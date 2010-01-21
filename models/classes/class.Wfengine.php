@@ -19,42 +19,11 @@ if (0 > version_compare(PHP_VERSION, '5')) {
 
 /* user defined includes */
 // section 10-13-1--31-740bb989:119ebfa9b28:-8000:0000000000000816-includes begin
-include_once(dirname(__FILE__) . "/../../../../../generis/core/api/generisApiPhp.php");
-include_once(dirname(__FILE__) . "/../../constants.php");
-include_once(dirname(__FILE__) . "/../../../../../generis/common/common.php");
-include_once(dirname(__FILE__) . "/../../../../../piaac/common.php");
-
-include_once(dirname(__FILE__) . "/class.Utils.php");
-include_once(dirname(__FILE__) . "/class.WfUser.php");
-include_once(dirname(__FILE__) . "/class.WfRole.php");
-include_once(dirname(__FILE__) . "/class.wfResource.php");
-include_once(dirname(__FILE__) . "/class.Tool.php");
-include_once(dirname(__FILE__) . "/class.Activity.php");
-include_once(dirname(__FILE__) . "/class.Process.php");
-include_once(dirname(__FILE__) . "/class.ProcessExecution.php");
-include_once(dirname(__FILE__) . "/class.Connector.php");
-include_once(dirname(__FILE__) . "/class.ProcessExecutionFactory.php");
-include_once(dirname(__FILE__) . "/class.Variable.php");
-include_once(dirname(__FILE__) . "/class.ActivityExecution.php");
-include_once(dirname(__FILE__) . "/class.ViewProcessExecution.php");
-include_once(dirname(__FILE__) . "/class.ViewProcess.php");
-include_once(dirname(__FILE__) . "/class.ViewTable.php");
-include_once(dirname(__FILE__) . "/class.TransitionRule.php");
-include_once(dirname(__FILE__) . "/class.ConsistencyRule.php");
-include_once(dirname(__FILE__) . "/class.InferenceRule.php");
-include_once(dirname(__FILE__) . "/interface.Selector.php");
-include_once(dirname(__FILE__) . "/class.SequentialSelector.php");
-include_once(dirname(__FILE__) . "/class.DichotomicSelector.php");
-include_once(dirname(__FILE__) . "/class.RandomSelector.php");
-include_once(dirname(__FILE__) . "/class.ActivitiesList.php");
-include_once(dirname(__FILE__) . "/class.ActivitiesListExecution.php");
 // section 10-13-1--31-740bb989:119ebfa9b28:-8000:0000000000000816-includes end
 
 /* user defined constants */
 // section 10-13-1--31-740bb989:119ebfa9b28:-8000:0000000000000816-constants begin
-include_once(dirname(__FILE__) . "/../../../../config/config.php");
-include_once(dirname(__FILE__) . "/../../settings.php");
-include_once(dirname(__FILE__) . "/../../constants.php");
+
 
 /*
 define("PASS", "taoqual", true);
@@ -144,10 +113,10 @@ class Wfengine
     private function __construct($login, $password)
     {
         // section 10-13-1--31-740bb989:119ebfa9b28:-8000:00000000000008B9 begin
-		$session = authenticate(array($login),array($password),array("1"),array(MODULE));
-		$this->sessionGeneris =$session["pSession"];
-		if ($this->sessionGeneris=="Authentication failed")
-		{trigger_error("wrong login/password");}
+//		$session = authenticate(array($login),array($password),array("1"),array(MODULE));
+//		$this->sessionGeneris =$session["pSession"];
+//		if ($this->sessionGeneris=="Authentication failed")
+//		{trigger_error("wrong login/password");}
 		$this->login=$login;
 
         // section 10-13-1--31-740bb989:119ebfa9b28:-8000:00000000000008B9 end
@@ -229,9 +198,21 @@ class Wfengine
 		if ($this->user == null)
 		{	//TODO OPTIMIZE, nevertheless seems that $this->user  is always set before externally
 			//$users  = search($this->sessionGeneris, array(PROPERTY_USER_LOGIN,$this->login),array(),false);
+			$db = core_kernel_classes_DbWrapper::singleton(DATABASE_NAME);
+			$query = "SELECT subject FROM `statements` WHERE predicate='".PROPERTY_USER_LOGIN."' AND object ='".$this->login."' ";
 
 
-			$users  = execSQL(Wfengine::singleton()->sessionGeneris,"AND predicate='".PROPERTY_USER_LOGIN."' AND object ='".$this->login."' LIMIT 1", array());
+			
+			$db->dbConnector->debug = true;
+			$result = $db->execSql($query);
+			$db->dbConnector->debug = false;
+			var_dump($result->fields);
+			while (!$result-> EOF){
+	
+				
+				$result->MoveNext();
+			}
+		
 
 			//$hdl = fopen("monitoring","a+"); fwrite($hdl,microtime(true)." ".__FILE__." ".__LINE__.$users[0][0]."\r\n");fclose($hdl);
 
