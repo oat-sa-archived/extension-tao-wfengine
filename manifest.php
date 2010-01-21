@@ -12,7 +12,9 @@
 		
 			'classLoaderPackages' => array( 
 				dirname(__FILE__).'/actions/',
+				dirname(__FILE__).'/models/classes/',
 				dirname(__FILE__).'/helpers/'
+
 
 			 )	
 			
