@@ -1,0 +1,284 @@
+<?php
+
+error_reporting(E_ALL);
+
+/**
+ * WorkFlowEngine - class.Connector.php
+ *
+ * $Id$
+ *
+ * This file is part of WorkFlowEngine.
+ *
+ * Automatic generated with ArgoUML 0.24 on 13.11.2008, 16:17:41
+ *
+ * @author firstname and lastname of author, <author@example.org>
+ */
+
+if (0 > version_compare(PHP_VERSION, '5')) {
+    die('This file was generated for PHP 5');
+}
+
+/**
+ * include Activity
+ *
+ * @author firstname and lastname of author, <author@example.org>
+ */
+require_once('class.Activity.php');
+
+/**
+ * include wfResource
+ *
+ * @author firstname and lastname of author, <author@example.org>
+ */
+require_once('class.wfResource.php');
+
+/* user defined includes */
+// section -64--88-1-64--7117f567:11a0527df60:-8000:00000000000008D4-includes begin
+// section -64--88-1-64--7117f567:11a0527df60:-8000:00000000000008D4-includes end
+
+/* user defined constants */
+// section -64--88-1-64--7117f567:11a0527df60:-8000:00000000000008D4-constants begin
+// section -64--88-1-64--7117f567:11a0527df60:-8000:00000000000008D4-constants end
+
+/**
+ * Short description of class Connector
+ *
+ * @access public
+ * @author firstname and lastname of author, <author@example.org>
+ */
+class Connector
+    extends wfResource
+{
+    // --- ATTRIBUTES ---
+
+    /**
+     * Short description of attribute nextActivities
+     *
+     * @access public
+     * @var array
+     */
+    public $nextActivities = array();
+
+    /**
+     * Short description of attribute type
+     *
+     * @access public
+     * @var string
+     */
+    public $type = '';
+
+    /**
+     * Short description of attribute prevActivities
+     *
+     * @access public
+     * @var array
+     */
+    public $prevActivities = array();
+
+    /**
+     * Short description of attribute transitionRule
+     *
+     * @access public
+     * @var object
+     */
+    public $transitionRule = null;
+
+    /**
+     * Short description of attribute consistencyRules
+     *
+     * @access public
+     * @var array
+     */
+    public $consistencyRules = array();
+
+    /**
+     * Short description of attribute inferenceRules
+     *
+     * @access public
+     * @var array
+     */
+    public $inferenceRules = array();
+
+    // --- OPERATIONS ---
+
+    /**
+     * Short description of method feedFlow
+     *
+     * @access public
+     * @author firstname and lastname of author, <author@example.org>
+     * @param int
+     * @return void
+     */
+    public function feedFlow($recursivityLevel = "")
+    {
+        // section -64--88-1-64--7117f567:11a0527df60:-8000:0000000000000914 begin
+									  
+		// Next activities feeding.
+		if ($recursivityLevel != "") 
+			$recursivityLevel--;
+			
+    	$geNextActivities = getInstancePropertyValues(Wfengine::singleton()->sessionGeneris,
+													  array($this->uri),
+													  array(PROPERTY_CONENCTORS_NEXTACTIVITIES),
+													  array(""));	
+
+		$this->nextActivities = array();
+		$this->precActivities = Array();
+		foreach ($geNextActivities as $key=>$val)
+		{
+			
+			$isAConnector = getInstancePropertyValues(Wfengine::singleton()->sessionGeneris,
+													  array($val),
+													  array("http://www.w3.org/1999/02/22-rdf-syntax-ns#type"),
+													  array(""));
+			if ($isAConnector[0]==CLASS_ACTIVITIES)
+			{
+				
+				if (isset($_SESSION["activities"][$val])) 
+				{
+					
+					$this->nextActivities[] =$_SESSION["activities"][$val];
+				} 
+				else
+				{
+					
+					$activity = new Activity($val);
+					$_SESSION["activities"][$val] = $activity;
+					$activity->getActors();
+
+					$this->nextActivities[] = $activity;						
+				}
+			}
+			
+		}
+		
+		// Previous activities feeding.
+    	$gePrevActivities = getInstancePropertyValues(Wfengine::singleton()->sessionGeneris,
+													  array($this->uri),
+													  array(PROPERTY_CONNECTORS_PRECACTIVITIES),
+													  array(""));
+													  	
+		//if (sizeOf($gePrevActivities)>1) echo $this->label; 
+		foreach ($gePrevActivities as $key=>$val)
+		{
+			$isAConnector = getInstancePropertyValues(Wfengine::singleton()->sessionGeneris,
+													  array($val),
+													  array("http://www.w3.org/1999/02/22-rdf-syntax-ns#type"),
+													  array(""));
+			if ($isAConnector[0]!=CLASS_CONNECTORS)
+			{
+				
+			
+				if (isset($_SESSION["activities"][$val])) 
+				{
+					$this->prevActivities[] = $_SESSION["activities"][$val];
+				} 
+				else
+				{
+					
+					//we should detect loops, todo
+					
+					
+					$activity = new Activity($val);
+					$_SESSION["activities"][$val] = $activity;
+					$activity->getActors();
+					//$activity->feedFlow($recursivityLevel);
+						
+					$this->prevActivities[] = $activity;	
+					
+					
+				}
+			}
+			
+		}
+		
+        // section -64--88-1-64--7117f567:11a0527df60:-8000:0000000000000914 end
+    }
+    
+    /**
+     * Short description of method getType
+     *
+     * @access public
+     * @author firstname and lastname of author, <author@example.org>
+     * @return void
+     */
+    public function getType() {
+    	
+    	$returnValue = null;
+    	
+    	$resource = new core_kernel_classes_Resource($this->uri,__METHOD__);
+    	$connTypeProp = new core_kernel_classes_Property(PROPERTY_CONNECTOR_TYPEOFCONNECTOR,__METHOD__);
+		try {
+    		$returnValue = $resource->getUniquePropertyValue($connTypeProp);
+		}
+		catch (common_Exception $e) {
+			echo 'Exception when retreiving Connector type ' . $this->uri;
+			var_dump($e->getMessage(), $e->getTraceAsString());
+		}
+    	return $returnValue;
+    }
+    
+    /**
+     * Short description of method getNextActivities
+     *
+     * @access public
+     * @author firstname and lastname of author, <author@example.org>
+     * @return void
+     */
+    public function getPreviousActivities() {
+    	$precActivitiesProp = new core_kernel_classes_Property(PREC_ACTIVITIES,__METHOD__);
+		$resource = new core_kernel_classes_Resource($this->uri,__METHOD__);
+		$returnValue = $resource->getPropertyValuesCollection($precActivitiesProp);
+    	return $returnValue;
+    
+    }
+    
+    /**
+     * Short description of method getNextActivities
+     *
+     * @access public
+     * @author firstname and lastname of author, <author@example.org>
+     * @return void
+     */
+    public function getNextActivities() {
+    	$nextActivitiesProp = new core_kernel_classes_Property(PROPERTY_CONENCTORS_NEXTACTIVITIES,__METHOD__);
+		$resource = new core_kernel_classes_Resource($this->uri,__METHOD__);
+		$returnValue = $resource->getPropertyValuesCollection($nextActivitiesProp);
+    	return $returnValue;
+    
+    }
+
+    /**
+     * Short description of method __construct
+     *
+     * @access public
+     * @author firstname and lastname of author, <author@example.org>
+     * @param string
+     * @return void
+     */
+    public function __construct($uri)
+    {
+        // section -64--88-1-64--7117f567:11a0527df60:-8000:0000000000000935 begin
+		parent::__construct($uri);
+		$typeOfConnector = getInstancePropertyValues(Wfengine::singleton()->sessionGeneris,array($uri),array(PROPERTY_CONENCTORS_TYPEOF),array(""));	
+		$this->type = $typeOfConnector[0];
+		
+		// We get the TransitionRule relevant to the connector.
+		$rule = getInstancePropertyValues(Wfengine::singleton()->sessionGeneris,
+												  array($this->uri),
+												  array(PROPERTY_CONNECTOR_TRANSITIONRULE),
+											      array(""));
+		
+		if (count($rule)&& $rule[0] != "")
+			$this->transitionRule = new TransitionRule($rule[0]);
+		else
+			$this->transitionRule = null;
+		
+		
+		
+        // section -64--88-1-64--7117f567:11a0527df60:-8000:0000000000000935 end
+    }
+
+} /* end of class Connector */
+
+?>
