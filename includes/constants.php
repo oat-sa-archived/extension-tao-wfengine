@@ -2,7 +2,7 @@
 
 
 
-define('NS_TAOQUAL',									'http://10.13.1.225/middleware/taoqual.rdf');
+define('NS_TAOQUAL',									'http://www.tao.lu/middleware/taoqual.rdf');
 
 
 
