@@ -3,49 +3,39 @@ class UsersHelper
 {
 
 	public static function authenticate($in_login, $in_password){
+
 		
-		$session = @authenticate(array($in_login),array($in_password),array("1"),array(MODULE));
-		
-		if ($session["pSession"][0] != "Authentication failed")
-		{
-			// New API Connection.
-			core_control_FrontController::connect($in_login,
-			md5($in_password),
-			MODULE);
-	
-			$_SESSION["bd"]				= MODULE;
-			$_SESSION["session"]		= $session["pSession"];
-			$_SESSION["ok"]				= true; 
-			$_SESSION["guilg"] 			= "EN";
-			$_SESSION["type"]			= "i";
-			$_SESSION["cuser"]			= $in_login;
-			$_SESSION["Wfengine"] 		= Wfengine::singleton($in_login, $in_password);
-			$_SESSION["userObject"] 	= Wfengine::singleton()->getUser();
-	
-			core_kernel_classes_Session::singleton()->setLg("EN");
+		// New API Connection.
+		core_control_FrontController::connect($in_login,md5($in_password), DATABASE_NAME);
+
+		//			$_SESSION["bd"]				= MODULE;
+		//			$_SESSION["session"]		= $session["pSession"];
+		//			$_SESSION["ok"]				= true;
+		//			$_SESSION["guilg"] 			= "EN";
+		//			$_SESSION["type"]			= "i";
+		//			$_SESSION["cuser"]			= $in_login;
+
+		$_SESSION["Wfengine"] 		= Wfengine::singleton($in_login, $in_password);
+		$_SESSION["userObject"] 	= Wfengine::singleton()->getUser();
+		core_kernel_classes_Session::singleton()->setLg("EN");
 			
-			// Taoqual authentication and language markers.
-			$_SESSION['taoqual.authenticated'] 		= true;
-			$_SESSION['taoqual.lang']				= 'EN';
-			$_SESSION['taoqual.serviceContentLang'] = 'EN';
-			$_SESSION['taoqual.userId']				= $in_login;
-			
-			if (defined("PIAAC_ENABLED")) {
-				$_SESSION['taoqual.serviceContentLang'] = $GLOBALS["countryActivityContentLanguages"][PIAAC_VERSION][0];
-				$_SESSION['taoqual.lang'] = $GLOBALS["countryUILanguages"][PIAAC_VERSION][0];
-	
-				//BATCH special hack for batch
-				//$_SESSION['taoqual.serviceContentLang'] = "EN";
-			}
-	
-			$_SESSION['taoqual.theme']			= 'PIAAC';
-			
-			return true;
+		// Taoqual authentication and language markers.
+		$_SESSION['taoqual.authenticated'] 		= true;
+		$_SESSION['taoqual.lang']				= 'EN';
+		$_SESSION['taoqual.serviceContentLang'] = 'EN';
+		$_SESSION['taoqual.userId']				= $in_login;
+
+		if (defined("PIAAC_ENABLED")) {
+			$_SESSION['taoqual.serviceContentLang'] = $GLOBALS["countryActivityContentLanguages"][PIAAC_VERSION][0];
+			$_SESSION['taoqual.lang'] = $GLOBALS["countryUILanguages"][PIAAC_VERSION][0];
+
+			//BATCH special hack for batch
+			//$_SESSION['taoqual.serviceContentLang'] = "EN";
 		}
-		else
-		{
-			return false;	
-		}
+
+		$_SESSION['taoqual.theme']			= 'template';
+		return true;
+
 	}
 
 	public static function buildCurrentUserForView()
@@ -106,9 +96,10 @@ class UsersHelper
 	public static function checkAuthentication()
 	{
 		if (!isset($_SESSION['taoqual.authenticated']))
-		{
+		{	
 			self::authenticationRouting();
 		}
+		
 	}
 
 	public static function authenticationRouting()
@@ -116,21 +107,21 @@ class UsersHelper
 		$context = Context::getInstance();
 		$fromModule = $context->getModuleName();
 		$fromAction= $context->getActionName();
-//		$currentHttpRequest = new HttpRequest();
-//		$fromModule = $currentHttpRequest->getModule();
-//		$fromAction = $currentHttpRequest->getAction();
+		//		$currentHttpRequest = new HttpRequest();
+		//		$fromModule = $currentHttpRequest->getModule();
+		//		$fromAction = $currentHttpRequest->getAction();
 
 		// From contain the url encoded module and action.
 		$fromLoc = urlencode($fromModule . '/' . $fromAction);
 
 		// Params will contain the url encoded current query string.
 		$query = urlencode('?' . $_SERVER['QUERY_STRING']);
-		var_dump($query);
+
 		$flow = new FlowController();
-		$flow->redirect("index.php/Authentication/index?from=${fromLoc}&fromQuery=${query}");
-		
-//		AdvancedFC::redirection("authentication/index?from=${fromLoc}&fromQuery=${query}");
-//		$fromModule->redirect("authentication/index?from=${fromLoc}&fromQuery=${query}");
+		$flow->redirect("authentication/index?from=${fromLoc}&fromQuery=${query}");
+
+		//		AdvancedFC::redirection("authentication/index?from=${fromLoc}&fromQuery=${query}");
+
 	}
 
 	public static function informServiceMode()

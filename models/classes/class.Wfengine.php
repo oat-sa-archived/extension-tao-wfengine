@@ -87,13 +87,14 @@ class Wfengine
         $returnValue = array();
 
         // section 10-13-1--31-740bb989:119ebfa9b28:-8000:0000000000000819 begin
-		$processes = getInstances($this->sessionGeneris,array(CLASS_PROCESS),array(""));
-		foreach ($processes["pDescription"] as $key=>$val)
-			{
-				$process = new ViewProcess($key);
-				$returnValue[] = $process;
+		
+		$class = new core_kernel_classes_Class(CLASS_PROCESS);
+		$processes = $class->getInstances();
+		foreach ($processes as $key=>$val){
+			$process = new ViewProcess($key);
+			$returnValue[] = $process;
 
-			}
+		}
 
 
         // section 10-13-1--31-740bb989:119ebfa9b28:-8000:0000000000000819 end
@@ -113,12 +114,7 @@ class Wfengine
     private function __construct($login, $password)
     {
         // section 10-13-1--31-740bb989:119ebfa9b28:-8000:00000000000008B9 begin
-//		$session = authenticate(array($login),array($password),array("1"),array(MODULE));
-//		$this->sessionGeneris =$session["pSession"];
-//		if ($this->sessionGeneris=="Authentication failed")
-//		{trigger_error("wrong login/password");}
 		$this->login=$login;
-
         // section 10-13-1--31-740bb989:119ebfa9b28:-8000:00000000000008B9 end
     }
 
@@ -137,7 +133,7 @@ class Wfengine
 
         // section 10-13-1--31-740bb989:119ebfa9b28:-8000:00000000000008BB begin
 		if (!isset(self::$instance)) {
-
+			
 			//checks if the wfengine has not already been in the session, useful otherwise, if the application using the wfengine extract the instance from the session this singleton won't see the instance of it and will create a second instance
 			if (!isset($_SESSION["Wfengine"]))
 			{
@@ -167,13 +163,14 @@ class Wfengine
         $returnValue = array();
 
         // section 10-13-1--31-740bb989:119ebfa9b28:-8000:00000000000008E7 begin
-		$processes = getInstances($this->sessionGeneris,array(CLASS_PROCESS_EXECUTIONS),array(""));
+        $class = new core_kernel_classes_Class(CLASS_PROCESS_EXECUTIONS);
+        $processes = $class->getInstances(CLASS_PROCESS_EXECUTIONS);
+//		$processes = getInstances($this->sessionGeneris,array(CLASS_PROCESS_EXECUTIONS),array(""));
 
-		foreach ($processes["pDescription"] as $key=>$pInstance)
-			{
-				$processInstance = new ViewProcessExecution($key);
-				$returnValue[]=$processInstance;
-			}
+		foreach ($processes as $key=>$pInstance){
+			$processInstance = new ViewProcessExecution($key);
+			$returnValue[]=$processInstance;
+		}
 
 
         // section 10-13-1--31-740bb989:119ebfa9b28:-8000:00000000000008E7 end
@@ -198,25 +195,14 @@ class Wfengine
 		if ($this->user == null)
 		{	//TODO OPTIMIZE, nevertheless seems that $this->user  is always set before externally
 			//$users  = search($this->sessionGeneris, array(PROPERTY_USER_LOGIN,$this->login),array(),false);
+
 			$db = core_kernel_classes_DbWrapper::singleton(DATABASE_NAME);
-			$query = "SELECT subject FROM `statements` WHERE predicate='".PROPERTY_USER_LOGIN."' AND object ='".$this->login."' ";
-
-
 			
-			$db->dbConnector->debug = true;
+			$query = "SELECT subject FROM `statements` WHERE predicate='".PROPERTY_USER_LOGIN."' AND object ='".$this->login."' ";
 			$result = $db->execSql($query);
-			$db->dbConnector->debug = false;
-			var_dump($result->fields);
-			while (!$result-> EOF){
-	
-				
-				$result->MoveNext();
+			if(isset($result->fields["subject"])){
+				$this->user = new WfUser($result->fields["subject"],$this->login);
 			}
-		
-
-			//$hdl = fopen("monitoring","a+"); fwrite($hdl,microtime(true)." ".__FILE__." ".__LINE__.$users[0][0]."\r\n");fclose($hdl);
-
-			$this->user = new WfUser($users[0][0], $this->login);
 		}
 
 		$returnValue = $this->user;

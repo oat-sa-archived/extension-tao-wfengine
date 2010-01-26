@@ -77,9 +77,8 @@ class wfResource
         // section 10-13-1--31-740bb989:119ebfa9b28:-8000:00000000000008B2 begin
 		$this->uri =$uri;
 		$this->resource = new core_kernel_classes_Resource($uri,__METHOD__);
-		$labelcomment = getlabelcomment(Wfengine::singleton()->sessionGeneris,$uri,array(""));
-		$this->setLabel($labelcomment["label"]);
-		$this->setComment($labelcomment["comment"]);
+		$this->setLabel($this->resource->getLabel());
+		$this->setComment($this->resource->comment);
 			
         // section 10-13-1--31-740bb989:119ebfa9b28:-8000:00000000000008B2 end
     }

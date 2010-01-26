@@ -1,5 +1,5 @@
 <?php
-class Processes
+class Processes extends Module
 {
 	public function authoring($processDefinitionUri)
 	{
@@ -7,59 +7,14 @@ class Processes
 		// the service mode !
 		if (!SERVICE_MODE)
 		{
-			UsersHelper::checkAuthentication();	
+			//UsersHelper::checkAuthentication();	
+			UsersHelper::authenticate('tao','tao');
 							
 			$wfEngine 			= $_SESSION["Wfengine"];
 			$userViewData 		= UsersHelper::buildCurrentUserForView();
+			$this->setData('userViewData',$userViewData);
 			$process 			= new ViewProcess(urldecode($processDefinitionUri));
 		
-			if (DEBUG_MODE_ENABLE)
-			{
-		
-				$processes 			= $wfEngine->getProcessExecutions();
-				$filter = array();
-				$filter[] = '.svn';
-		
-				foreach ($processes as $proc){
-					$procVariables = Utils::processVarsToArray($proc->getVariables());
-		
-					$intervieweeInst = new core_kernel_classes_Resource($procVariables[VAR_INTERVIEWEE_URI],__METHOD__);
-					$property = propertyExists(CASE_ID_CODE);
-		
-					if(($property)) 
-					{
-						
-						$caseIdProp = new core_kernel_classes_Property($property,__METHOD__);
-						$result = $intervieweeInst->getPropertyValuesCollection($caseIdProp);
-		
-						if ($result->count() == 1)
-						{
-							$filter[] = $result->get(0)->literal . '.zip';
-						}
-						else {
-							foreach ($result->getIterator() as $container) {
-								if ($container instanceof core_kernel_classes_Literal ){
-									$filter[] = $container->literal . '.zip';
-								}
-							}
-						}
-					}
-				}
-			
-			
-				$caseIdViewData = array();
-				$caseIdFiles = FileSystemUtil::getDirectoryContentNames(SHARE_DIRECTORY.'/Import',$filter);
-				
-				
-				foreach ($caseIdFiles as $caseId){
-					if(strpos($caseId,'.zip')){
-						$plop = str_split($caseId,strpos($caseId,'.zip'));		
-						$caseIdViewData[]['id'] = $plop[0];
-					}	
-				}
-				
-				usort($caseIdViewData, 'Processes::compareCaseFile');
-			}
 			
 			$processAuthoringData 	= array();
 			$processAuthoringData['processUri'] 	= $processDefinitionUri;
@@ -68,9 +23,11 @@ class Processes
 			
 			$uiLanguages		= I18nUtil::getAvailableLanguages();
 			
+			$this->setData('uiLanguages',$uiLanguages);
+			
 			// Process variables retrieving.
 			$variables = $process->getProcessVars();
-			
+
 			foreach ($variables as $key => $variable)
 			{
 				$name 			= $variable[0];
@@ -84,22 +41,17 @@ class Processes
 						  
 				// Euh what's happening :D ? Ask it to PPL.
 				// Utils::getRemoteKB($propertyRange);
-				
-				include("../../../generis/core/widgets/".urlencode($widgetType).".php"); 
+
+				include(GENERIS_BASE_PATH."/core/widgets/".urlencode($widgetType).".php"); 
 				$widget = str_replace("instanceCreation", "posted", $widget); 
 				
 				$processAuthoringData['variables'][] = array('name'		=> $name,
 														   	 'widget'	=> $widget);
 			}
 			// View selection.
-			if (DEBUG_MODE_ENABLE)
-			{			
-				require_once(GenerisFC::getView('process_authoring.tpl'));
-			}
-			else 
-			{
-				require_once(GenerisFC::getView('process_authoring_old.tpl'));
-			}
+			$this->setData('processAuthoringData',$processAuthoringData);
+			$this->setView('process_authoring_old.tpl');
+
 		}
 		else
 		{
@@ -111,7 +63,7 @@ class Processes
 	public function add($posted)
 	{
 		ini_set('max_execution_time', 200);
-		
+
 		// This action is not available when running the service mode.
 		if (!SERVICE_MODE)
 		{
@@ -128,47 +80,9 @@ class Processes
 			}
 
 			
-			if (DEBUG_MODE_ENABLE) 
-			{
-				$processExecutionFactory = new ProcessExecutionFactory();
-				if($posted['new'] === __("Import Interview") && isset($posted['caseId'])) 
-				{	
-					$processExecutionFactory->name = urldecode($posted['caseId']);
-					$processExecutionFactory->comment = urldecode($posted['caseId']) ;
-			
-					if (defined('PIAAC_ENABLED'))
-					{
-						$processExecutionFactory->intervieweeUri = PiaacDataExchange::importAll($posted['caseId']);
-						
-						if ($owner = PiaacCommonUtils::getInterviewerById($_SESSION['taoqual.userId']))
-						{
-							$processExecutionFactory->ownerUri = $owner->uriResource;
-						}
-					}
-				}
-				else 
-				{
-					$processExecutionFactory->name = 'Interview ' . date(DATE_ISO8601);
-					$processExecutionFactory->comment = 'comment';
-					
-					if (defined('PIAAC_ENABLED'))
-					{
-						$processExecutionFactory->intervieweeUri = PiaacHyperClassUtils::import();
-						
-						if ($owner = PiaacCommonUtils::getInterviewerById($_SESSION['taoqual.userId']))
-						{
-							$processExecutionFactory->ownerUri = $owner->uriResource;
-						}
-					}
-				}
-				
-				$processExecutionFactory->execution = urldecode($posted['executionOf']);
-				$newProcessExecution = $processExecutionFactory->create();
-			}
-			else 
-			{
-				$newProcessExecution = Utils::createProcessExecution($posted);
-			}
+
+			$newProcessExecution = Utils::createProcessExecution($posted);
+
 			
 			$newProcessExecution->feed();
 			
@@ -186,7 +100,7 @@ class Processes
 				$viewState = 'main/index';
 			}
 			
-			GenerisFC::redirection($viewState);
+			$this->redirect($viewState);
 		}
 		else
 		{

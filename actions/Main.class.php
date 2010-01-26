@@ -15,11 +15,14 @@ class Main extends Module
 			{
 				UsersHelper::authenticate($login, $pwd);
 			}
-				
-			//			UsersHelper::checkAuthentication();
+
+//			UsersHelper::checkAuthentication();
+			UsersHelper::authenticate('tao','tao');
+
 
 			$wfEngine 			= $_SESSION["Wfengine"];
 			$userViewData 		= UsersHelper::buildCurrentUserForView();
+			$this->setData('userViewData',$userViewData);
 			$processes 			= $wfEngine->getProcessExecutions();
 
 			if ($caseId != null)
@@ -42,7 +45,7 @@ class Main extends Module
 									$processUri = urlencode($proc->uri);
 									$activityUri = urlencode($proc->currentActivity[0]->activity->uri);
 									$viewState = "processBrowser/index?processUri=${processUri}";
-									GenerisFC::redirection($viewState);
+									$this->redirect($viewState);
 							}
 						}
 					}
@@ -51,8 +54,9 @@ class Main extends Module
 		}
 
 		$processViewData 	= array();
+		
 		$uiLanguages		= I18nUtil::getAvailableLanguages();
-			
+		$this->setData('uiLanguages',$uiLanguages);
 		foreach ($processes as $proc)
 		{
 
@@ -65,14 +69,14 @@ class Main extends Module
 			$procVariables = Utils::processVarsToArray($proc->getVariables());
 			$intervieweeInst = new core_kernel_classes_Resource($procVariables[VAR_INTERVIEWEE_URI],__METHOD__);
 
-			//var_dump($intervieweeInst);
+
 
 			if($property)
 			{
 				$caseIdProp = new core_kernel_classes_Property($property,__METHOD__);
 
 				$results = $intervieweeInst->getPropertyValuesCollection($caseIdProp);
-				error_reporting(E_ALL);
+
 				foreach ($results->sequence as $result){
 					if (isset($result->literal)){
 						$persid	= $result->literal;
@@ -97,7 +101,10 @@ class Main extends Module
 					$currentActivities[] = array('label' 			=> $currentActivity->label,
 													 'uri' 				=> $currentActivity->uri,
 													 'may_participate'	=> !$proc->isFinished());
+					
+					
 				}
+				$this->setData('currentActivities',$currentActivities);
 			}
 
 			if (true)
@@ -108,10 +115,13 @@ class Main extends Module
 												'persid'	=> $persid,
 										   	   'activities' => $currentActivities,
 											   'status'		=> $status);
+				
+				
 			}
 		}
 
-		require_once (GenerisFC::getView('main.tpl'));
+		$this->setData('processViewData',$processViewData);
+		$this->setView('main.tpl');
 	}
 	else
 	{

@@ -67,6 +67,8 @@ class WfUser
      * @var boolean
      */
     public $connected = false;
+    
+    public $resource = null;
 
     /**
      * Short description of attribute userUri
@@ -92,16 +94,14 @@ class WfUser
         // section 10-13-1--31-740bb989:119ebfa9b28:-8000:00000000000008AE begin
 		$this->userName 	= $userName;
 		$this->userUri 		= $userUri;
-		
+		$this->resource = new core_kernel_classes_Resource($userUri);
 		// Building roles.
-		$rolesUris 			= getInstancePropertyValues(Wfengine::singleton()->sessionGeneris,
-											  			array($userUri),
-											  		 	array(USER_ROLE),
-											   			array(""));
-										   			
-		foreach ($rolesUris as $uri)
-			$this->roles[] = new WfRole($uri);
-		
+		$roleProperty = new core_kernel_classes_Property(USER_ROLE);
+		$rolesUris = $this->resource->getPropertyValuesCollection($roleProperty);
+									   			
+		foreach ($rolesUris->getIterator() as $resource){
+			$this->roles[] = new WfRole($resource->uriResource);
+		}
         // section 10-13-1--31-740bb989:119ebfa9b28:-8000:00000000000008AE end
     }
 

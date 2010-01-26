@@ -34,33 +34,22 @@ class Authentication extends Module
 		// We connect to generis.
 		if (UsersHelper::authenticate($in_login,$in_password))
 		{
-			// Login should be successful ...
-			// If Piaac is enabled, we have to invalidate the Piaac cache
-			// to be sure it is "fresh enough".
-			if (defined('PIAAC_ENABLED')) PiaacDataHolder::invalidateCache();
-
 			// If we are here, the login process succeeded. So we redirect the user
 			// to the UserFrontend main web form or to the location specified
 			// by the 'from' and 'fromQuery' parameters.
-			if (isset($_POST['route']) && $_POST['route'] == 'true')
-				GenerisFC::redirection($_POST['from'] . $_POST['fromQuery']);
+			
+			if (isset($_POST['route']) && $_POST['route'] == 'true') {
+				$this->redirect($_POST['from'] . $_POST['fromQuery']);
+			}
 			else{
-				
-				if (defined('PIAAC_ENABLED') && SERVICE_MODE && ($processBoundUri = getProcessExecutionUriBoundToUser($in_login)))
-				{
-					GenerisFC::redirection('processBrowser/index?processUri=' . urlencode($processBoundUri));
-				}
-				else
-				{
-					GenerisFC::redirection('main/index');
-				}
+				$this->redirect('Main/index');
 			}
 
 		}
 		else
 		{
 			// The user has to provide valid indentification information.
-			GenerisFC::redirection('authentication/index');
+			$this->redirect('authentication/index');
 		}
 	}
 
@@ -74,7 +63,7 @@ class Authentication extends Module
 		// Finally, destroy the session.
 		session_destroy();
 
-		GenerisFC::redirection('authentication/index');
+		$this->redirect('authentication/index');
 	}
 }
 ?>
