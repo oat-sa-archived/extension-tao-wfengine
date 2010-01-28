@@ -11,6 +11,9 @@ class ProcessBrowser extends Module
 		$browserViewData 	= array(); // general data for browser view.
 
 		$process 			= new ProcessExecution($processUri);
+		if(empty($process->currentActivity)) {
+			die('Any current activity found in the process : ' . $processUri);
+		}
 		$activity 			= $process->currentActivity[0];
 		$activityPerf 		= new Activity($activity->uri, false); // Performance WA
 		$activityExecution 	= new ActivityExecution($process, $activity);
