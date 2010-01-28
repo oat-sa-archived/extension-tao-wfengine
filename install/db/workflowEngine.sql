@@ -33,7 +33,7 @@ INSERT INTO `models` (`modelID`, `modelURI`, `baseURI`) VALUES
 (18, 'http://www.tao.lu/middleware/hyperclass.rdf#', 'http://www.tao.lu/middleware/hyperclass.rdf#'),
 (15, 'http://www.tao.lu/middleware/taoqual.rdf#', 'http://www.tao.lu/middleware/taoqual.rdf#'),
 (17, 'http://www.tao.lu/middleware/Rules.rdf#', 'http://www.tao.lu/middleware/Rules.rdf#'),
-(16, 'http://www.tao.lu/middleware/Interview.rdf#', 'http://www.tao.lu/middleware/Interview.rdf#')
+(16, 'http://www.tao.lu/middleware/Interview.rdf#', 'http://www.tao.lu/middleware/Interview.rdf#');
 --
 -- Contenu de la table `statements`
 --
