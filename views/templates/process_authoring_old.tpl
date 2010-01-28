@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<?php echo $GLOBALS['lang']; ?>" lang="<?php echo $GLOBALS['lang']; ?>">
 	<head>
-		<title><?php echo __("Capi Background Questionnaire"); ?></title>
+		<title><?php echo __("Workflow Engine"); ?></title>
 	
 		<style media="screen">
 			@import url(<?echo BASE_WWW; ?>/<?php echo $GLOBALS['dir_theme']; ?>/css/process_authoring.css);
@@ -34,7 +34,7 @@
 			
 			<div id="business">
 				<h2 id="authoring_subtitle"><?php echo $processAuthoringData['processLabel']; ?></h2>
-				<form id="authoring_form" action="<?php echo BASE_URL;?>/processes/add" method="post" onsubmit="return checkForm();">
+				<form id="authoring_form" action="<?php echo BASE_URL;?>/processes/add" method="post" >
 				<input type="hidden" name="posted[executionOf]" value="<?php echo urlencode($processAuthoringData['processUri']); ?>"/>
 					<table id="authoring_table">
 						<tbody>
