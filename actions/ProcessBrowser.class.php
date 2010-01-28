@@ -1,11 +1,10 @@
 <?php
-class ProcessBrowser
+class ProcessBrowser extends Module
 {
 	public function index($processUri)
 	{
 		UsersHelper::checkAuthentication();
 
-		PiaacDataHolder::build($processUri);
 
 		$processUri 		= urldecode($processUri); // parameters clean-up.
 		$userViewData 		= UsersHelper::buildCurrentUserForView(); // user data for browser view.
@@ -17,15 +16,10 @@ class ProcessBrowser
 		$activityExecution 	= new ActivityExecution($process, $activity);
 
 		$browserViewData['activityContentLanguages'] = array();
-		if (defined("PIAAC_ENABLED"))
-		{
-			//content languages defined in piaac constants
-			$browserViewData['activityContentLanguages'] = $GLOBALS['countryActivityContentLanguages'][PIAAC_VERSION];
-		}
 
 		// If paused, resume it.
 		if ($process->status == 'Paused')
-			$process->resume();
+		$process->resume();
 
 		// Browser view main data.
 		$browserViewData['isHyperView']				= false;
@@ -34,16 +28,13 @@ class ProcessBrowser
 		$browserViewData['processExecutionLabel']	= $process->label;
 		$browserViewData['activityLabel'] 			= $activity->label;
 		$browserViewData['isBackable']				= (FlowHelper::isProcessBackable($process) and !(isPiaacNotBackableItemList($activity->uri)));
-		$browserViewData['isBreakOffable']			= isPiaacBreakable($activity->uri);
-		$browserViewData['isNextable']				= USE_NEXT && !isPiaacNotNextableItemList($activity->uri);
-		$browserViewData['forceNext']				= FORCE_NEXT;
 		$browserViewData['uiLanguage']				= $GLOBALS['lang'];
 		$browserViewData['contentlanguage']			= $_SESSION['taoqual.serviceContentLang'];
 		$browserViewData['processUri']				= $processUri ;
 
 		$browserViewData['uiLanguages']				= I18nUtil::getAvailableLanguages();
 		$browserViewData['activityContentLanguages'] = I18nUtil::getAvailableServiceContentLanguages();
-		
+
 		$browserViewData['showCalendar']			= $activityPerf->showCalendar;
 
 		// process variables data.
@@ -89,101 +80,44 @@ class ProcessBrowser
 			$_SESSION['taoqual.flashvar.consistency'] = null;
 		}
 
-		// FIXME Please generalize in order to provide other tools than hyperviews
-		if ($variablesViewData['Var_Interviewee'] && !ActivityHelper::hasInteractiveTools($activityExecution))
+
+
+		//The following takes about 0.2 seconds -->cache
+
+		//retrieve activities
+
+		if (!($qSortedActivities = common_Cache::getCache("aprocess_activities")))
 		{
-			$browserViewData['isHyperView'] = true;
-			$intervieweeSearch = getInstancePropertyValues(Wfengine::singleton()->sessionGeneris,
-														   array($processUri),
-														   array($variablesViewData['Var_Interviewee']['uri']),
-														   array(''));
 
-			$hyperViewData = array();
+			$processDefinition = new core_kernel_classes_resource($process->process->uri);
+			$activities = $processDefinition->getPropertyValues(new core_kernel_classes_Property(PROPERTY_PROCESS_ACTIVITIES));
 
-			$hyperViews = getInstancePropertyValues(Wfengine::singleton()->sessionGeneris,
-													array($activity->uri),
-												 	array(PROPERTY_ACTIVITIES_HYPERCLASSES),
-												 	array(''));
-
-			$firstHvIndex = 0;
-			$i = 0;
-			foreach ($hyperViews as $hv)
+			//sort the activities
+			$qSortedActivities =array();
+			foreach ($activities as $key=>$val)
 			{
-				if ($hv == RESOURCE_INTERVIEW_HYPERCLASS)
-					$firstHvIndex = $i;
+				$activity_res = new core_kernel_classes_resource($val);
+				$label = $activity_res->label;
+				$qSortedActivities[$label] = $val;
 
-				$hyperViewData[] = array('hyper_class' => $hv,
-										 'hyper_object' => $intervieweeSearch[0]);
-
-				$i++;
 			}
-
-			// FIXME Generalize me (PIAAC)
-			if ($firstHvIndex != 0)
-			{
-				$backup = $hyperViewData[0];
-				$hyperViewData[0] = $hyperViewData[$firstHvIndex];
-				$hyperViewData[1] = $backup;
-			}
-
-
-			/**
-			* @param  annotationsClassificationsJsArray  contains relevant annotations classes  ()different kind of annotations described in a model within generis
-			* @param annotationsResourcesJsArray (a list of resources being actually presented on the screen )
-			**/
-
-
-			$browserViewData['annotationsClassificationsJsArray']=
-			array(
-			array('#122786657224088',__("Optional")),
-			array('#122786664635240',__("Response problem")),
-			array('#122786657224088',__("Observation")),
-			array('#122786668726350',__("Past Item response problem"))
-			);
-
-
-			//The following takes about 0.2 seconds -->cache
-
-			//retrieve activities
-
-			if (!($qSortedActivities = common_Cache::getCache("aprocess_activities")))
-			{
-
-				$processDefinition = new core_kernel_classes_resource($process->process->uri);
-				$activities = $processDefinition->getPropertyValues(new core_kernel_classes_Property(PROPERTY_PROCESS_ACTIVITIES));
-
-				//sort the activities
-				$qSortedActivities =array();
-				foreach ($activities as $key=>$val)
-				{
-					$activity_res = new core_kernel_classes_resource($val);
-					$label = $activity_res->label;
-					$qSortedActivities[$label] = $val;
-
-				}
-				ksort($qSortedActivities);
-				common_Cache::setCache($qSortedActivities,"aprocess_activities");
-			}
-
-			$browserViewData['annotationsResourcesJsArray'] = array();
-			foreach ($qSortedActivities as $key=>$val)
-			{
-				$browserViewData['annotationsResourcesJsArray'][]= array($val,$key);
-			}
-
-			$browserViewData['active_Resource']="'".$activity->uri."'" ;
-
-			require_once (GenerisFC::getView('process_browser.tpl'));
+			ksort($qSortedActivities);
+			common_Cache::setCache($qSortedActivities,"aprocess_activities");
 		}
-		else if ($variablesViewData['Var_Interviewee'] && ActivityHelper::hasInteractiveTools($activityExecution))
+
+		$browserViewData['annotationsResourcesJsArray'] = array();
+		foreach ($qSortedActivities as $key=>$val)
 		{
-			$browserViewData['isInteractiveService'] 	= true;
-			$servicesViewData 							= array();
-
-			$services = $activityExecution->getInteractiveTools();
-
-			require_once (GenerisFC::getView('process_browser_full_screen.tpl'));
+			$browserViewData['annotationsResourcesJsArray'][]= array($val,$key);
 		}
+
+		$browserViewData['active_Resource']="'".$activity->uri."'" ;
+		$this->setData($browserViewData);
+		$this->setView('process_browser.tpl');
+
+
+
+
 	}
 
 	public function back($processUri)
@@ -204,63 +138,63 @@ class ProcessBrowser
 		{
 			$processUri = urlencode($processUri);
 			GenerisFC::redirection("processBrowser/index?processUri=${processUri}");
-		}
 	}
+}
 
-	public function next($processUri, $ignoreConsistency = 'false')
+public function next($processUri, $ignoreConsistency = 'false')
+{
+	UsersHelper::checkAuthentication();
+
+	PiaacDataHolder::build($processUri);
+
+	$processUri 	= urldecode($processUri);
+	$processExecution = new ProcessExecution($processUri);
+
+	try
 	{
-		UsersHelper::checkAuthentication();
+		$processExecution->performTransition(($ignoreConsistency == 'true') ? true : false);
 
-		PiaacDataHolder::build($processUri);
-
-		$processUri 	= urldecode($processUri);
-		$processExecution = new ProcessExecution($processUri);
-
-		try
+		if (!$processExecution->isFinished())
 		{
-			$processExecution->performTransition(($ignoreConsistency == 'true') ? true : false);
+			$processUri = urlencode($processUri);
 
-			if (!$processExecution->isFinished())
-			{
-				$processUri = urlencode($processUri);
-
-				if (!ENABLE_HTTP_REDIRECT_PROCESS_BROWSER)
-					$this->index($processUri);
-				else
-				{
-					$processUri = urlencode($processUri);
-					GenerisFC::redirection("processBrowser/index?processUri=${processUri}");
-				}
-			}
+			if (!ENABLE_HTTP_REDIRECT_PROCESS_BROWSER)
+			$this->index($processUri);
 			else
 			{
-				if (defined('PIAAC_ENABLED') && SERVICE_MODE && USE_CALLBACK_URL_ON_PROCESS_FINISHED)
-				{
-					header('Location: ' . CALLBACK_URL_ON_PROCESS_FINISHED);
-				}
-				else
-				{
-					GenerisFC::redirection('main/index');
-				}
-			}
+				$processUri = urlencode($processUri);
+				GenerisFC::redirection("processBrowser/index?processUri=${processUri}");
 		}
-		catch (ConsistencyException $consistencyException)
+	}
+	else
+	{
+		if (defined('PIAAC_ENABLED') && SERVICE_MODE && USE_CALLBACK_URL_ON_PROCESS_FINISHED)
 		{
-			// A consistency error occured when trying to go
-			// forward in the process. Let's try to get useful
-			// information from the exception.
+			header('Location: ' . CALLBACK_URL_ON_PROCESS_FINISHED);
+		}
+		else
+		{
+			GenerisFC::redirection('main/index');
+		}
+	}
+}
+catch (ConsistencyException $consistencyException)
+{
+	// A consistency error occured when trying to go
+	// forward in the process. Let's try to get useful
+	// information from the exception.
 
-			// We need to tell the "index" action of the "ProcessBrowser" controller
-			// that a consistency exception occured. To do so, we will use the concept
-			// of flash variable. This kind of variable survives during one and only one
-			// HTTP request lifecycle. So that in the "index" action, the session variable
-			// depicting the error will be systematically erased after each processing.
-			//$_SESSION['taoqual.flashvar.consistency'] = $consistencyException;
-			$consistency = ConsistencyHelper::BuildConsistencyStructure($consistencyException);
-			$_SESSION['taoqual.flashvar.consistency'] = $consistency;
+	// We need to tell the "index" action of the "ProcessBrowser" controller
+	// that a consistency exception occured. To do so, we will use the concept
+	// of flash variable. This kind of variable survives during one and only one
+	// HTTP request lifecycle. So that in the "index" action, the session variable
+	// depicting the error will be systematically erased after each processing.
+	//$_SESSION['taoqual.flashvar.consistency'] = $consistencyException;
+	$consistency = ConsistencyHelper::BuildConsistencyStructure($consistencyException);
+	$_SESSION['taoqual.flashvar.consistency'] = $consistency;
 
-			$processUri = urlencode($processUri);
-			GenerisFC::redirection("processBrowser/index?processUri=${processUri}");
+	$processUri = urlencode($processUri);
+	GenerisFC::redirection("processBrowser/index?processUri=${processUri}");
 		}
 	}
 
@@ -287,19 +221,19 @@ class ProcessBrowser
 		$newActivity = new Activity($activityUri);
 		$processExecution->jumpBack(new Activity($activityUri), $testing);
 
-			if ($ignoreHidden == true)
+		if ($ignoreHidden == true)
+		{
+			$newActivity->feedFlow(1);
+			if ($newActivity->isHidden)
 			{
-				$newActivity->feedFlow(1);
-				if ($newActivity->isHidden)
-				{
-					$this->next(urlencode($processUri));
-					die();
-				}
+				$this->next(urlencode($processUri));
+				die();
 			}
+		}
 
 
-			$processUri = urlencode($processUri);
-			GenerisFC::redirection("processBrowser/index?processUri=${processUri}");
+		$processUri = urlencode($processUri);
+		GenerisFC::redirection("processBrowser/index?processUri=${processUri}");
 	}
 
 	public function breakOff($processUri)
@@ -337,7 +271,7 @@ class ProcessBrowser
 
 			$processUri = urlencode($processUri);
 			GenerisFC::redirection("processBrowser/index?processUri=${processUri}");
-		}
+	}
 	}
 }
 ?>

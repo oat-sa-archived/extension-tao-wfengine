@@ -37,7 +37,7 @@ define('DEFAULT_MODULE_NAME', 'Main');
 define('DEFAULT_ACTION_NAME', 'index');
 
 # Process Browser page title.
-define('PROCESS_BROWSER_TITLE', 'WorkFlowEngine UserFrontend');
+define('PROCESS_BROWSER_TITLE', 'Process BrowserEngine');
 										
 
 # Service mode

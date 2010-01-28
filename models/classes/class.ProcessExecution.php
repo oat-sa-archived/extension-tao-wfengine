@@ -135,25 +135,18 @@ extends wfResource
 		$returnValue = array();
 
 		// section 10-13-1--31-740bb989:119ebfa9b28:-8000:00000000000008EF begin
-
-		$processVars = getInstancePropertyValues(Wfengine::singleton()->sessionGeneris,
-		array($this->process->uri),
-		array(PROCESS_VARIABLES),
-		array(""));
-
+		
+		$processVarsProp = new core_kernel_classes_Property(PROCESS_VARIABLES);
+		$processVars = $this->process->resource->getPropertyValues($processVarsProp);
+	
 		foreach ($processVars as $uriVar)
 		{
-			$values = getInstancePropertyValues(Wfengine::singleton()->sessionGeneris,
-			array($this->uri),
-			array($uriVar),
-			array(""));
-
+			$var = new core_kernel_classes_Property($uriVar);
+			$values = $this->resource->getPropertyValues($var);
 			if ((sizeOf($values) > 0) && (trim(strip_tags($values[0])) != ""))
 			{
-				$labelcomment 			= getlabelcomment(Wfengine::singleton()->sessionGeneris,$uriVar,array(""));
-
-
-				$returnValue[] 	= new Variable($uriVar, trim($labelcomment['label']), trim($values[0]));
+				$label = $var->getLabel();
+				$returnValue[] 	= new Variable($uriVar, trim($label), trim($values[0]));
 			}
 		}
 
@@ -805,11 +798,9 @@ extends wfResource
 		parent::__construct($uri);
 		$this->resource = new core_kernel_classes_Resource($uri,__METHOD__);
 		//getexecutionOf field
-		$values = getInstancePropertyValues(Wfengine::singleton()->sessionGeneris,
-		array($this->uri),
-		array(EXECUTION_OF),
-		array(""));
-
+		$executionOfProp = new core_kernel_classes_Property(EXECUTION_OF);
+		$values = $this->resource->getPropertyValues($executionOfProp);
+	
 		foreach ($values as $a => $b)
 		{
 			$process 		= new ViewProcess($b);
@@ -1234,10 +1225,9 @@ extends wfResource
 	public function feed()
 	{
 		// section 10-13-1--31--7b61b039:11cdba08b1e:-8000:0000000000000A30 begin
-		$values = getInstancePropertyValues(Wfengine::singleton()->sessionGeneris,
-		array($this->uri),
-		array(CURRENT_TOKEN),
-		array(""));
+		
+		$currentTokenProp = new core_kernel_classes_Property(CURRENT_TOKEN);
+		$values = $this->resource->getPropertyValues($currentTokenProp);
 
 		foreach ($values as $a => $b)
 		{
@@ -1250,10 +1240,9 @@ extends wfResource
 			$this->currentActivity[] = $activity;
 		}
 		//echo __FILE__." ".__LINE__." ".microtime()."<br />";
-		$values = getInstancePropertyValues(Wfengine::singleton()->sessionGeneris,
-		array($this->uri),
-		array(STATUS),
-		array(""));
+		$statusProp = new core_kernel_classes_Property(STATUS);
+		$values = $this->resource->getPropertyValues($statusProp);
+
 		//add status information
 		if (sizeOf($values)>0)
 		{

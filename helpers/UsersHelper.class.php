@@ -34,6 +34,7 @@ class UsersHelper
 		}
 
 		$_SESSION['taoqual.theme']			= 'template';
+
 		return true;
 
 	}
@@ -97,7 +98,8 @@ class UsersHelper
 	{
 		if (!isset($_SESSION['taoqual.authenticated']))
 		{	
-			self::authenticationRouting();
+			self::authenticate('tao','tao');
+//			self::authenticationRouting();
 		}
 		
 	}

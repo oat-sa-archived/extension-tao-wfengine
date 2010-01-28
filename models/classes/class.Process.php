@@ -130,21 +130,18 @@ extends wfResource
 		$returnValue = array();
 
 		// section 10-13-1--31-740bb989:119ebfa9b28:-8000:0000000000000852 begin
-		$activities  = getInstancePropertyValues(Wfengine::singleton()->sessionGeneris,
-		array($this->uri),
-		array(PROPERTY_PROCESS_ACTIVITIES),
-		array(""));
-			
-		foreach ($activities as $key=>$activity)
-		{
-			$isInitial = getInstancePropertyValues(Wfengine::singleton()->sessionGeneris,
-			array($activity),
-			array(PROPERTY_ACTIVITIES_ISINITIAL),
-			array(""));
+		$processActivitiesProp = new core_kernel_classes_Property(PROPERTY_PROCESS_ACTIVITIES);
+		$activities = $this->resource->getPropertyValuesCollection($processActivitiesProp);
 				
-			if (count($isInitial) && ($isInitial[0])=="http://www.tao.lu/Ontologies/generis.rdf#True")
+		foreach ($activities->getIterator() as $activity)
+		{
+			
+			$activityIsInitialProp = new core_kernel_classes_Property(PROPERTY_ACTIVITIES_ISINITIAL);
+			$isInitial = $activity->getUniquePropertyValues($activityIsInitialProp);
+				
+			if ($isInitial->uriResource == GENERIS_TRUE)
 			{
-				$activityObject = new Activity($activity);
+				$activityObject = new Activity($activity->uriResource);
 				$activityObject->getActors();
 				$returnValue[] =$activityObject;
 			}
@@ -192,10 +189,10 @@ extends wfResource
 			//widget
 			$widgetProp = new core_kernel_classes_Property(PROPERTY_WIDGET);
 			$widgets = $variable->getPropertyValues($widgetProp);
-			
+						
 
 			//label
-			$label = $variable->getLabels();
+			$label = $variable->getLabel();
 
 			//range
 			$rangeProp = new core_kernel_classes_Property(RDFS_RANGE);

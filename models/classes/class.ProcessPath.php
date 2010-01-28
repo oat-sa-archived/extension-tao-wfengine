@@ -218,10 +218,9 @@ class ProcessPath
         
     	$this->processExecution = $processExecution;
     	
-    	$path = getInstancePropertyValues(Wfengine::singleton()->sessionGeneris,
-										  array($processExecution->uri),
-										  array(PROPERTY_PINSTANCES_PROCESSPATH),
-										  array(""));								  
+    	$processPathProp = new core_kernel_classes_Property(PROPERTY_PINSTANCES_PROCESSPATH);
+    	$path = $processExecution->resource->getPropertyValues($processPathProp);
+						  
 										 
 		$explodeToken = '|';
 										  
@@ -233,11 +232,10 @@ class ProcessPath
 			foreach ($pathItems as $pI)
 				array_push($this->activityStack, $pI);
 		}
-		
-    	$path = getInstancePropertyValues(Wfengine::singleton()->sessionGeneris,
-										  array($processExecution->uri),
-										  array(PROPERTY_PINSTANCES_FULLPROCESSPATH),
-										  array(""));								  
+		$pinstanceFullProcessPath = new core_kernel_classes_Property(PROPERTY_PINSTANCES_FULLPROCESSPATH);
+    	$path = $processExecution->resource->getPropertyValues($pinstanceFullProcessPath);
+    	
+							  
 										 
 		$explodeToken = '|';
 										  

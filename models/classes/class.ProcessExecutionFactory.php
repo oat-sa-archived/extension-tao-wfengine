@@ -18,7 +18,7 @@ class ProcessExecutionFactory {
 	 * @return unknown_type
 	 */
 	public function create(){
-
+		var_dump($this);
 		if (!isset($this->name) || !isset($this->execution) || !isset($this->intervieweeUri)){
 			trigger_error('Problem creating Process Execution, missiong parameter',E_USER_ERROR);
 		}
@@ -26,22 +26,24 @@ class ProcessExecutionFactory {
 		$processExecutionClass = new core_kernel_classes_Class(CLASS_PROCESS_EXECUTIONS, __METHOD__);
 		$subjectResource = core_kernel_classes_ResourceFactory::create($processExecutionClass,$this->name,$this->comment);
 
-		$property = propertyExists(CASE_ID_CODE);
-		if($property)
-		{
-			$caseIdProp = new core_kernel_classes_Property($property,__METHOD__);
-			$subjectResource->setPropertyValue($caseIdProp,$this->name);
-		}
+//		$property = propertyExists(CASE_ID_CODE);
+//		if($property)
+//		{
+//			$caseIdProp = new core_kernel_classes_Property($property,__METHOD__);
+//			$subjectResource->setPropertyValue($caseIdProp,$this->name);
+//		}
 
 		$statusProp = new core_kernel_classes_Property(STATUS,__METHOD__);
 		$subjectResource->setPropertyValue($statusProp,PROPERTY_PINSTANCES_STATUS);
-		$processActionCodeProp = new core_kernel_classes_Property(PROPERTY_PROCESSINSTANCE_ACTIONCODE,__METHOD__);
-		$subjectResource->setPropertyValue($processActionCodeProp,RESOURCE_ACTIONCODE_PROCEED_INTERVIEW);
+
 		$processExecutionOfProp = new core_kernel_classes_Property(PROPERTY_PINSTANCES_EXECUTIONOF,__METHOD__);
 		$subjectResource->setPropertyValue($processExecutionOfProp,$this->execution);
 
-		if (defined('PIAAC_ENABLED'))
+	/*	if (defined('PIAAC_ENABLED'))
 		{
+					$processActionCodeProp = new core_kernel_classes_Property(PROPERTY_PROCESSINSTANCE_ACTIONCODE,__METHOD__);
+		$subjectResource->setPropertyValue($processActionCodeProp,RESOURCE_ACTIONCODE_PROCEED_INTERVIEW);
+		
 			PiaacDataHolder::build($subjectResource->uriResource);
 			
 			// Bind the interviewee to the process.
@@ -96,7 +98,7 @@ class ProcessExecutionFactory {
 			}
 		}
 
-
+*/
 		$returnValue = new ProcessExecution($subjectResource->uriResource);
 
 		$processVars = $returnValue->getVariables();

@@ -9,6 +9,7 @@ class Main extends Module
 	 */
 	public function index($caseId = null, $login = null, $pwd = null)
 	{
+
 		if (!SERVICE_MODE)
 		{
 			if ($login != null && $pwd != null)
@@ -16,7 +17,7 @@ class Main extends Module
 				UsersHelper::authenticate($login, $pwd);
 			}
 
-//			UsersHelper::checkAuthentication();
+			//			UsersHelper::checkAuthentication();
 			UsersHelper::authenticate('tao','tao');
 
 
@@ -54,7 +55,7 @@ class Main extends Module
 		}
 
 		$processViewData 	= array();
-		
+
 		$uiLanguages		= I18nUtil::getAvailableLanguages();
 		$this->setData('uiLanguages',$uiLanguages);
 		foreach ($processes as $proc)
@@ -65,25 +66,25 @@ class Main extends Module
 			$uri 	= $proc->uri;
 			$status = $proc->status;
 			$persid	= "-";
-			$property = propertyExists(CASE_ID_CODE);
-			$procVariables = Utils::processVarsToArray($proc->getVariables());
-			$intervieweeInst = new core_kernel_classes_Resource($procVariables[VAR_INTERVIEWEE_URI],__METHOD__);
+
+//			$procVariables = Utils::processVarsToArray($proc->getVariables());
+//			$intervieweeInst = new core_kernel_classes_Resource($procVariables[VAR_INTERVIEWEE_URI],__METHOD__);
 
 
 
-			if($property)
-			{
-				$caseIdProp = new core_kernel_classes_Property($property,__METHOD__);
-
-				$results = $intervieweeInst->getPropertyValuesCollection($caseIdProp);
-
-				foreach ($results->sequence as $result){
-					if (isset($result->literal)){
-						$persid	= $result->literal;
-
-					}
-				}
-			}
+			//			if($property)
+			//			{
+			//				$caseIdProp = new core_kernel_classes_Property($property,__METHOD__);
+			//
+			//				$results = $intervieweeInst->getPropertyValuesCollection($caseIdProp);
+			//
+			//				foreach ($results->sequence as $result){
+			//					if (isset($result->literal)){
+			//						$persid	= $result->literal;
+			//
+			//					}
+			//				}
+			//			}
 
 			/** In case of ---  if we want to embed svg into the html page
 				* $proc->editMode=false;
@@ -101,8 +102,8 @@ class Main extends Module
 					$currentActivities[] = array('label' 			=> $currentActivity->label,
 													 'uri' 				=> $currentActivity->uri,
 													 'may_participate'	=> !$proc->isFinished());
-					
-					
+						
+						
 				}
 				$this->setData('currentActivities',$currentActivities);
 			}
@@ -115,11 +116,15 @@ class Main extends Module
 												'persid'	=> $persid,
 										   	   'activities' => $currentActivities,
 											   'status'		=> $status);
-				
-				
-			}
-		}
 
+
+			}
+				
+
+		}
+		$processClass = new core_kernel_classes_Class(CLASS_PROCESS);
+		$availableProcessDefinition = $processClass->getInstances();
+		$this->setData('availableProcessDefinition',$availableProcessDefinition);
 		$this->setData('processViewData',$processViewData);
 		$this->setView('main.tpl');
 	}

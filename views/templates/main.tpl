@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<?php echo $GLOBALS['lang']; ?>" lang="<?php echo $GLOBALS['lang']; ?>">
 	<head>
-		<title><?php echo __("Capi Questionnaire"); ?></title>
+		<title><?php echo __("WorkflowEngine Process Browser "); ?></title>
 		<script type="text/javascript" src="<?echo BASE_WWW; ?>/<?php echo $GLOBALS['dir_theme']; ?>/js/jquery.js"/></script>
 		<script type="text/javascript" src="<?echo BASE_WWW; ?>/<?php echo $GLOBALS['dir_theme']; ?>/js/wfEngine.js"/></script>
 		<style media="screen">
@@ -33,16 +33,16 @@
 		</ul>
 		
 		<div id="content">
-			<h1 id="welcome_message"><?php echo __("Welcome to Capi Interview System"); ?></h1>	
+			<h1 id="welcome_message"><?php echo __("Welcome to TAO Process Engine"); ?></h1>	
 			<div id="business">
-				<h2 class="section_title"><?php echo __("Active Interviews"); ?></h2>
+				<h2 class="section_title"><?php echo __("Active Process"); ?></h2>
 			<table id="active_processes">
 				<thead>
 					<tr>
 						<th><?php echo __("Status"); ?></th>
 						<th><?php echo __("Process type"); ?></th>
 						<th>CI_PersID</th>
-						<th><?php echo __("Interview"); ?></th>
+						<th><?php echo __("Process"); ?></th>
 						<th><?php echo __("Start/Resume the case"); ?></th>
 					</tr>
 				</thead>
@@ -67,7 +67,7 @@
 									<?php endif; ?>
 								<?php endforeach; ?>
 							<?php else: ?>
-								<span><?php echo __("Finished Interview"); ?></span>
+								<span><?php echo __("Finished Process"); ?></span>
 							<?php endif; ?>
 						</td>
 						<!--<td class="situation"><a href="#"><img onclick="openProcess('../../../WorkFlowEngine/index.php?do=processInstance&param1=<?php echo urlencode($procData['uri']); ?>')" src="<?php echo BASE_WWW;?>/<?php echo $GLOBALS['dir_theme']; ?>img/open_process_view.png"/></a></td>-->
@@ -77,9 +77,17 @@
 			</table>
 			
 			<!-- End of Active Processes -->
-			<h2 class="section_title"><?php echo __("Initialize new Interview"); ?></h2>
-			<input id="new_process" type="button" value="<?php echo __("New Interview") ?>" onclick="window.location.href='<?php echo BASE_URL;?>/processes/authoring?processDefinitionUri=http%3A%2F%2F127.0.0.1%2Fmiddleware%2FInterview.rdf%23i1224080114089468400'"/>
-			
+			<h2 class="section_title"><?php echo __("Initialize new Process"); ?></h2>
+			<form id="authoring_form" action="<?php echo BASE_URL;?>/processes/authoring" method="get" >
+				<?php foreach($availableProcessDefinition as $procDef) : ?>
+					<li>
+						<input type="radio"  value="<?php echo urlencode($procDef->uriResource); ?>" name="processDefinitionUri" >  
+							<?php echo GUIHelper::sanitizeGenerisString($procDef->getLabel()); ?>
+						</input>
+					</li>
+				<?php endforeach;  ?>					
+				<input id="new_process" type="submit" value="<?php echo __("New Process") ?>" />
+			</form>
 			<h2 class="section_title"><?php echo __("My roles"); ?></h2>
 			<ul id="roles">
 				<?php foreach ($userViewData['roles'] as $role): ?>
