@@ -114,36 +114,34 @@ class Connector
         // section -64--88-1-64--7117f567:11a0527df60:-8000:0000000000000914 begin
 									  
 		// Next activities feeding.
-		if ($recursivityLevel != "") 
+		if ($recursivityLevel != "") {
 			$recursivityLevel--;
-			
-    	$geNextActivities = getInstancePropertyValues(Wfengine::singleton()->sessionGeneris,
-													  array($this->uri),
-													  array(PROPERTY_CONENCTORS_NEXTACTIVITIES),
-													  array(""));	
+		}
+		$geNextActivitiesProp = new core_kernel_classes_Property(PROPERTY_CONENCTORS_NEXTACTIVITIES);
+		$geNextActivities = $this->resource->getPropertyValuesCollection($geNextActivitiesProp);
+
 
 		$this->nextActivities = array();
 		$this->precActivities = Array();
-		foreach ($geNextActivities as $key=>$val)
+		foreach ($geNextActivities->getIterator() as $val)
 		{
+			$typeProp = new core_kernel_classes_Property(RDF_TYPE);
+
+			$isAConnector = $val->getUniquePropertyValues($typeProp);
 			
-			$isAConnector = getInstancePropertyValues(Wfengine::singleton()->sessionGeneris,
-													  array($val),
-													  array("http://www.w3.org/1999/02/22-rdf-syntax-ns#type"),
-													  array(""));
-			if ($isAConnector[0]==CLASS_ACTIVITIES)
+			if ($isAConnector->uriResource == CLASS_ACTIVITIES)
 			{
 				
-				if (isset($_SESSION["activities"][$val])) 
+				if (isset($_SESSION["activities"][$val->uriResource])) 
 				{
 					
-					$this->nextActivities[] =$_SESSION["activities"][$val];
+					$this->nextActivities[] =$_SESSION["activities"][$val->uriResource];
 				} 
 				else
 				{
 					
-					$activity = new Activity($val);
-					$_SESSION["activities"][$val] = $activity;
+					$activity = new Activity($val->uriResource);
+					$_SESSION["activities"][$val->uriResource] = $activity;
 					$activity->getActors();
 
 					$this->nextActivities[] = $activity;						
@@ -153,14 +151,14 @@ class Connector
 		}
 		
 		// Previous activities feeding.
-    	$gePrevActivities = getInstancePropertyValues(Wfengine::singleton()->sessionGeneris,
-													  array($this->uri),
-													  array(PROPERTY_CONNECTORS_PRECACTIVITIES),
-													  array(""));
+		$gePrevActivitiesProp = new core_kernel_classes_Property(PROPERTY_CONNECTORS_PRECACTIVITIES);
+		$gePrevActivities = $this->resource->getPropertyValues($gePrevActivitiesProp);
+    	
 													  	
 		//if (sizeOf($gePrevActivities)>1) echo $this->label; 
 		foreach ($gePrevActivities as $key=>$val)
 		{
+			
 			$isAConnector = getInstancePropertyValues(Wfengine::singleton()->sessionGeneris,
 													  array($val),
 													  array("http://www.w3.org/1999/02/22-rdf-syntax-ns#type"),

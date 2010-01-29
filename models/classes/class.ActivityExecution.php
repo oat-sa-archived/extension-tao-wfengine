@@ -110,15 +110,18 @@ class ActivityExecution
     public function isExecutable()
     {
         // section 10-13-1--31-740bb989:119ebfa9b28:-8000:000000000000087D begin
-		$tokens = getInstancePropertyValues(Wfengine::singleton()->sessionGeneris,array($this->processExecution->uri),array(PROPERTY_PINSTANCES_TOKEN),array(""));
+		$tokensProp = new core_kernel_classes_Property(PROPERTY_PINSTANCES_TOKEN);
+		$tokens = $this->processExecution->resource->getPropertyValues($tokensProp);
+		
 		
 		if (in_array($this->activity->uri,$tokens))
 			{
-				$rolesAllowed = getInstancePropertyValues(Wfengine::singleton()->sessionGeneris,array($this->activity->uri),array(ACTIVITY_ROLE),array(""));
+				$rolesAllowedProp = new core_kernel_classes_Property(ACTIVITY_ROLE);
+				$rolesAllowed = $this->activity->resource->getPropertyValues($rolesAllowedProp);
+
+				$rolesUserProp = new core_kernel_classes_Property(USER_ROLE);
+				$rolesUser = Wfengine::singleton()->user->resource->getPropertyValues($rolesUserProp);
 				
-				$rolesUser = getInstancePropertyValues(Wfengine::singleton()->sessionGeneris,array(Wfengine::singleton()->user->userUri),array(USER_ROLE),array(""));
-
-
 				foreach ($rolesAllowed as $roleAllowed)
 
 					{
