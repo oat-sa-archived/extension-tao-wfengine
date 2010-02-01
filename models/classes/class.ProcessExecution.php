@@ -917,16 +917,12 @@ extends wfResource
 	 * @return unknown_type
 	 */
 	private function getNextConnectorsUri($uri){
-		$nextConnectors  = execSQL(Wfengine::singleton()->sessionGeneris,
-								   "AND predicate='".PREC_ACTIVITIES."' AND object ='".$uri."'",
-		array());
-
+		
+		$connectorsCollection = core_kernel_classes_ApiModelOO::singleton()->getSubject(PREC_ACTIVITIES,$uri);
 
 		$connectorsUri = array();
-		foreach ($nextConnectors as $key => $statement){
-
-			$connectorsUri[] = $statement['subject'];
-
+		foreach ($connectorsCollection->getIterator() as $statement){
+			$connectorsUri[] = $statement->uriResource;
 		}
 		return $connectorsUri;
 	}
