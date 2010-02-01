@@ -123,8 +123,7 @@ class wfResource
     public function remove()
     {
         // section 10-13-1--31-7f1456d9:11a242e5517:-8000:000000000000096F begin
-		
-		removeSubject(Wfengine::singleton()->sessionGeneris,$this->uri);
+		$this->resource->delete();
         // section 10-13-1--31-7f1456d9:11a242e5517:-8000:000000000000096F end
     }
 

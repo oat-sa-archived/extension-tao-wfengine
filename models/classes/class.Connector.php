@@ -152,24 +152,23 @@ class Connector
 		
 		// Previous activities feeding.
 		$gePrevActivitiesProp = new core_kernel_classes_Property(PROPERTY_CONNECTORS_PRECACTIVITIES);
-		$gePrevActivities = $this->resource->getPropertyValues($gePrevActivitiesProp);
+		$gePrevActivities = $this->resource->getPropertyValuesCollection($gePrevActivitiesProp);
     	
 													  	
 		//if (sizeOf($gePrevActivities)>1) echo $this->label; 
-		foreach ($gePrevActivities as $key=>$val)
+		foreach ($gePrevActivities->getIterator() as $val)
 		{
+			$typeProp = new core_kernel_classes_Property(RDF_TYPE);
+
+			$isAConnector = $val->getUniquePropertyValues($typeProp);
 			
-			$isAConnector = getInstancePropertyValues(Wfengine::singleton()->sessionGeneris,
-													  array($val),
-													  array("http://www.w3.org/1999/02/22-rdf-syntax-ns#type"),
-													  array(""));
-			if ($isAConnector[0]!=CLASS_CONNECTORS)
+			if ($isAConnector->uriResource == CLASS_ACTIVITIES)
 			{
 				
 			
-				if (isset($_SESSION["activities"][$val])) 
+				if (isset($_SESSION["activities"][$val->uriResource])) 
 				{
-					$this->prevActivities[] = $_SESSION["activities"][$val];
+					$this->prevActivities[] = $_SESSION["activities"][$val->uriResource];
 				} 
 				else
 				{
@@ -177,8 +176,8 @@ class Connector
 					//we should detect loops, todo
 					
 					
-					$activity = new Activity($val);
-					$_SESSION["activities"][$val] = $activity;
+					$activity = new Activity($val->uriResource);
+					$_SESSION["activities"][$val->uriResource] = $activity;
 					$activity->getActors();
 					//$activity->feedFlow($recursivityLevel);
 						
@@ -258,21 +257,20 @@ class Connector
     {
         // section -64--88-1-64--7117f567:11a0527df60:-8000:0000000000000935 begin
 		parent::__construct($uri);
-		$typeOfConnector = getInstancePropertyValues(Wfengine::singleton()->sessionGeneris,array($uri),array(PROPERTY_CONENCTORS_TYPEOF),array(""));	
-		$this->type = $typeOfConnector[0];
+		$typeOfConnectorProp = new core_kernel_classes_Property(PROPERTY_CONENCTORS_TYPEOF);
+		$this->type = $this->resource->getUniquePropertyValue($typeOfConnectorProp);
 		
 		// We get the TransitionRule relevant to the connector.
-		$rule = getInstancePropertyValues(Wfengine::singleton()->sessionGeneris,
-												  array($this->uri),
-												  array(PROPERTY_CONNECTOR_TRANSITIONRULE),
-											      array(""));
+		$ruleProp = new core_kernel_classes_Property(PROPERTY_CONNECTOR_TRANSITIONRULE);
+		$rule = $this->resource->getPropertyValues($ruleProp);
+
 		
-		if (count($rule)&& $rule[0] != "")
+		if (count($rule)&& $rule[0] != ""){
 			$this->transitionRule = new TransitionRule($rule[0]);
-		else
+		}
+		else {
 			$this->transitionRule = null;
-		
-		
+		}
 		
         // section -64--88-1-64--7117f567:11a0527df60:-8000:0000000000000935 end
     }

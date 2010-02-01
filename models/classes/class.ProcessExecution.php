@@ -691,12 +691,10 @@ extends wfResource
 
 		$newActivities = array();
 		// We get the TransitionRule relevant to the connector.
-
-		$rule = getInstancePropertyValues(Wfengine::singleton()->sessionGeneris,
-		array($connUri),
-		array(PROPERTY_CONNECTOR_TRANSITIONRULE),
-		array(""));
-
+		$ruleProp = new core_kernel_classes_Property(PROPERTY_CONNECTOR_TRANSITIONRULE);
+		$connResource = new core_kernel_classes_Resource($connUri);
+		$rule = $connResource->getPropertyValues($connUri);
+		
 		$transitionRule 	= new TransitionRule($rule[0]);
 
 		$evaluationResult 	= $transitionRule->getExpression()->evaluate($arrayOfProcessVars);
@@ -828,30 +826,18 @@ extends wfResource
 		// section 10-13-1--31-7f1456d9:11a242e5517:-8000:0000000000000F26 begin
 
 		// Status handling.
-		removePropertyValuesforInstance(Wfengine::singleton()->sessionGeneris,
-		array($this->uri),
-		array(STATUS));
 
-		setPropertyValuesforInstance(Wfengine::singleton()->sessionGeneris,
-		array($this->uri),
-		array(STATUS),
-		array(''),
-		array(RESOURCE_PROCESSSTATUS_RESUMED));
-
+		$statusProp = new core_kernel_classes_Property(STATUS);
+		$this->resource->removePropertyValues($statusProp);
+		$this->resource->editPropertyValuesPropertyValues($statusProp,RESOURCE_PROCESSSTATUS_RESUMED);
 		$this->status = "Resumed";
 
 		// -- Exit code handling.
-		removePropertyValuesforInstance(Wfengine::singleton()->sessionGeneris,
-		array($this->uri),
-		array(PROPERTY_PROCESSINSTANCE_EXITCODE));
+		$exitCodeProp = new core_kernel_classes_Property(PROPERTY_PROCESSINSTANCE_EXITCODE);
+		$this->resource->removePropertyValues($exitCodeProp);
+		
+		
 
-		// We log the RESUME action.
-		if (defined('PIAAC_ENABLED'))
-		{
-			$event = new PiaacEvent('BQ_ENGINE', 'Resuming process',
-									'flow_resumed', getIntervieweeUriByProcessExecutionUri($this->uri));
-			PiaacEventLogger::getInstance()->trigEvent($event);
-		}
 		// section 10-13-1--31-7f1456d9:11a242e5517:-8000:0000000000000F26 end
 	}
 
@@ -880,28 +866,17 @@ extends wfResource
 		// section 10-13-1-85-746e873e:11bb0a6f076:-8000:00000000000009A5 begin
 
 		// -- Status handling.
-		removePropertyValuesforInstance(Wfengine::singleton()->sessionGeneris,
-		array($this->uri),
-		array(STATUS));
-
-		editPropertyValuesforInstance(Wfengine::singleton()->sessionGeneris,
-		array($this->uri),
-		array(STATUS),
-		array(""),
-		array(RESOURCE_PROCESSSTATUS_PAUSED));
-
+		$statusProp = new core_kernel_classes_Property(STATUS);
+		$this->resource->removePropertyValues($statusProp);
+		$this->resource->editPropertyValues($statusProp,RESOURCE_PROCESSSTATUS_PAUSED);
 		$this->status = 'Paused';
 
 		// -- Exit code handling.
-		removePropertyValuesforInstance(Wfengine::singleton()->sessionGeneris,
-		array($this->uri),
-		array(PROPERTY_PROCESSINSTANCE_EXITCODE));
+		
+		$exitCode = new core_kernel_classes_Property(PROPERTY_PROCESSINSTANCE_EXITCODE);
+		$this->resource->removePropertyValues($exitCode);
+		$this->resource->editPropertyValues($exitCode,RESOURCE_EXITCODE_INTERVIEWER_PAUSES);
 
-		editPropertyValuesforInstance(Wfengine::singleton()->sessionGeneris,
-		array($this->uri),
-		array(PROPERTY_PROCESSINSTANCE_EXITCODE),
-		array(''),
-		array(RESOURCE_EXITCODE_INTERVIEWER_PAUSES));
 
 		// We log the "INTERVIEW_PAUSE" in the log file.
 		if (defined('PIAAC_ENABLED'))

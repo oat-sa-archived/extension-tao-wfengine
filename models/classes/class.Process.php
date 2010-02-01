@@ -89,28 +89,29 @@ extends wfResource
 
 		// section 10-13-1--31-740bb989:119ebfa9b28:-8000:000000000000081E begin
 
-		$activities  = getInstancePropertyValues(Wfengine::singleton()->sessionGeneris,
-		array($this->uri),
-		array(PROPERTY_PROCESS_ACTIVITIES),
-		array(""));
+
+		$activitiesProp = new core_kernel_classes_Property(PROPERTY_PROCESS_ACTIVITIES);
+		$activities = $this->resource->getPropertyValuesCollection($activitiesProp);
 		$roles = array();
 
-		foreach ($activities as $key=>$activity)
+		foreach ($activities->getIterator() as $activity)
 		{
-			$activityObject 	= new Activity($activity);
+			$activityObject 	= new Activity($activity->uriResource);
 			$roles				= array_merge($roles, $activityObject->getActors());
 		}
 
 
 		//hack to get unique array ...
 		//as described http://lu.php.net/array_unique
-		foreach ($roles as $key => $value)
-		$roles[$key] = "'" . serialize($value) . "'";
+		foreach ($roles as $key => $value){
+			$roles[$key] = "'" . serialize($value) . "'";
+		}
 
 		$roles = array_unique($roles);
 
-		foreach ($roles as $key=>$value)
-		$roles[$key] = unserialize(trim($value, "'"));
+		foreach ($roles as $key=>$value){
+			$roles[$key] = unserialize(trim($value, "'"));
+		}
 
 		$returnValue = $roles;
 		// section 10-13-1--31-740bb989:119ebfa9b28:-8000:000000000000081E end
@@ -238,15 +239,12 @@ extends wfResource
 
 		// section 10-13-1-85-16731180:11be4127421:-8000:0000000000000A0B begin
 		$activities = array();
+		$actsProp = new core_kernel_classes_Property(PROCESS_ACTIVITIES);
+		$acts = $this->resource->getPropertyValuesCollection($actsProp);
 
-		$acts = getInstancePropertyValues(Wfengine::singleton()->sessionGeneris,
-		array($this->uri),
-		array(PROCESS_ACTIVITIES),
-		array(""));
-
-		foreach ($acts as $activityUri)
+		foreach ($acts->getIterator() as $activityResource)
 		{
-			$activities[] = new Activity($activityUri);
+			$activities[] = new Activity($activityResource->uriResource);
 		}
 
 		$returnValue = $activities;
