@@ -135,10 +135,10 @@ extends wfResource
 		$returnValue = array();
 
 		// section 10-13-1--31-740bb989:119ebfa9b28:-8000:00000000000008EF begin
-		
+
 		$processVarsProp = new core_kernel_classes_Property(PROCESS_VARIABLES);
 		$processVars = $this->process->resource->getPropertyValues($processVarsProp);
-	
+
 		foreach ($processVars as $uriVar)
 		{
 			$var = new core_kernel_classes_Property($uriVar);
@@ -178,7 +178,7 @@ extends wfResource
 
 		$activityBeforeTransition 	= new Activity($this->currentActivity[0]->uri);
 		$activityBeforeTransition->feedFlow(1);
-		
+
 		//common_Cache::setCache($activityBeforeTransition,$this->currentActivity[0]->uri);
 
 		$processVars 				= $this->getVariables();
@@ -233,18 +233,18 @@ extends wfResource
 				array(CURRENT_TOKEN),
 				array(""),
 				array($activityToGoBack->uri));
-				
+
 				// We log the "CONSISTENCY_ERROR" in the log file.
 				if (defined('PIAAC_ENABLED'))
 				{
 					$event = new PiaacBusinessEvent('BQ_ENGINE', 'CONSISTENCY_ERROR',
 													'A consistency error occured', 
-													getIntervieweeUriByProcessExecutionUri($this->uri),
-													$activityBeforeTransition->label);
-													  
+					getIntervieweeUriByProcessExecutionUri($this->uri),
+					$activityBeforeTransition->label);
+
 					PiaacEventLogger::getInstance()->trigEvent($event);
 				}
-				
+
 				throw $consistencyException;
 			}
 		}
@@ -309,7 +309,7 @@ extends wfResource
 					$activityAfterTransition->isHidden = true;
 				}
 			}
-			
+
 			// Last but not least ... is the next activity a machine activity ?
 			// if yes, we perform the transition.
 			if ($activityAfterTransition->isHidden)
@@ -608,7 +608,7 @@ extends wfResource
 				$finishedActivityListArray = unserialize($collection->get(0));
 			}
 			$finishedActivityListArray[] = $activitiesList->resource->uriResource;
-			
+
 			$this->resource->editPropertyValues($finishedActivityListProp,serialize($finishedActivityListArray));
 			$logger->debug('List Selector do not have more element'  . $activitiesList->resource->getLabel(),__FILE__,__LINE__);
 			$logger->debug('List Selector do not have more element'  . $activitiesList->resource->uriResource,__FILE__,__LINE__);
@@ -638,7 +638,7 @@ extends wfResource
 					$activitiesExecution->setUp(true);
 				}
 				else {
-					
+
 					$logger->debug('activity over remove activityExecution'  ,__FILE__,__LINE__);
 					$activitiesExecution->setUp(true);
 					return array();
@@ -648,7 +648,7 @@ extends wfResource
 			else {
 
 				$logger->debug('END' ,__FILE__,__LINE__);
-				
+
 
 				//				// handle when the activity history is empty i.e. at the end of the test
 				//				if($connector->getNextActivities()->isEmpty()){
@@ -672,10 +672,10 @@ extends wfResource
 			}
 
 		}
-//		echo __FILE__.__LINE__; var_dump($newActivities);
+		//		echo __FILE__.__LINE__; var_dump($newActivities);
 		//		xdebug_stop_trace();
-//		$logger->debug('next Activity uri : '. $newActivities[0]->resource->uriResource,__FILE__,__LINE__);
-//		$logger->debug('next Activity name : '. $newActivities[0]->resource->getLabel(),__FILE__,__LINE__);
+		//		$logger->debug('next Activity uri : '. $newActivities[0]->resource->uriResource,__FILE__,__LINE__);
+		//		$logger->debug('next Activity name : '. $newActivities[0]->resource->getLabel(),__FILE__,__LINE__);
 		return $newActivities;
 
 	}
@@ -694,7 +694,7 @@ extends wfResource
 		$ruleProp = new core_kernel_classes_Property(PROPERTY_CONNECTOR_TRANSITIONRULE);
 		$connResource = new core_kernel_classes_Resource($connUri);
 		$rule = $connResource->getPropertyValues($connUri);
-		
+
 		$transitionRule 	= new TransitionRule($rule[0]);
 
 		$evaluationResult 	= $transitionRule->getExpression()->evaluate($arrayOfProcessVars);
@@ -745,39 +745,6 @@ extends wfResource
 	private function warnNextRole( Activity $activity)
 	{
 		// section 10-13-1--31--4660acca:119ecd38e96:-8000:0000000000000869 begin
-
-		// -- The following source code block does not seem to be a priority.
-		//		$roles = getRoles($uriCurrentActivity);
-		//
-		//		foreach ($roles as $key => $role)
-		//		{
-		//			error_reporting("^E_NOTICE"); // Why ?
-		//			$users = search($_SESSION["session"],
-		//							array("#type",
-		//								  "#11859665003194",
-		//								  "#119012169222836",
-		//								  $role[0]),
-		//								  false,
-		//								  false);
-		//
-		//			foreach ($users["pResult"] as $key => $val)
-		//			{
-		//				$email = getInstancePropertyValues($_SESSION["session"],
-		//												   array($val),
-		//												   array("#120593879614028"),
-		//												   array(""));
-		//
-		//				error_reporting("^E_NOTICE"); // Why ?
-		//				$username = getlabelcomment($_SESSION["session"],
-		//											$val);
-		//
-		//				sendMail($uriInstance,
-		//						 $uriCurrentActivity,
-		//						 $email,
-		//						 $role[1],
-		//						 $username["tla"]);
-		//			}
-		//		}
 		// section 10-13-1--31--4660acca:119ecd38e96:-8000:0000000000000869 end
 	}
 
@@ -798,7 +765,7 @@ extends wfResource
 		//getexecutionOf field
 		$executionOfProp = new core_kernel_classes_Property(EXECUTION_OF);
 		$values = $this->resource->getPropertyValues($executionOfProp);
-	
+
 		foreach ($values as $a => $b)
 		{
 			$process 		= new ViewProcess($b);
@@ -828,15 +795,14 @@ extends wfResource
 		// Status handling.
 
 		$statusProp = new core_kernel_classes_Property(STATUS);
-		$this->resource->removePropertyValues($statusProp);
 		$this->resource->editPropertyValuesPropertyValues($statusProp,RESOURCE_PROCESSSTATUS_RESUMED);
 		$this->status = "Resumed";
 
 		// -- Exit code handling.
 		$exitCodeProp = new core_kernel_classes_Property(PROPERTY_PROCESSINSTANCE_EXITCODE);
 		$this->resource->removePropertyValues($exitCodeProp);
-		
-		
+
+
 
 		// section 10-13-1--31-7f1456d9:11a242e5517:-8000:0000000000000F26 end
 	}
@@ -867,14 +833,12 @@ extends wfResource
 
 		// -- Status handling.
 		$statusProp = new core_kernel_classes_Property(STATUS);
-		$this->resource->removePropertyValues($statusProp);
 		$this->resource->editPropertyValues($statusProp,RESOURCE_PROCESSSTATUS_PAUSED);
 		$this->status = 'Paused';
 
 		// -- Exit code handling.
-		
+
 		$exitCode = new core_kernel_classes_Property(PROPERTY_PROCESSINSTANCE_EXITCODE);
-		$this->resource->removePropertyValues($exitCode);
 		$this->resource->editPropertyValues($exitCode,RESOURCE_EXITCODE_INTERVIEWER_PAUSES);
 
 
@@ -883,11 +847,11 @@ extends wfResource
 		{
 			$event = new PiaacBusinessEvent('BQ_ENGINE', 'INTERVIEW_PAUSE',
 											'The interview is paused', 
-											 getIntervieweeUriByProcessExecutionUri($this->uri),
-											 $this->currentActivity[0]->label);
-												  
+			getIntervieweeUriByProcessExecutionUri($this->uri),
+			$this->currentActivity[0]->label);
+
 			PiaacEventLogger::getInstance()->trigEvent($event);
-			
+
 			if( EXPORT_DATA_WHEN_PAUSED){
 				PiaacDataExchange::export($this, $exportCognitive = false);
 			}
@@ -917,7 +881,7 @@ extends wfResource
 	 * @return unknown_type
 	 */
 	private function getNextConnectorsUri($uri){
-		
+
 		$connectorsCollection = core_kernel_classes_ApiModelOO::singleton()->getSubject(PREC_ACTIVITIES,$uri);
 
 		$connectorsUri = array();
@@ -941,14 +905,13 @@ extends wfResource
 		$returnValue = array();
 
 		// section 10-13-1-85--3c82cee5:11bb0c5945c:-8000:00000000000009AB begin
-
-		$nextConnectors  = execSQL(Wfengine::singleton()->sessionGeneris,"AND predicate='".PREC_ACTIVITIES."' AND object ='".$this->currentActivity[0]->uri."'", array());
+		$nextConnectorsCollection = core_kernel_classes_ApiModelOO::singleton()->getSubject(PREC_ACTIVITIES,$this->currentActivity[0]->uri);
 
 		$connectors = array();
 
-		foreach ($nextConnectors as $key => $statement)
+		foreach ($nextConnectorsCollection->getIterator() as $statement)
 		{
-			$newConn = new Connector($statement["subject"]);
+			$newConn = new Connector($statement->uriResource);
 			$newConn->feedFlow(1);
 
 			$connectors[] = $newConn;
@@ -988,36 +951,22 @@ extends wfResource
 	public function performBackwardTransition(Activity $from)
 	{
 		// section 10-13-1-85-16731180:11be4127421:-8000:0000000000000A4D begin
-		
+
 		$activity = $this->path->getActivityBefore($from);
-		
+
 		// Only go backward if there is an activity before the "from Activity".
 		// If you persist in doing so, your process current token will be set
 		// in the digital nirvana...
 		if (null != $activity)
 		{
-			removePropertyValuesforInstance($_SESSION["session"],
-											array($this->uri),
-											array(CURRENT_TOKEN));
-	
-			setStatement(Wfengine::singleton()->sessionGeneris,
-						$this->uri,
-						CURRENT_TOKEN,
-						$activity,
-	       				"r", "", "", "r", "");
-	
+			$currentTokenProp = new core_kernel_classes_Property(CURRENT_TOKEN);
+
+			$this->resource->editPropertyValues($currentTokenProp,$activity);
+
 			$this->currentActivity = array();
 			$beforeActivity = new Activity($activity);
 			$this->currentActivity[] = $beforeActivity;
-	
-			if (defined('PIAAC_ENABLED') && PIAAC_ENABLED == true)
-			{
-				if (isPiaacHidden($beforeActivity->label))
-				{
-					$beforeActivity->isHidden = true;	
-				}
-			}
-			
+
 			if ($beforeActivity->isHidden && !$beforeActivity->isFirst())
 			{
 				$this->performBackwardTransition($beforeActivity);
@@ -1054,54 +1003,25 @@ extends wfResource
 	{
 		// section 10-13-1-85-19c5934a:11cae6d4e92:-8000:0000000000000A28 begin
 		// -- Status handling
-		editPropertyValuesforInstance(Wfengine::singleton()->sessionGeneris,
-									  array($this->uri),
-									  array(STATUS),
-									  array(""),
-									  array(STATUS_FINISHED));
+		$statusProp = new core_kernel_classes_Property(STATUS);
+		$this->resource->editPropertyValues($statusProp,STATUS_FINISHED);
 
 		$this->status = 'Finished';
 
 		// -- Exit code handling.
 		// I chain removeProp... and editProp... because of an editProp...
 		// malfunction.
-		removePropertyValuesforInstance(Wfengine::singleton()->sessionGeneris,
-										array($this->uri),
-										array(CURRENT_TOKEN));
+		$currentTokenProp =	new core_kernel_classes_Property(CURRENT_TOKEN);
+		$this->resource->removePropertyValues($currentTokenProp);
 
-		setPropertyValuesforInstance(Wfengine::singleton()->sessionGeneris,
-									 array($this->uri),
-									 array(PROPERTY_PROCESSINSTANCE_EXITCODE),
-									 array(''),
-									 array(RESOURCE_EXITCODE_ALL_COVERED));
+		$exitCodeProp = new core_kernel_classes_Property(PROPERTY_PROCESSINSTANCE_EXITCODE);
+		$this->resource->setPropertyValue($exitCodeProp, RESOURCE_EXITCODE_ALL_COVERED);
 
 		// -- Action code handling.
-		removePropertyValuesforInstance(Wfengine::singleton()->sessionGeneris,
-										array($this->uri),
-										array(PROPERTY_PROCESSINSTANCE_ACTIONCODE));
+		$actionCodeProp = new core_kernel_classes_Property(PROPERTY_PROCESSINSTANCE_ACTIONCODE);
+		$this->resource->removePropertyValues($actionCodeProp);
+		$this->resource->setPropertyValue($actionCodeProp,'');
 
-		setPropertyValuesforInstance(Wfengine::singleton()->sessionGeneris,
-		array($this->uri),
-		array(PROPERTY_PROCESSINSTANCE_ACTIONCODE),
-										array(''),
-										array(''));
-
-		// We log the "FINISHED" event in the log file.
-		if (defined('PIAAC_ENABLED'))
-		{
-			$event = new PiaacBusinessEvent('BQ_ENGINE', 'INTERVIEW_END',
-											'The interview ended', 
-											 getIntervieweeUriByProcessExecutionUri($this->uri),
-											 null);
-												  
-			PiaacEventLogger::getInstance()->trigEvent($event);
-			
-			// If we are in PIAAC Mode and in integrated mode,
-			// we export the case on the File System.
-			if (defined('PIAAC_ENABLED') && DEBUG_MODE_ENABLE) {
-				PiaacDataExchange::export($this);
-			}
-		}
 
 		// section 10-13-1-85-19c5934a:11cae6d4e92:-8000:0000000000000A28 end
 	}
@@ -1145,24 +1065,18 @@ extends wfResource
 		$beforeActivityLabel = $this->currentActivity[0]->label;
 		$beforeActivity = $this->currentActivity[0];
 		// Current token is now the activity to jump back.
-		removePropertyValuesforInstance(Wfengine::singleton()->sessionGeneris,
-		array($this->uri),
-		array(CURRENT_TOKEN));
+		$tokenProp = new core_kernel_classes_Property(CURRENT_TOKEN);
+		$this->resource->editPropertyValues($tokenProp,$activity->uri);
 
-		setStatement(Wfengine::singleton()->sessionGeneris,
-		$this->uri,
-		CURRENT_TOKEN,
-		$activity->uri,
-        			 "r", "", "", "r", "");
 
 		/*
-		//should be a real boolean, don't know how php framework handle that
-		//to do after release 5.1.7 change this
-		if ($testing=="true") {$this->path->insertActivity($activity);}
+		 //should be a real boolean, don't know how php framework handle that
+		 //to do after release 5.1.7 change this
+		 if ($testing=="true") {$this->path->insertActivity($activity);}
 
-		$this->currentActivity = array();
-		$this->currentActivity[] = new Activity($activity->uri);
-		*/
+		 $this->currentActivity = array();
+		 $this->currentActivity[] = new Activity($activity->uri);
+		 */
 
 		$this->path->invalidate($beforeActivity,
 		($this->path->contains($activity) ? $activity : null));
@@ -1178,10 +1092,10 @@ extends wfResource
 		{
 			$event = new PiaacBusinessEvent('BQ_ENGINE', 'MOVE_JUMP',
 											'The interviewer jumped to a previous question', 
-											getIntervieweeUriByProcessExecutionUri($this->uri),
-											$beforeActivityLabel,
-											$this->currentActivity[0]->label);
-												  
+			getIntervieweeUriByProcessExecutionUri($this->uri),
+			$beforeActivityLabel,
+			$this->currentActivity[0]->label);
+
 			PiaacEventLogger::getInstance()->trigEvent($event);
 		}
 	}
@@ -1196,7 +1110,7 @@ extends wfResource
 	public function feed()
 	{
 		// section 10-13-1--31--7b61b039:11cdba08b1e:-8000:0000000000000A30 begin
-		
+
 		$currentTokenProp = new core_kernel_classes_Property(CURRENT_TOKEN);
 		$values = $this->resource->getPropertyValues($currentTokenProp);
 
@@ -1343,39 +1257,39 @@ extends wfResource
 			$this->performTransition();
 		}
 	}
-	
+
 	public function isBackable()
-    {						  
-    	$backable = false;
-    	$previousActivity = $this->path->getActivityBefore($this->currentActivity[0]);
-    	if ($previousActivity)
-    	{
-    		$previousActivity = new Activity($previousActivity);
-    	}
-    	else
-    	{
+	{
+		$backable = false;
+		$previousActivity = $this->path->getActivityBefore($this->currentActivity[0]);
+		if ($previousActivity)
+		{
+			$previousActivity = new Activity($previousActivity);
+		}
+		else
+		{
 			return false;
-    	}
-    	
-    	while($previousActivity)
-    	{
-    		$scannedActivity = $previousActivity;
-    		
-    		if (!$scannedActivity->isHidden)
-    		{
-    			$backable = true;
-    			break;
-    		}
-    		
-    		$previousActivity = $this->path->getActivityBefore($scannedActivity);
-    		if ($previousActivity)
-    		{
-    			$previousActivity = new Activity($previousActivity);
-    		}
-    	}
-    	
-    	return $backable;
-    }
+		}
+			
+		while($previousActivity)
+		{
+			$scannedActivity = $previousActivity;
+
+			if (!$scannedActivity->isHidden)
+			{
+				$backable = true;
+				break;
+			}
+
+			$previousActivity = $this->path->getActivityBefore($scannedActivity);
+			if ($previousActivity)
+			{
+				$previousActivity = new Activity($previousActivity);
+			}
+		}
+			
+		return $backable;
+	}
 
 } /* end of class ProcessExecution */
 

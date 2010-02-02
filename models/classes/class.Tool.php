@@ -109,13 +109,16 @@ class Tool
 		$this->activityexecution = $activityExecution;
 
 		// Get service definitions
-		$serviceDefinition 		= getInstancePropertyValues(Wfengine::singleton()->sessionGeneris,
-															array($uri),
-															array(PROPERTY_CALLOFSERVICES_SERVICEDEFINITION),
-															array(''));
+		
+		$serviceDefinitionCallOfServiceProp = new core_kernel_classes_Property(PROPERTY_CALLOFSERVICES_SERVICEDEFINITION);
+		$serviceDefinition = $this->resource->getUniquePropertyValue($serviceDefinitionCallOfServiceProp);
+
 
 		// Get service url for call
-		$serviceDefinitionUrl 	= getInstancePropertyValues(Wfengine::singleton()->sessionGeneris,
+		$serviceDefinitionUrlProp = new core_kernel_classes_Property(PROPERTY_SERVICEDEFINITIONS_URL);
+		$serviceDefinitionUrl 	= 
+		
+		getInstancePropertyValues(Wfengine::singleton()->sessionGeneris,
 																		array($serviceDefinition[0]),
 																		array(PROPERTY_SERVICEDEFINITIONS_URL),
 																		array(""));																		
