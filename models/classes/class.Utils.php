@@ -135,14 +135,14 @@ class Utils
 		$urimodel = substr($baseClass,0,strpos($baseClass,"#"));
 		$file = str_replace("www.tao.lu/Ontologies/",$_SERVER["HTTP_HOST"]."/generis/Ontologies/",$urimodel);
 		$dlmodel = importrdfs($_SESSION["session"],$urimodel,$file);
-		Wfengine::singleton()->sessionGeneris=$dlmodel["pSession"];
+		WfEngine::singleton()->sessionGeneris=$dlmodel["pSession"];
 
-		$idsub = getSubscribeesurl(Wfengine::singleton()->sessionGeneris,array($baseClass),"");
+		$idsub = getSubscribeesurl(WfEngine::singleton()->sessionGeneris,array($baseClass),"");
 		foreach ($idsub as $key => $val)
 		{
-			$result = getRDFfromaremotemodule(Wfengine::singleton()->sessionGeneris,array($_SESSION["datalg"]), array($val[0]),false,"1");
+			$result = getRDFfromaremotemodule(WfEngine::singleton()->sessionGeneris,array($_SESSION["datalg"]), array($val[0]),false,"1");
 			if (!(is_string($result))) {
-				Wfengine::singleton()->sessionGeneris=$result["pSession"];
+				WfEngine::singleton()->sessionGeneris=$result["pSession"];
 				$_SESSION["session"]=$result["pSession"];
 					
 			}

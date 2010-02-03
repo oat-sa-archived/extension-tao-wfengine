@@ -120,7 +120,7 @@ class ActivityExecution
 				$rolesAllowed = $this->activity->resource->getPropertyValues($rolesAllowedProp);
 
 				$rolesUserProp = new core_kernel_classes_Property(USER_ROLE);
-				$rolesUser = Wfengine::singleton()->user->resource->getPropertyValues($rolesUserProp);
+				$rolesUser = WfEngine::singleton()->user->resource->getPropertyValues($rolesUserProp);
 				
 				foreach ($rolesAllowed as $roleAllowed)
 

@@ -68,7 +68,7 @@ class DichotomicSelector implements Selector {
 	 * @return boolean
 	 */
 	public function hasNext(){
-		$logger = new common_Logger('WFEngine Process Execution Dicho', Logger::debug_level);
+		$logger = new common_Logger('WfEngine Process Execution Dicho', Logger::debug_level);
 
 		$tab = array_values($this->responses);
 		if(	empty($tab)	|| $tab[0]== DichotomicSelector::NO
@@ -102,7 +102,7 @@ class DichotomicSelector implements Selector {
 	 * @return core_kernel_classes_Resource
 	 */
 	public function next(){
-		$logger = new common_Logger('WFEngine Process Execution Dicho', Logger::debug_level);
+		$logger = new common_Logger('WfEngine Process Execution Dicho', Logger::debug_level);
 		$logger->info('Dico  next :',__FILE__,__LINE__);
 		$this->execution->setUp(true);
 

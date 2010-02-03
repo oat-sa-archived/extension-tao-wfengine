@@ -118,14 +118,14 @@ class Tool
 		$serviceDefinitionUrlProp = new core_kernel_classes_Property(PROPERTY_SERVICEDEFINITIONS_URL);
 		$serviceDefinitionUrl 	= 
 		
-		getInstancePropertyValues(Wfengine::singleton()->sessionGeneris,
+		getInstancePropertyValues(WfEngine::singleton()->sessionGeneris,
 																		array($serviceDefinition[0]),
 																		array(PROPERTY_SERVICEDEFINITIONS_URL),
 																		array(""));																		
 		$interactiveToolUrl		= $serviceDefinitionUrl[0]."";
 
 		// We get the input parameters for the tool.
-		$inParameters = getInstancePropertyValues(Wfengine::singleton()->sessionGeneris,
+		$inParameters = getInstancePropertyValues(WfEngine::singleton()->sessionGeneris,
 												  array($uri),
 												  array(PROPERTY_CALLOFSERVICES_ACTUALPARAMETERIN),
 												  array(''));
@@ -136,29 +136,29 @@ class Tool
 		foreach ($inParameters as $inParameter)
 		{
 			// We retrieve param labels -> their names.
-			$inParameterlabelcomment = getlabelcomment(Wfengine::singleton()->sessionGeneris,
+			$inParameterlabelcomment = getlabelcomment(WfEngine::singleton()->sessionGeneris,
 													   $inParameter,
 													   array(''));
 			
 			// Actual parameters can be filled in by ONE process variable OR a quality metric OR a constant value.
 			// So we consider a XOR between processVariable, constantValue and qualityMetric.
-			$inParametersProcessVariables 	= getInstancePropertyValues(Wfengine::singleton()->sessionGeneris,
+			$inParametersProcessVariables 	= getInstancePropertyValues(WfEngine::singleton()->sessionGeneris,
 																	    array($inParameter),
 																	    array(PROPERTY_ACTUALPARAMETER_PROCESSVARIABLE),
 																	    array(''));
 																	  
-			$inParametersQualityMetrics		= getInstancePropertyValues(Wfengine::singleton()->sessionGeneris,
+			$inParametersQualityMetrics		= getInstancePropertyValues(WfEngine::singleton()->sessionGeneris,
 																		array($inParameter),
 																		array(PROPERTY_ACTUALPARAMETER_QUALITYMETRIC),
 																		array(''));
 																		
-			$inParametersConstantValues		= getInstancePropertyValues(Wfengine::singleton()->sessionGeneris,
+			$inParametersConstantValues		= getInstancePropertyValues(WfEngine::singleton()->sessionGeneris,
 																		array($inParameter),
 																		array(PROPERTY_ACTUALPARAMETER_CONSTANTVALUE),
 																		array(''));
 
 			// We also need the label of the formal parameters for the call URL.
-			$formalParameters				= getInstancePropertyValues(Wfengine::singleton()->sessionGeneris,
+			$formalParameters				= getInstancePropertyValues(WfEngine::singleton()->sessionGeneris,
 																		array($inParameter),
 																		array(PROPERTY_ACTUALPARAMETER_FORMALPARAMETER),
 																		array(''));
@@ -166,7 +166,7 @@ class Tool
 			if (!(is_null($this->activityexecution)))
 			{
 				// We find the parameter's formal name.
-				$formalParameterName 					= getlabelcomment(Wfengine::singleton()->sessionGeneris,
+				$formalParameterName 					= getlabelcomment(WfEngine::singleton()->sessionGeneris,
 																		  $formalParameters[0],
 																		  array(''));
 			
@@ -174,7 +174,7 @@ class Tool
 				if (count($inParametersProcessVariables))
 				{
 					// Process variable case.
-					$inParametersProcessVariablesValues = getInstancePropertyValues(Wfengine::singleton()->sessionGeneris,
+					$inParametersProcessVariablesValues = getInstancePropertyValues(WfEngine::singleton()->sessionGeneris,
 																					array($this->activityexecution->processExecution->uri),
 																					array($inParametersProcessVariables[0]),
 																					array(''));
@@ -204,11 +204,11 @@ class Tool
 			}
 		}
 		
-//		$outParameters = getInstancePropertyValues(Wfengine::singleton()->sessionGeneris,array($uri),array(PROPERTY_CALLOFSERVICES_ACTUALPARAMETEROUT),array(""));
+//		$outParameters = getInstancePropertyValues(WfEngine::singleton()->sessionGeneris,array($uri),array(PROPERTY_CALLOFSERVICES_ACTUALPARAMETEROUT),array(""));
 //		$outParametersDescription="[output&nbsp;parameters]";
 //		foreach ($outParameters as $outParameter)
 //		{
-//			$outParameterlabelcomment=getlabelcomment(Wfengine::singleton()->sessionGeneris,$outParameter,array(""));
+//			$outParameterlabelcomment=getlabelcomment(WfEngine::singleton()->sessionGeneris,$outParameter,array(""));
 //			
 //			$outParametersDescription.="&".$outParameterlabelcomment["label"]."=";
 //		}

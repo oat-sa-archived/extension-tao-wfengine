@@ -39,7 +39,7 @@ class RandomSelector implements Selector {
 		$this->remainning = $this->execution->getRemaining();
 
 		$this->head = $this->list->getHead();
-		$logger = new common_Logger('WFEngine Process Execution Random', Logger::debug_level);
+		$logger = new common_Logger('WfEngine Process Execution Random', Logger::debug_level);
 
 		//List contains activity list
 		if ($this->isSelectorList()) {
@@ -129,7 +129,7 @@ class RandomSelector implements Selector {
 	 */
 	public function hasNext(){
 
-		$logger = new common_Logger('WFEngine Process Execution Random', Logger::debug_level);
+		$logger = new common_Logger('WfEngine Process Execution Random', Logger::debug_level);
 
 		if ($this->isSelectorList()) {
 
@@ -158,7 +158,7 @@ class RandomSelector implements Selector {
 	 * @return core_kernel_classes_Resource
 	 */
 	public function next(){
-		$logger = new common_Logger('WFEngine Process Execution Random', Logger::debug_level);
+		$logger = new common_Logger('WfEngine Process Execution Random', Logger::debug_level);
 		$logger->info('Random  next :',__FILE__,__LINE__);
 
 		if ($this->isSelectorList()) {

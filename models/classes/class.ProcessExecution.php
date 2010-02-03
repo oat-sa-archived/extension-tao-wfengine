@@ -497,7 +497,7 @@ extends WfResource
 		$newActivities = array();
 
 		$activitiesList = $this->getActivityList($connector,true);
-		$logger = new common_Logger('WFEngine Process Execution', Logger::debug_level);
+		$logger = new common_Logger('WfEngine Process Execution', Logger::debug_level);
 		$logger->info('****Proceeding on list :' . $activitiesList->label,__FILE__,__LINE__);
 
 
