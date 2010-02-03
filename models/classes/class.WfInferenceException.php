@@ -1,5 +1,5 @@
 <?php
-class InferenceException extends WfException
+class WfInferenceException extends WfException
 {
 
 	public function __construct($message, 

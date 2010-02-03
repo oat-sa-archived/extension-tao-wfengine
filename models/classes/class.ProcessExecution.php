@@ -54,11 +54,11 @@ require_once('class.Process.php');
 require_once('class.Variable.php');
 
 /**
- * include wfResource
+ * include WfResource
  *
  * @author firstname and lastname of author, <author@example.org>
  */
-require_once('class.wfResource.php');
+require_once('class.WfResource.php');
 
 /* user defined includes */
 // section 10-13-1--31-740bb989:119ebfa9b28:-8000:00000000000007E9-includes begin
@@ -75,7 +75,7 @@ require_once('class.wfResource.php');
  * @author firstname and lastname of author, <author@example.org>
  */
 class ProcessExecution
-extends wfResource
+extends WfResource
 {
 	// --- ATTRIBUTES ---
 

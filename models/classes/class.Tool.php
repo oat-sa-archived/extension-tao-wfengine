@@ -33,11 +33,11 @@ require_once('class.Activity.php');
 require_once('class.ActivityExecution.php');
 
 /**
- * include wfResource
+ * include WfResource
  *
  * @author firstname and lastname of author, <author@example.org>
  */
-require_once('class.wfResource.php');
+require_once('class.WfResource.php');
 
 /* user defined includes */
 // section 10-13-1--31--23da6e5c:11a2ac14500:-8000:000000000000099B-includes begin
@@ -54,7 +54,7 @@ require_once('class.wfResource.php');
  * @author firstname and lastname of author, <author@example.org>
  */
 class Tool
-    extends wfResource
+    extends WfResource
 {
     // --- ATTRIBUTES ---
 

@@ -26,11 +26,11 @@ if (0 > version_compare(PHP_VERSION, '5')) {
 require_once('class.Activity.php');
 
 /**
- * include wfResource
+ * include WfResource
  *
  * @author firstname and lastname of author, <author@example.org>
  */
-require_once('class.wfResource.php');
+require_once('class.WfResource.php');
 
 /* user defined includes */
 // section -64--88-1-64--7117f567:11a0527df60:-8000:00000000000008D4-includes begin
@@ -47,7 +47,7 @@ require_once('class.wfResource.php');
  * @author firstname and lastname of author, <author@example.org>
  */
 class Connector
-    extends wfResource
+    extends WfResource
 {
     // --- ATTRIBUTES ---
 

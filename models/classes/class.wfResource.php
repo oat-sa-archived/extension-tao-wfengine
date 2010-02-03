@@ -3,7 +3,7 @@
 error_reporting(E_ALL);
 
 /**
- * WorkFlowEngine - class.wfResource.php
+ * WorkFlowEngine - class.WfResource.php
  *
  * $Id$
  *
@@ -27,12 +27,12 @@ if (0 > version_compare(PHP_VERSION, '5')) {
 // section 10-13-1--31-740bb989:119ebfa9b28:-8000:0000000000000831-constants end
 
 /**
- * Short description of class wfResource
+ * Short description of class WfResource
  *
  * @access public
  * @author firstname and lastname of author, <author@example.org>
  */
-class wfResource
+class WfResource
 {
     // --- ATTRIBUTES ---
 
@@ -127,6 +127,6 @@ class wfResource
         // section 10-13-1--31-7f1456d9:11a242e5517:-8000:000000000000096F end
     }
 
-} /* end of class wfResource */
+} /* end of class WfResource */
 
 ?>

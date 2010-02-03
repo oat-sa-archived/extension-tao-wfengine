@@ -99,18 +99,18 @@ class Utils
 	 *
 	 * @access public
 	 * @author firstname and lastname of author, <author@example.org>
-	 * @param wfResource
+	 * @param WfResource
 	 * @param array
 	 * @return boolean
 	 */
-	public static function contains( wfResource $resource, $setOfResources)
+	public static function contains( WfResource $resource, $setOfResources)
 	{
 		$returnValue = (bool) false;
 
 		// section 10-13-1--31-7f1456d9:11a242e5517:-8000:0000000000000961 begin
-		foreach ($setOfResources as $wfResource)
+		foreach ($setOfResources as $WfResource)
 		{
-			if ($resource->uri == $wfResource->uri) {return true;}
+			if ($resource->uri == $WfResource->uri) {return true;}
 		}
 		// section 10-13-1--31-7f1456d9:11a242e5517:-8000:0000000000000961 end
 

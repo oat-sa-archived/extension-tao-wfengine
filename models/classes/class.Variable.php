@@ -19,11 +19,11 @@ if (0 > version_compare(PHP_VERSION, '5')) {
 }
 
 /**
- * include wfResource
+ * include WfResource
  *
  * @author firstname and lastname of author, <author@example.org>
  */
-require_once('class.wfResource.php');
+require_once('class.WfResource.php');
 
 /* user defined includes */
 // section 10-13-1-85-16731180:11be4127421:-8000:0000000000000A14-includes begin
@@ -40,7 +40,7 @@ require_once('class.wfResource.php');
  * @author firstname and lastname of author, <author@example.org>
  */
 class Variable
-    extends wfResource
+    extends WfResource
 {
     // --- ATTRIBUTES ---
 

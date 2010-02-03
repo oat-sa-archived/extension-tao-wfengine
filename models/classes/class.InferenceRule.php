@@ -64,7 +64,7 @@ class InferenceRule extends PiaacRule
 			}
 			else
 			{
-				throw new InferenceException('Unknow datatype for InferenceRules->else. Must be InferenceRules or Assignment');
+				throw new WfInferenceException('Unknow datatype for InferenceRules->else. Must be InferenceRules or Assignment');
 			}
 			
 			// Else statement loaded...
@@ -79,7 +79,7 @@ class InferenceRule extends PiaacRule
 				$this->else->execute($symbols);
 			}
 			else
-				throw new InferenceException('Unknow datatype for InferenceRules->else object.The type of the object must be InferenceRule or core_kernel_classes_Assignment');
+				throw new WfInferenceException('Unknow datatype for InferenceRules->else object.The type of the object must be InferenceRule or core_kernel_classes_Assignment');
 		}
 	}
 }
