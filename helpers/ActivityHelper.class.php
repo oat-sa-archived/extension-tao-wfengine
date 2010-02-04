@@ -1,9 +1,9 @@
 <?php
 class ActivityHelper
 {
-	public static function hasInteractiveTools(ActivityExecution $activity)
+	public static function hasInteractiveServices(ActivityExecution $activity)
 	{
-		return count($activity->getInteractiveTools());
+		return count($activity->getInteractiveServices());
 	}
 }
 ?>

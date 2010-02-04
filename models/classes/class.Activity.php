@@ -47,11 +47,11 @@ require_once('class.Process.php');
 require_once('class.ProcessExecution.php');
 
 /**
- * include Tool
+ * include Service
  *
  * @author firstname and lastname of author, <author@example.org>
  */
-require_once('class.Tool.php');
+require_once('class.Service.php');
 
 /**
  * include WfRole
@@ -229,35 +229,35 @@ extends WfResource
 	}
 
 	/**
-	 * Short description of method getTools
+	 * Short description of method getServices
 	 *
 	 * @access public
 	 * @author firstname and lastname of author, <author@example.org>
 	 * @param ActivityExecution
 	 * @return array
 	 */
-	public function getTools( ActivityExecution $execution = null)
+	public function getServices( ActivityExecution $execution = null)
 	{
 		$returnValue = array();
 
 		// section 10-13-1--31-2237f23b:11a39ee89a9:-8000:000000000000098F begin
 		$activitiesIserviceProp = new core_kernel_classes_Property(PROPERTY_ACTIVITIES_ISERVICES);
-		$interactiveTools =  $this->resource->getPropertyValues($activitiesIserviceProp);
+		$interactiveServices =  $this->resource->getPropertyValues($activitiesIserviceProp);
 
-		$interactiveToolsDescription=array();
-		if (sizeOf($interactiveTools)>0)
+		$interactiveServicesDescription=array();
+		if (sizeOf($interactiveServices)>0)
 		{
-			if ($interactiveTools[0]!="")
+			if ($interactiveServices[0]!="")
 			{
-				foreach ($interactiveTools as $interactiveTool)
+				foreach ($interactiveServices as $interactiveService)
 				{
 						
-					$interactiveToolsDescription[] = new Tool($interactiveTool,$execution);
+					$interactiveServicesDescription[] = new Service($interactiveService,$execution);
 				}
 			}
 		}
 
-		$returnValue = $interactiveToolsDescription;
+		$returnValue = $interactiveServicesDescription;
 		// section 10-13-1--31-2237f23b:11a39ee89a9:-8000:000000000000098F end
 
 		return (array) $returnValue;

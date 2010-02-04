@@ -33,11 +33,11 @@ require_once('class.Activity.php');
 require_once('class.ProcessExecution.php');
 
 /**
- * include Tool
+ * include Service
  *
  * @author firstname and lastname of author, <author@example.org>
  */
-require_once('class.Tool.php');
+require_once('class.Service.php');
 
 /**
  * include WfResource
@@ -150,19 +150,19 @@ class ActivityExecution
     }
 
     /**
-     * Short description of method getInteractiveTools
+     * Short description of method getInteractiveServices
      *
      * @access public
      * @author firstname and lastname of author, <author@example.org>
      * @return array
      */
-    public function getInteractiveTools()
+    public function getInteractiveServices()
     {
         $returnValue = array();
 
         // section 10-13-1--31-740bb989:119ebfa9b28:-8000:0000000000000881 begin
 		
-		$returnValue = $this->activity->getTools($this);
+		$returnValue = $this->activity->getServices($this);
 		
         // section 10-13-1--31-740bb989:119ebfa9b28:-8000:0000000000000881 end
 

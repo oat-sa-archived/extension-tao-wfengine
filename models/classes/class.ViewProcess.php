@@ -675,14 +675,14 @@ extends Process
 			$returnValue.='</a>';
 
 
-			$tools = $activity->getTools();
+			$Services = $activity->getServices();
 			$i=65;
-			foreach ($tools as $tool)
+			foreach ($Services as $Service)
 			{
-				$WindowTitle = str_replace(" ","",trim(html_entity_decode(strip_tags("Edit ".$tool->label))));
+				$WindowTitle = str_replace(" ","",trim(html_entity_decode(strip_tags("Edit ".$Service->label))));
 				$WindowId = str_replace(" ","",$WindowTitle);
 
-				$xlink=' xlink:href="javascript:parent.getUrl(\'index.php?do=edit&amp;param1='.urlencode(urlencode($tool->uri)).'&amp;param2='.urlencode($this->uri).'\',\''.$WindowTitle.' \',2,300,300,\''.$WindowId.'\')" xlink:title=" Edit the way the service '.(html_entity_decode($tool->label)).' is used (configure its inputs and ouputs variables)"
+				$xlink=' xlink:href="javascript:parent.getUrl(\'index.php?do=edit&amp;param1='.urlencode(urlencode($Service->uri)).'&amp;param2='.urlencode($this->uri).'\',\''.$WindowTitle.' \',2,300,300,\''.$WindowId.'\')" xlink:title=" Edit the way the service '.(html_entity_decode($Service->label)).' is used (configure its inputs and ouputs variables)"
 									 ';
 
 				$returnValue.='
