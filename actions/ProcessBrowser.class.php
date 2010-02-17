@@ -21,9 +21,9 @@ class ProcessBrowser extends Module
 		$browserViewData['activityContentLanguages'] = array();
 
 		// If paused, resume it.
-		if ($process->status == 'Paused')
-		$process->resume();
-
+		if ($process->status == 'Paused'){
+			$process->resume();
+		}
 		// Browser view main data.
 		$browserViewData['isHyperView']				= false;
 		$browserViewData['isInteractiveService']	= false;
@@ -115,7 +115,7 @@ class ProcessBrowser extends Module
 		}
 
 		$browserViewData['active_Resource']="'".$activity->uri."'" ;
-		$this->setData($browserViewData);
+		$this->setData('browserViewData', $browserViewData);
 		$this->setView('process_browser.tpl');
 
 

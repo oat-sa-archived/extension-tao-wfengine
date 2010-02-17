@@ -39,6 +39,14 @@ define('DEFAULT_ACTION_NAME', 'index');
 # Process Browser page title.
 define('PROCESS_BROWSER_TITLE', 'Process BrowserEngine');
 										
+# Next/Previous button usable or not.
+define('USE_NEXT',			true);
+define('USE_PREVIOUS',		true);
+define('FORCE_NEXT',		true);
+
+# Keyboard enabled or not.
+define('USE_KEYBOARD',		true);
+
 
 # Service mode
 # If set to true, the process dashboard (main view) and the
