@@ -154,7 +154,14 @@ extends WfResource
 		$activityroles = $this->resource->getPropertyValuesCollection($activityRoleProp);
 		foreach ($activityroles->getIterator() as $role)
 		{
-			$returnValue[]=array($role->uriResource,trim(strip_tags($role->getLabel())));
+			$roleLabel = '';
+			if($role instanceof core_kernel_classes_Resource){
+				$roleLabel = $role->getLabel();
+			}
+			if($role instanceof core_kernel_classes_Literal){
+				$roleLabel = $role->literal;
+			}
+			$returnValue[]=array($role->uriResource,trim(strip_tags($roleLabel)));
 		}
 		$this->actors = $returnValue;
 		// section 10-13-1--31-740bb989:119ebfa9b28:-8000:0000000000000850 end
