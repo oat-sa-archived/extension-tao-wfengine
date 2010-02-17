@@ -259,19 +259,19 @@ class Connector
 		parent::__construct($uri);
 		$typeOfConnectorProp = new core_kernel_classes_Property(PROPERTY_CONENCTORS_TYPEOF);
 		$this->type = $this->resource->getUniquePropertyValue($typeOfConnectorProp);
-		
+
 		// We get the TransitionRule relevant to the connector.
 		$ruleProp = new core_kernel_classes_Property(PROPERTY_CONNECTOR_TRANSITIONRULE);
 		$rule = $this->resource->getPropertyValues($ruleProp);
+	
 
-		
 		if (count($rule)&& $rule[0] != ""){
 			$this->transitionRule = new TransitionRule($rule[0]);
 		}
 		else {
 			$this->transitionRule = null;
 		}
-		
+
         // section -64--88-1-64--7117f567:11a0527df60:-8000:0000000000000935 end
     }
 

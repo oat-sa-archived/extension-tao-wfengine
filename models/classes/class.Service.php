@@ -108,6 +108,18 @@ class Service
     public function __construct($uri,  ActivityExecution $activityExecution = null)
     {
         // section 10-13-1--31--23da6e5c:11a2ac14500:-8000:00000000000009B3 begin
+        parent::__construct($uri);
+		$this->activityexecution = $activityExecution;
+				
+		// Get service definitions
+		$serviceDefProp = new core_kernel_classes_Property(PROPERTY_CALLOFSERVICES_SERVICEDEFINITION);
+		$serviceDefinition = $this->resource->getUniquePropertyValue($serviceDefProp);
+
+		// Get service url for call
+		$serviceDefinitionUrlProp = new core_kernel_classes_Property(PROPERTY_SERVICEDEFINITIONS_URL);
+		$serviceDefinitionUrl = $serviceDefinition->getPropertyValues($serviceDefinitionUrlProp);
+
+		$this->url = $serviceDefinitionUrl[0]."";
         // section 10-13-1--31--23da6e5c:11a2ac14500:-8000:00000000000009B3 end
     }
 
@@ -124,6 +136,15 @@ class Service
         $returnValue = (string) '';
 
         // section 10-13-1-85-453ada87:11c2dedd780:-8000:0000000000000A1C begin
+    	$activeLiteral = new core_kernel_classes_ActiveLiteral($this->url);
+		$activeUrl = "".$activeLiteral->getDisplayedCode($variables)."";
+		
+		$returnValue = $activeUrl;
+        
+        foreach ($this->input as $name => $value)
+        {
+        	$returnValue .= '&' . urlencode(trim($name)) . '=' . urlencode(trim($value['value']));
+        }
         // section 10-13-1-85-453ada87:11c2dedd780:-8000:0000000000000A1C end
 
         return (string) $returnValue;

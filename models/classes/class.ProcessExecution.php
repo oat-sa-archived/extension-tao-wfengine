@@ -190,7 +190,7 @@ extends WfResource
 		{
 			$rule->execute($arrayOfProcessVars);
 		}
-
+		$curentTokenProp = new core_kernel_classes_Property(CURRENT_TOKEN);
 		// -- ONAFTER CONSISTENCY CHECKING
 		// First of all, we check if the consistency rule is respected.
 		if (!$ignoreConsistency && $activityBeforeTransition->consistencyRule)
@@ -218,32 +218,14 @@ extends WfResource
 
 				// If the consistency result is negative, we throw a ConsistencyException.
 				$consistencyException = new ConsistencyException('The consistency test was negative',
-				$activityBeforeTransition,
-				$consistencyRule->involvedActivities,
-				$consistencyRule->notification,
-				$consistencyRule->suppressable);
+																$activityBeforeTransition,
+																$consistencyRule->involvedActivities,
+																$consistencyRule->notification,
+																$consistencyRule->suppressable);
 
-				// The current token must be the activity we are jumping back !
-				removePropertyValuesforInstance($_SESSION["session"],
-				array($this->uri),
-				array(CURRENT_TOKEN));
+				// The current token must be the activity we are jumping back 		
+				$this->resource->editPropertyValues($curentTokenProp,$activityToGoBack->uri);
 
-				setPropertyValuesforInstance($_SESSION["session"],
-				array($this->uri),
-				array(CURRENT_TOKEN),
-				array(""),
-				array($activityToGoBack->uri));
-
-				// We log the "CONSISTENCY_ERROR" in the log file.
-				if (defined('PIAAC_ENABLED'))
-				{
-					$event = new PiaacBusinessEvent('BQ_ENGINE', 'CONSISTENCY_ERROR',
-													'A consistency error occured', 
-					getIntervieweeUriByProcessExecutionUri($this->uri),
-					$activityBeforeTransition->label);
-
-					PiaacEventLogger::getInstance()->trigEvent($event);
-				}
 
 				throw $consistencyException;
 			}
@@ -251,18 +233,11 @@ extends WfResource
 
 		$connectorsUri = $this->getNextConnectorsUri($this->currentActivity[0]->uri);
 		$newActivities = $this->getNewActivities($arrayOfProcessVars, $connectorsUri);
-
-		removePropertyValuesforInstance($_SESSION["session"],
-		array($this->uri),
-		array(CURRENT_TOKEN));
+		$this->resource->removePropertyValues($curentTokenProp);
 
 		foreach ($newActivities as $activity)
-		{
-			setPropertyValuesforInstance($_SESSION["session"],
-			array($this->uri),
-			array(CURRENT_TOKEN),
-			array(""),
-			array($activity->uri));
+		{		
+			$this->resource->editPropertyValues($curentTokenProp,$activity->uri);
 		}
 
 
@@ -270,17 +245,17 @@ extends WfResource
 
 		foreach ($newActivities as $newActivity)
 		{
-			$this->path->invalidate($activityBeforeTransition,
-			($this->path->contains($newActivity) ? $newActivity : null));
+
+			$this->path->invalidate($activityBeforeTransition,($this->path->contains($newActivity) ? $newActivity : null));
 
 			// We insert in the ontology the last activity in the path stack.
 			$this->path->insertActivity($newActivity);
 			$this->currentActivity[] = new Activity($newActivity->uri);
 
+			
 
-			PiaacDataHolder::buildPath();
 		}
-
+		
 		// If the activity before the transition was the last activity of the process,
 		// we have to finish gracefully the process.
 
@@ -319,6 +294,7 @@ extends WfResource
 
 
 		}
+
 		// section 10-13-1--31--4660acca:119ecd38e96:-8000:0000000000000866 end
 	}
 
@@ -765,10 +741,10 @@ extends WfResource
 		//getexecutionOf field
 		$executionOfProp = new core_kernel_classes_Property(EXECUTION_OF);
 		$values = $this->resource->getPropertyValues($executionOfProp);
-
+		
 		foreach ($values as $a => $b)
 		{
-			$process 		= new ViewProcess($b);
+			$process 		= new Process($b);
 			$this->process 	= $process;
 		}
 
@@ -1113,25 +1089,23 @@ extends WfResource
 
 		$currentTokenProp = new core_kernel_classes_Property(CURRENT_TOKEN);
 		$values = $this->resource->getPropertyValues($currentTokenProp);
-
-		foreach ($values as $a => $b)
+		
+		foreach ($values as  $b)
 		{
 			$activity				= new Activity($b);
 			$activityExecution		= new ActivityExecution($this,$activity);
 			$activityExecution->uri = $b;
-
 			$activityExecution->label = $activity->label;
 
 			$this->currentActivity[] = $activity;
 		}
-		//echo __FILE__." ".__LINE__." ".microtime()."<br />";
+
 		$statusProp = new core_kernel_classes_Property(STATUS);
 		$values = $this->resource->getPropertyValues($statusProp);
 
 		//add status information
 		if (sizeOf($values)>0)
 		{
-
 			switch ($values[0])
 			{
 				case RESOURCE_PROCESSSTATUS_RESUMED : 	{ $this->status = "Resumed"; break; }

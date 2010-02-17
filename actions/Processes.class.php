@@ -10,7 +10,7 @@ class Processes extends Module
 			UsersHelper::checkAuthentication();
 
 				
-			$wfEngine 			= $_SESSION["Wfengine"];
+			$wfEngine 			= $_SESSION["WfEngine"];
 			$userViewData 		= UsersHelper::buildCurrentUserForView();
 			$this->setData('userViewData',$userViewData);
 			$process 			= new ViewProcess(urldecode($processDefinitionUri));

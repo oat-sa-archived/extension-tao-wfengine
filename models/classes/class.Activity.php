@@ -177,16 +177,17 @@ extends WfResource
 
 		// We get the next connectors.
 		$nextConnectors = core_kernel_classes_ApiModelOO::singleton()->getSubject(PROPERTY_CONNECTORS_PRECACTIVITIES,$this->uri);
-
+//		echo __FILE__.__LINE__;var_dump($nextConnectors);
 		$connectors =array();
 		foreach ($nextConnectors->getIterator() as $resource)
 		{
 			$typeProp = new core_kernel_classes_Property(RDF_TYPE);
 			$isAConnector = $resource->getPropertyValuesCollection($typeProp);
-				
+//			echo __FILE__.__LINE__;var_dump($resource);
 			if ($isAConnector->get(0)->uriResource == CLASS_CONNECTORS)
 			{
-				$connector	= new Connector($isAConnector->uriResource);
+				$connector	= new Connector($resource->uriResource);
+
 				$this->nextConnectors[] = $connector;
 
 			}
@@ -203,7 +204,7 @@ extends WfResource
 			$this->consistencyRule = new ConsistencyRule($consistencyRules[0]);
 		}
 			
-			
+
 		// We get the associated onAfterInferenceRule.
 			
 		$infRulesProp = new core_kernel_classes_Property(PROPERTY_ACTIVITIES_INFERENCERULE);
@@ -214,7 +215,7 @@ extends WfResource
 			foreach ($inferenceRules as $inf)
 			$this->inferenceRule[] = new InferenceRule($inf);
 		}
-			
+
 		// We get the associated onBeforeInferenceRule.
 		$infRulesOnBeforeProp = new core_kernel_classes_Property(PROPERTY_ACTIVITIES_ONBEFOREINFERENCERULE);
 		$inferenceRules = $this->resource->getPropertyValues($infRulesOnBeforeProp);
@@ -243,7 +244,7 @@ extends WfResource
 		// section 10-13-1--31-2237f23b:11a39ee89a9:-8000:000000000000098F begin
 		$activitiesIserviceProp = new core_kernel_classes_Property(PROPERTY_ACTIVITIES_ISERVICES);
 		$interactiveServices =  $this->resource->getPropertyValues($activitiesIserviceProp);
-
+		
 		$interactiveServicesDescription=array();
 		if (sizeOf($interactiveServices)>0)
 		{
@@ -258,6 +259,7 @@ extends WfResource
 		}
 
 		$returnValue = $interactiveServicesDescription;
+
 		// section 10-13-1--31-2237f23b:11a39ee89a9:-8000:000000000000098F end
 
 		return (array) $returnValue;
@@ -365,8 +367,8 @@ extends WfResource
 		// section 10-13-1-85-16731180:11be4127421:-8000:0000000000000A07 begin
 
 		$nextActivitiesCollection = core_kernel_classes_ApiModelOO::singleton()->getSubject(PREC_ACTIVITIES,$this->uri);
-					
-		$returnValue = ($nextActivities->isEmpty());
+		
+		$returnValue = $nextActivitiesCollection=== null;
 		// section 10-13-1-85-16731180:11be4127421:-8000:0000000000000A07 end
 
 		return (bool) $returnValue;

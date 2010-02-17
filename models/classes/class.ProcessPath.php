@@ -290,7 +290,7 @@ class ProcessPath
 	{
 		// section 10-13-1-85-7282d1cf:11cf4fd21dd:-8000:0000000000000A40 begin
 		// $to is the activity before the current one.
-		 
+
 		$i 					= ($this->getPathSize() -1);
 		$indexesToRemove 	= array();
 
@@ -343,8 +343,9 @@ class ProcessPath
 			$serializedPath = substr($serializedPath, 0, strlen($serializedPath) - 1);
 		}
 
-		$pInstanceProp = new core_kenel_classes_Property(PROPERTY_PINSTANCES_PROCESSPATH);
+		$pInstanceProp = new core_kernel_classes_Property(PROPERTY_PINSTANCES_PROCESSPATH);
 		$this->processExecution->resource->editPropertyValues($pInstanceProp,$serializedPath);
+
 		// section 10-13-1-85-7282d1cf:11cf4fd21dd:-8000:0000000000000A40 end
 	}
 

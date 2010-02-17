@@ -140,7 +140,7 @@ class ProcessBrowser extends Module
 		else
 		{
 			$processUri = urlencode($processUri);
-			GenerisFC::redirection("processBrowser/index?processUri=${processUri}");
+			$this->redirect("processBrowser/index?processUri=${processUri}");
 	}
 }
 
@@ -166,7 +166,7 @@ public function next($processUri, $ignoreConsistency = 'false')
 			else
 			{
 				$processUri = urlencode($processUri);
-				GenerisFC::redirection("processBrowser/index?processUri=${processUri}");
+				$this->redirect("processBrowser/index?processUri=${processUri}");
 		}
 	}
 	else
@@ -177,7 +177,7 @@ public function next($processUri, $ignoreConsistency = 'false')
 		}
 		else
 		{
-			GenerisFC::redirection('main/index');
+			$this->redirect('main/index');
 		}
 	}
 }
@@ -197,7 +197,7 @@ catch (ConsistencyException $consistencyException)
 	$_SESSION['taoqual.flashvar.consistency'] = $consistency;
 
 	$processUri = urlencode($processUri);
-	GenerisFC::redirection("processBrowser/index?processUri=${processUri}");
+	$this->redirect("processBrowser/index?processUri=${processUri}");
 		}
 	}
 
@@ -210,7 +210,7 @@ catch (ConsistencyException $consistencyException)
 
 		$processExecution->pause();
 
-		GenerisFC::redirection((FORCE_PAUSE_LOGOUT) ? 'authentication/logout' : 'main/index');
+		$this->redirect((FORCE_PAUSE_LOGOUT) ? 'authentication/logout' : 'main/index');
 	}
 
 	public function jumpBack($processUri, $activityUri, $testing="",$ignoreHidden=false)
@@ -236,7 +236,7 @@ catch (ConsistencyException $consistencyException)
 
 
 		$processUri = urlencode($processUri);
-		GenerisFC::redirection("processBrowser/index?processUri=${processUri}");
+		$this->redirect("processBrowser/index?processUri=${processUri}");
 	}
 
 	public function breakOff($processUri)
@@ -273,7 +273,7 @@ catch (ConsistencyException $consistencyException)
 			$_SESSION['taoqual.flashvar.consistency'] = $consistency;
 
 			$processUri = urlencode($processUri);
-			GenerisFC::redirection("processBrowser/index?processUri=${processUri}");
+			$this->redirect("processBrowser/index?processUri=${processUri}");
 	}
 	}
 }

@@ -8,15 +8,9 @@ class UsersHelper
 		// New API Connection.
 		core_control_FrontController::connect($in_login,md5($in_password), DATABASE_NAME);
 
-		//			$_SESSION["bd"]				= MODULE;
-		//			$_SESSION["session"]		= $session["pSession"];
-		//			$_SESSION["ok"]				= true;
-		//			$_SESSION["guilg"] 			= "EN";
-		//			$_SESSION["type"]			= "i";
-		//			$_SESSION["cuser"]			= $in_login;
 
-		$_SESSION["Wfengine"] 		= Wfengine::singleton($in_login, $in_password);
-		$_SESSION["userObject"] 	= Wfengine::singleton()->getUser();
+		$_SESSION["WfEngine"] 		= WfEngine::singleton($in_login, $in_password);
+		$_SESSION["userObject"] 	= WfEngine::singleton()->getUser();
 		core_kernel_classes_Session::singleton()->setLg("EN");
 			
 		// Taoqual authentication and language markers.
@@ -25,15 +19,7 @@ class UsersHelper
 		$_SESSION['taoqual.serviceContentLang'] = 'EN';
 		$_SESSION['taoqual.userId']				= $in_login;
 
-		if (defined("PIAAC_ENABLED")) {
-			$_SESSION['taoqual.serviceContentLang'] = $GLOBALS["countryActivityContentLanguages"][PIAAC_VERSION][0];
-			$_SESSION['taoqual.lang'] = $GLOBALS["countryUILanguages"][PIAAC_VERSION][0];
 
-			//BATCH special hack for batch
-			//$_SESSION['taoqual.serviceContentLang'] = "EN";
-		}
-
-		$_SESSION['taoqual.theme']			= 'template';
 
 		return true;
 
@@ -41,8 +27,8 @@ class UsersHelper
 
 	public static function buildCurrentUserForView()
 	{
-		$wfEngine 			= Wfengine::singleton();
-		$user 				= $wfEngine->getUser();
+		$WfEngine 			= WfEngine::singleton();
+		$user 				= $WfEngine->getUser();
 
 		// username.
 		$data['username'] 	= $user->userName;
@@ -58,8 +44,8 @@ class UsersHelper
 
 	public static function mayAccessActivity(Activity $activity)
 	{
-		$wfEngine 	= Wfengine::singleton();
-		$user		= $wfEngine->getUser();
+		$WfEngine 	= WfEngine::singleton();
+		$user		= $WfEngine->getUser();
 
 		$acceptedRole = $activity->acceptedRole;
 

@@ -133,13 +133,13 @@ extends WfResource
 		// section 10-13-1--31-740bb989:119ebfa9b28:-8000:0000000000000852 begin
 		$processActivitiesProp = new core_kernel_classes_Property(PROPERTY_PROCESS_ACTIVITIES);
 		$activities = $this->resource->getPropertyValuesCollection($processActivitiesProp);
-				
+
 		foreach ($activities->getIterator() as $activity)
 		{
-			
 			$activityIsInitialProp = new core_kernel_classes_Property(PROPERTY_ACTIVITIES_ISINITIAL);
-			$isInitial = $activity->getUniquePropertyValues($activityIsInitialProp);
-				
+
+			$isInitial = $activity->getUniquePropertyValue($activityIsInitialProp);
+
 			if ($isInitial->uriResource == GENERIS_TRUE)
 			{
 				$activityObject = new Activity($activity->uriResource);
@@ -147,7 +147,7 @@ extends WfResource
 				$returnValue[] =$activityObject;
 			}
 		}
-
+		
 		$this->rootActivities = $returnValue;
 		// section 10-13-1--31-740bb989:119ebfa9b28:-8000:0000000000000852 end
 

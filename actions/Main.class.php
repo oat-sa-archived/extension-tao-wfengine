@@ -21,7 +21,7 @@ class Main extends Module
 			UsersHelper::authenticate('tao','tao');
 
 
-			$wfEngine 			= $_SESSION["Wfengine"];
+			$wfEngine 			= $_SESSION["WfEngine"];
 			$userViewData 		= UsersHelper::buildCurrentUserForView();
 			$this->setData('userViewData',$userViewData);
 			$processes 			= $wfEngine->getProcessExecutions();
@@ -124,6 +124,7 @@ class Main extends Module
 		}
 		$processClass = new core_kernel_classes_Class(CLASS_PROCESS);
 		$availableProcessDefinition = $processClass->getInstances();
+		var_dump($availableProcessDefinition);
 		$this->setData('availableProcessDefinition',$availableProcessDefinition);
 		$this->setData('processViewData',$processViewData);
 		$this->setView('main.tpl');
