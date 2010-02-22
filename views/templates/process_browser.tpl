@@ -15,11 +15,6 @@
 			window.activityUri = '<?php echo urlencode($activity->uri); ?>';
 			window.activeResources = <?php echo $browserViewData['active_Resource']; ?>;
 			window.uiLanguage = '<?php echo $browserViewData['uiLanguage']; ?>';
-			<?php if ($browserViewData['isBreakOffable']): ?>
-			window.breakable = true;
-			<?php else: ?>
-			window.breakable = false;
-			<?php endif; ?>
 			
 			
 			function goToPage(page_str){

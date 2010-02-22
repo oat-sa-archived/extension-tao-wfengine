@@ -4,7 +4,7 @@
 		<title><?php echo PROCESS_BROWSER_TITLE; ?></title>
 		
 		<style media="screen">
-			@import url(../../views/<?php echo $GLOBALS['dir_theme']; ?>css/login.css);
+			@import url(<?echo BASE_WWW; ?>/<?php echo $GLOBALS['dir_theme']; ?>/css/login.css);
 		</style>
 	</head>
 	
@@ -14,7 +14,7 @@
 		</ul>
 		<div id="content">
 			<div id="business">
-				<form id="login_form" method="post" action="../../index.php/authentication/login">
+				<form id="login_form" method="post" action=".<?php echo BASE_URL;?>/authentication/login">
 					<?php if ($indexViewData['route']): ?>
 					<input name="route" type="hidden" value="true"/>
 					<input name="from" type="hidden" value="<?php echo $indexViewData['from']; ?>"/>
