@@ -51,9 +51,6 @@
 					<tr>
 						<td class="status"><img src="<?php echo BASE_WWW;?>/<?php echo GUIHelper::buildStatusImageURI($procData['status']); ?>"/></td>
 						
-						<?php if (SHOW_PROCESS_TYPE_VIEW): ?>
-						<td class="type"><?php echo GUIHelper::sanitizeGenerisString($procData['type']); ?></td>
-						<?php endif; ?>
 						<td class="label"><?php echo GUIHelper::sanitizeGenerisString($procData['persid']); ?></td>
 						<td class="label"><?php echo GUIHelper::sanitizeGenerisString($procData['label']); ?></td>
 		

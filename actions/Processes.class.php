@@ -102,7 +102,7 @@ class Processes extends Module
 			if (BEGIN_WHEN_PROCESS_CREATED)
 			{
 				$processUri = urlencode($newProcessExecution->uri);
-				$viewState = "processBrowser/index?processUri=${processUri}";
+				$viewState = "../processBrowser/index?processUri=${processUri}";
 		}
 		else
 		{

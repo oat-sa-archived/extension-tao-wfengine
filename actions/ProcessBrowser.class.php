@@ -7,7 +7,9 @@ class ProcessBrowser extends Module
 
 
 		$processUri 		= urldecode($processUri); // parameters clean-up.
+		$this->setData('processUri',$processUri);
 		$userViewData 		= UsersHelper::buildCurrentUserForView(); // user data for browser view.
+		$this->setData('userViewData',$userViewData);
 		$browserViewData 	= array(); // general data for browser view.
 
 		$process 			= new ProcessExecution($processUri);
@@ -15,6 +17,7 @@ class ProcessBrowser extends Module
 			die('Any current activity found in the process : ' . $processUri);
 		}
 		$activity 			= $process->currentActivity[0];
+		$this->setData('activity',$activity);
 		$activityPerf 		= new Activity($activity->uri, false); // Performance WA
 		$activityExecution 	= new ActivityExecution($process, $activity);
 
@@ -25,12 +28,15 @@ class ProcessBrowser extends Module
 			$process->resume();
 		}
 		// Browser view main data.
-		$browserViewData['isHyperView']				= false;
+
+//		$browserViewData['isNextable']				= true;
+//		$browserViewData['forceNext']				= true;
 		$browserViewData['isInteractiveService']	= false;
+		
 		$browserViewData['processLabel'] 			= $process->process->label;
 		$browserViewData['processExecutionLabel']	= $process->label;
 		$browserViewData['activityLabel'] 			= $activity->label;
-		$browserViewData['isBackable']				= (FlowHelper::isProcessBackable($process) and !(isPiaacNotBackableItemList($activity->uri)));
+		$browserViewData['isBackable']				= (FlowHelper::isProcessBackable($process));
 		$browserViewData['uiLanguage']				= $GLOBALS['lang'];
 		$browserViewData['contentlanguage']			= $_SESSION['taoqual.serviceContentLang'];
 		$browserViewData['processUri']				= $processUri ;
@@ -49,7 +55,7 @@ class ProcessBrowser extends Module
 			$variablesViewData[$var->name] = array('uri' 	=> $var->uri,
 												   'value' 	=> $var->value);
 		}
-
+		$this->setData('variablesViewData',$variablesViewData);
 		// consistency data.
 		$consistencyViewData = array();
 		if (isset($_SESSION['taoqual.flashvar.consistency']))
@@ -80,9 +86,14 @@ class ProcessBrowser extends Module
 		{
 			// Everything is allright with data consistency for this process.
 			$consistencyViewData['isConsistent'] = true;
+			
 			$_SESSION['taoqual.flashvar.consistency'] = null;
 		}
+		
+		$this->setData('consistencyViewData',$consistencyViewData);
+		
 
+		
 
 
 		//The following takes about 0.2 seconds -->cache
@@ -115,12 +126,17 @@ class ProcessBrowser extends Module
 		}
 
 		$browserViewData['active_Resource']="'".$activity->uri."'" ;
+
+
+		$browserViewData['isInteractiveService'] 	= true;
+
+		$servicesViewData 							= array();
+		
+		$services = $activityExecution->getInteractiveServices();
+		$this->setData('services',$services);
+		
 		$this->setData('browserViewData', $browserViewData);
 		$this->setView('process_browser.tpl');
-
-
-
-
 	}
 
 	public function back($processUri)
@@ -148,7 +164,7 @@ public function next($processUri, $ignoreConsistency = 'false')
 {
 	UsersHelper::checkAuthentication();
 
-	PiaacDataHolder::build($processUri);
+
 
 	$processUri 	= urldecode($processUri);
 	$processExecution = new ProcessExecution($processUri);
@@ -201,7 +217,7 @@ catch (ConsistencyException $consistencyException)
 		}
 	}
 
-	public static function pause($processUri)
+	public function pause($processUri)
 	{
 		UsersHelper::checkAuthentication();
 
@@ -210,7 +226,7 @@ catch (ConsistencyException $consistencyException)
 
 		$processExecution->pause();
 
-		$this->redirect((FORCE_PAUSE_LOGOUT) ? 'authentication/logout' : 'main/index');
+		$this->redirect('main/index');
 	}
 
 	public function jumpBack($processUri, $activityUri, $testing="",$ignoreHidden=false)

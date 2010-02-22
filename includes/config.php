@@ -62,11 +62,11 @@ $GLOBALS['lang']			= 'EN';
 
 #BASE PATH: the root path in the file system (usually the document root)
 define('ROOT_PATH', $_SERVER['DOCUMENT_ROOT']);
-define('BASE_PATH', ROOT_PATH . '/WorkflowEngine');
+define('BASE_PATH', ROOT_PATH . '/wfEngine');
 
 #BASE URL (usually the domain root)
 define('ROOT_URL', 'http://'.$_SERVER['HTTP_HOST']);
-define('BASE_URL', ROOT_URL.'/WorkflowEngine');
+define('BASE_URL', ROOT_URL.'/wfEngine');
 
 #BASE WWW the web resources path
 define('BASE_WWW', BASE_URL . '/views/' );

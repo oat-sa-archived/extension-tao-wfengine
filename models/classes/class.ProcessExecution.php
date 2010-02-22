@@ -771,7 +771,7 @@ extends WfResource
 		// Status handling.
 
 		$statusProp = new core_kernel_classes_Property(STATUS);
-		$this->resource->editPropertyValuesPropertyValues($statusProp,RESOURCE_PROCESSSTATUS_RESUMED);
+		$this->resource->editPropertyValues($statusProp,RESOURCE_PROCESSSTATUS_RESUMED);
 		$this->status = "Resumed";
 
 		// -- Exit code handling.
@@ -812,26 +812,6 @@ extends WfResource
 		$this->resource->editPropertyValues($statusProp,RESOURCE_PROCESSSTATUS_PAUSED);
 		$this->status = 'Paused';
 
-		// -- Exit code handling.
-
-		$exitCode = new core_kernel_classes_Property(PROPERTY_PROCESSINSTANCE_EXITCODE);
-		$this->resource->editPropertyValues($exitCode,RESOURCE_EXITCODE_INTERVIEWER_PAUSES);
-
-
-		// We log the "INTERVIEW_PAUSE" in the log file.
-		if (defined('PIAAC_ENABLED'))
-		{
-			$event = new PiaacBusinessEvent('BQ_ENGINE', 'INTERVIEW_PAUSE',
-											'The interview is paused', 
-			getIntervieweeUriByProcessExecutionUri($this->uri),
-			$this->currentActivity[0]->label);
-
-			PiaacEventLogger::getInstance()->trigEvent($event);
-
-			if( EXPORT_DATA_WHEN_PAUSED){
-				PiaacDataExchange::export($this, $exportCognitive = false);
-			}
-		}
 
 		// section 10-13-1-85-746e873e:11bb0a6f076:-8000:00000000000009A5 end
 	}
