@@ -40,8 +40,6 @@
 				<thead>
 					<tr>
 						<th><?php echo __("Status"); ?></th>
-						<th><?php echo __("Process type"); ?></th>
-						<th>CI_PersID</th>
 						<th><?php echo __("Process"); ?></th>
 						<th><?php echo __("Start/Resume the case"); ?></th>
 					</tr>
@@ -51,7 +49,7 @@
 					<tr>
 						<td class="status"><img src="<?php echo BASE_WWW;?>/<?php echo GUIHelper::buildStatusImageURI($procData['status']); ?>"/></td>
 						
-						<td class="label"><?php echo GUIHelper::sanitizeGenerisString($procData['persid']); ?></td>
+						
 						<td class="label"><?php echo GUIHelper::sanitizeGenerisString($procData['label']); ?></td>
 		
 						<td class="join">
