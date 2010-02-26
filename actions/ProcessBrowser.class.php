@@ -3,11 +3,12 @@ class ProcessBrowser extends Module
 {
 	public function index($processUri)
 	{
+		$_SESSION["processUri"]= $processUri;
 		UsersHelper::checkAuthentication();
-
 
 		$processUri 		= urldecode($processUri); // parameters clean-up.
 		$this->setData('processUri',$processUri);
+		
 		$userViewData 		= UsersHelper::buildCurrentUserForView(); // user data for browser view.
 		$this->setData('userViewData',$userViewData);
 		$browserViewData 	= array(); // general data for browser view.
@@ -28,11 +29,8 @@ class ProcessBrowser extends Module
 			$process->resume();
 		}
 		// Browser view main data.
-
-//		$browserViewData['isNextable']				= true;
-//		$browserViewData['forceNext']				= true;
 		$browserViewData['isInteractiveService']	= false;
-		
+
 		$browserViewData['processLabel'] 			= $process->process->label;
 		$browserViewData['processExecutionLabel']	= $process->label;
 		$browserViewData['activityLabel'] 			= $activity->label;
@@ -86,15 +84,11 @@ class ProcessBrowser extends Module
 		{
 			// Everything is allright with data consistency for this process.
 			$consistencyViewData['isConsistent'] = true;
-			
+
 			$_SESSION['taoqual.flashvar.consistency'] = null;
 		}
-		
+
 		$this->setData('consistencyViewData',$consistencyViewData);
-		
-
-		
-
 
 		//The following takes about 0.2 seconds -->cache
 
@@ -126,15 +120,13 @@ class ProcessBrowser extends Module
 		}
 
 		$browserViewData['active_Resource']="'".$activity->uri."'" ;
-
-
 		$browserViewData['isInteractiveService'] 	= true;
 
-		$servicesViewData 							= array();
-		
+		$servicesViewData 	= array();
+
 		$services = $activityExecution->getInteractiveServices();
 		$this->setData('services',$services);
-		
+
 		$this->setData('browserViewData', $browserViewData);
 		$this->setView('process_browser.tpl');
 	}
@@ -157,63 +149,59 @@ class ProcessBrowser extends Module
 		{
 			$processUri = urlencode($processUri);
 			$this->redirect("processBrowser/index?processUri=${processUri}");
+		}
 	}
-}
 
-public function next($processUri, $ignoreConsistency = 'false')
-{
-	UsersHelper::checkAuthentication();
-
-
-
-	$processUri 	= urldecode($processUri);
-	$processExecution = new ProcessExecution($processUri);
-
-	try
+	public function next($processUri, $ignoreConsistency = 'false')
 	{
-		$processExecution->performTransition(($ignoreConsistency == 'true') ? true : false);
-
-		if (!$processExecution->isFinished())
+		UsersHelper::checkAuthentication();
+	
+	
+	
+		$processUri 	= urldecode($processUri);
+		$processExecution = new ProcessExecution($processUri);
+	
+		try
 		{
-			$processUri = urlencode($processUri);
-
-			if (!ENABLE_HTTP_REDIRECT_PROCESS_BROWSER)
-			$this->index($processUri);
-			else
+			$processExecution->performTransition(($ignoreConsistency == 'true') ? true : false);
+	
+			if (!$processExecution->isFinished())
 			{
 				$processUri = urlencode($processUri);
-				$this->redirect("processBrowser/index?processUri=${processUri}");
-		}
-	}
-	else
-	{
-		if (defined('PIAAC_ENABLED') && SERVICE_MODE && USE_CALLBACK_URL_ON_PROCESS_FINISHED)
-		{
-			header('Location: ' . CALLBACK_URL_ON_PROCESS_FINISHED);
-		}
-		else
-		{
-			$this->redirect('main/index');
-		}
-	}
-}
-catch (ConsistencyException $consistencyException)
-{
-	// A consistency error occured when trying to go
-	// forward in the process. Let's try to get useful
-	// information from the exception.
+	
+				if (!ENABLE_HTTP_REDIRECT_PROCESS_BROWSER)
+				$this->index($processUri);
+				else
+				{
+					$processUri = urlencode($processUri);
+					$this->redirect("processBrowser/index?processUri=${processUri}");
+				}
+			}
+			else
+			{
 
-	// We need to tell the "index" action of the "ProcessBrowser" controller
-	// that a consistency exception occured. To do so, we will use the concept
-	// of flash variable. This kind of variable survives during one and only one
-	// HTTP request lifecycle. So that in the "index" action, the session variable
-	// depicting the error will be systematically erased after each processing.
-	//$_SESSION['taoqual.flashvar.consistency'] = $consistencyException;
-	$consistency = ConsistencyHelper::BuildConsistencyStructure($consistencyException);
-	$_SESSION['taoqual.flashvar.consistency'] = $consistency;
-
-	$processUri = urlencode($processUri);
-	$this->redirect("processBrowser/index?processUri=${processUri}");
+				
+				$this->redirect('main/index');
+				
+			}
+		}
+		catch (ConsistencyException $consistencyException)
+		{
+			// A consistency error occured when trying to go
+			// forward in the process. Let's try to get useful
+			// information from the exception.
+		
+			// We need to tell the "index" action of the "ProcessBrowser" controller
+			// that a consistency exception occured. To do so, we will use the concept
+			// of flash variable. This kind of variable survives during one and only one
+			// HTTP request lifecycle. So that in the "index" action, the session variable
+			// depicting the error will be systematically erased after each processing.
+			//$_SESSION['taoqual.flashvar.consistency'] = $consistencyException;
+			$consistency = ConsistencyHelper::BuildConsistencyStructure($consistencyException);
+			$_SESSION['taoqual.flashvar.consistency'] = $consistency;
+		
+			$processUri = urlencode($processUri);
+			$this->redirect("processBrowser/index?processUri=${processUri}");
 		}
 	}
 
@@ -225,7 +213,7 @@ catch (ConsistencyException $consistencyException)
 		$processExecution = new ProcessExecution($processUri);
 
 		$processExecution->pause();
-
+		$_SESSION["processUri"]= null;
 		$this->redirect('main/index');
 	}
 
@@ -290,7 +278,7 @@ catch (ConsistencyException $consistencyException)
 
 			$processUri = urlencode($processUri);
 			$this->redirect("processBrowser/index?processUri=${processUri}");
-	}
+		}
 	}
 }
 ?>
