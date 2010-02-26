@@ -1,6 +1,6 @@
 <?php
 
-class TransitionRule extends PiaacRule
+class TransitionRule extends core_kernel_classes_Rule
 {
 	public $thenActivity = null;
 	public $elseActivity = null;
