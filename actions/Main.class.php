@@ -25,7 +25,7 @@ class Main extends Module
 			$userViewData 		= UsersHelper::buildCurrentUserForView();
 			$this->setData('userViewData',$userViewData);
 			$processes 			= $wfEngine->getProcessExecutions();
-
+			
 			if ($caseId != null)
 			{
 				foreach ($processes as $proc)
@@ -126,6 +126,7 @@ class Main extends Module
 	
 		$availableProcessDefinition = $processClass->getInstances();
 		
+		var_dump($availableProcessDefinition);
 
 		$this->setData('availableProcessDefinition',$availableProcessDefinition);
 		$this->setData('processViewData',$processViewData);

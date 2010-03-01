@@ -114,4 +114,17 @@ define('PROPERTY_REMAINING_ACTIVITIES_ARRAY',			NS_TAOQUAL.'#124705207523877');
 define('PROPERTY_FINISHED_ACTIVITIES',					NS_TAOQUAL.'#12525951541482');
 
 
+
+$todefine = array(
+	'CLASS_SERVICESDEFINITION' => NS_TAOQUAL . '#118588759532084',
+	'CLASS_ROLE' => NS_TAOQUAL . '#118588820437156',
+	'CLASS_FORMALPARAMETER' => NS_TAOQUAL . '#118588904546812',
+);
+
+foreach($todefine as $constName => $constValue){
+	if(!defined($constName)){
+		define($constName, $constValue);
+	}
+}
+unset($todefine);
 ?>

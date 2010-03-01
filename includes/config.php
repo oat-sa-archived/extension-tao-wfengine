@@ -20,7 +20,7 @@ define("DIR_MODELS"			, dirname(__FILE__). "/../models/");
 define('DIR_PLUGINS'		, dirname(__FILE__).'/../plugins/');
 
 # views directory
-define("DIR_VIEWS"			, dirname(__FILE__) . '/../views/');
+define("DIR_VIEWS"			, 'views/');
 
 # helpers directory
 define("DIR_HELPERS"		, dirname(__FILE__) . "/../helpers/");
@@ -58,7 +58,8 @@ define('SERVICE_MODE', false);
 $GLOBALS['dir_theme']		= "templates/";
 
 # language
-$GLOBALS['lang']			= 'EN';
+$GLOBALS['default_lang']	= 'EN';
+$GLOBALS['available_langs']	= array('EN', 'FR', 'DE', 'LU');
 
 #BASE PATH: the root path in the file system (usually the document root)
 define('ROOT_PATH', $_SERVER['DOCUMENT_ROOT']);
@@ -71,5 +72,8 @@ define('BASE_URL', ROOT_URL.'/wfEngine');
 #BASE WWW the web resources path
 define('BASE_WWW', BASE_URL . '/views/' );
 
+define('TAOBASE_WWW', 'http://'.$_SERVER['HTTP_HOST']. '/tao/' . DIR_VIEWS);
+define('TAOVIEW_PATH', $_SERVER['DOCUMENT_ROOT'] . '/tao/' . DIR_VIEWS);
+define('TAO_TPL_PATH', $_SERVER['DOCUMENT_ROOT'] . '/tao/' . DIR_VIEWS . $GLOBALS['dir_theme']);
 
 ?>
