@@ -29,15 +29,16 @@ class UsersHelper
 	{
 		$WfEngine 			= WfEngine::singleton();
 		$user 				= $WfEngine->getUser();
-
+		var_dump($user);
 		// username.
 		$data['username'] 	= $user->userName;
 
 		// user roles.
 		$data['roles']		= array();
-		foreach ($user->roles as $role)
-		$data['roles'][] = array('uri' 	 => $role->uri,
+		foreach ($user->roles as $role){
+			$data['roles'][] = array('uri' 	 => $role->uri,
 								     'label' => $role->label);
+		}
 
 		return $data;
 	}
@@ -84,8 +85,7 @@ class UsersHelper
 	{
 		if (!isset($_SESSION['taoqual.authenticated']))
 		{	
-			self::authenticate('tao','tao');
-//			self::authenticationRouting();
+			self::authenticationRouting();
 		}
 		
 	}
