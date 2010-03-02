@@ -11,20 +11,20 @@ class ProcessExecutionFactory {
 	public $name;
 	public $comment;
 	public $execution;
-	public $intervieweeUri;
+	public $variables = array();
 	public $ownerUri;
 
 	/**
 	 * @return unknown_type
 	 */
 	public function create(){
-		if (!isset($this->name) || !isset($this->execution) ){
+		if (!isset($this->name) || !isset($this->execution)  ){
 			trigger_error('Problem creating Process Execution, missiong parameter',E_USER_ERROR);
 		}
 
 		$processExecutionClass = new core_kernel_classes_Class(CLASS_PROCESS_EXECUTIONS, __METHOD__);
 		$subjectResource = core_kernel_classes_ResourceFactory::create($processExecutionClass,$this->name,$this->comment);
-
+	
 
 		$statusProp = new core_kernel_classes_Property(STATUS,__METHOD__);
 		$subjectResource->setPropertyValue($statusProp,PROPERTY_PINSTANCES_STATUS);
@@ -35,11 +35,19 @@ class ProcessExecutionFactory {
 		$returnValue = new ProcessExecution($subjectResource->uriResource,false);
 
 		$processVars = $returnValue->getVariables();
+
 		$processVars = Utils::processVarsToArray($processVars);
+
 		$initialActivities = $returnValue->process->getRootActivities();
-	
 
-
+		foreach($this->variables as $uri => $value) {
+			// have to skip name because note work like other variable
+			if($uri != RDFS_LABEL) {
+				
+				$property = new core_kernel_classes_Property($uri);
+				$returnValue->resource->setPropertyValue($property,$value);
+			}
+		}
 		foreach ($initialActivities as $activity)
 		{
 			//add token
@@ -63,7 +71,7 @@ class ProcessExecutionFactory {
 			}
 		}
 
-		
+
 		// Feed newly created process.
 		$returnValue->feed();
 /*

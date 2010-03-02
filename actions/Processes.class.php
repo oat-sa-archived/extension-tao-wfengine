@@ -31,39 +31,25 @@ class Processes extends Module
 			foreach ($variables as $key => $variable)
 			{
 				$name 			= $variable[0];
-				$widgetType		= $variable[1];
-				$propertyRange 	= $variable[2];
 				$propertyKey	= $key;
 
-				// OMG :D !
-				$val["PropertyRange"] = $variable[2];
-				$val["PropertyKey"] = $key;
 
-				// Euh what's happening :D ? Ask it to PPL.
-				// Utils::getRemoteKB($propertyRange);
-
-				include(GENERIS_BASE_PATH."/core/widgets/".urlencode($widgetType).".php");
-				$widget = str_replace("instanceCreation", "posted", $widget);
-
-				$processAuthoringData['variables'][] = array('name'		=> $name,
-														   	 'widget'	=> $widget);
+				$processAuthoringData['variables'][] = array('name'		=> $name,															
+															'key' => 	$key
+														   	 );
 			}
-			// View selection.
+		
+
 			$this->setData('processAuthoringData',$processAuthoringData);
 			$this->setView('process_authoring_old.tpl');
 
-//		}
-//		else
-//		{
-//			// Service mode is enabled so that this action is supported.
-//			UsersHelper::informServiceMode();
-//		}
+
 	}
 
 	public function add($posted)
 	{
 		ini_set('max_execution_time', 200);
-		var_dump($posted);
+
 		// This action is not available when running the service mode.
 		if (!SERVICE_MODE)
 		{
@@ -78,21 +64,23 @@ class Processes extends Module
 				UsersHelper::checkAuthentication();
 			}
 
-				
+
 
 			$processExecutionFactory = new ProcessExecutionFactory();
-
+			
 						
-			$processExecutionFactory->name = $posted["properties"][RDFS_LABEL][0];
+			$processExecutionFactory->name = $posted["variables"][RDFS_LABEL][0];
 			$processExecutionFactory->comment = 'Created ' . date(DATE_ISO8601);
 			
-			$processExecutionFactory->intervieweeUri = 'http://www.tao.lu/middleware/Interview.rdf#test2';
-
-
 			$processExecutionFactory->execution = urldecode($posted['executionOf']);
+			
+		
+			
+			$processExecutionFactory->variables = $posted["variables"];
+	
 			$newProcessExecution = $processExecutionFactory->create();
+			
 
-				
 			$newProcessExecution->feed();
 				
 			// We build the next url for view state. Two possibilities :
@@ -106,16 +94,18 @@ class Processes extends Module
 		}
 		else
 		{
-			$viewState = 'Main/index';
+			$viewState = 'Main/index';echo __FILE__.__LINE__;error_reporting(E_ALL);
 		}
-			
+			echo __FILE__.__LINE__;
 		$this->redirect($viewState);
 	}
 	else
 	{
 		// We are running in service mode so that this action is
 		// simply not available.
+		echo __FILE__.__LINE__;
 		UsersHelper::informServiceMode();
+		echo __FILE__.__LINE__;
 	}
 }
 

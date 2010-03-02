@@ -53,6 +53,7 @@ class ProcessBrowser extends Module
 			$variablesViewData[$var->name] = array('uri' 	=> $var->uri,
 												   'value' 	=> $var->value);
 		}
+
 		$this->setData('variablesViewData',$variablesViewData);
 		// consistency data.
 		$consistencyViewData = array();

@@ -41,7 +41,7 @@
 							<?php foreach ($processAuthoringData['variables'] as $var): ?>
 							<tr>
 								<td class="variable_name"><?php echo $var['name']; ?> :</td>
-								<td><?php echo $var['widget']; ?></td>
+								<td><input type="text" size="50" name="posted[variables][<?php echo $var['key']; ?>]" value=""/></td>
 							</tr>
 							<?php endforeach; ?>
 						</tbody>

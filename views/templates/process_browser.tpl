@@ -140,7 +140,6 @@
 
 			
 				<div id="tools">
-					
 					<iframe frameborder="0" id="tools" src="<?php echo $services[0]->getCallUrl($variablesViewData);  ?>"/></iframe>
 				</div>
 

@@ -138,16 +138,17 @@ extends WfResource
 		{
 			$activityIsInitialProp = new core_kernel_classes_Property(PROPERTY_ACTIVITIES_ISINITIAL);
 
-			$isInitial = $activity->getUniquePropertyValue($activityIsInitialProp);
 
-			if ($isInitial->uriResource == GENERIS_TRUE)
+			$isInitialCollection= $activity->getOnePropertyValue($activityIsInitialProp);
+		
+			if ($isInitialCollection!= null && $isInitialCollection->uriResource == GENERIS_TRUE)
 			{
 				$activityObject = new Activity($activity->uriResource);
 				$activityObject->getActors();
 				$returnValue[] =$activityObject;
 			}
 		}
-		
+
 		$this->rootActivities = $returnValue;
 		// section 10-13-1--31-740bb989:119ebfa9b28:-8000:0000000000000852 end
 

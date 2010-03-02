@@ -151,7 +151,7 @@ extends WfResource
 		}
 
 		// section 10-13-1--31-740bb989:119ebfa9b28:-8000:00000000000008EF end
-
+		
 		return (array) $returnValue;
 	}
 
