@@ -96,7 +96,7 @@ class GUIHelper
 	}
 	public static function buildStatusImageURI($strStatus)
 	{
-		$baseURI = $GLOBALS['dir_theme'] . 'img/status_';
+		$baseURI = 'img/status_';
 		$statusName = '';
 		
 		switch ($strStatus)
