@@ -126,7 +126,7 @@ class Main extends Module
 	
 		$availableProcessDefinition = $processClass->getInstances();
 		
-		var_dump($availableProcessDefinition);
+
 
 		$this->setData('availableProcessDefinition',$availableProcessDefinition);
 		$this->setData('processViewData',$processViewData);
