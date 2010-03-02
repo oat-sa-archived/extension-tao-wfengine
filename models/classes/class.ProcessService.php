@@ -32,7 +32,7 @@ require_once('tao/models/classes/class.Service.php');
  * @subpackage models_classes
  */
 class wfEngine_models_classes_ProcessService
-    extends tao_models_classes_Service
+    extends wfEngine_models_classes_ProcessAuthoringService
 {
     // --- ASSOCIATIONS ---
 
@@ -152,94 +152,6 @@ class wfEngine_models_classes_ProcessService
 
 
         return $returnValue;
-    }
-
-    /**
-     * Short description of method createGroupClass
-     *
-     * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
-     * @param  Class clazz
-     * @param  string label
-     * @param  array properties
-     * @return core_kernel_classes_Class
-     */
-    public function createGroupClass( core_kernel_classes_Class $clazz = null, $label = '', $properties = array())
-    {
-        $returnValue = null;
-
-        // section 127-0-1-1-5109b15:124a4877945:-8000:0000000000001B11 begin
-		
-		if(is_null($clazz)){
-			$clazz = $this->groupClass;
-		}
-		
-		if($this->isGroupClass($clazz)){
-		
-			$groupClass = $this->createSubClass($clazz, $label);
-			
-			foreach($properties as $propertyName => $propertyValue){
-				$myProperty = $groupClass->createProperty(
-					$propertyName,
-					$propertyName . ' ' . $label .' property created from ' . get_class($this) . ' the '. date('Y-m-d h:i:s') 
-				);
-				
-				//@todo implement check if there is a widget key and/or a range key
-			}
-			$returnValue = $groupClass;
-		}
-		
-        // section 127-0-1-1-5109b15:124a4877945:-8000:0000000000001B11 end
-
-        return $returnValue;
-    }
-
-    /**
-     * delete a group instance
-     *
-     * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
-     * @param  Resource group
-     * @return boolean
-     */
-    public function deleteProcess( core_kernel_classes_Resource $process)
-    {
-        $returnValue = (bool) false;
-
-        // section 10-13-1-45-792423e0:12398d13f24:-8000:0000000000001806 begin
-		
-		if(!is_null($process)){
-			$returnValue = $process->delete();
-		}
-		
-        // section 10-13-1-45-792423e0:12398d13f24:-8000:0000000000001806 end
-
-        return (bool) $returnValue;
-    }
-
-    /**
-     * delete a group class or sublcass
-     *
-     * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
-     * @param  Class clazz
-     * @return boolean
-     */
-    public function deleteGroupClass( core_kernel_classes_Class $clazz)
-    {
-        $returnValue = (bool) false;
-
-        // section 127-0-1-1-5109b15:124a4877945:-8000:0000000000001B0D begin
-		
-		if(!is_null($clazz)){
-			if($this->isGroupClass($clazz) && $clazz->uriResource != $this->groupClass->uriResource){
-				$returnValue = $clazz->delete();
-			}
-		}
-		
-        // section 127-0-1-1-5109b15:124a4877945:-8000:0000000000001B0D end
-
-        return (bool) $returnValue;
     }
 
     /**

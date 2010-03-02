@@ -114,29 +114,13 @@ class Process extends TaoModule {
 			}
 		}
 		
+		$this->setData('uri', tao_helpers_Uri::encode($process->uriResource));
+		$this->setData('classUri', tao_helpers_Uri::encode($clazz->uriResource));
 		$this->setData('formTitle', 'Edit process');
 		$this->setData('myForm', $myForm->render());
 		$this->setView('form_process.tpl');
 	}
-	
-	
-	/**
-	 * Add a group subclass
-	 * @return void
-	 */
-	public function addGroupClass(){
-		if(!tao_helpers_Request::isAjax()){
-			throw new Exception("wrong request mode");
-		}
-		$clazz = $this->service->createGroupClass($this->getCurrentClass());
-		if(!is_null($clazz) && $clazz instanceof core_kernel_classes_Class){
-			echo json_encode(array(
-				'label'	=> $clazz->getLabel(),
-				'uri' 	=> tao_helpers_Uri::encode($clazz->uriResource)
-			));
-		}
-	}
-	
+
 	/**
 	 * Delete a group or a group class
 	 * @return void
@@ -148,86 +132,28 @@ class Process extends TaoModule {
 		
 		$deleted = false;
 		if($this->getRequestParameter('uri')){
-			$deleted = $this->service->deleteGroup($this->getCurrentInstance());
+			$deleted = $this->service->deleteProcess($this->getCurrentInstance());
 		}
-		else{
-			$deleted = $this->service->deleteGroupClass($this->getCurrentClass());
-		}
+		// else{
+			// $deleted = $this->service->deleteGroupClass($this->getCurrentClass());
+		// }//no subclass available, therefore no delete action associated
 		
 		echo json_encode(array('deleted'	=> $deleted));
 	}
 	
-	
-	/**
-	 * Get the data to populate the tree of group's subjects
-	 * @return void
-	 */
-	public function getMembers(){
-		if(!tao_helpers_Request::isAjax()){
-			throw new Exception("wrong request mode");
+	public function authoring(){
+		$this->setData('error', false);
+		try{
+			//get process instance to be authored
+			// $processDefinition = new core_kernel_classes_Resource("http://127.0.0.1/middleware/demo.rdf#i1265636054002217401");		
+			$processDefinition = $this->getCurrentInstance();
+			$this->setData('processUri', tao_helpers_Uri::encode($processDefinition->uriResource));
 		}
-		
-		echo json_encode($this->service->toTree( new core_kernel_classes_Class(TAO_SUBJECT_CLASS), true, true, ''));
-	}
-	
-	/**
-	 * Save the group related subjects
-	 * @return void
-	 */
-	public function saveMembers(){
-		if(!tao_helpers_Request::isAjax()){
-			throw new Exception("wrong request mode");
+		catch(Exception $e){
+			$this->setData('error', true);
+			$this->setData('errorMessage', $e);
 		}
-		$saved = false;
-		
-		$members = array();
-		foreach($this->getRequestParameters() as $key => $value){
-			if(preg_match("/^instance_/", $key)){
-				array_push($members, tao_helpers_Uri::decode($value));
-			}
-		}
-		$group = $this->getCurrentInstance();
-		
-		if($this->service->setRelatedSubjects($group, $members)){
-			$saved = true;
-		}
-		echo json_encode(array('saved'	=> $saved));
-	}
-	
-	/**
-	 * Get the data to populate the tree of group's tests
-	 * @return void
-	 */
-	public function getTests(){
-		if(!tao_helpers_Request::isAjax()){
-			throw new Exception("wrong request mode");
-		}
-		
-		echo json_encode($this->service->toTree( new core_kernel_classes_Class(TAO_TEST_CLASS), true, true, ''));
-	}
-	
-	/**
-	 * Save the group related subjects
-	 * @return void
-	 */
-	public function saveTests(){
-		if(!tao_helpers_Request::isAjax()){
-			throw new Exception("wrong request mode");
-		}
-		$saved = false;
-		
-		$tests = array();
-		foreach($this->getRequestParameters() as $key => $value){
-			if(preg_match("/^instance_/", $key)){
-				array_push($tests, tao_helpers_Uri::decode($value));
-			}
-		}
-		$group = $this->getCurrentInstance();
-		
-		if($this->service->setRelatedTests($group, $tests)){
-			$saved = true;
-		}
-		echo json_encode(array('saved'	=> $saved));
+		$this->setView('process_authoring_tool.tpl');
 	}
 	
 	
