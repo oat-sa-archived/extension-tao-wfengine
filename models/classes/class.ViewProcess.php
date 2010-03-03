@@ -296,9 +296,9 @@ extends Process
 			if ($val[1]!="")
 			{
 				$svg.='
-				<rect x = "'.$x.'" y = "'.$y.'" rx = "12" ry = "12" width = "'.$swimlaneWidth.'" height = "99%" fill = "white" stroke = "#334477" stroke-width = "1"/>';
+				<rect x = "'.$x.'" y = "'.$y.'" rx = "12" ry = "12" width = "'.$swimlaneWidth.'" height = "99%" fill = "white" stroke = "#i334477" stroke-width = "1"/>';
 				$svg.='
-				<rect x = "'.$x.'" y = "'.$y.'"  rx = "12" ry = "12" width = "'.$swimlaneWidth.'" height = "50" fill = "url(#orange_red)" stroke = "#334477" stroke-width = "1"/>';
+				<rect x = "'.$x.'" y = "'.$y.'"  rx = "12" ry = "12" width = "'.$swimlaneWidth.'" height = "50" fill = "url(#orange_red)" stroke = "#i334477" stroke-width = "1"/>';
 
 				$WindowTitle = trim(html_entity_decode(strip_tags($val[1])));
 				$WindowId = str_replace(" ","",$WindowTitle);
@@ -314,7 +314,7 @@ extends Process
 
 				if ($this->editMode)
 				{
-					$uriclassActor="#118588820437156";
+					$uriclassActor="#i118588820437156";
 					$WindowTitle = str_replace(" ","",trim(html_entity_decode(strip_tags("Edit ".$val[1]))));
 					$WindowId = str_replace(" ","",$WindowTitle);
 
@@ -328,7 +328,7 @@ extends Process
 						';
 					$svg.='</a>';
 
-					$uriclassActor="#118588820437156";
+					$uriclassActor="#i118588820437156";
 
 					$WindowTitle = str_replace(" ","",trim(html_entity_decode(strip_tags("Remove".$val[1]))));
 					$WindowId = str_replace(" ","",$WindowTitle);
@@ -344,7 +344,7 @@ extends Process
 					$svg.='</a>';
 
 
-					$uriclassActivity="#118588757437650";
+					$uriclassActivity="#i118588757437650";
 					$WindowTitle = str_replace(" ","",trim(html_entity_decode(strip_tags("instanciate".str_replace("#","",$uriclassActivity)))));
 					$WindowId = str_replace(" ","",$WindowTitle);
 					$xlink='
@@ -367,7 +367,7 @@ extends Process
 		$returnValue=$svg;
 		if ($this->editMode)
 		{
-			$uriclassActor="#118588820437156";
+			$uriclassActor="#i118588820437156";
 
 			$WindowTitle = str_replace(" ","",trim(html_entity_decode(strip_tags("Create  a new actor in".$val[1]))));
 			$WindowId = str_replace(" ","",$WindowTitle);
@@ -749,7 +749,7 @@ extends Process
 					break;
 				}
 				//join
-			case "http://10.13.1.225/middleware/taoqual.rdf#11858924147584":
+			case "http://10.13.1.225/middleware/taoqual.rdf#i11858924147584":
 				{
 					if (!(isset($this->space["connector_location"][$connector->uri])))
 					{

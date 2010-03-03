@@ -19,7 +19,7 @@ class ProcessExecutionTestCase extends UnitTestCase{
 		core_kernel_classes_ApiModelOO::singleton()->logIn(LOGIN,md5(PASS),DATABASE_NAME,true);
 		$factory = new ProcessExecutionFactory();
 		$factory->name = 'Test Process Execution';
-		$factory->execution = 'http://www.tao.lu/middleware/Interview.rdf#126537966613798';
+		$factory->execution = 'http://www.tao.lu/middleware/Interview.rdf#i126537966613798';
 		
 		
 		$factory->ownerUri = LOGIN;
