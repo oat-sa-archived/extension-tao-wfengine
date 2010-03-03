@@ -29,7 +29,7 @@ class UsersHelper
 	{
 		$WfEngine 			= WfEngine::singleton();
 		$user 				= $WfEngine->getUser();
-		var_dump($user);
+
 		// username.
 		$data['username'] 	= $user->userName;
 
