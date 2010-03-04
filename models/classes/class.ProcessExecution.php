@@ -678,7 +678,7 @@ extends WfResource
 
 		if ($evaluationResult)	{
 
-			// Prochaines activités = THEN
+			// Prochaines activitï¿½s = THEN
 
 			if ($transitionRule->thenActivity instanceof Activity)
 			{
@@ -694,7 +694,7 @@ extends WfResource
 		}
 		else
 		{
-			// Prochaines activités = ELSE
+			// Prochaines activitï¿½s = ELSE
 			if ($transitionRule->elseActivity instanceof Activity)
 			{
 				$newActivities[] = $transitionRule->elseActivity;
@@ -970,13 +970,13 @@ extends WfResource
 		$currentTokenProp =	new core_kernel_classes_Property(CURRENT_TOKEN);
 		$this->resource->removePropertyValues($currentTokenProp);
 
-		$exitCodeProp = new core_kernel_classes_Property(PROPERTY_PROCESSINSTANCE_EXITCODE);
-		$this->resource->setPropertyValue($exitCodeProp, RESOURCE_EXITCODE_ALL_COVERED);
-
-		// -- Action code handling.
-		$actionCodeProp = new core_kernel_classes_Property(PROPERTY_PROCESSINSTANCE_ACTIONCODE);
-		$this->resource->removePropertyValues($actionCodeProp);
-		$this->resource->setPropertyValue($actionCodeProp,'');
+//		$exitCodeProp = new core_kernel_classes_Property(PROPERTY_PROCESSINSTANCE_EXITCODE);
+//		$this->resource->setPropertyValue($exitCodeProp, RESOURCE_EXITCODE_ALL_COVERED);
+//
+//		// -- Action code handling.
+//		$actionCodeProp = new core_kernel_classes_Property(PROPERTY_PROCESSINSTANCE_ACTIONCODE);
+//		$this->resource->removePropertyValues($actionCodeProp);
+//		$this->resource->setPropertyValue($actionCodeProp,'');
 
 
 		// section 10-13-1-85-19c5934a:11cae6d4e92:-8000:0000000000000A28 end
