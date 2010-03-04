@@ -22,7 +22,7 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 --
 
 INSERT INTO `extensions` (`id`, `name`, `version`, `loaded`, `loadAtStartUp`) VALUES
-('WorkflowEngine', 'Workflow Engine Extension', '1.0', 1, 1);
+('wfEngine', 'Workflow Engine Extension', '1.0', 1, 1);
 
 
 --
@@ -434,12 +434,6 @@ INSERT INTO `statements` (`modelID`, `subject`, `predicate`, `object`, `l_langua
 (15, 'http://www.tao.lu/middleware/taoqual.rdf#i124326462812324', 'http://www.w3.org/1999/02/22-rdf-syntax-ns#value', '', 'EN', 'generis', 'yyy[admin,administrators,authors]', 'yyy[admin,administrators,authors]', 'yyy[admin,administrators,authors]'),
 (15, 'http://www.tao.lu/middleware/taoqual.rdf#i122207070428322', 'http://www.w3.org/2000/01/rdf-schema#range', 'http://www.tao.lu/middleware/taoqual.rdf#i118588757437650', '', 'taoqual', 'yyy[admin,administrators,authors]', 'yyy[admin,administrators,authors]', 'yyy[admin,administrators,authors]'),
 (15, 'http://www.tao.lu/middleware/taoqual.rdf#i118589252058280', 'http://www.w3.org/2000/01/rdf-schema#range', 'http://www.tao.lu/middleware/taoqual.rdf#i12429950482224', '', 'taoqual', 'yy-[admin,administrators,authors]', 'yy-[admin,administrators,authors]', 'yy-[admin,administrators,authors]'),
-(15, 'http://www.tao.lu/middleware/taoqual.rdf#i1246279182028411900', 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type', 'http://www.tao.lu/middleware/taoqual.rdf#i118589088163970', '', 'taoqual', 'yy-[admin,administrators,authors]', 'yy-[admin,administrators,authors]', 'yy-[admin,administrators,authors]'),
-(15, 'http://www.tao.lu/middleware/taoqual.rdf#i1246279182028411900', 'http://www.w3.org/1999/02/22-rdf-syntax-ns#value', '', 'EN', 'taoqual', 'yy-[admin,administrators,authors]', 'yy-[admin,administrators,authors]', 'yy-[admin,administrators,authors]'),
-(15, 'http://www.tao.lu/middleware/taoqual.rdf#i1246279182028411900', 'http://www.w3.org/2000/01/rdf-schema#comment', '&nbsp;', 'EN', 'taoqual', 'yy-[admin,administrators,authors]', 'yy-[admin,administrators,authors]', 'yy-[admin,administrators,authors]'),
-(15, 'http://www.tao.lu/middleware/taoqual.rdf#i1246279182028411900', 'http://www.w3.org/2000/01/rdf-schema#label', '\r\nList_Up', 'EN', 'taoqual', 'yy-[admin,administrators,authors]', 'yy-[admin,administrators,authors]', 'yy-[admin,administrators,authors]'),
-(15, 'http://www.tao.lu/middleware/taoqual.rdf#i1246279182028411900', 'http://www.w3.org/2000/01/rdf-schema#seeAlso', '', 'EN', 'taoqual', 'yy-[admin,administrators,authors]', 'yy-[admin,administrators,authors]', 'yy-[admin,administrators,authors]'),
-(15, 'http://www.tao.lu/middleware/taoqual.rdf#i1246279182028411900', 'http://www.w3.org/2000/01/rdf-schema#isDefinedBy', ' ', 'EN', 'taoqual', 'yy-[admin,administrators,authors]', 'yy-[admin,administrators,authors]', 'yy-[admin,administrators,authors]'),
 (15, 'http://www.tao.lu/middleware/taoqual.rdf#i12445408585808', 'http://www.w3.org/1999/02/22-rdf-syntax-ns#value', '', 'EN', 'generis', 'yyy[admin,administrators,authors]', 'yyy[admin,administrators,authors]', 'yyy[admin,administrators,authors]'),
 (15, 'http://www.tao.lu/middleware/taoqual.rdf#i12445408585808', 'http://www.tao.lu/middleware/Interview.rdf#i122786657224088', 'http://www.tao.lu/middleware/taoqual.rdf#i1207061000021883700', 'EN', 'generis', 'yyy[admin,administrators,authors]', 'yyy[admin,administrators,authors]', 'yyy[admin,administrators,authors]'),
 (15, 'http://www.tao.lu/middleware/taoqual.rdf#i12445408585808', 'http://www.tao.lu/middleware/Interview.rdf#i122786668726350', 'http://www.tao.lu/middleware/taoqual.rdf#i1207061000021883700', 'EN', 'generis', 'yyy[admin,administrators,authors]', 'yyy[admin,administrators,authors]', 'yyy[admin,administrators,authors]'),
@@ -1244,12 +1238,6 @@ INSERT INTO `statements` (`modelID`, `subject`, `predicate`, `object`, `l_langua
 (15, 'http://www.tao.lu/middleware/taoqual.rdf#i118589243226718', 'http://www.w3.org/2000/01/rdf-schema#comment', '&nbsp;', 'EN', 'taoqual', 'yy-[admin,administrators,authors]', 'yy-[admin,administrators,authors]', 'yy-[admin,administrators,authors]'),
 (15, 'http://www.tao.lu/middleware/taoqual.rdf#i118589243226718', 'http://www.w3.org/1999/02/22-rdf-syntax-ns#value', '', 'EN', 'taoqual', 'yy-[admin,administrators,authors]', 'yy-[admin,administrators,authors]', 'yy-[admin,administrators,authors]'),
 (15, 'http://www.tao.lu/middleware/taoqual.rdf#i118589243226718', 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type', 'http://www.tao.lu/middleware/taoqual.rdf#i118589088163970', '', 'taoqual', 'yy-[admin,administrators,authors]', 'yy-[admin,administrators,authors]', 'yy-[admin,administrators,authors]'),
-(15, 'http://www.tao.lu/middleware/taoqual.rdf#i11858924147584', 'http://www.w3.org/2000/01/rdf-schema#isDefinedBy', ' ', 'EN', 'taoqual', 'yy-[admin,administrators,authors]', 'yy-[admin,administrators,authors]', 'yy-[admin,administrators,authors]'),
-(15, 'http://www.tao.lu/middleware/taoqual.rdf#i11858924147584', 'http://www.w3.org/2000/01/rdf-schema#seeAlso', '', 'EN', 'taoqual', 'yy-[admin,administrators,authors]', 'yy-[admin,administrators,authors]', 'yy-[admin,administrators,authors]'),
-(15, 'http://www.tao.lu/middleware/taoqual.rdf#i11858924147584', 'http://www.w3.org/2000/01/rdf-schema#label', 'List', 'EN', 'taoqual', 'yy-[admin,administrators,authors]', 'yy-[admin,administrators,authors]', 'yy-[admin,administrators,authors]'),
-(15, 'http://www.tao.lu/middleware/taoqual.rdf#i11858924147584', 'http://www.w3.org/2000/01/rdf-schema#comment', '&nbsp;', 'EN', 'taoqual', 'yy-[admin,administrators,authors]', 'yy-[admin,administrators,authors]', 'yy-[admin,administrators,authors]'),
-(15, 'http://www.tao.lu/middleware/taoqual.rdf#i11858924147584', 'http://www.w3.org/1999/02/22-rdf-syntax-ns#value', '', 'EN', 'taoqual', 'yy-[admin,administrators,authors]', 'yy-[admin,administrators,authors]', 'yy-[admin,administrators,authors]'),
-(15, 'http://www.tao.lu/middleware/taoqual.rdf#i11858924147584', 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type', 'http://www.tao.lu/middleware/taoqual.rdf#i118589088163970', '', 'taoqual', 'yy-[admin,administrators,authors]', 'yy-[admin,administrators,authors]', 'yy-[admin,administrators,authors]'),
 (15, 'http://www.tao.lu/middleware/taoqual.rdf#i118589220353990', 'http://www.w3.org/2000/01/rdf-schema#isDefinedBy', ' ', 'EN', 'taoqual', 'yy-[admin,administrators,authors]', 'yy-[admin,administrators,authors]', 'yy-[admin,administrators,authors]'),
 (15, 'http://www.tao.lu/middleware/taoqual.rdf#i118589220353990', 'http://www.w3.org/2000/01/rdf-schema#seeAlso', '', 'EN', 'taoqual', 'yy-[admin,administrators,authors]', 'yy-[admin,administrators,authors]', 'yy-[admin,administrators,authors]'),
 (15, 'http://www.tao.lu/middleware/taoqual.rdf#i118589220353990', 'http://www.w3.org/2000/01/rdf-schema#label', 'Split\r\n', 'EN', 'taoqual', 'yy-[admin,administrators,authors]', 'yy-[admin,administrators,authors]', 'yy-[admin,administrators,authors]'),
