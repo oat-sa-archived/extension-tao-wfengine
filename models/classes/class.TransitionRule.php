@@ -1,6 +1,6 @@
 <?php
 
-class TransitionRule extends core_kernel_classes_Rule
+class TransitionRule extends core_kernel_events_Rule
 {
 	public $thenActivity = null;
 	public $elseActivity = null;

@@ -309,7 +309,7 @@ class wfEngine_models_classes_ProcessAuthoringService
 		
 		$returnValue = false;
 		
-		$apiModel = core_kernel_classes_ApiModelOO::singleton();
+		$apiModel = core_kernel_impl_ApiModelOO::singleton();
 		
 		//delete the activity reference in the process instance.
 		$processCollection = $apiModel->getSubject(PROPERTY_PROCESS_ACTIVITIES , $activity->uriResource);
@@ -394,7 +394,7 @@ class wfEngine_models_classes_ProcessAuthoringService
 		$previousActivityCollection = $connector->getPropertyValuesCollection(new core_kernel_classes_Property(PROPERTY_CONNECTORS_PRECACTIVITIES));
 		foreach($previousActivityCollection->getIterator() as $previousActivity){
 			if($this->isConnector($previousActivity)){
-				core_kernel_classes_ApiModelOO::singleton()->removeStatement($previousActivity->uriResource, PROPERTY_CONNECTORS_NEXTACTIVITIES, $connector->uriResource, '');
+				core_kernel_impl_ApiModelOO::singleton()->removeStatement($previousActivity->uriResource, PROPERTY_CONNECTORS_NEXTACTIVITIES, $connector->uriResource, '');
 			}
 		}
 		
@@ -421,7 +421,7 @@ class wfEngine_models_classes_ProcessAuthoringService
 		
 		$returnValue = false;
 		
-		$apiModel = core_kernel_classes_ApiModelOO::singleton();
+		$apiModel = core_kernel_impl_ApiModelOO::singleton();
 		
 		$subjectCollection = $apiModel->getSubject($property->uriResource, $object->uriResource);
 		if(!$subjectCollection->isEmpty()){
@@ -531,7 +531,7 @@ class wfEngine_models_classes_ProcessAuthoringService
 		if(is_null($followingActivity)){
 			//get the process associate to the connector to create a new instance of activity
 			$relatedActivity = $connector->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_ACTIVITYREFERENCE));
-			$processCollection = core_kernel_classes_ApiModelOO::getSubject(PROPERTY_PROCESS_ACTIVITIES, $relatedActivity->uriResource);
+			$processCollection = core_kernel_impl_ApiModelOO::getSubject(PROPERTY_PROCESS_ACTIVITIES, $relatedActivity->uriResource);
 			if(!$processCollection->isEmpty()){
 				$followingActivity = $this->createActivity($processCollection->get(0), $newActivityLabel);
 				$newConnector = $this->createConnector($followingActivity);
@@ -626,7 +626,7 @@ class wfEngine_models_classes_ProcessAuthoringService
 			}else{
 				//get the process associate to the connector to create a new instance of activity
 				$relatedActivity = $connector->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_ACTIVITYREFERENCE));
-				$processCollection = core_kernel_classes_ApiModelOO::getSubject(PROPERTY_PROCESS_ACTIVITIES, $relatedActivity->uriResource);
+				$processCollection = core_kernel_impl_ApiModelOO::getSubject(PROPERTY_PROCESS_ACTIVITIES, $relatedActivity->uriResource);
 				if(!$processCollection->isEmpty()){
 					$followingActivity = $this->createActivity($processCollection->get(0), $newActivityLabel);
 					$newConnector = $this->createConnector($followingActivity);
@@ -710,7 +710,7 @@ class wfEngine_models_classes_ProcessAuthoringService
 		
 		if(in_array('prev',$option)){
 		
-			$previousConnectorsCollection=core_kernel_classes_ApiModelOO::singleton()->getSubject(PROPERTY_CONNECTORS_NEXTACTIVITIES, $activity->uriResource);
+			$previousConnectorsCollection=core_kernel_impl_ApiModelOO::singleton()->getSubject(PROPERTY_CONNECTORS_NEXTACTIVITIES, $activity->uriResource);
 		
 			foreach ($previousConnectorsCollection->getIterator() as $connector){
 				if(!is_null($connector)){
@@ -723,7 +723,7 @@ class wfEngine_models_classes_ProcessAuthoringService
 		
 		if(in_array('next',$option)){
 		
-			$followingConnectorsCollection=core_kernel_classes_ApiModelOO::singleton()->getSubject(PROPERTY_CONNECTORS_PRECACTIVITIES, $activity->uriResource);
+			$followingConnectorsCollection=core_kernel_impl_ApiModelOO::singleton()->getSubject(PROPERTY_CONNECTORS_PRECACTIVITIES, $activity->uriResource);
 		
 			foreach ($followingConnectorsCollection->getIterator() as $connector){
 				if(!is_null($connector)){
@@ -745,7 +745,7 @@ class wfEngine_models_classes_ProcessAuthoringService
 	public static function isActivity(core_kernel_classes_Resource $resource){
 		$returnValue = false;
 		
-		$activityType = core_kernel_classes_ApiModelOO::singleton()->getObject($resource->uriResource, RDF_TYPE);
+		$activityType = core_kernel_impl_ApiModelOO::singleton()->getObject($resource->uriResource, RDF_TYPE);
 		if($activityType->count()>0){
 			if($activityType->get(0) instanceof core_kernel_classes_Resource){//should be a generis class
 				if( $activityType->get(0)->uriResource == CLASS_ACTIVITIES){
@@ -760,7 +760,7 @@ class wfEngine_models_classes_ProcessAuthoringService
 	public static function isConnector(core_kernel_classes_Resource $resource){
 		$returnValue = false;
 		
-		$activityType = core_kernel_classes_ApiModelOO::singleton()->getObject($resource->uriResource, RDF_TYPE);
+		$activityType = core_kernel_impl_ApiModelOO::singleton()->getObject($resource->uriResource, RDF_TYPE);
 		if($activityType->count()>0){
 			if($activityType->get(0) instanceof core_kernel_classes_Resource){
 				if( $activityType->get(0)->uriResource == CLASS_CONNECTORS){
@@ -775,7 +775,7 @@ class wfEngine_models_classes_ProcessAuthoringService
 	public function getProcessVariable($code){
 		$returnValue = null;
 		
-		$processVarCollection = core_kernel_classes_ApiModelOO::singleton()->getSubject(PROPERTY_CODE, $code);
+		$processVarCollection = core_kernel_impl_ApiModelOO::singleton()->getSubject(PROPERTY_CODE, $code);
 		if(!$processVarCollection->isEmpty()){
 			$returnValue = $processVarCollection->get(0);
 		}

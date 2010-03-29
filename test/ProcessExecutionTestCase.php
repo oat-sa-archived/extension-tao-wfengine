@@ -16,7 +16,7 @@ class ProcessExecutionTestCase extends UnitTestCase{
 	protected $proc;
 	
 	public function setUp(){
-		core_kernel_classes_ApiModelOO::singleton()->logIn(LOGIN,md5(PASS),DATABASE_NAME,true);
+		core_kernel_impl_ApiModelOO::singleton()->logIn(LOGIN,md5(PASS),DATABASE_NAME,true);
 		$factory = new ProcessExecutionFactory();
 		$factory->name = 'Test Process Execution';
 		$factory->execution = 'http://www.tao.lu/middleware/Interview.rdf#i126537966613798';

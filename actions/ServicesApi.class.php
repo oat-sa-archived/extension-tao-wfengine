@@ -13,7 +13,7 @@ class ServiceApi extends Module
 			$processUri = $_SESSION["processUri"];
 			$process = new core_kernel_classes_Resource($processUri);
 			foreach($variable as $k=>$v) {
-				$collection = core_kernel_classes_ApiModelOO::singleton()->getSubject(PROPERTY_CODE,$k);
+				$collection = core_kernel_impl_ApiModelOO::singleton()->getSubject(PROPERTY_CODE,$k);
 				if(!$collection->isEmpty()){
 					if($collection->count() == 1) {
 						$property = core_kernel_classes_Property($collection->get(0)->uriResource);

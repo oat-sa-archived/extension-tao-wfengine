@@ -838,7 +838,7 @@ extends WfResource
 	 */
 	private function getNextConnectorsUri($uri){
 
-		$connectorsCollection = core_kernel_classes_ApiModelOO::singleton()->getSubject(PREC_ACTIVITIES,$uri);
+		$connectorsCollection = core_kernel_impl_ApiModelOO::singleton()->getSubject(PREC_ACTIVITIES,$uri);
 
 		$connectorsUri = array();
 		foreach ($connectorsCollection->getIterator() as $statement){
@@ -861,7 +861,7 @@ extends WfResource
 		$returnValue = array();
 
 		// section 10-13-1-85--3c82cee5:11bb0c5945c:-8000:00000000000009AB begin
-		$nextConnectorsCollection = core_kernel_classes_ApiModelOO::singleton()->getSubject(PREC_ACTIVITIES,$this->currentActivity[0]->uri);
+		$nextConnectorsCollection = core_kernel_impl_ApiModelOO::singleton()->getSubject(PREC_ACTIVITIES,$this->currentActivity[0]->uri);
 
 		$connectors = array();
 

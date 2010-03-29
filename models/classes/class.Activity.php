@@ -186,7 +186,7 @@ extends WfResource
 		// section -64--88-1-64--7117f567:11a0527df60:-8000:00000000000008F4 begin
 
 		// We get the next connectors.
-		$nextConnectors = core_kernel_classes_ApiModelOO::singleton()->getSubject(PROPERTY_CONNECTORS_PRECACTIVITIES,$this->uri);
+		$nextConnectors = core_kernel_impl_ApiModelOO::singleton()->getSubject(PROPERTY_CONNECTORS_PRECACTIVITIES,$this->uri);
 //		echo __FILE__.__LINE__;var_dump($nextConnectors);
 		$connectors =array();
 		foreach ($nextConnectors->getIterator() as $resource)
@@ -376,7 +376,7 @@ extends WfResource
 
 		// section 10-13-1-85-16731180:11be4127421:-8000:0000000000000A07 begin
 
-		$nextActivitiesCollection = core_kernel_classes_ApiModelOO::singleton()->getSubject(PREC_ACTIVITIES,$this->uri);
+		$nextActivitiesCollection = core_kernel_impl_ApiModelOO::singleton()->getSubject(PREC_ACTIVITIES,$this->uri);
 		
 		$returnValue = $nextActivitiesCollection=== null;
 		// section 10-13-1-85-16731180:11be4127421:-8000:0000000000000A07 end
