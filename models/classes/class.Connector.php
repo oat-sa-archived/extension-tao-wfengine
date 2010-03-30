@@ -127,7 +127,7 @@ class Connector
 		{
 			$typeProp = new core_kernel_classes_Property(RDF_TYPE);
 
-			$isAConnector = $val->getUniquePropertyValues($typeProp);
+			$isAConnector = $val->getUniquePropertyValue($typeProp);
 			
 			if ($isAConnector->uriResource == CLASS_ACTIVITIES)
 			{
