@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE extension SYSTEM "../../tao/doc/structure.dtd">
 <extension name="Process" url="/wfEngine/Process/index" level="6">
 	<sections>
 		<section id="manage_process" name="Manage Process" url="/wfEngine/Process/index">

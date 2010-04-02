@@ -8,7 +8,7 @@ class ServiceApi extends Module
 	 * @param $variable
 	 * @return true
 	 */
-	public function save($variable){
+	public static function save($variable){
 		if(isset($_SESSION["processUri"])){
 			$processUri = $_SESSION["processUri"];
 			$process = new core_kernel_classes_Resource($processUri);
