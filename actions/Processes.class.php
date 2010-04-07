@@ -7,7 +7,9 @@ class Processes extends Module
 		// the service mode !
 
 			$processDefinitionUri = urldecode($processDefinitionUri);
-			UsersHelper::checkAuthentication();
+				if(!UsersHelper::checkAuthentication()) {
+				$this->redirect('Authentication/index');
+			}
 
 				
 			$wfEngine 			= $_SESSION["WfEngine"];
@@ -50,19 +52,12 @@ class Processes extends Module
 	{
 		ini_set('max_execution_time', 200);
 
-		// This action is not available when running the service mode.
-		if (!SERVICE_MODE)
-		{
-			//TODO UGLY but not my fault. NOTE JBO: Forgiven.
 
-			if (isset($posted['login']) && isset($posted['pwd']))
-			{
-				UsersHelper::authenticate($posted['login'],$posted['pwd']);
+			
+			if(!UsersHelper::checkAuthentication()) {
+				$this->redirect('Authentication/index');
 			}
-			else
-			{
-				UsersHelper::checkAuthentication();
-			}
+			
 
 
 
@@ -98,15 +93,7 @@ class Processes extends Module
 		}
 			echo __FILE__.__LINE__;
 		$this->redirect($viewState);
-	}
-	else
-	{
-		// We are running in service mode so that this action is
-		// simply not available.
-		echo __FILE__.__LINE__;
-		UsersHelper::informServiceMode();
-		echo __FILE__.__LINE__;
-	}
+
 }
 
 protected static function compareCaseFile($a, $b)

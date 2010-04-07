@@ -19,12 +19,12 @@ class Authentication extends Module
 		$indexViewData = array();
 		$indexViewData['route'] = false;
 
-		if (isset($_GET['from']) && isset($_GET['fromQuery']))
-		{
-			$indexViewData['route']			= true;
-			$indexViewData['from'] 			= $_GET['from'];
-			$indexViewData['fromQuery'] 	= $_GET['fromQuery'];
-		}
+//		if (isset($_GET['from']) && isset($_GET['fromQuery']))
+//		{
+//			$indexViewData['route']			= true;
+//			$indexViewData['from'] 			= $_GET['from'];
+//			$indexViewData['fromQuery'] 	= $_GET['fromQuery'];
+//		}
 		$this->setData('indexViewData',$indexViewData);
 		$this->setView('login.tpl');
 	}
@@ -32,25 +32,27 @@ class Authentication extends Module
 	public function login($in_login, $in_password)
 	{
 		// We connect to generis.
+		echo __FILE__.__LINE__;
 		if (UsersHelper::authenticate($in_login,$in_password))
 		{
 			// If we are here, the login process succeeded. So we redirect the user
 			// to the UserFrontend main web form or to the location specified
 			// by the 'from' and 'fromQuery' parameters.
-			
+
 			if (isset($_POST['route']) && $_POST['route'] == 'true') {
 				$this->redirect($_POST['from'] . $_POST['fromQuery']);
 			}
 			else{
-				$this->redirect('Main/index');
+				$this->redirect('../Main/index');
 			}
 
 		}
 		else
 		{
 			// The user has to provide valid indentification information.
-			$this->redirect('authentication/index');
+			$this->redirect('../Authentication/index');
 		}
+		echo __FILE__.__LINE__;
 	}
 
 	public function logout()
@@ -63,7 +65,7 @@ class Authentication extends Module
 		// Finally, destroy the session.
 		session_destroy();
 
-		$this->redirect('authentication/index');
+		$this->redirect('../Authentication/index');
 	}
 }
 ?>

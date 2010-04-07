@@ -14,7 +14,7 @@
 		</ul>
 		<div id="content">
 			<div id="business">
-				<form id="login_form" method="post" action=".<?php echo BASE_URL;?>/authentication/login">
+				<form id="login_form" method="post" action="../Authentication/login">
 					<?php if ($indexViewData['route']): ?>
 					<input name="route" type="hidden" value="true"/>
 					<input name="from" type="hidden" value="<?php echo $indexViewData['from']; ?>"/>

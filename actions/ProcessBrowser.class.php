@@ -4,7 +4,9 @@ class ProcessBrowser extends Module
 	public function index($processUri)
 	{
 		$_SESSION["processUri"]= $processUri;
-		UsersHelper::checkAuthentication();
+		if(!UsersHelper::checkAuthentication()) {
+				$this->redirect('Authentication/index');
+		}
 
 		$processUri 		= urldecode($processUri); // parameters clean-up.
 		$this->setData('processUri',$processUri);
@@ -134,7 +136,9 @@ class ProcessBrowser extends Module
 
 	public function back($processUri)
 	{
-		UsersHelper::checkAuthentication();
+		if(!UsersHelper::checkAuthentication()) {
+				$this->redirect('Authentication/index');
+		}
 
 		$processUri 	= urldecode($processUri);
 		$processExecution = new ProcessExecution($processUri);
@@ -155,7 +159,9 @@ class ProcessBrowser extends Module
 
 	public function next($processUri, $ignoreConsistency = 'false')
 	{
-		UsersHelper::checkAuthentication();
+			if(!UsersHelper::checkAuthentication()) {
+				$this->redirect('Authentication/index');
+			}
 	
 	
 	
@@ -208,7 +214,9 @@ class ProcessBrowser extends Module
 
 	public function pause($processUri)
 	{
-		UsersHelper::checkAuthentication();
+		if(!UsersHelper::checkAuthentication()) {
+				$this->redirect('Authentication/index');
+		}
 
 		$processUri 	= urldecode($processUri);
 		$processExecution = new ProcessExecution($processUri);
@@ -220,7 +228,9 @@ class ProcessBrowser extends Module
 
 	public function jumpBack($processUri, $activityUri, $testing="",$ignoreHidden=false)
 	{
-		UsersHelper::checkAuthentication();
+		if(!UsersHelper::checkAuthentication()) {
+				$this->redirect('Authentication/index');
+		}
 
 		$processUri = urldecode($processUri);
 		$activityUri = urldecode($activityUri);
@@ -246,7 +256,9 @@ class ProcessBrowser extends Module
 
 	public function breakOff($processUri)
 	{
-		UsersHelper::checkAuthentication();
+				if(!UsersHelper::checkAuthentication()) {
+				$this->redirect('Authentication/index');
+			}
 		PiaacDataHolder::build($processUri);
 
 		$processUri = urldecode($processUri);
@@ -261,7 +273,9 @@ class ProcessBrowser extends Module
 
 	public function jumpLast($processUri)
 	{
-		UsersHelper::checkAuthentication();
+				if(!UsersHelper::checkAuthentication()) {
+				$this->redirect('Authentication/index');
+			}
 		PiaacDataHolder::build($processUri);
 
 		$processUri = urldecode($processUri);

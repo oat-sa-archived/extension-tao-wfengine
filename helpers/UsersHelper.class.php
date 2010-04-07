@@ -6,7 +6,7 @@ class UsersHelper
 
 		
 		// New API Connection.
-		core_control_FrontController::connect($in_login,md5($in_password), DATABASE_NAME);
+		core_control_FrontController::connect(API_LOGIN,API_PASSWORD, DATABASE_NAME);
 
 
 		$_SESSION["WfEngine"] 		= WfEngine::singleton($in_login, $in_password);
@@ -83,34 +83,14 @@ class UsersHelper
 
 	public static function checkAuthentication()
 	{
+		core_control_FrontController::connect(API_LOGIN,API_PASSWORD, DATABASE_NAME);
 		if (!isset($_SESSION['taoqual.authenticated']))
 		{	
-			self::authenticationRouting();
+			return false;
 		}
-		
+		return true;
 	}
 
-	public static function authenticationRouting()
-	{
-		$context = Context::getInstance();
-		$fromModule = $context->getModuleName();
-		$fromAction= $context->getActionName();
-		//		$currentHttpRequest = new HttpRequest();
-		//		$fromModule = $currentHttpRequest->getModule();
-		//		$fromAction = $currentHttpRequest->getAction();
-
-		// From contain the url encoded module and action.
-		$fromLoc = urlencode($fromModule . '/' . $fromAction);
-
-		// Params will contain the url encoded current query string.
-		$query = urlencode('?' . $_SERVER['QUERY_STRING']);
-
-		$flow = new FlowController();
-		$flow->redirect("authentication/index?from=${fromLoc}&fromQuery=${query}");
-
-		//		AdvancedFC::redirection("authentication/index?from=${fromLoc}&fromQuery=${query}");
-
-	}
 
 	public static function informServiceMode()
 	{

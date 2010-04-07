@@ -197,12 +197,14 @@ class WfEngine
 			//$users  = search($this->sessionGeneris, array(PROPERTY_USER_LOGIN,$this->login),array(),false);
 
 			$db = core_kernel_classes_DbWrapper::singleton(DATABASE_NAME);
-			
+			$db->dbConnector->debug= true;
 			$query = "SELECT subject FROM `statements` WHERE predicate='".PROPERTY_USER_LOGIN."' AND object ='".$this->login."' ";
 			$result = $db->execSql($query);
 			if(isset($result->fields["subject"])){
 				$this->user = new WfUser($result->fields["subject"],$this->login);
 			}
+			$db->dbConnector->debug= false;
+			
 		}
 
 		$returnValue = $this->user;
