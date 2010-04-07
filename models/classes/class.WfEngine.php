@@ -203,6 +203,7 @@ class WfEngine
 				$this->user = new WfUser($result->fields["subject"],$this->login);
 			}
 			
+			
 		}
 
 		$returnValue = $this->user;

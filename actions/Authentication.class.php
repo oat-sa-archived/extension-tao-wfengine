@@ -32,7 +32,7 @@ class Authentication extends Module
 	public function login($in_login, $in_password)
 	{
 		// We connect to generis.
-		echo __FILE__.__LINE__;
+
 		if (UsersHelper::authenticate($in_login,$in_password))
 		{
 			// If we are here, the login process succeeded. So we redirect the user

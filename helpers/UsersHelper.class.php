@@ -4,13 +4,17 @@ class UsersHelper
 
 	public static function authenticate($in_login, $in_password){
 
-		
+
 		// New API Connection.
 		core_control_FrontController::connect(API_LOGIN,API_PASSWORD, DATABASE_NAME);
 
-
 		$_SESSION["WfEngine"] 		= WfEngine::singleton($in_login, $in_password);
-		$_SESSION["userObject"] 	= WfEngine::singleton()->getUser();
+		$user = WfEngine::singleton()->getUser();
+		if($user == null) {
+			return false;
+		}
+		
+		$_SESSION["userObject"] 	= $user;
 		core_kernel_classes_Session::singleton()->setLg("EN");
 			
 		// Taoqual authentication and language markers.
@@ -18,8 +22,6 @@ class UsersHelper
 		$_SESSION['taoqual.lang']				= 'EN';
 		$_SESSION['taoqual.serviceContentLang'] = 'EN';
 		$_SESSION['taoqual.userId']				= $in_login;
-
-
 
 		return true;
 
@@ -31,15 +33,16 @@ class UsersHelper
 		$user 				= $WfEngine->getUser();
 
 		// username.
+		
 		$data['username'] 	= $user->userName;
-
+	
 		// user roles.
 		$data['roles']		= array();
 		foreach ($user->roles as $role){
 			$data['roles'][] = array('uri' 	 => $role->uri,
-								     'label' => $role->label);
+									 'label' => $role->label);
 		}
-
+		
 		return $data;
 	}
 
