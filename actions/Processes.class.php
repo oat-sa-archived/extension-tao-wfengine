@@ -20,7 +20,7 @@ class Processes extends Module
 		
 			$processAuthoringData 	= array();
 			$processAuthoringData['processUri'] 	= $processDefinitionUri;
-			$processAuthoringData['processLabel']	= 'Capi Background Questionnaire';
+			$processAuthoringData['processLabel']	= "Process' variables initialization";
 			$processAuthoringData['variables']		= array();
 				
 			$uiLanguages		= I18nUtil::getAvailableLanguages();
@@ -58,13 +58,13 @@ class Processes extends Module
 				$this->redirect('Authentication/index');
 			}
 			
-
+		
 
 
 			$processExecutionFactory = new ProcessExecutionFactory();
 			
 						
-			$processExecutionFactory->name = $posted["variables"][RDFS_LABEL][0];
+			$processExecutionFactory->name = $posted["variables"][RDFS_LABEL];
 			$processExecutionFactory->comment = 'Created ' . date(DATE_ISO8601);
 			
 			$processExecutionFactory->execution = urldecode($posted['executionOf']);
