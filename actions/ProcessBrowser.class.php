@@ -7,7 +7,7 @@ class ProcessBrowser extends Module
 		if(!UsersHelper::checkAuthentication()) {
 				$this->redirect('Authentication/index');
 		}
-
+			
 		$processUri 		= urldecode($processUri); // parameters clean-up.
 		$this->setData('processUri',$processUri);
 		
@@ -50,20 +50,24 @@ class ProcessBrowser extends Module
 		$variablesViewData = array();
 		$variables = $process->getVariables();
 
+
+
 		foreach ($process->getVariables() as $var)
 		{
-			$variablesViewData[$var->name] = array('uri' 	=> $var->uri,
+			$variablesViewData[$var->code] = array('uri' 	=> $var->uri,
 												   'value' 	=> $var->value);
+				
 		}
 
 		$this->setData('variablesViewData',$variablesViewData);
 		// consistency data.
+
+		
 		$consistencyViewData = array();
 		if (isset($_SESSION['taoqual.flashvar.consistency']))
 		{
 			$consistencyException 		= $_SESSION['taoqual.flashvar.consistency'];
 			$involvedActivities 		= $consistencyException['involvedActivities'];
-
 			$consistencyViewData['isConsistent']		= false;
 			$consistencyViewData['suppressable']		= $consistencyException['suppressable'];
 			$consistencyViewData['notification']		= str_replace(array("\r", "\n"), '', $consistencyException['notification']);
@@ -79,7 +83,7 @@ class ProcessBrowser extends Module
 																	 'label' => $involvedActivity['label'],
 																	 'processUri' => $processUri);
 			}
-
+			
 			// Clean flash variables.
 			$_SESSION['taoqual.flashvar.consistency'] = null;
 		}
@@ -90,7 +94,7 @@ class ProcessBrowser extends Module
 
 			$_SESSION['taoqual.flashvar.consistency'] = null;
 		}
-
+		
 		$this->setData('consistencyViewData',$consistencyViewData);
 
 		//The following takes about 0.2 seconds -->cache
@@ -128,8 +132,11 @@ class ProcessBrowser extends Module
 		$servicesViewData 	= array();
 
 		$services = $activityExecution->getInteractiveServices();
+
+
 		$this->setData('services',$services);
 
+		$this->setData('browserViewData', $browserViewData);
 		$this->setData('browserViewData', $browserViewData);
 		$this->setView('process_browser.tpl');
 	}

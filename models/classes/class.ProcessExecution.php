@@ -146,7 +146,9 @@ extends WfResource
 			if ((sizeOf($values) > 0) && (trim(strip_tags($values[0])) != ""))
 			{
 				$label = $var->getLabel();
-				$returnValue[] 	= new Variable($uriVar, trim($label), trim($values[0]));
+				$codeProp = new core_kernel_classes_Property(PROPERTY_CODE);
+				$code = $var->getUniquePropertyValue($codeProp);
+				$returnValue[] 	= new Variable($uriVar, $code->literal, trim($values[0]));
 			}
 		}
 

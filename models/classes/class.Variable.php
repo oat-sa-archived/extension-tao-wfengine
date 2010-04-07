@@ -50,7 +50,7 @@ class Variable
      * @access public
      * @var string
      */
-    public $name = '';
+    public $code = '';
 
     /**
      * Short description of attribute value
@@ -71,12 +71,12 @@ class Variable
      * @param string
      * @return void
      */
-    public function __construct($uri, $name, $value)
+    public function __construct($uri, $code, $value)
     {
         // section 10-13-1-85-16731180:11be4127421:-8000:0000000000000A43 begin
         parent::__construct($uri);
         
-        $this->name = $name;
+        $this->code = $code;
         $this->value = $value;
         // section 10-13-1-85-16731180:11be4127421:-8000:0000000000000A43 end
     }
