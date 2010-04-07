@@ -9,7 +9,7 @@ error_reporting(E_ALL);
  *
  *
  * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
- * @package taoDelivery
+ * @package wfEngine
  * @subpackage models_classes
  * @license GPLv2  http://www.opensource.org/licenses/gpl-2.0.php
  */
@@ -26,16 +26,26 @@ if (0 > version_compare(PHP_VERSION, '5')) {
  */
 require_once('tao/models/classes/class.Service.php');
 
-require_once('taoDelivery/plugins/CapiXML/models/class.ConditionalTokenizer.php');//to be copied into the process extension
-
-require_once('taoDelivery/plugins/CapiImport/models/class.DescriptorFactory.php');//to be copied into the process extension
+/**
+ * 
+ *
+ * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
+ */
+require_once('wfEngine/plugins/CapiXML/models/class.ConditionalTokenizer.php');
 
 /**
- * The taoDelivery_models_classes_ProcessAuthoringService class provides methods to connect to several ontologies and interact with them.
+ * 
+ *
+ * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
+ */
+require_once('wfEngine/plugins/CapiImport/models/class.DescriptorFactory.php');
+
+/**
+ * The wfEngine_models_classes_ProcessAuthoringService class provides methods to access and edit the process ontology
  *
  * @access public
  * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
- * @package taoDelivery
+ * @package wfEngine
  * @subpackage models_classes
  * @license GPLv2  http://www.opensource.org/licenses/gpl-2.0.php
  */
@@ -43,35 +53,11 @@ class wfEngine_models_classes_ProcessAuthoringService
     extends tao_models_classes_Service
 {
     // --- ASSOCIATIONS ---
-
-
-    // --- ATTRIBUTES ---
-
-    /**
-     * The attribute deliveryClass contains the default TAO Delivery Class
-     *
-     * @access protected
-     * @var Class
-     */
-    protected $deliveryClass = null;
-
-	/**
-     * The attribute testClass contains the default TAO Test Class
-     *
-     * @access protected
-     * @var Class
-     */
-	protected $testClass = null;
-	
-	protected $activityClass = null;
-	protected $roleClass = null;
-	protected $serviceDefinitionClass = null;
-	protected $formalParameterClass = null;
 	
 	protected $processUri = '';
 		
     /**
-     * The attribute deliveryOntologies contains the reference to the TAODelivery Ontology
+     * The attribute deliveryOntologies contains the reference to the required Ontologies
      *
      * @access protected
      * @var array
@@ -98,47 +84,10 @@ class wfEngine_models_classes_ProcessAuthoringService
     {
 		parent::__construct();
 		
-		
-		//TODO: clean that
-		// $this->deliveryClass = new core_kernel_classes_Class(TAO_DELIVERY_CLASS);
-		// $this->testClass = new core_kernel_classes_Class(TAO_TEST_CLASS);
-		$this->activityClass = new core_kernel_classes_Class(CLASS_ACTIVITIES);
-		$this->roleClass = new core_kernel_classes_Class(CLASS_ROLE);
-		$this->serviceDefinitionClass = new core_kernel_classes_Class(CLASS_SERVICESDEFINITION);
-		$this->formalParameterClass = new core_kernel_classes_Class(CLASS_FORMALPARAMETER);
-		
 		//set processUri here
 		
 		$this->loadOntologies($this->processOntologies);
     }
-	
-	/**
-     * The method getDeliveryClass return the current Delivery Class
-	 * (not used yet in the current implementation)
-     *
-     * @access public
-     * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
-     * @param  string uri
-     * @return core_kernel_classes_Class
-     */
-	 //UL
-    public function getDeliveryClass($uri = '')
-    {
-        $returnValue = null;
-
-		if(empty($uri) && !is_null($this->deliveryClass)){
-			$returnValue = $this->deliveryClass;
-		}
-		else{
-			$clazz = new core_kernel_classes_Class($uri);
-			if($this->isDeliveryClass($clazz)){
-				$returnValue = $clazz;
-			}
-		}
-
-        return $returnValue;
-    }
-	
 	
 	/**
      * Returns a delivery by providing either its uri (default) or its label and the delivery class
@@ -163,11 +112,10 @@ class wfEngine_models_classes_ProcessAuthoringService
 		
 	/**
      * Method to be called to delete an instance
-     * (Method is not used in the current implementation yet)
 	 *
      * @access public
      * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
-     * @param  Resource instance
+     * @param  core_kernel_classes_Resource instance
      * @return boolean
      */
     public function deleteInstance( core_kernel_classes_Resource $instance){
@@ -180,6 +128,14 @@ class wfEngine_models_classes_ProcessAuthoringService
         return (bool) $returnValue;
     }
 	
+	/**
+     * Description
+	 *
+     * @access public
+     * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
+     * @param  core_kernel_classes_Resource activity
+     * @return core_kernel_classes_Resource
+     */
 	public function createInteractiveService(core_kernel_classes_Resource $activity){
 		$number = $activity->getPropertyValuesCollection(new core_kernel_classes_Property(PROPERTY_ACTIVITIES_INTERACTIVESERVICES))->count();
 		$number += 1;
@@ -199,7 +155,19 @@ class wfEngine_models_classes_ProcessAuthoringService
 		
 		return $callOfService;
 	}
-
+	
+	/**
+     * Description
+	 *
+     * @access public
+     * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
+     * @param  core_kernel_classes_Resource activity
+	 * @param  core_kernel_classes_Resource formalParam
+	 * @param  string value
+	 * @param  string parameterInOrOut
+	 * @param  string actualParameterType
+     * @return boolean
+     */
 	public function setActualParameter(core_kernel_classes_Resource $callOfService, core_kernel_classes_Resource $formalParam, $value, $parameterInOrOut, $actualParameterType=''){
 		
 		//to be clarified:
@@ -216,7 +184,14 @@ class wfEngine_models_classes_ProcessAuthoringService
 		return $callOfService->setPropertyValue(new core_kernel_classes_Property($parameterInOrOut), $newActualParameter->uriResource);
 	}
 	
-	//clean the triples for a call of service and its related resource (i.e. actual parameters)
+	/**
+     * Clean the triples for a call of service and its related resource (i.e. actual parameters)
+	 *
+     * @access public
+     * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
+     * @param  core_kernel_classes_Resource callOfService
+     * @return boolean
+     */
 	public function deleteActualParameters(core_kernel_classes_Resource $callOfService){
 		
 		$returnValue = (bool) false;
@@ -250,43 +225,86 @@ class wfEngine_models_classes_ProcessAuthoringService
 		
 		return (bool) $returnValue;
 	}
-
-	public function deleteRule(core_kernel_classes_Resource $rule){
+	
+	/**
+     * Clean the triples for a transition rule and its related resource
+	 *
+     * @access public
+     * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
+     * @param  core_kernel_classes_Resource rule
+     * @return boolean
+     */
+	public function deleteRule(core_kernel_classes_Resource $rule){//transition rule only!!!!
+		$returnValue = false;
+		
 		//get the rule type:
-		if($rule instanceof core_kernel_classes_Resource){
+		if(!is_null($rule)){
+			$this->deleteCondition($rule);
+			
+			//delete the resources
+			$returnValue = $rule->delete($rule);
+		}
+		
+		return $returnValue;
+	}
+	
+	public function deleteCondition(core_kernel_classes_Resource $rule){
+		$returnValue = false;
+		
+		//get the rule type:
+		if(!is_null($rule)){
 			//if it is a transition rule: get the uri of the related properties: THEN and ELSE:
 			//delete the expression of the conditio and its related terms
-			$expressionCollection = $rule->getPropertyValuesCollection(new core_kernel_classes_Property(PROPERTY_RULE_IF));
-			foreach($expressionCollection->getIterator() as $expression){
+			$expression = $rule->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_RULE_IF));
+			if(!is_null($expression) && ($expression instanceof core_kernel_classes_Resource) ){
 				$this->deleteExpression($expression);
 			}
 			
-			//delete the resources
-			$rule->delete();
+			//delete reference: should be done on a upper level, at this function call
 		}
 		
+		return $returnValue;
 	}
-	
-	//note: always recursive: delete the expressions that make up the current expression
+	/**
+     * Clean the triples for an expression and its related resource
+	 * note: always recursive: delete the expressions that make up the current expression
+     *
+	 * @access public
+     * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
+     * @param  core_kernel_classes_Resource expression
+     * @return boolean
+     */
 	public function deleteExpression(core_kernel_classes_Resource $expression){
-			
+		
+		$returnValue = false;
+		
 		//delete related expressions
 		$firstExpressionCollection = $expression->getPropertyValuesCollection(new core_kernel_classes_Property(PROPERTY_EXPRESSION_FIRSTEXPRESSION));
 		$secondExpressionCollection = $expression->getPropertyValuesCollection(new core_kernel_classes_Property(PROPERTY_EXPRESSION_SECONDEXPRESSION));
 		$expressionCollection = $firstExpressionCollection->union($secondExpressionCollection);
 		foreach($expressionCollection->getIterator() as $exp){
-				$this->deleteExpression($exp);
+			$this->deleteExpression($exp);
 		}
 		
 		$terminalExpression = $expression->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_EXPRESSION_TERMINALEXPRESSION));
 		if(!empty($terminalExpression) && $terminalExpression instanceof core_kernel_classes_Resource){
-			$terminalExpression->delete();
+			$this->deleteTerm($terminalExpression);
 		}
 		
 		//delete the expression itself:
-		$expression->delete();
+		$returnValue = $expression->delete();
+		
+		return $returnValue;
 	}
 	
+	/**
+     * Clean the ontology from a process triples
+     *
+	 * @access public
+     * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
+     * @param  core_kernel_classes_Resource process
+     * @return boolean
+     */
 	public function deleteProcess(core_kernel_classes_Resource $process){
 		
 		$returnValue = false;
@@ -305,19 +323,22 @@ class wfEngine_models_classes_ProcessAuthoringService
 		return $returnValue;
 	}
 	
+	/**
+     * Clean the ontology from an activity triples
+     *
+	 * @access public
+     * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
+     * @param  core_kernel_classes_Resource activity
+     * @return boolean
+     */
 	public function deleteActivity(core_kernel_classes_Resource $activity){
 		
 		$returnValue = false;
 		
 		$apiModel = core_kernel_impl_ApiModelOO::singleton();
 		
-		//delete the activity reference in the process instance.
-		$processCollection = $apiModel->getSubject(PROPERTY_PROCESS_ACTIVITIES , $activity->uriResource);
-		if(!$processCollection->isEmpty()){
-			$apiModel->removeStatement($processCollection->get(0)->uriResource, PROPERTY_PROCESS_ACTIVITIES, $activity->uriResource, '');
-		}else{
-			return false;
-		}
+		
+		
 		
 		//delete related connector
 		$connectorCollection = $apiModel->getSubject(PROPERTY_CONNECTORS_ACTIVITYREFERENCE , $activity->uriResource);
@@ -353,21 +374,47 @@ class wfEngine_models_classes_ProcessAuthoringService
 		}
 		
 		//clean reference in transition rule (faster method)
-		$thenCollection = $apiModel->getSubject(PROPERTY_TRANSITIONRULES_THEN , $activity->uriResource);
-		foreach($thenCollection->getIterator() as $transitionRule){
-			$apiModel->removeStatement($transitionRule->uriResource, PROPERTY_TRANSITIONRULES_THEN, $activity->uriResource, '');
+		// $thenCollection = $apiModel->getSubject(PROPERTY_TRANSITIONRULES_THEN , $activity->uriResource);
+		// foreach($thenCollection->getIterator() as $transitionRule){
+			// $apiModel->removeStatement($transitionRule->uriResource, PROPERTY_TRANSITIONRULES_THEN, $activity->uriResource, '');
+		// }
+		// $elseCollection = $apiModel->getSubject(PROPERTY_TRANSITIONRULES_ELSE , $activity->uriResource);
+		// foreach($elseCollection->getIterator() as $transitionRule){
+			// $apiModel->removeStatement($transitionRule->uriResource, PROPERTY_TRANSITIONRULES_ELSE, $activity->uriResource, '');
+		// }
+		$this->deleteReference(new core_kernel_classes_Property(PROPERTY_TRANSITIONRULES_THEN), $activity);
+		$this->deleteReference(new core_kernel_classes_Property(PROPERTY_TRANSITIONRULES_ELSE), $activity);
+		
+		//delete inference rules:
+		foreach($activity->getPropertyValuesCollection(new core_kernel_classes_Property(PROPERTY_ACTIVITIES_ONBEFOREINFERENCERULE))->getIterator() as $inferenceRule){
+			$this->deleteInferenceRule($inferenceRule);
 		}
-		$elseCollection = $apiModel->getSubject(PROPERTY_TRANSITIONRULES_ELSE , $activity->uriResource);
-		foreach($elseCollection->getIterator() as $transitionRule){
-			$apiModel->removeStatement($transitionRule->uriResource, PROPERTY_TRANSITIONRULES_ELSE, $activity->uriResource, '');
+		foreach($activity->getPropertyValuesCollection(new core_kernel_classes_Property(PROPERTY_ACTIVITIES_ONAFTERINFERENCERULE))->getIterator() as $inferenceRule){
+			$this->deleteInferenceRule($inferenceRule);
 		}
-			
+		
 		//delete activity itself:
 		$returnValue = $this->deleteInstance($activity);
 		
-		return $returnValue;
+		//delete the activity reference in the process instance.
+		$processCollection = $apiModel->getSubject(PROPERTY_PROCESS_ACTIVITIES , $activity->uriResource);
+		if(!$processCollection->isEmpty()){
+			$apiModel->removeStatement($processCollection->get(0)->uriResource, PROPERTY_PROCESS_ACTIVITIES, $activity->uriResource, '');
+		}else{
+			return false;
+		}
+		
+		return $returnValue=true;
 	}
 	
+	/**
+     * delete a connector and its related resources
+     *
+	 * @access public
+     * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
+     * @param  core_kernel_classes_Resource connector
+     * @return boolean
+     */
 	public function deleteConnector(core_kernel_classes_Resource $connector){
 		
 		$returnValue = false;
@@ -416,7 +463,17 @@ class wfEngine_models_classes_ProcessAuthoringService
 		return $returnValue;
 	}
 	
-	
+	/**
+     * delete the reference to an object via a given property
+	 *Useful when the object has been deleted and the sources related to it must be deleted reference to it.
+     *
+	 * @access public
+     * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
+     * @param  core_kernel_classes_Resource property
+	 * @param  core_kernel_classes_Resource object
+	 * @param  boolean multiple
+     * @return boolean
+     */
 	public function deleteReference(core_kernel_classes_Property $property, core_kernel_classes_Resource $object, $multiple = false){
 		
 		$returnValue = false;
@@ -444,8 +501,7 @@ class wfEngine_models_classes_ProcessAuthoringService
 	}
 	
     /**
-     * Check whether the object is a delivery class
-     * (Method is not used in the current implementation yet)
+     * Check whether the class is authorized 
      *
      * @access public
      * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
@@ -473,10 +529,23 @@ class wfEngine_models_classes_ProcessAuthoringService
 		
         return (bool) $returnValue;
     }
-			
+	
+	/**
+     * Create an activity for a process
+     *
+     *
+     * @access public
+     * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
+     * @param  core_kernel_classes_Resource process
+	 * @param  string label
+     * @return core_kernel_classes_Resource
+     */	
 	public function createActivity(core_kernel_classes_Resource $process, $label=''){
 		
+		$activity = null;
 		$activityLabel = "";
+		$number = 0;
+		
 		if(empty($label)){
 			$number = $process->getPropertyValuesCollection(new core_kernel_classes_Property(PROPERTY_PROCESS_ACTIVITIES))->count();
 			$number += 1;
@@ -491,12 +560,28 @@ class wfEngine_models_classes_ProcessAuthoringService
 		if(!empty($activity)){
 			//associate the new instance to the process instance
 			$process->setPropertyValue(new core_kernel_classes_Property(PROPERTY_PROCESS_ACTIVITIES), $activity->uriResource);
+		
+			//set if it is the first or not:
+			if($number == 1){
+				$activity->editPropertyValues(new core_kernel_classes_Property(PROPERTY_ACTIVITIES_ISINITIAL), GENERIS_TRUE);
+			}else{
+				$activity->editPropertyValues(new core_kernel_classes_Property(PROPERTY_ACTIVITIES_ISINITIAL), GENERIS_FALSE);
+			}
 		}else{
 			throw new Exception("the activity cannot be created for the process {$process->uriResource}");
 		}
 		return $activity;
 	}
 	
+	/**
+     * Create a connector for an activity
+     *
+     * @access public
+     * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
+     * @param  core_kernel_classes_Resource activity
+	 * @param  string label
+     * @return core_kernel_classes_Resource
+     */	
 	public function createConnector(core_kernel_classes_Resource $activity, $label=''){
 		$connectorLabel = "";
 		if(empty($label)){
@@ -527,6 +612,17 @@ class wfEngine_models_classes_ProcessAuthoringService
 		return $connector;
 	}
 	
+	/**
+     * Create a new activity and assign it the next activity of a connector
+	 * If the activity already exists and is put in the parameter, simply set it as the next activity of a connector  
+     *
+     * @access public
+     * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
+     * @param  core_kernel_classes_Resource connector
+	 * @param  core_kernel_classes_Resource followingActivity
+	 * @param  string newActivityLabel
+     * @return void
+     */	
 	public function createSequenceActivity(core_kernel_classes_Resource $connector, core_kernel_classes_Resource $followingActivity = null, $newActivityLabel = ''){
 		if(is_null($followingActivity)){
 			//get the process associate to the connector to create a new instance of activity
@@ -541,14 +637,43 @@ class wfEngine_models_classes_ProcessAuthoringService
 		}
 		if($followingActivity instanceof core_kernel_classes_Resource){
 			//associate it to the property value of the connector
-			$connector->editPropertyValues(new core_kernel_classes_Property(PROPERTY_CONNECTORS_NEXTACTIVITIES), $followingActivity->uriResource);//use this function and not editPropertyValue!
+			$connector->editPropertyValues(new core_kernel_classes_Property(PROPERTY_CONNECTORS_NEXTACTIVITIES), $followingActivity->uriResource);
 		}
 	}
 	
-	public function createRule(core_kernel_classes_Resource $connector, $condition=''){
+	/**
+	 * Create a rule according to a condition
+     *
+     * @access public
+     * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
+     * @param  core_kernel_classes_Resource connector
+	 * @param  string condiiton
+     * @return boolean
+     */	
+	public function createRule(core_kernel_classes_Resource $connector, $question=''){//transiiton rule only! rename as such!
 		
 		$returnValue = true;
+			
+		// $xmlDom = $this->analyseExpression($condition);
+		$condition = $this->createCondition( $this->analyseExpression($question, true) );
+				
+		if($condition instanceof core_kernel_classes_Resource){
+			//associate the newly create expression with the transition rule of the connector
+			$transitionRule = $connector->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_TRANSITIONRULE));
+			if(empty($transitionRule)){
+				//create an instance of transition rule:
+				$transitionRuleClass = new core_kernel_classes_Class(CLASS_TRANSITIONRULES);
+				$transitionRule = $transitionRuleClass->createInstance();
+				//Associate the newly created transition rule to the connector:
+				$connector->editPropertyValues(new core_kernel_classes_Property(PROPERTY_CONNECTORS_TRANSITIONRULE), $transitionRule->uriResource);
+			}
+			$returnValue = $transitionRule->editPropertyValues(new core_kernel_classes_Property(PROPERTY_RULE_IF), $condition->uriResource);
+		}
 		
+		return $returnValue;
+	}
+	
+	public function analyseExpression($condition, $isCondition = false){
 		//place the following bloc in a helper
 		if (!empty($condition))
 			$question = $condition;
@@ -558,66 +683,293 @@ class wfEngine_models_classes_ProcessAuthoringService
 		//question test:
 		//$question = "IF    (11+B_Q01a*3)>=2 AND (B_Q01c=2 OR B_Q01c=7)    	THEN ^variable := 2*(B_Q01a+7)-^variable";
 		
-		//analyse the condiiton string and convert to an XML document:
+		//analyse the condition string and convert to an XML document:
 		if (get_magic_quotes_gpc()) $question = stripslashes($question);// Magic quotes are deprecated
-
+		//TODO: check if the variables exists and are associated to the process definition 
+		
+		$xmlDom = null;
 		if (!empty($question)){ // something to parse
 			// str_replace taken from the MsReader class
 			$question = str_replace("’", "'", $question); // utf8...
 			$question = str_replace("‘", "'", $question); // utf8...
 			$question = str_replace("“", "\"", $question);
 			$question = str_replace("”", "\"", $question);
-			$question = "if ".$question;
+			if($isCondition){
+				$question = "if ".$question;
+			}	
 			try{
 				$analyser = new Analyser();
 				$tokens = $analyser->analyse($question);
 
 				// $xml = htmlspecialchars($tokens->getXmlString(true));
 				// $xml = $tokens->getXmlString(true);
+				
 				$xmlDom = $tokens->getXml();
-				// throw new Exception("name={$xmlDom->nodeName} XMLcontent={$xmlDom->saveXML()}");
+				
 			}catch(Exception $e){
 				throw new Exception("CapiXML error: {$e->getMessage()}");
 			}
 		}
-		
+		return $xmlDom;
+	}
+	
+	//^SCR = ((^SCR)*31+^SCR*^SCR) => fail
+	public function createCondition($xmlDom){
 		//create the expression instance:
-		$expressionInstance = null;
+		$condition = null;
 		foreach ($xmlDom->childNodes as $childNode) {
 			foreach ($childNode->childNodes as $childOfChildNode) {
 				if ($childOfChildNode->nodeName == "condition"){
-					// throw new Exception("parent={$childNode->nodeName} <br/> XMLcontent=".$childOfChildNode->textContent." <br/>compare to {$tokens->getXmlString(true)}");
-					$conditionDescriptor = DescriptorFactory::getConditionDescriptor($childOfChildNode);
-					// throw new Exception("descriptor=".var_dump($conditionDescriptor));
 					
-					$expressionInstance = $conditionDescriptor->import();//(3*(^var +  1) = 2 or ^var > 7) AND ^RRR
+					$conditionDescriptor = DescriptorFactory::getConditionDescriptor($childOfChildNode);
+					$condition = $conditionDescriptor->import();//(3*(^var +  1) = 2 or ^var > 7) AND ^RRR
 					break 2;//once is enough...
-					// throw new Exception("expression uri = {$expressionInstance->uriResource}");
+				
 				}
 			}
 		}
+		return $condition;
+	}
+	
+	public function editCondition($rule, $conditionString){
 		
-		// throw new Exception("dump".var_dump($expressionInstance));
-		if($expressionInstance instanceof core_kernel_classes_Resource){
-			//associate the newly create expression with the transition rule of the connector
-			$transitionRule = $connector->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_TRANSITIONRULE));
-			if(empty($transitionRule)){
-				//create an instance of transition rule:
-				// throw new Exception("dfgfdmhfho");
-				$transitionRuleClass = new core_kernel_classes_Class(CLASS_TRANSITIONRULES);
-				$transitionRule = $transitionRuleClass->createInstance();
-				//Associate the newly created transition rule to the connector:
-				$connector->editPropertyValues(new core_kernel_classes_Property(PROPERTY_CONNECTORS_TRANSITIONRULE), $transitionRule->uriResource);
+		$returnValue = false;
+		
+		if(!empty($conditionString)){
+			$conditionDom =  $this->analyseExpression($conditionString, true);
+			$condition = $this->createCondition($conditionDom);
+			if(is_null($condition)){
+				throw new Exception("the condition \"{$conditionString}\" cannot be created for the inference rule {$rule->getLabel()}");
+			}else{
+				//delete old condition if exists:
+				$this->deleteCondition($rule);
+				
+				//associate the new condition:
+				$returnValue = $rule->editPropertyValues(new core_kernel_classes_Property(PROPERTY_RULE_IF), $condition->uriResource);
 			}
-			$returnValue = $transitionRule->editPropertyValues(new core_kernel_classes_Property(PROPERTY_RULE_IF), $expressionInstance->uriResource);
 		}
 		
 		return $returnValue;
 	}
+		
+	public function createAssignment($xmlDom){
+		//create the expression instance:
+		$assignment = null;
+		foreach ($xmlDom->childNodes as $childNode) {
+			foreach ($childNode->childNodes as $childOfChildNode) {
+				if ($childOfChildNode->nodeName == "then"){
+					
+					$assignmentDescriptor = DescriptorFactory::getAssignDescriptor($childOfChildNode);
+					$assignment = $assignmentDescriptor->import();//(3*(^var +  1) = 2 or ^var > 7) AND ^RRR
+					break 2;//stop at the first occurence of course
+				}
+			}
+		}
+		return $assignment;
+	}
 	
-	//remove property PROPERTY_CONNECTORS_NEXTACTIVITIES values on connector before:
+	public function createInferenceRule(core_kernel_classes_Resource $activity, $type, $label=''){
+		
+		//note: the resource in the parameter "activity" can be either an actual activity or a parent inferenceRule
+		
+		$inferenceRule = null;
+		
+		switch($type){
+			case 'onBefore':{
+				$inferenceRuleProp = new core_kernel_classes_Property(PROPERTY_ACTIVITIES_ONBEFOREINFERENCERULE);
+				break;
+			}
+			case 'onAfter': {
+				$inferenceRuleProp = new core_kernel_classes_Property(PROPERTY_ACTIVITIES_ONAFTERINFERENCERULE);
+				break;
+			}
+			case 'inferenceRuleElse': {
+				$inferenceRuleProp = new core_kernel_classes_Property(PROPERTY_INFERENCERULES_ELSE);
+				if(empty($label)){
+					$label = ' ';
+				}
+				break;
+			}
+			default:{
+				return $inferenceRule;
+			}
+		}
+		
+		$inferenceRuleLabel = "";
+		if(empty($label)){
+			// $activity->getPropertyValuesCollection($inferenceRuleProp);
+			$nb = $activity->getPropertyValuesCollection($inferenceRuleProp)->count()+1;
+			$inferenceRuleLabel = "$type Inference Rule $nb";
+		}else{
+			$inferenceRuleLabel = $label;
+		}
+		
+		$inferenceRuleClass = new core_kernel_classes_Class(CLASS_INFERENCERULES);
+		$inferenceRule = $inferenceRuleClass->createInstance($inferenceRuleLabel, "created by ProcessAuthoringService.Class");
+		
+		if(!empty($inferenceRule)){
+			//associate the inference rule to the activity or the parent inference rule
+			if($type == 'inferenceRuleElse'){
+				$activity->editPropertyValues($inferenceRuleProp, $inferenceRule->uriResource);//only one single inference rule is allowed 
+			}else{
+				//we add a new inference rule to an activity
+				$activity->setPropertyValue($inferenceRuleProp, $inferenceRule->uriResource);
+			}
+		}else{
+			throw new Exception("the inference rule cannot be created for the activity {$activity->getLabel()}: {$activity->uriResource}");
+		}
+		return $inferenceRule;
+	}
+	
+	public function createConsistencyRule(core_kernel_classes_Resource $activity, $label=''){
+		
+		$consistency = null;
+		
+		$consistencyRuleLabel = "";
+		if(empty($label)){
+			$nb = $activity->getPropertyValuesCollection(new core_kernel_classes_Property(PROPERTY_ACTIVITIES_CONSISTENCYRULE))->count()+1;
+			$consistencyRuleLabel = "Consistency Rule $nb";
+		}else{
+			$consistencyRuleLabel = $label;
+		}
+		
+		$consistencyRuleClass = new core_kernel_classes_Class(CLASS_CONSISTENCYRULES);
+		$consistencyRule = $consistencyRuleClass->createInstance($consistencyRuleLabel, "created by ProcessAuthoringService.Class");
+		
+		if(!empty($consistencyRule)){
+			$activity->editPropertyValues(new core_kernel_classes_Property(PROPERTY_ACTIVITIES_CONSISTENCYRULE), $consistencyRule->uriResource);//only one single inference rule is allowed 
+		}else{
+			throw new Exception("the consistency rule cannot be created for the activity {$activity->getLabel()}: {$activity->uriResource}");
+		}
+		
+		return $consistencyRule;
+	}
+	
+	public function deleteInferenceRule(core_kernel_classes_Resource $inferenceRule){
+		// $if = $inferenceRule->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_RULE_IF));//conditon or null
+		$then = $inferenceRule->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_INFERENCERULES_THEN));//assignment or null only
+		$else = $inferenceRule->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_INFERENCERULES_ELSE));//assignment, inference rule or null
+		
+		$this->deleteCondition($inferenceRule);
+		
+		if(!is_null($then) && ($then instanceof core_kernel_classes_Resource) ){
+			$this->deleteAssignment($then);
+		}
+		
+		if(!is_null($else) && ($then instanceof core_kernel_classes_Resource) ){
+			$classUri = $else->getUniquePropertyValue(new core_kernel_classes_Property(RDF_TYPE))->uriResource;
+			if($classUri == CLASS_ASSIGNMENT){
+				$this->deleteAssignment($else);
+			}elseif($classUri == CLASS_INFERENCERULES){
+				$this->deleteInferenceRule($else);
+			}
+		}
+		
+		//last: delete the reference to this inferenceRule in case of successive inference rule:
+		$this->deleteReference(new core_kernel_classes_Property(PROPERTY_INFERENCERULES_ELSE), $inferenceRule);
+		$this->deleteReference(new core_kernel_classes_Property(PROPERTY_ACTIVITIES_ONAFTERINFERENCERULE), $inferenceRule);
+		// $this->deleteReference(new core_kernel_classes_Property(PROPERTY_ACTIVITIES_ONBEFOREINFERENCERULE), $inferenceRule);
+		
+		return $inferenceRule->delete();
+	}
+	
+	public function deleteConsistencyRule(core_kernel_classes_Resource $consistencyRule){
+		$this->deleteCondition($consistencyRule);
+		$this->deleteReference(new core_kernel_classes_Property(PROPERTY_ACTIVITIES_CONSISTENCYRULE), $consistencyRule);
+		return $consistencyRule->delete();
+	}
+	
+	public function deleteAssignment(core_kernel_classes_Resource $assignment, $fullDelete = true){
+		
+		if(!is_null($assignment)){
+		
+			$assignmentVariable = $assignment->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_ASSIGNMENT_VARIABLE));
+			//should be an SPX:
+			if($assignmentVariable instanceof core_kernel_classes_Resource){
+				$assignmentVariable->delete();
+			}
+			
+			$assignmentValue = $assignment->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_ASSIGNMENT_VALUE));
+			// var_dump($assignment, $assignmentValue);
+			if(!is_null($assignmentValue)){
+				//could be a term, an operation or a constant (even though its range is resource)
+				if($assignmentValue instanceof core_kernel_classes_Resource){
+					
+					$this->deleteTerm($assignmentValue);
+					
+				}
+			}
+			
+			if($fullDelete){
+				$assignment->delete();
+			}
+		
+		}
+		
+		return true;
+	}
+	
+	public function deleteOperation(core_kernel_classes_Resource $operation){
+			
+		$firstOperand = $operation->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_OPERATION_FIRST_OP));
+		if(!is_null($firstOperand) && ($firstOperand instanceof core_kernel_classes_Resource)){
+			$this->deleteTerm($firstOperand);
+		}
+		
+		$secondOperand = $operation->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_OPERATION_SECND_OP));
+		if(!is_null($secondOperand) && ($secondOperand instanceof core_kernel_classes_Resource)){
+			$this->deleteTerm($secondOperand);
+		}
+		
+		return $operation->delete();
+	}
+	
+	public function deleteTerm(core_kernel_classes_Resource $term){
+		$termClasses = array(
+			CLASS_TERM_SUJET_PREDICATE_X,
+			CLASS_TERM_CONST
+		);
+		
+		//list of terms instance that must not be deleted!
+		$termConstants = array(
+			INSTANCE_TERM_IS_NULL
+		);
+		
+		if(!is_null($term)){
+			//determine the class:
+			$classUri = $term->getUniquePropertyValue(new core_kernel_classes_Property(RDF_TYPE))->uriResource;
+			
+			if($classUri == CLASS_OPERATION){
+				
+				$this->deleteOperation($term);//an operation is a term
+				
+			}elseif(in_array($classUri,$termClasses)){
+			
+				if(!in_array($term->uriResource, $termConstants)){//delete all instances but the one that are preset
+					$term->delete();
+				}
+				
+			}else{
+				throw new Exception("trying to delete a term with an unknown term class");
+			}
+		}
+	}
+	
+	/**
+     * Create the following activity for a connector.
+	 * If the following activity is given, define it as the 'next' activity and the type: 'then' or 'else'
+     *
+     * @access public
+     * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
+     * @param  core_kernel_classes_Resource connector
+	 * @param  string connectorType
+	 * @param  core_kernel_classes_Resource followingActivity
+	 * @param  string newActivityLabel
+	 * @param  boolean followingActivityisConnector
+     * @return void
+     */	
 	public function createSplitActivity(core_kernel_classes_Resource $connector, $connectorType, core_kernel_classes_Resource $followingActivity = null, $newActivityLabel ='', $followingActivityisConnector = false){
-
+		//remove property PROPERTY_CONNECTORS_NEXTACTIVITIES values on connector before:
 		if(is_null($followingActivity)){
 			
 			if($followingActivityisConnector){
@@ -657,6 +1009,14 @@ class wfEngine_models_classes_ProcessAuthoringService
 		}
 	}
 	
+	/**
+     * Get an array of activities of the process
+     *
+     * @access public
+     * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
+     * @param  core_kernel_classes_Resource process
+     * @return array
+     */	
 	public function getActivitiesByProcess(core_kernel_classes_Resource $process){
 		
 		$returnValue = array();
@@ -680,6 +1040,14 @@ class wfEngine_models_classes_ProcessAuthoringService
 		return $returnValue;
 	}
 	
+	/**
+     * Get all connectors of a process
+     *
+     * @access public
+     * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
+     * @param  core_kernel_classes_Resource process
+     * @return array
+     */	
 	public function getConnectorsByProcess(core_kernel_classes_Resource $process){
 		$activities = $this->getActivitiesByProcess($process);
 		$connectors = array();
@@ -692,6 +1060,16 @@ class wfEngine_models_classes_ProcessAuthoringService
 	
 	}
 	
+	/**
+     * Get all connectors of an activity
+     *
+     * @access public
+     * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
+     * @param  core_kernel_classes_Resource activity
+	 * @param  array option
+	 * @param  boolean isConnector
+     * @return array
+     */
 	public function getConnectorsByActivity(core_kernel_classes_Resource $activity, $option=array(), $isConnector=false ){
 			
 		//prev: the connectors that links to the current activity
@@ -741,7 +1119,15 @@ class wfEngine_models_classes_ProcessAuthoringService
 		
 		return $returnValue;
 	}
-		
+	
+	/**
+     * Check if the resource is an activity instance
+     *
+     * @access public
+     * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
+     * @param  core_kernel_classes_Resource resource
+     * @return boolean
+     */	
 	public static function isActivity(core_kernel_classes_Resource $resource){
 		$returnValue = false;
 		
@@ -757,6 +1143,14 @@ class wfEngine_models_classes_ProcessAuthoringService
 		return $returnValue;
 	}
 	
+	/**
+     * Check if the resource is a connector instance
+     *
+     * @access public
+     * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
+     * @param  core_kernel_classes_Resource resource
+     * @return boolean
+     */	
 	public static function isConnector(core_kernel_classes_Resource $resource){
 		$returnValue = false;
 		
@@ -772,6 +1166,14 @@ class wfEngine_models_classes_ProcessAuthoringService
 		return $returnValue;
 	}
 	
+	/**
+     * Get the process variable with a given code
+     *
+     * @access public
+     * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
+     * @param  string code
+     * @return core_kernel_classes_Resource
+     */
 	public function getProcessVariable($code){
 		$returnValue = null;
 		
@@ -785,6 +1187,6 @@ class wfEngine_models_classes_ProcessAuthoringService
 	
 		
 
-} /* end of class taoDelivery_models_classes_DeliveryService */
+} /* end of class wfEngine_models_classes_ProcessAuthoringService */
 
 ?>

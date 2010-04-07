@@ -1,4 +1,4 @@
-<?include(TAO_TPL_PATH .'header.tpl')?>
+<?include('header.tpl')?>
 
 
 
@@ -21,8 +21,9 @@
 	#draggable {padding: 0.5em;width:auto; }
 	#draggable1 {padding: 0.5em;width:auto;}
 	
-	#accordion1 {position:absolute;left:0%;top:0%;width:30%;height=100%;}
-	#accordion_container_2 {position:absolute;left:30%;top:0%;width:70%;height=100%;}
+	#accordion1 {position:absolute;left:0%;top:0%;width:30%;height:100%;}
+	#accordion_container_2 {position:absolute;left:30%;top:0%;width:70%;height:100%;}
+	#process_diagram_container {position:absolute;left:0%;top:0%;width:75%;height:100%;}
 	
 	#demo {position:absolute;left:27%;top:1%;width:50%;height=auto;}
 	#process {position:absolute;left:78%;top:1%;width:21%;height=auto;}
@@ -38,7 +39,7 @@
 
 	<div class="main-container" style="display:none;"></div>
 	<div id="authoring-container" class="ui-helper-reset">
-	
+	<div id="process_diagram_container"></div>
 	<div id="accordion1" style="font-size:0.8em;">
 		<h3><a href="#"><?=__('Service Definition')?></a></h3>
 		<div>
@@ -62,7 +63,7 @@
 		</div>
 	</div><!--end accordion -->
 	
-	<div id="accordion_container_2" style="height:100%">
+	<div id="accordion_container_2">
 	<div id="accordion2" style="font-size:0.8em;">
 		<h3><a href="#"><?=__('Activity Editor')?></a></h3>
 		<div>
@@ -78,7 +79,6 @@
 			<!--<div id="process_info"><?=__('loading...')?></div>-->
 			<div id="process_form"><?=__('loading...')?></div>
 		</div>
-		
 	</div><!--end accordion -->
 	</div><!--end accordion_container_2 -->
 	
@@ -108,7 +108,7 @@
 		loadSectionTree("variable");
 		
 		processProperty();
-		
+			
 	});
 	
 	$(function(){
@@ -155,9 +155,8 @@
 			}
 		});
 	}
-	</script>
 	
-
+	</script>
 	
 <?endif?>
 

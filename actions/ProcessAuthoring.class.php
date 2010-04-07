@@ -6,7 +6,7 @@ require_once('tao/actions/TaoModule.class.php');
  * DeliveryAuthoring Controller provide actions to edit a delivery
  * 
  * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
- * @package taoDelivery
+ * @package wfEngine
  * @subpackage actions
  * @license GPLv2  http://www.opensource.org/licenses/gpl-2.0.php
  */
@@ -24,11 +24,11 @@ class ProcessAuthoring extends TaoModule {
 		parent::__construct();
 		
 		//the service is initialized by default
-		$this->service = new taoDelivery_models_classes_ProcessAuthoringService();
+		$this->service = new wfEngine_models_classes_ProcessAuthoringService();
 		$this->defaultData();
 		
 		//add the tree service
-		$this->processTreeService = new taoDelivery_models_classes_ProcessTreeService();
+		$this->processTreeService = new wfEngine_models_classes_ProcessTreeService();
 	}
 	
 /*
@@ -61,8 +61,6 @@ class ProcessAuthoring extends TaoModule {
 	protected function getRootClass(){
 		return null;
 	}
-	
-	
 
 	protected function getCurrentActivity(){
 		$uri = tao_helpers_Uri::decode($this->getRequestParameter('activityUri'));
@@ -174,10 +172,17 @@ class ProcessAuthoring extends TaoModule {
 		
 		//attach the created activity to the process
 		if(!is_null($newActivity) && $newActivity instanceof core_kernel_classes_Resource){
+			$class = '';
+			if($newActivity->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_ACTIVITIES_ISINITIAL))->uriResource == GENERIS_TRUE){
+				//just set the first activity as a such
+				$class = 'node-activity-initial';
+			}
+			
 			echo json_encode(array(
 				'label'	=> $newActivity->getLabel(),
 				'uri' 	=> tao_helpers_Uri::encode($newActivity->uriResource),
-				'connector' => $this->processTreeService->defaultConnectorNode($newConnector)
+				'connector' => $this->processTreeService->defaultConnectorNode($newConnector),
+				'class' => $class
 			));
 		}
 	}
@@ -192,6 +197,34 @@ class ProcessAuthoring extends TaoModule {
 			echo json_encode(array(
 				'label'	=> $newService->getLabel(),
 				'uri' 	=> tao_helpers_Uri::encode($newService->uriResource)
+			));
+		}
+	}
+	
+	public function addInferenceRule(){
+		if(!tao_helpers_Request::isAjax()){
+			throw new Exception("wrong request mode");
+		}
+		$currentActivity = $this->getCurrentActivity();
+		$inferenceRule = $this->service->createInferenceRule($currentActivity, $_POST['type']);
+		if(!is_null($inferenceRule) && $inferenceRule instanceof core_kernel_classes_Resource){
+			echo json_encode(array(
+				'label'	=> $inferenceRule->getLabel(),
+				'uri' 	=> tao_helpers_Uri::encode($inferenceRule->uriResource)
+			));
+		}
+	}
+	
+	public function addConsistencyRule(){
+		if(!tao_helpers_Request::isAjax()){
+			throw new Exception("wrong request mode");
+		}
+		$currentActivity = $this->getCurrentActivity();
+		$consistencyRule = $this->service->createConsistencyRule($currentActivity);
+		if(!is_null($consistencyRule) && $consistencyRule instanceof core_kernel_classes_Resource){
+			echo json_encode(array(
+				'label'	=> $consistencyRule->getLabel(),
+				'uri' 	=> tao_helpers_Uri::encode($consistencyRule->uriResource)
 			));
 		}
 	}
@@ -227,7 +260,7 @@ class ProcessAuthoring extends TaoModule {
 		}
 				
 		$myForm = null;
-		$myForm = taoDelivery_helpers_ProcessFormFactory::instanceEditor($clazz, $instance, $formName, array("noSubmit"=>true,"noRevert"=>true) , $excludedProperty );
+		$myForm = wfEngine_helpers_ProcessFormFactory::instanceEditor($clazz, $instance, $formName, array("noSubmit"=>true,"noRevert"=>true) , $excludedProperty );
 		$myForm->setActions(array(), 'bottom');	
 		if($myForm->isSubmited()){
 			if($myForm->isValid()){
@@ -257,7 +290,7 @@ class ProcessAuthoring extends TaoModule {
 		$this->setData('sectionName', 'activity');
 		
 		$myForm = null;
-		$myForm = taoDelivery_helpers_ProcessFormFactory::instanceEditor(new core_kernel_classes_Class(CLASS_ACTIVITIES), $activity, $formName, array("noSubmit"=>true,"noRevert"=>true), $excludedProperty);
+		$myForm = wfEngine_helpers_ProcessFormFactory::instanceEditor(new core_kernel_classes_Class(CLASS_ACTIVITIES), $activity, $formName, array("noSubmit"=>true,"noRevert"=>true), $excludedProperty);
 		$myForm->setActions(array(), 'bottom');	
 		if($myForm->isSubmited()){
 			if($myForm->isValid()){
@@ -287,7 +320,7 @@ class ProcessAuthoring extends TaoModule {
 		$this->setData('sectionName', 'process');
 		
 		$myForm = null;
-		$myForm = taoDelivery_helpers_ProcessFormFactory::instanceEditor(new core_kernel_classes_Class(CLASS_PROCESS), $process, $formName, array("noSubmit"=>true,"noRevert"=>true), $excludedProperty, true);
+		$myForm = wfEngine_helpers_ProcessFormFactory::instanceEditor(new core_kernel_classes_Class(CLASS_PROCESS), $process, $formName, array("noSubmit"=>true,"noRevert"=>true), $excludedProperty, true);
 		$myForm->setActions(array(), 'bottom');	
 		if($myForm->isSubmited()){
 			if($myForm->isValid()){
@@ -304,6 +337,14 @@ class ProcessAuthoring extends TaoModule {
 		$this->setView('process_form_property.tpl');
 	}
 	
+	public function editConsistencyRule(){
+		$formName = uniqid("consistencyRuleEditor_");
+		$myForm = wfEngine_helpers_ProcessFormFactory::consistencyRuleEditor(new core_kernel_classes_Resource(tao_helpers_Uri::decode($_POST['consistencyRuleUri'])), $formName);
+
+		$this->setData('formId', $formName);
+		$this->setData('formConsistencyRule', $myForm->render());
+		$this->setView('process_form_consistencyRule.tpl');
+	}
 	
 	/**
 	 * Add an instance        
@@ -394,6 +435,27 @@ class ProcessAuthoring extends TaoModule {
 	
 		echo json_encode(array('deleted' => $deleted));
 	}
+	
+	public function deleteInferenceRule(){
+		if(!tao_helpers_Request::isAjax()){
+			throw new Exception("wrong request mode");
+		}
+		$deleted = $this->service->deleteInferenceRule(new core_kernel_classes_Resource(tao_helpers_Uri::decode($_POST["inferenceUri"])));
+	
+		echo json_encode(array('deleted' => $deleted));
+		
+	}
+	
+	public function deleteConsistencyRule(){
+		if(!tao_helpers_Request::isAjax()){
+			throw new Exception("wrong request mode");
+		}
+		$deleted = $this->service->deleteConsistencyRule(new core_kernel_classes_Resource(tao_helpers_Uri::decode($_POST["consistencyUri"])));
+	
+		echo json_encode(array('deleted' => $deleted));
+		
+	}
+	
 	/**
 	 * Duplicate an instance
 	 * A bit more complicated here
@@ -429,7 +491,7 @@ class ProcessAuthoring extends TaoModule {
 		$callOfServiceUri = tao_helpers_Uri::decode($_POST['uri']);
 		
 		$formName=uniqid("callOfServiceEditor_");
-		$myForm = taoDelivery_helpers_ProcessFormFactory::callOfServiceEditor(new core_kernel_classes_Resource($callOfServiceUri), null, $formName);//NS_TAOQUAL . '#i118595593412394'
+		$myForm = wfEngine_helpers_ProcessFormFactory::callOfServiceEditor(new core_kernel_classes_Resource($callOfServiceUri), null, $formName);//NS_TAOQUAL . '#i118595593412394'
 		
 		$this->setData('formId', $formName);
 		$this->setData('formInteractionService', $myForm->render());
@@ -515,11 +577,22 @@ class ProcessAuthoring extends TaoModule {
 		$connectorUri = tao_helpers_Uri::decode($_POST['connectorUri']);
 		
 		$formName=uniqid("connectorEditor_");
-		$myForm = taoDelivery_helpers_ProcessFormFactory::connectorEditor(new core_kernel_classes_Resource($connectorUri), null, $formName);
+		$myForm = wfEngine_helpers_ProcessFormFactory::connectorEditor(new core_kernel_classes_Resource($connectorUri), null, $formName);
 		
 		$this->setData('formId', $formName);
 		$this->setData('formConnector', $myForm->render());
 		$this->setView('process_form_connector.tpl');
+	}
+	
+	public function editInferenceRule(){
+		$inferenceRule = new core_kernel_classes_Resource(tao_helpers_Uri::decode($_POST['inferenceRuleUri']));
+		
+		$formName = uniqid("inferenceRuleEditor_");
+		$myForm = wfEngine_helpers_ProcessFormFactory::inferenceRuleEditor($inferenceRule, $formName);
+		
+		$this->setData('formId', $formName);
+		$this->setData('formInferenceRule', $myForm->render());
+		$this->setView('process_form_inferenceRule.tpl');
 	}
 	
 	public function saveConnector(){
@@ -543,7 +616,9 @@ class ProcessAuthoring extends TaoModule {
 			$saved = false;
 			throw new Exception("no connector type uri found in POST");
 		}
-		$this->service->bindProperties($connectorInstance, array(PROPERTY_CONNECTORS_TYPE => $data[PROPERTY_CONNECTORS_TYPE]));
+		if($data[PROPERTY_CONNECTORS_TYPE] != 'none'){
+			$this->service->bindProperties($connectorInstance, array(PROPERTY_CONNECTORS_TYPE => $data[PROPERTY_CONNECTORS_TYPE]));
+		}
 		
 		$followingActivity = null;
 		if($data[PROPERTY_CONNECTORS_TYPE] == INSTANCE_TYPEOFCONNECTORS_SEQUENCE){
@@ -567,6 +642,8 @@ class ProcessAuthoring extends TaoModule {
 				$oldRule = $connectorInstance->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_TRANSITIONRULE));
 				if(!empty($oldRule)){
 					$deleted = $this->service->deleteRule($oldRule);
+					//TODO: to be called deleteTransitionRule
+					//TODO: use editCOndition somewhere instead
 					// if(!$deleted){
 						// throw new Exception("the old transition rule related to the connector cannot be removed");
 					// }
@@ -575,10 +652,7 @@ class ProcessAuthoring extends TaoModule {
 				//save the new rule here:
 				$condition = $data['if'];
 				
-				// throw new Exception("mghjpogim".stripos($condition, 'if'));
-				
 				if(!empty($condition)){
-					
 					if(!$this->service->createRule($connectorInstance, $condition)){
 						throw new Exception("the condition \"{$condition}\" cannot be created");
 					}
@@ -623,6 +697,145 @@ class ProcessAuthoring extends TaoModule {
 		echo json_encode(array("saved" => $saved));
 	}
 	
+	public function saveInferenceRule(){
+		
+		$returnValue = false;
+		
+		$inferenceRule = new core_kernel_classes_Resource(tao_helpers_Uri::decode($_POST['inferenceRuleUri']));
+		
+		//save the "if":
+		$conditionString = $_POST['if'];
+		if(!empty($conditionString)){
+			
+			$this->service->editCondition($inferenceRule, $conditionString);
+		}
+		
+		//save the "then":
+		$inferenceThenProp = new core_kernel_classes_Property(PROPERTY_INFERENCERULES_THEN);
+		$then_assignment = $_POST['then_assignment'];
+		// $this->service->createAssignment($inferenceRule, $then_assignment, 'then');
+		$thenDom = $this->service->analyseExpression($then_assignment);
+		// var_dump($thenDom->saveXML());
+		if(!is_null($thenDom)){
+			//delete old assignment resource:
+			$oldThenAssignment = $inferenceRule->getOnePropertyValue($inferenceThenProp);
+			if(!is_null($oldThenAssignment)){
+				$this->service->deleteAssignment($oldThenAssignment);
+			}
+			
+			//save new one:
+			$newAssignment = $this->service->createAssignment($thenDom);
+			$returnValue = $inferenceRule->editPropertyValues($inferenceThenProp, $newAssignment->uriResource);
+		}
+		
+		//save the "else":
+		if(isset($_POST['else_choice'])){
+			
+			$returnValue = false;
+			$inferenceElseProp = new core_kernel_classes_Property(PROPERTY_INFERENCERULES_ELSE);
+			
+			if($_POST['else_choice'] == 'assignment'){
+			
+				$else_assignment = $_POST['else_assignment'];
+				$elseDom = $this->service->analyseExpression($else_assignment);
+				if(!is_null($elseDom)){
+					//delete old assignment resource:
+					$oldElseAssignment = $inferenceRule->getOnePropertyValue($inferenceElseProp);
+					if(!is_null($oldElseAssignment)){
+						$this->service->deleteAssignment($oldElseAssignment);
+					}
+			
+					//save new assignment:
+					$newAssignment = null;
+					$newAssignment = $this->service->createAssignment($elseDom);
+					$returnValue = $inferenceRule->editPropertyValues($inferenceElseProp, $newAssignment->uriResource);
+					
+				}
+				
+			}elseif($_POST['else_choice'] == 'inference'){
+				//check if the current "else" is already an inference rule:
+				$elseIsInferenceRule = false;
+				$else = $inferenceRule->getOnePropertyValue($inferenceElseProp);//assignment, inference rule or null
+				
+				if(!empty($else)){
+					if($else instanceof core_kernel_classes_Resource){
+						if($else->getUniquePropertyValue(new core_kernel_classes_Property(RDF_TYPE))->uriResource == CLASS_INFERENCERULES){
+							$elseIsInferenceRule = true;
+							$returnValue = true;//no need to do anything, since the inference rule already exists
+						}
+					}
+				}
+				if(!$elseIsInferenceRule){
+					//create a new inference rule
+					$newInferenceRule = null;
+					$newInferenceRule = $this->service->createInferenceRule($inferenceRule, 'inferenceRuleElse');
+					
+					if(!is_null($newInferenceRule)){
+						$returnValue = true;
+					}
+				}
+			}else{
+				//find what is in the "else" property of the current inference rule, and delete it:
+				
+				$else = $inferenceRule->getOnePropertyValue($inferenceElseProp);
+				
+				if(!is_null($else)){//delete it whatever it is (assignment or inference rule)
+					if($else instanceof core_kernel_classes_Resource){
+						$type = $else->getUniquePropertyValue(new core_kernel_classes_Property(RDF_TYPE));
+						if($type->uriResource == CLASS_ASSIGNMENT){
+							$this->service->deleteAssignment($else);
+						}elseif($type->uriResource == CLASS_INFERENCERULES){
+							$this->service->deleteInferenceRule($else);
+						}
+					}
+				}
+				
+				//remove property value:
+				$inferenceRule->removePropertyValues($inferenceElseProp);
+				$returnValue = true;
+			}
+		}
+		
+		echo json_encode(array('saved'=>$returnValue));
+	}
+	
+	public function saveConsistencyRule(){
+		
+		$returnValue = false;
+		
+		$consistencyRule = new core_kernel_classes_Resource(tao_helpers_Uri::decode($_POST['consistencyRuleUri']));
+		
+		//save the "if":
+		$conditionString = $_POST['if'];
+		if(!empty($conditionString)){
+			$this->service->editCondition($consistencyRule, $conditionString);
+		}
+		
+		//save activities:
+		
+		$involvedActivitiesProp = new core_kernel_classes_Property(PROPERTY_CONSISTENCYRULES_INVOLVEDACTIVITIES);
+		$consistencyRule->removePropertyValues($involvedActivitiesProp);
+		$encodedActivitiesPropUri = tao_helpers_Uri::encode($involvedActivitiesProp->uriResource);
+		
+		foreach($_POST as $propUri => $propValue){
+			if(strpos($propUri, $encodedActivitiesPropUri) === 0){
+				$consistencyRule->setPropertyValue($involvedActivitiesProp, tao_helpers_Uri::decode($propValue));
+			}
+		}	
+		
+		// $this->service->bindProperties($consistencyRule, array_map('trim', $activities);
+		
+		//save suppressable:
+		$consistencyRule->editPropertyValues(new core_kernel_classes_Property(PROPERTY_CONSISTENCYRULES_SUPPRESSABLE), tao_helpers_Uri::decode($_POST[tao_helpers_Uri::encode(PROPERTY_CONSISTENCYRULES_SUPPRESSABLE)]));
+		//(use bindProperties instead)
+		//save notification:
+		$returnValue = $consistencyRule->editPropertyValues(new core_kernel_classes_Property(PROPERTY_CONSISTENCYRULES_NOTIFICATION), $_POST[tao_helpers_Uri::encode(PROPERTY_CONSISTENCYRULES_NOTIFICATION)]);
+	
+		echo json_encode(array('saved'=>$returnValue));
+		
+	}
+	
+	
 	public function checkCode(){
 	
 		$code = $_POST['code'];
@@ -641,6 +854,62 @@ class ProcessAuthoring extends TaoModule {
 		echo json_encode($returnValue);
 	}
 	
+	public function checkExpressionVariables(){
+		
+		$process = $this->getCurrentProcess();
+		$expression = '';
+		//to sources of problem: 
+		//1-either the code is not associate to any process var ('the process var does not exist') 
+		//2-or the process var is not set to the current process
+		$returnValue = array(
+			'doesNotExist'=>array(),
+			'notSet'=>array()
+		);
+		
+		$codes = array();
+		//regular expression on the expression and get an array of process variable codes:
+		if(preg_match_all('/\^(\w+)/', $expression, $matches)){
+			$codes = $matches[1];
+		}
+		
+		$processVarProp = new core_kernel_classes_Property(PROPERTY_PROCESS_VARIABLE);
+		foreach($codes as $code){
+			//get the variable resource: 
+			$processVar = $this->service->getProcessVariable($code);
+			if(is_null($processVar)){
+				$returnValue['doesNotExist'][] = $code;
+			}else{
+				//check if the variable is set as a process variable of the current process
+				$processCollection = core_kernel_impl_ApiModelOO::singleton()->getSubject($processVarProp, $processVar);
+				$ok = false;
+				foreach($processCollection->getIterator() as $processTemp){
+					if($processTemp->uriResource == $process->uriResource){
+						$ok = true;
+						break;
+					}
+				}
+				if(!$ok){
+					//the variable is not a variable of the current process:
+					$returnValue['notSet'][] = $code;
+				}
+			}
+		}
+		echo json_encode($returnValue);
+	}
+	
+	public function getOneSubject(core_kernel_classes_Property $property, core_kernel_classes_Resource $resource, $last=false){
+		$subject = null;
+		$subjectCollection = core_kernel_impl_ApiModelOO::singleton()->getSubject($property->uriResource , $resource->uriResource);
+		if(!$subjectCollection->isEmpty()){
+			if($last){
+				$subject = $subjectCollection->get($subjectCollection->count()-1);
+			}else{
+				$subject = $subjectCollection->get(0);
+			}
+		}
+		return $subject;
+	}
+	
 	/**
 	 *
 	 *
@@ -651,7 +920,34 @@ class ProcessAuthoring extends TaoModule {
 	public function preview(){
 		
 	}
-			
+	
+	public function setFirstActivity(){
+		$activity = $this->getCurrentActivity();
+		$process = $this->getCurrentProcess();
+		
+		$activities = $this->service->getActivitiesByProcess($process);
+		foreach($activities as $activityTemp){
+			$activityTemp->editPropertyValues(new core_kernel_classes_Property(PROPERTY_ACTIVITIES_ISINITIAL), GENERIS_FALSE);
+		}
+		
+		$returnValue = $activity->editPropertyValues(new core_kernel_classes_Property(PROPERTY_ACTIVITIES_ISINITIAL), GENERIS_TRUE);
+	
+		echo json_encode(array('set' => $returnValue));
+	}
+	
+	public function unsetLastActivity(){
+		$activity = $this->getCurrentActivity();
+		$created = false;
+		
+		//TODO: check if there is really no connector for the activity
+		$connector = $this->service->createConnector($activity);
+		if(!is_null($connector)){
+			$created = true;
+		}
+		
+		echo json_encode(array('created' => $created));
+	}
+	
 	/*
 	 * @TODO implement the following actions
 	 */

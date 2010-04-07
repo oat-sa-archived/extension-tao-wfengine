@@ -133,7 +133,7 @@ extends WfResource
 		// section 10-13-1--31-740bb989:119ebfa9b28:-8000:0000000000000852 begin
 		$processActivitiesProp = new core_kernel_classes_Property(PROPERTY_PROCESS_ACTIVITIES);
 		$activities = $this->resource->getPropertyValuesCollection($processActivitiesProp);
-
+	// var_dump(PROPERTY_PROCESS_ACTIVITIES, $activities);
 		foreach ($activities->getIterator() as $activity)
 		{
 			$activityIsInitialProp = new core_kernel_classes_Property(PROPERTY_ACTIVITIES_ISINITIAL);

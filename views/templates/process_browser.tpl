@@ -1,15 +1,15 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<?php echo $GLOBALS['lang']; ?>" lang="<?php echo $GLOBALS['lang']; ?>">
 	<head>
-		<title><?php echo PROCESS_BROWSER_TITLE; ?></title>
+		<title><?php echo __("TAO - An Open and Versatile Computer-Based Assessment Platform"); ?></title>
 		
-		<script type="text/javascript" src="<?echo BASE_WWW; ?>/<?php echo $GLOBALS['dir_theme']; ?>/js/jquery.js"></script>
-		<script type="text/javascript" src="<?echo BASE_WWW; ?>/<?php echo $GLOBALS['dir_theme']; ?>/js/jquery.ui.js"></script>
-		<script type="text/javascript" src="<?echo BASE_WWW; ?>/<?php echo $GLOBALS['dir_theme']; ?>/js/jquery.json.js"></script>	
-		<script type="text/javascript" src="<?echo BASE_WWW; ?>/<?php echo $GLOBALS['dir_theme']; ?>/js/jquery.ui.taoqualDialog.js"></script>
-		<script type="text/javascript" src="<?echo BASE_WWW; ?>/<?php echo $GLOBALS['dir_theme']; ?>/js/wfEngine.js"></script>
-		<script type="text/javascript" src="<?echo BASE_WWW; ?>/<?php echo $GLOBALS['dir_theme']; ?>/js/process_browser.js"></script>
-			<script type="text/javascript" src="<?echo BASE_WWW; ?>/<?php echo $GLOBALS['dir_theme']; ?>/js/event_logger.js"></script>
+		<script type="text/javascript" src="<?echo BASE_WWW; ?>js/jquery.js"></script>
+		<script type="text/javascript" src="<?echo BASE_WWW; ?>js/jquery.ui.js"></script>
+		<script type="text/javascript" src="<?echo BASE_WWW; ?>js/jquery.json.js"></script>	
+		<script type="text/javascript" src="<?echo BASE_WWW; ?>js/jquery.ui.taoqualDialog.js"></script>
+		<script type="text/javascript" src="<?echo BASE_WWW; ?>js/wfEngine.js"></script>
+		<script type="text/javascript" src="<?echo BASE_WWW; ?>js/process_browser.js"></script>
+			
 		<script type="text/javascript">
 			window.processUri = '<?php echo urlencode($processUri); ?>';
 			window.activityUri = '<?php echo urlencode($activity->uri); ?>';
@@ -87,7 +87,7 @@
 		</script>
 		
 		<style media="screen">
-			@import url(<?echo BASE_WWW; ?>/<?php echo $GLOBALS['dir_theme']; ?>/css/process_browser.css);
+			@import url(<?echo BASE_WWW; ?>css/process_browser.css);
 		</style>
 
 	</head>
@@ -98,7 +98,7 @@
 			
 			
         	<li>
-        		<span id="connecteduser" class="icon"><?php echo __("User Id."); ?> <span id="username"><?php echo $userViewData['username']; ?></span></span> <span class="separator" />
+        		<span id="connecteduser" class="icon"><?php echo __("User Id."); ?> <span id="username"><?php echo $user; ?></span></span> <span class="separator" />
         	</li>
          	
 
@@ -112,7 +112,7 @@
          	
          
          	<li>
-         		<a id="logout" class="action icon" href="<?php echo BASE_URL;?>/authentication/logout"><?php echo __("Logout"); ?></a>
+         		<a id="logout" class="action icon" href="<?php echo BASE_URL;?>/DeliveryServer/logout"><?php echo __("Logout"); ?></a>
          	</li>
 
 		</ul>

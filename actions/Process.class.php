@@ -25,7 +25,7 @@ class Process extends TaoModule {
 		
 		//the service is initialized by default
 		$this->service = new wfEngine_models_classes_ProcessService();
-		$this->authoringService = new taoDelivery_models_classes_ProcessAuthoringService();
+		$this->authoringService = new wfEngine_models_classes_ProcessAuthoringService();
 		$this->defaultData();
 	}
 	
@@ -145,7 +145,6 @@ class Process extends TaoModule {
 		$this->setData('error', false);
 		try{
 			//get process instance to be authored
-			// $processDefinition = new core_kernel_classes_Resource("http://127.0.0.1/middleware/demo.rdf#i1265636054002217401");		
 			$processDefinition = $this->getCurrentInstance();
 			$this->setData('processUri', tao_helpers_Uri::encode($processDefinition->uriResource));
 		}
