@@ -52,10 +52,10 @@ class ProcessBrowser extends Module
 
 
 
-		foreach ($process->getVariables() as $var)
+		foreach ($variables as $var)
 		{
 			$variablesViewData[$var->code] = array('uri' 	=> $var->uri,
-												   'value' 	=> $var->value);
+												   'value' 	=> urlencode($var->value));
 				
 		}
 
@@ -133,11 +133,10 @@ class ProcessBrowser extends Module
 
 		$services = $activityExecution->getInteractiveServices();
 
-
 		$this->setData('services',$services);
 
 		$this->setData('browserViewData', $browserViewData);
-		$this->setData('browserViewData', $browserViewData);
+
 		$this->setView('process_browser.tpl');
 	}
 
