@@ -2,10 +2,10 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<?php echo $GLOBALS['lang']; ?>" lang="<?php echo $GLOBALS['lang']; ?>">
 	<head>
 		<title><?php echo __("WorkflowEngine Process Browser "); ?></title>
-		<script type="text/javascript" src="<?echo BASE_WWW; ?>/<?php echo $GLOBALS['dir_theme']; ?>/js/jquery.js"/></script>
-		<script type="text/javascript" src="<?echo BASE_WWW; ?>/<?php echo $GLOBALS['dir_theme']; ?>/js/wfEngine.js"/></script>
+		<script type="text/javascript" src="<?echo BASE_WWW; ?>/js/jquery.js"/></script>
+		<script type="text/javascript" src="<?echo BASE_WWW; ?>/js/wfEngine.js"/></script>
 		<style media="screen">
-			@import url(<?echo BASE_WWW; ?>/<?php echo $GLOBALS['dir_theme']; ?>css/main.css);
+			@import url(<?echo BASE_WWW; ?>/css/main.css);
 		</style>
 	</head>
 	
@@ -68,21 +68,20 @@
 			
 			<!-- End of Active Processes -->
 			<h2 class="section_title"><?php echo __("Initialize new Process"); ?></h2>
-			<form id="authoring_form" action="<?php echo BASE_URL;?>/processes/authoring" method="get" >
-				<?php foreach($availableProcessDefinition as $procDef) : ?>
-					<li>
-						<input type="radio"  value="<?php echo urlencode($procDef->uriResource); ?>" name="processDefinitionUri" >  
-							<?php echo GUIHelper::sanitizeGenerisString($procDef->getLabel()); ?>
-						</input>
-					</li>
-				<?php endforeach;  ?>					
-				<input id="new_process" type="submit" value="<?php echo __("New Process") ?>" />
-			</form>
+				<div id="new_process">
+					<?php foreach($availableProcessDefinition as $procDef) : ?>
+						<li>
+							<a href="<?php echo BASE_URL;?>/Processes/authoring?processDefinitionUri=<?php echo urlencode($procDef->uriResource); ?>">
+							<?php echo GUIHelper::sanitizeGenerisString($procDef->getLabel()); ?></a>
+						</li>
+					<?php endforeach;  ?>
+				</div>				
 			<h2 class="section_title"><?php echo __("My roles"); ?></h2>
 			<ul id="roles">
 				<?php foreach ($userViewData['roles'] as $role): ?>
 					<li><?php echo $role['label']; ?></li>
 				<?php endforeach; ?>
+	
 			</ul>
 			<!-- End of Roles -->
 			</div>

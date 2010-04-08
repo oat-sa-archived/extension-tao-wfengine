@@ -4,7 +4,7 @@
 		<title><?php echo PROCESS_BROWSER_TITLE; ?></title>
 		
 		<style media="screen">
-			@import url(<?echo BASE_WWW; ?>/<?php echo $GLOBALS['dir_theme']; ?>/css/login.css);
+			@import url(<?echo BASE_WWW; ?>/css/login.css);
 		</style>
 	</head>
 	

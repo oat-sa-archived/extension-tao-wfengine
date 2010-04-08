@@ -4,20 +4,14 @@
 		<title><?php echo __("Workflow Engine"); ?></title>
 	
 		<style media="screen">
-			@import url(<?echo BASE_WWW; ?>/<?php echo $GLOBALS['dir_theme']; ?>/css/process_authoring.css);
+			@import url(<?echo BASE_WWW; ?>/css/process_authoring.css);
 		</style>
 		
-		<script type="text/javascript" src="<?echo BASE_WWW; ?>/<?php echo $GLOBALS['dir_theme']; ?>/js/jquery.js"></script>
-		<script type="text/javascript" src="<?echo BASE_WWW; ?>/<?php echo $GLOBALS['dir_theme']; ?>/js/process_authoring.js"></script>
+		<script type="text/javascript" src="<?echo BASE_WWW; ?>/js/jquery.js"></script>
+		<script type="text/javascript" src="<?echo BASE_WWW; ?>/js/process_authoring.js"></script>
 	</head>
 	<body>
 		<ul id="control">
-			<li>
-				<span id="uiLanguages" class="icon"><?php echo __("Languages"); ?> :</span> 
-				<?php foreach ($uiLanguages as $lg): ?>
-				<a class="language internalLink" href="<?php echo BASE_URL;?>/preferences/switchUiLanguage?lang=<?php echo str_replace("EN_EN","EN",$lg); ?>"><?php echo strtoupper(substr($lg,3)); ?></a> 
-				<?php endforeach; ?> <span class="separator" />
-			</li>  
         	<li>
         		<span id="connecteduser" class="icon"><?php echo __("User Id."); ?> <span id="username"><?php echo $userViewData['username']; ?></span> </span><span class="separator" />
         	</li>
@@ -30,7 +24,7 @@
 		</ul>
 		
 		<div id="content">
-			<h1 id="authoring_title"><?php echo __("Interview initialization"); ?></h1>	
+			<h1 id="authoring_title"><?php echo __("Process initialization"); ?></h1>	
 			
 			<div id="business">
 				<h2 id="authoring_subtitle"><?php echo $processAuthoringData['processLabel']; ?></h2>
@@ -47,7 +41,7 @@
 						</tbody>
 						<tfoot>
 							<tr>
-								<td id="authoring_submit" colspan="2"><input id="submit_process" type="submit" name="posted[new]" value="<?php echo __("Create Interview"); ?>"/></td>
+								<td id="authoring_submit" colspan="2"><input id="submit_process" type="submit" name="posted[new]" value="<?php echo __("Launch Process"); ?>"/></td>
 							</tr>
 						</tfoot>
 					</table>
