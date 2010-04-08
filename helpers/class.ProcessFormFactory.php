@@ -633,7 +633,7 @@ class wfEngine_helpers_ProcessFormFactory extends tao_helpers_form_GenerisFormFa
 				$currentProcess = $processCollection->get(0);
 				
 				//get all activities of the process:
-				$authoringService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessAuthoringService');
+				$authoringService = new wfEngine_models_classes_ProcessAuthoringService();
 				$activities = $authoringService->getActivitiesByProcess($currentProcess);
 			}
 		}
