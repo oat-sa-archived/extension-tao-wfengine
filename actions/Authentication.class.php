@@ -63,7 +63,7 @@ class Authentication extends Module
 		}
 
 		// Finally, destroy the session.
-		session_destroy();
+		session_unset();
 
 		$this->redirect('../Authentication/index');
 	}
