@@ -448,10 +448,10 @@ class wfEngine_helpers_ProcessFormFactory extends tao_helpers_form_GenerisFormFa
 		$myForm->addElement($elementConnectorUri);
 		
 		//add label input: authorize connector label editing or not?
-		// $elementLabel = tao_helpers_form_FormFactory::getElement('label', 'Textbox');
-		// $elementLabel->setDescription(__('Label'));
-		// $elementLabel->setValue($callOfService->getLabel());
-		// $myForm->addElement($elementLabel);
+		$elementLabel = tao_helpers_form_FormFactory::getElement('label', 'Textbox');
+		$elementLabel->setDescription(__('Label'));
+		$elementLabel->setValue($connector->getLabel());
+		$myForm->addElement($elementLabel);
 		
 		//add a drop down select input to allow selecting Type of Connector
 		$elementConnectorType = tao_helpers_form_FormFactory::getElement(tao_helpers_Uri::encode(PROPERTY_CONNECTORS_TYPE), 'Combobox');

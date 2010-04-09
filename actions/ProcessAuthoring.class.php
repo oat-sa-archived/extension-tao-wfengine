@@ -178,6 +178,9 @@ class ProcessAuthoring extends TaoModule {
 				$class = 'node-activity-initial';
 			}
 			
+			//by default, set the 'isHidden' property value to false:
+			$newActivity->setPropertyValue(new core_kernel_classes_Property(PROPERTY_ACTIVITIES_ISHIDDEN), GENERIS_FALSE);
+			
 			echo json_encode(array(
 				'label'	=> $newActivity->getLabel(),
 				'uri' 	=> tao_helpers_Uri::encode($newActivity->uriResource),
@@ -616,8 +619,18 @@ class ProcessAuthoring extends TaoModule {
 			$saved = false;
 			throw new Exception("no connector type uri found in POST");
 		}
+		
+		$propertyValues = array();
 		if($data[PROPERTY_CONNECTORS_TYPE] != 'none'){
-			$this->service->bindProperties($connectorInstance, array(PROPERTY_CONNECTORS_TYPE => $data[PROPERTY_CONNECTORS_TYPE]));
+			$propertyValues[PROPERTY_CONNECTORS_TYPE] = $data[PROPERTY_CONNECTORS_TYPE];
+		}
+		
+		if(trim($data['label']) != ''){
+			$propertyValues[RDFS_LABEL] = $data['label'];
+		}
+		
+		if(!empty($propertyValues)){
+			$this->service->bindProperties($connectorInstance, $propertyValues);
 		}
 		
 		$followingActivity = null;
