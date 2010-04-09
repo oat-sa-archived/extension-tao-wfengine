@@ -178,9 +178,6 @@ class ProcessAuthoring extends TaoModule {
 				$class = 'node-activity-initial';
 			}
 			
-			//by default, set the 'isHidden' property value to false:
-			$newActivity->setPropertyValue(new core_kernel_classes_Property(PROPERTY_ACTIVITIES_ISHIDDEN), GENERIS_FALSE);
-			
 			echo json_encode(array(
 				'label'	=> $newActivity->getLabel(),
 				'uri' 	=> tao_helpers_Uri::encode($newActivity->uriResource),
@@ -286,6 +283,9 @@ class ProcessAuthoring extends TaoModule {
 			PROPERTY_ACTIVITIES_ONAFTERINFERENCERULE,
 			PROPERTY_ACTIVITIES_ONBEFOREINFERENCERULE,
 			PROPERTY_ACTIVITIES_CONSISTENCYRULE,
+			PROPERTY_ACTIVITIES_DISPLAYCALENDAR,
+			PROPERTY_ACTIVITIES_HYPERCLASSES,
+			PROPERTY_ACTIVITIES_STATEMENTASSIGNATION,
 			'http://www.tao.lu/middleware/Interview.rdf#i122354397139712'
 		);
 		

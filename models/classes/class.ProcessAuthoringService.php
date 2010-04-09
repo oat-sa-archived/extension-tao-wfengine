@@ -567,6 +567,10 @@ class wfEngine_models_classes_ProcessAuthoringService
 			}else{
 				$activity->editPropertyValues(new core_kernel_classes_Property(PROPERTY_ACTIVITIES_ISINITIAL), GENERIS_FALSE);
 			}
+			
+			//by default, set the 'isHidden' property value to false:
+			$activity->editPropertyValues(new core_kernel_classes_Property(PROPERTY_ACTIVITIES_ISHIDDEN), GENERIS_FALSE);
+			
 		}else{
 			throw new Exception("the activity cannot be created for the process {$process->uriResource}");
 		}
