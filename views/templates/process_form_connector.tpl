@@ -58,7 +58,7 @@ $(function(){
 					// initActivityTree();
 					refreshActivityTree();
 					// reselectActivityTree();
-					// ActivityTreeClass.selectTreeNode(selectedNode);
+					ActivityTreeClass.selectTreeNode(selectedNode);
 				}else{
 					$("#connector-form").html("connector save failed:" + response);
 				}

@@ -91,9 +91,9 @@
 	
 	$(function(){
 		$("#accordion1").accordion({
-			fillSpace: false,
+			fillSpace: true,
 			autoHeight: false,
-			collapsible: true,
+			collapsible: false,
 			active: 0,
 			icons: { 'header': 'ui-icon-plus', 'headerSelected': 'ui-icon-minus' }
 		});
@@ -113,7 +113,7 @@
 	
 	$(function(){
 		$("#accordion2").accordion({
-			fillSpace: false,
+			fillSpace: true,
 			autoHeight: false,
 			collapsible: false,
 			
