@@ -27,6 +27,8 @@ class Process extends TaoModule {
 		$this->service = new wfEngine_models_classes_ProcessService();
 		$this->authoringService = new wfEngine_models_classes_ProcessAuthoringService();
 		$this->defaultData();
+		
+		Session::setAttribute('currentSection', 'process');
 	}
 	
 /*
