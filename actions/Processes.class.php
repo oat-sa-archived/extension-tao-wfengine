@@ -82,16 +82,10 @@ class Processes extends Module
 			// 1. We go back to the main.
 			// 2. We begin the newly created process.
 			$viewState = '';
-			if (BEGIN_WHEN_PROCESS_CREATED)
-			{
-				$processUri = urlencode($newProcessExecution->uri);
-				$viewState = "../ProcessBrowser/index?processUri=${processUri}";
-		}
-		else
-		{
-			$viewState = 'Main/index';echo __FILE__.__LINE__;error_reporting(E_ALL);
-		}
-			echo __FILE__.__LINE__;
+			$processUri = urlencode($newProcessExecution->uri);
+			$viewState = "../ProcessBrowser/index?processUri=${processUri}";
+
+			
 		$this->redirect($viewState);
 
 }
