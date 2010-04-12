@@ -289,15 +289,6 @@ class wfEngine_helpers_ProcessFormFactory extends tao_helpers_form_GenerisFormFa
 			return $returnValue;
 		}
 		
-		if(!($serviceDefinition instanceof core_kernel_classes_Resource)){
-			throw new Exception('serviceDefinition must be a resource');
-			return $returnValue;
-		}
-		if(!($callOfService instanceof core_kernel_classes_Resource)){
-			throw new Exception('callOfService must be a resource');
-			return $returnValue;
-		}
-		
 		$formalParameterType = '';
 		$actualParameterInOutType = '';
 		$formalParameterName = '';
@@ -355,7 +346,7 @@ class wfEngine_helpers_ProcessFormFactory extends tao_helpers_form_GenerisFormFa
 							//the actual param associated to the formal parameter of THE call of services has been found!
 						
 							//to be clarified(which one to use, how and when???):
-							$actualParameterType = PROPERTY_ACTUALPARAM_PROCESSVARIABLE; //PROPERTY_ACTUALPARAM_CONSTANTVALUE;//PROPERTY_ACTUALPARAM_PROCESSVARIABLE //PROPERTY_ACTUALPARAM_QUALITYMETRIC
+							$actualParameterType = PROPERTY_ACTUALPARAM_CONSTANTVALUE; //PROPERTY_ACTUALPARAM_CONSTANTVALUE;//PROPERTY_ACTUALPARAM_PROCESSVARIABLE //PROPERTY_ACTUALPARAM_QUALITYMETRIC
 							
 							$actualParamValueCollection = $actualParam->getPropertyValuesCollection(new core_kernel_classes_Property($actualParameterType));
 							if(!$actualParamValueCollection->isEmpty()){

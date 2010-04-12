@@ -110,63 +110,93 @@ class Service
         // section 10-13-1--31--23da6e5c:11a2ac14500:-8000:00000000000009B3 begin
         parent::__construct($uri);
 		$this->activityexecution = $activityExecution;
-				
+		
+
+	
 		// Get service definitions
-		$serviceDefProp = new core_kernel_classes_Property(PROPERTY_CALLOFSERVICES_SERVICEDEFINITION);
-		$serviceDefinition = $this->resource->getOnePropertyValue($serviceDefProp);
+		$serviceDefinition = $this->resource->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_CALLOFSERVICES_SERVICEDEFINITION));
 
 		// Get service url for call
-		$serviceDefinitionUrlProp = new core_kernel_classes_Property(PROPERTY_SERVICEDEFINITIONS_URL);
-		$serviceDefinitionUrl = $serviceDefinition->getPropertyValues($serviceDefinitionUrlProp);
-
-		$this->url = $serviceDefinitionUrl[0]."";
+		$serviceDefinitionUrl = $serviceDefinition->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_SERVICEDEFINITIONS_URL));
 		
-		$inParametersPorp = new core_kernel_classes_Property(PROPERTY_CALLOFSERVICES_ACTUALPARAMETERIN);
-		$inParameters = $this->resource->getOnePropertyValue($inParametersPorp);
+		$urlPart = explode('?',$serviceDefinitionUrl->literal);
+		$this->url = $urlPart[0];
+		
+		$inParameterCollection = $this->resource->getPropertyValuesCollection(new core_kernel_classes_Property(PROPERTY_CALLOFSERVICES_ACTUALPARAMETERIN));
         
 		$this->input 	= array();
 		$this->output	= array();
 		
-		foreach ($inParameters as $inParameter)
+		foreach ($inParameterCollection->getIterator() as $inParameter)
 		{
-			$inParametersProcessVariableProp = new core_kernel_classes_Property(PROPERTY_ACTUALPARAMETER_PROCESSVARIABLE);
-			$inParametersProcessVariable = $inParameter->getOnePropertyValue($inParametersProcessVariableProp);
+			$inParameterProcessVariable = $inParameter->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_ACTUALPARAMETER_PROCESSVARIABLE));//a resource
+			$inParameterConstant = $inParameter->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_ACTUALPARAMETER_CONSTANTVALUE));
 			
-			$inParametersQualityMetricProp = new core_kernel_classes_Property(PROPERTY_ACTUALPARAMETER_QUALITYMETRIC);
-			$inParametersQualityMetric = $inParameter->getOnePropertyValue($inParametersQualityMetricProp);
+			//quality metric no longer used:
+			// $inParametersQualityMetricProp = new core_kernel_classes_Property(PROPERTY_ACTUALPARAMETER_QUALITYMETRIC);
+			// $inParametersQualityMetric = $inParameter->getOnePropertyValue($inParametersQualityMetricProp);
 			
-			$inParametersConstantProp = new core_kernel_classes_Property(PROPERTY_ACTUALPARAMETER_CONSTANTVALUE);
-			$inParametersConstant = $inParameter->getOnePropertyValue($inParametersConstantProp);
-			
-			$formalParametersProp = new core_kernel_classes_Property(PROPERTY_ACTUALPARAMETER_FORMALPARAMETER);
-			$formalParameters = $inParameter->getOnePropertyValue($formalParametersProp);
-			
+			$formalParameter = $inParameter->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_ACTUALPARAMETER_FORMALPARAMETER));
+				
 			if (!(is_null($this->activityexecution))){
-				$formalParameterName = $formalParameters->getLabel();
+			
+				$formalParameterName = $formalParameter->getLabel();//or the name property???
+				// var_dump($inParameter, $formalParameter, $inParameterProcessVariable, $inParameterConstant);
 				
-				if($inParametersProcessVariable != null) {
-					$prop = new core_kernel_classes_Property($inParametersProcessVariable);
-					$paramValue = $this->activityExecution->resource->getOnePropertyValue($prop);
+				if($inParameterProcessVariable != null) {
+					
+					if(!($inParameterProcessVariable instanceof core_kernel_classes_Resource)){
+						throw new Exception("the process variable set as the value of the parameter 'in' is not a resource");
+					}
+					
+					
 					$paramType 	= 'processvar'; 
+					$paramValue = '';
+					
+					$prop = new core_kernel_classes_Property($inParameterProcessVariable->uriResource);
+					$paramValueResource = $this->activityExecution->resource->getOnePropertyValue($prop);
+					
+					if($paramValueResource instanceof core_kernel_classes_Literal){
+						$paramValue = $paramValueResource->literal;
+					}else if($paramValueResource instanceof core_kernel_classes_Resource){
+						$paramValue = $paramValueResource->uriResource;//encode??
+					}
+					
+					$this->input[common_Utils::fullTrim($formalParameterName)] = array(
+						'type' => $paramType, 
+						'value' => $paramValue, 
+						'uri' => $inParameterProcessVariable->uriResource
+						);
 				}
-				else if ($inParametersQualityMetrics != null) {
-					$paramType 	= 'metric';
-					$paramvalue = $inParametersQualityMetric;
+				// else if ($inParametersQualityMetrics != null) {
+					// $paramType 	= 'metric';
+					// $paramvalue = $inParametersQualityMetric;
+				// }
+				else{
+					
+					$paramType 	= 'constant';
+					$paramValue = '';
+					
+					if($inParameterConstant instanceof core_kernel_classes_Literal){
+						$paramValue = $inParameterConstant->literal;
+					}else if($inParameterConstant instanceof core_kernel_classes_Resource){
+						$paramValue = $inParameterConstant->uriResource;//encode??
+					}
+					
+					// var_dump($inParameterConstant, $paramValue);
+					
+					$this->input[common_Utils::fullTrim($formalParameterName)] = array(
+						'type' => $paramType,
+						'value' => $paramValue
+						);
 				}
-				else {
-					$paramType 	= 'metric';
-					$paramvalue = $inParametersQualityMetric;
-				}
-				$this->input[common_Utils::fullTrim($formalParameterName)] = array('type' => $paramType, 'value' => $paramValue);
 				
-			}
-			else{
+				
+			}else{
 				$this->input[common_Utils::fullTrim($formalParameterName)] = array('type' => null, 'value' => null);
 			}
 		}
-										
-
-														
+		
 		// section 10-13-1--31--23da6e5c:11a2ac14500:-8000:00000000000009B3 end
     }
 
@@ -181,17 +211,26 @@ class Service
     public function getCallUrl($variables = array())
     {
         $returnValue = (string) '';
-
+	
         // section 10-13-1-85-453ada87:11c2dedd780:-8000:0000000000000A1C begin
-    	$activeLiteral = new core_kernel_classes_ActiveLiteral($this->url);
-		$activeUrl = "".$activeLiteral->getDisplayedCode($variables)."";
+		$returnValue = $this->url;
 		
-		$returnValue = $activeUrl;
-
-        foreach ($this->input as $name => $value)
-        {
-        	$returnValue .= '&' . urlencode(trim($name)) . '=' . urlencode(trim($value['value']));
-        }
+		$returnValue .= '?';
+        // var_dump($this->input);
+		foreach ($this->input as $name => $value){
+		
+			$actualValue = $value['value'];
+			
+			if($value['type']=='processVar'){
+				//check if the same is passed in param:
+				if(array_key_exists($value['uri'], $variables)){
+					$actualValue = $variables[ $value['uri'] ];//set the actual value as the one given in parameter
+				}
+			}
+			
+        	$returnValue .= urlencode(trim($name)) . '=' . urlencode(trim($actualValue)) . '&';
+        
+		}
 
         // section 10-13-1-85-453ada87:11c2dedd780:-8000:0000000000000A1C end
 		

@@ -171,7 +171,7 @@ class wfEngine_models_classes_ProcessAuthoringService
 	public function setActualParameter(core_kernel_classes_Resource $callOfService, core_kernel_classes_Resource $formalParam, $value, $parameterInOrOut, $actualParameterType=''){
 		
 		//to be clarified:
-		$actualParameterType = PROPERTY_ACTUALPARAM_PROCESSVARIABLE; //PROPERTY_ACTUALPARAM_CONSTANTVALUE;//PROPERTY_ACTUALPARAM_PROCESSVARIABLE //PROPERTY_ACTUALPARAM_QUALITYMETRIC
+		$actualParameterType = PROPERTY_ACTUALPARAM_CONSTANTVALUE; //PROPERTY_ACTUALPARAM_CONSTANTVALUE;//PROPERTY_ACTUALPARAM_PROCESSVARIABLE //PROPERTY_ACTUALPARAM_QUALITYMETRIC
 		
 		//retrouver systematiquement l'actual parameter associé à chaque fois, à partir du formal parameter et call of service, lors de la sauvegarde
 		$actualParameterClass = new core_kernel_classes_Class(CLASS_ACTUALPARAMETER);
@@ -196,10 +196,9 @@ class wfEngine_models_classes_ProcessAuthoringService
 		
 		$returnValue = (bool) false;
 		
-		if(is_null($callOfService) || !($callOfService instanceof core_kernel_classes_Resource)){
-			throw new Exception("no valid Call of Service in function parameter");
-			return $returnValue;
-		}
+		//remove the property values in the call of service instance
+		$callOfService->removePropertyValues(new core_kernel_classes_Property(PROPERTY_CALLOFSERVICES_ACTUALPARAMIN));
+		$callOfService->removePropertyValues(new core_kernel_classes_Property(PROPERTY_CALLOFSERVICES_ACTUALPARAMOUT));
 		
 		//get all actual param of the current call of service
 		$actualParamCollection = $callOfService->getPropertyValuesCollection(new core_kernel_classes_Property(PROPERTY_SERVICESDEFINITION_FORMALPARAMIN));
@@ -218,10 +217,6 @@ class wfEngine_models_classes_ProcessAuthoringService
 				}
 			}
 		}
-		
-		//remove the property values in the call of service instance
-		$callOfService->removePropertyValues(new core_kernel_classes_Property(PROPERTY_CALLOFSERVICES_ACTUALPARAMIN));
-		$callOfService->removePropertyValues(new core_kernel_classes_Property(PROPERTY_CALLOFSERVICES_ACTUALPARAMOUT));
 		
 		return (bool) $returnValue;
 	}

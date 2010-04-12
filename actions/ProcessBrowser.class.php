@@ -54,9 +54,9 @@ class ProcessBrowser extends Module
 
 		foreach ($variables as $var)
 		{
-			$variablesViewData[$var->code] = array('uri' 	=> $var->uri,
-												   'value' 	=> urlencode($var->value));
-				
+			// $variablesViewData[$var->code] = array('uri' 	=> $var->uri,
+												   // 'value' 	=> urlencode($var->value));
+			$variablesViewData[$var->uri] = urlencode($var->value);	
 		}
 
 		$this->setData('variablesViewData',$variablesViewData);

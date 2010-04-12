@@ -251,8 +251,10 @@ class ProcessAuthoring extends TaoModule {
 		}elseif( (strcasecmp($clazz->uriResource, CLASS_WEBSERVICES) == 0) || (strcasecmp($clazz->uriResource, CLASS_SUPPORTSERVICES) == 0) ){
 			//note: direct instanciating CLASS_SERVICEDEFINITION should be forbidden
 			$formName = "serviceDefinition";
-			$excludedProperty[] = PROPERTY_SERVICESDEFINITION_FORMALPARAMOUT;
-			$excludedProperty[] = PROPERTY_SERVICESDEFINITION_FORMALPARAMIN;
+			
+			//unquote the following lines to disable the display of formal parameters fields
+			// $excludedProperty[] = PROPERTY_SERVICESDEFINITION_FORMALPARAMOUT;
+			// $excludedProperty[] = PROPERTY_SERVICESDEFINITION_FORMALPARAMIN;
 		}elseif(strcasecmp($clazz->uriResource, CLASS_PROCESSVARIABLES) == 0){
 			$formName = "variable";
 		}else{
@@ -264,8 +266,18 @@ class ProcessAuthoring extends TaoModule {
 		$myForm->setActions(array(), 'bottom');	
 		if($myForm->isSubmited()){
 			if($myForm->isValid()){
-				$instance = $this->service->bindProperties($instance, array_map('trim', $myForm->getValues()));
-				
+				var_dump($myForm->getValues());
+				// $instance = $this->service->bindProperties($instance, array_map('trim', $myForm->getValues()));
+				$propertyValues = $myForm->getValues();
+				if(empty($propertyValues[PROPERTY_SERVICESDEFINITION_FORMALPARAMOUT])){
+					unset($propertyValues[PROPERTY_SERVICESDEFINITION_FORMALPARAMOUT]);
+					$instance->removePropertyValues(new core_kernel_classes_Property(PROPERTY_SERVICESDEFINITION_FORMALPARAMOUT));
+				}
+				if(empty($propertyValues[PROPERTY_SERVICESDEFINITION_FORMALPARAMIN])){
+					unset($propertyValues[PROPERTY_SERVICESDEFINITION_FORMALPARAMIN]);
+					$instance->removePropertyValues(new core_kernel_classes_Property(PROPERTY_SERVICESDEFINITION_FORMALPARAMIN));
+				}
+				$instance = $this->service->bindProperties($instance, $propertyValues);
 				echo __("saved");exit;
 			}
 		}
@@ -674,6 +686,7 @@ class ProcessAuthoring extends TaoModule {
 				
 				//save the "then" and the "else" activity (or connector)
 				if(($data['then_activityOrConnector']=="activity") && isset($data["then_activityUri"])){
+					//destruction of the connector of the connector?
 					if($data["then_activityUri"]=="newActivity"){
 						$this->service->createSplitActivity($connectorInstance, 'then', null, $data["then_activityLabel"], false);
 					}else{
