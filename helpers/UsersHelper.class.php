@@ -1,30 +1,49 @@
 <?php
+
 class UsersHelper
 {
 
+	/**
+	 * Double authentication: loggin into tao and the wfengine and init the API connections
+	 * @param string $in_login
+	 * @param string $in_password
+	 * @return boolean
+	 */
 	public static function authenticate($in_login, $in_password){
 
-
-		// New API Connection.
-		core_control_FrontController::connect(API_LOGIN,API_PASSWORD, DATABASE_NAME);
-
-		$_SESSION["WfEngine"] 		= WfEngine::singleton($in_login, $in_password);
-		$user = WfEngine::singleton()->getUser();
-		if($user == null) {
-			return false;
-		}
+		$userService = tao_models_classes_ServiceFactory::get('tao_models_classes_UserService');
 		
-		$_SESSION["userObject"] 	= $user;
-		core_kernel_classes_Session::singleton()->setLg("EN");
+		//loggin into tao 
+		if($userService->loginUser($in_login, $in_password, false)){
+		
+			//get the user in the session
+			$currentUser = $userService->getCurrentUser(Session::getAttribute(tao_models_classes_UserService::LOGIN_KEY));
+				
+			//connect the API
+			core_control_FrontController::connect($currentUser['login'], $currentUser['password'], DATABASE_NAME);
 			
-		// Taoqual authentication and language markers.
-		$_SESSION['taoqual.authenticated'] 		= true;
-		$_SESSION['taoqual.lang']				= 'EN';
-		$_SESSION['taoqual.serviceContentLang'] = 'EN';
-		$_SESSION['taoqual.userId']				= $in_login;
-
-		return true;
-
+			//init the languages
+			core_kernel_classes_Session::singleton()->defaultLg = $userService->getDefaultLanguage();
+			core_kernel_classes_Session::singleton()->setLg($userService->getUserLanguage($currentUser['login']));
+			
+			//log in the wf engines
+			$_SESSION["WfEngine"] 		= WfEngine::singleton($currentUser['login'], $currentUser['password']);
+			$user = WfEngine::singleton()->getUser();
+			if($user == null) {
+				return false;
+			}
+			
+			$_SESSION["userObject"] 	= $user;
+				
+			// Taoqual authentication and language markers.
+			$_SESSION['taoqual.authenticated'] 		= true;
+			$_SESSION['taoqual.lang']				= 'EN';
+			$_SESSION['taoqual.serviceContentLang'] = 'EN';
+			$_SESSION['taoqual.userId']				= $in_login;
+			
+			return true;
+		}
+		return false;
 	}
 
 	public static function buildCurrentUserForView()
@@ -84,14 +103,12 @@ class UsersHelper
 		return $mayAccess;
 	}
 
-	public static function checkAuthentication()
-	{
-		core_control_FrontController::connect(API_LOGIN,API_PASSWORD, DATABASE_NAME);
-		if (!isset($_SESSION['taoqual.authenticated']))
-		{	
-			return false;
-		}
-		return true;
+	/**
+	 * check into the session if a user has been authenticated
+	 * @return boolean 
+	 */
+	public static function checkAuthentication(){
+		return (isset($_SESSION['taoqual.authenticated']) && tao_models_classes_UserService::isASessionOpened());
 	}
 
 

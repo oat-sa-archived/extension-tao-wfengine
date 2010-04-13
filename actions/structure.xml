@@ -26,9 +26,7 @@
 			</actions>
 		</section>
 		
-		<section id="process_authoring" name="Process authoring" url="/wfEngine/Process/authoring" >
-			<actions/>
-		</section>
+		<section id="process_authoring" name="Process authoring" url="/wfEngine/Process/authoring" />
 		
 	</sections>
 </extension>

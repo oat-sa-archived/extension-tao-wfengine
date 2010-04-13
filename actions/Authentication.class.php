@@ -16,23 +16,32 @@ class Authentication extends Module
 		// In this was, the login action will receive these parameters and will be able
 		// to route the client to the view where in he tried to be authenticated before
 		// being redirected to the authentication process.
-		$indexViewData = array();
-		$indexViewData['route'] = false;
-
-//		if (isset($_GET['from']) && isset($_GET['fromQuery']))
-//		{
-//			$indexViewData['route']			= true;
-//			$indexViewData['from'] 			= $_GET['from'];
-//			$indexViewData['fromQuery'] 	= $_GET['fromQuery'];
-//		}
-		$this->setData('indexViewData',$indexViewData);
+		$data = array();
+		$data['route'] = false;
+		if (isset($_GET['from']) && isset($_GET['fromQuery'])){
+			$data['route']		= true;
+			$data['from'] 		= $_GET['from'];
+			$data['fromQuery'] 	= $_GET['fromQuery'];
+		}
+		
+		$myLoginFormContainer = new wfEngine_actions_form_Login($data);
+		$myForm = $myLoginFormContainer->getForm();
+		if($myForm->isSubmited()){
+			if($myForm->isValid()){
+				$values = $myForm->getValues();
+				if(!$this->login($values['login'], $values['password'])){
+					$this->setData('errorMessage', __('No account match the given login / password'));
+				}
+			}
+		}
+		
+		$this->setData('form', $myForm->render());
 		$this->setView('login.tpl');
 	}
 
-	public function login($in_login, $in_password)
+	protected function login($in_login, $in_password)
 	{
 		// We connect to generis.
-
 		if (UsersHelper::authenticate($in_login,$in_password))
 		{
 			// If we are here, the login process succeeded. So we redirect the user
@@ -45,14 +54,9 @@ class Authentication extends Module
 			else{
 				$this->redirect('../Main/index');
 			}
-
+			return true;
 		}
-		else
-		{
-			// The user has to provide valid indentification information.
-			$this->redirect('../Authentication/index');
-		}
-		echo __FILE__.__LINE__;
+		return false;
 	}
 
 	public function logout()
