@@ -547,6 +547,7 @@ class ProcessAuthoring extends TaoModule {
 			throw new Exception("the actual parameters related to the call of service cannot be removed");
 		}
 		
+		var_dump($data);
 		foreach($data as $key=>$value){
 			$formalParamUri = '';
 			$parameterInOrOut='';
@@ -568,19 +569,32 @@ class ProcessAuthoring extends TaoModule {
 			*/
 			
 			//method2: use the suffix of the name of the form input:
-			$index=0;
-			if($index=strpos($key, '_IN')){
+			$index = 0;
+			if($index = strpos('_IN_choice')){
 				$formalParamUri = substr($key,0,$index);
 				$parameterInOrOut = PROPERTY_CALLOFSERVICES_ACTUALPARAMIN;
-			}elseif($index=strpos($key, '_OUT')){
+			}elseif($index = strpos('_OUT_choice')){
 				$formalParamUri = substr($key,0,$index);
 				$parameterInOrOut = PROPERTY_CALLOFSERVICES_ACTUALPARAMOUT;
 			}else{
 				continue;
 			}
 			
+			$actualParameterType = '';
+			$paramValue = '';
+			if($value == 'constant'){
+				$actualParameterType = PROPERTY_ACTUALPARAM_CONSTANTVALUE;
+				$paramValue = $data[$formalParamUri.'_constant'];
+			}elseif($value == 'processvariable'){
+				$actualParameterType = PROPERTY_ACTUALPARAM_PROCESSVARIABLE;
+				$paramValue = $data[$formalParamUri.'_var'];
+			}else{
+				throw new Exception('wrong actual parameter type posted');
+			}
+			// $actualParameterType = PROPERTY_ACTUALPARAM_CONSTANTVALUE; //PROPERTY_ACTUALPARAM_CONSTANTVALUE;//PROPERTY_ACTUALPARAM_PROCESSVARIABLE //PROPERTY_ACTUALPARAM_QUALITYMETRIC
+		
 			$formalParam = new core_kernel_classes_Resource($formalParamUri);
-			$saved = $this->service->setActualParameter($callOfService, $formalParam, $value, $parameterInOrOut, '');
+			$saved = $this->service->setActualParameter($callOfService, $formalParam, $paramValue, $parameterInOrOut, $actualParameterType);
 			if(!$saved){
 				break;
 			}

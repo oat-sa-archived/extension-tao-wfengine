@@ -317,7 +317,7 @@ class wfEngine_helpers_ProcessFormFactory extends tao_helpers_form_GenerisFormFa
 		if($collection->count()>0){
 			//start creating the BLOC of form element
 			$descriptionElement = tao_helpers_form_FormFactory::getElement($paramType, 'Free');
-			$descriptionElement->setValue($formalParameterName.' :');
+			$descriptionElement->setValue("<b>{$formalParameterName} :</b>");
 			$returnValue[$paramType]=$descriptionElement;
 		}
 		
@@ -331,7 +331,9 @@ class wfEngine_helpers_ProcessFormFactory extends tao_helpers_form_GenerisFormFa
 				$inputValue = "";
 				
 				
-				//get current value:PROPERTY_ACTUALPARAM_CONSTANTVALUE
+				
+				
+				//get current value:
 				//find actual param first!
 				$actualParamValue='';
 				$actualParamFromFormalParam = core_kernel_impl_ApiModelOO::singleton()->getSubject(PROPERTY_ACTUALPARAM_FORMALPARAM, $formalParam->uriResource);
@@ -339,54 +341,55 @@ class wfEngine_helpers_ProcessFormFactory extends tao_helpers_form_GenerisFormFa
 				
 				//make an intersect with $collection = $callOfService->getPropertyValuesCollection(new core_kernel_classes_Property(PROPERTY_CALLOFSERVICES_ACTUALPARAMOUT));
 				$actualParamCollection = $actualParamFromFormalParam->intersect($actualParamFromCallOfServices);
-				// throw new Exception("vardump=". var_dump($actualParam));//debug
+				
 				if(!$actualParamCollection->isEmpty()){
 					foreach($actualParamCollection->getIterator() as $actualParam){
 						if($actualParam instanceof core_kernel_classes_Resource){
 							//the actual param associated to the formal parameter of THE call of services has been found!
 						
-							//to be clarified(which one to use, how and when???):
-							$actualParameterType = PROPERTY_ACTUALPARAM_CONSTANTVALUE; //PROPERTY_ACTUALPARAM_CONSTANTVALUE;//PROPERTY_ACTUALPARAM_PROCESSVARIABLE //PROPERTY_ACTUALPARAM_QUALITYMETRIC
-							
-							$actualParamValueCollection = $actualParam->getPropertyValuesCollection(new core_kernel_classes_Property($actualParameterType));
-							if(!$actualParamValueCollection->isEmpty()){
-								if($actualParamValueCollection->get(0) instanceof core_kernel_classes_Resource){
-									$actualParamValue = $actualParamValueCollection->get(0)->uriResource;
-								}elseif($actualParamValueCollection->get(0) instanceof core_kernel_classes_Literal){
-									$actualParamValue = $actualParamValueCollection->get(0)->literal;
+							//check the type of actual parameter:
+							$inParameterProcessVariable = $actualParam->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_ACTUALPARAMETER_PROCESSVARIABLE));//a resource
+							$inParameterConstant = $actualParam->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_ACTUALPARAMETER_CONSTANTVALUE));
+							if(!is_null($inParameterProcessVariable)){
+								//the type is a processvariable so must be a resource:
+								if(!($inParameterProcessVariable instanceof core_kernel_classes_Resource)){
+									throw new Exception("the process variable set as the value of the actual parameter is not a resource");
 								}
-								$inputValue = $actualParamValue;
+								
+								$paramType = 'processVariable';
+								$inputValue = $inParameterProcessVariable->uriResource;
+								
+							}elseif(!is_null($inParameterConstant)){
+								//the type is a constant:
+								$paramType = 'constant';
+								if($inParameterConstant instanceof core_kernel_classes_Literal){
+									$inputValue = $inParameterConstant->literal;
+								}else if($inParameterConstant instanceof core_kernel_classes_Resource){
+									$inputValue = $inParameterConstant->uriResource;//encode??
+								}
+								
+							}else{
+								//the type is not specified yet:
+								
 							}
+			
+							// $actualParameterType = PROPERTY_ACTUALPARAM_CONSTANTVALUE; //PROPERTY_ACTUALPARAM_CONSTANTVALUE;//PROPERTY_ACTUALPARAM_PROCESSVARIABLE //PROPERTY_ACTUALPARAM_QUALITYMETRIC
+							
+							// $actualParamValueCollection = $actualParam->getPropertyValuesCollection(new core_kernel_classes_Property($actualParameterType));
+							// if(!$actualParamValueCollection->isEmpty()){
+								// if($actualParamValueCollection->get(0) instanceof core_kernel_classes_Resource){
+									// $actualParamValue = $actualParamValueCollection->get(0)->uriResource;
+								// }elseif($actualParamValueCollection->get(0) instanceof core_kernel_classes_Literal){
+									// $actualParamValue = $actualParamValueCollection->get(0)->literal;
+								// }
+								// $inputValue = $actualParamValue;
+							// }
+						
+							break; //stop as one iteration: there normally should be only one actual parameter set for a given formal parameter 
 						}
 					}
-					/*
-					if($actualParam->get(0) instanceof core_kernel_classes_Resource){
-						//the actual param associated to the formal parameter of THE call of services has been found!
-						
-						//to be clarified(which one to use, how and when???):
-						$actualParameterType = PROPERTY_ACTUALPARAM_PROCESSVARIABLE; //PROPERTY_ACTUALPARAM_CONSTANTVALUE;//PROPERTY_ACTUALPARAM_PROCESSVARIABLE //PROPERTY_ACTUALPARAM_QUALITYMETRIC
-						
-						// $actualParamValueCollection = $actualParam->get(0)->getPropertyValuesCollection(new core_kernel_classes_Property($actualParameterType));
-						// if($actualParamValueCollection->count() > 0){
-							// if($actualParamValueCollection->get(0) instanceof core_kernel_classes_Resource){
-								// $actualParamValue = $actualParamValueCollection->get(0)->uriResource;
-							// }elseif($actualParamValueCollection->get(0) instanceof core_kernel_classes_Literal){
-								// $actualParamValue = $actualParamValueCollection->get(0)->literal;
-							// }
-							// $inputValue = $actualParamValue;
-						// }
-					}*/
 				}
-				
-				// if($actualParam->count()>0){
-					// if($actualParam->get(0) instanceof core_kernel_classes_Resource){
-						// $actualParamValueCollection = $actualParam->get(0)->getPropertyValuesCollection(new core_kernel_classes_Property(PROPERTY_ACTUALPARAM_CONSTANTVALUE));
-						// if($actualParamValueCollection->count() > 0){
-							// $actualParamValue = $actualParamValueCollection->get(0)->literal;
-							// $inputValue = $actualParamValue;
-						// }
-					// }
-				// }
+					
 				
 				/*
 				if(empty($inputUri)){//place ce bloc dans la creation de call of service: cad retrouver systematiquement l'actual parameter associé à chaque fois, à partir du formal parameter et call of service, lors de la sauvegarde
@@ -401,23 +404,69 @@ class wfEngine_helpers_ProcessFormFactory extends tao_helpers_form_GenerisFormFa
 				*/
 				
 				if(empty($inputValue)){
-					//if no value set yet, try finding the default value:
+					//if no value set yet, try finding the default value (literal only! or url that are considered as a literal)
 					$defaultValue = "";
-					$paramValueCollection = $formalParam->getPropertyValuesCollection(new core_kernel_classes_Property(PROPERTY_FORMALPARAM_DEFAULTVALUE));
-					if($paramValueCollection->count()>0){
-						if($paramValueCollection->get(0) instanceof core_kernel_classes_Literal){
-							$defaultValue = $paramValueCollection->get(0)->literal;
-							$inputValue = $defaultValue;
+					$paramDefaultValue = $formalParam->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_FORMALPARAM_DEFAULTVALUE));
+					if(!is_null($paramDefaultValue)){
+						if($paramDefaultValue instanceof core_kernel_classes_Literal){
+							$inputValue = $paramDefaultValue->literal;
+						}else if($paramDefaultValue instanceof core_kernel_classes_Resource){
+							$inputValue = $paramDefaultValue->uriResource;//the case a url
+						}
+						
+						if(!empty($inputValue)){
+							//the input value has been set as the default one:
+							$paramType = 'constant';
 						}
 					}
 				}
 				
-				//create the form element here:
-				$element = tao_helpers_form_FormFactory::getElement(tao_helpers_Uri::encode($inputUri).$formalParameterSuffix, 'Textbox');
-				$element->setDescription($inputName);
-				$element->setValue($inputValue);
+				$elementId = tao_helpers_Uri::encode($inputUri).$formalParameterSuffix;
+				$elementChoiceId = $elementId.'_choice';
+				$elementInputId = $elementId.'_constant';
+				$elementVarId = $elementId.'_var';
 				
-				$returnValue[tao_helpers_Uri::encode($inputUri).$formalParameterSuffix] = $element;
+				//element of type "free":
+				$element = tao_helpers_form_FormFactory::getElement($elementId, 'Free');
+				$element->setValue($inputName.': ');
+				
+				//set the choice element (radiobox: constant/processVariable:
+				$elementChoice = tao_helpers_form_FormFactory::getElement($elementChoiceId, 'Radiobox');
+				$elementChoice->setDescription(' ');
+				$options = array(
+					"constant" => __("Constant"),
+					"processvariable" => __("Process Variable")
+				);
+				$elementChoice->setOptions($options);
+				$elementChoice->setValue($paramType);
+				
+				//element input:
+				$elementInput = tao_helpers_form_FormFactory::getElement($elementInputId, 'Textbox');
+				$elementInput->setDescription(' ');
+				
+				//element choice of process var (range: all or selected only?):
+				$elementVar = tao_helpers_form_FormFactory::getElement($elementVarId, 'ComboBox');
+				$elementVar->setDescription(' ');
+				
+				$processVariables = array();
+				$processVariables = array('none' => ' ');
+				$range = new core_kernel_classes_Class(CLASS_PROCESSVARIABLES);
+				foreach($range->getInstances(true) as $rangeInstance){
+					$processVariables[ tao_helpers_Uri::encode($rangeInstance->uriResource) ] = $rangeInstance->getLabel();
+				}
+				$elementVar->setOptions($processVariables);
+				
+				//set value here:
+				if($paramType == 'constant'){
+					$elementInput->setValue($inputValue);
+				}elseif($paramType == 'processvar'){
+					$elementVar->setValue($inputValue);
+				}
+								
+				$returnValue[$elementId] = $element;
+				$returnValue[$elementChoiceId] = $elementChoice;
+				$returnValue[$elementInputId] = $elementInput;
+				$returnValue[$elementVarId] = $elementVar;
 			}
 		}
 		
