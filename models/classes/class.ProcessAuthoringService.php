@@ -1184,7 +1184,91 @@ class wfEngine_models_classes_ProcessAuthoringService
 		return $returnValue;
 	}
 	
+	//type: constant or processvariable
+	function createFormalParameter($name, $type, $defaultValue, $label=''){
 		
+		if($type == 'constant'){
+			$defaultValueProp = new core_kernel_classes_Property(PROPERTY_FORMALPARAMETER_DEFAULTCONSTANTVALUE);
+		}elseif($type == 'processvariable'){
+			$defaultValueProp = new core_kernel_classes_Property(PROPERTY_FORMALPARAMETER_DEFAULTPROCESSVARIABLE);
+		}else{
+			return null;
+		}
+		
+		$classFormalParam = new core_kernel_classes_Class(CLASS_FORMALPARAMETER);
+		if(empty($label)){
+			$label = $name;
+		}
+		$formalParam = $classFormalParam->createInstance($label, 'created by process authoring service');
+		$formalParam->setPropertyValue(new core_kernel_classes_Property(PROPERTY_FORMALPARAMETER_NAME), $name);
+		$formalParam->setPropertyValue($defaultValueProp, $defaultValue);
+		
+		return $formalParam;
+	}
+	
+	function existFormalParameter($name, $defaultValue = null){
+		
+		$returnValue = false;
+		
+		$classFormalParam = new core_kernel_classes_Class(CLASS_FORMALPARAMETER);
+		
+		
+		foreach($classFormalParam->getInstances(true) as $formalParam){
+			$nameResource = $formalParam->getOnePropertyvalue(new core_kernel_classes_Property(PROPERTY_FORMALPARAMETER_NAME));
+			$nameValue = null;
+			if(!is_null($nameResource)){
+			
+				if($nameResource instanceof core_kernel_classes_Literal){
+					$nameValue = $nameResource->literal;
+				}else if($nameResource instanceof core_kernel_classes_Resource){
+					$nameValue = $nameResource->uriResource;//encode??
+				}
+				
+				if($nameValue == $name){
+				
+					if(is_null($defaultValue)){
+					
+						$returnValue = true;
+						break;
+						
+					}else{
+						//check defaultvalue:
+						
+						$defaultConstantValueContainer = $formalParam->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_FORMALPARAMETER_DEFAULTCONSTANTVALUE));
+						if(!is_null($defaultConstantValueContainer)){
+							if($defaultConstantValueContainer instanceof core_kernel_classes_Literal){
+								$defaultConstantValue = $defaultConstantValueContainer->literal;
+							}else if($defaultConstantValueContainer instanceof core_kernel_classes_Resource){
+								$defaultConstantValue = $defaultConstantValueContainer->uriResource;
+							}
+							if($defaultConstantValue == $defaultValue){
+								return true;
+							}
+						}
+						
+						$defaultProcessVariable = $formalParam->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_FORMALPARAMETER_DEFAULTPROCESSVARIABLE));
+						if(!is_null($defaultProcessVariable)){
+							if($defaultProcessVariable instanceof core_kernel_classes_Resource){
+								if($defaultValue instanceof core_kernel_classes_Resource){
+									if($defaultProcessVariable->uriResource == $defaultValue->uriResource){
+										return true;
+									}
+								}else{
+									if($defaultProcessVariable->uriResource == $defaultValue){
+										return true;
+									}
+								}
+							}
+						}
+						
+					}
+					
+				}
+			}
+		}
+		
+		return $returnValue;
+	}
 
 } /* end of class wfEngine_models_classes_ProcessAuthoringService */
 
