@@ -267,15 +267,25 @@ class ProcessAuthoring extends TaoModule {
 		if($myForm->isSubmited()){
 			if($myForm->isValid()){
 				$propertyValues = $myForm->getValues();
-				// var_dump($propertyValues);
-				if(empty($propertyValues[PROPERTY_SERVICESDEFINITION_FORMALPARAMOUT])){
-					unset($propertyValues[PROPERTY_SERVICESDEFINITION_FORMALPARAMOUT]);
-					$instance->removePropertyValues(new core_kernel_classes_Property(PROPERTY_SERVICESDEFINITION_FORMALPARAMOUT));
+				
+				// if(empty($propertyValues[PROPERTY_SERVICESDEFINITION_FORMALPARAMOUT])){
+					// unset($propertyValues[PROPERTY_SERVICESDEFINITION_FORMALPARAMOUT]);
+					// $instance->removePropertyValues(new core_kernel_classes_Property(PROPERTY_SERVICESDEFINITION_FORMALPARAMOUT));
+				// }
+				// if(empty($propertyValues[PROPERTY_SERVICESDEFINITION_FORMALPARAMIN])){
+					// unset($propertyValues[PROPERTY_SERVICESDEFINITION_FORMALPARAMIN]);
+					// $instance->removePropertyValues(new core_kernel_classes_Property(PROPERTY_SERVICESDEFINITION_FORMALPARAMIN));
+				// }
+				
+				foreach($propertyValues as $key=>$value){
+					if(empty($value)){
+						$instance->removePropertyValues(new core_kernel_classes_Property($key));
+						unset($propertyValues[$key]);
+					}
 				}
-				if(empty($propertyValues[PROPERTY_SERVICESDEFINITION_FORMALPARAMIN])){
-					unset($propertyValues[PROPERTY_SERVICESDEFINITION_FORMALPARAMIN]);
-					$instance->removePropertyValues(new core_kernel_classes_Property(PROPERTY_SERVICESDEFINITION_FORMALPARAMIN));
-				}
+				
+				var_dump($propertyValues);
+				
 				$instance = $this->service->bindProperties($instance, $propertyValues);
 				echo __("saved");exit;
 			}
