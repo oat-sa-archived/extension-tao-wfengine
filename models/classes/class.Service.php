@@ -109,7 +109,7 @@ class Service
     {
         // section 10-13-1--31--23da6e5c:11a2ac14500:-8000:00000000000009B3 begin
         parent::__construct($uri);
-		$this->activityexecution = $activityExecution;
+		$this->activityExecution = $activityExecution;
 		
 
 	
@@ -126,7 +126,7 @@ class Service
         
 		$this->input 	= array();
 		$this->output	= array();
-		
+		// var_dump($this->resource, $inParameterCollection);
 		foreach ($inParameterCollection->getIterator() as $inParameter)
 		{
 			$inParameterProcessVariable = $inParameter->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_ACTUALPARAMETER_PROCESSVARIABLE));//a resource
@@ -138,9 +138,9 @@ class Service
 			
 			$formalParameter = $inParameter->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_ACTUALPARAMETER_FORMALPARAMETER));
 				
-			if (!(is_null($this->activityexecution))){
+			if (!(is_null($this->activityExecution))){
 			
-				$formalParameterName = $formalParameter->getLabel();//or the name property???
+				$formalParameterName = $formalParameter->getUniqueProperty(PROPERTY_FORMALPARAMETER_NAME);
 				// var_dump($inParameter, $formalParameter, $inParameterProcessVariable, $inParameterConstant);
 				
 				if($inParameterProcessVariable != null) {
@@ -153,8 +153,11 @@ class Service
 					$paramType 	= 'processvar'; 
 					$paramValue = '';
 					
+					
 					$prop = new core_kernel_classes_Property($inParameterProcessVariable->uriResource);
-					$paramValueResource = $this->activityExecution->resource->getOnePropertyValue($prop);
+					$paramValueResource = $this->activityExecution->processExecution->resource->getOnePropertyValue($prop);
+					
+					// var_dump($inParameterProcessVariable,$paramValueResource);
 					
 					if($paramValueResource instanceof core_kernel_classes_Literal){
 						$paramValue = $paramValueResource->literal;
@@ -195,6 +198,7 @@ class Service
 			}else{
 				$this->input[common_Utils::fullTrim($formalParameterName)] = array('type' => null, 'value' => null);
 			}
+			
 		}
 		
 		// section 10-13-1--31--23da6e5c:11a2ac14500:-8000:00000000000009B3 end

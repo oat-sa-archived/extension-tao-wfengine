@@ -238,7 +238,7 @@ class ProcessAuthoring extends TaoModule {
 	public function editInstance(){
 		$clazz = $this->getCurrentClass();
 		$instance = $this->getCurrentInstance();
-		
+		// var_dump($instance);
 		$excludedProperty = array();
 		$excludedProperty[] = 'http://www.tao.lu/middleware/Interview.rdf#i122354397139712';
 		
@@ -266,9 +266,8 @@ class ProcessAuthoring extends TaoModule {
 		$myForm->setActions(array(), 'bottom');	
 		if($myForm->isSubmited()){
 			if($myForm->isValid()){
-				var_dump($myForm->getValues());
-				// $instance = $this->service->bindProperties($instance, array_map('trim', $myForm->getValues()));
 				$propertyValues = $myForm->getValues();
+				// var_dump($propertyValues);
 				if(empty($propertyValues[PROPERTY_SERVICESDEFINITION_FORMALPARAMOUT])){
 					unset($propertyValues[PROPERTY_SERVICESDEFINITION_FORMALPARAMOUT]);
 					$instance->removePropertyValues(new core_kernel_classes_Property(PROPERTY_SERVICESDEFINITION_FORMALPARAMOUT));
@@ -547,7 +546,7 @@ class ProcessAuthoring extends TaoModule {
 			throw new Exception("the actual parameters related to the call of service cannot be removed");
 		}
 		
-		var_dump($data);
+		// var_dump($data);
 		foreach($data as $key=>$value){
 			$formalParamUri = '';
 			$parameterInOrOut='';
@@ -570,24 +569,29 @@ class ProcessAuthoring extends TaoModule {
 			
 			//method2: use the suffix of the name of the form input:
 			$index = 0;
-			if($index = strpos('_IN_choice')){
+			$suffix = '';
+			if($index = strpos($key,'_IN_choice')){
+				
 				$formalParamUri = substr($key,0,$index);
 				$parameterInOrOut = PROPERTY_CALLOFSERVICES_ACTUALPARAMIN;
-			}elseif($index = strpos('_OUT_choice')){
+				$suffix = '_IN';
+			}elseif($index = strpos($key,'_OUT_choice')){
 				$formalParamUri = substr($key,0,$index);
 				$parameterInOrOut = PROPERTY_CALLOFSERVICES_ACTUALPARAMOUT;
+				$suffix = '_OUT';
 			}else{
 				continue;
 			}
+			
 			
 			$actualParameterType = '';
 			$paramValue = '';
 			if($value == 'constant'){
 				$actualParameterType = PROPERTY_ACTUALPARAM_CONSTANTVALUE;
-				$paramValue = $data[$formalParamUri.'_constant'];
+				$paramValue = $data[$formalParamUri.$suffix.'_constant'];
 			}elseif($value == 'processvariable'){
 				$actualParameterType = PROPERTY_ACTUALPARAM_PROCESSVARIABLE;
-				$paramValue = $data[$formalParamUri.'_var'];
+				$paramValue = $data[$formalParamUri.$suffix.'_var'];
 			}else{
 				throw new Exception('wrong actual parameter type posted');
 			}
@@ -595,6 +599,8 @@ class ProcessAuthoring extends TaoModule {
 		
 			$formalParam = new core_kernel_classes_Resource($formalParamUri);
 			$saved = $this->service->setActualParameter($callOfService, $formalParam, $paramValue, $parameterInOrOut, $actualParameterType);
+			// var_dump($paramValue, $parameterInOrOut, $actualParameterType);
+			
 			if(!$saved){
 				break;
 			}

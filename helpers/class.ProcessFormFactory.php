@@ -330,9 +330,6 @@ class wfEngine_helpers_ProcessFormFactory extends tao_helpers_form_GenerisFormFa
 				// $inputUri = "";
 				$inputValue = "";
 				
-				
-				
-				
 				//get current value:
 				//find actual param first!
 				$actualParamValue='';
@@ -348,15 +345,17 @@ class wfEngine_helpers_ProcessFormFactory extends tao_helpers_form_GenerisFormFa
 							//the actual param associated to the formal parameter of THE call of services has been found!
 						
 							//check the type of actual parameter:
-							$inParameterProcessVariable = $actualParam->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_ACTUALPARAMETER_PROCESSVARIABLE));//a resource
-							$inParameterConstant = $actualParam->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_ACTUALPARAMETER_CONSTANTVALUE));
+							$inParameterProcessVariable = $actualParam->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_ACTUALPARAM_PROCESSVARIABLE));//a resource
+							$inParameterConstant = $actualParam->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_ACTUALPARAM_CONSTANTVALUE));
+							// var_dump($actualParam, $inParameterProcessVariable, $inParameterConstant);
+							
 							if(!is_null($inParameterProcessVariable)){
 								//the type is a processvariable so must be a resource:
 								if(!($inParameterProcessVariable instanceof core_kernel_classes_Resource)){
 									throw new Exception("the process variable set as the value of the actual parameter is not a resource");
 								}
 								
-								$paramType = 'processVariable';
+								$paramType = 'processvariable';
 								$inputValue = $inParameterProcessVariable->uriResource;
 								
 							}elseif(!is_null($inParameterConstant)){
@@ -405,18 +404,36 @@ class wfEngine_helpers_ProcessFormFactory extends tao_helpers_form_GenerisFormFa
 				
 				if(empty($inputValue)){
 					//if no value set yet, try finding the default value (literal only! or url that are considered as a literal)
-					$defaultValue = "";
-					$paramDefaultValue = $formalParam->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_FORMALPARAM_DEFAULTVALUE));
-					if(!is_null($paramDefaultValue)){
-						if($paramDefaultValue instanceof core_kernel_classes_Literal){
-							$inputValue = $paramDefaultValue->literal;
-						}else if($paramDefaultValue instanceof core_kernel_classes_Resource){
-							$inputValue = $paramDefaultValue->uriResource;//the case a url
+					
+					$defaultConstantValue = $formalParam->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_FORMALPARAMETER_DEFAULTCONSTANTVALUE));
+					$defaultProcessVariable = $formalParam->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_FORMALPARAMETER_DEFAULTPROCESSVARIABLE));
+					// var_dump($formalParam, $defaultConstantValue, $defaultProcessVariable);
+					
+					$defaultValue = '';
+					if(!is_null($defaultProcessVariable)){
+						if($defaultProcessVariable instanceof core_kernel_classes_Resource){
+							$defaultValue = $defaultProcessVariable->uriResource;//the case a url
+						}else{
+							throw new Exception('the process variable must be a resource');
+						}
+						// echo 'skjdsk';
+						// var_dump($defaultValue);
+						if(!empty($defaultValue)){
+							//the input value has been set as the default one:
+							$paramType = 'processvariable';
+							$inputValue = $defaultValue;
+						}
+					}elseif(!is_null($defaultConstantValue)){
+						if($defaultConstantValue instanceof core_kernel_classes_Literal){
+							$defaultValue = $defaultConstantValue->literal;
+						}else if($defaultConstantValue instanceof core_kernel_classes_Resource){
+							$defaultValue = $defaultConstantValue->uriResource;//the case a url
 						}
 						
-						if(!empty($inputValue)){
+						if(!empty($defaultValue)){
 							//the input value has been set as the default one:
 							$paramType = 'constant';
+							$inputValue = $defaultValue;
 						}
 					}
 				}
@@ -459,7 +476,7 @@ class wfEngine_helpers_ProcessFormFactory extends tao_helpers_form_GenerisFormFa
 				//set value here:
 				if($paramType == 'constant'){
 					$elementInput->setValue($inputValue);
-				}elseif($paramType == 'processvar'){
+				}elseif($paramType == 'processvariable'){
 					$elementVar->setValue($inputValue);
 				}
 								
@@ -471,6 +488,10 @@ class wfEngine_helpers_ProcessFormFactory extends tao_helpers_form_GenerisFormFa
 		}
 		
 		return $returnValue;
+	}
+	
+	public function formalParameterEditor(core_kernel_classes_Resource $formalParam){
+		
 	}
 	
 	public function connectorEditor(core_kernel_classes_Resource $connector, core_kernel_classes_Resource $connectorType=null, $formName=''){
@@ -627,8 +648,6 @@ class wfEngine_helpers_ProcessFormFactory extends tao_helpers_form_GenerisFormFa
 			}elseif($classUri == CLASS_INFERENCERULES){
 				$elementChoice->setValue("inference");
 			}else{
-				var_dump($else->getUniquePropertyValue(new core_kernel_classes_Property(RDF_TYPE)));
-				var_dump($classUri, $else);
 				throw new Exception("wrong type in the else of the inference rule");
 			}
 		}else{
