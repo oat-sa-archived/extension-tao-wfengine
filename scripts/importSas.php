@@ -45,6 +45,11 @@ class SasImporter{
 	private $serviceUrlProp = null;
 	
 	/**
+	 * @var core_kernel_classes_Property
+	 */
+	private $serviceFormalParamInProp = null;
+	
+	/**
 	 * @var core_kernel_classes_Class
 	 */
 	private $processVarClass = null;
@@ -88,11 +93,12 @@ class SasImporter{
 
 		//initialize ref to API classes and properties
 		
-		$this->serviceDefClass 		= new core_kernel_classes_Class(CLASS_SUPPORTSERVICES);
-		$this->serviceUrlProp 		= new core_kernel_classes_Property(PROPERTY_SERVICESDEFINITION_URL);
+		$this->serviceDefClass 				= new core_kernel_classes_Class(CLASS_SUPPORTSERVICES);
+		$this->serviceUrlProp 				= new core_kernel_classes_Property(PROPERTY_SERVICESDEFINITION_URL);
+		$this->serviceFormalParamInProp 	= new core_kernel_classes_Property(PROPERTY_SERVICESDEFINITION_FORMALPARAMIN);
 		
-		$this->processVarClass 		= new core_kernel_classes_Class(CLASS_PROCESSVARIABLES);
-		$this->processVarCodeProp 	= new core_kernel_classes_Property(PROPERTY_PROCESSVARIABLES_CODE);
+		$this->processVarClass 				= new core_kernel_classes_Class(CLASS_PROCESSVARIABLES);
+		$this->processVarCodeProp 			= new core_kernel_classes_Property(PROPERTY_PROCESSVARIABLES_CODE);
 		
 		$this->formalParamClass 			= new core_kernel_classes_Class(CLASS_FORMALPARAMETER);
 		$this->formalParamNameProp			= new core_kernel_classes_Property(PROPERTY_FORMALPARAMETER_NAME);
@@ -109,24 +115,6 @@ class SasImporter{
 		foreach($this->getSasFiles() as $sasFile){
 			log($sasFile." found");
 			$this->parseSasFile($sasFile);
-		}
-		
-		//insert service definitions
-		$serviceNum = count($this->services);
-		$serviceInserted = 0;
-		foreach($this->services as $service){
-			if($this->addService($service['name'], $service['url'], $service['description'])){
-				$serviceInserted++;
-				if(!$this->outputModeWeb){
-					echo "\r$serviceInserted / $serviceNum  services definition inserted";
-				}
-			}
-		}
-		if($this->outputModeWeb){
-			$this->log("$serviceInserted / $serviceNum  services definition inserted");
-		}
-		else{
-			echo "\n";
 		}
 		
 		//insert process vars
@@ -160,6 +148,24 @@ class SasImporter{
 		}
 		if($this->outputModeWeb){
 			$this->log("$formaParamInserted / $formaParamNum  formal parameters inserted");
+		}
+		else{
+			echo "\n";
+		}
+		
+		//insert service definitions
+		$serviceNum = count($this->services);
+		$serviceInserted = 0;
+		foreach($this->services as $service){
+			if($this->addService($service['name'], $service['url'], $service['description'], $service['params'])){
+				$serviceInserted++;
+				if(!$this->outputModeWeb){
+					echo "\r$serviceInserted / $serviceNum  services definition inserted";
+				}
+			}
+		}
+		if($this->outputModeWeb){
+			$this->log("$serviceInserted / $serviceNum  services definition inserted");
 		}
 		else{
 			echo "\n";
@@ -204,6 +210,7 @@ class SasImporter{
 					$url .= '?';
 				}
 				
+				$formalParamsIn = array();
 				foreach($loc->param as $param){
 					if(isset($param['key'])){
 						
@@ -216,6 +223,8 @@ class SasImporter{
 								$this->processVars[] = (string)$param['value'];
 							}	
 
+							$formalParamsIn[(string)$param['key']] = (string)$param['value']; 
+							
 							//set the formatParams
 							$key = (string)$param['key'].(string)$param['value'];
 							if(!array_key_exists($key, $this->formalParams)){
@@ -230,7 +239,6 @@ class SasImporter{
 							$url .= "^".((string)$param['key']);
 						}
 						$url .= "&";
-						
 						
 					}
 				}
@@ -247,7 +255,8 @@ class SasImporter{
 				$this->services[] = array(
 					'name' 			=> (string)$service->name,
 					'description' 	=> (string)$service->description,
-					'url'			=>	$url
+					'url'			=>	$url,
+					'params'		=> $formalParamsIn
 				);
 			}
 		}
@@ -258,13 +267,25 @@ class SasImporter{
 	 * @param string $name
 	 * @param string $url
 	 * @param string $description
+	 * @param array $params
 	 * @return boolean
 	 */
-	private function addService($name, $url,  $description =''){
+	private function addService($name, $url,  $description ='', $params = array()){
 		if(!$this->serviceExists($url)){
 			$service = $this->serviceDefClass->createInstance($name, trim($description));
 			if(!is_null($service)){
-				return $service->setPropertyValue($this->serviceUrlProp, $url);
+				if($service->setPropertyValue($this->serviceUrlProp, $url)){
+					foreach($params as $key => $value){
+						$formalParam = $this->getFormalParameter($key, $value);
+						if(!is_null($formalParam)){
+							$service->setPropertyValue($this->serviceFormalParamInProp, $formalParam->uriResource);
+						}
+						else{
+							echo "\nError\n";exit;
+						}
+					}
+					return true;
+				}
 			}
 		}
 		return false;
@@ -374,6 +395,36 @@ class SasImporter{
 		return false;
 	}
 	
+	/**
+	 * get a formal parameter
+	 * @param string $key
+	 * @param string $value
+	 * @return core_kernel_classes_Resource
+	 */
+	private function getFormalParameter($key, $value){
+		
+		foreach($this->formalParamClass->getInstances(false) as $formalParam){
+			try{
+				$name = $formalParam->getOnePropertyValue($this->formalParamNameProp);
+				if(trim($key) == trim($name)){
+					$foundProcessVar = $this->getProcessVar(str_replace('^', '', $value));
+					if(!is_null($foundProcessVar)){
+						$processVar = $formalParam->getUniquePropertyValue($this->formalParamDefProcessVarProp);
+						if($foundProcessVar->uriResource == $processVar->uriResource){
+							return $formalParam;
+						}
+					}
+					else if($value == $formalParam->getUniquePropertyValue($this->formalParamDefConstantProp)){
+						return $formalParam;
+					}
+				}
+			}	
+			catch(common_Exception $ce){
+				print $ce;
+			}	
+		}
+		return null;
+	}
 	
 	/**
 	 * Utility method to (unCamelize -> un camelize) a string
