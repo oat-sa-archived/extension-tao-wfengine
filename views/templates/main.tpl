@@ -28,7 +28,7 @@
 		</ul>
 		
 		<div id="content">
-			<h1 id="welcome_message"><?php echo __("Welcome to TAO Process Engine"); ?></h1>	
+			<h1 id="welcome_message"><img src="<?=BASE_WWW?>/img/wf_engine_logo.png" /><?php echo __("Welcome to TAO Process Engine"); ?></h1>	
 			<div id="business">
 				<h2 class="section_title"><?php echo __("Active Process"); ?></h2>
 			<table id="active_processes">

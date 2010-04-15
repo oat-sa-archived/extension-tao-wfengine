@@ -15,6 +15,7 @@
 			<li></li>
 		</ul>
 		<div id="content">
+			<h1 id="welcome_message"><img src="<?=BASE_WWW?>/img/wf_engine_logo.png" /><?= __("TAO Process Engine"); ?></h1>
 			<div id="business">
 				<br />
 				<?if(get_data('errorMessage')):?>
