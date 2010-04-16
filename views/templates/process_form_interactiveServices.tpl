@@ -48,8 +48,10 @@ $(function(){
 			dataType: 'json',
 			success: function(response){
 				if(response.saved){
+					var selectedNode = $("#callOfServiceUri").val();
 					$("#interactiveService-form").html(__("interactive service saved"));
 					refreshActivityTree();
+					ActivityTreeClass.selectTreeNode(selectedNode);
 				}else{
 					$("#interactiveService-form").html("interactive service save failed:" + response);//debug
 				}
