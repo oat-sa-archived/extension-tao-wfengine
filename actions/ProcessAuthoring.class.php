@@ -284,8 +284,6 @@ class ProcessAuthoring extends TaoModule {
 					}
 				}
 				
-				var_dump($propertyValues);
-				
 				$instance = $this->service->bindProperties($instance, $propertyValues);
 				echo __("saved");exit;
 			}

@@ -1187,9 +1187,9 @@ class wfEngine_models_classes_ProcessAuthoringService
 	//type: constant or processvariable
 	function createFormalParameter($name, $type, $defaultValue, $label=''){
 		
-		if($type == 'constant'){
+		if(strtolower($type) == 'constant'){
 			$defaultValueProp = new core_kernel_classes_Property(PROPERTY_FORMALPARAMETER_DEFAULTCONSTANTVALUE);
-		}elseif($type == 'processvariable'){
+		}elseif(strtolower($type) == 'processvariable'){
 			$defaultValueProp = new core_kernel_classes_Property(PROPERTY_FORMALPARAMETER_DEFAULTPROCESSVARIABLE);
 		}else{
 			return null;
@@ -1206,9 +1206,9 @@ class wfEngine_models_classes_ProcessAuthoringService
 		return $formalParam;
 	}
 	
-	function existFormalParameter($name, $defaultValue = null){
+	function getFormalParameter($name, $defaultValue = null){
 		
-		$returnValue = false;
+		$returnValue = null;
 		
 		$classFormalParam = new core_kernel_classes_Class(CLASS_FORMALPARAMETER);
 		
@@ -1228,8 +1228,7 @@ class wfEngine_models_classes_ProcessAuthoringService
 				
 					if(is_null($defaultValue)){
 					
-						$returnValue = true;
-						break;
+						return $returnValue = $formalParam;
 						
 					}else{
 						//check defaultvalue:
@@ -1242,7 +1241,7 @@ class wfEngine_models_classes_ProcessAuthoringService
 								$defaultConstantValue = $defaultConstantValueContainer->uriResource;
 							}
 							if($defaultConstantValue == $defaultValue){
-								return true;
+								return $formalParam;
 							}
 						}
 						
@@ -1251,11 +1250,11 @@ class wfEngine_models_classes_ProcessAuthoringService
 							if($defaultProcessVariable instanceof core_kernel_classes_Resource){
 								if($defaultValue instanceof core_kernel_classes_Resource){
 									if($defaultProcessVariable->uriResource == $defaultValue->uriResource){
-										return true;
+										return $formalParam;
 									}
 								}else{
 									if($defaultProcessVariable->uriResource == $defaultValue){
-										return true;
+										return $formalParam;
 									}
 								}
 							}

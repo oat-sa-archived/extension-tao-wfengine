@@ -117,9 +117,14 @@ class Service
 		$serviceDefinition = $this->resource->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_CALLOFSERVICES_SERVICEDEFINITION));
 
 		// Get service url for call
+		$serviceUrl = '';
 		$serviceDefinitionUrl = $serviceDefinition->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_SERVICEDEFINITIONS_URL));
-		
-		$urlPart = explode('?',$serviceDefinitionUrl->literal);
+		if($serviceDefinitionUrl instanceof core_kernel_classes_Literal){
+			$serviceUrl = $serviceDefinitionUrl->literal;
+		}else if($serviceDefinitionUrl instanceof core_kernel_classes_Resource){
+			$serviceUrl = $serviceDefinitionUrl->uriResource;
+		}
+		$urlPart = explode('?',$serviceUrl);
 		$this->url = $urlPart[0];
 		
 		$inParameterCollection = $this->resource->getPropertyValuesCollection(new core_kernel_classes_Property(PROPERTY_CALLOFSERVICES_ACTUALPARAMETERIN));
@@ -139,11 +144,12 @@ class Service
 			$formalParameter = $inParameter->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_ACTUALPARAMETER_FORMALPARAMETER));
 				
 			if (!(is_null($this->activityExecution))){
-			
-				$formalParameterName = $formalParameter->getUniqueProperty(PROPERTY_FORMALPARAMETER_NAME);
+				
+				$formalParameterName = $formalParameter->getUniquePropertyValue( new core_kernel_classes_Property(PROPERTY_FORMALPARAMETER_NAME));
+				
 				// var_dump($inParameter, $formalParameter, $inParameterProcessVariable, $inParameterConstant);
 				
-				if($inParameterProcessVariable != null) {
+				if(!is_null($inParameterProcessVariable)){
 					
 					if(!($inParameterProcessVariable instanceof core_kernel_classes_Resource)){
 						throw new Exception("the process variable set as the value of the parameter 'in' is not a resource");
@@ -170,12 +176,7 @@ class Service
 						'value' => $paramValue, 
 						'uri' => $inParameterProcessVariable->uriResource
 						);
-				}
-				// else if ($inParametersQualityMetrics != null) {
-					// $paramType 	= 'metric';
-					// $paramvalue = $inParametersQualityMetric;
-				// }
-				else{
+				}else if(!is_null($inParameterConstant)){
 					
 					$paramType 	= 'constant';
 					$paramValue = '';
@@ -192,6 +193,8 @@ class Service
 						'type' => $paramType,
 						'value' => $paramValue
 						);
+				}else{
+				
 				}
 				
 				
