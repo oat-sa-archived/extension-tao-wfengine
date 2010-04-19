@@ -17,7 +17,6 @@
 				<action name="new process" js="GenerisAction.instanciate" url="/wfEngine/Process/addInstance" context="class" />
 				<action name="delete" js="GenerisAction.removeNode" url="/wfEngine/Process/delete" context="resource" />
 				<!--<action name="duplicate" js="GenerisAction.duplicateNode" url="/wfEngine/Process/cloneInstance" context="instance" />-->
-				<action name="edit process" url="/wfEngine/Process/editProcess" context="instance" />
 				<!--<action name="new property" js="GenerisAction.addProperty" url="/wfEngine/Process/addClassProperty" context="class" />-->
 				<action name="meta data" js="GenerisAction.loadMetaData" url="/taoTests/Tests/getMetaData"  context="instance" />
 				<action name="create table" js="GenerisAction.resultTable" url="/taoResults/Results/createTable"  context="class" />
