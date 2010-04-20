@@ -743,11 +743,13 @@ class wfEngine_helpers_ProcessFormFactory extends tao_helpers_form_GenerisFormFa
 		$elementChoice->setOptions($options);
 		
 		//set the value:
-		$propertyValue = $instance->getOnePropertyValue($property);
-		if($propertyValue instanceof core_kernel_classes_Resource){
-			$elementChoice->setValue($propertyValue->uriResource);
-		}elseif($propertyValue instanceof core_kernel_classes_Literal){
-			$elementChoice->setValue($propertyValue->literal);
+		$propertyValuesCollection = $instance->getPropertyValuesCollection($property);
+		foreach($propertyValuesCollection->getIterator() as $propertyValue){
+			if($propertyValue instanceof core_kernel_classes_Resource){
+				$elementChoice->setValue($propertyValue->uriResource);
+			}elseif($propertyValue instanceof core_kernel_classes_Literal){
+				$elementChoice->setValue($propertyValue->literal);
+			}
 		}
 		
 		return $elementChoice;

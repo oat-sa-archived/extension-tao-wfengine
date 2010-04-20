@@ -317,7 +317,26 @@ class ProcessAuthoring extends TaoModule {
 		$myForm->setActions(array(), 'bottom');	
 		if($myForm->isSubmited()){
 			if($myForm->isValid()){
-				$activity = $this->service->bindProperties($activity, $myForm->getValues());
+				// $activity = $this->service->bindProperties($activity, $myForm->getValues());
+				
+				$properties = $myForm->getValues();
+				//set label:
+				if(isset($properties[RDFS_LABEL])){
+					$activity->setLabel($properties[RDFS_LABEL]);
+				}
+				
+				//set role:
+				if(isset($properties[PROPERTY_ACTIVITIES_ROLE])){
+					$this->service->setActivityRole($activity, new core_kernel_classes_Resource($properties[PROPERTY_ACTIVITIES_ROLE]));
+				}
+				
+				//set ishidden:
+				if(isset($properties[PROPERTY_ACTIVITIES_ISHIDDEN])){
+					$bool = wfEngine_models_classes_ProcessAuthoringService::generisBooleanConvertor($properties[PROPERTY_ACTIVITIES_ISHIDDEN]);
+					if(!is_null($bool)){
+						$this->service->setActivityHidden($activity, $bool);
+					}
+				}
 				
 				//replace with a clean template upload
 				$this->setData('saved', true);
@@ -539,13 +558,21 @@ class ProcessAuthoring extends TaoModule {
 		}
 		$serviceDefinition = new core_kernel_classes_Resource($data[PROPERTY_CALLOFSERVICES_SERVICEDEFINITION]);
 		unset($data[PROPERTY_CALLOFSERVICES_SERVICEDEFINITION]);
+		if(!is_null($serviceDefinition)){
+			$this->service->setCallOfServiceDefinition($callOfService, $serviceDefinition);
+		}
 		
 		//edit label
-		$label = $data["label"];
-		$this->service->bindProperties($callOfService, array(
-			PROPERTY_CALLOFSERVICES_SERVICEDEFINITION => $serviceDefinition->uriResource,
-			'http://www.w3.org/2000/01/rdf-schema#label' => $label
-		));
+		// $label = ;
+		// $this->service->bindProperties($callOfService, array(
+			// PROPERTY_CALLOFSERVICES_SERVICEDEFINITION => $serviceDefinition->uriResource,
+			// 'http://www.w3.org/2000/01/rdf-schema#label' => $label
+		// ));
+		
+		if(isset($data["label"])){
+			$callOfService->setLabel($data["label"]);
+		}
+		
 		//note: equivalent to $callOfService->editPropertyValues(new core_kernel_classes_Property(PROPERTY_CALLOFSERVICES_SERVICEDEFINITION), $serviceDefinition->uriResource);
 		
 		//reset new actual parameters : clear ALL and recreate new values at each save
@@ -661,18 +688,19 @@ class ProcessAuthoring extends TaoModule {
 			throw new Exception("no connector type uri found in POST");
 		}
 		
-		$propertyValues = array();
 		if($data[PROPERTY_CONNECTORS_TYPE] != 'none'){
-			$propertyValues[PROPERTY_CONNECTORS_TYPE] = $data[PROPERTY_CONNECTORS_TYPE];
+			$this->service->setConnectorType($connectorInstance, new core_kernel_classes_Resource($data[PROPERTY_CONNECTORS_TYPE]));
 		}
 		
 		if(trim($data['label']) != ''){
 			$propertyValues[RDFS_LABEL] = $data['label'];
+			$connectorInstance->setLabel($data['label']);
 		}
 		
-		if(!empty($propertyValues)){
-			$this->service->bindProperties($connectorInstance, $propertyValues);
-		}
+		// if(!empty($propertyValues)){
+		// var_dump($propertyValues);
+			// $this->service->bindProperties($connectorInstance, $propertyValues);
+		// }
 		
 		$followingActivity = null;
 		if($data[PROPERTY_CONNECTORS_TYPE] == INSTANCE_TYPEOFCONNECTORS_SEQUENCE){
@@ -766,21 +794,13 @@ class ProcessAuthoring extends TaoModule {
 		}
 		
 		//save the "then":
-		$inferenceThenProp = new core_kernel_classes_Property(PROPERTY_INFERENCERULES_THEN);
+		// $inferenceThenProp = new core_kernel_classes_Property(PROPERTY_INFERENCERULES_THEN);
 		$then_assignment = $_POST['then_assignment'];
-		// $this->service->createAssignment($inferenceRule, $then_assignment, 'then');
 		$thenDom = $this->service->analyseExpression($then_assignment);
 		// var_dump($thenDom->saveXML());
 		if(!is_null($thenDom)){
-			//delete old assignment resource:
-			$oldThenAssignment = $inferenceRule->getOnePropertyValue($inferenceThenProp);
-			if(!is_null($oldThenAssignment)){
-				$this->service->deleteAssignment($oldThenAssignment);
-			}
-			
-			//save new one:
 			$newAssignment = $this->service->createAssignment($thenDom);
-			$returnValue = $inferenceRule->editPropertyValues($inferenceThenProp, $newAssignment->uriResource);
+			$returnValue = $this->service->setAssignment($inferenceRule, 'then', $newAssignment);
 		}
 		
 		//save the "else":
@@ -794,17 +814,8 @@ class ProcessAuthoring extends TaoModule {
 				$else_assignment = $_POST['else_assignment'];
 				$elseDom = $this->service->analyseExpression($else_assignment);
 				if(!is_null($elseDom)){
-					//delete old assignment resource:
-					$oldElseAssignment = $inferenceRule->getOnePropertyValue($inferenceElseProp);
-					if(!is_null($oldElseAssignment)){
-						$this->service->deleteAssignment($oldElseAssignment);
-					}
-			
-					//save new assignment:
-					$newAssignment = null;
 					$newAssignment = $this->service->createAssignment($elseDom);
-					$returnValue = $inferenceRule->editPropertyValues($inferenceElseProp, $newAssignment->uriResource);
-					
+					$returnValue = $this->service->setAssignment($inferenceRule, 'else', $newAssignment);
 				}
 				
 			}elseif($_POST['else_choice'] == 'inference'){
@@ -867,27 +878,26 @@ class ProcessAuthoring extends TaoModule {
 		}
 		
 		//save activities:
-		
-		$involvedActivitiesProp = new core_kernel_classes_Property(PROPERTY_CONSISTENCYRULES_INVOLVEDACTIVITIES);
-		$consistencyRule->removePropertyValues($involvedActivitiesProp);
-		$encodedActivitiesPropUri = tao_helpers_Uri::encode($involvedActivitiesProp->uriResource);
-		
+		$encodedActivitiesPropUri = tao_helpers_Uri::encode(PROPERTY_CONSISTENCYRULES_INVOLVEDACTIVITIES);
+		$activities = array();
 		foreach($_POST as $propUri => $propValue){
 			if(strpos($propUri, $encodedActivitiesPropUri) === 0){
-				$consistencyRule->setPropertyValue($involvedActivitiesProp, tao_helpers_Uri::decode($propValue));
+				
+				$activitiUri  = tao_helpers_Uri::decode($propValue);
+				$activities[$activitiUri] = new core_kernel_classes_Resource($activitiUri);
 			}
-		}	
-		
-		// $this->service->bindProperties($consistencyRule, array_map('trim', $activities);
+		}
+		if(!empty($activities)){
+			$this->service->setConsistencyActivities($consistencyRule, $activities);
+		}
 		
 		//save suppressable:
-		$consistencyRule->editPropertyValues(new core_kernel_classes_Property(PROPERTY_CONSISTENCYRULES_SUPPRESSABLE), tao_helpers_Uri::decode($_POST[tao_helpers_Uri::encode(PROPERTY_CONSISTENCYRULES_SUPPRESSABLE)]));
-		//(use bindProperties instead)
-		//save notification:
-		$returnValue = $consistencyRule->editPropertyValues(new core_kernel_classes_Property(PROPERTY_CONSISTENCYRULES_NOTIFICATION), $_POST[tao_helpers_Uri::encode(PROPERTY_CONSISTENCYRULES_NOTIFICATION)]);
-	
-		echo json_encode(array('saved'=>$returnValue));
+		$this->service->setConsistencySuppressable($consistencyRule, tao_helpers_Uri::decode($_POST[tao_helpers_Uri::encode(PROPERTY_CONSISTENCYRULES_SUPPRESSABLE)]));
 		
+		//save notfication:
+		$returnValue = $this->service->setConsistencyNotification($consistencyRule, $_POST[tao_helpers_Uri::encode(PROPERTY_CONSISTENCYRULES_NOTIFICATION)]);
+		
+		echo json_encode(array('saved'=>$returnValue));
 	}
 	
 	
@@ -980,12 +990,7 @@ class ProcessAuthoring extends TaoModule {
 		$activity = $this->getCurrentActivity();
 		$process = $this->getCurrentProcess();
 		
-		$activities = $this->service->getActivitiesByProcess($process);
-		foreach($activities as $activityTemp){
-			$activityTemp->editPropertyValues(new core_kernel_classes_Property(PROPERTY_ACTIVITIES_ISINITIAL), GENERIS_FALSE);
-		}
-		
-		$returnValue = $activity->editPropertyValues(new core_kernel_classes_Property(PROPERTY_ACTIVITIES_ISINITIAL), GENERIS_TRUE);
+		$returnValue = $this->service->setFirstActivity($process, $activity);
 	
 		echo json_encode(array('set' => $returnValue));
 	}
