@@ -281,7 +281,9 @@ class SasImporter{
 							$service->setPropertyValue($this->serviceFormalParamInProp, $formalParam->uriResource);
 						}
 						else{
-							echo "\nError\n";exit;
+							echo "\nError\n";
+							var_dump($params);
+							exit;
 						}
 					}
 					return true;
@@ -404,24 +406,28 @@ class SasImporter{
 	private function getFormalParameter($key, $value){
 		
 		foreach($this->formalParamClass->getInstances(false) as $formalParam){
-			try{
-				$name = $formalParam->getOnePropertyValue($this->formalParamNameProp);
-				if(trim($key) == trim($name)){
-					$foundProcessVar = $this->getProcessVar(str_replace('^', '', $value));
-					if(!is_null($foundProcessVar)){
+			
+			$name = $formalParam->getOnePropertyValue($this->formalParamNameProp);
+			if(trim($key) == trim($name)){
+				$foundProcessVar = $this->getProcessVar(str_replace('^', '', $value));
+				if(!is_null($foundProcessVar)){
+					try{
 						$processVar = $formalParam->getUniquePropertyValue($this->formalParamDefProcessVarProp);
 						if($foundProcessVar->uriResource == $processVar->uriResource){
 							return $formalParam;
 						}
-					}
-					else if($value == $formalParam->getUniquePropertyValue($this->formalParamDefConstantProp)){
+					}	
+					catch(common_Exception $ce){}	
+				}
+				
+				try{
+					if($value == $formalParam->getUniquePropertyValue($this->formalParamDefConstantProp)){
 						return $formalParam;
 					}
-				}
-			}	
-			catch(common_Exception $ce){
-				print $ce;
-			}	
+				}	
+				catch(common_Exception $ce){}
+				
+			}
 		}
 		return null;
 	}
