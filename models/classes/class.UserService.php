@@ -112,6 +112,7 @@ class wfEngine_models_classes_UserService
 	        			$wfUser = $this->createInstance($this->wfUserClass);
 	        			$this->bindProperties($wfUser, array(PROPERTY_USER_LOGIN =>  $user['login']));
 	        		}
+	        		
 	        		$this->bindProperties($wfUser, array(
 	        			PROPERTY_USER_PASSWORD 	=> $user['password'],
 	        			USER_ROLE				=> $user['wfRole']
