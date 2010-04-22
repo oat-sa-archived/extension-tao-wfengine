@@ -756,6 +756,8 @@ class ProcessAuthoring extends TaoModule {
 						$followingActivity = new core_kernel_classes_Resource($data["then_connectorUri"]);
 						$this->service->createSplitActivity($connectorInstance, 'then', $followingActivity, '', true);
 					}
+				}elseif($data['then_activityOrConnector']=="delete"){
+					$this->service->deleteConnectorNextActivity($connectorInstance, 'then');
 				}
 			
 				//save the activity in "ELSE":
@@ -773,6 +775,8 @@ class ProcessAuthoring extends TaoModule {
 						$followingActivity = new core_kernel_classes_Resource($data["else_connectorUri"]);
 						$this->service->createSplitActivity($connectorInstance, 'else', $followingActivity, '', true);
 					}
+				}elseif($data['else_activityOrConnector']=="delete"){
+					$this->service->deleteConnectorNextActivity($connectorInstance, 'else');
 				}
 			}
 		}

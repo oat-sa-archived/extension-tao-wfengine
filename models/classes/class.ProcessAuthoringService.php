@@ -451,11 +451,75 @@ class wfEngine_models_classes_ProcessAuthoringService
 				}
 			}
 		}
+		$this->deleteConnectorNextActivity($connector, 'next');
 		
 		//delete connector itself:
 		$returnValue = $this->deleteInstance($connector);
 		
 		return $returnValue;
+	}
+	
+	public function deleteConnectorNextActivity(core_kernel_classes_Resource $connector, $type='next'){
+		
+		// $authorizedProperties = array(
+			// PROPERTY_CONNECTORS_NEXTACTIVITIES,
+			// PROPERTY_TRANSITIONRULES_THEN,
+			// PROPERTY_TRANSITIONRULES_ELSE
+		// );
+		$nextActivitiesProp = new core_kernel_classes_Property(PROPERTY_CONNECTORS_NEXTACTIVITIES);
+		
+		switch($type){
+			case 'next':{
+				$property = $nextActivitiesProp;
+				break;
+			}
+			case 'then':{
+				$property = new core_kernel_classes_Property(PROPERTY_TRANSITIONRULES_THEN);
+				break;
+			}
+			case 'else':{
+				$property = new core_kernel_classes_Property(PROPERTY_TRANSITIONRULES_ELSE);
+				break;
+			}
+			default:{
+				throw new Exception('Trying to delete the value of an unauthorized connector property');
+			}
+		}
+		
+		$activityRefProp = new core_kernel_classes_Property(PROPERTY_CONNECTORS_ACTIVITYREFERENCE);
+		$activityRef = $connector->getUniquePropertyValue($activityRefProp)->uriResource;
+	
+		if($property->uriResource == PROPERTY_CONNECTORS_NEXTACTIVITIES){
+			//manage the connection to the following activities
+			$nextActivityCollection = $connector->getPropertyValuesCollection($property);
+			foreach($nextActivityCollection->getIterator() as $nextActivity){
+				if(self::isConnector($nextActivity)){
+					$nextActivityRef = $nextActivity->getUniquePropertyValue($activityRefProp)->uriResource;
+					if($nextActivityRef == $activityRef){
+						$this->deleteConnector($nextActivity);//delete following connectors only if they have the same activity reference
+					}
+				}
+			}
+			$connector->removePropertyValues($nextActivitiesProp);
+		}elseif(($property->uriResource == PROPERTY_TRANSITIONRULES_THEN)||($property->uriResource == PROPERTY_TRANSITIONRULES_ELSE)){
+			//it is a split connector: get the transition rule, if exists
+			$transitionRule = $connector->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTOR_TRANSITIONRULE));
+			if(!is_null($transitionRule)){
+				$nexActivity = $transitionRule->getOnePropertyValue($property);
+				if(!is_null($nexActivity)){
+					if(self::isConnector($nextActivity)){
+						$nextActivityRef = $nextActivity->getUniquePropertyValue($activityRefProp)->uriResource;
+						if($nextActivityRef == $activityRef){
+							$this->deleteConnector($nextActivity);//delete following connectors only if they have the same activity reference
+						}
+					}
+					$this->deleteReference($nextActivitiesProp,$nextActivity);
+				}
+			
+			}
+		}
+		
+		
 	}
 	
 	/**
@@ -635,9 +699,16 @@ class wfEngine_models_classes_ProcessAuthoringService
 			}
 		}
 		if($followingActivity instanceof core_kernel_classes_Resource){
+			//set connector type to split
+			$this->setConnectorType($connector, new core_kernel_classes_Resource(INSTANCE_TYPEOFCONNECTORS_SEQUENCE));
+			
 			//associate it to the property value of the connector
 			$connector->editPropertyValues(new core_kernel_classes_Property(PROPERTY_CONNECTORS_NEXTACTIVITIES), $followingActivity->uriResource);
+		}else{
+			throw new Exception("the following sequential activity cannot be created.");
 		}
+		
+		return $followingActivity;
 	}
 	
 	/**
@@ -965,7 +1036,7 @@ class wfEngine_models_classes_ProcessAuthoringService
 	 * @param  core_kernel_classes_Resource followingActivity
 	 * @param  string newActivityLabel
 	 * @param  boolean followingActivityisConnector
-     * @return void
+     * @return core_kernel_classes_Resource
      */	
 	public function createSplitActivity(core_kernel_classes_Resource $connector, $connectorType, core_kernel_classes_Resource $followingActivity = null, $newActivityLabel ='', $followingActivityisConnector = false){
 		//remove property PROPERTY_CONNECTORS_NEXTACTIVITIES values on connector before:
@@ -988,6 +1059,10 @@ class wfEngine_models_classes_ProcessAuthoringService
 		}
 		
 		if($followingActivity instanceof core_kernel_classes_Resource){
+			
+			//set connector type to split
+			$this->setConnectorType($connector, new core_kernel_classes_Resource(INSTANCE_TYPEOFCONNECTORS_SPLIT));
+			
 			//associate it to the property value of the connector
 			$connector->setPropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_NEXTACTIVITIES), $followingActivity->uriResource);//use this function and not editPropertyValue!
 			$transitionRule = $connector->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_TRANSITIONRULE));
@@ -1006,6 +1081,8 @@ class wfEngine_models_classes_ProcessAuthoringService
 				$transitionRule->editPropertyValues(new core_kernel_classes_Property(PROPERTY_TRANSITIONRULES_ELSE), $followingActivity->uriResource);
 			}
 		}
+		
+		return $followingActivity;
 	}
 	
 	/**

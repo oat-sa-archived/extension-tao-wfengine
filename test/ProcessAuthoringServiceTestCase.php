@@ -130,7 +130,84 @@ class ProcessAuthoringServiceTestCase extends UnitTestCase {
 		
 	}
 	
-	 function tearDown() {
+	public function testCreateSequenceActivity(){
+		$activity1 = $this->authoringService->createActivity($this->proc, 'myActivity');
+		$connector1 = $this->authoringService->createConnector($activity1);
+		$followingActivity1 = $this->authoringService->createSequenceActivity($connector1);
+		$this->assertIsA($followingActivity1, 'core_kernel_classes_Resource');
+		$this->assertEqual($followingActivity1->getLabel(), 'Activity_2');
+		$this->assertEqual($connector1->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_TYPE))->uriResource, INSTANCE_TYPEOFCONNECTORS_SEQUENCE);
+		
+		$followingConnector1 = $this->apiModel->getSubject(PROPERTY_CONNECTORS_PRECACTIVITIES, $followingActivity1->uriResource)->get(0);
+		$this->assertIsA($followingConnector1, 'core_kernel_classes_Resource');
+
+		$shouldBeActivity1 = null;
+		$shouldBeActivity1 = $this->authoringService->createSequenceActivity($followingConnector1, $activity1);
+		$this->assertEqual($activity1->uriResource, $shouldBeActivity1->uriResource);
+		
+		$shouldBeActivity1 = null;
+		$shouldBeActivity1 = $followingConnector1->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_NEXTACTIVITIES));
+		$this->assertEqual($activity1->uriResource,$shouldBeActivity1->uriResource);
+		
+		$activity1->delete();
+		$connector1->delete();
+		$followingActivity1->delete();
+		$followingConnector1->delete();
+	}
+	
+	public function testCreateSplitActivity(){
+		$activity1 = $this->authoringService->createActivity($this->proc, 'myActivity');
+		$connector1 = $this->authoringService->createConnector($activity1);
+		
+		$then = $this->authoringService->createSplitActivity($connector1, 'then');//create "Activity_2"
+		$else = $this->authoringService->createSplitActivity($connector1, 'else', null, '', true);//create another connector
+		$this->assertEqual($connector1->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_TYPE))->uriResource, INSTANCE_TYPEOFCONNECTORS_SPLIT);
+		$this->assertTrue(wfEngine_models_classes_ProcessAuthoringService::isActivity($then));
+		$this->assertTrue(wfEngine_models_classes_ProcessAuthoringService::isConnector($else));
+		
+		$transitionRule = $connector1->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_TRANSITIONRULE));
+		$this->assertEqual($then->uriResource, $transitionRule->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_TRANSITIONRULES_THEN))->uriResource);
+		$this->assertEqual($else->uriResource, $transitionRule->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_TRANSITIONRULES_ELSE))->uriResource);
+		
+		$activity1->delete();
+		$connector1->delete();
+		$transitionRule->delete();
+		$then->delete();
+		$else->delete();
+	}
+	
+	
+	public function testDeleteConnectorNextActivity(){
+		$activity1 = $this->authoringService->createActivity($this->proc, 'myActivity');
+		$connector1 = $this->authoringService->createConnector($activity1);
+		$this->authoringService->createSequenceActivity($connector1);
+		
+		$nextActivitiesProp = new core_kernel_classes_Property(PROPERTY_CONNECTORS_NEXTACTIVITIES);
+		
+		$activity2 = $connector1->getUniquePropertyValue($nextActivitiesProp);
+		$this->assertIsA($activity2 , 'core_kernel_classes_Resource');
+		
+		$this->authoringService->deleteConnectorNextActivity($connector1, 'next');
+		$followingActivity1 = $connector1->getOnePropertyValue($nextActivitiesProp);
+		$this->assertNull($followingActivity1);
+		
+		$connector2 = $this->apiModel->getSubject(PROPERTY_CONNECTORS_PRECACTIVITIES, $activity2->uriResource)->get(0);
+		$then = $this->authoringService->createSplitActivity($connector2, 'then');//create "Activity_2"
+		$else = $this->authoringService->createSplitActivity($connector2, 'else', null, '', true);//create another connector
+		// $this->authoringService->deleteConnectorNextActivity($connector1, 'then');
+		// $this->authoringService->deleteConnectorNextActivity($connector1, 'else');
+		$transitionRule = $connector2->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_TRANSITIONRULE));
+		
+		$activity1->delete();
+		$connector1->delete();
+		$activity2->delete();
+		$connector2->delete();
+		$transitionRule->delete();
+		$then->delete();
+		$else->delete();
+	}
+	
+	public function tearDown() {
         $this->proc->delete();
     }
 
