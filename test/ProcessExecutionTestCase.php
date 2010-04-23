@@ -1,22 +1,35 @@
 <?php
-
-error_reporting(-1);
-
 require_once dirname(__FILE__) . '/../../generis/common/inc.extension.php';
-require_once dirname(__FILE__). '/../includes/common.php';
-
-define("LOGIN", "tao", true);
-define("PASS", "tao", true);
-
+require_once dirname(__FILE__) . '/../includes/common.php';
 require_once INCLUDES_PATH.'/simpletest/autorun.php';
- 
+
+if(!defined("LOGIN")){
+	define("LOGIN", "generis", true);
+}
+/**
+* @constant password for the module you wish to connect to 
+*/
+if(!defined("PASS")){
+	define("PASS", "g3n3r1s", true);
+}
+/**
+* @constant module for the module you wish to connect to 
+*/
+if(!defined("MODULE")){
+	define("MODULE", "tao", true);
+}
+
+error_reporting(E_ALL);
 
 class ProcessExecutionTestCase extends UnitTestCase{
 	
-	protected $proc;
+	protected $procDefinition;
 	
 	public function setUp(){
 		core_kernel_impl_ApiModelOO::singleton()->logIn(LOGIN,md5(PASS),DATABASE_NAME,true);
+
+		/*
+		
 		$factory = new ProcessExecutionFactory();
 		$factory->name = 'Test Process Execution';
 		$factory->execution = 'http://www.tao.lu/middleware/Interview.rdf#i126537966613798';
@@ -25,21 +38,73 @@ class ProcessExecutionTestCase extends UnitTestCase{
 		$factory->ownerUri = LOGIN;
 
 		$this->proc = $factory->create();
-
+*/
 
 	}
 	
-	public function test(){
-		var_dump($this->proc->currentActivity[0]);
-		$activity = $this->proc->currentActivity[0];
-		var_dump($activity->getServices());
+	public function testPerformTransition(){
 		
-		$this->proc->performTransition();
+		$authoringService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessAuthoringService');
+		$process = new core_kernel_classes_Class(CLASS_PROCESS);
+		$this->procDefinition = core_kernel_classes_ResourceFactory::create($process,'WfEngine unit test', 'test');
+		$activity1 = $authoringService->createActivity($this->procDefinition, 'testPerformTransition Activity 1');
+		$authoringService->setFirstActivity($this->procDefinition,$activity1);
+		$connectorSeq = new core_kernel_classes_Resource(CONNECTOR_SEQ);
+		$connectorSplit = new core_kernel_classes_Resource(CONNECTOR_SPLIT);
 		
-		var_dump($this->proc->currentActivity[0]);
-		$activity = $this->proc->currentActivity[0];
-		var_dump($activity->getServices());
-//		var_dump($this->proc);
+		$seaConnector1 = $authoringService->createConnector($activity1);
+		$authoringService->setConnectorType($seaConnector1,$connectorSeq);
+
+		
+		$activity2 = $authoringService->createSequenceActivity($seaConnector1);
+		
+		$seaConnector2 = $authoringService->createConnector($activity2);
+
+		echo __FILE__.__LINE__;var_dump($seaConnector2,$connectorSplit);
+		$authoringService->setConnectorType($seaConnector2,$connectorSplit);
+//
+//				
+//		$rule = $authoringService->createRule($seaConnector2,'^var = 1');
+//		$condition = $authoringService->createCondition($conditionDom);
+//
+//		$activity3 = $authoringService->createSplitActivity($seaConnector2, 'then');
+//		$seaConnector3 = $authoringService->createConnector($activity3);
+//		$authoringService->setConnectorType($seaConnector3,$connectorSeq);
+//
+//		
+//		$activity4 = $authoringService->createSplitActivity($seaConnector2, 'else');
+//		$seaConnector4 = $authoringService->createConnector($activity4);
+//		$authoringService->setConnectorType($seaConnector4,$connectorSeq);
+//		
+//		$activity5 = $authoringService->createSequenceActivity($seaConnector3);
+//		$activity5 = $authoringService->createSequenceActivity($seaConnector4,$activity5);
+
+		
+
+		$factory = new ProcessExecutionFactory();
+		$factory->name = 'Test Process Execution';
+		$factory->execution = urldecode('http%3A%2F%2Flocalhost%2Fmiddleware%2Fzzz.rdf%23i1272033936038083200');
+//		$factory->execution =$this->procDefinition->uriResource;
+		$factory->ownerUri = LOGIN;
+
+		$proc = $factory->create();
+
+//		var_dump($proc);
+		var_dump($proc->currentActivity[0]);
+		$activity = $proc->currentActivity[0];
+//		var_dump($activity->getServices());
+
+		$proc->performTransition();
+		
+		var_dump($proc->currentActivity[0]);
+		$activity = $proc->currentActivity[0];
+		$proc->performTransition();
+		
+		var_dump($proc->currentActivity[0]);
+		$activity = $proc->currentActivity[0];
+//		var_dump($activity->getServices());
+
+		
 		$this->fail('not imp yet');
 		
 	}
