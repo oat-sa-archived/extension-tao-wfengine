@@ -23,11 +23,13 @@ error_reporting(E_ALL);
 
 class ProcessExecutionTestCase extends UnitTestCase{
 	
-	protected $procDefinition;
+	protected $procDefinition = null;
+	protected $apiModel = null;
 	
 	public function setUp(){
-		core_kernel_impl_ApiModelOO::singleton()->logIn(LOGIN,md5(PASS),DATABASE_NAME,true);
-
+		$this->apiModel = core_kernel_impl_ApiModelOO::singleton();
+		$this->apiModel->logIn(LOGIN,md5(PASS),DATABASE_NAME,true);
+		
 		/*
 		
 		$factory = new ProcessExecutionFactory();
@@ -42,6 +44,73 @@ class ProcessExecutionTestCase extends UnitTestCase{
 
 	}
 	
+	public function testCreateProcess(){
+	
+		$authoringService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessAuthoringService');
+		
+		$processDefinitionClass = new core_kernel_classes_Class(CLASS_PROCESS);
+		$processDefinition = $processDefinitionClass->createInstance('processForUnitTest','created for the unit test of process execution');
+		$this->assertIsA($processDefinition, 'core_kernel_classes_Resource');
+		
+		$activity1 = $authoringService->createActivity($processDefinition, 'activity1');
+		$authoringService->setFirstActivity($processDefinition,$activity1);
+		$connector1 = $authoringService->createConnector($activity1);
+		$this->assertNotNull($connector1);
+		
+		$activity2 = $authoringService->createSequenceActivity($connector1, null, 'activity2');
+		$connector2 = $this->apiModel->getSubject(PROPERTY_CONNECTORS_PRECACTIVITIES, $activity2->uriResource)->get(0);//the spit connector
+		$authoringService->createRule($connector2, '^groupUri = 1');
+		
+		$activity3 = $authoringService->createSplitActivity($connector2, 'then', null, 'activity3');
+		$connector3 = $this->apiModel->getSubject(PROPERTY_CONNECTORS_PRECACTIVITIES, $activity3->uriResource)->get(0);
+		$this->assertNotNull($connector3);
+		
+		$activity4 = $authoringService->createSplitActivity($connector2, 'else', null, 'activity4');
+		$connector4 = $this->apiModel->getSubject(PROPERTY_CONNECTORS_PRECACTIVITIES, $activity4->uriResource)->get(0);
+		
+		
+		$activity5 = $authoringService->createActivity($processDefinition, 'activity5');
+		//connect activity 3 and 4 to the 5th:
+		$act5bis = $authoringService->createSequenceActivity($connector3, $activity5);
+		$act5ter = $authoringService->createSequenceActivity($connector4, $activity5);
+		$this->assertEqual($connector3->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_NEXTACTIVITIES))->uriResource, $activity5->uriResource);
+		$this->assertEqual($connector3->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_NEXTACTIVITIES))->uriResource, $connector4->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_NEXTACTIVITIES))->uriResource);
+		
+		
+		$factory = new ProcessExecutionFactory();
+		$factory->name = 'Test Process Execution';
+		$factory->execution = $processDefinition->uriResource;
+		$factory->ownerUri = LOGIN;
+
+		$proc = $factory->create();
+		
+		$procVar = $authoringService->getProcessVariable('groupUri');
+		$this->assertNotNull($procVar);
+		$proc->resource->setPropertyValue($procVar->uriResource, '1');
+		
+		var_dump($proc);
+		// var_dump($proc->currentActivity[0]);
+		// $activity = $proc->currentActivity[0];
+		// var_dump($activity->getServices());
+
+		// $proc->performTransition();
+		
+		// var_dump($proc->currentActivity[0]);
+		// $activity = $proc->currentActivity[0];
+		// $proc->performTransition();
+		
+		// var_dump($proc->currentActivity[0]);
+		// $activity = $proc->currentActivity[0];
+		// var_dump($activity->getServices());
+
+		
+		// $this->fail('not imp yet');
+		
+		//delete processdef:
+		$authoringService->deleteProcess($processDefinition);
+		
+	}
+	/*
 	public function testPerformTransition(){
 		
 		$authoringService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessAuthoringService');
@@ -108,7 +177,7 @@ class ProcessExecutionTestCase extends UnitTestCase{
 		$this->fail('not imp yet');
 		
 	}
-
+	*/
 
 	
 }
