@@ -48,21 +48,16 @@ class ProcessAuthoringServiceTestCase extends UnitTestCase {
 	
 	public function testCreateActivity(){
 		
-		$processDefinitionClass = new core_kernel_classes_Class(CLASS_PROCESS);
-		$process = $processDefinitionClass->createInstance('processForUnitTest','created for the unit test of process authoring service');
-		if($process instanceof core_kernel_classes_Resource){
-			$activity1 = $this->authoringService->createActivity($process);
+			$activity1 = $this->authoringService->createActivity($this->proc);
 			$this->assertEqual($activity1->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_ACTIVITIES_ISINITIAL))->uriResource, GENERIS_TRUE);
 			$this->assertEqual($activity1->getLabel(), 'Activity_1');
 			$this->assertEqual($activity1->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_ACTIVITIES_ISHIDDEN))->uriResource, GENERIS_FALSE);
 			
-			$activity2 = $this->authoringService->createActivity($process, 'myActivity');
+			$activity2 = $this->authoringService->createActivity($this->proc, 'myActivity');
 			$this->assertEqual($activity2->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_ACTIVITIES_ISINITIAL))->uriResource, GENERIS_FALSE);
 			
 			$activity1->delete();
 			$activity2->delete();
-			$process->delete();
-		}
 		
 	}
 	
@@ -180,7 +175,7 @@ class ProcessAuthoringServiceTestCase extends UnitTestCase {
 	public function testDeleteConnectorNextActivity(){
 		$activity1 = $this->authoringService->createActivity($this->proc, 'myActivity');
 		$connector1 = $this->authoringService->createConnector($activity1);
-		$this->authoringService->createSequenceActivity($connector1);
+		$this->authoringService->createSequenceActivity($connector1, null, '2ndActivityForUnitTest');
 		
 		$nextActivitiesProp = new core_kernel_classes_Property(PROPERTY_CONNECTORS_NEXTACTIVITIES);
 		
@@ -194,9 +189,15 @@ class ProcessAuthoringServiceTestCase extends UnitTestCase {
 		$connector2 = $this->apiModel->getSubject(PROPERTY_CONNECTORS_PRECACTIVITIES, $activity2->uriResource)->get(0);
 		$then = $this->authoringService->createSplitActivity($connector2, 'then');//create "Activity_2"
 		$else = $this->authoringService->createSplitActivity($connector2, 'else', null, '', true);//create another connector
-		// $this->authoringService->deleteConnectorNextActivity($connector1, 'then');
-		// $this->authoringService->deleteConnectorNextActivity($connector1, 'else');
+		
+		$this->authoringService->deleteConnectorNextActivity($connector2, 'then');
+		$this->authoringService->deleteConnectorNextActivity($connector2, 'else');
+		
 		$transitionRule = $connector2->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_TRANSITIONRULE));
+		
+		$this->assertNull($transitionRule->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_TRANSITIONRULES_THEN)));
+		$this->assertNull($transitionRule->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_TRANSITIONRULES_ELSE)));
+		$this->assertTrue($this->apiModel->getSubject(RDFS_LABEL, '2ndActivityForUnitTest_c_c')->isEmpty());
 		
 		$activity1->delete();
 		$connector1->delete();

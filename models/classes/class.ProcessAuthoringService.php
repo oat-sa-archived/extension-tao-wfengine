@@ -505,20 +505,20 @@ class wfEngine_models_classes_ProcessAuthoringService
 			//it is a split connector: get the transition rule, if exists
 			$transitionRule = $connector->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTOR_TRANSITIONRULE));
 			if(!is_null($transitionRule)){
-				$nexActivity = $transitionRule->getOnePropertyValue($property);
-				if(!is_null($nexActivity)){
+				$nextActivity = $transitionRule->getOnePropertyValue($property);
+				if(!is_null($nextActivity)){
 					if(self::isConnector($nextActivity)){
+						
 						$nextActivityRef = $nextActivity->getUniquePropertyValue($activityRefProp)->uriResource;
 						if($nextActivityRef == $activityRef){
 							$this->deleteConnector($nextActivity);//delete following connectors only if they have the same activity reference
 						}
 					}
-					$this->deleteReference($nextActivitiesProp,$nextActivity);
+					$this->deleteReference($nextActivitiesProp, $nextActivity);
+					$this->deleteReference($property, $nextActivity);
 				}
-			
 			}
 		}
-		
 		
 	}
 	
