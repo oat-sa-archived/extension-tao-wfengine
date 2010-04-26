@@ -184,26 +184,24 @@ extends WfResource
 	public function feedFlow($recursivityLevel = "")
 	{
 		// section -64--88-1-64--7117f567:11a0527df60:-8000:00000000000008F4 begin
-
 		// We get the next connectors.
 		$nextConnectors = core_kernel_impl_ApiModelOO::singleton()->getSubject(PROPERTY_CONNECTORS_PRECACTIVITIES,$this->uri);
-//		echo __FILE__.__LINE__;var_dump($nextConnectors);
 		$connectors =array();
 		foreach ($nextConnectors->getIterator() as $resource)
 		{
 			$typeProp = new core_kernel_classes_Property(RDF_TYPE);
 			$isAConnector = $resource->getPropertyValuesCollection($typeProp);
-//			echo __FILE__.__LINE__;var_dump($resource);
+			
 			if ($isAConnector->get(0)->uriResource == CLASS_CONNECTORS)
 			{
+						
 				$connector	= new Connector($resource->uriResource);
-
-				$this->nextConnectors[] = $connector;
+				$this->nextConnectors[] = $connector;		
 
 			}
 				
 		}
-
+		
 		// We get the associated consistency rule.
 		// Please be carefull that an activity wihtout any transition rule is absolutely valid.
 		$consistencyRulesActivitiesProp = new core_kernel_classes_Property(PROPERTY_ACTIVITIES_CONSISTENCYRULE);
@@ -214,12 +212,12 @@ extends WfResource
 			$this->consistencyRule = new ConsistencyRule($consistencyRules[0]);
 		}
 			
-
+		
 		// We get the associated onAfterInferenceRule.
 			
 		$infRulesProp = new core_kernel_classes_Property(PROPERTY_ACTIVITIES_INFERENCERULE);
 		$inferenceRules = $this->resource->getPropertyValues($infRulesProp);
-			
+
 		if (count($inferenceRules))
 		{
 			foreach ($inferenceRules as $inf)
@@ -288,7 +286,8 @@ extends WfResource
 		// section 10-13-1-85-16731180:11be4127421:-8000:00000000000009FA begin
 		 
 		parent::__construct($uri);
-
+		$this->logger->debug('Build Activity  Name: ' . $this->resource->getLabel(),__FILE__,__LINE__);
+		$this->logger->debug('Build Activity  Uri: ' . $this->resource->uriResource,__FILE__,__LINE__);
 		if ($feed)
 		{
 			$activityRoleProp = new core_kernel_classes_Property(ACTIVITY_ROLE);
@@ -298,26 +297,14 @@ extends WfResource
 			if (isset($acceptedRole[0])) {
 				$this->acceptedRole = new WfRole($acceptedRole[0]);
 			}
-
+			
 			 
-			// Calendar
-			
-			$showCalendarProp = new core_kernel_classes_Property(PROPERTY_ACTIVITIES_DISPLAYCALENDAR);
-			$showCalendar = $this->resource->getPropertyValues($showCalendarProp);
-			
-		
-			if (count($showCalendar))
-			{
-				if ($showCalendar[0] == GENERIS_TRUE)
-				{
-					$this->showCalendar = true;
-				}
-			}
+
 			 
 			// Hidden
 			$isHiddenProp = new core_kernel_classes_Property(PROPERTY_ACTIVITIES_ISHIDDEN);
 			$isHidden = $this->resource->getPropertyValues($isHiddenProp);
-			
+
 
 			if (count($isHidden))
 			{
@@ -326,6 +313,7 @@ extends WfResource
 					$this->isHidden = true;
 				}
 			}
+
 		}
 
 		// section 10-13-1-85-16731180:11be4127421:-8000:00000000000009FA end

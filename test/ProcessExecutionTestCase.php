@@ -55,19 +55,25 @@ class ProcessExecutionTestCase extends UnitTestCase{
 		$activity1 = $authoringService->createActivity($processDefinition, 'activity1');
 		$authoringService->setFirstActivity($processDefinition,$activity1);
 		$connector1 = $authoringService->createConnector($activity1);
+		$connectorSeq = new core_kernel_classes_Resource(CONNECTOR_SEQ);
+		$connectorSplit = new core_kernel_classes_Resource(CONNECTOR_SPLIT);
+		
+		$authoringService->setConnectorType($connector1,$connectorSeq);
 		$this->assertNotNull($connector1);
 		
 		$activity2 = $authoringService->createSequenceActivity($connector1, null, 'activity2');
 		$connector2 = $this->apiModel->getSubject(PROPERTY_CONNECTORS_PRECACTIVITIES, $activity2->uriResource)->get(0);//the spit connector
+		$authoringService->setConnectorType($connector2,$connectorSplit);
 		$authoringService->createRule($connector2, '^groupUri = 1');
 		
 		$activity3 = $authoringService->createSplitActivity($connector2, 'then', null, 'activity3');
 		$connector3 = $this->apiModel->getSubject(PROPERTY_CONNECTORS_PRECACTIVITIES, $activity3->uriResource)->get(0);
+		$authoringService->setConnectorType($connector3,$connectorSeq);
 		$this->assertNotNull($connector3);
 		
 		$activity4 = $authoringService->createSplitActivity($connector2, 'else', null, 'activity4');
 		$connector4 = $this->apiModel->getSubject(PROPERTY_CONNECTORS_PRECACTIVITIES, $activity4->uriResource)->get(0);
-		
+		$authoringService->setConnectorType($connector4,$connectorSeq);
 		
 		$activity5 = $authoringService->createActivity($processDefinition, 'activity5');
 		//connect activity 3 and 4 to the 5th:
@@ -81,30 +87,32 @@ class ProcessExecutionTestCase extends UnitTestCase{
 		$factory->name = 'Test Process Execution';
 		$factory->execution = $processDefinition->uriResource;
 		$factory->ownerUri = LOGIN;
-
 		$proc = $factory->create();
-		
 		$procVar = $authoringService->getProcessVariable('groupUri');
 		$this->assertNotNull($procVar);
-		$proc->resource->setPropertyValue($procVar->uriResource, '1');
-		
-		var_dump($proc);
-		// var_dump($proc->currentActivity[0]);
-		// $activity = $proc->currentActivity[0];
-		// var_dump($activity->getServices());
+		$proc->resource->setPropertyValue(new core_kernel_classes_Property($procVar->uriResource), '1');
 
-		// $proc->performTransition();
-		
-		// var_dump($proc->currentActivity[0]);
-		// $activity = $proc->currentActivity[0];
-		// $proc->performTransition();
-		
-		// var_dump($proc->currentActivity[0]);
-		// $activity = $proc->currentActivity[0];
-		// var_dump($activity->getServices());
+		 var_dump($proc->currentActivity[0]);
+		 $activity = $proc->currentActivity[0];
+//		 var_dump($activity->getServices());
 
+		 $proc->performTransition();
 		
-		// $this->fail('not imp yet');
+		 var_dump($proc->currentActivity[0]);
+		 $activity = $proc->currentActivity[0];
+
+		 $proc->performTransition();
+	
+		 var_dump($proc->currentActivity[0]);
+		 $activity = $proc->currentActivity[0];
+//		 var_dump($activity->getServices());
+
+		$proc->performTransition();
+	
+		 var_dump($proc->currentActivity[0]);
+		 $activity = $proc->currentActivity[0];
+
+		 $this->fail('not imp yet');
 		
 		//delete processdef:
 		$authoringService->deleteProcess($processDefinition);

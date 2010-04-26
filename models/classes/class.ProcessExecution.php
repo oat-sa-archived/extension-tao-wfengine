@@ -168,7 +168,7 @@ extends WfResource
 	{
 
 		// section 10-13-1--31--4660acca:119ecd38e96:-8000:0000000000000866 begin
-
+		$this->logger->debug('Start Perform Transition ',__FILE__,__LINE__);
 
 		//we should call process->feedFlow method, keep it in session, then reuse attributes instead of querying generis. at each call This imply that currentactivity is a pointer in generis but also a pointer to the object in memory so that we can retrive nec-xt conenctors of the currentactivity, etc...
 		//code will be quicker and cleaner
@@ -178,7 +178,9 @@ extends WfResource
 		//the activity definition is set into cache .. about 0.06 -> 0.01
 		//$value = common_Cache::getCache($this->currentActivity[0]->uri);
 
+
 		$activityBeforeTransition 	= new Activity($this->currentActivity[0]->uri);
+
 		$activityBeforeTransition->feedFlow(1);
 
 		//common_Cache::setCache($activityBeforeTransition,$this->currentActivity[0]->uri);
@@ -186,12 +188,14 @@ extends WfResource
 		$processVars 				= $this->getVariables();
 		$arrayOfProcessVars 		= Utils::processVarsToArray($processVars);
 
+
 		// ONAFTER INFERENCE RULE
 		// If we are here, no consistency error was thrown. Thus, we can infer something if needed.
 		foreach ($activityBeforeTransition->inferenceRule as $rule)
 		{
 			$rule->execute($arrayOfProcessVars);
 		}
+
 		$curentTokenProp = new core_kernel_classes_Property(CURRENT_TOKEN);
 		// -- ONAFTER CONSISTENCY CHECKING
 		// First of all, we check if the consistency rule is respected.
@@ -234,20 +238,19 @@ extends WfResource
 		}
 
 		$connectorsUri = $this->getNextConnectorsUri($this->currentActivity[0]->uri);
+		
+		$arrayOfProcessVars[VAR_PROCESS_INSTANCE] = $this->resource->uriResource;
 		$newActivities = $this->getNewActivities($arrayOfProcessVars, $connectorsUri);
+
+
 		$this->resource->removePropertyValues($curentTokenProp);
-
-		foreach ($newActivities as $activity)
-		{		
-			$this->resource->editPropertyValues($curentTokenProp,$activity->uri);
-		}
-
 
 		$this->currentActivity = array();
 
 		foreach ($newActivities as $newActivity)
 		{
 
+			$this->resource->editPropertyValues($curentTokenProp,$newActivity->uri);
 			$this->path->invalidate($activityBeforeTransition,($this->path->contains($newActivity) ? $newActivity : null));
 
 			// We insert in the ontology the last activity in the path stack.
@@ -257,7 +260,7 @@ extends WfResource
 			
 
 		}
-		
+
 		// If the activity before the transition was the last activity of the process,
 		// we have to finish gracefully the process.
 
@@ -267,25 +270,20 @@ extends WfResource
 		}
 		else
 		{
+
 			// The process is not finished.
 			// It means we have to run the onBeforeInference rule of the new current activity.
 			$activityAfterTransition = $this->currentActivity[0];
 			$activityAfterTransition->feedFlow(1);
 
+			
 			// ONBEFORE INFERENCE RULE
 			// If we are here, no consistency error was thrown. Thus, we can infer something if needed.
 			foreach ($activityAfterTransition->onBeforeInferenceRule as $rule)
 			{
 				$rule->execute($arrayOfProcessVars);
 			}
-
-			if (defined('PIAAC_ENABLED') && PIAAC_ENABLED == true)
-			{
-				if (isPiaacHidden($activityAfterTransition->label))
-				{
-					$activityAfterTransition->isHidden = true;
-				}
-			}
+		
 
 			// Last but not least ... is the next activity a machine activity ?
 			// if yes, we perform the transition.
@@ -294,7 +292,7 @@ extends WfResource
 				$this->performTransition($ignoreConsistency);
 			}
 
-
+		
 		}
 
 		// section 10-13-1--31--4660acca:119ecd38e96:-8000:0000000000000866 end
@@ -315,6 +313,11 @@ extends WfResource
 			$connector = new Connector($connUri);
 
 			$connType = $connector->getType();
+			if(!($connType instanceof core_kernel_classes_Resource)){
+				throw new common_Exception('Connector type should be a Resource');
+			}
+			$this->logger->debug('Next Connector Type : ' . $connType->getLabel(),__FILE__,__LINE__);
+			
 
 			switch ($connType->uriResource) {
 				case CONNECTOR_SPLIT : {
@@ -330,9 +333,11 @@ extends WfResource
 					break;
 				}
 				default : {
-
+					
 					foreach ($connector->getNextActivities()->getIterator() as $val)
 					{
+						$this->logger->debug('Next Activity  Name: ' . $val->getLabel(),__FILE__,__LINE__);
+						$this->logger->debug('Next Activity  Uri: ' . $val->uriResource,__FILE__,__LINE__);
 						$activity = new Activity($val->uriResource);
 						$activity->getActors();
 						$newActivities[]= $activity;
@@ -669,11 +674,9 @@ extends WfResource
 
 		$newActivities = array();
 		// We get the TransitionRule relevant to the connector.
-		$ruleProp = new core_kernel_classes_Property(PROPERTY_CONNECTOR_TRANSITIONRULE);
-		$connResource = new core_kernel_classes_Resource($connUri);
-		$rule = $connResource->getPropertyValues($connUri);
-
-		$transitionRule 	= new TransitionRule($rule[0]);
+		$connector = new Connector($connUri);
+	
+		$transitionRule 	= $connector->transitionRule;
 
 		$evaluationResult 	= $transitionRule->getExpression()->evaluate($arrayOfProcessVars);
 
@@ -844,6 +847,8 @@ extends WfResource
 
 		$connectorsUri = array();
 		foreach ($connectorsCollection->getIterator() as $statement){
+			$this->logger->debug('get Next Connectors Uri : ' . $statement->uriResource,__FILE__,__LINE__);
+			$this->logger->debug('get Next Connectors Name : ' . $statement->getLabel(),__FILE__,__LINE__);
 			$connectorsUri[] = $statement->uriResource;
 		}
 		return $connectorsUri;
@@ -1071,7 +1076,7 @@ extends WfResource
 
 		$currentTokenProp = new core_kernel_classes_Property(CURRENT_TOKEN);
 		$values = $this->resource->getPropertyValues($currentTokenProp);
-		
+
 		foreach ($values as  $b)
 		{
 			$activity				= new Activity($b);
@@ -1113,12 +1118,6 @@ extends WfResource
 		$fromActivity = $this->currentActivity[0];
 		$partialPath = $this->path->getPathFrom($fromActivity);
 
-		if (defined('PIAAC_ENABLED'))
-		{
-			$codeProperty = new core_kernel_classes_Property(PROPERTY_ACTIVITIES_CODE);
-			// Will rebuild PiaacDataHolder if needed.
-			PiaacDataHolder::build($this->uri);
-		}
 
 		for ($i = 0; $i < (count($partialPath) - 1); $i++)
 		{
@@ -1127,59 +1126,6 @@ extends WfResource
 			$currentActivity = $this->currentActivity[0];
 			$currentActivityUri = $currentActivity->uri;
 
-			if (defined('PIAAC_ENABLED') && $i > 0)
-			{
-				// For PIAAC, life time events are reset if you change
-				// the date of birth of the respondent. It means that you
-				// can jump over life time events having no answer at all.
-				// In this particular case, ConcistencyExceptions will not
-				// occur and the flow will go through empty life time events.
-				//
-				// To avoid this problem, when a life time event is found during
-				// the forward jump, we verify if it has answers before continuing
-				// to go forward.
-				$activityResource = new core_kernel_classes_Resource($currentActivityUri);
-				$activityCode = $activityResource->getUniquePropertyValue($codeProperty);
-				$activityCode = str_replace(ACTIVTY_CODE_PREFIX, '', $activityCode);
-
-				if (in_array($activityCode, $GLOBALS['agevents']))
-				{
-					// We now check if there is at least one answer for
-					// the life event...
-					$items = PiaacDataHolder::getItemsByItemGroup($currentActivityUri, true);
-
-					// Only two items should be found (Age and Year).
-					if (count($items) > 2)
-					{
-						throw new common_Exception('An itemGroup identified as a lifetime ' .
-    											   'event has more than the 2 expected items ' .
-    											   '(Age and Year).');
-					}
-					else
-					{
-						$intervieweeUri = getIntervieweeUriByProcessExecutionUri($this->uri);
-						$interviewee = new core_kernel_classes_Resource($intervieweeUri);
-
-						// Real lifetime event found.
-						$hasAnswer = false;
-
-						foreach ($items as $item)
-						{
-							$varProperty = new core_kernel_classes_Property($item['uri']);
-
-							if (count($interviewee->getPropertyValues($varProperty)))
-							{
-								$hasAnswer = true;
-								break;
-							}
-						}
-
-						// No answer ? We stop to perform transitions.
-						if (!$hasAnswer)
-						break;
-					}
-				}
-			}
 
 			if ($pathItemUri != $currentActivityUri)
 			{

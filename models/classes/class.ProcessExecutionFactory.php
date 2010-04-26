@@ -25,7 +25,7 @@ class ProcessExecutionFactory {
 		$processExecutionClass = new core_kernel_classes_Class(CLASS_PROCESS_EXECUTIONS, __METHOD__);
 		$subjectResource = core_kernel_classes_ResourceFactory::create($processExecutionClass,$this->name,$this->comment);
 	
-
+		
 		$statusProp = new core_kernel_classes_Property(STATUS,__METHOD__);
 		$subjectResource->setPropertyValue($statusProp,PROPERTY_PINSTANCES_STATUS);
 
@@ -33,7 +33,7 @@ class ProcessExecutionFactory {
 		$subjectResource->setPropertyValue($processExecutionOfProp,$this->execution);
 
 		$returnValue = new ProcessExecution($subjectResource->uriResource,false);
-
+		
 		$processVars = $returnValue->getVariables();
 
 		$processVars = Utils::processVarsToArray($processVars);
@@ -61,6 +61,7 @@ class ProcessExecutionFactory {
 
 			// OnBefore initial activity.
 			// If the initial Activity has inference rules on before... let's run them !
+			
 			$activity->feedFlow(0);
 			if (count($activity->onBeforeInferenceRule))
 			{
@@ -69,6 +70,7 @@ class ProcessExecutionFactory {
 					$onbir->execute($processVars);
 				}
 			}
+			
 		}
 
 

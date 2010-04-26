@@ -1,4 +1,6 @@
 <?php
+error_reporting(E_ALL);
+
 class ProcessBrowser extends Module
 {
 	public function index($processUri)
@@ -7,7 +9,7 @@ class ProcessBrowser extends Module
 		if(!UsersHelper::checkAuthentication()) {
 				$this->redirect('Authentication/index');
 		}
-			
+
 		$processUri 		= urldecode($processUri); // parameters clean-up.
 		$this->setData('processUri',$processUri);
 		
@@ -19,6 +21,7 @@ class ProcessBrowser extends Module
 		if(empty($process->currentActivity)) {
 			die('Any current activity found in the process : ' . $processUri);
 		}
+
 		$activity 			= $process->currentActivity[0];
 		$this->setData('activity',$activity);
 		$activityPerf 		= new Activity($activity->uri, false); // Performance WA
@@ -50,7 +53,7 @@ class ProcessBrowser extends Module
 		$variablesViewData = array();
 		$variables = $process->getVariables();
 
-
+		
 
 		foreach ($variables as $var)
 		{
@@ -169,26 +172,21 @@ class ProcessBrowser extends Module
 				$this->redirect('Authentication/index');
 			}
 	
-	
+
 	
 		$processUri 	= urldecode($processUri);
 		$processExecution = new ProcessExecution($processUri);
 	
 		try
 		{
+
 			$processExecution->performTransition(($ignoreConsistency == 'true') ? true : false);
-	
+
 			if (!$processExecution->isFinished())
 			{
 				$processUri = urlencode($processUri);
-	
-				if (!ENABLE_HTTP_REDIRECT_PROCESS_BROWSER)
-				$this->index($processUri);
-				else
-				{
-					$processUri = urlencode($processUri);
-					$this->redirect("processBrowser/index?processUri=${processUri}");
-				}
+				$this->redirect("processBrowser/index?processUri=${processUri}");
+				
 			}
 			else
 			{

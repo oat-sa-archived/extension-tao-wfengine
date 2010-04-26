@@ -137,7 +137,7 @@ private function importTermSPX($variable){
 		
 			$processInstanceProperty = $processInstancePropertyCollection->get(0);
 			
-			$termInstance->setPropertyValue($subjectProperty , 'VAR_PROCESS_INSTANCE');
+			$termInstance->setPropertyValue($subjectProperty , VAR_PROCESS_INSTANCE);
 			$termInstance->setPropertyValue($predicateProperty , $processInstanceProperty->uriResource);
 		}
 		else{
