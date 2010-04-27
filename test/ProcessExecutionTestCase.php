@@ -30,17 +30,6 @@ class ProcessExecutionTestCase extends UnitTestCase{
 		$this->apiModel = core_kernel_impl_ApiModelOO::singleton();
 		$this->apiModel->logIn(LOGIN,md5(PASS),DATABASE_NAME,true);
 		
-		/*
-		
-		$factory = new ProcessExecutionFactory();
-		$factory->name = 'Test Process Execution';
-		$factory->execution = 'http://www.tao.lu/middleware/Interview.rdf#i126537966613798';
-		
-		
-		$factory->ownerUri = LOGIN;
-
-		$this->proc = $factory->create();
-*/
 
 	}
 	
@@ -92,28 +81,28 @@ class ProcessExecutionTestCase extends UnitTestCase{
 		$this->assertNotNull($procVar);
 		$proc->resource->setPropertyValue(new core_kernel_classes_Property($procVar->uriResource), '1');
 
-		 var_dump($proc->currentActivity[0]);
-		 $activity = $proc->currentActivity[0];
-//		 var_dump($activity->getServices());
-
-		 $proc->performTransition();
-		
-		 var_dump($proc->currentActivity[0]);
-		 $activity = $proc->currentActivity[0];
-
-		 $proc->performTransition();
-	
-		 var_dump($proc->currentActivity[0]);
-		 $activity = $proc->currentActivity[0];
-//		 var_dump($activity->getServices());
-
+		$this->assertTrue($proc->currentActivity[0]->label == 'activity1');
 		$proc->performTransition();
-	
-		 var_dump($proc->currentActivity[0]);
-		 $activity = $proc->currentActivity[0];
-
-		 $this->fail('not imp yet');
+		$this->assertTrue($proc->currentActivity[0]->label == 'activity2');
+		$proc->performTransition();
+		$this->assertTrue($proc->currentActivity[0]->label == 'activity3');
+		$proc->performTransition();
+		$this->assertTrue($proc->currentActivity[0]->label == 'activity5');
+		$proc->resource->delete();
 		
+		$proc = $factory->create();
+		$this->assertNotNull($procVar);
+		$proc->resource->setPropertyValue(new core_kernel_classes_Property($procVar->uriResource), '12');
+		$this->assertTrue($proc->currentActivity[0]->label == 'activity1');
+		$proc->performTransition();
+		$this->assertTrue($proc->currentActivity[0]->label == 'activity2');
+		$proc->performTransition();
+		$this->assertTrue($proc->currentActivity[0]->label == 'activity4');
+		$proc->performTransition();
+		$this->assertTrue($proc->currentActivity[0]->label == 'activity5');
+		
+		$proc->resource->delete();
+			
 		//delete processdef:
 		$authoringService->deleteProcess($processDefinition);
 		
