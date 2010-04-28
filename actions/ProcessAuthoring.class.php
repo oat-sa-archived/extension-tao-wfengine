@@ -172,10 +172,10 @@ class ProcessAuthoring extends TaoModule {
 		
 		//attach the created activity to the process
 		if(!is_null($newActivity) && $newActivity instanceof core_kernel_classes_Resource){
-			$class = '';
+			$class = 'node-activity';
 			if($newActivity->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_ACTIVITIES_ISINITIAL))->uriResource == GENERIS_TRUE){
 				//just set the first activity as a such
-				$class = 'node-activity-initial';
+				$class .= ' node-activity-initial';
 			}
 			
 			echo json_encode(array(
@@ -193,6 +193,18 @@ class ProcessAuthoring extends TaoModule {
 		}
 		$currentActivity = $this->getCurrentActivity();
 		$newService = $this->service->createInteractiveService($currentActivity);
+		
+		if(isset($_POST['serviceDefinitionUri'])){
+			$serviceDefinition = new core_kernel_classes_Resource(tao_helpers_Uri::decode($_POST['serviceDefinitionUri']));
+			if(!is_null($serviceDefinition)){
+				$this->saveCallOfService(array(
+					'callOfServiceUri' => $newService->uriResource,
+					PROPERTY_CALLOFSERVICES_SERVICEDEFINITION => $serviceDefinition->uriResource,
+					'label' => "service: ".$serviceDefinition->getLabel()
+				));
+			}
+		}
+		
 		if(!is_null($newService) && $newService instanceof core_kernel_classes_Resource){
 			echo json_encode(array(
 				'label'	=> $newService->getLabel(),
@@ -540,24 +552,38 @@ class ProcessAuthoring extends TaoModule {
 		$this->setView('process_form_interactiveServices.tpl');
 	}
 			
-	public function saveCallOfService(){
+	public function saveCallOfService($param = array()){
+		// $param = array("callOfServiceUri", PROPERTY_CALLOFSERVICES_SERVICEDEFINITION, 'label');
+		
 		$saved = true;
 		
-		//decode uri:
-		$data = array();
-		foreach($_POST as $key=>$value){
-			$data[tao_helpers_Uri::decode($key)] = tao_helpers_Uri::decode($value);
+		if(empty($param)){
+			//take the data from POST
+			
+			//decode uri:
+			$data = array();
+			foreach($_POST as $key=>$value){
+				$data[tao_helpers_Uri::decode($key)] = tao_helpers_Uri::decode($value);
+			}
+		}else{
+			$data = $param;
 		}
 		
-		$callOfService = new core_kernel_classes_Resource($data["callOfServiceUri"]);
-		unset($data["callOfServiceUri"]);
+		$callOfService = null;
+		if(!isset($data["callOfServiceUri"])){
+			throw new Exception("no call of service uri found in data array");
+		}else{
+			$callOfService = new core_kernel_classes_Resource($data["callOfServiceUri"]);
+			unset($data["callOfServiceUri"]);
+		}
 		
 		//edit service definition resource value:
 		if(!isset($data[PROPERTY_CALLOFSERVICES_SERVICEDEFINITION])){
-			throw new Exception("no service definition uri found in POST");
+			throw new Exception("no service definition uri found in data array");
 		}
 		$serviceDefinition = new core_kernel_classes_Resource($data[PROPERTY_CALLOFSERVICES_SERVICEDEFINITION]);
 		unset($data[PROPERTY_CALLOFSERVICES_SERVICEDEFINITION]);
+		
 		if(!is_null($serviceDefinition)){
 			$this->service->setCallOfServiceDefinition($callOfService, $serviceDefinition);
 		}
@@ -693,7 +719,7 @@ class ProcessAuthoring extends TaoModule {
 		}
 		
 		if(trim($data['label']) != ''){
-			$propertyValues[RDFS_LABEL] = $data['label'];
+			// $propertyValues[RDFS_LABEL] = $data['label'];
 			$connectorInstance->setLabel($data['label']);
 		}
 		
@@ -732,6 +758,7 @@ class ProcessAuthoring extends TaoModule {
 				}
 								
 				//save the new rule here:
+				
 				$condition = $data['if'];
 				
 				if(!empty($condition)){
