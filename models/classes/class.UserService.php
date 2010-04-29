@@ -3,14 +3,8 @@
 error_reporting(E_ALL);
 
 /**
- * Generis Object Oriented API - wfEngine/models/classes/class.UserService.php
- *
- * $Id$
- *
- * This file is part of Generis Object Oriented API.
- *
- * Automatically generated on 13.04.2010, 11:57:19 with ArgoUML PHP module 
- * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
+ * This class provides a service on user management. It extends the common user
+ * to add the data related to the workflow engine user managament
  *
  * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
  * @package wfEngine
@@ -37,7 +31,8 @@ require_once('tao/models/classes/class.UserService.php');
 // section 127-0-1-1-e87e5e4:127f196b89d:-8000:00000000000023AE-constants end
 
 /**
- * Short description of class wfEngine_models_classes_UserService
+ * This class provides a service on user management. It extends the common user
+ * to add the data related to the workflow engine user managament
  *
  * @access public
  * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
