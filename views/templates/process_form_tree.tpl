@@ -6,24 +6,6 @@
 	<input type="button" name="submit-<?=$sectionName?>" id="submit-<?=$sectionName?>" value="save" disabled="disabled"/>
 </div>
 
-<script type="text/javascript" src="/taoDelivery/views/js/processResourceSelector.js"></script>
-<script type="text/javascript">
-$(function(){
-	//bloc specific to delivery authoring tool:
-	
-	var supportServiceUrlInput = "input[id=<?=tao_helpers_Uri::encode(PROPERTY_SUPPORTSERVICES_URL)?>]";
-	if($(supportServiceUrlInput).length){
-		textBoxControl = $('<a href="#">'+__("Browse Tests")+'</a>');
-		textBoxControl.click(function(){
-			resourceSelector(supportServiceUrlInput,"tests");
-			return false;
-		});
-		textBoxControl.insertAfter($(supportServiceUrlInput));
-	}
-});
-</script>
-
-
 <script type="text/javascript">
 $(function(){	
 	//bloc to check if an identical code already exists
