@@ -7,8 +7,8 @@ class Processes extends Module
 		// the service mode !
 
 			$processDefinitionUri = urldecode($processDefinitionUri);
-				if(!UsersHelper::checkAuthentication()) {
-				$this->redirect('Authentication/index');
+			if(!UsersHelper::checkAuthentication()) {
+				$this->redirect(_url('index', 'Authentication'));
 			}
 
 				
@@ -55,7 +55,7 @@ class Processes extends Module
 
 			
 			if(!UsersHelper::checkAuthentication()) {
-				$this->redirect('Authentication/index');
+				$this->redirect(_url('index', 'Authentication'));
 			}
 			
 		
@@ -83,10 +83,8 @@ class Processes extends Module
 			// 2. We begin the newly created process.
 			$viewState = '';
 			$processUri = urlencode($newProcessExecution->uri);
-			$viewState = "../ProcessBrowser/index?processUri=${processUri}";
-
-			
-		$this->redirect($viewState);
+			$viewState = _url('index', 'processBrowser', null, array('processUri' => $processUri));
+			$this->redirect($viewState);
 
 }
 

@@ -10,7 +10,7 @@ class Main extends Module
 	public function index($caseId = null, $login = null, $pwd = null)
 	{
 		if(!UsersHelper::checkAuthentication()) {
-			$this->redirect('Authentication/index');
+			$this->redirect(_url('index', 'Authentication'));
 		}
 
 
@@ -38,7 +38,7 @@ class Main extends Module
 							if($result instanceof core_kernel_classes_Literal && $result->literal == $caseId) {
 								$processUri = urlencode($proc->uri);
 								$activityUri = urlencode($proc->currentActivity[0]->activity->uri);
-								$viewState = "../ProcessBrowser/index?processUri=${processUri}";
+								$viewState = _url('index', 'ProcessBrowser', null, array('processUri' => $processUri));
 								$this->redirect($viewState);
 							}
 						}

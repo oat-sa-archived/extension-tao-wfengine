@@ -7,7 +7,7 @@ class ProcessBrowser extends Module
 	{
 		$_SESSION["processUri"]= $processUri;
 		if(!UsersHelper::checkAuthentication()) {
-				$this->redirect('Authentication/index');
+				$this->redirect(_url('index', 'Authentication'));
 		}
 
 		$processUri 		= urldecode($processUri); // parameters clean-up.
@@ -146,7 +146,7 @@ class ProcessBrowser extends Module
 	public function back($processUri)
 	{
 		if(!UsersHelper::checkAuthentication()) {
-				$this->redirect('Authentication/index');
+				$this->redirect(_url('index', 'Authentication'));
 		}
 
 		$processUri 	= urldecode($processUri);
@@ -161,15 +161,14 @@ class ProcessBrowser extends Module
 		}
 		else
 		{
-			$processUri = urlencode($processUri);
-			$this->redirect("processBrowser/index?processUri=${processUri}");
+			$this->redirect(_url('index', 'processBrowser', null, array('processUri' => urlencode($processUri))));
 		}
 	}
 
 	public function next($processUri, $ignoreConsistency = 'false')
 	{
 			if(!UsersHelper::checkAuthentication()) {
-				$this->redirect('Authentication/index');
+				$this->redirect(_url('index', 'Authentication'));
 			}
 	
 
@@ -184,15 +183,12 @@ class ProcessBrowser extends Module
 
 			if (!$processExecution->isFinished())
 			{
-				$processUri = urlencode($processUri);
-				$this->redirect("processBrowser/index?processUri=${processUri}");
+				$this->redirect(_url('index', 'processBrowser', null, array('processUri' => urlencode($processUri))));
 				
 			}
 			else
 			{
-
-				
-				$this->redirect('main/index');
+				$this->redirect(_url('index', 'Main'));
 				
 			}
 		}
@@ -211,15 +207,14 @@ class ProcessBrowser extends Module
 			$consistency = ConsistencyHelper::BuildConsistencyStructure($consistencyException);
 			$_SESSION['taoqual.flashvar.consistency'] = $consistency;
 		
-			$processUri = urlencode($processUri);
-			$this->redirect("processBrowser/index?processUri=${processUri}");
+			$this->redirect(_url('index', 'processBrowser', null, array('processUri' => urlencode($processUri))));
 		}
 	}
 
 	public function pause($processUri)
 	{
 		if(!UsersHelper::checkAuthentication()) {
-				$this->redirect('Authentication/index');
+				$this->redirect(_url('index', 'Authentication'));
 		}
 
 		$processUri 	= urldecode($processUri);
@@ -227,13 +222,13 @@ class ProcessBrowser extends Module
 
 		$processExecution->pause();
 		$_SESSION["processUri"]= null;
-		$this->redirect('main/index');
+		$this->redirect(_url('index', 'Main'));
 	}
 
 	public function jumpBack($processUri, $activityUri, $testing="",$ignoreHidden=false)
 	{
 		if(!UsersHelper::checkAuthentication()) {
-				$this->redirect('Authentication/index');
+				$this->redirect(_url('index', 'Authentication'));
 		}
 
 		$processUri = urldecode($processUri);
@@ -254,14 +249,13 @@ class ProcessBrowser extends Module
 		}
 
 
-		$processUri = urlencode($processUri);
-		$this->redirect("processBrowser/index?processUri=${processUri}");
+		$this->redirect(_url('index', 'processBrowser', null, array('processUri' => urlencode($processUri))));
 	}
 
 	public function breakOff($processUri)
 	{
 				if(!UsersHelper::checkAuthentication()) {
-				$this->redirect('Authentication/index');
+				$this->redirect(_url('index', 'Authentication'));
 			}
 		PiaacDataHolder::build($processUri);
 
@@ -278,7 +272,7 @@ class ProcessBrowser extends Module
 	public function jumpLast($processUri)
 	{
 				if(!UsersHelper::checkAuthentication()) {
-				$this->redirect('Authentication/index');
+				$this->redirect(_url('index', 'Authentication'));
 			}
 		PiaacDataHolder::build($processUri);
 
@@ -295,8 +289,7 @@ class ProcessBrowser extends Module
 			$consistency = ConsistencyHelper::BuildConsistencyStructure($e);
 			$_SESSION['taoqual.flashvar.consistency'] = $consistency;
 
-			$processUri = urlencode($processUri);
-			$this->redirect("processBrowser/index?processUri=${processUri}");
+			$this->redirect(_url('index', 'processBrowser', null, array('processUri' => urlencode($processUri))));
 		}
 	}
 }

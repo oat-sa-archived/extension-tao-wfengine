@@ -52,7 +52,7 @@ class Authentication extends Module
 				$this->redirect($_POST['from'] . $_POST['fromQuery']);
 			}
 			else{
-				$this->redirect('../Main/index');
+				$this->redirect(_url('index', 'Main'));
 			}
 			return true;
 		}
@@ -69,7 +69,7 @@ class Authentication extends Module
 		// Finally, destroy the session.
 		session_unset();
 
-		$this->redirect('../Authentication/index');
+		$this->redirect(_url('index', 'Authentication'));
 	}
 }
 ?>

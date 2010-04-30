@@ -5,7 +5,7 @@ var ctx_action 		= "<?=get_data('action')?>";
 $(function(){
 	
 	<?if(get_data('uri') && get_data('classUri')):?>
-		updateTabUrl(UiBootstrap.tabs, 'process_authoring', "<?=_url('authoring', 'Process', array('uri' => get_data('uri'), 'classUri' => get_data('classUri') ))?>");
+		updateTabUrl(UiBootstrap.tabs, 'process_authoring', "<?=_url('authoring', 'Process', 'wfEngine', array('uri' => get_data('uri'), 'classUri' => get_data('classUri') ))?>");
 	<?else:?>
 		UiBootstrap.tabs.tabs('disable', getTabIndexByName('process_authoring'));
 	<?endif?>
