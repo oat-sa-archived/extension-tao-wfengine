@@ -1045,6 +1045,11 @@ class wfEngine_models_classes_ProcessAuthoringService
 		return $returnValue;
 	}
 	
+	public function getServicesByActivity(core_kernel_classes_Resource $activity){
+		
+	}	
+	
+	
 	/**
      * Get all connectors of a process
      *

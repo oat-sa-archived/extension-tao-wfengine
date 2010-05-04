@@ -88,10 +88,11 @@ class wfEngine_models_classes_ProcessTreeService
 		
 		//initiate the return data value:
 		$data = array(
-			'data' => __("Process Tree"),
+			'data' => __("Process Tree:").' '.$process->getLabel(),
 			'attributes' => array(
-				'id' => tao_helpers_Uri::encode($process->uriResource),
-				'class' => 'node-process-root'
+				'id' => 'node-process-root',
+				'class' => 'node-process-root',
+				'rel' => tao_helpers_Uri::encode($process->uriResource)
 			),
 			'children' => array()
 		);
@@ -407,7 +408,6 @@ class wfEngine_models_classes_ProcessTreeService
 						if( ($connectorActivityReference == $this->currentActivity->uriResource) && !in_array($then->uriResource, $this->addedConnectors) ){
 							if($recursive){
 								$connectorData[] = $this->connectorNode($then, 'then', true);
-								//throw new Exception("ogihfhm  ".$this->currentConnector->uriResource);//http://127.0.0.1/middleware/demo.rdf#i1266498881014202100
 							}else{
 								$connectorData[] = $this->activityNode($then, 'then', false);
 							}
@@ -427,7 +427,6 @@ class wfEngine_models_classes_ProcessTreeService
 						if( ($connectorActivityReference == $this->currentActivity->uriResource) && !in_array($else->uriResource, $this->addedConnectors) ){
 							if($recursive){
 								$connectorData[] = $this->connectorNode($else, 'else', true);
-								//throw new Exception("ogihfhm  ".$this->currentConnector->uriResource);//http://127.0.0.1/middleware/demo.rdf#i1266498881014202100
 							}else{
 								$connectorData[] = $this->activityNode($else, 'else', false);
 							}
@@ -454,8 +453,10 @@ class wfEngine_models_classes_ProcessTreeService
 			'data' => $connectorType->getLabel().":".$connector->getLabel(),
 			'attributes' => array(
 				'id' => tao_helpers_Uri::encode($connector->uriResource),
-				'class' => 'node-connector'
-			)
+				'class' => 'node-connector',
+			),
+			'type'=>$connectorType->getLabel(),
+			'port'=>$nodeClass
 		);
 		$returnValue = self::addNodePrefix($returnValue, $nodeClass);
 		
@@ -598,7 +599,8 @@ class wfEngine_models_classes_ProcessTreeService
 			'attributes' => array(
 				$linkAttribute => tao_helpers_Uri::encode($activity->uriResource),
 				'class' => $class
-			)
+			),
+			'port'=>$nodeClass
 		);
 		$nodeData = self::addNodePrefix($nodeData, $nodeClass);
 		return $nodeData;
@@ -617,37 +619,16 @@ class wfEngine_models_classes_ProcessTreeService
 		
 		if(isset($nodeData['attributes']['class']) && !empty($newClass)){
 			$nodeData['attributes']['class'] .= " ".$newClass;
+			
+			//set specific option
+			if($newClass == 'node-activity-initial'){
+				$nodeData['isInitial'] = true; 
+			}
+			if($newClass == 'node-activity-last'){
+				$nodeData['isLast'] = true; 
+			}
 		}
 		return $nodeData;
-	}
-	
-	//might be useless
-	public function thenElseNode($connectorRule, $type){
-		
-		$returnValue = null;
-		
-		if($type=='then'){
-			$property = PROPERTY_TRANSITIONRULES_THEN;
-		}elseif($type=='else'){
-			$property = PROPERTY_TRANSITIONRULES_ELSE;
-		}else{
-			throw new Exception('choose either "then" or "else"');
-			return $returnValue ;
-		}
-		
-		$nextActivity = $connectorRule->getUniquePropertyValue(new core_kernel_classes_Property($property));
-		$connectorActivityReference = $connector->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_ACTIVITYREFERENCE))->literal;
-		if(wfEngine_models_classes_ProcessAuthoringService::isConnector($nextActivity) && ($connectorActivityReference == $this->currentActivity->uriResource) && !in_array($nextActivity->uriResource, $this->addedConnectors)){
-			if($recursive=true){//TODO: keep it or not?
-				$returnValue = $this->connectorNode($nextActivity, true);
-			}else{
-				$returnValue = $this->activityNode($nextActivity, $type, false);
-			}
-		}else{
-			$returnValue = $this->activityNode($nextActivity, $type, true);
-		}
-		
-		return $returnValue;
 	}
 } /* end of class  */
 
