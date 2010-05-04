@@ -265,15 +265,34 @@ class wfEngine_helpers_ProcessFormFactory extends tao_helpers_form_GenerisFormFa
 			$myForm->addElement($serviceDefinitionUriElt);
 		}*/
 		
+		//build position elements: top, left, width, height,
+		$styleProperties = array(
+			PROPERTY_CALLOFSERVICES_TOP,
+			PROPERTY_CALLOFSERVICES_LEFT,
+			PROPERTY_CALLOFSERVICES_WIDTH,
+			PROPERTY_CALLOFSERVICES_HEIGHT
+		);
+		$styleDescElement = tao_helpers_form_FormFactory::getElement('positionning', 'Free');
+		$styleDescElement->setValue('<b>'.__('Positionning').': </b>');
+		
+		$styleElements = array();
+		$styleElements[] = $styleDescElement;
+		foreach($styleProperties as $propUri){
+			$prop = new core_kernel_classes_Property($propUri);
+			$styleElements[] = self::getCallOfServiceStyleElement($callOfService, $prop);
+		}
+		
+		
 		//continue building the form associated to the selected service:
 		//get list of parameters from the service definition PROPERTY_SERVICESDEFINITION_FORMALPARAMOUT and IN
 		//create a form element and fill the content with the default value
 		$elementInputs = array_merge(
-			self::getCallOfServiceFormElements($serviceDefinition, $callOfService, "formalParameterIn"),
-			self::getCallOfServiceFormElements($serviceDefinition, $callOfService, "formalParameterOut")
+			self::getCallOfServiceParameterElements($serviceDefinition, $callOfService, "formalParameterIn"),
+			self::getCallOfServiceParameterElements($serviceDefinition, $callOfService, "formalParameterOut"),
+			$styleElements
 		);
 				
-		// $elementInputs = self::getCallOfServiceFormElements($serviceDefinition, $callOfService, "formalParameterin");
+		// $elementInputs = self::getCallOfServiceParameterElements($serviceDefinition, $callOfService, "formalParameterin");
 		foreach($elementInputs as $elementInput){
 			$myForm->addElement($elementInput);
 		}
@@ -281,8 +300,33 @@ class wfEngine_helpers_ProcessFormFactory extends tao_helpers_form_GenerisFormFa
         return $myForm;
 	}
 	
+	protected static function getCallOfServiceStyleElement(core_kernel_classes_Resource $callOfService, core_kernel_classes_Property $prop){
+		
+		$element = null;
+		
+		$authorizedProperties = array(
+			PROPERTY_CALLOFSERVICES_TOP,
+			PROPERTY_CALLOFSERVICES_LEFT,
+			PROPERTY_CALLOFSERVICES_WIDTH,
+			PROPERTY_CALLOFSERVICES_HEIGHT
+		);
+		
+		if(!in_array($prop->uriResource, $authorizedProperties)){
+			throw new Exception("wrong type of property for the call of service position");
+		}
+		
+		$element = tao_helpers_form_FormFactory::getElement(tao_helpers_Uri::encode($prop->uriResource), 'Textbox');
+		$element->setDescription($prop->getLabel());
+		$value = $callOfService->getOnePropertyValue($prop);
+		if($value != null && $value instanceof core_kernel_classes_Literal){
+			$element->setValue($value->literal);
+		}
+		return $element;
+		
+	}
+	
 	//return an array of elments
-	protected static function getCallOfServiceFormElements(core_kernel_classes_Resource $serviceDefinition, core_kernel_classes_Resource $callOfService, $paramType){
+	protected static function getCallOfServiceParameterElements(core_kernel_classes_Resource $serviceDefinition, core_kernel_classes_Resource $callOfService, $paramType){
 	
 		$returnValue = array();//array();
 		if(empty($paramType) || empty($serviceDefinition)){

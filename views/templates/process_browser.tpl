@@ -140,7 +140,10 @@
 
 			
 				<div id="tools">
-					<iframe frameborder="0" id="tools" src="<?php echo $services[0]->getCallUrl($variablesViewData);  ?>"/></iframe>
+					<?php foreach($services as $service): ?>
+					<?php //var_dump($service->getStyle());?>
+					<iframe frameborder="0" style="<?php echo $service->getStyle();?>" src="<?php echo $service->getCallUrl($variablesViewData);  ?>"/></iframe>
+					<?php endforeach;?>
 				</div>
 
 			</div>

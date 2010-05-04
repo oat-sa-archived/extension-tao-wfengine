@@ -93,7 +93,13 @@ class Service
      * @var ActivityExecution
      */
     public $activityExecution = null;
-
+	
+	
+	public $styleWidth = 1024;
+	public $styleHeight = 800;
+	public $styleTop = 0;
+	public $styleLeft = 0;
+	
     // --- OPERATIONS ---
 
     /**
@@ -204,6 +210,34 @@ class Service
 			
 		}
 		
+		//get the style information (size and position)
+		$width = $this->resource->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_CALLOFSERVICES_WIDTH));
+		if($width != null && $width instanceof core_kernel_classes_Literal){
+			if(intval($width)){
+				//do not allow width="0"
+				$this->styleWidth = intval($width->literal).'px';
+			}
+		}//in the future, allow percentage
+		
+		$height = $this->resource->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_CALLOFSERVICES_HEIGHT));
+		if($height != null && $height instanceof core_kernel_classes_Literal){
+			if(intval($height->literal)){
+				//do not allow height="0"
+				$this->styleHeight = intval($height->literal).'px';
+			}
+		}
+		
+		$top = $this->resource->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_CALLOFSERVICES_TOP));
+		if($top != null && $top instanceof core_kernel_classes_Literal){
+			$this->styleTop = (30+intval($top->literal)).'px';
+		}
+		
+		$left = $this->resource->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_CALLOFSERVICES_LEFT));
+		if($left != null && $left instanceof core_kernel_classes_Literal){
+			$this->styleLeft = intval($left->literal).'px';
+		}
+		
+		
 		// section 10-13-1--31--23da6e5c:11a2ac14500:-8000:00000000000009B3 end
     }
 
@@ -243,6 +277,19 @@ class Service
 		
         return (string) $returnValue;
     }
+	
+	public function getStyle(){
+	
+		$style = "position:absolute;";
+		
+		if(!empty($this->styleLeft)) $style .= "left:{$this->styleLeft};";
+		if(!empty($this->styleTop)) $style .= "top:{$this->styleTop};";
+		if(!empty($this->styleWidth)) $style .= "width:{$this->styleWidth};";
+		if(!empty($this->styleHeight))	$style .= "height:{$this->styleHeight};";
+		
+		return $style;
+		
+	}
 
 } /* end of class Service */
 

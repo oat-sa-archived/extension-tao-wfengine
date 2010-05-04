@@ -327,28 +327,13 @@ class ProcessAuthoring extends TaoModule {
 		$myForm = null;
 		$myForm = wfEngine_helpers_ProcessFormFactory::instanceEditor(new core_kernel_classes_Class(CLASS_ACTIVITIES), $activity, $formName, array("noSubmit"=>true,"noRevert"=>true), $excludedProperty);
 		$myForm->setActions(array(), 'bottom');	
+		/*
 		if($myForm->isSubmited()){
 			if($myForm->isValid()){
-				// $activity = $this->service->bindProperties($activity, $myForm->getValues());
+				
 				
 				$properties = $myForm->getValues();
-				//set label:
-				if(isset($properties[RDFS_LABEL])){
-					$activity->setLabel($properties[RDFS_LABEL]);
-				}
-				
-				//set role:
-				if(isset($properties[PROPERTY_ACTIVITIES_ROLE])){
-					$this->service->setActivityRole($activity, new core_kernel_classes_Resource($properties[PROPERTY_ACTIVITIES_ROLE]));
-				}
-				
-				//set ishidden:
-				if(isset($properties[PROPERTY_ACTIVITIES_ISHIDDEN])){
-					$bool = wfEngine_models_classes_ProcessAuthoringService::generisBooleanConvertor($properties[PROPERTY_ACTIVITIES_ISHIDDEN]);
-					if(!is_null($bool)){
-						$this->service->setActivityHidden($activity, $bool);
-					}
-				}
+				$this->saveActivityProperty($properties);
 				
 				//replace with a clean template upload
 				$this->setData('saved', true);
@@ -356,11 +341,50 @@ class ProcessAuthoring extends TaoModule {
 				exit;
 			}
 		}
+		*/
 		
 		$this->setData('myForm', $myForm->render());
 		$this->setView('process_form_property.tpl');
 	}
 	
+	public function saveActivityProperty($param = array()){
+	
+		$activity = $this->getCurrentActivity();
+		
+		$saved = true;
+		
+		$properties = array();
+		if(empty($param)){
+			//take the data from POST:
+			
+			//decode uri:
+			foreach($_POST as $key=>$value){
+				$properties[tao_helpers_Uri::decode($key)] = tao_helpers_Uri::decode($value);
+			}
+		}else{
+			$properties = $param;
+		}
+		
+		//set label:
+		if(isset($properties[RDFS_LABEL])){
+			$activity->setLabel($properties[RDFS_LABEL]);
+		}
+		
+		//set role:
+		if(isset($properties[PROPERTY_ACTIVITIES_ROLE])){
+			$this->service->setActivityRole($activity, new core_kernel_classes_Resource($properties[PROPERTY_ACTIVITIES_ROLE]));
+		}
+		
+		//set ishidden:
+		if(isset($properties[PROPERTY_ACTIVITIES_ISHIDDEN])){
+			$bool = wfEngine_models_classes_ProcessAuthoringService::generisBooleanConvertor($properties[PROPERTY_ACTIVITIES_ISHIDDEN]);
+			if(!is_null($bool)){
+				$this->service->setActivityHidden($activity, $bool);
+			}
+		}
+		
+		echo json_encode(array("saved" => $saved));
+	}
 	
 	public function editProcessProperty(){
 		$formName = "processPropertyEditor";
@@ -562,8 +586,10 @@ class ProcessAuthoring extends TaoModule {
 			
 			//decode uri:
 			$data = array();
-			foreach($_POST as $key=>$value){
-				$data[tao_helpers_Uri::decode($key)] = tao_helpers_Uri::decode($value);
+			foreach($_POST as $key=>$val){
+				$value = tao_helpers_Uri::decode($val);
+				if(!empty($value)){//filter the empty string values
+				}	$data[tao_helpers_Uri::decode($key)] = $value;
 			}
 		}else{
 			$data = $param;
@@ -650,9 +676,11 @@ class ProcessAuthoring extends TaoModule {
 			if($value == 'constant'){
 				$actualParameterType = PROPERTY_ACTUALPARAM_CONSTANTVALUE;
 				$paramValue = $data[$formalParamUri.$suffix.'_constant'];
+				unset($data[$formalParamUri.$suffix.'_constant']);
 			}elseif($value == 'processvariable'){
 				$actualParameterType = PROPERTY_ACTUALPARAM_PROCESSVARIABLE;
 				$paramValue = $data[$formalParamUri.$suffix.'_var'];
+				unset($data[$formalParamUri.$suffix.'_var']);
 			}else{
 				throw new Exception('wrong actual parameter type posted');
 			}
@@ -666,6 +694,10 @@ class ProcessAuthoring extends TaoModule {
 				break;
 			}
 		}
+		
+		//save positioning and style data:
+		$this->service->bindProperties($callOfService, $data);
+		
 		
 		echo json_encode(array("saved" => $saved));
 	}

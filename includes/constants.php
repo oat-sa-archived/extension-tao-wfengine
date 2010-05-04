@@ -168,8 +168,11 @@ $todefine = array(
 	'VAR_PROCESS_INSTANCE' => NS_RULES . '#VAR_PROCESS_INSTANCE',
 
 	'ENABLE_HTTP_REDIRECT_PROCESS_BROWSER'		=> false,
-	// 'VAR_SUBJECTURI' => 'http://127.0.0.1/middleware/demo.rdf#i1267544223024059900',
-	// 'VAR_WSDL' => 'http://127.0.0.1/middleware/demo.rdf#i1267544266063085400'
+	
+	'PROPERTY_CALLOFSERVICES_TOP' => NS_TAOQUAL . '#serviceStyleTop',
+	'PROPERTY_CALLOFSERVICES_LEFT' => NS_TAOQUAL . '#serviceStyleLeft',
+	'PROPERTY_CALLOFSERVICES_WIDTH' => NS_TAOQUAL . '#serviceStyleWidth',
+	'PROPERTY_CALLOFSERVICES_HEIGHT' => NS_TAOQUAL . '#serviceStyleHeight',
 		
 	'API_LOGIN' => 'generis',
 	'API_PASSWORD' => md5('g3n3r1s')
