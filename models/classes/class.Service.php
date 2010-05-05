@@ -215,7 +215,7 @@ class Service
 		if($width != null && $width instanceof core_kernel_classes_Literal){
 			if(intval($width)){
 				//do not allow width="0"
-				$this->styleWidth = intval($width->literal).'px';
+				$this->styleWidth = intval($width->literal).'%';
 			}
 		}//in the future, allow percentage
 		
@@ -223,18 +223,18 @@ class Service
 		if($height != null && $height instanceof core_kernel_classes_Literal){
 			if(intval($height->literal)){
 				//do not allow height="0"
-				$this->styleHeight = intval($height->literal).'px';
+				$this->styleHeight = intval($height->literal).'%';
 			}
 		}
 		
 		$top = $this->resource->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_CALLOFSERVICES_TOP));
 		if($top != null && $top instanceof core_kernel_classes_Literal){
-			$this->styleTop = (30+intval($top->literal)).'px';
+			$this->styleTop = (0+intval($top->literal)).'%';//used to be +30px
 		}
 		
 		$left = $this->resource->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_CALLOFSERVICES_LEFT));
 		if($left != null && $left instanceof core_kernel_classes_Literal){
-			$this->styleLeft = intval($left->literal).'px';
+			$this->styleLeft = intval($left->literal).'%';
 		}
 		
 		

@@ -194,6 +194,12 @@ class ProcessAuthoring extends TaoModule {
 		$currentActivity = $this->getCurrentActivity();
 		$newService = $this->service->createInteractiveService($currentActivity);
 		
+		//set default position and size value:
+		$newService->editPropertyValues(new core_kernel_classes_Property(PROPERTY_CALLOFSERVICES_WIDTH), 100);
+		$newService->editPropertyValues(new core_kernel_classes_Property(PROPERTY_CALLOFSERVICES_HEIGHT), 100);
+		$newService->editPropertyValues(new core_kernel_classes_Property(PROPERTY_CALLOFSERVICES_TOP), 0);
+		$newService->editPropertyValues(new core_kernel_classes_Property(PROPERTY_CALLOFSERVICES_LEFT), 0);
+		
 		if(isset($_POST['serviceDefinitionUri'])){
 			$serviceDefinition = new core_kernel_classes_Resource(tao_helpers_Uri::decode($_POST['serviceDefinitionUri']));
 			if(!is_null($serviceDefinition)){
@@ -567,12 +573,70 @@ class ProcessAuthoring extends TaoModule {
 	
 	public function editCallOfService(){
 		$callOfServiceUri = tao_helpers_Uri::decode($_POST['uri']);
+		if(empty($callOfServiceUri)){
+			throw new Exception("no call of service uri found");
+		}
 		
+		$callOfService = new core_kernel_classes_Resource($callOfServiceUri);
 		$formName=uniqid("callOfServiceEditor_");
-		$myForm = wfEngine_helpers_ProcessFormFactory::callOfServiceEditor(new core_kernel_classes_Resource($callOfServiceUri), null, $formName);//NS_TAOQUAL . '#i118595593412394'
+		$myForm = wfEngine_helpers_ProcessFormFactory::callOfServiceEditor($callOfService, null, $formName);//NS_TAOQUAL . '#i118595593412394'
+		$servicesData = array(
+			'current' => array(
+				'label' => $callOfService->getLabel(),
+				'id' => tao_helpers_Precompilator::getUniqueId($callOfService->uriResource)
+				),
+			'other' => array()
+		);
+		
+		$activity = core_kernel_impl_ApiModelOO::singleton()->getSubject(PROPERTY_ACTIVITIES_INTERACTIVESERVICES, $callOfServiceUri)->get(0);
+		if($activity instanceof core_kernel_classes_Resource){
+			
+			$serviceCollection = $activity->getPropertyValuesCollection(new core_kernel_classes_Property(PROPERTY_ACTIVITIES_INTERACTIVESERVICES));
+			
+			
+			foreach($serviceCollection->getIterator() as $service){
+				if( $service->uriResource != $callOfServiceUri ){
+				
+					$serviceStylingData = array();
+					$serviceStylingData['label'] = $service->getLabel();
+					$serviceStylingData['uri'] = tao_helpers_Uri::encode($service->uriResource);
+					
+					//get the position and size data (in %):
+					$width = $service->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_CALLOFSERVICES_WIDTH));
+					if($width != null && $width instanceof core_kernel_classes_Literal){
+						if(intval($width)){
+							//do not allow width="0"
+							$serviceStylingData['width'] = intval($width->literal);
+						}
+					}
+					
+					$height = $service->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_CALLOFSERVICES_HEIGHT));
+					if($height != null && $height instanceof core_kernel_classes_Literal){
+						if(intval($height->literal)){
+							//do not allow height="0"
+							$serviceStylingData['height'] = intval($height->literal);
+						}
+					}
+					
+					$top = $service->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_CALLOFSERVICES_TOP));
+					if($top != null && $top instanceof core_kernel_classes_Literal){
+						$serviceStylingData['top'] = intval($top->literal);
+					}
+					
+					$left = $service->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_CALLOFSERVICES_LEFT));
+					if($left != null && $left instanceof core_kernel_classes_Literal){
+						$serviceStylingData['left'] = intval($left->literal);
+					}
+					
+					$servicesData['other'][tao_helpers_Precompilator::getUniqueId($service->uriResource)] = $serviceStylingData;
+				}
+			}
+		}
+		
 		
 		$this->setData('formId', $formName);
 		$this->setData('formInteractionService', $myForm->render());
+		$this->setData('servicesData', $servicesData);
 		$this->setView('process_form_interactiveServices.tpl');
 	}
 			

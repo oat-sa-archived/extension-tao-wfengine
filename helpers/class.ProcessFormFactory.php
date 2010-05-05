@@ -279,9 +279,8 @@ class wfEngine_helpers_ProcessFormFactory extends tao_helpers_form_GenerisFormFa
 		$styleElements[] = $styleDescElement;
 		foreach($styleProperties as $propUri){
 			$prop = new core_kernel_classes_Property($propUri);
-			$styleElements[] = self::getCallOfServiceStyleElement($callOfService, $prop);
+			$styleElements[] = self::getCallOfServiceStyleElement($callOfService, $prop);//eventually, use the option hidden = true
 		}
-		
 		
 		//continue building the form associated to the selected service:
 		//get list of parameters from the service definition PROPERTY_SERVICESDEFINITION_FORMALPARAMOUT and IN
@@ -300,7 +299,7 @@ class wfEngine_helpers_ProcessFormFactory extends tao_helpers_form_GenerisFormFa
         return $myForm;
 	}
 	
-	protected static function getCallOfServiceStyleElement(core_kernel_classes_Resource $callOfService, core_kernel_classes_Property $prop){
+	protected static function getCallOfServiceStyleElement(core_kernel_classes_Resource $callOfService, core_kernel_classes_Property $prop, $hidden=false){
 		
 		$element = null;
 		
@@ -315,7 +314,13 @@ class wfEngine_helpers_ProcessFormFactory extends tao_helpers_form_GenerisFormFa
 			throw new Exception("wrong type of property for the call of service position");
 		}
 		
-		$element = tao_helpers_form_FormFactory::getElement(tao_helpers_Uri::encode($prop->uriResource), 'Textbox');
+		if($hidden){
+			$widget = 'Hidden';
+		}else{
+			$widget = 'Textbox';
+		}
+		
+		$element = tao_helpers_form_FormFactory::getElement(tao_helpers_Uri::encode($prop->uriResource), $widget);
 		$element->setDescription($prop->getLabel());
 		$value = $callOfService->getOnePropertyValue($prop);
 		if($value != null && $value instanceof core_kernel_classes_Literal){
