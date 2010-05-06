@@ -141,8 +141,7 @@
 			
 				<div id="tools">
 					<?php foreach($services as $service): ?>
-					<?php //var_dump($service->getStyle());?>
-					<iframe frameborder="0" style="<?php echo $service->getStyle();?>" src="<?php echo $service->getCallUrl($variablesViewData);  ?>"/></iframe>
+					<iframe frameborder="0" style="<?php echo $service->getStyle();?>" src="<?php echo $service->getCallUrl($variablesViewData);?>"></iframe>
 					<?php endforeach;?>
 				</div>
 
