@@ -25,7 +25,7 @@ GatewayProcessAuthoring.addActivity = function(url, processUri){
 GatewayProcessAuthoring.addInteractiveService = function(url, activityUri, serviceDefinitionUri){
 	// console.log('url', url);	
 	// console.log('processUri', processUri);
-	data = {activityUri: options.id, type: 'interactive-service'};
+	data = {activityUri: activityUri, type: 'interactive-service'};
 	if(serviceDefinitionUri){
 		data.serviceDefinitionUri = serviceDefinitionUri;
 	}
