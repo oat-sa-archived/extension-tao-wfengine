@@ -9,6 +9,14 @@
 			'install' => array( 
 				'php' => dirname(__FILE__). '/install/install.php'
 			),
+			'model' => array(
+				'http://www.tao.lu/Ontologies/TAODelivery.rdf',
+				'http://www.tao.lu/Ontologies/TAOTest.rdf',
+				'http://www.tao.lu/middleware/hyperclass.rdf',
+				'http://www.tao.lu/middleware/taoqual.rdf',
+				'http://www.tao.lu/middleware/Rules.rdf',
+				'http://www.tao.lu/middleware/Interview.rdf'
+			),
 		
 			'classLoaderPackages' => array( 
 				dirname(__FILE__).'/actions/',
