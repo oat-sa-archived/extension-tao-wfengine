@@ -619,11 +619,20 @@ class wfEngine_helpers_ProcessFormFactory extends tao_helpers_form_GenerisFormFa
 			
 			$elementInputs = array_merge($elementInputs, self::nextActivityElements($connector, 'then'));
 			$elementInputs = array_merge($elementInputs, self::nextActivityElements($connector, 'else'));
+			
+		}else if($connectorType->uriResource == INSTANCE_TYPEOFCONNECTORS_PARALLEL){
+			
+			$elementInputs = self::nextActivityElements($connector, 'parallel', false, false, 'Checkbox');
+			
+		}else if($connectorType->uriResource == INSTANCE_TYPEOFCONNECTORS_JOIN){
+			
+			$elementInputs = self::nextActivityElements($connector, 'join', true, false, 'Combobox');
+			
 		}else{
 			throw new Exception("the selected type of connector {$connectorType->getLabel()} is not supported yet");
 		}
 		
-		// throw new Exception("elts:".var_dump($elementInputs));
+		//var_dump($elementInputs);
 		
 		foreach($elementInputs as $elementInput){
 			$myForm->addElement($elementInput);
@@ -837,16 +846,25 @@ class wfEngine_helpers_ProcessFormFactory extends tao_helpers_form_GenerisFormFa
         return $myForm;
 	}
 	
-	public function nextActivityElements(core_kernel_classes_Resource $connector, $type){
+	public function nextActivityElements(core_kernel_classes_Resource $connector, $type, $allowCreation = true, $includeConnectors = true, $optionsWidget = 'Combobox'){
+		
 		$returnValue = array();
+		
+		$authorizedOptionsWidget = array('Combobox','Checkbox');
+		if(!in_array($optionsWidget, $authorizedOptionsWidget)){
+			throw new Exception('Wrong type of widget');
+			return $returnValue;
+		}
+		
 		$idPrefix = '';
 		$nextActivity = null;
-		
+		$propTransitionRule = new core_kernel_classes_Property(PROPERTY_CONNECTORS_TRANSITIONRULE);
+		$propNextActivities = new core_kernel_classes_Property(PROPERTY_CONNECTORS_NEXTACTIVITIES);
 		//find the next activity if available
 		switch(strtolower($type)){
 			case 'next':
 					
-				$nextActivityCollection = $connector->getPropertyValuesCollection(new core_kernel_classes_Property(PROPERTY_CONNECTORS_NEXTACTIVITIES));
+				$nextActivityCollection = $connector->getPropertyValuesCollection($propNextActivities);
 				foreach($nextActivityCollection->getIterator() as $activity){
 					if($activity instanceof core_kernel_classes_Resource){
 						$nextActivity = $activity;//we take the last one...(note: there should be only one though)
@@ -855,7 +873,7 @@ class wfEngine_helpers_ProcessFormFactory extends tao_helpers_form_GenerisFormFa
 				$idPrefix = 'next';
 				break;
 			case 'then':
-				$transitionRuleCollection = $connector->getPropertyValuesCollection(new core_kernel_classes_Property(PROPERTY_CONNECTORS_TRANSITIONRULE));
+				$transitionRuleCollection = $connector->getPropertyValuesCollection($propTransitionRule);
 				foreach($transitionRuleCollection->getIterator() as $transitionRule){
 					if($transitionRule instanceof core_kernel_classes_Resource){
 						foreach($transitionRule->getPropertyValuesCollection(new core_kernel_classes_Property(PROPERTY_TRANSITIONRULES_THEN))->getIterator() as $then){
@@ -868,7 +886,7 @@ class wfEngine_helpers_ProcessFormFactory extends tao_helpers_form_GenerisFormFa
 				$idPrefix = 'then';
 				break;
 			case 'else':
-				$transitionRuleCollection = $connector->getPropertyValuesCollection(new core_kernel_classes_Property(PROPERTY_CONNECTORS_TRANSITIONRULE));
+				$transitionRuleCollection = $connector->getPropertyValuesCollection($propTransitionRule);
 				foreach($transitionRuleCollection->getIterator() as $transitionRule){
 					if($transitionRule instanceof core_kernel_classes_Resource){
 						foreach($transitionRule->getPropertyValuesCollection(new core_kernel_classes_Property(PROPERTY_TRANSITIONRULES_ELSE))->getIterator() as $else){
@@ -880,6 +898,27 @@ class wfEngine_helpers_ProcessFormFactory extends tao_helpers_form_GenerisFormFa
 				}
 				$idPrefix = 'else';
 				break;
+			case 'parallel':{
+				$nextActivity = array();
+				$nextActivityCollection = $connector->getPropertyValuesCollection($propNextActivities);
+				foreach($nextActivityCollection->getIterator() as $activity){
+					if($activity instanceof core_kernel_classes_Resource){
+						$nextActivity[] = $activity;
+					}
+				}
+				$idPrefix = 'parallel';
+				break;
+			}
+			case 'join':
+				$transitionRule = $connector->getOnePropertyValue($propTransitionRule);
+				if(!is_null($transitionRule) && $transitionRule instanceof core_kernel_classes_Resource){
+					$then = $transitionRule->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_TRANSITIONRULES_THEN));//note: 'else' doesn't matter
+					if($then instanceof core_kernel_classes_Resource){
+						$nextActivity = $then;
+					}
+				}
+				$idPrefix = $type;
+				break;
 			default:
 				throw new Exception("unknown type for the next activity");
 		}
@@ -887,9 +926,15 @@ class wfEngine_helpers_ProcessFormFactory extends tao_helpers_form_GenerisFormFa
 		$activityOptions = array();
 		$connectorOptions = array();
 		
-		//add the "creating" option
-		$activityOptions["newActivity"] = __("create new activity");
-		$connectorOptions["newConnector"] = __("create new connector");
+		if($allowCreation){
+			//create the activity label element (used only in case of new activity craetion)
+			$elementActivityLabel = tao_helpers_form_FormFactory::getElement($idPrefix."_activityLabel", 'Textbox');
+			$elementActivityLabel->setDescription(__('Label'));
+		
+			//add the "creating" option
+			$activityOptions["newActivity"] = __("create new activity");
+			$connectorOptions["newConnector"] = __("create new connector");
+		}
 		
 		//the activity associated to the connector:
 		$referencedActivity = $connector->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_ACTIVITYREFERENCE));//mandatory property value, initiated at the connector creation
@@ -905,10 +950,12 @@ class wfEngine_helpers_ProcessFormFactory extends tao_helpers_form_GenerisFormFa
 					
 					foreach($activities as $activityTemp){
 						$activityOptions[ tao_helpers_Uri::encode($activityTemp->uriResource) ] = $activityTemp->getLabel();
-						$connectorCollection = core_kernel_impl_ApiModelOO::getSubject(PROPERTY_CONNECTORS_ACTIVITYREFERENCE, $activityTemp->uriResource);
-						foreach($connectorCollection->getIterator() as $connectorTemp){
-							if( $connector->uriResource!=$connectorTemp->uriResource){
-								$connectorOptions[ tao_helpers_Uri::encode($connectorTemp->uriResource) ] = $connectorTemp->getLabel();
+						if($includeConnectors){
+							$connectorCollection = core_kernel_impl_ApiModelOO::getSubject(PROPERTY_CONNECTORS_ACTIVITYREFERENCE, $activityTemp->uriResource);
+							foreach($connectorCollection->getIterator() as $connectorTemp){
+								if( $connector->uriResource!=$connectorTemp->uriResource){
+									$connectorOptions[ tao_helpers_Uri::encode($connectorTemp->uriResource) ] = $connectorTemp->getLabel();
+								}
 							}
 						}
 					}
@@ -920,50 +967,54 @@ class wfEngine_helpers_ProcessFormFactory extends tao_helpers_form_GenerisFormFa
 		$elementDescription = tao_helpers_form_FormFactory::getElement($idPrefix, 'Free');
 		$elementDescription->setValue(strtoupper($type).' :');
 		
-		//the default radio button to select between the 3 possibilities:
-		$elementChoice = tao_helpers_form_FormFactory::getElement($idPrefix."_activityOrConnector", 'Radiobox');
-		$elementChoice->setDescription(__('Activity or Connector'));
-		$options = array(
-			"activity" => __("Activity"),
-			"connector" => __("Connector")
-		);
-		$elementChoice->setOptions($options);
-		
 		//create the activity select element:
-		$elementActivities = tao_helpers_form_FormFactory::getElement($idPrefix."_activityUri", 'Combobox');
+		$elementActivities = tao_helpers_form_FormFactory::getElement($idPrefix."_activityUri", $optionsWidget);
 		$elementActivities->setDescription(__('Activity'));
 		$elementActivities->setOptions($activityOptions);
 		
-		//create the activity label element (used only in case of new activity craetion)
-		$elementActivityLabel = tao_helpers_form_FormFactory::getElement($idPrefix."_activityLabel", 'Textbox');
-		$elementActivityLabel->setDescription(__('Label'));
-				
-		//create the connector select element:
-		$elementConnectors = tao_helpers_form_FormFactory::getElement($idPrefix."_connectorUri", 'Combobox');
-		$elementConnectors->setDescription(__('Connector'));
-		$elementConnectors->setOptions($connectorOptions);
 		
-		if(!empty($nextActivity)){
-			if(wfEngine_models_classes_ProcessAuthoringService::isActivity($nextActivity)){
-				$elementChoice->setValue("activity");
-				$elementActivities->setValue($nextActivity->uriResource);//no need for tao_helpers_Uri::encode
-				
-			}
-			if(wfEngine_models_classes_ProcessAuthoringService::isConnector($nextActivity)){
+		
+		$elementChoice = null;
+		$elementConnectors = null;
+		if($includeConnectors){
+			//the default radio button to select between the 3 possibilities:
+			$elementChoice = tao_helpers_form_FormFactory::getElement($idPrefix."_activityOrConnector", 'Radiobox');
+			$elementChoice->setDescription(__('Activity or Connector'));
+			$options = array(
+				"activity" => __("Activity"),
+				"connector" => __("Connector")
+			);
+			$elementChoice->setOptions($options);
 			
-				// throw new Exception("uri=".$elementActivities->render());
-				
-				$elementChoice->setValue("connector");
-				$elementConnectors->setValue($nextActivity->uriResource);
+			//create the connector select element:
+			$elementConnectors = tao_helpers_form_FormFactory::getElement($idPrefix."_connectorUri", $optionsWidget);
+			$elementConnectors->setDescription(__('Connector'));
+			$elementConnectors->setOptions($connectorOptions);
+		}
+		/*
+		if(!empty($nextActivity)){
+			if(is_array($nextActivity) && $optionsWidget == 'Checkbox'){
+				foreach($nextActivity as $activity){
+					$elementActivities->setValue($activity->uriResource);//no need for tao_helpers_Uri::encode
+				}
+			}elseif($nextActivity instanceof core_kernel_classes_Resource){
+				if(wfEngine_models_classes_ProcessAuthoringService::isActivity($nextActivity)){
+					$elementChoice->setValue("activity");
+					$elementActivities->setValue($nextActivity->uriResource);//no need for tao_helpers_Uri::encode
+				}
+				if(wfEngine_models_classes_ProcessAuthoringService::isConnector($nextActivity) && $includeConnectors){
+					$elementChoice->setValue("connector");
+					$elementConnectors->setValue($nextActivity->uriResource);
+				}
 			}
 		}
-		
+		*/
 		//put all elements in the return value:
 		$returnValue[$idPrefix.'_description'] = $elementDescription;
-		$returnValue[$idPrefix.'_choice'] = $elementChoice;
+		if($includeConnectors) $returnValue[$idPrefix.'_choice'] = $elementChoice;
 		$returnValue[$idPrefix.'_activities'] = $elementActivities;
-		$returnValue[$idPrefix.'_label'] = $elementActivityLabel;
-		$returnValue[$idPrefix.'_connectors'] = $elementConnectors;
+		if($allowCreation) $returnValue[$idPrefix.'_label'] = $elementActivityLabel;
+		if($includeConnectors) $returnValue[$idPrefix.'_connectors'] = $elementConnectors;
 		
 		return $returnValue;
 	}

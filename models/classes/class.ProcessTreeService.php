@@ -113,8 +113,6 @@ class wfEngine_models_classes_ProcessTreeService
 			$activityData = array();
 			$activityData = $this->activityNode($activity, 'next', false);
 			
-			
-			
 			//set property node:
 			$activityData['children'][] = array(
 				'data' => __("Property"),
@@ -439,6 +437,20 @@ class wfEngine_models_classes_ProcessTreeService
 				}
 			}
 		}elseif($connectorType->uriResource == INSTANCE_TYPEOFCONNECTORS_SEQUENCE){
+			$next = $connector->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_NEXTACTIVITIES), false);
+			
+			if(!is_null($next)){
+				$connectorData[] = $this->activityNode($next, 'next', true);
+			}
+		}elseif($connectorType->uriResource == INSTANCE_TYPEOFCONNECTORS_PARALLEL){
+			$nextActivitiesCollection = $connector->getPropertyValuesCollection(new core_kernel_classes_Property(PROPERTY_CONNECTORS_NEXTACTIVITIES));
+			foreach($nextActivitiesCollection->getIterator() as $nextActivity){
+				if($nextActivity instanceof core_kernel_classes_Resource){
+					$connectorData[] = $this->activityNode($nextActivity, 'next', true);
+				}
+			}
+			
+		}elseif($connectorType->uriResource == INSTANCE_TYPEOFCONNECTORS_JOIN){
 			$next = $connector->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_NEXTACTIVITIES), false);
 			
 			if(!is_null($next)){

@@ -670,6 +670,11 @@ class wfEngine_models_classes_ProcessAuthoringService
 				//Associate the newly created transition rule to the connector:
 				$connector->editPropertyValues(new core_kernel_classes_Property(PROPERTY_CONNECTORS_TRANSITIONRULE), $transitionRule->uriResource);
 			}
+			//delete old condition:
+			$oldCondition = $transitionRule->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_RULE_IF));
+			if(!is_null($oldCondition)){
+				$this->deleteCondition($oldCondition);
+			}
 			$returnValue = $transitionRule->editPropertyValues(new core_kernel_classes_Property(PROPERTY_RULE_IF), $condition->uriResource);
 		}
 
@@ -1391,6 +1396,63 @@ class wfEngine_models_classes_ProcessAuthoringService
 		}
 		
 		return $returnValue;
+	}
+	
+	
+	public function setJoinConnectorActivity($connectorInstance, $followingActivity){
+		$connectorInstance->removePropertyValues(new core_kernel_classes_Property(PROPERTY_CONNECTORS_NEXTACTIVITIES));
+		
+		//get transition rule if exists
+		//search prev connector of the following activity, the type of which is 'join':
+		$transitionRule = null;
+		$joinConnectors = array();
+		$conditionString = '';
+		$prevConnectorsCollection = core_kernel_impl_ApiModelOO::singleton()->getSubject(PROPERTY_CONNECTORS_NEXTACTIVITIES, $followingActivity->uriResource);
+		foreach($prevConnectorsCollection->getIterator() as $prevConnector){
+			if($prevConnector instanceof core_kernel_classes_Resource){
+			
+				$connectorType = null;
+				$connectorType = $prevConnector->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_TYPE));
+				if($connectorType->uriResource == INSTANCE_TYPEOFCONNECTORS_JOIN){
+					//TODO: check if the connector pre
+					$transitionRuleTemp = $prevConnector->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_TRANSITIONRULE));
+					if($transitionRuleTemp instanceof core_kernel_classes_Resource){
+						$joinConnectors[] = $prevConnector;
+						$transitionRule = $transitionRuleTemp;//note the transition rule for these connectors should be exactly the same
+						$previousActivity = $prevConnector->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_PRECACTIVITIES));
+					
+						//create activity 'isFinished' process variable:
+						$label = $previousActivity->getLabel();
+						$code = 'activity';
+						if(stripos($previousActivity->uriRessource,".rdf#")>0){
+							$code .= '_'.substr($previousActivity->uriRessource, stripos($previousActivity->uriRessource,".rdf#")+5);
+						}
+						//check if the code (i.e. the variable) does not exist yet:
+						if(is_null($this->getProcessVariable($code))){
+							$this->createProcessVariable('isFinished: '.$previousActivity->getLabel(), $code);
+						}
+						
+						$conditionString .= "^{$code} == 'true' AND ";
+					}
+				}
+				
+			}
+		}
+		$conditionString = substr_replace($conditionString,'',-4);
+		
+		if(!is_null($transitionRule)){
+			//delete old transition rule,
+			$this->deleteRule($transitionRule);
+		}
+		$transitionRule = $this->createRule($connectorInstance, $conditionString);
+		$transitionRule->editPropertyValues(new core_kernel_classes_Property(PROPERTY_TRANSITIONRULES_THEN), $followingActivity->uriResource);//how to set 'void' to 'ELSE'?
+		
+		//for each connector, except the current one (already set on the line above), set the transition rule:
+		foreach($joinConnectors as $connector){
+			$connector->editPropertyValues(new core_kernel_classes_Property(PROPERTY_CONNECTORS_NEXTACTIVITIES), $followingActivity->uriResource);
+			$connector->editPropertyValues(new core_kernel_classes_Property(PROPERTY_CONNECTORS_TRANSITIONRULE), $transitionRule->uriResource);
+		}
+	
 	}
 } /* end of class wfEngine_models_classes_ProcessAuthoringService */
 

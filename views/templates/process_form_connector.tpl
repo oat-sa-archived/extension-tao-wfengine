@@ -72,14 +72,19 @@ $(function(){
 		initActivitySwitch('else');
 	}else{
 		initActivitySwitch('next');
+		initActivitySwitch('join');
 	}
 
 });
 
 function initActivitySwitch(clazz){
 	switchActivityType(clazz);
-	$("input:radio[name="+clazz+"_activityOrConnector]").change(function(){switchActivityType(clazz);});
-	$("#"+clazz+"_activityUri").change(function(){switchActivityType(clazz);});
+	if($("input:radio[name="+clazz+"_activityOrConnector]").length){
+		$("input:radio[name="+clazz+"_activityOrConnector]").change(function(){switchActivityType(clazz);});
+	}
+	if($("#"+clazz+"_activityUri").length){
+		$("#"+clazz+"_activityUri").change(function(){switchActivityType(clazz);});
+	}
 }
 
 function switchActivityType(clazz){
@@ -88,7 +93,7 @@ function switchActivityType(clazz){
 		disable($("#"+clazz+"_activityUri"));
 		disable($("#"+clazz+"_activityLabel"));
 		enable($("#"+clazz+"_connectorUri"));
-	}else if(value == 'activity'){
+	}else if(value == 'activity' || !$("input:radio[name="+clazz+"_activityOrConnector]").length){
 		enable($("#"+clazz+"_activityUri"));
 		disable($("#"+clazz+"_activityLabel"));
 		if($("#"+clazz+"_activityUri").val() == 'newActivity'){
