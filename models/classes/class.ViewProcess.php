@@ -314,7 +314,7 @@ extends Process
 
 				if ($this->editMode)
 				{
-					$uriclassActor="#i118588820437156";
+					$uriclassActor="#Role";
 					$WindowTitle = str_replace(" ","",trim(html_entity_decode(strip_tags("Edit ".$val[1]))));
 					$WindowId = str_replace(" ","",$WindowTitle);
 
@@ -328,7 +328,7 @@ extends Process
 						';
 					$svg.='</a>';
 
-					$uriclassActor="#i118588820437156";
+					$uriclassActor="#Role";
 
 					$WindowTitle = str_replace(" ","",trim(html_entity_decode(strip_tags("Remove".$val[1]))));
 					$WindowId = str_replace(" ","",$WindowTitle);
@@ -367,7 +367,7 @@ extends Process
 		$returnValue=$svg;
 		if ($this->editMode)
 		{
-			$uriclassActor="#i118588820437156";
+			$uriclassActor="#Role";
 
 			$WindowTitle = str_replace(" ","",trim(html_entity_decode(strip_tags("Create  a new actor in".$val[1]))));
 			$WindowId = str_replace(" ","",$WindowTitle);
