@@ -794,6 +794,7 @@ class ProcessAuthoring extends TaoModule {
 	
 	public function saveConnector(){
 		$saved = true;
+		$propNextActivities = new core_kernel_classes_Property(PROPERTY_CONNECTORS_NEXTACTIVITIES);
 		
 		//decode uri:
 		$data = array();
@@ -815,6 +816,21 @@ class ProcessAuthoring extends TaoModule {
 		}
 		
 		if($data[PROPERTY_CONNECTORS_TYPE] != 'none'){
+			//check if there is a need for update: in case the old type of connector was 'join':
+			$connectorType = $connectorInstance->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_TYPE));
+			if(!is_null($connectorType)){
+				if($connectorType->uriResource == INSTANCE_TYPEOFCONNECTORS_JOIN){
+					//need for update if the activity is different:
+					$oldNextActivity = $connectorType->getOnePropertyValue($propNextActivities);
+					if(!is_null($oldNextActivity)){
+						if($oldNextActivity->uriResource != $data["join_activityUri"]){
+							$connectorInstance->removePropertyValues(new core_kernel_classes_Property(PROPERTY_CONNECTORS_TRANSITIONRULE));
+							$connectorInstance->removePropertyValues($propNextActivities);
+							$this->service->updateJoinedActivity($oldNextActivity);
+						}
+					}
+				}
+			}
 			$this->service->setConnectorType($connectorInstance, new core_kernel_classes_Resource($data[PROPERTY_CONNECTORS_TYPE]));
 		}
 		
@@ -829,7 +845,7 @@ class ProcessAuthoring extends TaoModule {
 		// }
 		
 		$followingActivity = null;
-		$propNextActivities = new core_kernel_classes_Property(PROPERTY_CONNECTORS_NEXTACTIVITIES);
+		
 		if($data[PROPERTY_CONNECTORS_TYPE] == INSTANCE_TYPEOFCONNECTORS_SEQUENCE){
 			//get form input starting with "next_"
 			if(isset($data["next_activityUri"])){
@@ -863,7 +879,7 @@ class ProcessAuthoring extends TaoModule {
 				$condition = $data['if'];
 				
 				if(!empty($condition)){
-					if(!$this->service->createRule($connectorInstance, $condition)){
+					if(is_null($this->service->createRule($connectorInstance, $condition))){
 						throw new Exception("the condition \"{$condition}\" cannot be created");
 					}
 				}
@@ -911,7 +927,7 @@ class ProcessAuthoring extends TaoModule {
 			
 			$connectorInstance->removePropertyValues($propNextActivities);
 			foreach($data as $key=>$value){
-				if(strpos($data, 'parallel_')==0){
+				if(strpos($key, 'parallel_')===0){//find the key-value related to selected activities
 					$connectorInstance->setPropertyValue($propNextActivities, $value);
 				}
 			}
@@ -921,7 +937,8 @@ class ProcessAuthoring extends TaoModule {
 			if(!empty($data["join_activityUri"])){
 				$followingActivity = new core_kernel_classes_Resource($data["join_activityUri"]);
 				
-				$this->service->setJoinConnectorActivity($connectorInstance, $followingActivity);
+				$this->service->createJoinActivity($connectorInstance, $followingActivity);
+				/*
 				$connectorInstance->removePropertyValues(new core_kernel_classes_Property(PROPERTY_CONNECTORS_NEXTACTIVITIES));
 				
 				//get transition rule if exists
@@ -963,50 +980,50 @@ class ProcessAuthoring extends TaoModule {
 				}
 				$conditionString = substr_replace($conditionString,'',-4);
 				
-				/*
+				
 				// $oldTransitionRule = $connectorInstance->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_TRANSITIONRULE));
-				$previousActivities = array();
-				if(!is_null($transitionRule)){
-					//get connectors associated to such transition rule:
-					$joinConnectorsCollection = core_kernel_impl_ApiModelOO::singleton()->getSubject(PROPERTY_CONNECTORS_TRANSITIONRULE, $transitionRule->uriResource);
+				// $previousActivities = array();
+				// if(!is_null($transitionRule)){
+					get connectors associated to such transition rule:
+					// $joinConnectorsCollection = core_kernel_impl_ApiModelOO::singleton()->getSubject(PROPERTY_CONNECTORS_TRANSITIONRULE, $transitionRule->uriResource);
 					
-					//foreach of them, get the connector and thus the list of activities:
-					foreach($joinConnectorsCollection->getIterator() as $connector){
-						if($connector instanceof core_kernel_classes_Resource){
-							$previousActivities[] = $connector->getUniquePropertyValue(PROPERTY_CONNECTORS_PRECACTIVITIES);
-						}
-					}
+					foreach of them, get the connector and thus the list of activities:
+					// foreach($joinConnectorsCollection->getIterator() as $connector){
+						// if($connector instanceof core_kernel_classes_Resource){
+							// $previousActivities[] = $connector->getUniquePropertyValue(PROPERTY_CONNECTORS_PRECACTIVITIES);
+						// }
+					// }
 					
-					//delete old transition rule,
-					$this->deleteRule($transitionRule);
-				}
-				*/
+					delete old transition rule,
+					// $this->deleteRule($transitionRule);
+				// }
+				
 				
 				if(!is_null($transitionRule)){
 					//delete old transition rule,
 					$this->deleteRule($transitionRule);
 				}
-				/*
+				
 				// create a new transition that take into account the new list of activity:
 				//create the condition string:
 				//TODO: put that foreach loop with the previous one when everything is clearer
-				$conditionString = '';
-				foreach($previousActivities as $previousActivity){
-					//create activity 'isFinished' process variable:
-					$label = $previousActivity->getLabel();
-					$code = 'activity';
+				// $conditionString = '';
+				// foreach($previousActivities as $previousActivity){
+					create activity 'isFinished' process variable:
+					// $label = $previousActivity->getLabel();
+					// $code = 'activity';
 					
-					if(stripos($previousActivity->uriRessource,".rdf#")>0){
-						$code .= '_'.substr($previousActivity->uriRessource, stripos($previousActivity->uriRessource,".rdf#")+5);
-					}
-					//check if the code (i.e. the variable) does not exist yet:
-					if(is_null($this->getProcessVariable($code))){
-						$this->createProcessVariable('isFinished: '.$previousActivity->getLabel(), $code);
-					}
-					$conditionString .= "^{$code} == 'true' AND ";
-				}
-				$conditionString = substr_replace($conditionString,'',-4);
-				*/
+					// if(stripos($previousActivity->uriRessource,".rdf#")>0){
+						// $code .= '_'.substr($previousActivity->uriRessource, stripos($previousActivity->uriRessource,".rdf#")+5);
+					// }
+					check if the code (i.e. the variable) does not exist yet:
+					// if(is_null($this->getProcessVariable($code))){
+						// $this->createProcessVariable('isFinished: '.$previousActivity->getLabel(), $code);
+					// }
+					// $conditionString .= "^{$code} == 'true' AND ";
+				// }
+				// $conditionString = substr_replace($conditionString,'',-4);
+				
 				$transitionRule = $this->createRule($connectorInstance, $conditionString);
 				$transitionRule->editPropertyValues(new core_kernel_classes_Property(PROPERTY_TRANSITIONRULES_THEN), $followingActivity->uriResource);//how to set 'void' to 'ELSE'?
 				
@@ -1015,7 +1032,7 @@ class ProcessAuthoring extends TaoModule {
 					$connector->editPropertyValues(new core_kernel_classes_Property(PROPERTY_CONNECTORS_NEXTACTIVITIES), $followingActivity->uriResource);
 					$connector->editPropertyValues(new core_kernel_classes_Property(PROPERTY_CONNECTORS_TRANSITIONRULE), $transitionRule->uriResource);
 				}
-				
+				*/
 			}
 		}
 		

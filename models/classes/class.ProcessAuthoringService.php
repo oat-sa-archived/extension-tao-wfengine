@@ -236,6 +236,9 @@ class wfEngine_models_classes_ProcessAuthoringService
 		if(!is_null($rule)){
 			$this->deleteCondition($rule);
 			
+			//delete reference:
+			$this->deleteReference(new core_kernel_classes_Property(PROPERTY_CONNECTORS_TRANSITIONRULE), $rule);
+			
 			//delete the resources
 			$returnValue = $rule->delete($rule);
 		}
@@ -426,7 +429,7 @@ class wfEngine_models_classes_ProcessAuthoringService
 				//delete the related rule:
 				$relatedRule = $connector->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_TRANSITIONRULE));
 				if(!is_null($relatedRule)){
-					$this->deleteRule($relatedRule);
+					$this->deleteRule($relatedRule);//warning: do not do this for a join connector
 				}
 			}
 		}
@@ -649,11 +652,11 @@ class wfEngine_models_classes_ProcessAuthoringService
      * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
      * @param  core_kernel_classes_Resource connector
 	 * @param  string condiiton
-     * @return boolean
+     * @return core_kernel_classes_Resource
      */	
 	public function createRule(core_kernel_classes_Resource $connector, $question=''){//transiiton rule only! rename as such!
 		
-		$returnValue = true;
+		$returnValue = null;
 			
 		// $xmlDom = $this->analyseExpression($condition);
 		$condition = $this->createCondition( $this->analyseExpression($question, true) );
@@ -675,7 +678,8 @@ class wfEngine_models_classes_ProcessAuthoringService
 			if(!is_null($oldCondition)){
 				$this->deleteCondition($oldCondition);
 			}
-			$returnValue = $transitionRule->editPropertyValues(new core_kernel_classes_Property(PROPERTY_RULE_IF), $condition->uriResource);
+			$transitionRule->editPropertyValues(new core_kernel_classes_Property(PROPERTY_RULE_IF), $condition->uriResource);
+			$returnValue = $transitionRule;
 		}
 
 		return $returnValue;
@@ -1289,7 +1293,7 @@ class wfEngine_models_classes_ProcessAuthoringService
 		
 		if($type == 'then'){
 			$property = new core_kernel_classes_Property(PROPERTY_INFERENCERULES_THEN);
-		}else if('else'){
+		}else if($type == 'else'){
 			$property = new core_kernel_classes_Property(PROPERTY_INFERENCERULES_ELSE);
 		}else{
 			throw new Exception('unknown type of assignment');
@@ -1399,15 +1403,32 @@ class wfEngine_models_classes_ProcessAuthoringService
 	}
 	
 	
-	public function setJoinConnectorActivity($connectorInstance, $followingActivity){
-		$connectorInstance->removePropertyValues(new core_kernel_classes_Property(PROPERTY_CONNECTORS_NEXTACTIVITIES));
-		
+	public function createJoinActivity(core_kernel_classes_Resource $connectorInstance, core_kernel_classes_Resource $followingActivity = null, $newActivityLabel = ''){
 		//get transition rule if exists
 		//search prev connector of the following activity, the type of which is 'join':
-		$transitionRule = null;
+		
+		$propNextActivity = new core_kernel_classes_Property(PROPERTY_CONNECTORS_NEXTACTIVITIES);
+		
+		$connectorInstance->removePropertyValues($propNextActivity);
+		$connectorInstance->setPropertyValue($propNextActivity, $followingActivity->uriResource);
+		
+		
+		if(is_null($followingActivity)){
+			//TODO: create an activity if null:
+			
+		}else{
+			$this->updateJoinedActivity($followingActivity);
+		}
+		
+		return $followingActivity;
+	}
+	
+	public function updateJoinedActivity(core_kernel_classes_Resource $followingActivity){
+		
 		$joinConnectors = array();
 		$conditionString = '';
 		$prevConnectorsCollection = core_kernel_impl_ApiModelOO::singleton()->getSubject(PROPERTY_CONNECTORS_NEXTACTIVITIES, $followingActivity->uriResource);
+		
 		foreach($prevConnectorsCollection->getIterator() as $prevConnector){
 			if($prevConnector instanceof core_kernel_classes_Resource){
 			
@@ -1417,34 +1438,41 @@ class wfEngine_models_classes_ProcessAuthoringService
 					//TODO: check if the connector pre
 					$transitionRuleTemp = $prevConnector->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_TRANSITIONRULE));
 					if($transitionRuleTemp instanceof core_kernel_classes_Resource){
-						$joinConnectors[] = $prevConnector;
-						$transitionRule = $transitionRuleTemp;//note the transition rule for these connectors should be exactly the same
-						$previousActivity = $prevConnector->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_PRECACTIVITIES));
-					
-						//create activity 'isFinished' process variable:
-						$label = $previousActivity->getLabel();
-						$code = 'activity';
-						if(stripos($previousActivity->uriRessource,".rdf#")>0){
-							$code .= '_'.substr($previousActivity->uriRessource, stripos($previousActivity->uriRessource,".rdf#")+5);
-						}
-						//check if the code (i.e. the variable) does not exist yet:
-						if(is_null($this->getProcessVariable($code))){
-							$this->createProcessVariable('isFinished: '.$previousActivity->getLabel(), $code);
-						}
-						
-						$conditionString .= "^{$code} == 'true' AND ";
+						$this->deleteRule($transitionRuleTemp);
+						// $transitionRule = $transitionRuleTemp;//note: the transition rule for these connectors should be exactly the same
 					}
+					$joinConnectors[] = $prevConnector;
+					$previousActivity = $prevConnector->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_PRECACTIVITIES));
+					
+					//create activity 'isFinished' process variable:
+					$label = $previousActivity->getLabel();
+					$code = 'activity';
+					// var_dump($previousActivity, $previousActivity->uriResource, stripos($previousActivity->uriResource,".rdf#"));
+					if(stripos($previousActivity->uriResource,".rdf#")>0){
+						$code .= '_'.substr($previousActivity->uriResource, stripos($previousActivity->uriResource,".rdf#")+5);
+					}
+					//check if the code (i.e. the variable) does not exist yet:
+					$activityProcessVar = $this->getProcessVariable($code);
+					if(is_null($activityProcessVar)){
+						$activityProcessVar = $this->createProcessVariable('isFinished: '.$label, $code);
+					}
+					//assign process var to process definition:
+					// $activityProcessVar
+					
+					//add statement assignation to activity prec:
+					
+					$conditionString .= "^{$code} == 'true' AND ";
 				}
 				
 			}
 		}
 		$conditionString = substr_replace($conditionString,'',-4);
+		echo 'condition: '.$conditionString;
 		
-		if(!is_null($transitionRule)){
-			//delete old transition rule,
-			$this->deleteRule($transitionRule);
-		}
-		$transitionRule = $this->createRule($connectorInstance, $conditionString);
+		//if transition rule exists, replace conditio (prop "if"):
+		$transitionRule = null;
+		$transitionRule = $this->createRule($prevConnector, $conditionString);
+		// var_dump($transitionRule);
 		$transitionRule->editPropertyValues(new core_kernel_classes_Property(PROPERTY_TRANSITIONRULES_THEN), $followingActivity->uriResource);//how to set 'void' to 'ELSE'?
 		
 		//for each connector, except the current one (already set on the line above), set the transition rule:
@@ -1452,8 +1480,20 @@ class wfEngine_models_classes_ProcessAuthoringService
 			$connector->editPropertyValues(new core_kernel_classes_Property(PROPERTY_CONNECTORS_NEXTACTIVITIES), $followingActivity->uriResource);
 			$connector->editPropertyValues(new core_kernel_classes_Property(PROPERTY_CONNECTORS_TRANSITIONRULE), $transitionRule->uriResource);
 		}
-	
+		
+		return true;
 	}
+	
+	public function createProcessVariable($label, $code){
+		if($this->getProcessVariable($code)){
+			throw new Exception("A process variable with the code '{$code}' already exists");
+		}
+		$classCode = new core_kernel_classes_Class(CLASS_PROCESSVARIABLES);
+		$processVariable = $classCode->createInstance($label, 'created by ProcessAuthoringService');
+		$processVariable->setPropertyValue(new core_kernel_classes_Property(PROPERTY_PROCESSVARIABLES_CODE), $code);
+		return $processVariable;
+	}
+	
 } /* end of class wfEngine_models_classes_ProcessAuthoringService */
 
 ?>

@@ -880,7 +880,7 @@ class wfEngine_helpers_ProcessFormFactory extends tao_helpers_form_GenerisFormFa
 							if($then instanceof core_kernel_classes_Resource){
 								$nextActivity = $then;
 							}
-						};
+						}
 					}
 				}
 				$idPrefix = 'then';
@@ -917,6 +917,7 @@ class wfEngine_helpers_ProcessFormFactory extends tao_helpers_form_GenerisFormFa
 						$nextActivity = $then;
 					}
 				}
+				
 				$idPrefix = $type;
 				break;
 			default:
@@ -972,8 +973,6 @@ class wfEngine_helpers_ProcessFormFactory extends tao_helpers_form_GenerisFormFa
 		$elementActivities->setDescription(__('Activity'));
 		$elementActivities->setOptions($activityOptions);
 		
-		
-		
 		$elementChoice = null;
 		$elementConnectors = null;
 		if($includeConnectors){
@@ -991,7 +990,7 @@ class wfEngine_helpers_ProcessFormFactory extends tao_helpers_form_GenerisFormFa
 			$elementConnectors->setDescription(__('Connector'));
 			$elementConnectors->setOptions($connectorOptions);
 		}
-		/*
+		
 		if(!empty($nextActivity)){
 			if(is_array($nextActivity) && $optionsWidget == 'Checkbox'){
 				foreach($nextActivity as $activity){
@@ -999,7 +998,7 @@ class wfEngine_helpers_ProcessFormFactory extends tao_helpers_form_GenerisFormFa
 				}
 			}elseif($nextActivity instanceof core_kernel_classes_Resource){
 				if(wfEngine_models_classes_ProcessAuthoringService::isActivity($nextActivity)){
-					$elementChoice->setValue("activity");
+					if($includeConnectors) $elementChoice->setValue("activity");
 					$elementActivities->setValue($nextActivity->uriResource);//no need for tao_helpers_Uri::encode
 				}
 				if(wfEngine_models_classes_ProcessAuthoringService::isConnector($nextActivity) && $includeConnectors){
@@ -1008,7 +1007,7 @@ class wfEngine_helpers_ProcessFormFactory extends tao_helpers_form_GenerisFormFa
 				}
 			}
 		}
-		*/
+		
 		//put all elements in the return value:
 		$returnValue[$idPrefix.'_description'] = $elementDescription;
 		if($includeConnectors) $returnValue[$idPrefix.'_choice'] = $elementChoice;
