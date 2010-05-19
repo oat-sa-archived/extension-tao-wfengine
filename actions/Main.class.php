@@ -1,5 +1,5 @@
 <?php
-class Main extends Module
+class Main extends WfModule
 {
 
 
@@ -9,10 +9,6 @@ class Main extends Module
 	 */
 	public function index($caseId = null, $login = null, $pwd = null)
 	{
-		if(!UsersHelper::checkAuthentication()) {
-			$this->redirect(_url('index', 'Authentication'));
-		}
-
 
 		$wfEngine 			= $_SESSION["WfEngine"];
 		$userViewData 		= UsersHelper::buildCurrentUserForView();

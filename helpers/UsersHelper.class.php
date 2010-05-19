@@ -108,7 +108,7 @@ class UsersHelper
 	 * @return boolean 
 	 */
 	public static function checkAuthentication(){
-		return (isset($_SESSION['taoqual.authenticated']) && tao_models_classes_UserService::isASessionOpened());
+		return (isset($_SESSION['taoqual.authenticated']) && core_kernel_users_Service::singleton()->isASessionOpened());
 	}
 
 

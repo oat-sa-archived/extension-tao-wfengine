@@ -1,5 +1,5 @@
 <?php
-class Processes extends Module
+class Processes extends WfModule
 {
 	public function authoring($processDefinitionUri)
 	{
@@ -7,10 +7,6 @@ class Processes extends Module
 		// the service mode !
 
 			$processDefinitionUri = urldecode($processDefinitionUri);
-			if(!UsersHelper::checkAuthentication()) {
-				$this->redirect(_url('index', 'Authentication'));
-			}
-
 				
 			$wfEngine 			= $_SESSION["WfEngine"];
 			$userViewData 		= UsersHelper::buildCurrentUserForView();
@@ -51,14 +47,6 @@ class Processes extends Module
 	public function add($posted)
 	{
 		ini_set('max_execution_time', 200);
-
-
-			
-			if(!UsersHelper::checkAuthentication()) {
-				$this->redirect(_url('index', 'Authentication'));
-			}
-			
-		
 
 
 			$processExecutionFactory = new ProcessExecutionFactory();

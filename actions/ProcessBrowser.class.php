@@ -1,14 +1,11 @@
 <?php
 error_reporting(E_ALL);
 
-class ProcessBrowser extends Module
+class ProcessBrowser extends WfModule
 {
 	public function index($processUri)
 	{
-		$_SESSION["processUri"]= $processUri;
-		if(!UsersHelper::checkAuthentication()) {
-				$this->redirect(_url('index', 'Authentication'));
-		}
+		$_SESSION["processUri"] = $processUri;
 
 		$processUri 		= urldecode($processUri); // parameters clean-up.
 		$this->setData('processUri',$processUri);
@@ -145,10 +142,6 @@ class ProcessBrowser extends Module
 
 	public function back($processUri)
 	{
-		if(!UsersHelper::checkAuthentication()) {
-				$this->redirect(_url('index', 'Authentication'));
-		}
-
 		$processUri 	= urldecode($processUri);
 		$processExecution = new ProcessExecution($processUri);
 		$activity = $processExecution->currentActivity[0];
@@ -167,11 +160,6 @@ class ProcessBrowser extends Module
 
 	public function next($processUri, $ignoreConsistency = 'false')
 	{
-			if(!UsersHelper::checkAuthentication()) {
-				$this->redirect(_url('index', 'Authentication'));
-			}
-	
-
 	
 		$processUri 	= urldecode($processUri);
 		$processExecution = new ProcessExecution($processUri);
@@ -213,9 +201,6 @@ class ProcessBrowser extends Module
 
 	public function pause($processUri)
 	{
-		if(!UsersHelper::checkAuthentication()) {
-				$this->redirect(_url('index', 'Authentication'));
-		}
 
 		$processUri 	= urldecode($processUri);
 		$processExecution = new ProcessExecution($processUri);
@@ -227,9 +212,6 @@ class ProcessBrowser extends Module
 
 	public function jumpBack($processUri, $activityUri, $testing="",$ignoreHidden=false)
 	{
-		if(!UsersHelper::checkAuthentication()) {
-				$this->redirect(_url('index', 'Authentication'));
-		}
 
 		$processUri = urldecode($processUri);
 		$activityUri = urldecode($activityUri);
@@ -254,9 +236,6 @@ class ProcessBrowser extends Module
 
 	public function breakOff($processUri)
 	{
-				if(!UsersHelper::checkAuthentication()) {
-				$this->redirect(_url('index', 'Authentication'));
-			}
 		PiaacDataHolder::build($processUri);
 
 		$processUri = urldecode($processUri);
@@ -271,9 +250,6 @@ class ProcessBrowser extends Module
 
 	public function jumpLast($processUri)
 	{
-				if(!UsersHelper::checkAuthentication()) {
-				$this->redirect(_url('index', 'Authentication'));
-			}
 		PiaacDataHolder::build($processUri);
 
 		$processUri = urldecode($processUri);

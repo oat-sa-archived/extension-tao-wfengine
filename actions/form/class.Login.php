@@ -86,19 +86,6 @@ class wfEngine_actions_form_Login
     {
         // section 127-0-1-1-68f1e705:127f61c8a56:-8000:00000000000023C2 begin
         
-    	if($this->data['route']){
-    		$routeElt = tao_helpers_form_FormFactory::getElement('route', 'Hidden');
-    		$routeElt->setValue('true');
-    		$this->form->addElement($routeElt);
-    		
-    		$fromElt = tao_helpers_form_FormFactory::getElement('from', 'Hidden');
-    		$fromElt->setValue($this->data['from']);
-    		$this->form->addElement($fromElt);
-    		
-    		$fromQueryElt = tao_helpers_form_FormFactory::getElement('fromQuery', 'Hidden');
-    		$fromQueryElt->setValue($this->data['fromQuery']);
-    		$this->form->addElement($fromQueryElt);
-    	}
     	
     	$loginElt = tao_helpers_form_FormFactory::getElement('login', 'Textbox');
 		$loginElt->setDescription(__('Login'));
