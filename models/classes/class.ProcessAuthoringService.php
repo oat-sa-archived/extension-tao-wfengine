@@ -1504,6 +1504,12 @@ class wfEngine_models_classes_ProcessAuthoringService
 		$joinConnectors = array();
 		$conditionString = '';
 		$prevConnectorsCollection = core_kernel_impl_ApiModelOO::singleton()->getSubject(PROPERTY_CONNECTORS_NEXTACTIVITIES, $followingActivity->uriResource);
+		$currentProcessCollection = core_kernel_impl_ApiModelOO::singleton()->getSubject(PROPERTY_PROCESS_ACTIVITIES, $followingActivity->uriResource);
+		if($currentProcessCollection->isEmpty()){
+			throw new Exception('');
+			return false;
+		}
+		$currentProcess = $currentProcessCollection->get(0);
 		
 		foreach($prevConnectorsCollection->getIterator() as $prevConnector){
 			if($prevConnector instanceof core_kernel_classes_Resource){
@@ -1520,6 +1526,8 @@ class wfEngine_models_classes_ProcessAuthoringService
 					$joinConnectors[] = $prevConnector;
 					$previousActivity = $prevConnector->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_PRECACTIVITIES));
 					
+					$activityProcessVar = $this->getProcessVariableForActivity($previousActivity);
+					/*
 					//create activity 'isFinished' process variable:
 					$label = $previousActivity->getLabel();
 					$code = 'activity';
@@ -1531,13 +1539,18 @@ class wfEngine_models_classes_ProcessAuthoringService
 					$activityProcessVar = $this->getProcessVariable($code);
 					if(is_null($activityProcessVar)){
 						$activityProcessVar = $this->createProcessVariable('isFinished: '.$label, $code);
+					}*/
+					
+					//assign process var to the current process definition:
+					if($activityProcessVar){
+						$currentProcess->setPropertyValue(new core_kernel_classes_Property(PROPERTY_PROCESS_VARIABLE), $activityProcessVar->uriResource);
+					}else{
+						throw new Exception("the \"isfinished\" process variable of the activity {$activityProcessVar->uriResource} is empty");
 					}
-					//assign process var to process definition:
-					// $activityProcessVar
 					
 					//add statement assignation to activity prec:
 					
-					$conditionString .= "^{$code} == 'true' AND ";
+					$conditionString .= "^".$activityProcessVar->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_CODE))." == 'true' AND ";
 				}
 				
 			}
@@ -1570,6 +1583,28 @@ class wfEngine_models_classes_ProcessAuthoringService
 		$processVariable->setPropertyValue(new core_kernel_classes_Property(PROPERTY_PROCESSVARIABLES_CODE), $code);
 		return $processVariable;
 	}
+	
+	public function getProcessVariableForActivity(core_kernel_classes_Resource $activity){
+		
+		//create code from the label
+		$label = $activity->getLabel();
+		$code = 'activity';
+		// var_dump($activity, $activity->uriResource, stripos($activity->uriResource,".rdf#"));
+		if(stripos($activity->uriResource,".rdf#")>0){
+			$code .= '_'.substr($activity->uriResource, stripos($activity->uriResource,".rdf#")+5);
+		}else{
+			throw new Exception('from format of resource uri');
+		}
+		
+		//check if the code (i.e. the variable) does not exist yet:
+		$activityProcessVar = $this->getProcessVariable($code);
+		if(is_null($activityProcessVar)){
+			$activityProcessVar = $this->createProcessVariable('isFinished: '.$label, $code);
+		}
+		
+		return $activityProcessVar;
+	}
+	
 	
 } /* end of class wfEngine_models_classes_ProcessAuthoringService */
 

@@ -53,7 +53,7 @@ class ProcessAuthoringServiceTestCase extends UnitTestCase {
 		$authoringService = new wfEngine_models_classes_ProcessAuthoringService();
 		$this->assertIsA($authoringService, 'tao_models_classes_Service');
 		$this->assertIsA($authoringService, 'wfEngine_models_classes_ProcessAuthoringService');
-		
+
 		$this->authoringService = $authoringService;
 	}
 	
@@ -263,7 +263,7 @@ class ProcessAuthoringServiceTestCase extends UnitTestCase {
 		//the condition of transition rule of the connector 1 has been modified?
 		$newConditionIf = $transitionRule1->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_RULE_IF));
 		$this->assertNotEqual($oldConditonIf->uriResource, $newConditionIf->uriResource);
-		// var_dump($transitionRule1, $transitionRule1bis);
+		
 		
 		$parallelActivity1->delete();
 		$connector1->delete();
