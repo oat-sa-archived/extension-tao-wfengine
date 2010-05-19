@@ -461,6 +461,69 @@ class wfEngine_models_classes_ProcessAuthoringService
 		return $returnValue;
 	}
 	
+	public function deleteConnectorNextActivity(core_kernel_classes_Resource $connector, $type='next'){
+		
+		// $authorizedProperties = array(
+			// PROPERTY_CONNECTORS_NEXTACTIVITIES,
+			// PROPERTY_TRANSITIONRULES_THEN,
+			// PROPERTY_TRANSITIONRULES_ELSE
+		// );
+		$nextActivitiesProp = new core_kernel_classes_Property(PROPERTY_CONNECTORS_NEXTACTIVITIES);
+		
+		switch($type){
+			case 'next':{
+				$property = $nextActivitiesProp;
+				break;
+			}
+			case 'then':{
+				$property = new core_kernel_classes_Property(PROPERTY_TRANSITIONRULES_THEN);
+				break;
+			}
+			case 'else':{
+				$property = new core_kernel_classes_Property(PROPERTY_TRANSITIONRULES_ELSE);
+				break;
+			}
+			default:{
+				throw new Exception('Trying to delete the value of an unauthorized connector property');
+			}
+		}
+		
+		$activityRefProp = new core_kernel_classes_Property(PROPERTY_CONNECTORS_ACTIVITYREFERENCE);
+		$activityRef = $connector->getUniquePropertyValue($activityRefProp)->uriResource;
+	
+		if($property->uriResource == PROPERTY_CONNECTORS_NEXTACTIVITIES){
+			//manage the connection to the following activities
+			$nextActivityCollection = $connector->getPropertyValuesCollection($property);
+			foreach($nextActivityCollection->getIterator() as $nextActivity){
+				if(self::isConnector($nextActivity)){
+					$nextActivityRef = $nextActivity->getUniquePropertyValue($activityRefProp)->uriResource;
+					if($nextActivityRef == $activityRef){
+						$this->deleteConnector($nextActivity);//delete following connectors only if they have the same activity reference
+					}
+				}
+			}
+			$connector->removePropertyValues($nextActivitiesProp);
+		}elseif(($property->uriResource == PROPERTY_TRANSITIONRULES_THEN)||($property->uriResource == PROPERTY_TRANSITIONRULES_ELSE)){
+			//it is a split connector: get the transition rule, if exists
+			$transitionRule = $connector->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTOR_TRANSITIONRULE));
+			if(!is_null($transitionRule)){
+				$nextActivity = $transitionRule->getOnePropertyValue($property);
+				if(!is_null($nextActivity)){
+					if(self::isConnector($nextActivity)){
+						
+						$nextActivityRef = $nextActivity->getUniquePropertyValue($activityRefProp)->uriResource;
+						if($nextActivityRef == $activityRef){
+							$this->deleteConnector($nextActivity);//delete following connectors only if they have the same activity reference
+						}
+					}
+					$this->deleteReference($nextActivitiesProp, $nextActivity);
+					$this->deleteReference($property, $nextActivity);
+				}
+			}
+		}
+		
+	}
+	
 	/**
      * delete the reference to an object via a given property
 	 *Useful when the object has been deleted and the sources related to it must be deleted reference to it.
@@ -626,20 +689,30 @@ class wfEngine_models_classes_ProcessAuthoringService
      * @return void
      */	
 	public function createSequenceActivity(core_kernel_classes_Resource $connector, core_kernel_classes_Resource $followingActivity = null, $newActivityLabel = ''){
+		
+		$this->setConnectorType($connector, new core_kernel_classes_Resource(INSTANCE_TYPEOFCONNECTORS_SEQUENCE));
+		
 		if(is_null($followingActivity)){
-			//get the process associate to the connector to create a new instance of activity
-			$relatedActivity = $connector->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_ACTIVITYREFERENCE));
-			$processCollection = core_kernel_impl_ApiModelOO::getSubject(PROPERTY_PROCESS_ACTIVITIES, $relatedActivity->uriResource);
-			if(!$processCollection->isEmpty()){
-				$followingActivity = $this->createActivity($processCollection->get(0), $newActivityLabel);
-				$newConnector = $this->createConnector($followingActivity);
-			}else{
-				throw new Exception("no related process instance found to create an activity");
-			}
+			$followingActivity = $this->createActivityFromConnector($connector, $newActivityLabel);
 		}
 		if($followingActivity instanceof core_kernel_classes_Resource){
 			//associate it to the property value of the connector
 			$connector->editPropertyValues(new core_kernel_classes_Property(PROPERTY_CONNECTORS_NEXTACTIVITIES), $followingActivity->uriResource);
+		}
+		
+		return $followingActivity;
+	}
+	
+	public function createActivityFromConnector(core_kernel_classes_Resource $connector, $newActivityLabel){
+		//get the process associate to the connector to create a new instance of activity
+		$relatedActivity = $connector->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_ACTIVITYREFERENCE));
+		$processCollection = core_kernel_impl_ApiModelOO::getSubject(PROPERTY_PROCESS_ACTIVITIES, $relatedActivity->uriResource);
+		if(!$processCollection->isEmpty()){
+			$followingActivity = $this->createActivity($processCollection->get(0), $newActivityLabel);
+			//warning: a connector is created at the same time of the activity:
+			$newConnector = $this->createConnector($followingActivity);
+		}else{
+			throw new Exception("no related process instance found to create an activity");
 		}
 		
 		return $followingActivity;
@@ -983,6 +1056,8 @@ class wfEngine_models_classes_ProcessAuthoringService
      * @return void
      */	
 	public function createSplitActivity(core_kernel_classes_Resource $connector, $connectorType, core_kernel_classes_Resource $followingActivity = null, $newActivityLabel ='', $followingActivityisConnector = false){
+		
+		$this->setConnectorType($connector, new core_kernel_classes_Resource(INSTANCE_TYPEOFCONNECTORS_SPLIT));
 		
 		//remove property PROPERTY_CONNECTORS_NEXTACTIVITIES values on connector before:
 		if(is_null($followingActivity)){
@@ -1404,23 +1479,24 @@ class wfEngine_models_classes_ProcessAuthoringService
 	
 	
 	public function createJoinActivity(core_kernel_classes_Resource $connectorInstance, core_kernel_classes_Resource $followingActivity = null, $newActivityLabel = ''){
-		//get transition rule if exists
-		//search prev connector of the following activity, the type of which is 'join':
+		
+		$this->setConnectorType($connectorInstance, new core_kernel_classes_Resource(INSTANCE_TYPEOFCONNECTORS_JOIN));
 		
 		$propNextActivity = new core_kernel_classes_Property(PROPERTY_CONNECTORS_NEXTACTIVITIES);
 		
-		$connectorInstance->removePropertyValues($propNextActivity);
-		$connectorInstance->setPropertyValue($propNextActivity, $followingActivity->uriResource);
-		
-		
 		if(is_null($followingActivity)){
 			//TODO: create an activity if null:
-			
-		}else{
-			$this->updateJoinedActivity($followingActivity);
+			$followingActivity = $this->createActivityFromConnector($connectorInstance, $newActivityLabel);
 		}
 		
-		return $followingActivity;
+		if($followingActivity instanceof core_kernel_classes_Resource){
+			$connectorInstance->removePropertyValues($propNextActivity);
+			$connectorInstance->setPropertyValue($propNextActivity, $followingActivity->uriResource);
+			$this->updateJoinedActivity($followingActivity);
+			return $followingActivity;
+		}else{
+			return null;
+		}
 	}
 	
 	public function updateJoinedActivity(core_kernel_classes_Resource $followingActivity){
@@ -1467,18 +1543,19 @@ class wfEngine_models_classes_ProcessAuthoringService
 			}
 		}
 		$conditionString = substr_replace($conditionString,'',-4);
-		echo 'condition: '.$conditionString;
+		// echo 'condition: '.$conditionString;
 		
 		//if transition rule exists, replace conditio (prop "if"):
 		$transitionRule = null;
 		$transitionRule = $this->createRule($prevConnector, $conditionString);
-		// var_dump($transitionRule);
 		$transitionRule->editPropertyValues(new core_kernel_classes_Property(PROPERTY_TRANSITIONRULES_THEN), $followingActivity->uriResource);//how to set 'void' to 'ELSE'?
 		
 		//for each connector, except the current one (already set on the line above), set the transition rule:
+		// echo 'joinConnectors:';var_dump($joinConnectors);
 		foreach($joinConnectors as $connector){
 			$connector->editPropertyValues(new core_kernel_classes_Property(PROPERTY_CONNECTORS_NEXTACTIVITIES), $followingActivity->uriResource);
 			$connector->editPropertyValues(new core_kernel_classes_Property(PROPERTY_CONNECTORS_TRANSITIONRULE), $transitionRule->uriResource);
+			// var_dump('new transiitonrule:',$transitionRule);
 		}
 		
 		return true;
