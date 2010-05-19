@@ -1,5 +1,28 @@
 <?php
-require_once dirname(__FILE__) . '/../../tao/test/TestRunner.php';
+// require_once dirname(__FILE__) . '/../../tao/test/TestRunner.php';
+// set_include_path(get_include_path().';'.dirname(__FILE__).'/../..');
+
+require_once dirname(__FILE__) . '/../../generis/common/inc.extension.php';
+require_once dirname(__FILE__) . '/../includes/common.php';
+require_once INCLUDES_PATH.'/simpletest/autorun.php';
+
+if(!defined("LOGIN")){
+	define("LOGIN", "generis", true);
+}
+/**
+* @constant password for the module you wish to connect to 
+*/
+if(!defined("PASS")){
+	define("PASS", "g3n3r1s", true);
+}
+/**
+* @constant module for the module you wish to connect to 
+*/
+if(!defined("MODULE")){
+	define("MODULE", "tao", true);
+}
+
+error_reporting(E_ALL);
 
 class ProcessAuthoringServiceTestCase extends UnitTestCase {
 	
@@ -11,9 +34,10 @@ class ProcessAuthoringServiceTestCase extends UnitTestCase {
 	/**
 	 * tests initialization
 	 */
-	public function setUp(){		
-		TestRunner::initTest();
+	public function setUp(){
+		// TestRunner::initTest();
 		$this->apiModel = core_kernel_impl_ApiModelOO::singleton();
+		$this->apiModel->logIn(LOGIN,md5(PASS),DATABASE_NAME,true);
 		$processDefinitionClass = new core_kernel_classes_Class(CLASS_PROCESS);
 		$processDefinition = $processDefinitionClass->createInstance('processForUnitTest','created for the unit test of process authoring service');
 		if($processDefinition instanceof core_kernel_classes_Resource){
@@ -123,7 +147,7 @@ class ProcessAuthoringServiceTestCase extends UnitTestCase {
 		$this->assertTrue($isAssignment);
 		
 	}
-	
+
 	public function testCreateSequenceActivity(){
 		$activity1 = $this->authoringService->createActivity($this->proc, 'myActivity');
 		$connector1 = $this->authoringService->createConnector($activity1);
@@ -148,7 +172,7 @@ class ProcessAuthoringServiceTestCase extends UnitTestCase {
 		$followingActivity1->delete();
 		$followingConnector1->delete();
 	}
-	
+		
 	public function testCreateSplitActivity(){
 		$activity1 = $this->authoringService->createActivity($this->proc, 'myActivity');
 		$connector1 = $this->authoringService->createConnector($activity1);
@@ -206,6 +230,48 @@ class ProcessAuthoringServiceTestCase extends UnitTestCase {
 		$then->delete();
 		$else->delete();
 	}
+	
+	public function testCreateJoinActivity(){
+		$parallelActivity1 = $this->authoringService->createActivity($this->proc, 'myActivity1');
+		$connector1 = $this->authoringService->createConnector($parallelActivity1);
+		
+		$parallelActivity2 = $this->authoringService->createActivity($this->proc, 'myActivity2');
+		$connector2 = $this->authoringService->createConnector($parallelActivity2);
+		
+		$joinActivity = $this->authoringService->createActivity($this->proc, 'joinActivity');
+		
+		//join parallel Activity 1 and 2 to "joinActivity"
+		$this->assertIsA($this->authoringService->createJoinActivity($connector1, $joinActivity), 'core_kernel_classes_Resource');
+		$this->authoringService->createJoinActivity($connector2, $joinActivity);
+		
+		//both connectors joined to the same activity have the same transition rule?
+		$propTransitionRule = new core_kernel_classes_Property(PROPERTY_CONNECTORS_TRANSITIONRULE);
+		$transitionRule1 = $connector1->getUniquePropertyValue($propTransitionRule);
+		$this->assertIsA($transitionRule1, 'core_kernel_classes_Resource');
+		$transitionRule2 = $connector2->getUniquePropertyValue($propTransitionRule);
+		$this->assertEqual($transitionRule1->uriResource, $transitionRule2->uriResource);
+		
+		//same activity in 'then' property?
+		$propThen = new core_kernel_classes_Property(PROPERTY_TRANSITIONRULES_THEN);
+		$this->assertEqual($transitionRule1->getUniquePropertyValue($propThen)->uriResource, $joinActivity->uriResource);
+		
+		//test update of the joined activity after a connector has been disonnected from it:
+		$oldConditonIf = $transitionRule1->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_RULE_IF));
+		$connector2->removePropertyValues(new core_kernel_classes_Property(PROPERTY_CONNECTORS_NEXTACTIVITIES));
+		$this->authoringService->updateJoinedActivity($joinActivity);
+		
+		//the condition of transition rule of the connector 1 has been modified?
+		$newConditionIf = $transitionRule1->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_RULE_IF));
+		$this->assertNotEqual($oldConditonIf->uriResource, $newConditionIf->uriResource);
+		// var_dump($transitionRule1, $transitionRule1bis);
+		
+		$parallelActivity1->delete();
+		$connector1->delete();
+		$parallelActivity2->delete();
+		$connector2->delete();
+		$transitionRule1->delete();//TODO test all delete methods:
+	}
+	
 	
 	public function tearDown() {
         $this->proc->delete();
