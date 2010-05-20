@@ -71,13 +71,10 @@ class wfEngine_helpers_ProcessFormFactory extends tao_helpers_form_GenerisFormFa
 			
 			$myForm = tao_helpers_form_FormFactory::getForm($name, $options);
 			
-			$level = 2;
-					
 			$defaultProperties 	= self::getDefaultProperties();
 			
 			$classProperties = self::getClassProperties($clazz, new core_kernel_classes_Class(self::DEFAULT_TOP_LEVEL_CLASS));
 					
-			$maxLevel = count(array_merge($defaultProperties, $classProperties));
 			foreach(array_merge($defaultProperties, $classProperties) as $property){
 				
 				if(!empty($excludedProp) && in_array($property->uriResource, $excludedProp)){
@@ -105,14 +102,6 @@ class wfEngine_helpers_ProcessFormFactory extends tao_helpers_form_GenerisFormFa
 							}
 						}
 					}
-					if(in_array($property, $defaultProperties)){
-						$element->setLevel($level);
-						$level++;
-					}
-					else{
-						$element->setLevel($maxLevel + $level);
-						$maxLevel++;
-					}
 					$myForm->addElement($element);
 				}
 			}
@@ -120,14 +109,12 @@ class wfEngine_helpers_ProcessFormFactory extends tao_helpers_form_GenerisFormFa
 			//add an hidden elt for the class uri
 			$classUriElt = tao_helpers_form_FormFactory::getElement('classUri', 'Hidden');
 			$classUriElt->setValue(tao_helpers_Uri::encode($clazz->uriResource));
-			$classUriElt->setLevel($level);
 			$myForm->addElement($classUriElt);
 			
 			if(!is_null($instance)){
 				//add an hidden elt for the instance Uri
 				$instanceUriElt = tao_helpers_form_FormFactory::getElement('uri', 'Hidden');
 				$instanceUriElt->setValue(tao_helpers_Uri::encode($instance->uriResource));
-				$instanceUriElt->setLevel($level+1);
 				$myForm->addElement($instanceUriElt);
 			}
 			
@@ -206,7 +193,6 @@ class wfEngine_helpers_ProcessFormFactory extends tao_helpers_form_GenerisFormFa
 		//add a hidden input to post the uri of the call of service that is being edited
 		$classUriElt = tao_helpers_form_FormFactory::getElement('callOfServiceUri', 'Hidden');
 		$classUriElt->setValue(tao_helpers_Uri::encode($callOfService->uriResource));
-		// $classUriElt->setLevel($level);
 		$myForm->addElement($classUriElt);
 		
 		//add label input:
@@ -440,7 +426,7 @@ class wfEngine_helpers_ProcessFormFactory extends tao_helpers_form_GenerisFormFa
 					
 				
 				/*
-				if(empty($inputUri)){//place ce bloc dans la creation de call of service: cad retrouver systematiquement l'actual parameter associé à chaque fois, à partir du formal parameter et call of service, lors de la sauvegarde
+				if(empty($inputUri)){//place ce bloc dans la creation de call of service: cad retrouver systematiquement l'actual parameter associï¿½ ï¿½ chaque fois, ï¿½ partir du formal parameter et call of service, lors de la sauvegarde
 					// if no actual parameter has been found above (since $inputUri==0) create an instance of actual parameter and associate it to the call of service:
 					$property_actualParam_formalParam = new core_kernel_classes_Property(PROPERTY_ACTUALPARAM_FORMALPARAM);
 					$class_actualParam = new core_kernel_classes_Class(CLASS_ACTUALPARAM);
