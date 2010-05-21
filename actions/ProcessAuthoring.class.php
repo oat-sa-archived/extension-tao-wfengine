@@ -631,12 +631,10 @@ class ProcessAuthoring extends TaoModule {
 					if($left != null && $left instanceof core_kernel_classes_Literal){
 						$serviceStylingData['left'] = intval($left->literal);
 					}
-					
-					$servicesData['other'][tao_helpers_Precompilator::getUniqueId($service->uriResource)] = $serviceStylingData;
+					$servicesData['other'][taoDelivery_helpers_Compilator::getUniqueId($service->uriResource)] = $serviceStylingData;
 				}
 			}
 		}
-		
 		
 		$this->setData('formId', $formName);
 		$this->setData('formInteractionService', $myForm->render());
@@ -681,13 +679,6 @@ class ProcessAuthoring extends TaoModule {
 		if(!is_null($serviceDefinition)){
 			$this->service->setCallOfServiceDefinition($callOfService, $serviceDefinition);
 		}
-		
-		//edit label
-		// $label = ;
-		// $this->service->bindProperties($callOfService, array(
-			// PROPERTY_CALLOFSERVICES_SERVICEDEFINITION => $serviceDefinition->uriResource,
-			// 'http://www.w3.org/2000/01/rdf-schema#label' => $label
-		// ));
 		
 		if(isset($data["label"])){
 			$callOfService->setLabel($data["label"]);
@@ -838,11 +829,6 @@ class ProcessAuthoring extends TaoModule {
 			// $propertyValues[RDFS_LABEL] = $data['label'];
 			$connectorInstance->setLabel($data['label']);
 		}
-		
-		// if(!empty($propertyValues)){
-		// var_dump($propertyValues);
-			// $this->service->bindProperties($connectorInstance, $propertyValues);
-		// }
 		
 		$followingActivity = null;
 		
