@@ -65,8 +65,7 @@ class wfEngine_models_classes_UserService
     {
         // section 127-0-1-1-951b66:128b0d3ece8:-8000:0000000000001F55 begin
         
-    	$this->allowedRoles = array(INSTANCE_ROLE_BACKOFFICE);
-    	
+		$this->allowedRoles = array(CLASS_ROLE_BACKOFFICE);
         // section 127-0-1-1-951b66:128b0d3ece8:-8000:0000000000001F55 end
     }
 
@@ -116,6 +115,8 @@ class wfEngine_models_classes_UserService
 						$_SESSION['taoqual.userId']				= $login;
 						
 						$returnValue = true;
+						
+						$this->feedAllowedRoles(); die();
 					}
 	        	}
         	}
@@ -123,6 +124,51 @@ class wfEngine_models_classes_UserService
         
         // section 127-0-1-1-951b66:128b0d3ece8:-8000:0000000000001F59 end
 
+        return (bool) $returnValue;
+    }
+	
+	public function feedAllowedRoles(core_kernel_classes_Class $roleClass=null){
+		if(empty($roleClass)){
+			$roleClass = new core_kernel_classes_Class(CLASS_ROLE_BACKOFFICE);	
+		}	
+		
+		// $acceptedRole =  array_merge(array($roleClass->uriResource) , array_keys($roleClass->getInstances(true))); 
+    	$this->allowedRoles = array_keys($roleClass->getInstances(true));
+	}
+	
+	public function toTree(){
+		$this->feedAllowedRoles();
+		$users = $this->getAllUsers(array('order'=>'login'));
+		$instancesData = array();
+		foreach($users as $user){
+			$instancesData[] = array(
+					'data' 	=> tao_helpers_Display::textCutter($user->getLabel(), 16),
+					'attributes' => array(
+						'id' => tao_helpers_Uri::encode($user->uriResource),
+						'class' => 'node-instance'
+					)
+				);
+			
+		}
+		return $instancesData;
+	}
+	
+	public function saveUser( core_kernel_classes_Resource $user = null, $properties = array(), core_kernel_classes_Resource $role=null)
+    {
+        $returnValue = (bool) false;
+
+		if(is_null($user)){		
+			//Create user here:
+			if(is_null($role)){
+				$role = new core_kernel_classes_Resource(INSTANCE_ROLE_WORKFLOWUSER);
+			}
+			$user = $this->createInstance(new core_kernel_classes_Class($role->uriResource));
+		}
+		
+		if(!is_null($user)){
+			$returnValue = $this->bindProperties($user, $properties);
+		}
+		
         return (bool) $returnValue;
     }
 

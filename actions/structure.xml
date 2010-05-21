@@ -27,5 +27,27 @@
 		
 		<section id="process_authoring" name="Process authoring" url="/wfEngine/Process/authoring" />
 		
+		<section id="manage_roles" name="Manage Role" url="/wfEngine/Role/index">
+			<trees>
+				<tree name="Role library" 
+					dataUrl="/wfEngine/Role/getOntologyData" 
+					editInstanceUrl="/wfEngine/Role/editRole"
+					addInstanceUrl="/wfEngine/Role/addInstance"
+					deleteUrl="/wfEngine/Role/delete"
+				/>
+			</trees>
+			<actions>
+				<action name="search" url="/wfEngine/Process/search" context="*" />
+				<action name="new role" js="GenerisAction.instanciate" url="/wfEngine/Role/addInstance" context="class" />
+				<action name="delete" js="GenerisAction.removeNode" url="/wfEngine/Role/delete" context="resource" />
+				<action name="meta data" js="GenerisAction.loadMetaData" url="/taoTests/Tests/getMetaData"  context="instance" />
+				<action name="create table" js="GenerisAction.resultTable" url="/taoResults/Results/createTable"  context="class" />
+				<action name="export" url="/wfEngine/Process/export"  context="class" reload="true" />
+			</actions>
+		</section>
+		
+		<section id="list_users" name="Manage users" url="/wfEngine/Users/index" />
+		<section  id="add_user" name="Add a user" url="/wfEngine/Users/add" />
+		<section  id="edit_user" name="Edit a user" url="/wfEngine/Users/edit" />
 	</sections>
 </extension>
