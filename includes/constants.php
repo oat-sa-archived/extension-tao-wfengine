@@ -177,7 +177,9 @@ $todefine = array(
 	'PROPERTY_CALLOFSERVICES_LEFT' => NS_TAOQUAL . '#serviceStyleLeft',
 	'PROPERTY_CALLOFSERVICES_WIDTH' => NS_TAOQUAL . '#serviceStyleWidth',
 	'PROPERTY_CALLOFSERVICES_HEIGHT' => NS_TAOQUAL . '#serviceStyleHeight',
-		
+	
+	'PROPERTY_USER_LABEL' => 'http://www.tao.lu/Ontologies/generis.rdf#login',
+	
 	'API_LOGIN' => 'generis',
 	'API_PASSWORD' => md5('g3n3r1s')
 );

@@ -141,11 +141,13 @@ class wfEngine_models_classes_UserService
 		$users = $this->getAllUsers(array('order'=>'login'));
 		$instancesData = array();
 		foreach($users as $user){
+			$login = (string) $user->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_USER_LABEL));
 			$instancesData[] = array(
 					'data' 	=> tao_helpers_Display::textCutter($user->getLabel(), 16),
 					'attributes' => array(
 						'id' => tao_helpers_Uri::encode($user->uriResource),
-						'class' => 'node-instance'
+						'class' => 'node-instance',
+						'title' => __('login: ').$login
 					)
 				);
 			
@@ -156,7 +158,7 @@ class wfEngine_models_classes_UserService
 	public function saveUser( core_kernel_classes_Resource $user = null, $properties = array(), core_kernel_classes_Resource $role=null)
     {
         $returnValue = (bool) false;
-		var_dump($user);
+		// var_dump($user);
 		if(is_null($user)){		
 			//Create user here:
 			if(is_null($role)){

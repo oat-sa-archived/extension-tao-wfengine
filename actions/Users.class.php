@@ -212,7 +212,7 @@ class Users extends CommonModule {
 		
 		$user = new core_kernel_classes_Resource(tao_helpers_Uri::decode($this->getRequestParameter('uri')));
 		
-		$myFormContainer = new tao_actions_form_Users($this->userService->getClass($user), $user);
+		$myFormContainer = new tao_actions_form_Users(new core_kernel_classes_Class(INSTANCE_ROLE_WORKFLOWUSER), $user);
 		$myForm = $myFormContainer->getForm();
 		
 		if($myForm->isSubmited()){
