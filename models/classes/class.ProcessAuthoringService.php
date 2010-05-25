@@ -580,7 +580,7 @@ class wfEngine_models_classes_ProcessAuthoringService
 			CLASS_WEBSERVICES,
 			CLASS_SUPPORTSERVICES,
 			CLASS_FORMALPARAMETER,
-			CLASS_ROLE,
+			CLASS_ROLE_BACKOFFICE,
 			CLASS_PROCESS
 		);
 		

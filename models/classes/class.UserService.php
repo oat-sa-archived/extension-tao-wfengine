@@ -102,6 +102,7 @@ class wfEngine_models_classes_UserService
 	        		//log in the wf engines
 					$_SESSION["WfEngine"] 		= WfEngine::singleton($login, $password);
 					$user = WfEngine::singleton()->getUser();
+					
 					if($user == null) {
 						$returnValue=  false;
 					}
@@ -116,7 +117,7 @@ class wfEngine_models_classes_UserService
 						
 						$returnValue = true;
 						
-						$this->feedAllowedRoles(); die();
+						// $this->feedAllowedRoles();
 					}
 	        	}
         	}
