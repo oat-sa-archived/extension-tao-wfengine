@@ -6,13 +6,13 @@
 
 	<div class="main-container">
 		<div class="ui-state-error ui-corner-all" style="padding:5px;">
-			<?=__('Please select a delivery before authoring it!')?>
+			<?=__('Please select a process before authoring it!')?>
 			<br/>
-			<?=get_data('errorMessage')?>
+			<? //echo get_data('errorMessage');?>
 		</div>
 		<br />
 		<span class="ui-widget ui-state-default ui-corner-all" style="padding:5px;">
-			<a href="#" onclick="selectTabByName('manage_deliveries');"><?=__('Back')?></a>
+			<a href="#" onclick="selectTabByName('manage_process');"><?=__('Back')?></a>
 		</span>
 	</div>
 	
