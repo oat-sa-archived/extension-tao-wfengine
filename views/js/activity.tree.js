@@ -169,7 +169,7 @@ function ActivityTreeClass(selector, dataUrl, options){
 							action  : function(NODE, TREE_OBJ){
 								ActivityTreeClass.addActivity({
 									url: instance.options.createActivityAction,
-									id: $(NODE).attr('id'),
+									id: $(NODE).attr('rel'),
 									NODE: NODE,
 									TREE_OBJ: TREE_OBJ,
 									cssClass: instance.options.instanceClass
@@ -532,6 +532,12 @@ ActivityTreeClass.addActivity = function(options){
 					}
 				}, TREE_OBJ.get_node(NODE[0])));
 				
+				// console.log('node');
+				// console.dir(NODE);
+				// console.log('tree:');
+				// console.dir(TREE_OBJ);
+				// console.log('id', TREE_OBJ.container[0].id);
+				
 				//create property node:
 				TREE_OBJ.create({
 					data: 'property',
@@ -677,27 +683,91 @@ ActivityTreeClass.prototype.getTree = function(){
 }
 
 /**
- * select a node in the current tree
- * @param {String} id
+ * select a node in a tree instance
+ * @param {String} nodeId
+  * @param {String} treeId
  * @return {Boolean}
  */
-ActivityTreeClass.selectTreeNode = function(id){
-	i=0;
-	while(i < ActivityTreeClass.instances.length){
-		anActivityTree = ActivityTreeClass.instances[i];
-		if(anActivityTree){
-			aJsTree = anActivityTree.getTree();
-			if(aJsTree){
-				if(aJsTree.select_branch($("li[id='"+id+"']"))){
-					return true;
+ActivityTreeClass.selectTreeNode = function(nodeId, treeId){
+	
+	if(treeId){
+		// console.log('in if');
+		if(ActivityTreeClass.instances[treeId]){
+			anActivityTree = ActivityTreeClass.instances[treeId];
+			if(anActivityTree){
+				aJsTree = anActivityTree.getTree();
+				if(aJsTree){
+					if(aJsTree.select_branch($("li[id='"+nodeId+"']"))){
+						return true;
+					}
 				}
 			}
 		}
-		i++;
+	}else{
+		// console.log('in else');
+		// console.dir(ActivityTreeClass.instances);
+		for(treeName in ActivityTreeClass.instances){
+			anActivityTree = null;
+			anActivityTree = ActivityTreeClass.instances[treeName];
+			if(anActivityTree){
+				aJsTree = anActivityTree.getTree();
+				if(aJsTree){
+					if(aJsTree.select_branch($("li[id='"+nodeId+"']"))){
+						return true;
+					}
+				}
+			}
+		}
 	}
+	
 	return false;
 }
 
+/**
+ * get a node from a tree instance
+ * @param {String} nodeId
+  * @param {String} treeId
+ * @return {Object}
+ */
+ActivityTreeClass.getTreeNode = function(nodeId, treeId){
+	
+	if(treeId){
+		console.log('in if');
+		if(ActivityTreeClass.instances[treeId]){
+			anActivityTree = ActivityTreeClass.instances[treeId];
+			if(anActivityTree){
+				aJsTree = anActivityTree.getTree();
+				if(aJsTree){
+					if(aJsTree.get_node($("li[id='"+nodeId+"']"))){
+						return aJsTree.get_node($("li[id='"+nodeId+"']"));
+					}
+				}
+			}
+		}
+	}else{
+		console.log('in else');
+		// console.dir(ActivityTreeClass.instances);
+		for(treeName in ActivityTreeClass.instances){
+			anActivityTree = null;
+			anActivityTree = ActivityTreeClass.instances[treeName];
+			if(anActivityTree){
+				aJsTree = anActivityTree.getTree();
+				// console.log("aJsTree:");
+				// console.dir(aJsTree);
+				if(aJsTree){
+					if(aJsTree.get_node($("li[id='"+nodeId+"']"))){
+						node = aJsTree.get_node($("li[id='"+nodeId+"']"));
+						// console.log("aJsTree's node:");
+						// console.dir(node);
+						return node;
+					}
+				}
+			}
+		}
+	}
+	
+	return null;
+}
 /**
  * remove a resource
  * @param {Object} options

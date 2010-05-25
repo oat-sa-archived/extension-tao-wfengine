@@ -75,8 +75,10 @@ class Users extends CommonModule {
 		$response->total = $total_pages; 
 		$response->records = $count; 
 		$i = 0; 
-		foreach($users as $user) { 
+		
+		foreach($users as $user){
 			$cellData = array();
+			
 			try{
 				$cellData[0]		= (string)$user->getUniquePropertyValue($loginProperty);
 			}
@@ -85,6 +87,7 @@ class Users extends CommonModule {
 				$user->delete();
 				continue;
 			}
+			
 			$firstName 		= (string)$user->getOnePropertyValue($firstNameProperty);
 			$lastName 		= (string)$user->getOnePropertyValue($lastNameProperty);
 			$cellData[1]	= $firstName.' '.$lastName;
@@ -93,20 +96,38 @@ class Users extends CommonModule {
 			
 			$defLg 			= $user->getOnePropertyValue($deflgProperty);
 			$cellData[3] 	= '';
-			if(!is_null($defLg)){
+			
+			if(!is_null($defLg) && $defLg instanceof core_kernel_classes_Resource){
 				$cellData[3] = __($defLg->getLabel());
 			}
 			
 			$uiLg 			= $user->getOnePropertyValue($uilgProperty);
 			$cellData[4] 	= '';
-			if(!is_null($uiLg)){
+			if(!is_null($uiLg) && $uiLg instanceof core_kernel_classes_Resource){
 				$cellData[4] = __($uiLg->getLabel());
 			}
 			
+			//add role:
 			$cellData[5]	= '';
+			$roleCollection = null;
+			$roleCollection = $user->getPropertyValuesCollection(new core_kernel_classes_Property(RDF_TYPE));
+			// var_dump($user->getLabel(), $roleCollection, $user->getPropertyValues(new core_kernel_classes_Property(RDF_TYPE)) );
+			foreach($roleCollection->getIterator() as $role){
+				if($role instanceof core_kernel_classes_Resource){
+					$cellData[5] .= $role->getLabel().', ';
+				}
+				
+			}
+			if(strlen($cellData[5])>2){
+				$cellData[5] = substr($cellData[5],0,-2);
+			}
+			
+			
+			$cellData[6]	= '';
 			
 			$response->rows[$i]['id']= tao_helpers_Uri::encode($user->uriResource);
 			$response->rows[$i]['cell'] = $cellData;
+			
 			$i++;
 		} 
 		echo json_encode($response); 
@@ -142,7 +163,6 @@ class Users extends CommonModule {
 		
 		$myFormContainer = new tao_actions_form_Users(new core_kernel_classes_Class(INSTANCE_ROLE_WORKFLOWUSER));
 		$myForm = $myFormContainer->getForm();
-		
 		if($myForm->isSubmited()){
 			
 			if($myForm->isValid()){
@@ -150,7 +170,7 @@ class Users extends CommonModule {
 				$values[PROPERTY_USER_PASSWORD] = md5($values['password1']);
 				unset($values['password1']);
 				unset($values['password2']);
-				var_dump($values);
+				// var_dump($values);
 				if($this->userService->saveUser($myFormContainer->getUser(), $values)){
 					$this->setData('message', __('User added'));
 					$this->setData('exit', true);

@@ -156,13 +156,14 @@ class wfEngine_models_classes_UserService
 	public function saveUser( core_kernel_classes_Resource $user = null, $properties = array(), core_kernel_classes_Resource $role=null)
     {
         $returnValue = (bool) false;
-
+		var_dump($user);
 		if(is_null($user)){		
 			//Create user here:
 			if(is_null($role)){
 				$role = new core_kernel_classes_Resource(INSTANCE_ROLE_WORKFLOWUSER);
 			}
 			$user = $this->createInstance(new core_kernel_classes_Class($role->uriResource));
+			var_dump($user->getRdfTriples());
 		}
 		
 		if(!is_null($user)){

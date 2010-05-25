@@ -14,6 +14,7 @@ class Role extends TaoModule {
 	
 	
 	protected $authoringService = null;
+	protected $forbidden = null;
 	
 	/**
 	 * constructor: initialize the service and the default data
@@ -26,6 +27,10 @@ class Role extends TaoModule {
 		//the service is initialized by default
 		$this->service = new wfEngine_models_classes_RoleService();
 		$this->defaultData();
+		$this->forbidden = array(
+			INSTANCE_ROLE_TAOMANAGER,
+			INSTANCE_ROLE_WORKFLOWUSER
+		);
 		
 		Session::setAttribute('currentSection', 'role');
 	}
@@ -125,8 +130,24 @@ class Role extends TaoModule {
 		
 		$deleted = false;
 		if($this->getRequestParameter('uri')){
+
 			$role = $this->getCurrentInstance();
-			throw new Exception('not implemented yet');
+		
+			if(!in_array($role->uriResource, $this->forbidden)){
+					//check if no user is using this role:
+					$roleClass = new core_kernel_classes_Class($role->uriResource);
+					$users = $roleClass->getInstances();
+					if(empty($users)){
+						//delete role here:
+						$deleted = $this->service->deleteRole($role);
+					}else{
+						//set message error
+						// $this->setData('message', 'nope');
+						throw new Exception(__('The role is using by one or several users. Please remove the role to these users first.'));
+					}
+			}else{
+				throw new Exception($role->getLabel().' cannot be deleted');
+			}
 		}
 		
 		echo json_encode(array('deleted'	=> $deleted));
@@ -159,9 +180,16 @@ class Role extends TaoModule {
 		
 		$role = $this->getCurrentInstance();
 		// var_dump($role, $users);
-		if($this->service->setRoleToUsers($role, $users)){
-			$saved = true;
+		
+		
+		if(!in_array($role->uriResource, $this->forbidden)){
+			if($this->service->setRoleToUsers($role, $users)){
+				$saved = true;
+			}
+		}else{
+			throw new Exception($role->getLabel().' cannot be modified');
 		}
+		
 		echo json_encode(array('saved'	=> $saved));
 	}
 	
@@ -176,6 +204,24 @@ class Role extends TaoModule {
 				'uri' 	=> tao_helpers_Uri::encode($instance->uriResource)
 			));
 		}
+	}
+	
+	public function editRoleClass(){
+		$clazz = $this->getCurrentClass();
+		//display it but do not allow it to be saved
+		$myForm = $this->editClass($clazz, $this->service->getRoleClass());
+		if($myForm->isSubmited()){
+			if($myForm->isValid()){
+				if($clazz instanceof core_kernel_classes_Resource){
+					$this->setSessionAttribute("showNodeUri", tao_helpers_Uri::encode($clazz->uriResource));
+				}
+				$this->setData('message', __('Role Class saved'));
+				$this->setData('reload', true);
+			}
+		}
+		$this->setData('formTitle', __('Role class'));
+		$this->setData('myForm', $myForm->render());
+		$this->setView('form_process.tpl');
 	}
 	
 }

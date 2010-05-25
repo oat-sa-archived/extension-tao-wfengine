@@ -52,13 +52,14 @@ $(function(){
 	var myGrid = $("#user-list").jqGrid({
 		url: "<?=_url('data', 'Users', 'wfEngine')?>", 
 		datatype: "json", 
-		colNames:[ __('Login'), __('Name'), __('Email'), __('Data Language'), __('Interface Language'), __('Actions')], 
+		colNames:[ __('Login'), __('Name'), __('Email'), __('Data Language'), __('Interface Language'), __('Role(s)'),__('Actions')], 
 		colModel:[ 
 			{name:'login',index:'login'}, 
 			{name:'name',index:'name'}, 
 			{name:'email',index:'email', width: '200'}, 
-			{name:'deflg',index:'deflg', align:"center"},
-			{name:'uilg',index:'uilg', align:"center"},
+			{name:'deflg',index:'deflg', align:"center", width: '100'},
+			{name:'uilg',index:'uilg', align:"center", width: '100'},
+			{name:'role',index:'role', align:"center"},
 			{name:'actions',index:'actions', align:"center", sortable: false}
 		], 
 		rowNum:20, 
@@ -71,10 +72,12 @@ $(function(){
 		caption: __("Workflow Users"),
 		gridComplete: function(){
 			$.each(myGrid.getDataIDs(), function(index, elt){
-				myGrid.setRowData(elt, {
-					actions: "<a id='user_editor_"+elt+"' href='#' class='user_editor nd' ><img class='icon' src='<?=BASE_WWW?>img/pencil.png' alt='<?=__('Edit user')?>' /><?=__('Edit')?></a>&nbsp;|&nbsp;" +
-					"<a id='user_deletor_"+elt+"' href='#' class='user_deletor nd' ><img class='icon' src='<?=BASE_WWW?>img/delete.png' alt='<?=__('Delete user')?>' /><?=__('Delete')?></a>"
-				});
+				if(myGrid.getRowData(elt).role != 'TaoManager'){
+					myGrid.setRowData(elt, {
+						actions: "<a id='user_editor_"+elt+"' href='#' class='user_editor nd' ><img class='icon' src='<?=BASE_WWW?>img/pencil.png' alt='<?=__('Edit user')?>' /><?=__('Edit')?></a>&nbsp;|&nbsp;" +
+						"<a id='user_deletor_"+elt+"' href='#' class='user_deletor nd' ><img class='icon' src='<?=BASE_WWW?>img/delete.png' alt='<?=__('Delete user')?>' /><?=__('Delete')?></a>"
+					});
+				}
 			});
 			$(".user_editor").click(function(){
 				editUser(this.id.replace('user_editor_', ''));

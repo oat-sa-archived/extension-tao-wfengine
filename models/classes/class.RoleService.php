@@ -196,25 +196,17 @@ class wfEngine_models_classes_RoleService
 		//get all users who have the following role:
     	$allUsers = $this->getUsers($role);
 		
-		$forbidden = array(
-			INSTANCE_ROLE_TAOMANAGER,
-			INSTANCE_ROLE_WORKFLOWUSER
-		);
-		
-		if(!in_array($role->uriResource, $forbidden)){
-		
-			foreach($allUsers as $user){
-				//delete the current role
-				$returnValue = core_kernel_impl_ApiModelOO::singleton()->removeStatement($user, RDF_TYPE, $role->uriResource, '');
-				
-			}
-			
-			foreach($users as $userUri){
-				$userInstance = new core_kernel_classes_Resource($userUri);
-				$returnValue = $userInstance->setPropertyValue(new core_kernel_classes_Property(RDF_TYPE), $role->uriResource);
-			}
+		foreach($allUsers as $user){
+			//delete the current role
+			$returnValue = core_kernel_impl_ApiModelOO::singleton()->removeStatement($user, RDF_TYPE, $role->uriResource, '');
 			
 		}
+		
+		foreach($users as $userUri){
+			$userInstance = new core_kernel_classes_Resource($userUri);
+			$returnValue = $userInstance->setPropertyValue(new core_kernel_classes_Property(RDF_TYPE), $role->uriResource);
+		}
+			
 		
 		return $returnValue;
 		
@@ -239,10 +231,12 @@ class wfEngine_models_classes_RoleService
 		}
 		
 		$returnValue = $this->generisUserService->addRole($label, 'created by RoleService', new core_kernel_classes_Class(CLASS_ROLE_BACKOFFICE));
-		
 		return $returnValue;
 	}
 	
+	public function deleteRole(core_kernel_classes_Resource $role){
+		return $role->delete();
+	}	
 } /* end of class wfEngine_models_classes_RoleService */
 
 ?>

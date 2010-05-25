@@ -9,6 +9,7 @@
 					editInstanceUrl="/wfEngine/Process/editProcess"
 					addInstanceUrl="/wfEngine/Process/addInstance"
 					deleteUrl="/wfEngine/Process/delete"
+					editClassUrl="/wfEngine/Process/editProcessClass"
 				/>
 			</trees>
 			<actions>
@@ -34,6 +35,7 @@
 					editInstanceUrl="/wfEngine/Role/editRole"
 					addInstanceUrl="/wfEngine/Role/addInstance"
 					deleteUrl="/wfEngine/Role/delete"
+					editClassUrl="/wfEngine/Role/editRoleClass"
 				/>
 			</trees>
 			<actions>

@@ -66,27 +66,6 @@ class Process extends TaoModule {
  * controller actions
  */
 	
-	/**
-	 * Edit a group class
-	 * @see tao_helpers_form_GenerisFormFactory::classEditor
-	 * @return void
-	 */
-	public function editProcessClass(){
-		$clazz = $this->getCurrentClass();
-		$myForm = $this->editClass($clazz, $this->service->getProcessClass());
-		if($myForm->isSubmited()){
-			if($myForm->isValid()){
-				if($clazz instanceof core_kernel_classes_Resource){
-					$this->setSessionAttribute("showNodeUri", tao_helpers_Uri::encode($clazz->uriResource));
-				}
-				$this->setData('message', __('Class saved'));
-				$this->setData('reload', true);
-			}
-		}
-		$this->setData('formTitle', __('Edit group class'));
-		$this->setData('myForm', $myForm->render());
-		$this->setView('form.tpl', true);
-	}
 	
 	/**
 	 * Edit a group instance
@@ -155,6 +134,24 @@ class Process extends TaoModule {
 			$this->setData('errorMessage', $e);
 		}
 		$this->setView('process_authoring_tool.tpl');
+	}
+	
+	public function editProcessClass(){
+		$clazz = $this->getCurrentClass();
+		//display it but do not allow it to be saved
+		$myForm = $this->editClass($clazz, $this->service->getProcessClass());
+		if($myForm->isSubmited()){
+			if($myForm->isValid()){
+				if($clazz instanceof core_kernel_classes_Resource){
+					$this->setSessionAttribute("showNodeUri", tao_helpers_Uri::encode($clazz->uriResource));
+				}
+				$this->setData('message', __('Process Class saved'));
+				$this->setData('reload', true);
+			}
+		}
+		$this->setData('formTitle', __('Process class'));
+		$this->setData('myForm', $myForm->render());
+		$this->setView('form_process.tpl');
 	}
 	
 	
