@@ -444,10 +444,22 @@ class wfEngine_models_classes_ProcessTreeService
 			}
 		}elseif($connectorType->uriResource == INSTANCE_TYPEOFCONNECTORS_PARALLEL){
 			$nextActivitiesCollection = $connector->getPropertyValuesCollection(new core_kernel_classes_Property(PROPERTY_CONNECTORS_NEXTACTIVITIES));
+			//count the number of parallel activity:
+			$activityCount = array();
 			foreach($nextActivitiesCollection->getIterator() as $nextActivity){
 				if($nextActivity instanceof core_kernel_classes_Resource){
-					$connectorData[] = $this->activityNode($nextActivity, 'next', true);
+					if(isset($activityCount[$nextActivity->uriResource])){
+						//increment:
+						$activityCount[$nextActivity->uriResource] += 1;
+					}else{
+						$activityCount[$nextActivity->uriResource] = 1;
+					}
 				}
+			}
+			
+			foreach($activityCount as $activityUri=>$number){
+				
+				$connectorData[] = $this->activityNode(new core_kernel_classes_Resource($activityUri), 'next', true, "(count: $number)");
 			}
 			
 		}elseif($connectorType->uriResource == INSTANCE_TYPEOFCONNECTORS_JOIN){
@@ -588,7 +600,7 @@ class wfEngine_models_classes_ProcessTreeService
 	 * @param boolean goto
      * @return array
      */
-	public function activityNode(core_kernel_classes_Resource $activity, $nodeClass='', $goto=false){
+	public function activityNode(core_kernel_classes_Resource $activity, $nodeClass='', $goto=false, $labelSuffix=''){
 		$nodeData = array();
 		$class = '';
 		$linkAttribute = 'id';
@@ -607,7 +619,7 @@ class wfEngine_models_classes_ProcessTreeService
 		}
 				
 		$nodeData = array(
-			'data' => $activity->getLabel(),
+			'data' => $activity->getLabel().' '.$labelSuffix,
 			'attributes' => array(
 				$linkAttribute => tao_helpers_Uri::encode($activity->uriResource),
 				'class' => $class

@@ -96,7 +96,7 @@ $(function(){
 			});
 			
 			if(!checked){
-				$("input[id='"+input_id+"']").hide();
+				$("select[id='"+input_id+"']").hide();
 			}
 			
 		});
