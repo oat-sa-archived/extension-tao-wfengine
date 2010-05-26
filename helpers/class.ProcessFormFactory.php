@@ -615,7 +615,7 @@ class wfEngine_helpers_ProcessFormFactory extends tao_helpers_form_GenerisFormFa
 			$elementInputs = self::nextActivityElements($connector, 'join', true, false, 'Combobox');
 			
 		}else{
-			throw new Exception("the selected type of connector {$connectorType->getLabel()} is not supported yet");
+			throw new Exception("the selected type of connector {$connectorType->getLabel()} is not supported");
 		}
 		
 		//var_dump($elementInputs);
@@ -924,6 +924,7 @@ class wfEngine_helpers_ProcessFormFactory extends tao_helpers_form_GenerisFormFa
 		}
 		
 		//the activity associated to the connector:
+		$parallelActivityCount = array();//used only in case of a parallel connector
 		$referencedActivity = $connector->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_ACTIVITYREFERENCE));//mandatory property value, initiated at the connector creation
 		if($referencedActivity instanceof core_kernel_classes_Resource){
 			$processCollection = core_kernel_impl_ApiModelOO::getSubject(PROPERTY_PROCESS_ACTIVITIES, $referencedActivity->uriResource);
@@ -936,7 +937,12 @@ class wfEngine_helpers_ProcessFormFactory extends tao_helpers_form_GenerisFormFa
 					$activities = $processAuthoringService->getActivitiesByProcess($process);
 					
 					foreach($activities as $activityTemp){
+						
+						//include activities options:
 						$activityOptions[ tao_helpers_Uri::encode($activityTemp->uriResource) ] = $activityTemp->getLabel();
+						$parallelActivityCount[$activityTemp->uriResource] = 0;//initialize the number of each activity to 0
+						
+						//include connectors options:
 						if($includeConnectors){
 							$connectorCollection = core_kernel_impl_ApiModelOO::getSubject(PROPERTY_CONNECTORS_ACTIVITYREFERENCE, $activityTemp->uriResource);
 							foreach($connectorCollection->getIterator() as $connectorTemp){
@@ -945,6 +951,7 @@ class wfEngine_helpers_ProcessFormFactory extends tao_helpers_form_GenerisFormFa
 								}
 							}
 						}
+						
 					}
 				}
 			}
@@ -979,9 +986,25 @@ class wfEngine_helpers_ProcessFormFactory extends tao_helpers_form_GenerisFormFa
 		
 		if(!empty($nextActivity)){
 			if(is_array($nextActivity) && $optionsWidget == 'Checkbox'){
+				
 				foreach($nextActivity as $activity){
 					$elementActivities->setValue($activity->uriResource);//no need for tao_helpers_Uri::encode
+					
+					//determine the number for each activity:
+					$parallelActivityCount[$activity->uriResource] += 1;
 				}
+				
+				foreach($parallelActivityCount as $activityUri=>$number){
+					//create customized hidden field with the number for each activity
+					$encodedUri = tao_helpers_Uri::encode($activityUri);
+					
+					$elementHidden = null;
+					$elementHidden = tao_helpers_form_FormFactory::getElement("{$encodedUri}_num_hidden", 'Hidden');
+					$elementHidden->setValue($number);
+					
+					$returnValue[$idPrefix.'_'.$activityUri] = $elementHidden;
+				}
+				
 			}elseif($nextActivity instanceof core_kernel_classes_Resource){
 				if(wfEngine_models_classes_ProcessAuthoringService::isActivity($nextActivity)){
 					if($includeConnectors) $elementChoice->setValue("activity");

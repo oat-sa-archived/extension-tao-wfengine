@@ -4,6 +4,19 @@
 	<input type="button" name="submit-connector" id="submit-connector-<?=get_data("formId")?>" value="save"/>
 </div>
 
+<style type="text/css">
+	#checkbox_wrap {}
+	
+	#accordion1 {position:absolute;left:0%;top:0%;width:30%;height:100%;}
+	#accordion_container_2 {position:absolute;left:30%;top:0%;width:70%;height:100%;}
+	#process_diagram_container {position:absolute;left:0%;top:0%;width:75%;height:100%;}
+	
+	#demo {position:absolute;left:27%;top:1%;width:50%;height=auto;}
+	#process {position:absolute;left:78%;top:1%;width:21%;height=auto;}
+	#main {width:1000px;height:700px;}
+	
+</style>
+
 <script type="text/javascript">
 
 $(function(){
@@ -45,7 +58,75 @@ $(function(){
 		});
 	}
 	
+	
+	
+	if( $("#if").length ){
+		//split connector:
+		initActivitySwitch('then');
+		initActivitySwitch('else');
+	}else{
+		initActivitySwitch('next');
+		initActivitySwitch('join');
+	}
+	
+	//add listener to check box (only if the type of connector is parallel):
+	if(initalSelectedValue == '<?=tao_helpers_Uri::encode(INSTANCE_TYPEOFCONNECTORS_PARALLEL)?>'){
+	
+		$('#<?=get_data("formId")?> input:checkbox').css('position','relative');
+		$('#<?=get_data("formId")?> input:checkbox').css('top','3.5px');
+		
+		$('#<?=get_data("formId")?> input:checkbox').each(function(){
+			
+			var number = 9;
+			var checked = $(this).attr('checked');
+			var id = $(this).val();
+			var input_id = id+'_num';
+			var input_hidden_id = id+'_num_hidden';
+			
+			var selectNumElt = $('<select id="'+input_id+'"/>').insertAfter($(this));
+			selectNumElt.css('margin',0);
+			
+			for(var i=1;i<number+1;i++){
+				selectNumElt.append('<option value="'+i+'">'+i+'</option>');
+			}
+			selectNumElt.val($("input[id='"+input_hidden_id+"']").val());
+			
+			selectNumElt.change(function(){
+				$("input[id='"+$(this).attr('id')+"_hidden']").val( $(this).val() );
+			});
+			
+			if(!checked){
+				$("input[id='"+input_id+"']").hide();
+			}
+			
+		});
+		
+		
+		$('#<?=get_data("formId")?> input:checkbox').click(function(){
+			var checked = $(this).attr('checked');
+			var id = $(this).val();
+			var input_id = id+'_num';
+			var input_hidden_id = id+'_num_hidden';
+			
+			if(checked){
+				$("select[id='"+input_id+"']").val(1);
+				$("select[id='"+input_id+"']").show();
+				$("input[id='"+input_hidden_id+"']").val(1);
+			}else{
+				//hide the input:
+				$("select[id='"+input_id+"']").hide();
+				
+				//set hidden input to 0:
+				$("input[id='"+input_hidden_id+"']").val(0);
+			}
+		});
+		
+	}
+	
+	
 	$("#submit-connector-<?=get_data("formId")?>").click(function(){
+		// console.log($("#<?=get_data("formId")?>").serialize());
+		
 		$.ajax({
 			url: authoringControllerPath+'saveConnector',
 			type: "POST",
@@ -64,18 +145,12 @@ $(function(){
 				}
 			}
 		});
+		
 	});
-	
-	if( $("#if").length ){
-		//split connector:
-		initActivitySwitch('then');
-		initActivitySwitch('else');
-	}else{
-		initActivitySwitch('next');
-		initActivitySwitch('join');
-	}
-
 });
+
+
+
 
 function initActivitySwitch(clazz){
 	switchActivityType(clazz);

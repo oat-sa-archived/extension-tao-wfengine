@@ -912,9 +912,14 @@ class ProcessAuthoring extends TaoModule {
 		}elseif($data[PROPERTY_CONNECTORS_TYPE] == INSTANCE_TYPEOFCONNECTORS_PARALLEL){
 			
 			$connectorInstance->removePropertyValues($propNextActivities);
-			foreach($data as $key=>$value){
+			
+			foreach($data as $key=>$activityUri){
 				if(strpos($key, 'parallel_')===0){//find the key-value related to selected activities
-					$connectorInstance->setPropertyValue($propNextActivities, $value);
+					//get the number of that activity:
+					$number = $data[$activityUri.'_num_hidden'];
+					for($i=0;$i<$number;$i++){
+						$connectorInstance->setPropertyValue($propNextActivities, $activityUri);
+					}
 				}
 			}
 			
