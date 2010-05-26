@@ -282,7 +282,7 @@ class SasImporter{
 						}
 						else{
 							echo "\nError\n";
-							var_dump($params);
+							var_dump($params, $value);
 							exit;
 						}
 					}
