@@ -42,7 +42,7 @@ class WfResource
      * @access public
      * @var string
      */
-	public $logguer;
+	public $logger;
 	public $resource;
     public $uri = '';
 
