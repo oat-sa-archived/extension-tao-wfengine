@@ -50,7 +50,7 @@ class ActivityExecutionServiceTestCase extends UnitTestCase {
 		
 		$activity1 = $authoringService->createActivity($processDefinition, 'activity1');
 		$authoringService->setFirstActivity($processDefinition, $activity1);
-		$this->service->setAcl($activity1, $aclModeRole)
+		$this->service->setAcl($activity1, $aclModeRole);
 		
 		$connectorSeq = new core_kernel_classes_Resource(CONNECTOR_SEQ);
 		
