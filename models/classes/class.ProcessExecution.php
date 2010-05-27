@@ -316,12 +316,12 @@ extends WfResource
 	private function getNewActivities($arrayOfProcessVars, $nextConnectors)
 	{
 		$newActivities = array();
-
-
+		$activityExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityExecutionService');
+		$user = WfEngine::singleton()->getUser();
 		foreach ($nextConnectors as $connUri){
 
 			$connector = new Connector($connUri);
-
+			
 			$connType = $connector->getType();
 			if(!($connType instanceof core_kernel_classes_Resource)){
 				throw new common_Exception('Connector type should be a Resource');
@@ -345,6 +345,7 @@ extends WfResource
 				case INSTANCE_TYPEOFCONNECTORS_PARALLEL : {
 						echo 'work in progress';
 						$connector = new Connector($connUri);
+
 						$nextActivitesCollection = $connector->getNextActivities();
 						foreach ($nextActivitesCollection->getIterator() as $activityResource){
 							$newActivities[] = 	$activityResource->uriResource;
@@ -357,8 +358,16 @@ extends WfResource
 						echo 'work in progress';
 						$connector = new Connector($connUri);
 						$prevActivitesCollection = $connector->getPreviousActivities();
-						foreach ($nextActivitesCollection->getIterator() as $activityResource){
+						
+						foreach ($prevActivitesCollection->getIterator() as $activityResource){
+							$executionResource = $activityExecutionService->getExecution($activityResource, $user->resource );
+							$isFinishedProp = new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_IS_FINISHED);
+							$isFinished = $executionResource->getOnePropertyValue($isFinishedProp);
 							
+							if(!$isFinished instanceof core_kernel_classes_Resource || $isFinished->uriResource == GENERIS_TRUE){
+								$newActivities = false;
+								break;
+							}
 						}
 
 						
