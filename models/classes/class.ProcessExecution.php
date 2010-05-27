@@ -345,10 +345,20 @@ extends WfResource
 				case INSTANCE_TYPEOFCONNECTORS_PARALLEL : {
 						echo 'work in progress';
 						$connector = new Connector($connUri);
-						$nextActivitiesProp = new core_kernel_classes_Property(PROPERTY_CONNECTORS_NEXTACTIVITIES);
 						$nextActivitesCollection = $connector->getNextActivities();
 						foreach ($nextActivitesCollection->getIterator() as $activityResource){
 							$newActivities[] = 	$activityResource->uriResource;
+						}
+
+						
+						break;
+				}
+				case INSTANCE_TYPEOFCONNECTORS_JOIN : {
+						echo 'work in progress';
+						$connector = new Connector($connUri);
+						$prevActivitesCollection = $connector->getPreviousActivities();
+						foreach ($nextActivitesCollection->getIterator() as $activityResource){
+							
 						}
 
 						
