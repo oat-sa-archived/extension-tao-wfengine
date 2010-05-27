@@ -18,6 +18,9 @@ class ProcessBrowser extends WfModule
 		if(empty($process->currentActivity)) {
 			die('Any current activity found in the process : ' . $processUri);
 		}
+		if(count($process->currentActivity) > 1) {
+			$this->redirect(_url('pause', 'processBrowser'));
+		}
 
 		$activity 			= $process->currentActivity[0];
 		$this->setData('activity',$activity);
