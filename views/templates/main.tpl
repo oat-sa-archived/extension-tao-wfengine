@@ -53,7 +53,7 @@
 									<?php if ($activity['may_participate']): ?>
 									<a href="<?php echo BASE_URL;?>/processBrowser/index?processUri=<?php echo urlencode($procData['uri']); ?>"><?php echo $activity['label']; ?></a>
 									<?php else: ?>
-									<span></span>
+										<span style="color:red"><?php echo $activity['label']; ?></span>
 									<?php endif; ?>
 								<?php endforeach; ?>
 							<?php else: ?>

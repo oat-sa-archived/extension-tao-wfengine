@@ -69,37 +69,27 @@ class Main extends WfModule
 			{
 				$activity = $currentActivity;
 	
-				//if (UsersHelper::mayAccessProcess($proc->process))
-				if (true)
-				{
-					$currentActivities[] = array('label' 			=> $currentActivity->label,
-														 'uri' 				=> $currentActivity->uri,
-														 'may_participate'	=> !$proc->isFinished());
-	
-	
-				}
-
+				$isAllowed = $activityExecutionService->checkAcl($activity->resource, $currentUser);
+				$currentActivities[] = array(
+					'label'				=> $currentActivity->label,
+					'uri' 				=> $currentActivity->uri,
+					'may_participate'	=> (!$proc->isFinished() && $isAllowed)
+				);
 			}
 			
-			if (true)
-			{
-				$processViewData[] = array('type' 		=> $type,
-											  	   'label' 		=> $label,
-												   'uri' 		=> $uri,
-													'persid'	=> $persid,
-											   	   'activities' => $currentActivities,
-												   'status'		=> $status);
-	
-	
-			}
-	
+			$processViewData[] = array(
+				'type' 			=> $type,
+		  	   	'label' 		=> $label,
+			   	'uri' 			=> $uri,
+				'persid'		=> $persid,
+		   	  	'activities'	=> $currentActivities,
+			   	'status'		=> $status
+			);
 	
 		}
 		$processClass = new core_kernel_classes_Class(CLASS_PROCESS);
 	
 		$availableProcessDefinition = $processClass->getInstances();
-	
-	
 	
 		$this->setData('availableProcessDefinition',$availableProcessDefinition);
 		$this->setData('processViewData',$processViewData);
