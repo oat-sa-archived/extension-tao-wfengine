@@ -178,63 +178,70 @@ extends WfResource
 		//the activity definition is set into cache .. about 0.06 -> 0.01
 		//$value = common_Cache::getCache($this->currentActivity[0]->uri);
 
-
-		$activityBeforeTransition 	= new Activity($this->currentActivity[0]->uri);
-
-		$activityBeforeTransition->feedFlow(1);
-
-		//common_Cache::setCache($activityBeforeTransition,$this->currentActivity[0]->uri);
-
+		
 		$processVars 				= $this->getVariables();
 		$arrayOfProcessVars 		= Utils::processVarsToArray($processVars);
-
-
-		// ONAFTER INFERENCE RULE
-		// If we are here, no consistency error was thrown. Thus, we can infer something if needed.
-		foreach ($activityBeforeTransition->inferenceRule as $rule)
-		{
-			$rule->execute($arrayOfProcessVars);
-		}
-
 		$curentTokenProp = new core_kernel_classes_Property(CURRENT_TOKEN);
-		// -- ONAFTER CONSISTENCY CHECKING
-		// First of all, we check if the consistency rule is respected.
-		if (!$ignoreConsistency && $activityBeforeTransition->consistencyRule)
-		{
-			$consistencyRule 		= $activityBeforeTransition->consistencyRule;
-			$consistencyCheckResult = $consistencyRule->getExpression()->evaluate($arrayOfProcessVars);
-			$activityToGoBack		= null;
+		
+		
+			
+		
+			$activityBeforeTransition 	= new Activity($this->currentActivity[0]->uri);
+	
+			$activityBeforeTransition->feedFlow(1);
+	
+			//common_Cache::setCache($activityBeforeTransition,$this->currentActivity[0]->uri);
+	
 
-			if ($consistencyCheckResult)
+	
+	
+			// ONAFTER INFERENCE RULE
+			// If we are here, no consistency error was thrown. Thus, we can infer something if needed.
+			foreach ($activityBeforeTransition->inferenceRule as $rule)
 			{
-				// Were do we jump back ?
-				if ($activityBeforeTransition->isHidden)
-				{
-					$activityToGoBack = Utils::getLastViewableActivityFromPath($this->path->activityStack,
-					$activityBeforeTransition->uri);
-				}
-				else
-				{
-					$activityToGoBack = $activityBeforeTransition;
-				}
-
-				//the consistency notification is updated with the actual values of variables
-				$activeLiteral = new core_kernel_classes_ActiveLiteral($consistencyRule->notification);
-				$consistencyRule->notification = $activeLiteral->getDisplayedText($arrayOfProcessVars);
-
-				// If the consistency result is negative, we throw a ConsistencyException.
-				$consistencyException = new ConsistencyException('The consistency test was negative',
-																$activityBeforeTransition,
-																$consistencyRule->involvedActivities,
-																$consistencyRule->notification,
-																$consistencyRule->suppressable);
-
-				// The current token must be the activity we are jumping back 		
-				$this->resource->editPropertyValues($curentTokenProp,$activityToGoBack->uri);
-
-
-				throw $consistencyException;
+				$rule->execute($arrayOfProcessVars);
 			}
+	
+			
+			// -- ONAFTER CONSISTENCY CHECKING
+			// First of all, we check if the consistency rule is respected.
+			if (!$ignoreConsistency && $activityBeforeTransition->consistencyRule)
+			{
+				$consistencyRule 		= $activityBeforeTransition->consistencyRule;
+				$consistencyCheckResult = $consistencyRule->getExpression()->evaluate($arrayOfProcessVars);
+				$activityToGoBack		= null;
+	
+				if ($consistencyCheckResult)
+				{
+					// Were do we jump back ?
+					if ($activityBeforeTransition->isHidden)
+					{
+						$activityToGoBack = Utils::getLastViewableActivityFromPath($this->path->activityStack,
+						$activityBeforeTransition->uri);
+					}
+					else
+					{
+						$activityToGoBack = $activityBeforeTransition;
+					}
+	
+					//the consistency notification is updated with the actual values of variables
+					$activeLiteral = new core_kernel_classes_ActiveLiteral($consistencyRule->notification);
+					$consistencyRule->notification = $activeLiteral->getDisplayedText($arrayOfProcessVars);
+	
+					// If the consistency result is negative, we throw a ConsistencyException.
+					$consistencyException = new ConsistencyException('The consistency test was negative',
+																	$activityBeforeTransition,
+																	$consistencyRule->involvedActivities,
+																	$consistencyRule->notification,
+																	$consistencyRule->suppressable);
+	
+					// The current token must be the activity we are jumping back 		
+					$this->resource->editPropertyValues($curentTokenProp,$activityToGoBack->uri);
+	
+	
+					throw $consistencyException;
+				}
+			
 		}
 
 		$connectorsUri = $this->getNextConnectorsUri($this->currentActivity[0]->uri);
@@ -250,7 +257,9 @@ extends WfResource
 		foreach ($newActivities as $newActivity)
 		{
 
-			$this->resource->editPropertyValues($curentTokenProp,$newActivity->uri);
+			$this->resource->setPropertyValue($curentTokenProp,$newActivity->uri);
+			$this->logger->debug('Activiy ' . $newActivity->uri . ' added to current token' ,__FILE__,__LINE__);
+		
 			$this->path->invalidate($activityBeforeTransition,($this->path->contains($newActivity) ? $newActivity : null));
 
 			// We insert in the ontology the last activity in the path stack.
@@ -271,28 +280,29 @@ extends WfResource
 		else
 		{
 
-			// The process is not finished.
-			// It means we have to run the onBeforeInference rule of the new current activity.
-			$activityAfterTransition = $this->currentActivity[0];
-			$activityAfterTransition->feedFlow(1);
-
+			foreach ($this->currentActivity as $activityAfterTransition) {
+				// The process is not finished.
+				// It means we have to run the onBeforeInference rule of the new current activity.
+				
+				$activityAfterTransition->feedFlow(1);
+	
+				
+				// ONBEFORE INFERENCE RULE
+				// If we are here, no consistency error was thrown. Thus, we can infer something if needed.
+				foreach ($activityAfterTransition->onBeforeInferenceRule as $rule)
+				{
+					$rule->execute($arrayOfProcessVars);
+				}
 			
-			// ONBEFORE INFERENCE RULE
-			// If we are here, no consistency error was thrown. Thus, we can infer something if needed.
-			foreach ($activityAfterTransition->onBeforeInferenceRule as $rule)
-			{
-				$rule->execute($arrayOfProcessVars);
-			}
-		
+	
+				// Last but not least ... is the next activity a machine activity ?
+				// if yes, we perform the transition.
+				if ($activityAfterTransition->isHidden)
+				{
+					$this->performTransition($ignoreConsistency);
+				}
 
-			// Last but not least ... is the next activity a machine activity ?
-			// if yes, we perform the transition.
-			if ($activityAfterTransition->isHidden)
-			{
-				$this->performTransition($ignoreConsistency);
 			}
-
-		
 		}
 
 		// section 10-13-1--31--4660acca:119ecd38e96:-8000:0000000000000866 end
@@ -318,7 +328,7 @@ extends WfResource
 			}
 			$this->logger->debug('Next Connector Type : ' . $connType->getLabel(),__FILE__,__LINE__);
 			
-
+			
 			switch ($connType->uriResource) {
 				case CONNECTOR_SPLIT : {
 					$newActivities = $this->getSplitConnectorNewActivity($arrayOfProcessVars,$connUri);
@@ -331,6 +341,18 @@ extends WfResource
 					$newActivities = $this->getListConnectorNewActivity($arrayOfProcessVars,$connector);
 
 					break;
+				}
+				case INSTANCE_TYPEOFCONNECTORS_PARALLEL : {
+						echo 'work in progress';
+						$connector = new Connector($connUri);
+						$nextActivitiesProp = new core_kernel_classes_Property(PROPERTY_CONNECTORS_NEXTACTIVITIES);
+						$nextActivitesCollection = $connector->getNextActivities();
+						foreach ($nextActivitesCollection->getIterator() as $activityResource){
+							$newActivities[] = 	$activityResource->uriResource;
+						}
+
+						
+						break;
 				}
 				default : {
 					

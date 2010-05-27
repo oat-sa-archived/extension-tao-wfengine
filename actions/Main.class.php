@@ -58,7 +58,7 @@ class Main extends WfModule
 	
 	
 			$currentActivities = array();
-	
+
 			foreach ($proc->currentActivity as $currentActivity)
 			{
 				$activity = $currentActivity;
@@ -72,9 +72,9 @@ class Main extends WfModule
 	
 	
 				}
-				$this->setData('currentActivities',$currentActivities);
+
 			}
-	
+			
 			if (true)
 			{
 				$processViewData[] = array('type' 		=> $type,

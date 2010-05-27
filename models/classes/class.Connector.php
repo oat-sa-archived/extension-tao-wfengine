@@ -225,10 +225,12 @@ class Connector
      * @return void
      */
     public function getPreviousActivities() {
-    	$precActivitiesProp = new core_kernel_classes_Property(PREC_ACTIVITIES,__METHOD__);
-		$resource = new core_kernel_classes_Resource($this->uri,__METHOD__);
-		$returnValue = $resource->getPropertyValuesCollection($precActivitiesProp);
-    	return $returnValue;
+    	if(empty($this->prevActivities)) {
+	    	$precActivitiesProp = new core_kernel_classes_Property(PREC_ACTIVITIES,__METHOD__);
+			$resource = new core_kernel_classes_Resource($this->uri,__METHOD__);
+			$this->prevActivities = $resource->getPropertyValuesCollection($precActivitiesProp);
+    	}
+		return $this->prevActivities;
     
     }
     
@@ -240,10 +242,12 @@ class Connector
      * @return void
      */
     public function getNextActivities() {
-    	$nextActivitiesProp = new core_kernel_classes_Property(PROPERTY_CONENCTORS_NEXTACTIVITIES,__METHOD__);
-		$resource = new core_kernel_classes_Resource($this->uri,__METHOD__);
-		$returnValue = $resource->getPropertyValuesCollection($nextActivitiesProp);
-    	return $returnValue;
+    	if(empty($this->nextActivities)){
+	    	$nextActivitiesProp = new core_kernel_classes_Property(PROPERTY_CONENCTORS_NEXTACTIVITIES,__METHOD__);
+			$resource = new core_kernel_classes_Resource($this->uri,__METHOD__);
+			$this->nextActivities = $resource->getPropertyValuesCollection($nextActivitiesProp);
+    	}
+		return $this->nextActivities;
     
     }
 
