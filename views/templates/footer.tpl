@@ -3,6 +3,7 @@ var ctx_extension 	= "<?=get_data('extension')?>";
 var ctx_module 		= "<?=get_data('module')?>";
 var ctx_action 		= "<?=get_data('action')?>";
 $(function(){
+	UiBootstrap.tabs.tabs('disable', getTabIndexByName('edit_user'));
 	
 	<?if(get_data('uri') && get_data('classUri')):?>
 		updateTabUrl(UiBootstrap.tabs, 'process_authoring', "<?=_url('authoring', 'Process', 'wfEngine', array('uri' => get_data('uri'), 'classUri' => get_data('classUri') ))?>");

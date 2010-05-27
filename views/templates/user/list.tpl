@@ -48,7 +48,7 @@ function removeUser(uri){
 	}
 }
 $(function(){
-	UiBootstrap.tabs.tabs('disable', getTabIndexByName('edit_user'));
+	
 	var myGrid = $("#user-list").jqGrid({
 		url: "<?=_url('data', 'Users', 'wfEngine')?>", 
 		datatype: "json", 
