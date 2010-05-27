@@ -333,7 +333,7 @@ class ProcessAuthoring extends TaoModule {
 		$myForm = null;
 		$myForm = wfEngine_helpers_ProcessFormFactory::instanceEditor(new core_kernel_classes_Class(CLASS_ACTIVITIES), $activity, $formName, array("noSubmit"=>true,"noRevert"=>true), $excludedProperty);
 		$myForm->setActions(array(), 'bottom');	
-		/*
+		
 		if($myForm->isSubmited()){
 			if($myForm->isValid()){
 				
@@ -347,7 +347,7 @@ class ProcessAuthoring extends TaoModule {
 				exit;
 			}
 		}
-		*/
+		
 		
 		$this->setData('myForm', $myForm->render());
 		$this->setView('process_form_property.tpl');
@@ -389,7 +389,45 @@ class ProcessAuthoring extends TaoModule {
 			}
 		}
 		
+		//save ACL mode:
+		if(isset($properties[PROPERTY_ACTIVITIES_ACL_MODE])){
+			$mode = $properties[PROPERTY_ACTIVITIES_ACL_MODE];
+			
+			if(!empty($mode)){
+				$activityExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityExecutionService');
+				//delete old value:
+				
+				//
+				$target = null;
+				switch($mode){
+					case INSTANCE_ACL_USER:
+						if(!empty($properties[PROPERTY_ACTIVITIES_RESTRICTED_USER])){
+							$target = new core_kernel_classes_Resource($properties[PROPERTY_ACTIVITIES_RESTRICTED_USER]);
+						}
+						break;
+					
+					case INSTANCE_ACL_ROLE:
+					case INSTANCE_ACL_ROLE_RESTRICTED_USER:
+					case INSTANCE_ACL_ROLE_RESTRICTED_USER_INHERITED:
+						if(!empty($properties[PROPERTY_ACTIVITIES_RESTRICTED_ROLE])){
+							$target = new core_kernel_classes_Resource($properties[PROPERTY_ACTIVITIES_RESTRICTED_ROLE]);
+						}
+						break;
+					
+					default:
+						throw new Exception('unknown ACL mode: '.$mode);
+				}
+				
+				var_dump($activity, new core_kernel_classes_Resource($mode), $target);
+				// $saved = $activityExecutionService->setAcl($activity, new core_kernel_classes_Resource($mode), $target);
+			}
+		}
+		
+		//if ajax mode:
 		echo json_encode(array("saved" => $saved));
+		
+		//else:
+		return $saved;
 	}
 	
 	public function editProcessProperty(){

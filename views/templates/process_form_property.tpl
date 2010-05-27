@@ -7,12 +7,36 @@
 		<input type="button" id="reload-<?=$sectionName?>-property" value="<?=__("reload")?>"/>
 		<input type="button" id="cancel-<?=$sectionName?>-property" value="<?=__("cancel")?>"/>
 		<script type="text/javascript">
+			function switchACLmode(){
+				var restrictedUserElt = $('select[id=<?=tao_helpers_Uri::encode(PROPERTY_ACTIVITIES_RESTRICTED_USER)?>]').parent();
+				var restrictedRoleElt = $('select[id=<?=tao_helpers_Uri::encode(PROPERTY_ACTIVITIES_RESTRICTED_ROLE)?>]').parent();
+				var mode = $('select[id=<?=tao_helpers_Uri::encode(PROPERTY_ACTIVITIES_ACL_MODE)?>]').val();
+				if(mode == '<?=tao_helpers_Uri::encode(INSTANCE_ACL_USER)?>'){//mode "user"
+					restrictedUserElt.show();//restricted user prop
+					//empty the value and hide:
+					restrictedRoleElt.hide();
+				}else if(mode == ''){
+					restrictedRoleElt.hide();
+					restrictedUserElt.hide();
+				}else{
+					restrictedRoleElt.show();
+					restrictedUserElt.hide();
+				}
+			}
+			
 			$(function(){
+				
+				<?if($sectionName=="activity"):?>
+					switchACLmode();
+					$('select[id=<?=tao_helpers_Uri::encode(PROPERTY_ACTIVITIES_ACL_MODE)?>]').change(switchACLmode);
+				<?endif;?>
+					
 				//edit the id of the tag of uri:
 				$("#<?=$sectionName?>-property-form input[id=uri]").attr("name","<?=$sectionName?>Uri");
 
 				//change to submit event interception would be "cleaner" than adding a button
 				$("#submit-<?=$sectionName?>-property").click(function(){
+					// console.log('data', $("#<?=$sectionName?>-property-form :input").serialize());
 					$.ajax({
 						url: authoringControllerPath+'edit<?=ucfirst($sectionName)?>Property',
 						type: "POST",
