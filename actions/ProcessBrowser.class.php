@@ -23,6 +23,7 @@ class ProcessBrowser extends WfModule
 		}
 
 		$activity 			= $process->currentActivity[0];
+		
 		$this->setData('activity',$activity);
 		$activityPerf 		= new Activity($activity->uri, false); // Performance WA
 		$activityExecution 	= new ActivityExecution($process, $activity);
@@ -172,15 +173,14 @@ class ProcessBrowser extends WfModule
 
 			$processExecution->performTransition(($ignoreConsistency == 'true') ? true : false);
 
-			if (!$processExecution->isFinished())
-			{
-				$this->redirect(_url('index', 'processBrowser', null, array('processUri' => urlencode($processUri))));
-				
-			}
-			else
-			{
+			if ($processExecution->isFinished()){
 				$this->redirect(_url('index', 'Main'));
-				
+			}
+			elseif($processExecution->isPaused()){
+				$this->pause($processUri);
+			}
+			else{
+				$this->redirect(_url('index', 'processBrowser', null, array('processUri' => urlencode($processUri))));
 			}
 		}
 		catch (ConsistencyException $consistencyException)

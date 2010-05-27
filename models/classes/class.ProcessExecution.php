@@ -266,8 +266,6 @@ extends WfResource
 			$this->path->insertActivity($newActivity);
 			$this->currentActivity[] = new Activity($newActivity->uri);
 
-			
-
 		}
 
 		// If the activity before the transition was the last activity of the process,
@@ -280,7 +278,22 @@ extends WfResource
 		else
 		{
 
+			$activityExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityExecutionService');
+			$userService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_UserService');
+			$currentUser = $userService->getCurrentUser();
+			
+			$setPause = true;
 			foreach ($this->currentActivity as $activityAfterTransition) {
+				
+				//check if the current user is allowed to execute the activity
+				if($activityExecutionService->checkAcl($activityAfterTransition->resource, $currentUser)){
+					$activityExecutionService->initExecution($activityAfterTransition->resource, $currentUser);
+					$setPause = false;
+				}
+				else{
+					continue;
+				}
+				
 				// The process is not finished.
 				// It means we have to run the onBeforeInference rule of the new current activity.
 				
@@ -302,6 +315,9 @@ extends WfResource
 					$this->performTransition($ignoreConsistency);
 				}
 
+			}
+			if($setPause){
+				$this->pause();
 			}
 		}
 
@@ -940,6 +956,24 @@ extends WfResource
 
 		// section 10-13-1-85-16731180:11be4127421:-8000:0000000000000A09 begin
 		$returnValue = ($this->status == 'Finished');
+		// section 10-13-1-85-16731180:11be4127421:-8000:0000000000000A09 end
+
+		return (bool) $returnValue;
+	}
+	
+	/**
+	 * Check if the status is in pause
+	 *
+	 * @access public
+	 * @author Bertrand Chevrier
+	 * @return boolean
+	 */
+	public function isPaused()
+	{
+		$returnValue = (bool) false;
+
+		// section 10-13-1-85-16731180:11be4127421:-8000:0000000000000A09 begin
+		$returnValue = ($this->status == 'Paused');
 		// section 10-13-1-85-16731180:11be4127421:-8000:0000000000000A09 end
 
 		return (bool) $returnValue;

@@ -91,7 +91,7 @@ class wfEngine_models_classes_ActivityExecutionService
         if($this->getClass($activity)->uriResource != CLASS_ACTIVITIES){
         	throw new Exception("Activity must be an instance of the class Activities");
         }
-        if(in_array($mode->uriResource, array_keys($this->getAclModes()))){
+        if(!in_array($mode->uriResource, array_keys($this->getAclModes()))){
         	throw new Exception("Unknow acl mode");
         }
         
@@ -141,12 +141,13 @@ class wfEngine_models_classes_ActivityExecutionService
         // section 127-0-1-1--11ec324e:128d9678eea:-8000:0000000000001F80 begin
         
         if(!is_null($activity) && !is_null($currentUser)){
+        	
         	//retrieve the process containing the activity
         	$apiModel  	= core_kernel_impl_ApiModelOO::singleton();
         	$subjects 	= $apiModel->getSubject(PROPERTY_ACTIVITY_EXECUTION_ACTIVITY, $activity->uriResource);
         	foreach($subjects->getIterator() as $subject){
         		$activityExecution = new core_kernel_classes_Resource($subject);
-        		$userUri = (string)$activityExecution->getOnePropertyValue(PROPERTY_ACTIVITY_EXECUTION_CURRENT_USER);
+        		$userUri = (string)$activityExecution->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_CURRENT_USER));
         		if($currentUser->uriResource == $userUri && !empty($userUri)){
         			$returnValue = $activityExecution;
         			break;
@@ -381,7 +382,7 @@ class wfEngine_models_classes_ActivityExecutionService
         	foreach($process->activities as $activity){
         		
         		//check if the current user is allowed to access the activity
-        		if($this->checkAcl($activity)){
+        		if($this->checkAcl($activity, $currentUser)){
         			$returnValue[] = $activity;
         		}
         	}

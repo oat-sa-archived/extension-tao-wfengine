@@ -37,14 +37,20 @@ class ActivityExecutionServiceTestCase extends UnitTestCase {
 	
 	public function testVirtualProcess(){
 		
+		$userService = tao_models_classes_ServiceFactory('wfEngine_models_classes_UserService');
+		//$testRole = $userService
+		
 		$authoringService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessAuthoringService');
 		
 		$processDefinitionClass = new core_kernel_classes_Class(CLASS_PROCESS);
 		$processDefinition = $processDefinitionClass->createInstance('processForUnitTest', 'unit test');
 		$this->assertIsA($processDefinition, 'core_kernel_classes_Resource');
 		
+		$aclModeRole = new core_kernel_classes_Resource(INSTANCE_ACL_ROLE);
+		
 		$activity1 = $authoringService->createActivity($processDefinition, 'activity1');
 		$authoringService->setFirstActivity($processDefinition, $activity1);
+		$this->service->setAcl($activity1, $aclModeRole)
 		
 		$connectorSeq = new core_kernel_classes_Resource(CONNECTOR_SEQ);
 		

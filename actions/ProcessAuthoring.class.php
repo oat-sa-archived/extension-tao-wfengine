@@ -388,7 +388,6 @@ class ProcessAuthoring extends TaoModule {
 				$this->service->setActivityHidden($activity, $bool);
 			}
 		}
-		
 		//save ACL mode:
 		if(isset($properties[PROPERTY_ACTIVITIES_ACL_MODE])){
 			$mode = $properties[PROPERTY_ACTIVITIES_ACL_MODE];
@@ -418,16 +417,19 @@ class ProcessAuthoring extends TaoModule {
 						throw new Exception('unknown ACL mode: '.$mode);
 				}
 				
-				var_dump($activity, new core_kernel_classes_Resource($mode), $target);
-				// $saved = $activityExecutionService->setAcl($activity, new core_kernel_classes_Resource($mode), $target);
+				if($activityExecutionService->setAcl($activity, new core_kernel_classes_Resource($mode), $target) instanceof core_kernel_classes_Resource){
+					$saved = true;
+				}
 			}
 		}
 		
 		//if ajax mode:
-		echo json_encode(array("saved" => $saved));
-		
-		//else:
-		return $saved;
+		if(tao_helpers_Request::isAjax()){
+			echo json_encode(array("saved" => $saved));
+		}
+		else{
+			return $saved;
+		}
 	}
 	
 	public function editProcessProperty(){

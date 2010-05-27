@@ -14,6 +14,10 @@ class Main extends WfModule
 		$userViewData 		= UsersHelper::buildCurrentUserForView();
 		$this->setData('userViewData',$userViewData);
 		$processes 			= $wfEngine->getProcessExecutions();
+		
+		$activityExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityExecutionService');
+		$userService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_UserService');
+		$currentUser = $userService->getCurrentUser();
 
 		if ($caseId != null)
 		{
@@ -33,7 +37,9 @@ class Main extends WfModule
 						foreach ($results->getIterator() as $result) {
 							if($result instanceof core_kernel_classes_Literal && $result->literal == $caseId) {
 								$processUri = urlencode($proc->uri);
+								
 								$activityUri = urlencode($proc->currentActivity[0]->activity->uri);
+								
 								$viewState = _url('index', 'ProcessBrowser', null, array('processUri' => $processUri));
 								$this->redirect($viewState);
 							}
