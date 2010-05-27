@@ -168,7 +168,7 @@ class WfEngine
 //		$processes = getInstances($this->sessionGeneris,array(CLASS_PROCESS_EXECUTIONS),array(""));
 
 		foreach ($processes as $key=>$pInstance){
-			$processInstance = new ViewProcessExecution($key);
+			$processInstance = new ProcessExecution($key);
 			$returnValue[]=$processInstance;
 		}
 
