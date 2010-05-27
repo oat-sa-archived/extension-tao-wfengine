@@ -332,8 +332,7 @@ extends WfResource
 	private function getNewActivities($arrayOfProcessVars, $nextConnectors)
 	{
 		$newActivities = array();
-		$activityExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityExecutionService');
-		$user = WfEngine::singleton()->getUser();
+
 		foreach ($nextConnectors as $connUri){
 
 			$connector = new Connector($connUri);
@@ -359,6 +358,7 @@ extends WfResource
 					break;
 				}
 				case INSTANCE_TYPEOFCONNECTORS_PARALLEL : {
+						//TODO
 						echo 'work in progress';
 						$connector = new Connector($connUri);
 
@@ -371,12 +371,19 @@ extends WfResource
 						break;
 				}
 				case INSTANCE_TYPEOFCONNECTORS_JOIN : {
+					//TODO
 						echo 'work in progress';
 						$connector = new Connector($connUri);
 						$prevActivitesCollection = $connector->getPreviousActivities();
 						
 						foreach ($prevActivitesCollection->getIterator() as $activityResource){
-							$executionResource = $activityExecutionService->getExecution($activityResource, $user->resource );
+							
+							$apiModel  	= core_kernel_impl_ApiModelOO::singleton();
+        	
+							$subjects 	= $apiModel->getSubject(PROPERTY_ACTIVITY_EXECUTION_ACTIVITY, $activity->uriResource);
+							
+							$executionResource =	$subjects->get(0);
+							
 							$isFinishedProp = new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_IS_FINISHED);
 							$isFinished = $executionResource->getOnePropertyValue($isFinishedProp);
 							
@@ -384,8 +391,9 @@ extends WfResource
 								$newActivities = false;
 								break;
 							}
+							
 						}
-
+						$newActivities = $connector->getNextActivities();
 						
 						break;
 				}

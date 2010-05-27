@@ -169,7 +169,7 @@ class ProcessExecutionTestCase extends UnitTestCase{
 		$proc = $factory->create();
 		$proc->performTransition();
 		var_dump($proc->currentActivity);
-		
+
 		$parallelActivity1->delete();
 		$connector1->delete();
 		$parallelActivity2->delete();
@@ -179,7 +179,7 @@ class ProcessExecutionTestCase extends UnitTestCase{
 		$proc->resource->delete();
 			
 		//delete processdef:
-//		$authoringService->deleteProcess($processDefinition);
+		$authoringService->deleteProcess($processDefinition);
 	}
 	
 }
