@@ -121,11 +121,17 @@ class ProcessExecutionTestCase extends UnitTestCase{
 		$connectorParallele = new core_kernel_classes_Resource(INSTANCE_TYPEOFCONNECTORS_PARALLEL);
 		$authoringService->setConnectorType($connector0,$connectorParallele);
 		
+		
 		$parallelActivity1 = $authoringService->createActivity($processDefinition, 'myActivity1');
 		$connector1 = $authoringService->createConnector($parallelActivity1);
 
 		$parallelActivity2 = $authoringService->createActivity($processDefinition, 'myActivity2');
 		$connector2 = $authoringService->createConnector($parallelActivity2);
+		
+		$nextActivitiesProp = new core_kernel_classes_Property(PROPERTY_CONNECTORS_NEXTACTIVITIES);
+		
+		$connector0->setPropertyValue($nextActivitiesProp,$parallelActivity1->uriResource);
+		$connector0->setPropertyValue($nextActivitiesProp,$parallelActivity2->uriResource);
 		
 		$joinActivity = $authoringService->createActivity($processDefinition, 'joinActivity');
 		
