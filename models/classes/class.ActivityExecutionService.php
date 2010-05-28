@@ -103,6 +103,7 @@ class wfEngine_models_classes_ActivityExecutionService
         switch($mode->uriResource){
         	case INSTANCE_ACL_ROLE:
         	case INSTANCE_ACL_ROLE_RESTRICTED_USER:
+        	case INSTANCE_ACL_ROLE_RESTRICTED_USER_INHERITED:
         		if(is_null($target)){
         			throw new Exception("Target must reference a role resource");
         		}

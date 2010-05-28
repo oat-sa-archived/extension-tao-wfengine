@@ -69,6 +69,7 @@ class wfEngine_models_classes_ProcessAuthoringService
     public function __construct()
     {
 		parent::__construct();
+		
     }
 	
 	/**

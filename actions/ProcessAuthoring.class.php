@@ -324,7 +324,7 @@ class ProcessAuthoring extends TaoModule {
 			PROPERTY_ACTIVITIES_HYPERCLASSES,
 			PROPERTY_ACTIVITIES_STATEMENTASSIGNATION,
 			PROPERTY_ACTIVITIES_ISINITIAL,
-			'http://www.tao.lu/middleware/Interview.rdf#i122354397139712'
+			PROPERTY_ACTIVITIES_ALLOWFREEVALUEOF
 		);
 		
 		$this->setData('saved', false);
@@ -394,9 +394,6 @@ class ProcessAuthoring extends TaoModule {
 			
 			if(!empty($mode)){
 				$activityExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityExecutionService');
-				//delete old value:
-				
-				//
 				$target = null;
 				switch($mode){
 					case INSTANCE_ACL_USER:
@@ -423,6 +420,49 @@ class ProcessAuthoring extends TaoModule {
 			}
 		}
 		return $saved;
+	}
+	
+	/**
+	 * Get the list of roles that can be selected for an inherited ACL mode
+	 * Render a json array of the roles
+	 * @return void
+	 */
+	public function getActivityInheritableRoles(){
+		
+		if(!tao_helpers_Request::isAjax()){
+			throw new Exception('Wrong request mode');
+		}
+		
+		$availableRoles = array();
+
+		$activity = $this->getCurrentActivity();
+		
+		$activityModeProp	= new core_kernel_classes_Property(PROPERTY_ACTIVITIES_ACL_MODE);
+        $restrictedRoleProp	= new core_kernel_classes_Property(PROPERTY_ACTIVITIES_RESTRICTED_ROLE);
+        $actsProp 			= new core_kernel_classes_Property(PROCESS_ACTIVITIES);
+		
+		$apiModel  	= core_kernel_impl_ApiModelOO::singleton();
+        $subjects 	= $apiModel->getSubject(PROPERTY_PROCESS_ACTIVITIES, $activity->uriResource);
+        foreach($subjects->getIterator() as $process){
+        	
+			foreach ($process->getPropertyValues($actsProp) as $pactivityUri){
+				
+				$pactivity = new core_kernel_classes_Resource($pactivityUri);
+				
+        		//get an activity with the same mode
+        		$mode = $pactivity->getOnePropertyValue($activityModeProp);
+        		if($mode->uriResource == INSTANCE_ACL_ROLE_RESTRICTED_USER){
+        			$pRole = $pactivity->getUniquePropertyValue($restrictedRoleProp);
+        			if(!is_null($pRole)){
+        				if(!array_key_exists($pRole->uriResource, $availableRoles)){
+        					$availableRoles[$pRole->uriResource] = $pRole->getLabel();
+        				}
+        			}
+        		}
+	        }
+        }
+        $availableRoles = tao_helpers_Uri::encodeArray($availableRoles, tao_helpers_Uri::ENCODE_ARRAY_KEYS, true);
+		echo json_encode(array('roles' => $availableRoles));
 	}
 	
 	public function editProcessProperty(){

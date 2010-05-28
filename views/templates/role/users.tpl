@@ -23,7 +23,8 @@ $(document).ready(function(){
 	new GenerisTreeFormClass('#user-tree', getUrl, {
 		actionId: 'user',
 		saveUrl : setUrl,
-		checkedNodes : <?=get_data('users')?>
+		checkedNodes : <?=get_data('users')?>,
+		relatedFormId : 'roleEditor'
 	});
 });
 </script>
