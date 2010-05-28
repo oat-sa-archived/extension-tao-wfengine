@@ -5,6 +5,7 @@ class ProcessBrowser extends WfModule
 {
 	public function index($processUri)
 	{
+		
 		$_SESSION["processUri"] = $processUri;
 
 		$processUri 		= urldecode($processUri); // parameters clean-up.
@@ -28,6 +29,7 @@ class ProcessBrowser extends WfModule
 		$activityExecutionService 	= tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityExecutionService');
 		
 		$activity 			= $process->currentActivity[0];
+		
 		$activityExecutionService->initExecution($activity->resource, $currentUser);
 		
 		//security check if the user is allowed to access this activity
@@ -35,6 +37,7 @@ class ProcessBrowser extends WfModule
 			$_SESSION["processUri"] = null;
 			$this->redirect(_url('index', 'Main'));
 		}
+	
 		
 		$this->setData('activity',$activity);
 		$activityPerf 		= new Activity($activity->uri, false); // Performance WA

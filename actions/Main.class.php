@@ -67,13 +67,17 @@ class Main extends WfModule
 			$status = $proc->status;
 			$persid	= "-";
 	
+			$activityIsInitialProp = new core_kernel_classes_Property(PROPERTY_ACTIVITIES_ISINITIAL);
 	
 			$currentActivities = array();
 
 			foreach ($proc->currentActivity as $currentActivity)
 			{
 				$activity = $currentActivity;
-	
+				
+//				if(!is_null($activity->resource->getOnePropertyValue($activityIsInitialProp))){
+//					$activityExecutionService->initExecution($activity->resource, $currentUser);
+//				}
 				$isAllowed = $activityExecutionService->checkAcl($activity->resource, $currentUser);
 				$currentActivities[] = array(
 					'label'				=> $currentActivity->label,

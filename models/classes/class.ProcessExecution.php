@@ -285,9 +285,10 @@ extends WfResource
 			$setPause = true;
 			foreach ($this->currentActivity as $activityAfterTransition) {
 				
+				//$activityExecutionService->initExecution($activityAfterTransition->resource, $currentUser);
+				
 				//check if the current user is allowed to execute the activity
 				if($activityExecutionService->checkAcl($activityAfterTransition->resource, $currentUser)){
-					$activityExecutionService->initExecution($activityAfterTransition->resource, $currentUser);
 					$setPause = false;
 				}
 				else{

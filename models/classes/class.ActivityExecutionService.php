@@ -143,15 +143,18 @@ class wfEngine_models_classes_ActivityExecutionService
         
         if(!is_null($activity) && !is_null($currentUser)){
         	
+        	$currentUserProp = new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_CURRENT_USER);
+        	
         	//retrieve the process containing the activity
         	$apiModel  	= core_kernel_impl_ApiModelOO::singleton();
         	$subjects 	= $apiModel->getSubject(PROPERTY_ACTIVITY_EXECUTION_ACTIVITY, $activity->uriResource);
-        	foreach($subjects->getIterator() as $subject){
-        		$activityExecution = new core_kernel_classes_Resource($subject);
-        		$userUri = (string)$activityExecution->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_CURRENT_USER));
-        		if($currentUser->uriResource == $userUri && !empty($userUri)){
-        			$returnValue = $activityExecution;
-        			break;
+        	foreach($subjects->getIterator() as $activityExecution){
+        		$acticityExecutionUser = $activityExecution->getOnePropertyValue($currentUserProp);
+        		if(!is_null($acticityExecutionUser)){
+	        		if($currentUser->uriResource == $acticityExecutionUser->uriResource){
+	        			$returnValue = $activityExecution;
+	        			break;
+	        		}
         		}
         	}
         }
@@ -230,9 +233,22 @@ class wfEngine_models_classes_ActivityExecutionService
 	        	//in case of role and user restriction, set the current user as activty user
 	        	$activityUri	= $activityExecution->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_ACTIVITY));
 	        	$activity		= new core_kernel_classes_Resource($activityUri);
-	        	$modeUri 		= (string)$activity->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_ACTIVITIES_ACL_MODE));
-	        	if($modeUri == INSTANCE_ACL_ROLE_RESTRICTED_USER){
-	        		$activity->setPropertyValue(new core_kernel_classes_Property(PROPERTY_ACTIVITIES_RESTRICTED_USER), $currentUser->uriResource);
+	        	$mode		= $activity->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_ACTIVITIES_ACL_MODE));
+	        	if(!is_null($mode)){
+
+	        		$restrictedUserProp = new core_kernel_classes_Property(PROPERTY_ACTIVITIES_RESTRICTED_USER);
+	        		
+	        		if($mode->uriResource == INSTANCE_ACL_ROLE_RESTRICTED_USER){
+	        			if(is_null($activity->getOnePropertyValue($restrictedUserProp))){
+		        			
+	        				echo "bind activity ". $activity->getLabel()." to ".$currentUser->getLabel()."<br>";
+	        				
+	        				$activity->setPropertyValue($restrictedUserProp, $currentUser->uriResource);
+	        			}
+	        			else{
+	        				var_dump($activity->getOnePropertyValue($restrictedUserProp));
+	        			}
+	        		}
 	        	}
         	}
         }
@@ -277,7 +293,7 @@ class wfEngine_models_classes_ActivityExecutionService
         			
         			//check if th current user is the restricted user
         			case INSTANCE_ACL_USER:
-        				$activityUser = $activity->getUniquePropertyValue($restrictedUserProp);
+        				$activityUser = $activity->getOnePropertyValue($restrictedUserProp);
         				if(!is_null($activityUser)){
 	        				if($activityUser->uriResource == $currentUser->uriResource) {
 	        					$returnValue = true;
@@ -287,7 +303,7 @@ class wfEngine_models_classes_ActivityExecutionService
         			
         			//check if the current user has the restricted role
         			case INSTANCE_ACL_ROLE:
-        				$activityRole 	= $activity->getUniquePropertyValue($restrictedRoleProp);
+        				$activityRole 	= $activity->getOnePropertyValue($restrictedRoleProp);
         				$userRoles 		= $currentUser->getPropertyValues($rdfsTypeProp);
 						if(!is_null($activityRole) && is_array($userRoles)){
 	        				if(in_array($activityRole->uriResource, $userRoles)){
@@ -298,8 +314,8 @@ class wfEngine_models_classes_ActivityExecutionService
         			
         			//check if the current user has the restricted role and is the restricted user
         			case INSTANCE_ACL_ROLE_RESTRICTED_USER:
-        				$activityRole 	= $activity->getUniquePropertyValue($restrictedRoleProp);
-						$activityUser 	= $activity->getUniquePropertyValue($restrictedUserProp);
+        				$activityRole 	= $activity->getOnePropertyValue($restrictedRoleProp);
+						$activityUser 	= $activity->getOnePropertyValue($restrictedUserProp);
         				$userRoles 		= $currentUser->getPropertyValues($rdfsTypeProp);
         				if(!is_null($activityRole) && !is_null($activityUser) && is_array($userRoles)){
 	        				if(in_array($activityRole->uriResource, $userRoles) && $activityUser->uriResource == $currentUser->uriResource){
@@ -317,43 +333,43 @@ class wfEngine_models_classes_ActivityExecutionService
         				
         				if(!is_null($activityRole) && is_array($userRoles)){
         				
+	        				$actsProp 			= new core_kernel_classes_Property(PROCESS_ACTIVITIES);
+			
 	        				//retrieve the process containing the activity
-	        				$apiModel  	= core_kernel_impl_ApiModelOO::singleton();
+							$apiModel  	= core_kernel_impl_ApiModelOO::singleton();
 	        				$subjects 	= $apiModel->getSubject(PROPERTY_PROCESS_ACTIVITIES, $activity->uriResource);
-	        				foreach($subjects->getIterator() as $subject){
-	        					
-	        					$process = new Process($subject);
-	        					$processTypes = $process->resource->getPropertyValues($rdfsTypeProp);
-	        					
-	        					//chekif the process contains a valid process resource
-	        					if(in_array(CLASS_PROCESS ,$processTypes)){
-	        						
-	        						foreach($process->activities as $pactivity){
-	        							
-	        							//get an activity with the same mode
-	        							if((string)$pactivity->getOnePropertyValue($activityModeProp) == INSTANCE_ACL_ROLE_RESTRICTED_USER){
-	        								
-	        								//and the same role
-	        								$pRole = $pactivity->getUniquePropertyValue($restrictedRoleProp);
-	        								if($pRole->uriResource == $activityRole->uriResource){
-	        									
-	        									//then check if the current user is allowed for the inherited activity 
-		        								$pactivityUser 	= $pactivity->getUniquePropertyValue($restrictedUserProp);
-												if(in_array($activityRole->uriResource, $userRoles) && $activityUser->uriResource == $currentUser->uriResource){
-													$returnValue = true;
-												}
-	        									break;
-	        								}
+					        foreach($subjects->getIterator() as $process){
+					        	
+								foreach ($process->getPropertyValues($actsProp) as $pactivityUri){
+									//get  activities
+									$pactivity = new core_kernel_classes_Resource($pactivityUri);
+									
+					        		//with the same mode
+					        		$mode = $pactivity->getOnePropertyValue($activityModeProp);
+					        		if($mode->uriResource == INSTANCE_ACL_ROLE_RESTRICTED_USER){
+					        			
+					        			//and the same role
+	        							$pRole = $pactivity->getOnePropertyValue($restrictedRoleProp);
+	        							if(!is_null($pRole)){
+		        							if($pRole->uriResource == $activityRole->uriResource){
+		        								//then check if the current user is allowed for the inherited activity 
+		        								$activityUser 	= $activity->getOnePropertyValue($restrictedUserProp);
+		        								if(!is_null($pactivityUser)){
+			        								if(in_array($activityRole->uriResource, $userRoles) && $activityUser->uriResource == $currentUser->uriResource){
+														$returnValue = true;
+														break;
+													}
+		        								}
+		        							}
 	        							}
-	        						}
-	        					}
-	        				}
+					        		}
+						        }
+					        }
         				}
         				break;
         		}
         	}
         }
-        
         // section 127-0-1-1--10e47d9e:128d54bbb0d:-8000:0000000000001F62 end
 
         return (bool) $returnValue;
