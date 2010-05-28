@@ -47,15 +47,7 @@ class wfEngine_models_classes_RoleService
      */
     protected $roleClass = null;
 
-    /**
-     * The ontologies to load
-     *
-     * @access protected
-     * @var array
-     */
-    protected $processOntologies = array(NS_TAOQUAL);
-	
-	 /**
+	/**
      * Short description of attribute generisUserService
      *
      * @access protected
@@ -78,8 +70,6 @@ class wfEngine_models_classes_RoleService
 		parent::__construct();
 		$this->generisUserService = core_kernel_users_Service::singleton();
 		$this->roleClass = new core_kernel_classes_Class(INSTANCE_ROLE_BACKOFFICE);
-		$this->loadOntologies($this->processOntologies);
-		
     }
 
     /**

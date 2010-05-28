@@ -47,13 +47,6 @@ class wfEngine_models_classes_ProcessService
      */
     protected $processClass = null;
 
-    /**
-     * The ontologies to load
-     *
-     * @access protected
-     * @var array
-     */
-    protected $processOntologies = array(NS_TAOQUAL);
 
     // --- OPERATIONS ---
 
@@ -70,7 +63,6 @@ class wfEngine_models_classes_ProcessService
 		
 		parent::__construct();
 		$this->processClass = new core_kernel_classes_Class(CLASS_PROCESS);
-		$this->loadOntologies($this->processOntologies);
 		
         // section 127-0-1-1-506607cb:1249f78eef0:-8000:0000000000001AEB end
     }

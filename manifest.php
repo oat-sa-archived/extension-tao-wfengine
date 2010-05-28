@@ -15,7 +15,8 @@
 				'http://www.tao.lu/middleware/hyperclass.rdf',
 				'http://www.tao.lu/middleware/taoqual.rdf',
 				'http://www.tao.lu/middleware/Rules.rdf',
-				'http://www.tao.lu/middleware/Interview.rdf'
+				'http://www.tao.lu/middleware/Interview.rdf',
+				'http://www.tao.lu/middleware/review.rdf'
 			),
 		
 			'classLoaderPackages' => array( 

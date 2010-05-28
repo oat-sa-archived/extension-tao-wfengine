@@ -56,20 +56,6 @@ class wfEngine_models_classes_ProcessAuthoringService
 	
 	protected $processUri = '';
 		
-    /**
-     * The attribute deliveryOntologies contains the reference to the required Ontologies
-     *
-     * @access protected
-     * @var array
-     */
-    protected $processOntologies = array(
-		'http://www.tao.lu/Ontologies/TAODelivery.rdf',
-		'http://www.tao.lu/Ontologies/TAOTest.rdf',
-		'http://www.tao.lu/middleware/hyperclass.rdf',
-		'http://www.tao.lu/middleware/taoqual.rdf',
-		'http://www.tao.lu/middleware/Rules.rdf',
-		'http://www.tao.lu/middleware/Interview.rdf'
-		);
 			
     // --- OPERATIONS ---
 
@@ -83,10 +69,6 @@ class wfEngine_models_classes_ProcessAuthoringService
     public function __construct()
     {
 		parent::__construct();
-		
-		//set processUri here
-		
-		$this->loadOntologies($this->processOntologies);
     }
 	
 	/**
@@ -173,7 +155,7 @@ class wfEngine_models_classes_ProcessAuthoringService
 		//to be clarified:
 		// $actualParameterType = PROPERTY_ACTUALPARAM_CONSTANTVALUE; //PROPERTY_ACTUALPARAM_CONSTANTVALUE;//PROPERTY_ACTUALPARAM_PROCESSVARIABLE //PROPERTY_ACTUALPARAM_QUALITYMETRIC
 		
-		//retrouver systematiquement l'actual parameter associé à chaque fois, à partir du formal parameter et call of service, lors de la sauvegarde
+		//retrouver systematiquement l'actual parameter associï¿½ ï¿½ chaque fois, ï¿½ partir du formal parameter et call of service, lors de la sauvegarde
 		$actualParameterClass = new core_kernel_classes_Class(CLASS_ACTUALPARAMETER);
 		
 		//create new resource for the property value of the current call of service PROPERTY_CALLOFSERVICES_ACTUALPARAMIN or PROPERTY_CALLOFSERVICES_ACTUALPARAMOUT
@@ -775,10 +757,10 @@ class wfEngine_models_classes_ProcessAuthoringService
 		$xmlDom = null;
 		if (!empty($question)){ // something to parse
 			// str_replace taken from the MsReader class
-			$question = str_replace("’", "'", $question); // utf8...
-			$question = str_replace("‘", "'", $question); // utf8...
-			$question = str_replace("“", "\"", $question);
-			$question = str_replace("”", "\"", $question);
+			$question = str_replace("ï¿½", "'", $question); // utf8...
+			$question = str_replace("ï¿½", "'", $question); // utf8...
+			$question = str_replace("ï¿½", "\"", $question);
+			$question = str_replace("ï¿½", "\"", $question);
 			if($isCondition){
 				$question = "if ".$question;
 			}	
