@@ -164,9 +164,10 @@ extends WfResource
 	 * @author firstname and lastname of author, <author@example.org>
 	 * @return void
 	 */
-	public function performTransition($ignoreConsistency = false)
-	{
-
+	public function performTransition($ignoreConsistency = false){
+	
+		
+			
 		// section 10-13-1--31--4660acca:119ecd38e96:-8000:0000000000000866 begin
 		$this->logger->debug('Start Perform Transition ',__FILE__,__LINE__);
 
@@ -181,83 +182,86 @@ extends WfResource
 		
 		$processVars 				= $this->getVariables();
 		$arrayOfProcessVars 		= Utils::processVarsToArray($processVars);
-		$curentTokenProp = new core_kernel_classes_Property(CURRENT_TOKEN);
-		
-		
-			
-		
-			$activityBeforeTransition 	= new Activity($this->currentActivity[0]->uri);
+		$currentTokenProp = new core_kernel_classes_Property(CURRENT_TOKEN);
 	
-			$activityBeforeTransition->feedFlow(1);
-	
-			//common_Cache::setCache($activityBeforeTransition,$this->currentActivity[0]->uri);
-	
+		$activityBeforeTransition 	= new Activity($this->currentActivity[0]->uri);
 
-	
-	
-			// ONAFTER INFERENCE RULE
-			// If we are here, no consistency error was thrown. Thus, we can infer something if needed.
-			foreach ($activityBeforeTransition->inferenceRule as $rule)
-			{
-				$rule->execute($arrayOfProcessVars);
-			}
-	
-			
-			// -- ONAFTER CONSISTENCY CHECKING
-			// First of all, we check if the consistency rule is respected.
-			if (!$ignoreConsistency && $activityBeforeTransition->consistencyRule)
-			{
-				$consistencyRule 		= $activityBeforeTransition->consistencyRule;
-				$consistencyCheckResult = $consistencyRule->getExpression()->evaluate($arrayOfProcessVars);
-				$activityToGoBack		= null;
-	
-				if ($consistencyCheckResult)
-				{
-					// Were do we jump back ?
-					if ($activityBeforeTransition->isHidden)
-					{
-						$activityToGoBack = Utils::getLastViewableActivityFromPath($this->path->activityStack,
-						$activityBeforeTransition->uri);
-					}
-					else
-					{
-						$activityToGoBack = $activityBeforeTransition;
-					}
-	
-					//the consistency notification is updated with the actual values of variables
-					$activeLiteral = new core_kernel_classes_ActiveLiteral($consistencyRule->notification);
-					$consistencyRule->notification = $activeLiteral->getDisplayedText($arrayOfProcessVars);
-	
-					// If the consistency result is negative, we throw a ConsistencyException.
-					$consistencyException = new ConsistencyException('The consistency test was negative',
-																	$activityBeforeTransition,
-																	$consistencyRule->involvedActivities,
-																	$consistencyRule->notification,
-																	$consistencyRule->suppressable);
-	
-					// The current token must be the activity we are jumping back 		
-					$this->resource->editPropertyValues($curentTokenProp,$activityToGoBack->uri);
-	
-	
-					throw $consistencyException;
-				}
-			
+		$activityBeforeTransition->feedFlow(1);
+
+		//common_Cache::setCache($activityBeforeTransition,$this->currentActivity[0]->uri);
+
+		// ONAFTER INFERENCE RULE
+		// If we are here, no consistency error was thrown. Thus, we can infer something if needed.
+		foreach ($activityBeforeTransition->inferenceRule as $rule){
+			$rule->execute($arrayOfProcessVars);
 		}
-
-		$connectorsUri = $this->getNextConnectorsUri($this->currentActivity[0]->uri);
 		
+		// -- ONAFTER CONSISTENCY CHECKING
+		// First of all, we check if the consistency rule is respected.
+		if (!$ignoreConsistency && $activityBeforeTransition->consistencyRule){
+			$consistencyRule 		= $activityBeforeTransition->consistencyRule;
+			$consistencyCheckResult = $consistencyRule->getExpression()->evaluate($arrayOfProcessVars);
+			$activityToGoBack		= null;
+
+			if ($consistencyCheckResult){
+				// Were do we jump back ?
+				if ($activityBeforeTransition->isHidden){
+					$activityToGoBack = Utils::getLastViewableActivityFromPath($this->path->activityStack,
+					$activityBeforeTransition->uri);
+				}
+				else{
+					$activityToGoBack = $activityBeforeTransition;
+				}
+
+				//the consistency notification is updated with the actual values of variables
+				$activeLiteral = new core_kernel_classes_ActiveLiteral($consistencyRule->notification);
+				$consistencyRule->notification = $activeLiteral->getDisplayedText($arrayOfProcessVars);
+
+				// If the consistency result is negative, we throw a ConsistencyException.
+				$consistencyException = new ConsistencyException('The consistency test was negative',
+																$activityBeforeTransition,
+																$consistencyRule->involvedActivities,
+																$consistencyRule->notification,
+																$consistencyRule->suppressable);
+
+				// The current token must be the activity we are jumping back 		
+				$this->resource->editPropertyValues($currentTokenProp,$activityToGoBack->uri);
+
+				throw $consistencyException;
+			}
+		}
+		
+		
+		//set the activity execution of the current user as finished:
+		$activityExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityExecutionService');
+		$userService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_UserService');
+		$currentUser = $userService->getCurrentUser();
+		var_dump($activityBeforeTransition, $currentUser);
+		$activityExecutionResource = $activityExecutionService->getExecution(new core_kernel_classes_Resource($activityBeforeTransition->uri), $currentUser) ;
+		if(!is_null($activityExecutionResource)){
+			$activityExecutionResource->editPropertyValues(new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_IS_FINISHED), GENERIS_TRUE);
+		}else{
+			throw new Exception("cannot find the activity execution of the current activity {$activityBeforeTransition->uri} in perform transition");
+		}
+		
+		
+		$connectorsUri = $this->getNextConnectorsUri($this->currentActivity[0]->uri);//could work for join as they share the same connector
 		$arrayOfProcessVars[VAR_PROCESS_INSTANCE] = $this->resource->uriResource;
 		$newActivities = $this->getNewActivities($arrayOfProcessVars, $connectorsUri);
-
-
-		$this->resource->removePropertyValues($curentTokenProp);
+		if(empty($newActivities)){
+			//means that the process must be paused:
+			$this->pause();
+			return;
+		}
+		
+		//actual transition starting from here:
+		$this->resource->removePropertyValues($currentTokenProp);
 
 		$this->currentActivity = array();
 
-		foreach ($newActivities as $newActivity)
-		{
+		foreach ($newActivities as $newActivity){
 
-			$this->resource->setPropertyValue($curentTokenProp,$newActivity->uri);
+			$this->resource->setPropertyValue($currentTokenProp,$newActivity->uri);
 			$this->logger->debug('Activiy ' . $newActivity->uri . ' added to current token' ,__FILE__,__LINE__);
 		
 			$this->path->invalidate($activityBeforeTransition,($this->path->contains($newActivity) ? $newActivity : null));
@@ -271,19 +275,13 @@ extends WfResource
 		// If the activity before the transition was the last activity of the process,
 		// we have to finish gracefully the process.
 
-		if (!count($newActivities) || $activityBeforeTransition->isLast())
-		{
+		if (!count($newActivities) || $activityBeforeTransition->isLast()){
 			$this->finish();
-		}
-		else
-		{
-
-			$activityExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityExecutionService');
-			$userService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_UserService');
-			$currentUser = $userService->getCurrentUser();
+		}else{
+			
 			
 			$setPause = true;
-			foreach ($this->currentActivity as $activityAfterTransition) {
+			foreach ($this->currentActivity as $activityAfterTransition){
 				
 				//$activityExecutionService->initExecution($activityAfterTransition->resource, $currentUser);
 				
@@ -311,8 +309,7 @@ extends WfResource
 	
 				// Last but not least ... is the next activity a machine activity ?
 				// if yes, we perform the transition.
-				if ($activityAfterTransition->isHidden)
-				{
+				if ($activityAfterTransition->isHidden){
 					$this->performTransition($ignoreConsistency);
 				}
 
@@ -359,49 +356,99 @@ extends WfResource
 					break;
 				}
 				case INSTANCE_TYPEOFCONNECTORS_PARALLEL : {
-						//TODO
-						echo 'work in progress';
-						$connector = new Connector($connUri);
+					//TODO
+					// echo 'work in progress to parallel';
+					$connector = new Connector($connUri);
 
-						$nextActivitesCollection = $connector->getNextActivities();
-						foreach ($nextActivitesCollection->getIterator() as $activityResource){
-							$newActivities[] = 	$activityResource->uriResource;
-						}
+					$nextActivitesCollection = $connector->getNextActivities();
+					// var_dump($nextActivitesCollection);
+					foreach ($nextActivitesCollection->getIterator() as $activityResource){
+						$newActivities[] = 	new Activity($activityResource->uriResource);
+					}
 
-						
-						break;
+					
+					break;
 				}
 				case INSTANCE_TYPEOFCONNECTORS_JOIN : {
 					//TODO
-						echo 'work in progress';
-						$connector = new Connector($connUri);
-						$prevActivitesCollection = $connector->getPreviousActivities();
+					echo 'work in progress to join';
+					/*
+					$connector = new Connector($connUri);
+					$prevActivitesCollection = $connector->getPreviousActivities();
+					
+					foreach ($prevActivitesCollection->getIterator() as $activityResource){
 						
-						foreach ($prevActivitesCollection->getIterator() as $activityResource){
-							
-							$apiModel  	= core_kernel_impl_ApiModelOO::singleton();
-        	
-							$subjects 	= $apiModel->getSubject(PROPERTY_ACTIVITY_EXECUTION_ACTIVITY, $activity->uriResource);
-							
-							$executionResource =	$subjects->get(0);
-							
-							$isFinishedProp = new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_IS_FINISHED);
-							$isFinished = $executionResource->getOnePropertyValue($isFinishedProp);
-							
-							if(!$isFinished instanceof core_kernel_classes_Resource || $isFinished->uriResource == GENERIS_TRUE){
-								$newActivities = false;
-								break;
-							}
-							
+						$apiModel  	= core_kernel_impl_ApiModelOO::singleton();
+		
+						$subjects 	= $apiModel->getSubject(PROPERTY_ACTIVITY_EXECUTION_ACTIVITY, $activityResource->uriResource);
+						
+						$executionResource =	$subjects->get(0);
+						
+						$isFinishedProp = new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_IS_FINISHED);
+						$isFinished = $executionResource->getOnePropertyValue($isFinishedProp);
+						
+						if(!$isFinished instanceof core_kernel_classes_Resource || $isFinished->uriResource == GENERIS_FALSE){
+							$newActivities = false;
+							break;
 						}
-						$newActivities = $connector->getNextActivities();
 						
-						break;
+					}
+					$newActivities = $connector->getNextActivities();
+					*/
+					
+					$completed = false;
+					//count the number of each different activity definition that has to be done parallely:
+					$activityResourceArray = array();
+					$connector = new Connector($connUri);
+					$prevActivitesCollection = $connector->getPreviousActivities();
+					foreach ($prevActivitesCollection->getIterator() as $activityResource){
+						if(!isset($activityResourceArray[$activityResource->uriResource])){
+							$activityResourceArray[$activityResource->uriResource] = 1;
+						}else{
+							$activityResourceArray[$activityResource->uriResource] += 1;
+						}
+					}
+					
+					var_dump($activityResourceArray);
+					foreach($activityResourceArray as $activityDefinition=>$count){
+						
+						//get the collection of the execution performed:
+						$activityExecutionCollection = core_kernel_impl_ApiModelOO::singleton()->getSubject(PROPERTY_ACTIVITY_EXECUTION_ACTIVITY, $activityResource->uriResource);
+						$activityResourceArray[$activityDefinition] = $activityExecutionCollection->count();
+						
+						echo '$activityExecutionCollection of '.$activityDefinition; var_dump($activityExecutionCollection);
+								
+						if($activityExecutionCollection->count() != $count){
+							break; //leave the $completed value as false
+						}else{
+							foreach($activityExecutionCollection->getIterator() as $activityExecution){
+								$isFinished = $activityExecution->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_IS_FINISHED));
+								if(!$isFinished instanceof core_kernel_classes_Resource || $isFinished->uriResource == GENERIS_FALSE){
+									break; //leave the $completed value as false
+								}
+							}
+							//reach the end:
+							$completed = true;
+						}
+					}
+					
+					var_dump($activityResourceArray);die();
+					if($completed){
+						//get THE next activity
+						$nextActivitesCollection = $connector->getNextActivities();
+						// var_dump($nextActivitesCollection);
+						foreach ($nextActivitesCollection->getIterator() as $activityResource){
+							$newActivities[] = new Activity($activityResource->uriResource);//normally, should be only ONE, so could actually break after the first loop
+						}
+					}else{
+						//pause, do not allow transition so return an empty array
+					}
+					
+					break;
 				}
 				default : {
 					
-					foreach ($connector->getNextActivities()->getIterator() as $val)
-					{
+					foreach ($connector->getNextActivities()->getIterator() as $val){
 						$this->logger->debug('Next Activity  Name: ' . $val->getLabel(),__FILE__,__LINE__);
 						$this->logger->debug('Next Activity  Uri: ' . $val->uriResource,__FILE__,__LINE__);
 						$activity = new Activity($val->uriResource);

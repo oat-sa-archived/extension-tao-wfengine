@@ -33,6 +33,7 @@ class ProcessExecutionTestCase extends UnitTestCase{
 
 	}
 	
+	/*
 	public function testCreateSplitProcess(){
 	
 		$authoringService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessAuthoringService');
@@ -106,7 +107,7 @@ class ProcessExecutionTestCase extends UnitTestCase{
 		//delete processdef:
 		$authoringService->deleteProcess($processDefinition);
 		
-	}
+	}*/
 	
 	public function testCreateJoinProcess(){
 		
@@ -136,8 +137,8 @@ class ProcessExecutionTestCase extends UnitTestCase{
 		$joinActivity = $authoringService->createActivity($processDefinition, 'joinActivity');
 		
 		//join parallel Activity 1 and 2 to "joinActivity"
-		$this->assertIsA($authoringService->createJoinActivity($connector1, $joinActivity), 'core_kernel_classes_Resource');
-		$authoringService->createJoinActivity($connector2, $joinActivity);
+		$this->assertIsA($authoringService->createJoinActivity($connector1, $joinActivity, '', $parallelActivity1), 'core_kernel_classes_Resource');
+		$authoringService->createJoinActivity($connector2, $joinActivity, '', $parallelActivity2);
 		
 		//both connectors joined to the same activity have the same transition rule?
 		$propTransitionRule = new core_kernel_classes_Property(PROPERTY_CONNECTORS_TRANSITIONRULE);

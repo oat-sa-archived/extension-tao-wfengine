@@ -1031,7 +1031,6 @@ class ProcessAuthoring extends TaoModule {
 				if($data["join_activityUri"] == 'newActivity'){
 					$this->service->createJoinActivity($connectorInstance, null, $data["join_activityLabel"]);
 				}else{
-					echo 'koko';
 					if(!is_null($activity)){
 						$followingActivity = new core_kernel_classes_Resource($data["join_activityUri"]);
 						$this->service->createJoinActivity($connectorInstance, $followingActivity, '', $activity);

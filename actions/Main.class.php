@@ -24,21 +24,17 @@ class Main extends WfModule
 		$userService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_UserService');
 		$currentUser = $userService->getCurrentUser();
 
-		if ($caseId != null)
-		{
-			foreach ($processes as $proc)
-			{
+		if ($caseId != null){
+			foreach ($processes as $proc){
 
 				$procVariables = Utils::processVarsToArray($proc->getVariables());
 				$intervieweeInst = new core_kernel_classes_Resource($procVariables[VAR_INTERVIEWEE_URI],__METHOD__);
 				$property = propertyExists(CASE_ID_CODE);
-				if($property)
-				{
-
+				
+				if($property){
 					$caseIdProp = new core_kernel_classes_Property($property,__METHOD__);
 					$results = $intervieweeInst->getPropertyValuesCollection($caseIdProp);
-					if (!$results->isEmpty())
-					{
+					if (!$results->isEmpty()){
 						foreach ($results->getIterator() as $result) {
 							if($result instanceof core_kernel_classes_Literal && $result->literal == $caseId) {
 								$processUri = urlencode($proc->uri);
@@ -101,7 +97,7 @@ class Main extends WfModule
 		$processClass = new core_kernel_classes_Class(CLASS_PROCESS);
 	
 		$availableProcessDefinition = $processClass->getInstances();
-	
+		var_dump($processViewData);
 		$this->setData('availableProcessDefinition',$availableProcessDefinition);
 		$this->setData('processViewData',$processViewData);
 		$this->setView('main.tpl');

@@ -3,32 +3,51 @@ error_reporting(E_ALL);
 
 class ProcessBrowser extends WfModule
 {
-	public function index($processUri)
+	public function index($processUri, $activityUri)
 	{
 		
 		$_SESSION["processUri"] = $processUri;
-
 		$processUri 		= urldecode($processUri); // parameters clean-up.
 		$this->setData('processUri',$processUri);
+		
+		$activityUri = urldecode($activityUri);
 		
 		$userViewData 		= UsersHelper::buildCurrentUserForView(); // user data for browser view.
 		$this->setData('userViewData',$userViewData);
 		$browserViewData 	= array(); // general data for browser view.
 
 		$process 			= new ProcessExecution($processUri);
-		if(empty($process->currentActivity)) {
-			die('Any current activity found in the process : ' . $processUri);
+		$currentActivity = null;
+		if(!empty($activityUri)){
+			//check that it is an uri of a valid activitiy definition:
+			foreach($process->currentActivity as $processCurrentActivity){
+				if($processCurrentActivity->uri == $activityUri){
+					$currentActivity = new Activity($activityUri);
+					break;
+				}
+			}
 		}
-		if(count($process->currentActivity) > 1) {
-			$this->redirect(_url('pause', 'processBrowser'));
+		
+		if(is_null($currentActivity)){
+			//if the activity is still null check if there is a value in $process->currentActivity:
+			if(empty($process->currentActivity)) {
+				die('No current activity found in the process: ' . $processUri);
+			}
+			if(count($process->currentActivity) > 1) {
+				$this->redirect(_url('pause', 'processBrowser'));
+			}else{
+				//use the first one:
+				$currentActivity = $process->currentActivity[0];
+			}
 		}
+		
 		
 		$userService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_UserService');
 		$currentUser = $userService->getCurrentUser();
 		
 		$activityExecutionService 	= tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityExecutionService');
 		
-		$activity 			= $process->currentActivity[0];
+		$activity 			= $currentActivity;
 		
 		$activityExecutionService->initExecution($activity->resource, $currentUser);
 		
@@ -83,8 +102,7 @@ class ProcessBrowser extends WfModule
 
 		
 		$consistencyViewData = array();
-		if (isset($_SESSION['taoqual.flashvar.consistency']))
-		{
+		if (isset($_SESSION['taoqual.flashvar.consistency'])){
 			$consistencyException 		= $_SESSION['taoqual.flashvar.consistency'];
 			$involvedActivities 		= $consistencyException['involvedActivities'];
 			$consistencyViewData['isConsistent']		= false;
@@ -105,9 +123,7 @@ class ProcessBrowser extends WfModule
 			
 			// Clean flash variables.
 			$_SESSION['taoqual.flashvar.consistency'] = null;
-		}
-		else
-		{
+		}else{
 			// Everything is allright with data consistency for this process.
 			$consistencyViewData['isConsistent'] = true;
 
@@ -120,8 +136,7 @@ class ProcessBrowser extends WfModule
 
 		//retrieve activities
 
-		if (!($qSortedActivities = common_Cache::getCache("aprocess_activities")))
-		{
+		if (!($qSortedActivities = common_Cache::getCache("aprocess_activities"))){
 
 			$processDefinition = new core_kernel_classes_resource($process->process->uri);
 			$activities = $processDefinition->getPropertyValues(new core_kernel_classes_Property(PROPERTY_PROCESS_ACTIVITIES));
@@ -140,8 +155,7 @@ class ProcessBrowser extends WfModule
 		}
 
 		$browserViewData['annotationsResourcesJsArray'] = array();
-		foreach ($qSortedActivities as $key=>$val)
-		{
+		foreach ($qSortedActivities as $key=>$val){
 			$browserViewData['annotationsResourcesJsArray'][]= array($val,$key);
 		}
 
@@ -151,7 +165,7 @@ class ProcessBrowser extends WfModule
 		$servicesViewData 	= array();
 
 		$services = $activityExecution->getInteractiveServices();
-
+		var_dump('activity:',$activity);
 		$this->setData('services',$services);
 
 		$this->setData('browserViewData', $browserViewData);
@@ -195,7 +209,7 @@ class ProcessBrowser extends WfModule
 				$this->pause($processUri);
 			}
 			else{
-				$this->redirect(_url('index', 'processBrowser', null, array('processUri' => urlencode($processUri))));
+				$this->redirect(_url('index', 'processBrowser', null, array('processUri' => urlencode($processUri), 'activityUri'=>'my act uri')));
 			}
 		}
 		catch (ConsistencyException $consistencyException)
