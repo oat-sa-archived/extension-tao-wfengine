@@ -90,6 +90,13 @@
 	text-decoration: underline;	
 }
 
+#active_processes .join .activity-denied{
+	color: red;
+	padding: 0 0 0 20px;
+	height: 16px;
+	background: transparent url(../img/exclamation.png) no-repeat 0px -1px;
+}
+
 #active_processes .status
 {
 	width: 50px;
@@ -101,28 +108,37 @@
 #active_processes .situation
 {
 	width: 50px;
-
 	color: #000000;
 	text-align: center;	
 }
 
 #roles
 {
-	margin-left: 10px;
-	width: 930px;	
+	margin-left: 20px;
+	margin-top: 10px;
+	width: 920px;	
 }
 
 #roles li
 {
 	padding: 3px;
-	margin: 20px 0px 1px 0px;
+	margin: 2px 0px 1px 20px;
 	background: #E5F2FF;
+	list-style-image: url(../img/group.png);
 }
 
 #new_process
 {
 	display: block;
-	margin: 20px 0 20px 20px;
+	margin: 10px 0 20px 20px;
+	width: 920px;	
+}
+
+#new_process li
+{
+	padding: 3px;
+	margin: 2px 0px 1px 20px;
+	background: #E5F2FF;
 	list-style-image: url(../img/taoDelivery_small.png);
 }
 

@@ -4,15 +4,20 @@ class Main extends WfModule
 
 
 	/**
-	 * @param $caseId
-	 * @return unknown_type
+	 * 
+	 * @param string $caseId
+	 * @param string $login
+	 * @param string $pwd
+	 * @return void
 	 */
 	public function index($caseId = null, $login = null, $pwd = null)
 	{
 
 		$wfEngine 			= $_SESSION["WfEngine"];
+		
 		$userViewData 		= UsersHelper::buildCurrentUserForView();
 		$this->setData('userViewData',$userViewData);
+		
 		$processes 			= $wfEngine->getProcessExecutions();
 		
 		$activityExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityExecutionService');
@@ -73,7 +78,9 @@ class Main extends WfModule
 				$currentActivities[] = array(
 					'label'				=> $currentActivity->label,
 					'uri' 				=> $currentActivity->uri,
-					'may_participate'	=> (!$proc->isFinished() && $isAllowed)
+					'may_participate'	=> (!$proc->isFinished() && $isAllowed),
+					'finished'			=> $proc->isFinished(),
+					'allowed'			=> $isAllowed
 				);
 			}
 			

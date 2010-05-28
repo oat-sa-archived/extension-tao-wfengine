@@ -339,12 +339,12 @@ class ProcessAuthoring extends TaoModule {
 				
 				
 				$properties = $myForm->getValues();
-				$this->saveActivityProperty($properties);
-				
-				//replace with a clean template upload
-				$this->setData('saved', true);
+				if($this->saveActivityProperty($properties)){
+					//replace with a clean template upload
+					$this->setData('saved', true);
+				}
 				$this->setView('process_form_property.tpl');
-				exit;
+				return;
 			}
 		}
 		
@@ -422,14 +422,7 @@ class ProcessAuthoring extends TaoModule {
 				}
 			}
 		}
-		
-		//if ajax mode:
-		if(tao_helpers_Request::isAjax()){
-			echo json_encode(array("saved" => $saved));
-		}
-		else{
-			return $saved;
-		}
+		return $saved;
 	}
 	
 	public function editProcessProperty(){

@@ -237,6 +237,31 @@ class wfEngine_models_classes_RoleService
 	public function deleteRole(core_kernel_classes_Resource $role){
 		return $role->delete();
 	}	
+	
+	/**
+	 * get all the roles of the user
+	 * @param core_kernel_classes_Resource $user
+	 * @return array
+	 */
+	public function getUserRoles(core_kernel_classes_Resource $user){
+		
+		$returnValue = array();
+
+		if(!is_null($user)){
+			
+			$allowedRoles = $this->roleClass->getInstances(true);
+			
+			$roles = $user->getPropertyValues(new core_kernel_classes_Property(RDFS_TYPE));
+			foreach($roles as $role){
+				if(array_key_exists($role, $allowedRoles)){
+					$returnValue[] = new core_kernel_classes_Resource($role);
+				}
+			}
+		}
+		
+		return (array)$returnValue;
+	}
+	
 } /* end of class wfEngine_models_classes_RoleService */
 
 ?>

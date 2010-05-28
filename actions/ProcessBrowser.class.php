@@ -21,13 +21,17 @@ class ProcessBrowser extends WfModule
 		if(count($process->currentActivity) > 1) {
 			$this->redirect(_url('pause', 'processBrowser'));
 		}
-
+		
+		$userService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_UserService');
+		$currentUser = $userService->getCurrentUser();
+		
+		$activityExecutionService 	= tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityExecutionService');
+		
 		$activity 			= $process->currentActivity[0];
+		$activityExecutionService->initExecution($activity->resource, $currentUser);
 		
 		//security check if the user is allowed to access this activity
-		$activityExecutionService 	= tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityExecutionService');
-		$userService				= tao_models_classes_ServiceFactory::get('wfEngine_models_classes_UserService');
-		if(!$activityExecutionService->checkAcl($activity->resource, $userService->getCurrentUser())){
+		if(!$activityExecutionService->checkAcl($activity->resource, $currentUser)){
 			$_SESSION["processUri"] = null;
 			$this->redirect(_url('index', 'Main'));
 		}

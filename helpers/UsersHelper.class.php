@@ -11,7 +11,7 @@ class UsersHelper
 	 */
 	public static function authenticate($in_login, $in_password){
 
-		$userService = tao_models_classes_ServiceFactory::get('tao_models_classes_UserService');
+		$userService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_UserService');
 		
 		//loggin into tao 
 		if($userService->loginUser($in_login, $in_password, false)){
@@ -48,18 +48,20 @@ class UsersHelper
 
 	public static function buildCurrentUserForView()
 	{
-		$WfEngine 			= WfEngine::singleton();
-		$user 				= $WfEngine->getUser();
-
-		// username.
+		$userService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_UserService');
+		$roleService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_RoleService');
+		$currentUser = $userService->getCurrentUser();
 		
-		$data['username'] 	= $user->userName;
+		// username.
+		$data['username'] 	= (string)$currentUser->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_USER_LOGIN));
 	
 		// user roles.
 		$data['roles']		= array();
-		foreach ($user->roles as $role){
-			$data['roles'][] = array('uri' 	 => $role->uri,
-									 'label' => $role->label);
+		foreach ($roleService->getUserRoles($currentUser) as $role){
+			$data['roles'][] = array(
+				'uri' 	 => $role->uriResource,
+				'label' => $role->getLabel()
+			);
 		}
 		
 		return $data;
