@@ -798,7 +798,7 @@ class ProcessAuthoring extends TaoModule {
 		$connectorUri = tao_helpers_Uri::decode($_POST['connectorUri']);
 		
 		$formName=uniqid("connectorEditor_");
-		$myForm = wfEngine_helpers_ProcessFormFactory::connectorEditor(new core_kernel_classes_Resource($connectorUri), null, $formName);
+		$myForm = wfEngine_helpers_ProcessFormFactory::connectorEditor(new core_kernel_classes_Resource($connectorUri), null, $formName, $this->getCurrentActivity());
 		
 		$this->setData('formId', $formName);
 		$this->setData('formConnector', $myForm->render());
@@ -833,10 +833,18 @@ class ProcessAuthoring extends TaoModule {
 			$connectorInstance = new core_kernel_classes_Resource($data["connectorUri"]);
 		}
 		
+		//current activity:
+		$activity = $this->getCurrentActivity();
+						
 		//edit service definition resource value:
 		if(!isset($data[PROPERTY_CONNECTORS_TYPE])){
 			$saved = false;
 			throw new Exception("no connector type uri found in POST");
+		}
+		
+		if(trim($data['label']) != ''){
+			// $propertyValues[RDFS_LABEL] = $data['label'];
+			$connectorInstance->setLabel($data['label']);
 		}
 		
 		if($data[PROPERTY_CONNECTORS_TYPE] != 'none'){
@@ -844,13 +852,38 @@ class ProcessAuthoring extends TaoModule {
 			$connectorType = $connectorInstance->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_TYPE));
 			if(!is_null($connectorType)){
 				if($connectorType->uriResource == INSTANCE_TYPEOFCONNECTORS_JOIN){
-					//need for update if the activity is different:
+					
 					$oldNextActivity = $connectorInstance->getOnePropertyValue($propNextActivities);
 					if(!is_null($oldNextActivity)){
-						if($oldNextActivity->uriResource != $data["join_activityUri"]){
-							$connectorInstance->removePropertyValues(new core_kernel_classes_Property(PROPERTY_CONNECTORS_TRANSITIONRULE));
-							$connectorInstance->removePropertyValues($propNextActivities);
-							$this->service->updateJoinedActivity($oldNextActivity);
+						//if the current type is still 'join' && target activity has changed || type of connector has changed:
+						if( $oldNextActivity->uriResource != $data["join_activityUri"] || $data[PROPERTY_CONNECTORS_TYPE]!= INSTANCE_TYPEOFCONNECTORS_JOIN){
+							//check if another activities is joined with the same connector:
+							$previousActivityCollection = $connectorInstance->getPropertyValuesCollection(new core_kernel_classes_Property(PROPERTY_CONNECTORS_PRECACTIVITIES)); //old: apimodel->getSubject(PROPERTY_CONNECTORS_PRECACTIVTIES, $oldNextActivity->uriResource);
+							$anotherPreviousActivity = null;
+							foreach($previousActivityCollection->getIterator() as $previousActivity){
+								if($previousActivity instanceof core_kernel_classes_Resource){
+									if($previousActivity->uriResource != $activity->uriResource){
+										$anotherPreviousActivity = $previousActivity;
+										break;
+									}
+								}
+							}
+							
+							if(!is_null($anotherPreviousActivity)){
+								// echo ' creating new connector for it ';
+								//there is another activity, so:
+								//remove reference of that activity from previous connector, and update its activity reference to the one of the other previous activity, update the 'old' join connector
+								$this->service->deleteReference(new core_kernel_classes_Property(PROPERTY_CONNECTORS_PRECACTIVITIES), $activity);
+								$connectorInstance->editPropertyValues(new core_kernel_classes_Property(PROPERTY_CONNECTORS_ACTIVITYREFERENCE), $anotherPreviousActivity->uriResource);
+							
+								//since it used to share the connector with other previous activities, now that it needs a new connector of its own, create one here:
+								//create a new connector for the current previous activity: 
+								$newConnectorInstance = $this->service->createConnector($activity, 'merge to ');
+								$connectorInstance = $newConnectorInstance;
+							}else{
+								//the activity is the first activity that is joined via this connector so just let it be edited
+							}
+							
 						}
 					}
 				}
@@ -858,10 +891,6 @@ class ProcessAuthoring extends TaoModule {
 			$this->service->setConnectorType($connectorInstance, new core_kernel_classes_Resource($data[PROPERTY_CONNECTORS_TYPE]));
 		}
 		
-		if(trim($data['label']) != ''){
-			// $propertyValues[RDFS_LABEL] = $data['label'];
-			$connectorInstance->setLabel($data['label']);
-		}
 		
 		$followingActivity = null;
 		
@@ -962,8 +991,13 @@ class ProcessAuthoring extends TaoModule {
 				if($data["join_activityUri"] == 'newActivity'){
 					$this->service->createJoinActivity($connectorInstance, null, $data["join_activityLabel"]);
 				}else{
-					$followingActivity = new core_kernel_classes_Resource($data["join_activityUri"]);
-					$this->service->createJoinActivity($connectorInstance, $followingActivity);
+					echo 'koko';
+					if(!is_null($activity)){
+						$followingActivity = new core_kernel_classes_Resource($data["join_activityUri"]);
+						$this->service->createJoinActivity($connectorInstance, $followingActivity, '', $activity);
+					}else{
+						throw new Exception('no activity found to be joined');
+					}
 				}
 			}
 		}

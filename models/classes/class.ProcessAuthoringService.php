@@ -155,7 +155,6 @@ class wfEngine_models_classes_ProcessAuthoringService
 		//to be clarified:
 		// $actualParameterType = PROPERTY_ACTUALPARAM_CONSTANTVALUE; //PROPERTY_ACTUALPARAM_CONSTANTVALUE;//PROPERTY_ACTUALPARAM_PROCESSVARIABLE //PROPERTY_ACTUALPARAM_QUALITYMETRIC
 		
-		//retrouver systematiquement l'actual parameter associ� � chaque fois, � partir du formal parameter et call of service, lors de la sauvegarde
 		$actualParameterClass = new core_kernel_classes_Class(CLASS_ACTUALPARAMETER);
 		
 		//create new resource for the property value of the current call of service PROPERTY_CALLOFSERVICES_ACTUALPARAMIN or PROPERTY_CALLOFSERVICES_ACTUALPARAMOUT
@@ -438,6 +437,8 @@ class wfEngine_models_classes_ProcessAuthoringService
 		}
 		
 		//delete connector itself:
+		$returnValue = $this->deleteReference(new core_kernel_classes_Property(PROPERTY_CONNECTORS_PRECACTIVITIES), $connector);
+		// $returnValue = $this->deleteReference(new core_kernel_classes_Property(PROPERTY_CONNECTORS_NEXTACTIVITIES), $connector);
 		$returnValue = $this->deleteInstance($connector);
 		
 		return $returnValue;
@@ -757,10 +758,10 @@ class wfEngine_models_classes_ProcessAuthoringService
 		$xmlDom = null;
 		if (!empty($question)){ // something to parse
 			// str_replace taken from the MsReader class
-			$question = str_replace("�", "'", $question); // utf8...
-			$question = str_replace("�", "'", $question); // utf8...
-			$question = str_replace("�", "\"", $question);
-			$question = str_replace("�", "\"", $question);
+			$question = str_replace("’", "'", $question); // utf8...
+			$question = str_replace("‘", "'", $question); // utf8...
+			$question = str_replace("“", "\"", $question);
+			$question = str_replace("”", "\"", $question);
 			if($isCondition){
 				$question = "if ".$question;
 			}	
@@ -1460,7 +1461,8 @@ class wfEngine_models_classes_ProcessAuthoringService
 	}
 	
 	
-	public function createJoinActivity(core_kernel_classes_Resource $connectorInstance, core_kernel_classes_Resource $followingActivity = null, $newActivityLabel = ''){
+		
+	public function createJoinActivity(core_kernel_classes_Resource $connectorInstance, core_kernel_classes_Resource $followingActivity = null, $newActivityLabel = '', core_kernel_classes_Resource $previousActivity){
 		
 		$this->setConnectorType($connectorInstance, new core_kernel_classes_Resource(INSTANCE_TYPEOFCONNECTORS_JOIN));
 		
@@ -1469,16 +1471,44 @@ class wfEngine_models_classes_ProcessAuthoringService
 		if(is_null($followingActivity)){
 			//TODO: create an activity if null:
 			$followingActivity = $this->createActivityFromConnector($connectorInstance, $newActivityLabel);
+		}else{
+			//find if a join connector already leads to the following activity:
+			$connectorCollection = core_kernel_impl_ApiModelOO::singleton()->getSubject(PROPERTY_CONNECTORS_NEXTACTIVITIES, $followingActivity->uriResource);
+			foreach($connectorCollection->getIterator() as $connector){
+				if($connector instanceof core_kernel_classes_Resource){
+					if($connector->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTOR_TYPEOFCONNECTOR))->uriResource == INSTANCE_TYPEOFCONNECTORS_JOIN){
+						//join connector found: connect the previous activity to that one:
+						
+						if(!is_null($previousActivity)){
+							// echo 'connector found:';var_dump($connector);
+							
+							//important: check that the connector found is NOT the same as the current one:
+							if($connectorInstance->uriResource != $connector->uriResource){
+								//delete old connector, and associate the activity to that one:
+								$this->deleteConnector($connectorInstance);
+								// $connectorInstance = $connector;
+								$connector->setPropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_PRECACTIVITIES), $previousActivity->uriResource);
+							}else{
+								//nothing to do
+							}
+						}else{
+							throw new Exception('no previous activity found to be connected to the next activity');
+						}
+						return $followingActivity;
+					}
+				}
+			}
+			
 		}
 		
 		if($followingActivity instanceof core_kernel_classes_Resource){
-			$connectorInstance->removePropertyValues($propNextActivity);
-			$connectorInstance->setPropertyValue($propNextActivity, $followingActivity->uriResource);
-			$this->updateJoinedActivity($followingActivity);
+			$connectorInstance->editPropertyValues($propNextActivity, $followingActivity->uriResource);
+			$connectorInstance->setLabel(__("merge to ").$followingActivity->getLabel());
 			return $followingActivity;
 		}else{
 			return null;
 		}
+		
 	}
 	
 	public function updateJoinedActivity(core_kernel_classes_Resource $followingActivity){

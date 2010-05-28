@@ -529,7 +529,7 @@ class wfEngine_helpers_ProcessFormFactory extends tao_helpers_form_GenerisFormFa
 		
 	}
 	
-	public function connectorEditor(core_kernel_classes_Resource $connector, core_kernel_classes_Resource $connectorType=null, $formName=''){
+	public function connectorEditor(core_kernel_classes_Resource $connector, core_kernel_classes_Resource $connectorType=null, $formName='', core_kernel_classes_Resource $activity){
 		if(empty($formName)){
 			$formName = 'connectorForm';
 		}
@@ -537,11 +537,17 @@ class wfEngine_helpers_ProcessFormFactory extends tao_helpers_form_GenerisFormFa
 		$myForm = tao_helpers_form_FormFactory::getForm($formName, array());
 		$myForm->setActions(array(), 'bottom');//delete the default 'save' and 'revert' buttons
 		
-		//add a hidden input to post the uri of the call of service that is being edited
+		//add a hidden input to post the uri of the connector that is being edited
 		$elementConnectorUri = tao_helpers_form_FormFactory::getElement('connectorUri', 'Hidden');
 		$elementConnectorUri->setValue(tao_helpers_Uri::encode($connector->uriResource));
 		// $classUriElt->setLevel($level);
 		$myForm->addElement($elementConnectorUri);
+		
+		//add a hidden input to post the uri of the activity of the connector that is being edited
+		$elementActivityUri = tao_helpers_form_FormFactory::getElement('activityUri', 'Hidden');
+		$elementActivityUri->setValue(tao_helpers_Uri::encode($activity->uriResource));
+		// $classUriElt->setLevel($level);
+		$myForm->addElement($elementActivityUri);
 		
 		//add label input: authorize connector label editing or not?
 		$elementLabel = tao_helpers_form_FormFactory::getElement('label', 'Textbox');
@@ -896,14 +902,14 @@ class wfEngine_helpers_ProcessFormFactory extends tao_helpers_form_GenerisFormFa
 				break;
 			}
 			case 'join':
-				$transitionRule = $connector->getOnePropertyValue($propTransitionRule);
-				if(!is_null($transitionRule) && $transitionRule instanceof core_kernel_classes_Resource){
-					$then = $transitionRule->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_TRANSITIONRULES_THEN));//note: 'else' doesn't matter
-					if($then instanceof core_kernel_classes_Resource){
-						$nextActivity = $then;
-					}
-				}
-				
+				// $transitionRule = $connector->getOnePropertyValue($propTransitionRule);
+				// if(!is_null($transitionRule) && $transitionRule instanceof core_kernel_classes_Resource){
+					// $then = $transitionRule->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_TRANSITIONRULES_THEN));//note: 'else' doesn't matter
+					// if($then instanceof core_kernel_classes_Resource){
+						// $nextActivity = $then;
+					// }
+				// }
+				$nextActivity = $connector->getOnePropertyValue($propNextActivities, true);
 				$idPrefix = $type;
 				break;
 			default:
@@ -985,6 +991,7 @@ class wfEngine_helpers_ProcessFormFactory extends tao_helpers_form_GenerisFormFa
 		}
 		
 		if(!empty($nextActivity)){
+		
 			if(is_array($nextActivity) && $optionsWidget == 'Checkbox'){
 				
 				foreach($nextActivity as $activity){
@@ -994,16 +1001,7 @@ class wfEngine_helpers_ProcessFormFactory extends tao_helpers_form_GenerisFormFa
 					$parallelActivityCount[$activity->uriResource] += 1;
 				}
 				
-				foreach($parallelActivityCount as $activityUri=>$number){
-					//create customized hidden field with the number for each activity
-					$encodedUri = tao_helpers_Uri::encode($activityUri);
-					
-					$elementHidden = null;
-					$elementHidden = tao_helpers_form_FormFactory::getElement("{$encodedUri}_num_hidden", 'Hidden');
-					$elementHidden->setValue($number);
-					
-					$returnValue[$idPrefix.'_'.$activityUri] = $elementHidden;
-				}
+				
 				
 			}elseif($nextActivity instanceof core_kernel_classes_Resource){
 				if(wfEngine_models_classes_ProcessAuthoringService::isActivity($nextActivity)){
@@ -1014,6 +1012,20 @@ class wfEngine_helpers_ProcessFormFactory extends tao_helpers_form_GenerisFormFa
 					$elementChoice->setValue("connector");
 					$elementConnectors->setValue($nextActivity->uriResource);
 				}
+			}
+		}
+		
+		//if is parallel: TODO: clean that!!
+		if(strtolower($type)=='parallel'){
+			foreach($parallelActivityCount as $activityUri=>$number){
+				//create customized hidden field with the number for each activity
+				$encodedUri = tao_helpers_Uri::encode($activityUri);
+				
+				$elementHidden = null;
+				$elementHidden = tao_helpers_form_FormFactory::getElement("{$encodedUri}_num_hidden", 'Hidden');
+				$elementHidden->setValue($number);
+				
+				$returnValue[$idPrefix.'_'.$activityUri] = $elementHidden;
 			}
 		}
 		

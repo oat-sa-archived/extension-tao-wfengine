@@ -87,9 +87,10 @@ function ActivityTreeClass(selector, dataUrl, options){
 						);
 						
 					}else if( $(NODE).hasClass('node-connector') && instance.options.editConnectorAction){
+						console.log(TREE_OBJ.parent(NODE).attr('id'));
 						_load(instance.options.formContainer, 
 							instance.options.editConnectorAction,
-							{connectorUri:$(NODE).attr('id')}
+							{connectorUri:$(NODE).attr('id'), activityUri:TREE_OBJ.parent(NODE).attr('id')}
 						);
 					}else if( ($(NODE).hasClass('node-connector-goto')||$(NODE).hasClass('node-connector-prev')) && instance.options.editConnectorAction){
 						//hightlight the target node

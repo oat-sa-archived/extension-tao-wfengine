@@ -71,6 +71,7 @@
 				$("#cancel-<?=$sectionName?>-property").click(function(){
 					$("#<?=$sectionName?>-property-form").html('');
 				});
+				
 			});
 		</script>
 	<?else:?>
