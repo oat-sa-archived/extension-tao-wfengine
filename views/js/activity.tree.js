@@ -854,7 +854,7 @@ ActivityTreeClass.removeNode = function(options){
 ActivityTreeClass.setFirstActivity = function(options){
 	var TREE_OBJ = options.TREE_OBJ;
 	var NODE = options.NODE;
-	data = {processUri:TREE_OBJ.parent(NODE).attr('id'), activityUri:NODE.attr('id')};
+	data = {processUri:TREE_OBJ.parent(NODE).attr('rel'), activityUri:NODE.attr('id')};
 	
 	if(data){
 		$.ajax({
