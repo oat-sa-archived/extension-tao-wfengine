@@ -19,7 +19,7 @@ class ProcessBrowser extends WfModule
 		$process 			= new ProcessExecution($processUri);
 		$currentActivity = null;
 		if(!empty($activityUri)){
-			//check that it is an uri of a valid activitiy definition:
+			//check that it is an uri of a valid activity definition (which is contained in currentActivity):
 			foreach($process->currentActivity as $processCurrentActivity){
 				if($processCurrentActivity->uri == $activityUri){
 					$currentActivity = new Activity($activityUri);
@@ -49,7 +49,9 @@ class ProcessBrowser extends WfModule
 		
 		$activity 			= $currentActivity;
 		
-		$activityExecutionService->initExecution($activity->resource, $currentUser);
+		$activityExecutionResource = $activityExecutionService->initExecution($activity->resource, $currentUser, $process->resource);
+		$browserViewData['activityExecutionUri']= $activityExecutionResource->uriResource;
+		var_dump('resource:',$activityExecutionResource);
 		
 		//security check if the user is allowed to access this activity
 		if(!$activityExecutionService->checkAcl($activity->resource, $currentUser)){
@@ -161,11 +163,14 @@ class ProcessBrowser extends WfModule
 
 		$browserViewData['active_Resource']="'".$activity->uri."'" ;
 		$browserViewData['isInteractiveService'] 	= true;
-
+		
+		
 		$servicesViewData 	= array();
 
 		$services = $activityExecution->getInteractiveServices();
+		
 		var_dump('activity:',$activity);
+		
 		$this->setData('services',$services);
 
 		$this->setData('browserViewData', $browserViewData);
@@ -191,7 +196,7 @@ class ProcessBrowser extends WfModule
 		}
 	}
 
-	public function next($processUri, $ignoreConsistency = 'false')
+	public function next($processUri, $activityExecutionUri, $ignoreConsistency = 'false')
 	{
 	
 		$processUri 	= urldecode($processUri);
@@ -200,7 +205,7 @@ class ProcessBrowser extends WfModule
 		try
 		{
 
-			$processExecution->performTransition(($ignoreConsistency == 'true') ? true : false);
+			$processExecution->performTransition($activityExecutionUri,($ignoreConsistency == 'true') ? true : false);
 
 			if ($processExecution->isFinished()){
 				$this->redirect(_url('index', 'Main'));

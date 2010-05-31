@@ -5,7 +5,7 @@ error_reporting(E_ALL);
 /**
  * This service enables you to manage, control, restrict the process activities
  *
- * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+ * @author firstname and lastname of author, <author@example.org>
  * @package wfEngine
  * @subpackage models_classes
  */
@@ -18,7 +18,7 @@ if (0 > version_compare(PHP_VERSION, '5')) {
  * The Service class is an abstraction of each service instance. 
  * Used to centralize the behavior related to every servcie instances.
  *
- * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+ * @author firstname and lastname of author, <author@example.org>
  */
 require_once('tao/models/classes/class.Service.php');
 
@@ -34,7 +34,7 @@ require_once('tao/models/classes/class.Service.php');
  * This service enables you to manage, control, restrict the process activities
  *
  * @access public
- * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+ * @author firstname and lastname of author, <author@example.org>
  * @package wfEngine
  * @subpackage models_classes
  */
@@ -52,7 +52,7 @@ class wfEngine_models_classes_ActivityExecutionService
      * Get the list of available ACL modes
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author firstname and lastname of author, <author@example.org>
      * @return array
      */
     public function getAclModes()
@@ -75,7 +75,7 @@ class wfEngine_models_classes_ActivityExecutionService
      * Define the ACL mode of an activity
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author firstname and lastname of author, <author@example.org>
      * @param  Resource activity
      * @param  Resource mode
      * @param  Resource target
@@ -130,33 +130,40 @@ class wfEngine_models_classes_ActivityExecutionService
      * Short description of method getExecution
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author firstname and lastname of author, <author@example.org>
      * @param  Resource activity
      * @param  Resource currentUser
+     * @param  Resource processExecution
      * @return core_kernel_classes_Resource
      */
-    public function getExecution( core_kernel_classes_Resource $activity,  core_kernel_classes_Resource $currentUser)
+    public function getExecution( core_kernel_classes_Resource $activity,  core_kernel_classes_Resource $currentUser,  core_kernel_classes_Resource $processExecution)
     {
         $returnValue = null;
 
         // section 127-0-1-1--11ec324e:128d9678eea:-8000:0000000000001F80 begin
         
-        if(!is_null($activity) && !is_null($currentUser)){
+        if(!is_null($activity) && !is_null($currentUser) && !is_null($processExecution)){
         	
         	$currentUserProp = new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_CURRENT_USER);
         	
         	//retrieve the process containing the activity
         	$apiModel  	= core_kernel_impl_ApiModelOO::singleton();
-        	$subjects 	= $apiModel->getSubject(PROPERTY_ACTIVITY_EXECUTION_ACTIVITY, $activity->uriResource);
-        	foreach($subjects->getIterator() as $activityExecution){
-        		$acticityExecutionUser = $activityExecution->getOnePropertyValue($currentUserProp);
-        		if(!is_null($acticityExecutionUser)){
-	        		if($currentUser->uriResource == $acticityExecutionUser->uriResource){
+        	$activityExecutionCollection = $apiModel->getSubject(PROPERTY_ACTIVITY_EXECUTION_ACTIVITY, $activity->uriResource);
+        	foreach($activityExecutionCollection->getIterator() as $activityExecution){
+        		$activityExecutionUser = $activityExecution->getOnePropertyValue($currentUserProp);
+				$activityExecutionProcessExecution = $activityExecution->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_PROCESSEXECUTION));
+        		
+				// echo 'currentUser:';var_dump($currentUser, $activityExecutionUser);
+				// echo 'procExec:';var_dump($processExecution, $activityExecutionProcessExecution);
+				
+				if(!is_null($activityExecutionUser) && !is_null($activityExecutionProcessExecution)){
+	        		if($currentUser->uriResource == $activityExecutionUser->uriResource && $processExecution->uriResource == $activityExecutionProcessExecution->uriResource){
 	        			$returnValue = $activityExecution;
 	        			break;
 	        		}
         		}
         	}
+			
         }
         // section 127-0-1-1--11ec324e:128d9678eea:-8000:0000000000001F80 end
 
@@ -167,21 +174,22 @@ class wfEngine_models_classes_ActivityExecutionService
      * Short description of method initExecution
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author firstname and lastname of author, <author@example.org>
      * @param  Resource activity
      * @param  Resource currentUser
+     * @param  Resource processExecution
      * @return core_kernel_classes_Resource
      */
-    public function initExecution( core_kernel_classes_Resource $activity,  core_kernel_classes_Resource $currentUser)
+    public function initExecution( core_kernel_classes_Resource $activity,  core_kernel_classes_Resource $currentUser,  core_kernel_classes_Resource $processExecution)
     {
         $returnValue = null;
 
         // section 127-0-1-1--11ec324e:128d9678eea:-8000:0000000000001F7C begin
         
         
-        if(!is_null($activity) && !is_null($currentUser)){
+        if(!is_null($activity) && !is_null($currentUser) && !is_null($processExecution)){
 	        
-        	$execution = $this->getExecution($activity, $currentUser);
+        	$execution = $this->getExecution($activity, $currentUser, $processExecution);
 	        
 	        //if no activty execution, create one for that user
 	        if(is_null($execution)){
@@ -189,11 +197,11 @@ class wfEngine_models_classes_ActivityExecutionService
 	        	//create a new activity execution
 	        	$execution = $this->createInstance(new core_kernel_classes_Class(CLASS_ACTIVITY_EXECUTION));
 	        	
-	        	//link it to the activity
+	        	//link it to the activity definition:
 	        	$execution->setPropertyValue(new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_ACTIVITY), $activity->uriResource);
 	        	
-	        	//bind this execution of the activity with the current user 
-	        	$execution = $this->bindExecution($execution, $currentUser);
+	        	//bind this execution of the activity with the current user and the current process execution
+	        	$this->bindExecution($execution, $currentUser, $processExecution);
 	        }
 	        
 	        $returnValue = $execution;
@@ -209,12 +217,13 @@ class wfEngine_models_classes_ActivityExecutionService
      * the execution for that user or restrict it afterwhile)
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author firstname and lastname of author, <author@example.org>
      * @param  Resource activityExecution
      * @param  Resource currentUser
+     * @param  Resource processExecution
      * @return boolean
      */
-    public function bindExecution( core_kernel_classes_Resource $activityExecution,  core_kernel_classes_Resource $currentUser)
+    public function bindExecution( core_kernel_classes_Resource $activityExecution,  core_kernel_classes_Resource $currentUser,  core_kernel_classes_Resource $processExecution)
     {
         $returnValue = (bool) false;
 
@@ -229,6 +238,9 @@ class wfEngine_models_classes_ActivityExecutionService
 
         		//link the current user
 	        	$activityExecution->setPropertyValue(new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_CURRENT_USER), $currentUser->uriResource);
+	        	
+				//link the current process execution
+	        	$activityExecution->setPropertyValue(new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_PROCESSEXECUTION), $processExecution->uriResource);
 	        	
 	        	//in case of role and user restriction, set the current user as activty user
 	        	$activityUri	= $activityExecution->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_ACTIVITY));
@@ -263,7 +275,7 @@ class wfEngine_models_classes_ActivityExecutionService
      * It returns false if the user cannot access the activity.
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author firstname and lastname of author, <author@example.org>
      * @param  Resource activity
      * @param  Resource currentUser
      * @return boolean
@@ -379,7 +391,7 @@ class wfEngine_models_classes_ActivityExecutionService
      * Get the list of available process execution for a user
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author firstname and lastname of author, <author@example.org>
      * @param  Process process
      * @param  Resource currentUser
      * @return array

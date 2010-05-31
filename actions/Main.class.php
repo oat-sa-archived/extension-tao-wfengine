@@ -18,12 +18,14 @@ class Main extends WfModule
 		$userViewData 		= UsersHelper::buildCurrentUserForView();
 		$this->setData('userViewData',$userViewData);
 		
-		$processes 			= $wfEngine->getProcessExecutions();
+		//list of available process executions:
+		$processes = $wfEngine->getProcessExecutions();
 		
 		$activityExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityExecutionService');
 		$userService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_UserService');
 		$currentUser = $userService->getCurrentUser();
-
+		
+		//use of caseId?
 		if ($caseId != null){
 			foreach ($processes as $proc){
 
@@ -39,7 +41,7 @@ class Main extends WfModule
 							if($result instanceof core_kernel_classes_Literal && $result->literal == $caseId) {
 								$processUri = urlencode($proc->uri);
 								
-								$activityUri = urlencode($proc->currentActivity[0]->activity->uri);
+								$activityUri = urlencode($proc->currentActivity[0]->activity->uri);//not even used??!
 								
 								$viewState = _url('index', 'ProcessBrowser', null, array('processUri' => $processUri));
 								$this->redirect($viewState);
@@ -51,11 +53,9 @@ class Main extends WfModule
 		}
 
 		$processViewData 	= array();
-	
 		$uiLanguages		= I18nUtil::getAvailableLanguages();
 		$this->setData('uiLanguages',$uiLanguages);
-		foreach ($processes as $proc)
-		{
+		foreach ($processes as $proc){
 	
 			$type 	= $proc->process->label;
 			$label 	= $proc->label;
@@ -95,7 +95,8 @@ class Main extends WfModule
 	
 		}
 		$processClass = new core_kernel_classes_Class(CLASS_PROCESS);
-	
+		
+		//list of available process definitions:
 		$availableProcessDefinition = $processClass->getInstances();
 		var_dump($processViewData);
 		$this->setData('availableProcessDefinition',$availableProcessDefinition);

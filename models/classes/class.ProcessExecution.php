@@ -164,7 +164,7 @@ extends WfResource
 	 * @author firstname and lastname of author, <author@example.org>
 	 * @return void
 	 */
-	public function performTransition($ignoreConsistency = false){
+	public function performTransition($activityExecutionUri, $ignoreConsistency = false){
 	
 		
 			
@@ -183,9 +183,16 @@ extends WfResource
 		$processVars 				= $this->getVariables();
 		$arrayOfProcessVars 		= Utils::processVarsToArray($processVars);
 		$currentTokenProp = new core_kernel_classes_Property(CURRENT_TOKEN);
-	
-		$activityBeforeTransition 	= new Activity($this->currentActivity[0]->uri);
-
+		
+		//old impl, does not allow parallel activities of a same activity definition:
+		// $activityBeforeTransition 	= new Activity($this->currentActivity[0]->uri);
+		// $activityExecutionResource = $activityExecutionService->getExecution(new core_kernel_classes_Resource($activityBeforeTransition->uri), $currentUser, $this->resource) ;
+		
+		//new:
+		$activityExecutionResource = new core_kernel_classes_Resource($activityExecutionUri);
+		$activityDefinition = $activityExecutionResource->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_ACTIVITY));
+		$activityBeforeTransition 	= new Activity($activityDefinition->uriResource);
+		
 		$activityBeforeTransition->feedFlow(1);
 
 		//common_Cache::setCache($activityBeforeTransition,$this->currentActivity[0]->uri);
@@ -232,13 +239,15 @@ extends WfResource
 		}
 		
 		
-		//set the activity execution of the current user as finished:
+		//init the services
 		$activityExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityExecutionService');
 		$userService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_UserService');
 		$currentUser = $userService->getCurrentUser();
-		var_dump($activityBeforeTransition, $currentUser);
-		$activityExecutionResource = $activityExecutionService->getExecution(new core_kernel_classes_Resource($activityBeforeTransition->uri), $currentUser) ;
+		
+		var_dump($activityBeforeTransition->resource, $currentUser, $this->resource);
+		//set the activity execution of the current user as finished:
 		if(!is_null($activityExecutionResource)){
+			var_dump($activityExecutionResource, new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_IS_FINISHED));
 			$activityExecutionResource->editPropertyValues(new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_IS_FINISHED), GENERIS_TRUE);
 		}else{
 			throw new Exception("cannot find the activity execution of the current activity {$activityBeforeTransition->uri} in perform transition");
@@ -248,7 +257,7 @@ extends WfResource
 		$connectorsUri = $this->getNextConnectorsUri($this->currentActivity[0]->uri);//could work for join as they share the same connector
 		$arrayOfProcessVars[VAR_PROCESS_INSTANCE] = $this->resource->uriResource;
 		$newActivities = $this->getNewActivities($arrayOfProcessVars, $connectorsUri);
-		if(empty($newActivities)){
+		if($newActivities === false){
 			//means that the process must be paused:
 			$this->pause();
 			return;
@@ -325,7 +334,7 @@ extends WfResource
 	/**
 	 * @param $arrayOfProcessVars
 	 * @param $nextConnectors
-	 * @return Activity
+	 * @return array of Activity or Boolean (false) 
 	 */
 	private function getNewActivities($arrayOfProcessVars, $nextConnectors)
 	{
@@ -372,29 +381,8 @@ extends WfResource
 				case INSTANCE_TYPEOFCONNECTORS_JOIN : {
 					//TODO
 					echo 'work in progress to join';
-					/*
-					$connector = new Connector($connUri);
-					$prevActivitesCollection = $connector->getPreviousActivities();
 					
-					foreach ($prevActivitesCollection->getIterator() as $activityResource){
-						
-						$apiModel  	= core_kernel_impl_ApiModelOO::singleton();
-		
-						$subjects 	= $apiModel->getSubject(PROPERTY_ACTIVITY_EXECUTION_ACTIVITY, $activityResource->uriResource);
-						
-						$executionResource =	$subjects->get(0);
-						
-						$isFinishedProp = new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_IS_FINISHED);
-						$isFinished = $executionResource->getOnePropertyValue($isFinishedProp);
-						
-						if(!$isFinished instanceof core_kernel_classes_Resource || $isFinished->uriResource == GENERIS_FALSE){
-							$newActivities = false;
-							break;
-						}
-						
-					}
-					$newActivities = $connector->getNextActivities();
-					*/
+					
 					
 					$completed = false;
 					//count the number of each different activity definition that has to be done parallely:
@@ -409,40 +397,70 @@ extends WfResource
 						}
 					}
 					
-					var_dump($activityResourceArray);
+					// var_dump($activityResourceArray);
+					$debug = array();
+					
 					foreach($activityResourceArray as $activityDefinition=>$count){
+						//get all activity execution for the current activity definition and for the current process execution indepedently from the user (which is not known at the authoring time)
 						
 						//get the collection of the execution performed:
-						$activityExecutionCollection = core_kernel_impl_ApiModelOO::singleton()->getSubject(PROPERTY_ACTIVITY_EXECUTION_ACTIVITY, $activityResource->uriResource);
-						$activityResourceArray[$activityDefinition] = $activityExecutionCollection->count();
+						$activityExecutionCollection = core_kernel_impl_ApiModelOO::singleton()->getSubject(PROPERTY_ACTIVITY_EXECUTION_ACTIVITY, $activityDefinition);
 						
-						echo '$activityExecutionCollection of '.$activityDefinition; var_dump($activityExecutionCollection);
+						$activityExecutionArray = array();
+						$debug[$activityDefinition] = array();
+						foreach($activityExecutionCollection->getIterator() as $activityExecutionResource){
+							$processExecutionResource = $activityExecutionResource->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_PROCESSEXECUTION));
+							
+							$debug[$activityDefinition][$processExecutionResource->uriResource] = $this->resource->uriResource;
+							// $debug[$activityDefinition]['$this->resource->uri'] = $this->resource->uri;
 								
-						if($activityExecutionCollection->count() != $count){
-							break; //leave the $completed value as false
-						}else{
-							foreach($activityExecutionCollection->getIterator() as $activityExecution){
-								$isFinished = $activityExecution->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_IS_FINISHED));
-								if(!$isFinished instanceof core_kernel_classes_Resource || $isFinished->uriResource == GENERIS_FALSE){
-									break; //leave the $completed value as false
+							if(!is_null($processExecutionResource)){
+								if($processExecutionResource->uriResource == $this->resource->uriResource){
+									//found one: check if it is finished:
+									$isFinished = $activityExecutionResource->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_IS_FINISHED));
+									if(!$isFinished instanceof core_kernel_classes_Resource || $isFinished->uriResource == GENERIS_FALSE){
+										$completed = false;
+										break(2); //leave the $completed value as false, no neet to continue
+									}else{
+										//a finished activity execution for the process execution
+										$activityExecutionArray[] = $activityExecutionResource;
+									}
 								}
 							}
-							//reach the end:
-							$completed = true;
 						}
+						
+						$debug[$activityDefinition]['activityExecutionArray'] = $activityExecutionArray;
+						
+						if(count($activityExecutionArray) == $count){
+							//ok for this activity definiton, continue to the next loop
+							$completed = true;
+						}else{
+							$completed = false;
+							break;
+						}
+						
+						//for debug only:
+						// $activityResourceArray[$activityDefinition] = $activityExecutionCollection->count();
+						
+						// echo '$activityExecutionCollection of '.$activityDefinition; var_dump($activityExecutionCollection);
+												
 					}
 					
-					var_dump($activityResourceArray);die();
+					var_dump($activityResourceArray,$debug, $completed);
+					
 					if($completed){
-						//get THE next activity
+						//get THE (unique) next activity
 						$nextActivitesCollection = $connector->getNextActivities();
 						// var_dump($nextActivitesCollection);
 						foreach ($nextActivitesCollection->getIterator() as $activityResource){
 							$newActivities[] = new Activity($activityResource->uriResource);//normally, should be only ONE, so could actually break after the first loop
 						}
 					}else{
-						//pause, do not allow transition so return an empty array
+						//pause, do not allow transition so return boolean false
+						return false;
 					}
+					var_dump($nextActivitesCollection, $newActivities);
+					// die();
 					
 					break;
 				}
@@ -1219,12 +1237,12 @@ extends WfResource
 		}
 
 		$statusProp = new core_kernel_classes_Property(STATUS);
-		$values = $this->resource->getPropertyValues($statusProp);
+		$status = $this->resource->getPropertyValues($statusProp);
 
 		//add status information
-		if (sizeOf($values)>0)
+		if (sizeOf($status)>0)
 		{
-			switch ($values[0])
+			switch ($status[0])
 			{
 				case RESOURCE_PROCESSSTATUS_RESUMED : 	{ $this->status = "Resumed"; break; }
 				case RESOURCE_PROCESSSTATUS_STARTED : 	{ $this->status = "Started"; break; }
