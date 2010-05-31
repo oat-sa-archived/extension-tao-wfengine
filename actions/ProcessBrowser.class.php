@@ -3,7 +3,7 @@ error_reporting(E_ALL);
 
 class ProcessBrowser extends WfModule
 {
-	public function index($processUri, $activityUri)
+	public function index($processUri, $activityUri='')
 	{
 		
 		$_SESSION["processUri"] = $processUri;
