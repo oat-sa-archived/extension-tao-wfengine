@@ -62,7 +62,7 @@ class Main extends WfModule
 			$uri 	= $proc->uri;
 			$status = $proc->status;
 			$persid	= "-";
-	
+						
 			$activityIsInitialProp = new core_kernel_classes_Property(PROPERTY_ACTIVITIES_ISINITIAL);
 	
 			$currentActivities = array();
@@ -97,9 +97,20 @@ class Main extends WfModule
 		$processClass = new core_kernel_classes_Class(CLASS_PROCESS);
 		
 		//list of available process definitions:
-		$availableProcessDefinition = $processClass->getInstances();
-		var_dump($processViewData);
-		$this->setData('availableProcessDefinition',$availableProcessDefinition);
+		$availableProcessDefinitions = $processClass->getInstances();
+		
+		//filter process that can be initialized by the current user:
+		$processExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessExecutionService');
+		$authorizedProcessDefinitions = array();
+		foreach($availableProcessDefinitions as $processDefinition){
+			if($processExecutionService->checkAcl($processDefinition, $currentUser)){
+				$authorizedProcessDefinitions[] = $processDefinition;
+			}
+		}
+		
+		// var_dump($processViewData);
+		var_dump($authorizedProcessDefinitions);
+		$this->setData('availableProcessDefinition',$authorizedProcessDefinitions);
 		$this->setData('processViewData',$processViewData);
 		$this->setView('main.tpl');
 	
