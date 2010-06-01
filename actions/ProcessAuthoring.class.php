@@ -324,7 +324,8 @@ class ProcessAuthoring extends TaoModule {
 			PROPERTY_ACTIVITIES_HYPERCLASSES,
 			PROPERTY_ACTIVITIES_STATEMENTASSIGNATION,
 			PROPERTY_ACTIVITIES_ISINITIAL,
-			PROPERTY_ACTIVITIES_ALLOWFREEVALUEOF
+			PROPERTY_ACTIVITIES_ALLOWFREEVALUEOF,
+			'http://www.tao.lu/middleware/Interview.rdf#i122354397139712'
 		);
 		
 		$this->setData('saved', false);
@@ -1025,7 +1026,8 @@ class ProcessAuthoring extends TaoModule {
 		
 			if(!empty($data["join_activityUri"])){
 				if($data["join_activityUri"] == 'newActivity'){
-					$this->service->createJoinActivity($connectorInstance, null, $data["join_activityLabel"]);
+					// echo 'creating new joined activity';
+					$this->service->createJoinActivity($connectorInstance, null, $data["join_activityLabel"], $activity);
 				}else{
 					if(!is_null($activity)){
 						$followingActivity = new core_kernel_classes_Resource($data["join_activityUri"]);

@@ -327,8 +327,14 @@ class wfEngine_models_classes_ActivityExecutionService
         			//check if the current user has the restricted role and is the restricted user
         			case INSTANCE_ACL_ROLE_RESTRICTED_USER:
         				$activityRole 	= $activity->getOnePropertyValue($restrictedRoleProp);
+						
 						$activityUser 	= $activity->getOnePropertyValue($restrictedUserProp);
-        				$userRoles 		= $currentUser->getPropertyValues($rdfsTypeProp);
+        				//check if an activity execution already exists for the current activity or if there are several in parallel, check if there is one spot available. If so create the activity execution:
+						//need to know the current process execution, from it, get the process definition and the number of activity executions associated to it.
+						//from the process definition get the number of allowed activity executions for this activity definition (normally only 1 but can be more, for a parallel connector)
+						$activityExecutionUser = null;
+						
+						$userRoles 		= $currentUser->getPropertyValues($rdfsTypeProp);
         				if(!is_null($activityRole) && !is_null($activityUser) && is_array($userRoles)){
 	        				if(in_array($activityRole->uriResource, $userRoles) && $activityUser->uriResource == $currentUser->uriResource){
 								$returnValue = true;
