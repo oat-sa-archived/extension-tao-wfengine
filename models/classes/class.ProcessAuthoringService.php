@@ -1587,13 +1587,36 @@ class wfEngine_models_classes_ProcessAuthoringService
 		return true;
 	}
 	
-	public function createProcessVariable($label, $code){
-		if($this->getProcessVariable($code)){
+	public function createProcessVariable($label='', $code=''){
+		$processVariable = null;
+		
+		if(!empty($code) && $this->getProcessVariable($code)){
 			throw new Exception("A process variable with the code '{$code}' already exists");
 		}
+		
 		$classCode = new core_kernel_classes_Class(CLASS_PROCESSVARIABLES);
-		$processVariable = $classCode->createInstance($label, 'created by ProcessAuthoringService');
-		$processVariable->setPropertyValue(new core_kernel_classes_Property(PROPERTY_PROCESSVARIABLES_CODE), $code);
+		$processVariable = $this->createInstance($classCode);
+		
+		if(!empty($label)){
+			$processVariable->setLabel($label);
+		}
+		
+		// $processVariable = $classCode->createInstance($label, 'created by ProcessAuthoringService');
+		if(!empty($code)){
+			$processVariable->setPropertyValue(new core_kernel_classes_Property(PROPERTY_PROCESSVARIABLES_CODE), $code);
+		}
+		
+		//set the new instance of process variable as a property of the class process instance:
+		// $ok = core_kernel_impl_ApiModelOO::singleton()->setStatement($instance->uriResource, RDF_TYPE, RDF_PROPERTY, '');
+		$ok = $processVariable->setPropertyValue(new core_kernel_classes_Property(RDF_TYPE), RDF_PROPERTY);
+		if($ok){
+			$newProcessInstanceProperty = new core_kernel_classes_Property($processVariable->uriResource);
+			$newProcessInstanceProperty->setDomain(new core_kernel_classes_Class(CLASS_PROCESSINSTANCE));
+			$newProcessInstanceProperty->setRange(new core_kernel_classes_Class(RDFS_LITERAL));//literal only??
+		}else{
+			throw new Exception("the newly created process variable {$label} ({$processVariable->uriResource}) cannot be set as a property of the class process instance");
+		}
+		
 		return $processVariable;
 	}
 	

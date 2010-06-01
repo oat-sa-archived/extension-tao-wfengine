@@ -512,22 +512,18 @@ class ProcessAuthoring extends TaoModule {
 			throw new Exception("wrong request mode");
 		}
 		$clazz = $this->getCurrentClass();
-		$instance = $this->service->createInstance($clazz);
+		//case when a process variable has been just added:
+		if($clazz->uriResource == CLASS_PROCESSVARIABLES){
+			//
+			$instance =  $this->service->createProcessVariable();
+			
+		}else{
+			$instance = $this->service->createInstance($clazz);
+		}
 		
 		if(!is_null($instance) && $instance instanceof core_kernel_classes_Resource){
 		
-			//case when a process variable has been just added:
-			if($clazz->uriResource == CLASS_PROCESSVARIABLES){
-				//set the new instance of process variable as a property of the class process instance:
-				$ok = core_kernel_impl_ApiModelOO::singleton()->setStatement($instance->uriResource, RDF_TYPE, RDF_PROPERTY, '');
-				if($ok){
-					$newProcessInstanceProperty = new core_kernel_classes_Property($instance->uriResource);
-					$newProcessInstanceProperty->setDomain(new core_kernel_classes_Class(CLASS_PROCESSINSTANCE));
-					$newProcessInstanceProperty->setRange(new core_kernel_classes_Class(RDFS_LITERAL));//literal only??
-				}else{
-					throw new Exception("the newly created process variable cannot be set as a property of the class process instance");
-				}
-			}
+			
 			
 			echo json_encode(array(
 				'label'	=> $instance->getLabel(),
