@@ -169,7 +169,7 @@ class ProcessBrowser extends WfModule
 
 		$services = $activityExecution->getInteractiveServices();
 		
-		var_dump('activity:',$activity);
+		//var_dump('activity:',$activity);
 		
 		$this->setData('services',$services);
 

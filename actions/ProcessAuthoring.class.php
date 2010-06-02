@@ -70,6 +70,7 @@ class ProcessAuthoring extends TaoModule {
 		
 		$instance = $this->service->getInstance($uri, 'uri', new core_kernel_classes_Class(CLASS_ACTIVITIES));
 		if(is_null($instance)){
+			//var_dump($uri, $instance);
 			throw new Exception("No instance of the class Activities found for the uri {$uri}");
 		}
 		

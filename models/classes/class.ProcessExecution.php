@@ -139,8 +139,10 @@ extends WfResource
 		$processVarsProp = new core_kernel_classes_Property(PROCESS_VARIABLES);
 		$processVars = $this->process->resource->getPropertyValues($processVarsProp);
 
+		
 		foreach ($processVars as $uriVar)
 		{
+			
 			$var = new core_kernel_classes_Property($uriVar);
 			$values = $this->resource->getPropertyValues($var);
 			
@@ -256,10 +258,10 @@ extends WfResource
 		$userService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_UserService');
 		$currentUser = $userService->getCurrentUser();
 		
-		var_dump($activityBeforeTransition->resource, $currentUser, $this->resource);
+	//	var_dump($activityBeforeTransition->resource, $currentUser, $this->resource);
 		//set the activity execution of the current user as finished:
 		if(!is_null($activityExecutionResource)){
-			var_dump($activityExecutionResource, new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_IS_FINISHED));
+			//var_dump($activityExecutionResource, new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_IS_FINISHED));
 			$activityExecutionResource->editPropertyValues(new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_IS_FINISHED), GENERIS_TRUE);
 		}else{
 			throw new Exception("cannot find the activity execution of the current activity {$activityBeforeTransition->uri} in perform transition");
@@ -304,7 +306,7 @@ extends WfResource
 			$setPause = true;
 			foreach ($this->currentActivity as $activityAfterTransition){
 				
-				//$activityExecutionService->initExecution($activityAfterTransition->resource, $currentUser);
+				$activityExecutionService->initExecution($activityAfterTransition->resource, $currentUser);
 				
 				//check if the current user is allowed to execute the activity
 				if($activityExecutionService->checkAcl($activityAfterTransition->resource, $currentUser)){
@@ -455,10 +457,11 @@ extends WfResource
 						// $activityResourceArray[$activityDefinition] = $activityExecutionCollection->count();
 						
 						// echo '$activityExecutionCollection of '.$activityDefinition; var_dump($activityExecutionCollection);
+												
 					}
 					
-					var_dump($prevActivitesCollection, $activityResourceArray,$debug, $completed);
-					die();
+					//var_dump($activityResourceArray,$debug, $completed);
+					
 					if($completed){
 						//get THE (unique) next activity
 						$nextActivitesCollection = $connector->getNextActivities();
@@ -470,7 +473,7 @@ extends WfResource
 						//pause, do not allow transition so return boolean false
 						return false;
 					}
-					var_dump($nextActivitesCollection, $newActivities);
+					//var_dump($nextActivitesCollection, $newActivities);
 					// die();
 					
 					break;

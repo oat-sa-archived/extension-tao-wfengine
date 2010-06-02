@@ -14,6 +14,9 @@ class ServiceApi extends Module
 	 * @return true
 	 */
 	public static function save($variable){
+		
+		$returnValue = false;
+		
 		$logger = new common_Logger('Sevice API SAVE',Logger::debug_level);
 		
 		
@@ -21,6 +24,9 @@ class ServiceApi extends Module
 			$processUri = $_SESSION["processUri"];
 			$process = new core_kernel_classes_Resource(urldecode($processUri));
 			// var_dump($variable);
+			
+			
+			
 			foreach($variable as $k=>$v) {
 				$collection = core_kernel_impl_ApiModelOO::singleton()->getSubject(PROPERTY_CODE,$k);
 				$logger->debug('Searching code for ' . $k ,__FILE__,__LINE__);
@@ -28,7 +34,7 @@ class ServiceApi extends Module
 					if($collection->count() == 1) {
 						$property = new core_kernel_classes_Property($collection->get(0)->uriResource);
 						// $logger->debug('Pocess ' . $processUri . '|'.$k . '|'. $v  ,__FILE__,__LINE__);
-						return $process->editPropertyValues($property,$v);
+						$process->editPropertyValues($property,$v);
 					}
 					$logger->debug('Found more than one prop for ' . $k ,__FILE__,__LINE__);
 					
@@ -37,7 +43,7 @@ class ServiceApi extends Module
 			}
 
 		}
-		return false;
+		return $returnValue;
 	}
 	
 	/**

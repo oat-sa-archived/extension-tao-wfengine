@@ -62,6 +62,11 @@ class SasImporter{
 	/**
 	 * @var core_kernel_classes_Class
 	 */
+	private $processInstanceClass = null;
+	
+	/**
+	 * @var core_kernel_classes_Class
+	 */
 	private $formalParamClass = null;
 	
 	/**
@@ -80,6 +85,16 @@ class SasImporter{
 	private $formalParamDefConstantProp = null;
 	
 	/**
+	 * @var core_kernel_classes_Property
+	 */
+	private $rdfTypeProp = null;
+	
+	/**
+	 * @var core_kernel_classes_Class
+	 */
+	private $rdfLiteralClass = null;
+	
+	/**
 	 * Constructor: init api connection and the ref API resources
 	 */
 	public function __construct(){
@@ -92,6 +107,10 @@ class SasImporter{
 		core_control_FrontController::connect(SYS_USER_LOGIN, SYS_USER_PASS, DATABASE_NAME);
 
 		//initialize ref to API classes and properties
+		
+		$this->rdfTypeProp					= new core_kernel_classes_Property(RDF_TYPE);
+		$this->rdfLiteralClass				= new core_kernel_classes_Class(RDFS_LITERAL);
+		$this->processInstanceClass			= new core_kernel_classes_Class(CLASS_PROCESSINSTANCE);
 		
 		$this->serviceDefClass 				= new core_kernel_classes_Class(CLASS_SUPPORTSERVICES);
 		$this->serviceUrlProp 				= new core_kernel_classes_Property(PROPERTY_SERVICESDEFINITION_URL);
@@ -321,6 +340,13 @@ class SasImporter{
 		if(!$this->processVarExists($code)){
 			$processVar = $this->processVarClass->createInstance(self::unCamelize($code));
 			if(!is_null($processVar)){
+				//set the new instance of process variable as a property of the class process instance:
+				if($processVar->setPropertyValue($this->rdfTypeProp, RDF_PROPERTY)){
+					$newProcessInstanceProperty = new core_kernel_classes_Property($processVar->uriResource);
+					$newProcessInstanceProperty->setDomain($this->processInstanceClass);
+					$newProcessInstanceProperty->setRange($this->rdfLiteralClass);
+				}
+				
 				return $processVar->setPropertyValue($this->processVarCodeProp, $code);
 			}
 		}
