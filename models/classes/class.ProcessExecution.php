@@ -143,12 +143,24 @@ extends WfResource
 		{
 			$var = new core_kernel_classes_Property($uriVar);
 			$values = $this->resource->getPropertyValues($var);
-			if ((sizeOf($values) > 0) && (trim(strip_tags($values[0])) != ""))
-			{
-				$label = $var->getLabel();
-				$codeProp = new core_kernel_classes_Property(PROPERTY_CODE);
-				$code = $var->getUniquePropertyValue($codeProp);
-				$returnValue[] 	= new Variable($uriVar, $code->literal, trim($values[0]));
+			
+			$label = $var->getLabel();
+			$codeProp = new core_kernel_classes_Property(PROPERTY_CODE);
+			$code = $var->getUniquePropertyValue($codeProp);
+			
+			$actualValue = '';			
+			if(count($values)>1){
+				$actualValue = serialize($values);
+			}else{
+				if ((sizeOf($values) > 0) && (trim(strip_tags($values[0])) != ""))
+				{
+					$actualValue = trim($values[0]);
+					
+				}
+			}
+			
+			if(!empty($actualValue)){
+				$returnValue[] 	= new Variable($uriVar, $code->literal, $actualValue);
 			}
 		}
 
@@ -443,11 +455,10 @@ extends WfResource
 						// $activityResourceArray[$activityDefinition] = $activityExecutionCollection->count();
 						
 						// echo '$activityExecutionCollection of '.$activityDefinition; var_dump($activityExecutionCollection);
-												
 					}
 					
-					var_dump($activityResourceArray,$debug, $completed);
-					
+					var_dump($prevActivitesCollection, $activityResourceArray,$debug, $completed);
+					die();
 					if($completed){
 						//get THE (unique) next activity
 						$nextActivitesCollection = $connector->getNextActivities();
