@@ -3,7 +3,7 @@
 		'name' => 'Workflow Engine ',
 		'description' => 'Workflow Engine  http://www.tao.lu',
 		'additional' => array(
-			'version' => '1.0',
+			'version' => '1.2',
 			'author' => 'CRP Henri Tudor',
 			'dependances' => array(),
 			'install' => array( 
