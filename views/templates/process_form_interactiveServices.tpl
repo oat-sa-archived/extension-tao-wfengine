@@ -142,12 +142,12 @@ $(function(){
 			range: "min",
 			max: 100,
 			min: 0,
-			step: 5,
+			step: 1,
 			slide: function(event, ui){
 				refreshPositionPreview(ui.handle.parentNode.id);
 			},
 			stop:function(event, ui){
-				refreshPositionPreview(ui.handle.parentNode.id);
+				// refreshPositionPreview(ui.handle.parentNode.id);
 			}
 		});
 		$("#slider_height").slider("value", eltHeight.val());
