@@ -167,16 +167,41 @@ class Service
 					
 					
 					$prop = new core_kernel_classes_Property($inParameterProcessVariable->uriResource);
-					$paramValueResource = $this->activityExecution->processExecution->resource->getOnePropertyValue($prop);
+					$paramValueResourceArray = $this->activityExecution->processExecution->resource->getPropertyValues($prop);
 					
 					// var_dump($inParameterProcessVariable,$paramValueResource);
 					
-					if($paramValueResource instanceof core_kernel_classes_Literal){
-						$paramValue = $paramValueResource->literal;
-					}else if($paramValueResource instanceof core_kernel_classes_Resource){
-						$paramValue = $paramValueResource->uriResource;//encode??
+					// if($paramValueResource instanceof core_kernel_classes_Literal){
+						// $paramValue = $paramValueResource->literal;
+					// }else if($paramValueResource instanceof core_kernel_classes_Resource){
+						// $paramValue = $paramValueResource->uriResource;//encode??
+					// }
+					
+					// $count = $paramValueResourceCollection->count();
+					// if($count>0){
+						// if($count>1){
+							
+						// }else{
+							// $paramValue = (string) $paramValueResourceCollection->get(0);
+						// }
+					
+					// }
+					
+					
+					$paramValue = '';
+					if(sizeof($paramValueResourceArray)){					
+						if(count($paramValueResourceArray)>1){
+							$paramValue = serialize($paramValueResourceArray);
+						}else{
+							if (trim(strip_tags($paramValueResourceArray[0])) != "")
+							{
+								$paramValue = trim($paramValueResourceArray[0]);
+								
+							}
+						}
 					}
 					
+			
 					$this->input[common_Utils::fullTrim($formalParameterName)] = array(
 						'type' => $paramType, 
 						'value' => $paramValue, 
