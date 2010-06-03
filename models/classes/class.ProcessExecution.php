@@ -130,8 +130,7 @@ extends WfResource
 	 * @author firstname and lastname of author, <author@example.org>
 	 * @return array
 	 */
-	public function getVariables()
-	{
+	public function getVariables(){
 		$returnValue = array();
 
 		// section 10-13-1--31-740bb989:119ebfa9b28:-8000:00000000000008EF begin
@@ -294,7 +293,7 @@ extends WfResource
 			$this->currentActivity[] = new Activity($newActivity->uri);
 
 		}
-
+		
 		// If the activity before the transition was the last activity of the process,
 		// we have to finish gracefully the process.
 
@@ -306,7 +305,7 @@ extends WfResource
 			$setPause = true;
 			foreach ($this->currentActivity as $activityAfterTransition){
 				
-				$activityExecutionService->initExecution($activityAfterTransition->resource, $currentUser);
+				// $activityExecutionService->initExecution($activityAfterTransition->resource, $currentUser, $curret process instance);
 				
 				//check if the current user is allowed to execute the activity
 				if($activityExecutionService->checkAcl($activityAfterTransition->resource, $currentUser)){
