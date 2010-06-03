@@ -108,8 +108,6 @@ class Main extends WfModule
 			}
 		}
 		
-		// var_dump($processViewData);
-		var_dump($authorizedProcessDefinitions);
 		$this->setData('availableProcessDefinition',$authorizedProcessDefinitions);
 		$this->setData('processViewData',$processViewData);
 		$this->setView('main.tpl');

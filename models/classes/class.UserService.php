@@ -166,7 +166,7 @@ class wfEngine_models_classes_UserService
 				$role = new core_kernel_classes_Resource(INSTANCE_ROLE_WORKFLOWUSER);
 			}
 			$user = $this->createInstance(new core_kernel_classes_Class($role->uriResource));
-			var_dump($user->getRdfTriples());
+		//	var_dump($user->getRdfTriples());
 		}
 		
 		if(!is_null($user)){

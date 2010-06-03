@@ -74,7 +74,6 @@ class wfEngine_models_classes_ProcessExecutionService
         	//process and current must be set to the activty execution otherwise a common Exception is thrown
         	
         	$modeUri 		= $process->getOnePropertyValue($processModeProp);
-        	var_dump('$modeUri', $modeUri);
         	if(is_null($modeUri)){
         		$returnValue = true;	//if no mode defined, the process is allowed
         	}

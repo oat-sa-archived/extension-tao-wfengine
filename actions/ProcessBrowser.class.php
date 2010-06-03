@@ -51,7 +51,6 @@ class ProcessBrowser extends WfModule
 		
 		$activityExecutionResource = $activityExecutionService->initExecution($activity->resource, $currentUser, $process->resource);
 		$browserViewData['activityExecutionUri']= $activityExecutionResource->uriResource;
-		var_dump('resource:',$activityExecutionResource);
 		
 		//security check if the user is allowed to access this activity
 		if(!$activityExecutionService->checkAcl($activity->resource, $currentUser)){
