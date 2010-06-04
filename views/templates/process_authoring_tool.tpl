@@ -70,10 +70,6 @@
 			<div id="activity_tree"/>
 			<div id="activity_form"/>
 		</div>
-		<!--<h3><a href="#">Specialized form</a></h3>
-		<div>
-			<div id="spForm"><a id="ancre_spForm" href="#">spForm</a></div>
-		</div>-->
 		<h3><a href="#"><?=__('Process Property')?></a></h3>
 		<div>
 			<!--<div id="process_info"><?=__('loading...')?></div>-->
@@ -84,10 +80,10 @@
 	
 	</div><!--end authoring-container -->
 	
+	<script type="text/javascript" src="/<?=get_data('extension')?>/views/js/authoringConfig.js"></script>
 	<script type="text/javascript" src="/<?=get_data('extension')?>/views/js/activity.tree.js"></script>
 	<script type="text/javascript">
 	var processUri = "<?=get_data("processUri")?>";
-	var authoringControllerPath = '/wfEngine/ProcessAuthoring/';
 	
 	$(function(){
 		$("#accordion1").accordion({
