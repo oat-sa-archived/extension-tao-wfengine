@@ -3,10 +3,17 @@
 error_reporting(E_ALL);
 
 /**
- * 
+ * Generis Object Oriented API - wfEngine/models/classes/class.RoleService.php
+ *
+ * $Id$
+ *
+ * This file is part of Generis Object Oriented API.
+ *
+ * Automatically generated on 04.06.2010, 14:02:53 with ArgoUML PHP module 
+ * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
  *
  * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
- * @package taoGroups
+ * @package wfEngine
  * @subpackage models_classes
  */
 
@@ -15,243 +22,54 @@ if (0 > version_compare(PHP_VERSION, '5')) {
 }
 
 /**
- * The Service class is an abstraction of each service instance. 
- * Used to centralize the behavior related to every servcie instances.
+ * include tao_models_classes_RoleService
  *
  * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
  */
-require_once('tao/models/classes/class.Service.php');
+require_once('tao/models/classes/class.RoleService.php');
 
+/* user defined includes */
+// section 127-0-1-1-7f226444:12902c0ab92:-8000:0000000000001F8B-includes begin
+// section 127-0-1-1-7f226444:12902c0ab92:-8000:0000000000001F8B-includes end
+
+/* user defined constants */
+// section 127-0-1-1-7f226444:12902c0ab92:-8000:0000000000001F8B-constants begin
+// section 127-0-1-1-7f226444:12902c0ab92:-8000:0000000000001F8B-constants end
 
 /**
- * 
+ * Short description of class wfEngine_models_classes_RoleService
  *
  * @access public
- * @author taoTeam
+ * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
  * @package wfEngine
  * @subpackage models_classes
  */
 class wfEngine_models_classes_RoleService
-    extends tao_models_classes_Service
+    extends tao_models_classes_RoleService
 {
     // --- ASSOCIATIONS ---
 
 
     // --- ATTRIBUTES ---
 
-    /**
-     * The RDFS top level group class
-     *
-     * @access protected
-     * @var Class
-     */
-    protected $roleClass = null;
-
-	/**
-     * Short description of attribute generisUserService
-     *
-     * @access protected
-     * @var Service
-     */
-    protected $generisUserService = null;
-	
     // --- OPERATIONS ---
 
     /**
-     * Short description of method __construct
+     * Short description of method initRole
      *
      * @access public
      * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
      * @return mixed
      */
-    public function __construct()
+    public function initRole()
     {
-        		
-		parent::__construct();
-		$this->generisUserService = core_kernel_users_Service::singleton();
-		$this->roleClass = new core_kernel_classes_Class(INSTANCE_ROLE_BACKOFFICE);
+        // section 127-0-1-1-7f226444:12902c0ab92:-8000:0000000000001F8D begin
+        
+    	$this->roleClass = new core_kernel_classes_Class(INSTANCE_ROLE_WORKFLOWUSER);
+    	
+        // section 127-0-1-1-7f226444:12902c0ab92:-8000:0000000000001F8D end
     }
 
-    /**
-     * get a role subclass by uri. 
-     * If the uri is not set, it returns the group class (the top level class.
-     * If the uri don't reference a group subclass, it returns null
-     *
-     * @access public
-     * @author TAO team
-     * @param  string uri
-     * @return core_kernel_classes_Class
-     */
-    public function getRoleClass($uri = '')
-    {
-        $returnValue = null;
-		
-		if(empty($uri) && !is_null($this->roleClass)){
-			$returnValue = $this->roleClass;
-		}
-		else{
-			$clazz = new core_kernel_classes_Class($uri);
-			if($this->isRoleClass($clazz)){
-				$returnValue = $clazz;
-			}
-		}
-
-        return $returnValue;
-    }
-
-    /**
-     * Short description of method getGroup
-     *
-     * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
-     * @param  string identifier usually the test label or the ressource URI
-     * @param  string mode
-     * @param  Class clazz
-     * @return core_kernel_classes_Resource
-     */
-    public function getRole($identifier, $mode = 'uri',  core_kernel_classes_Class $clazz = null)
-    {
-        $returnValue = null;
-
-		
-		if(is_null($clazz) && $mode == 'uri'){
-			try{
-				$resource = new core_kernel_classes_Resource($identifier);
-				$type = $resource->getUniquePropertyValue(new core_kernel_classes_Property( RDF_TYPE ));
-				$clazz = new core_kernel_classes_Class($type->uriResource);
-			}
-			catch(Exception $e){}
-		}
-		if(is_null($clazz)){
-			$clazz = $this->roleClass;
-		}
-		if($this->isRoleClass($clazz)){
-			$returnValue = $this->getOneInstanceBy( $clazz, $identifier, $mode);
-		}
-		
-
-        return $returnValue;
-    }
-
-    /**
-     * Short description of method createGroup
-     *
-     * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
-     * @param  string label
-     * @param  ContainerCollection members
-     * @param  ContainerCollection tests
-     * @return core_kernel_classes_Resource
-     */
-    public function createProcess($label,  core_kernel_classes_ContainerCollection $members,  core_kernel_classes_ContainerCollection $tests)
-    {
-        $returnValue = null;
-
-
-        return $returnValue;
-    }
-	
-
-    /**
-     * Short description of method isRoleClass
-     *
-     * @access public
-     * @author TAO Team
-     * @param  Class clazz
-     * @return boolean
-     */
-    public function isRoleClass( core_kernel_classes_Class $clazz)
-    {
-        $returnValue = (bool) false;
-
-		if($clazz->uriResource == $this->roleClass->uriResource){
-			$returnValue = true;	
-		}
-		else{
-			foreach($this->roleClass->getSubClasses() as $subclass){
-				if($clazz->uriResource == $subclass->uriResource){
-					$returnValue = true;
-					break;	
-				}
-			}
-		}
-
-        return (bool) $returnValue;
-    }
- 
-	public function setRoleToUsers(core_kernel_classes_Resource $role, $users=array()){
-		
-		$returnValue = false;
-		
-		//get all users who have the following role:
-    	$allUsers = $this->getUsers($role);
-		
-		foreach($allUsers as $user){
-			//delete the current role
-			$returnValue = core_kernel_impl_ApiModelOO::singleton()->removeStatement($user, RDF_TYPE, $role->uriResource, '');
-			
-		}
-		
-		foreach($users as $userUri){
-			$userInstance = new core_kernel_classes_Resource($userUri);
-			$returnValue = $userInstance->setPropertyValue(new core_kernel_classes_Property(RDF_TYPE), $role->uriResource);
-		}
-			
-		
-		return $returnValue;
-		
-	}	
-	
-	public function getUsers(core_kernel_classes_Resource $role){
-		$allUsers = array();
-		
-		$userClass = new core_kernel_classes_Class($role->uriResource);	
-    	$allUsers = array_keys($userClass->getInstances(true));
-		
-		return $allUsers;
-	}
-	
-	public function createInstance($label='', core_kernel_classes_Class $clazz = null){
-		if(is_null($clazz)){
-			$clazz = $this->getRoleClass();
-		}
-		
-		if( empty($label) ){
-			$label = 'Role_' . (count($clazz->getInstances()) + 1);
-		}
-		
-		$returnValue = $this->generisUserService->addRole($label, 'created by RoleService', new core_kernel_classes_Class(CLASS_ROLE_BACKOFFICE));
-		return $returnValue;
-	}
-	
-	public function deleteRole(core_kernel_classes_Resource $role){
-		return $role->delete();
-	}	
-	
-	/**
-	 * get all the roles of the user
-	 * @param core_kernel_classes_Resource $user
-	 * @return array
-	 */
-	public function getUserRoles(core_kernel_classes_Resource $user){
-		
-		$returnValue = array();
-
-		if(!is_null($user)){
-			
-			$allowedRoles = $this->roleClass->getInstances(true);
-			
-			$roles = $user->getPropertyValues(new core_kernel_classes_Property(RDFS_TYPE));
-			foreach($roles as $role){
-				if(array_key_exists($role, $allowedRoles)){
-					$returnValue[] = new core_kernel_classes_Resource($role);
-				}
-			}
-		}
-		
-		return (array)$returnValue;
-	}
-	
 } /* end of class wfEngine_models_classes_RoleService */
 
 ?>

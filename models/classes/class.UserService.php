@@ -137,8 +137,28 @@ class wfEngine_models_classes_UserService
     	$this->allowedRoles = array_keys($roleClass->getInstances(true));
 	}
 	
+	 public function getAllUsers($options = array())
+     {
+    	
+     	$roleService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_RoleService');
+     	
+     	$users = array();
+       
+        $userClass = new core_kernel_classes_Class(CLASS_GENERIS_USER);
+        foreach($userClass->getInstances(true) as $user){
+          // 	foreach($this->allowedRoles as $roleUri){
+           		if($roleService->checkUserRole($user, new core_kernel_classes_Class(INSTANCE_ROLE_BACKOFFICE))){//, new core_kernel_classes_Class($roleUri))){
+           			$users[$user->uriResource] = $user;
+           			//break;
+           		}
+           		
+          // 	}
+        }
+    	return $users;
+     }
+	
 	public function toTree(){
-		$this->feedAllowedRoles();
+		//$this->feedAllowedRoles();
 		$users = $this->getAllUsers(array('order'=>'login'));
 		$instancesData = array();
 		foreach($users as $user){

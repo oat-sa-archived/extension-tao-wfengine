@@ -27,10 +27,7 @@ class Role extends TaoModule {
 		//the service is initialized by default
 		$this->service = new wfEngine_models_classes_RoleService();
 		$this->defaultData();
-		$this->forbidden = array(
-			INSTANCE_ROLE_TAOMANAGER,
-			INSTANCE_ROLE_WORKFLOWUSER
-		);
+	//	$this->forbidden = array(INSTANCE_ROLE_WORKFLOWUSER);
 		
 		Session::setAttribute('currentSection', 'role');
 	}
@@ -50,7 +47,7 @@ class Role extends TaoModule {
 		}
 		
 		$clazz = $this->getCurrentClass();
-		$role = $this->service->getRole($uri, 'uri', $clazz);
+		$role = $this->service->getRole($uri);
 		if(is_null($role)){
 			throw new Exception("No role found for the uri {$uri}");
 		}
@@ -158,7 +155,7 @@ class Role extends TaoModule {
 			throw new Exception("wrong request mode");
 		}
 		$userService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_UserService');
-		// echo json_encode($this->service->toTree( new core_kernel_classes_Class(TAO_GROUP_CLASS), true, true, ''));
+		// echo json_encode($this->service->toTree( new core_kernel_classes_Class(CLASS_GENERIS_USER), true, true, ''));
 		echo json_encode($userService->toTree());
 	}
 	
@@ -181,7 +178,6 @@ class Role extends TaoModule {
 		$role = $this->getCurrentInstance();
 		// var_dump($role, $users);
 		
-		
 		if(!in_array($role->uriResource, $this->forbidden)){
 			if($this->service->setRoleToUsers($role, $users)){
 				$saved = true;
@@ -197,7 +193,7 @@ class Role extends TaoModule {
 		if(!tao_helpers_Request::isAjax()){
 			throw new Exception("wrong request mode");
 		}
-		$instance = $this->service->createInstance();
+		$instance = $this->service->createInstance($this->service->getRoleClass());
 		if(!is_null($instance) && $instance instanceof core_kernel_classes_Resource){
 			echo json_encode(array(
 				'label'	=> $instance->getLabel(),
