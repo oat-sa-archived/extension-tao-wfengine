@@ -132,6 +132,12 @@ class wfEngine_models_classes_ProcessAuthoringService
 		if(!empty($callOfService)){
 			//associate the new instance to the activity instance
 			$activity->setPropertyValue(new core_kernel_classes_Property(PROPERTY_ACTIVITIES_INTERACTIVESERVICES), $callOfService->uriResource);
+			
+			//set default position and size value:
+			$callOfService->editPropertyValues(new core_kernel_classes_Property(PROPERTY_CALLOFSERVICES_WIDTH), 100);
+			$callOfService->editPropertyValues(new core_kernel_classes_Property(PROPERTY_CALLOFSERVICES_HEIGHT), 100);
+			$callOfService->editPropertyValues(new core_kernel_classes_Property(PROPERTY_CALLOFSERVICES_TOP), 0);
+			$callOfService->editPropertyValues(new core_kernel_classes_Property(PROPERTY_CALLOFSERVICES_LEFT), 0);
 		}else{
 			throw new Exception("the interactive service cannot be created for the activity {$activity->uriResource}");
 		}

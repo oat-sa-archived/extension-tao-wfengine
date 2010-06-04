@@ -195,12 +195,6 @@ class ProcessAuthoring extends TaoModule {
 		$currentActivity = $this->getCurrentActivity();
 		$newService = $this->service->createInteractiveService($currentActivity);
 		
-		//set default position and size value:
-		$newService->editPropertyValues(new core_kernel_classes_Property(PROPERTY_CALLOFSERVICES_WIDTH), 100);
-		$newService->editPropertyValues(new core_kernel_classes_Property(PROPERTY_CALLOFSERVICES_HEIGHT), 100);
-		$newService->editPropertyValues(new core_kernel_classes_Property(PROPERTY_CALLOFSERVICES_TOP), 0);
-		$newService->editPropertyValues(new core_kernel_classes_Property(PROPERTY_CALLOFSERVICES_LEFT), 0);
-		
 		if(isset($_POST['serviceDefinitionUri'])){
 			$serviceDefinition = new core_kernel_classes_Resource(tao_helpers_Uri::decode($_POST['serviceDefinitionUri']));
 			if(!is_null($serviceDefinition)){
