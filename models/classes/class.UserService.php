@@ -9,7 +9,7 @@ error_reporting(E_ALL);
  *
  * This file is part of Generis Object Oriented API.
  *
- * Automatically generated on 19.05.2010, 17:00:26 with ArgoUML PHP module 
+ * Automatically generated on 07.06.2010, 14:40:44 with ArgoUML PHP module 
  * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
  *
  * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
@@ -66,6 +66,7 @@ class wfEngine_models_classes_UserService
         // section 127-0-1-1-951b66:128b0d3ece8:-8000:0000000000001F55 begin
         
 		$this->allowedRoles = array(CLASS_ROLE_BACKOFFICE);
+		
         // section 127-0-1-1-951b66:128b0d3ece8:-8000:0000000000001F55 end
     }
 
@@ -127,43 +128,86 @@ class wfEngine_models_classes_UserService
 
         return (bool) $returnValue;
     }
-	
-	public function feedAllowedRoles(core_kernel_classes_Class $roleClass=null){
-		if(empty($roleClass)){
-			$roleClass = new core_kernel_classes_Class(CLASS_ROLE_BACKOFFICE);	
-		}	
-		
-		// $acceptedRole =  array_merge(array($roleClass->uriResource) , array_keys($roleClass->getInstances(true))); 
-    	$this->allowedRoles = array_keys($roleClass->getInstances(true));
-	}
-	
-	 public function getAllUsers($options = array())
-     {
-    	
-     	$roleService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_RoleService');
+
+    /**
+     * Short description of method getAllUsers
+     *
+     * @access public
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @param  array options
+     * @return array
+     */
+    public function getAllUsers($options)
+    {
+        $returnValue = array();
+
+        // section 127-0-1-1-718243b3:12912642ee4:-8000:0000000000001F88 begin
+        
+    	$roleService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_RoleService');
      	
-     	$users = array();
-       
+    	
         $userClass = new core_kernel_classes_Class(CLASS_GENERIS_USER);
         foreach($userClass->getInstances(true) as $user){
-          // 	foreach($this->allowedRoles as $roleUri){
-           		if($roleService->checkUserRole($user, new core_kernel_classes_Class(INSTANCE_ROLE_BACKOFFICE))){//, new core_kernel_classes_Class($roleUri))){
-           			$users[$user->uriResource] = $user;
-           			//break;
-           		}
-           		
-          // 	}
+           	if($roleService->checkUserRole($user, new core_kernel_classes_Class(CLASS_ROLE_BACKOFFICE))){
+           		$returnValue[$user->uriResource] = $user;
+           	}
         }
-    	return $users;
-     }
-	
-	public function toTree(){
-		//$this->feedAllowedRoles();
-		$users = $this->getAllUsers(array('order'=>'login'));
-		$instancesData = array();
+        
+        // section 127-0-1-1-718243b3:12912642ee4:-8000:0000000000001F88 end
+
+        return (array) $returnValue;
+    }
+
+    /**
+     * Short description of method saveUser
+     *
+     * @access public
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @param  Resource user
+     * @param  array properties
+     * @param  Resource role
+     * @return boolean
+     */
+    public function saveUser( core_kernel_classes_Resource $user, $properties = array(),  core_kernel_classes_Resource $role = null)
+    {
+        $returnValue = (bool) false;
+
+        // section 127-0-1-1-718243b3:12912642ee4:-8000:0000000000001F8B begin
+        
+        if(is_null($user)){		
+			//Create user here:
+			if(is_null($role)){
+				$role = new core_kernel_classes_Resource(CLASS_ROLE_WORKFLOWUSERROLE);
+			}
+			$user = $this->createInstance(new core_kernel_classes_Class($role->uriResource));
+		}
+		
+    	if(!is_null($user)){
+			$returnValue = $this->bindProperties($user, $properties);
+		}
+        
+        // section 127-0-1-1-718243b3:12912642ee4:-8000:0000000000001F8B end
+
+        return (bool) $returnValue;
+    }
+
+    /**
+     * Short description of method toTree
+     *
+     * @access public
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @return array
+     */
+    public function toTree()
+    {
+        $returnValue = array();
+
+        // section 127-0-1-1-718243b3:12912642ee4:-8000:0000000000001F92 begin
+        
+        $users = $this->getAllUsers(array('order'=>'login'));
 		foreach($users as $user){
 			$login = (string) $user->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_USER_LABEL));
-			$instancesData[] = array(
+			$returnValue[] = array(
 					'data' 	=> tao_helpers_Display::textCutter($user->getLabel(), 16),
 					'attributes' => array(
 						'id' => tao_helpers_Uri::encode($user->uriResource),
@@ -173,27 +217,10 @@ class wfEngine_models_classes_UserService
 				);
 			
 		}
-		return $instancesData;
-	}
-	
-	public function saveUser( core_kernel_classes_Resource $user = null, $properties = array(), core_kernel_classes_Resource $role=null)
-    {
-        $returnValue = (bool) false;
-		// var_dump($user);
-		if(is_null($user)){		
-			//Create user here:
-			if(is_null($role)){
-				$role = new core_kernel_classes_Resource(INSTANCE_ROLE_WORKFLOWUSER);
-			}
-			$user = $this->createInstance(new core_kernel_classes_Class($role->uriResource));
-		//	var_dump($user->getRdfTriples());
-		}
-		
-		if(!is_null($user)){
-			$returnValue = $this->bindProperties($user, $properties);
-		}
-		
-        return (bool) $returnValue;
+        
+        // section 127-0-1-1-718243b3:12912642ee4:-8000:0000000000001F92 end
+
+        return (array) $returnValue;
     }
 
 } /* end of class wfEngine_models_classes_UserService */

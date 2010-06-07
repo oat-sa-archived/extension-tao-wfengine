@@ -161,7 +161,7 @@ class Users extends CommonModule {
 	 */
 	public function add(){
 		
-		$myFormContainer = new tao_actions_form_Users(new core_kernel_classes_Class(INSTANCE_ROLE_WORKFLOWUSER));
+		$myFormContainer = new tao_actions_form_Users(new core_kernel_classes_Class(CLASS_ROLE_WORKFLOWUSERROLE));
 		$myForm = $myFormContainer->getForm();
 		if($myForm->isSubmited()){
 			
@@ -170,7 +170,7 @@ class Users extends CommonModule {
 				$values[PROPERTY_USER_PASSWORD] = md5($values['password1']);
 				unset($values['password1']);
 				unset($values['password2']);
-				// var_dump($values);
+				
 				if($this->userService->saveUser($myFormContainer->getUser(), $values)){
 					$this->setData('message', __('User added'));
 					$this->setData('exit', true);
@@ -212,7 +212,7 @@ class Users extends CommonModule {
 		
 		$user = new core_kernel_classes_Resource(tao_helpers_Uri::decode($this->getRequestParameter('uri')));
 		
-		$myFormContainer = new tao_actions_form_Users(new core_kernel_classes_Class(INSTANCE_ROLE_WORKFLOWUSER), $user);
+		$myFormContainer = new tao_actions_form_Users(new core_kernel_classes_Class(CLASS_ROLE_WORKFLOWUSERROLE), $user);
 		$myForm = $myFormContainer->getForm();
 		
 		if($myForm->isSubmited()){

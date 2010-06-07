@@ -27,7 +27,6 @@ class Role extends TaoModule {
 		//the service is initialized by default
 		$this->service = new wfEngine_models_classes_RoleService();
 		$this->defaultData();
-	//	$this->forbidden = array(INSTANCE_ROLE_WORKFLOWUSER);
 		
 		Session::setAttribute('currentSection', 'role');
 	}
@@ -176,15 +175,11 @@ class Role extends TaoModule {
 		}
 		
 		$role = $this->getCurrentInstance();
-		// var_dump($role, $users);
 		
-		if(!in_array($role->uriResource, $this->forbidden)){
-			if($this->service->setRoleToUsers($role, $users)){
-				$saved = true;
-			}
-		}else{
-			throw new Exception($role->getLabel().' cannot be modified');
+		if($this->service->setRoleToUsers($role, $users)){
+			$saved = true;
 		}
+
 		
 		echo json_encode(array('saved'	=> $saved));
 	}
