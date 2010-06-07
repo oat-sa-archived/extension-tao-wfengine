@@ -9,7 +9,7 @@ error_reporting(E_ALL);
  *
  * This file is part of Generis Object Oriented API.
  *
- * Automatically generated on 07.06.2010, 14:40:44 with ArgoUML PHP module 
+ * Automatically generated on 07.06.2010, 14:49:43 with ArgoUML PHP module 
  * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
  *
  * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
@@ -144,7 +144,6 @@ class wfEngine_models_classes_UserService
         // section 127-0-1-1-718243b3:12912642ee4:-8000:0000000000001F88 begin
         
     	$roleService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_RoleService');
-     	
     	
         $userClass = new core_kernel_classes_Class(CLASS_GENERIS_USER);
         foreach($userClass->getInstances(true) as $user){
@@ -189,6 +188,26 @@ class wfEngine_models_classes_UserService
         // section 127-0-1-1-718243b3:12912642ee4:-8000:0000000000001F8B end
 
         return (bool) $returnValue;
+    }
+
+    /**
+     * Short description of method feedAllowedRoles
+     *
+     * @access public
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @param  Class roleClass
+     * @return mixed
+     */
+    public function feedAllowedRoles( core_kernel_classes_Class $roleClass = null)
+    {
+        // section 127-0-1-1--2c34ff07:1291273bd7e:-8000:0000000000001F94 begin
+        
+    	if(empty($roleClass)){
+			$roleClass = new core_kernel_classes_Class(CLASS_ROLE_BACKOFFICE);	
+		}	
+    	$this->allowedRoles = array_keys($roleClass->getInstances(true));
+    	
+        // section 127-0-1-1--2c34ff07:1291273bd7e:-8000:0000000000001F94 end
     }
 
     /**
