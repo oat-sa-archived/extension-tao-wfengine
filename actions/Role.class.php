@@ -154,7 +154,6 @@ class Role extends TaoModule {
 			throw new Exception("wrong request mode");
 		}
 		$userService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_UserService');
-		// echo json_encode($this->service->toTree( new core_kernel_classes_Class(CLASS_GENERIS_USER), true, true, ''));
 		echo json_encode($userService->toTree());
 	}
 	

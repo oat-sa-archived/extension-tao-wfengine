@@ -104,40 +104,44 @@ class ProcessAuthoring extends TaoModule {
 		if(!tao_helpers_Request::isAjax()){
 			throw new Exception("wrong request mode");
 		}
-		$instanceOf = strtolower($_GET["instanceof"]);
-		$classUri='';
-		switch($instanceOf){
-			case 'servicedefinition': 
-				$classUri=CLASS_SERVICESDEFINITION;// <=> CLASS_WEBSERVICES or CLASS_SUPPORTSERVICES
-				break;
-			case 'formalparameter': 
-				$classUri=CLASS_FORMALPARAMETER;break;
-			case 'variable': 
-				$classUri=CLASS_PROCESSVARIABLES;break;
-			case 'role': 
-				$classUri=CLASS_ROLE_BACKOFFICE;break;//use to be CLASS_ROLE, now only back office roles are authorized to wf users (including TAO managers)
-			default:
-				throw new Exception('unknown class');break;
+		
+		$options = array();
+		
+		if($this->hasRequestParameter('classUri')){
+			$clazz = $this->getCurrentClass();
+			$options['chunk'] = true;
 		}
-		// $classUri = CLASS_SERVICEDEFINITION;
-		//!!! currently, not the uri of the class is provided: better to pass it to "get" parameter somehow
-		//one possibility: replace all by their uriResource from the authoring template.
-		$clazz=new core_kernel_classes_Class($classUri);
-		if( !$this->service->isAuthorizedClass($clazz) ){
-			throw new Exception("wrong class uri in parameter");
+		else{
+			$instanceOf = strtolower($this->getRequestParameter("instanceof"));
+			$classUri='';
+			switch($instanceOf){
+				case 'servicedefinition': 
+					$classUri=CLASS_SERVICESDEFINITION;// <=> CLASS_WEBSERVICES or CLASS_SUPPORTSERVICES
+					break;
+				case 'formalparameter': 
+					$classUri=CLASS_FORMALPARAMETER;break;
+				case 'variable': 
+					$classUri=CLASS_PROCESSVARIABLES;break;
+				case 'role': 
+					$classUri=CLASS_ROLE_BACKOFFICE;break;//use to be CLASS_ROLE, now only back office roles are authorized to wf users (including TAO managers)
+				default:
+					throw new Exception('unknown class');break;
+			}
+			// $classUri = CLASS_SERVICEDEFINITION;
+			//!!! currently, not the uri of the class is provided: better to pass it to "get" parameter somehow
+			//one possibility: replace all by their uriResource from the authoring template.
+			$clazz=new core_kernel_classes_Class($classUri);
+			if( !$this->service->isAuthorizedClass($clazz) ){
+				throw new Exception("wrong class uri in parameter");
+			}
 		}
 		
-		$highlightUri = '';
-		// if($this->hasSessionAttribute("showNodeUri")){
-			// $highlightUri = $this->getSessionAttribute("showNodeUri");
-			// unset($_SESSION[SESSION_NAMESPACE]["showNodeUri"]);
-		// }
-		
-		$filter = '';
 		if($this->hasRequestParameter('filter')){
-			$filter = $this->getRequestParameter('filter');
+			$options['labelFilter'] = $this->getRequestParameter('filter');
 		}
-		echo json_encode( $this->service->toTree( $clazz, true, true, $highlightUri, $filter));
+		
+		
+		echo json_encode( $this->service->toTree($clazz, $options) );
 	}
 	
 	public function getActivities(){
