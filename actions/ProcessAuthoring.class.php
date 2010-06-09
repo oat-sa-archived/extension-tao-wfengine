@@ -883,6 +883,8 @@ class ProcessAuthoring extends TaoModule {
 			$connectorInstance->setLabel($data['label']);
 		}
 		
+		
+		
 		if($data[PROPERTY_CONNECTORS_TYPE] != 'none'){
 			//check if there is a need for update: in case the old type of connector was 'join':
 			$connectorType = $connectorInstance->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_TYPE));
@@ -891,8 +893,16 @@ class ProcessAuthoring extends TaoModule {
 					
 					$oldNextActivity = $connectorInstance->getOnePropertyValue($propNextActivities);
 					if(!is_null($oldNextActivity)){
+						//if the connector type has changed from "join" to something else, remove next property values
+						// if($data[PROPERTY_CONNECTORS_TYPE]!= INSTANCE_TYPEOFCONNECTORS_JOIN){
+							// $connectorInstance->removePropertyValues($propNextActivities);
+						// }
+						
 						//if the current type is still 'join' && target activity has changed || type of connector has changed:
 						if( $oldNextActivity->uriResource != $data["join_activityUri"] || $data[PROPERTY_CONNECTORS_TYPE]!= INSTANCE_TYPEOFCONNECTORS_JOIN){
+							
+							
+							
 							//check if another activities is joined with the same connector:
 							$previousActivityCollection = $connectorInstance->getPropertyValuesCollection(new core_kernel_classes_Property(PROPERTY_CONNECTORS_PRECACTIVITIES)); //old: apimodel->getSubject(PROPERTY_CONNECTORS_PRECACTIVTIES, $oldNextActivity->uriResource);
 							$anotherPreviousActivity = null;
@@ -917,7 +927,13 @@ class ProcessAuthoring extends TaoModule {
 								$newConnectorInstance = $this->service->createConnector($activity, 'merge to ');
 								$connectorInstance = $newConnectorInstance;
 							}else{
-								//the activity is the first activity that is joined via this connector so just let it be edited
+								//the activity is the first activity that is joined via this connector so just let it be edited whilst removing its property value
+								
+								$connectorInstance->removePropertyValues($propNextActivities);
+								
+								//and edit prec activity number to 1:
+								$connectorInstance->setLabel($activity->getLabel().'_c');
+								$connectorInstance->editPropertyValues(new core_kernel_classes_Property(PROPERTY_CONNECTORS_PRECACTIVITIES), $activity->uriResource);
 							}
 							
 						}
