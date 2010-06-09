@@ -74,7 +74,8 @@ class Main extends WfModule
 //				if(!is_null($activity->resource->getOnePropertyValue($activityIsInitialProp))){
 //					$activityExecutionService->initExecution($activity->resource, $currentUser);
 //				}
-				$isAllowed = $activityExecutionService->checkAcl($activity->resource, $currentUser);
+				
+				$isAllowed = $activityExecutionService->checkAcl($activity->resource, $currentUser, $proc->resource);
 				$currentActivities[] = array(
 					'label'				=> $currentActivity->label,
 					'uri' 				=> $currentActivity->uri,

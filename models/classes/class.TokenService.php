@@ -56,24 +56,104 @@ class wfEngine_models_classes_TokenService
 
     // --- ATTRIBUTES ---
 
+    /**
+     * Short description of attribute tokenClass
+     *
+     * @access protected
+     * @var Class
+     */
+    protected $tokenClass = null;
+
+    /**
+     * Short description of attribute tokenActivityProp
+     *
+     * @access protected
+     * @var Property
+     */
+    protected $tokenActivityProp = null;
+
+    /**
+     * Short description of attribute tokenActivityExecutionProp
+     *
+     * @access protected
+     * @var Property
+     */
+    protected $tokenActivityExecutionProp = null;
+
+    /**
+     * Short description of attribute tokenCurrentUserProp
+     *
+     * @access protected
+     * @var Property
+     */
+    protected $tokenCurrentUserProp = null;
+
+    /**
+     * Short description of attribute tokenVariableProp
+     *
+     * @access protected
+     * @var Property
+     */
+    protected $tokenVariableProp = null;
+
     // --- OPERATIONS ---
 
     /**
-     * Short description of method getCurrent
+     * Short description of method __construct
+     *
+     * @access public
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @return mixed
+     */
+    public function __construct()
+    {
+        // section 127-0-1-1-24bd84b1:1291d596dba:-8000:0000000000001FB9 begin
+        
+    	$this->tokenClass = new core_kernel_classes_Class(CLASS_TOKEN);
+    	
+    	$this->tokenActivityProp 			= new core_kernel_classes_Property(PROPERTY_TOKEN_ACTIVITY);
+    	$this->tokenActivityExecutionProp 	= new core_kernel_classes_Property(PROPERTY_TOKEN_ACTIVITYEXECUTION);
+    	$this->tokenCurrentUserProp 		= new core_kernel_classes_Property(PROPERTY_TOKEN_CURRENTUSER);
+    	$this->tokenVariableProp 			= new core_kernel_classes_Property(PROPERTY_TOKEN_VARIABLE);
+    	
+        // section 127-0-1-1-24bd84b1:1291d596dba:-8000:0000000000001FB9 end
+    }
+
+    /**
+     * Short description of method getCurrents
      *
      * @access public
      * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
      * @param  Resource activityExecution
-     * @return core_kernel_classes_Resource
+     * @return array
      */
-    public function getCurrent( core_kernel_classes_Resource $activityExecution)
+    public function getCurrents( core_kernel_classes_Resource $activityExecution)
     {
-        $returnValue = null;
+        $returnValue = array();
 
         // section 127-0-1-1-bf84135:12912b487a0:-8000:0000000000001F9A begin
+        
+        if(!is_null($activityExecution)){
+        	
+        	$activityUser = $activityExecution->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_CURRENT_USER));
+        	if(!is_null($activityUser)){
+	        	
+	        	$apiModel  	= core_kernel_impl_ApiModelOO::singleton();
+	        	$tokenCollection = $apiModel->getSubject(PROPERTY_TOKEN_ACTIVITYEXECUTION, $activityExecution->uriResource);
+	        	foreach($tokenCollection->getIterator() as $token){
+	        		$tokenUser = $token->getOnePropertyValue($this->tokenCurrentUserProp);
+	        		if(!is_null($tokenUser)){
+	        			if($tokenUser->uriResource == $activityUser->uriResource){
+	        				$returnValue[$token->uriResource] = $token;
+	        			}
+	        		}
+	        	}
+        	}
+        }
+        
         // section 127-0-1-1-bf84135:12912b487a0:-8000:0000000000001F9A end
 
-        return $returnValue;
+        return (array) $returnValue;
     }
 
     /**
@@ -81,12 +161,11 @@ class wfEngine_models_classes_TokenService
      *
      * @access public
      * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
-     * @param  Resource previousActivty
-     * @param  Resource nextActivity
+     * @param  Resource connector
      * @param  Resource user
      * @return array
      */
-    public function build( core_kernel_classes_Resource $previousActivty,  core_kernel_classes_Resource $nextActivity,  core_kernel_classes_Resource $user)
+    public function build( core_kernel_classes_Resource $connector,  core_kernel_classes_Resource $user)
     {
         $returnValue = array();
 
@@ -145,6 +224,16 @@ class wfEngine_models_classes_TokenService
         $returnValue = (bool) false;
 
         // section 127-0-1-1-bf84135:12912b487a0:-8000:0000000000001FA8 begin
+        
+        if(!is_null($token)){
+        	$token->removePropertyValues($this->tokenActivityProp);
+        	$token->removePropertyValues($this->tokenActivityExecutionProp);
+        	$token->removePropertyValues($this->tokenCurrentUserProp);
+        	$token->removePropertyValues($this->tokenVariableProp);
+        	
+        	$returnValue = $token->delete();
+        }
+        
         // section 127-0-1-1-bf84135:12912b487a0:-8000:0000000000001FA8 end
 
         return (bool) $returnValue;
