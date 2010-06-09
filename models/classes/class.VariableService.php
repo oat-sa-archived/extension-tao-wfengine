@@ -92,18 +92,28 @@ extends tao_models_classes_Service
 		$returnValue = (bool) false;
 
 		// section -87--2--3--76--7eb229c2:12916be1ece:-8000:0000000000003C0B begin
-		$variable = $this->getAll();
-		if(!empty($variable)) {
-			$property = new core_kernel_classes_Property(PROPERTY_TOKEN_VARIABLE);	
+		if(isset($_SESSION["activityExecutionUri"])){
+			$activityExecutionUri = urldecode($_SESSION["activityExecutionUri"]);
+			$activityExecution = new core_kernel_classes_Resource($activityExecutionUri);
+			$tokenService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_TokenService');
+			$token = $tokenService->getCurrent($activityExecution);
 			if(is_string($params)){
 				$params = array($params);
-			}	
+			}
 			if(is_array($params)){
-				$newVariable = array_diff($variable,$params);
-				$returnValue = $token->editPropertyValues($property,serialize($newVariable));
-				
+				foreach($params as $param) {
+					$collection = core_kernel_impl_ApiModelOO::singleton()->getSubject(PROPERTY_CODE, $param);
+					if(!$collection->isEmpty()){
+						if($collection->count() == 1) {
+							$property = new core_kernel_classes_Property($collection->get(0)->uriResource);
+							// $apiModel->removeStatement($subjectCollection->get(0)->uriResource, $property->uriResource, $object->uriResource, '');
+							return $token->removePropertyValues($property);
+						}
+					}
+				}
 			}
 		}
+
 		// section -87--2--3--76--7eb229c2:12916be1ece:-8000:0000000000003C0B end
 
 		return (bool) $returnValue;
@@ -148,9 +158,9 @@ extends tao_models_classes_Service
 			$activityExecution = new core_kernel_classes_Resource($activityExecutionUri);
 			$tokenService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_TokenService');
 			$token = $tokenService->getCurrent($activityExecution);
-				
-			$property = new core_kernel_classes_Property(PROPERTY_TOKEN_VARIABLE);
-			$returnValue = unserialize($token->getOnePropertyValue($property));
+			
+			
+
 		}
 		// section -87--2--3--76--7eb229c2:12916be1ece:-8000:0000000000003C11 end
 
