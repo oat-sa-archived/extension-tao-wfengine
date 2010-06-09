@@ -905,7 +905,7 @@ class ProcessAuthoring extends TaoModule {
 								}
 							}
 							
-							if(!is_null($anotherPreviousActivity)){
+							if(!is_null($anotherPreviousActivity)){//the case when a new connector need to be created for the previous activity that is to be merged to a new next activity 
 								// echo ' creating new connector for it ';
 								//there is another activity, so:
 								//remove reference of that activity from previous connector, and update its activity reference to the one of the other previous activity, update the 'old' join connector
@@ -1009,32 +1009,45 @@ class ProcessAuthoring extends TaoModule {
 			}
 		}elseif($data[PROPERTY_CONNECTORS_TYPE] == INSTANCE_TYPEOFCONNECTORS_PARALLEL){
 			
-			$connectorInstance->removePropertyValues($propNextActivities);
-			
+			$newActivityArray = array();
 			foreach($data as $key=>$activityUri){
 				if(strpos($key, 'parallel_')===0){//find the key-value related to selected activities
+					//old impl:
+					/*
 					//get the number of that activity:
 					$number = $data[$activityUri.'_num_hidden'];
+					
+					
+					//set property value as much as required
 					for($i=0;$i<$number;$i++){
 						$connectorInstance->setPropertyValue($propNextActivities, $activityUri);
+						
 					}
+					*/
+					
+					//new impl:
+					$newActivityArray[$activityUri] = intval($data[$activityUri.'_num_hidden']);
 				}
 			}
+			
+			$this->service->setParallelActivities($connectorInstance, $newActivityArray);
 			
 		}elseif($data[PROPERTY_CONNECTORS_TYPE] == INSTANCE_TYPEOFCONNECTORS_JOIN){
 		
 			if(!empty($data["join_activityUri"])){
 				if($data["join_activityUri"] == 'newActivity'){
 					// echo 'creating new joined activity';
-					$this->service->createJoinActivity($connectorInstance, null, $data["join_activityLabel"], $activity);
+					$returnNextAct = $this->service->createJoinActivity($connectorInstance, null, $data["join_activityLabel"], $activity);
 				}else{
 					if(!is_null($activity)){
 						$followingActivity = new core_kernel_classes_Resource($data["join_activityUri"]);
-						$this->service->createJoinActivity($connectorInstance, $followingActivity, '', $activity);
+						$returnNextAct =  $this->service->createJoinActivity($connectorInstance, $followingActivity, '', $activity);
 					}else{
 						throw new Exception('no activity found to be joined');
 					}
 				}
+				//echo '$returnNextAct';var_dump($returnNextAct);
+				
 			}
 		}
 		

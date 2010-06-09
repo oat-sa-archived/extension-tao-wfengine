@@ -234,6 +234,9 @@ class wfEngine_models_classes_ProcessAuthoringService
 		return $returnValue;
 	}
 	
+	/**
+	* Delete the resource condition for the given role and delete the included expression
+	*/
 	public function deleteCondition(core_kernel_classes_Resource $rule){
 		$returnValue = false;
 		
@@ -251,6 +254,7 @@ class wfEngine_models_classes_ProcessAuthoringService
 		
 		return $returnValue;
 	}
+	
 	/**
      * Clean the triples for an expression and its related resource
 	 * note: always recursive: delete the expressions that make up the current expression
@@ -451,6 +455,10 @@ class wfEngine_models_classes_ProcessAuthoringService
 		return $returnValue;
 	}
 	
+	/**
+	* Cleanly delete the the next activity of a connector given its type
+	*
+	*/
 	public function deleteConnectorNextActivity(core_kernel_classes_Resource $connector, $type='next'){
 		
 		// $authorizedProperties = array(
@@ -693,6 +701,9 @@ class wfEngine_models_classes_ProcessAuthoringService
 		return $followingActivity;
 	}
 	
+	/**
+	* create a new activity in the context of a specified process, from the previous connector
+	*/
 	public function createActivityFromConnector(core_kernel_classes_Resource $connector, $newActivityLabel){
 		//get the process associate to the connector to create a new instance of activity
 		$relatedActivity = $connector->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_ACTIVITYREFERENCE));
@@ -748,17 +759,20 @@ class wfEngine_models_classes_ProcessAuthoringService
 		return $returnValue;
 	}
 	
-	public function analyseExpression($condition, $isCondition = false){
+	/**
+	* Use of the plugin of syntax alanyser to create an XML DOM that describes the input expression
+	*/
+	public function analyseExpression($expressionInput, $isCondition = false){
 		//place the following bloc in a helper
-		if (!empty($condition))
-			$question = $condition;
+		if (!empty($expressionInput))
+			$question = $expressionInput;
 		else
 			$question = "";
 		
 		//question test:
 		//$question = "IF    (11+B_Q01a*3)>=2 AND (B_Q01c=2 OR B_Q01c=7)    	THEN ^variable := 2*(B_Q01a+7)-^variable";
 		
-		//analyse the condition string and convert to an XML document:
+		//analyse the expressionInput string and convert to an XML document:
 		if (get_magic_quotes_gpc()) $question = stripslashes($question);// Magic quotes are deprecated
 		//TODO: check if the variables exists and are associated to the process definition 
 		
@@ -788,10 +802,14 @@ class wfEngine_models_classes_ProcessAuthoringService
 		return $xmlDom;
 	}
 	
-	//^SCR = ((^SCR)*31+^SCR*^SCR) => fail
+	
+	/**
+	* create a condition resource and its related resources (expressions+terms) from an XML Dom
+	*/
 	public function createCondition($xmlDom){
+		//note: //^SCR = ((^SCR)*31+^SCR*^SCR) => fail
+		
 		//create the expression instance:
-
 		$condition = null;
 		foreach ($xmlDom->childNodes as $childNode) {
 			foreach ($childNode->childNodes as $childOfChildNode) {
@@ -828,7 +846,10 @@ class wfEngine_models_classes_ProcessAuthoringService
 		
 		return $returnValue;
 	}
-		
+	
+	/**
+	* create an assignement resource resource and its related resources (SPX+terms) from an XML Dom descriptor
+	*/
 	public function createAssignment($xmlDom){
 		//create the expression instance:
 		$assignment = null;
@@ -1481,29 +1502,41 @@ class wfEngine_models_classes_ProcessAuthoringService
 		}else{
 			//find if a join connector already leads to the following activity:
 			$connectorCollection = core_kernel_impl_ApiModelOO::singleton()->getSubject(PROPERTY_CONNECTORS_NEXTACTIVITIES, $followingActivity->uriResource);
+			$found = false;
 			foreach($connectorCollection->getIterator() as $connector){
 				if($connector instanceof core_kernel_classes_Resource){
 					if($connector->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTOR_TYPEOFCONNECTOR))->uriResource == INSTANCE_TYPEOFCONNECTORS_JOIN){
-						//join connector found: connect the previous activity to that one:
+						//join connector found (there could be only a single one): connect the previous activity to that one:
 						
 						if(!is_null($previousActivity)){
 							// echo 'connector found:';var_dump($connector);
 							
 							//important: check that the connector found is NOT the same as the current one:
 							if($connectorInstance->uriResource != $connector->uriResource){
-								//delete old connector, and associate the activity to that one:
+								//delete old connector, 
 								$this->deleteConnector($connectorInstance);
-								// $connectorInstance = $connector;
-								$connector->setPropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_PRECACTIVITIES), $previousActivity->uriResource);
+								//and associate the activity to that one the existing one via a set property value to the "previous activities" property
+								$connectorInstance = $connector;
+								$found = true;
+								
+								break;//one join connector allowed for a next activity
 							}else{
-								//nothing to do
+								//nothing to do, since the connector is already 
+								//it would be the case when one re-save the join connector with the same followinf activity
+								return 'same activity';
 							}
+							
 						}else{
 							throw new Exception('no previous activity found to be connected to the next activity');
 						}
-						return $followingActivity;
+						
 					}
 				}
+			}
+			if($found){
+			
+			}else{
+			
 			}
 			
 		}
@@ -1511,88 +1544,52 @@ class wfEngine_models_classes_ProcessAuthoringService
 		if($followingActivity instanceof core_kernel_classes_Resource){
 			$connectorInstance->editPropertyValues($propNextActivity, $followingActivity->uriResource);
 			$connectorInstance->setLabel(__("merge to ").$followingActivity->getLabel());
+			
+			//check multiplivity here
+			// $connectorInstance = $connector;
+			//calculate the number of time the same triple must be set (according to the multiplicity of the related parallel connector):
+			$multiplicity = 1;//default multiplicity, if no multiple parallel activity 
+			$processFlow = new wfEngine_models_classes_ProcessFlow();
+			$parallelConnector = null;
+			$parallelConnector = $processFlow->findParallelFromActivityBackward($previousActivity);
+			
+			var_dump($parallelConnector);
+			if(!is_null($parallelConnector)){
+				$firstActivityOfTheBranch = array_pop($processFlow->getCheckedActivities());
+				//count the number of time theprevious activity must be set as the previous activity of the join connector
+				$multiplicity = 0; //restart counting: we are sure that at least one of such activity will be found
+				$nextActivityCollection = $parallelConnector->getPropertyValuesCollection(new core_kernel_classes_Property(PROPERTY_CONNECTORS_NEXTACTIVITIES));
+				echo '$firstActivityOfTheBranch: ';var_dump($firstActivityOfTheBranch);
+				echo '$processFlow: ';var_dump($processFlow);
+				echo '$colledc: ';var_dump($nextActivityCollection);
+				foreach($nextActivityCollection->getIterator() as $nextActivity){
+					if($nextActivity->uriResource == $firstActivityOfTheBranch->uriResource){
+						$multiplicity++;
+					}
+				}
+			}
+			
+			var_dump($multiplicity);
+			if($multiplicity){
+				//delete old connector, and associate the activity to that one:
+				// $this->deleteConnector($connectorInstance);
+				
+				core_kernel_impl_ApiModelOO::singleton()->removeStatement($connectorInstance->uriResource, PROPERTY_CONNECTORS_PRECACTIVITIES, $previousActivity->uriResource, '');
+				
+				for($i=0;$i<$multiplicity;$i++){
+					$connectorInstance->setPropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_PRECACTIVITIES), $previousActivity->uriResource);
+				}
+			}else{
+				throw new Exception('unexpected null multiplicity');
+			}
+			
 			return $followingActivity;
 		}else{
 			return null;
 		}
 		
 	}
-	
-	public function updateJoinedActivity(core_kernel_classes_Resource $followingActivity){
 		
-		$joinConnectors = array();
-		$conditionString = '';
-		$prevConnectorsCollection = core_kernel_impl_ApiModelOO::singleton()->getSubject(PROPERTY_CONNECTORS_NEXTACTIVITIES, $followingActivity->uriResource);
-		$currentProcessCollection = core_kernel_impl_ApiModelOO::singleton()->getSubject(PROPERTY_PROCESS_ACTIVITIES, $followingActivity->uriResource);
-		if($currentProcessCollection->isEmpty()){
-			throw new Exception('');
-			return false;
-		}
-		$currentProcess = $currentProcessCollection->get(0);
-		
-		foreach($prevConnectorsCollection->getIterator() as $prevConnector){
-			if($prevConnector instanceof core_kernel_classes_Resource){
-			
-				$connectorType = null;
-				$connectorType = $prevConnector->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_TYPE));
-				if($connectorType->uriResource == INSTANCE_TYPEOFCONNECTORS_JOIN){
-					//TODO: check if the connector pre
-					$transitionRuleTemp = $prevConnector->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_TRANSITIONRULE));
-					if($transitionRuleTemp instanceof core_kernel_classes_Resource){
-						$this->deleteRule($transitionRuleTemp);
-						// $transitionRule = $transitionRuleTemp;//note: the transition rule for these connectors should be exactly the same
-					}
-					$joinConnectors[] = $prevConnector;
-					$previousActivity = $prevConnector->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_PRECACTIVITIES));
-					
-					$activityProcessVar = $this->getProcessVariableForActivity($previousActivity);
-					/*
-					//create activity 'isFinished' process variable:
-					$label = $previousActivity->getLabel();
-					$code = 'activity';
-					// var_dump($previousActivity, $previousActivity->uriResource, stripos($previousActivity->uriResource,".rdf#"));
-					if(stripos($previousActivity->uriResource,".rdf#")>0){
-						$code .= '_'.substr($previousActivity->uriResource, stripos($previousActivity->uriResource,".rdf#")+5);
-					}
-					//check if the code (i.e. the variable) does not exist yet:
-					$activityProcessVar = $this->getProcessVariable($code);
-					if(is_null($activityProcessVar)){
-						$activityProcessVar = $this->createProcessVariable('isFinished: '.$label, $code);
-					}*/
-					
-					//assign process var to the current process definition:
-					if($activityProcessVar){
-						$currentProcess->setPropertyValue(new core_kernel_classes_Property(PROPERTY_PROCESS_VARIABLE), $activityProcessVar->uriResource);
-					}else{
-						throw new Exception("the \"isfinished\" process variable of the activity {$activityProcessVar->uriResource} is empty");
-					}
-					
-					//add statement assignation to activity prec:
-					
-					$conditionString .= "^".$activityProcessVar->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_CODE))." == 'true' AND ";
-				}
-				
-			}
-		}
-		$conditionString = substr_replace($conditionString,'',-4);
-		// echo 'condition: '.$conditionString;
-		
-		//if transition rule exists, replace conditio (prop "if"):
-		$transitionRule = null;
-		$transitionRule = $this->createRule($prevConnector, $conditionString);
-		$transitionRule->editPropertyValues(new core_kernel_classes_Property(PROPERTY_TRANSITIONRULES_THEN), $followingActivity->uriResource);//how to set 'void' to 'ELSE'?
-		
-		//for each connector, except the current one (already set on the line above), set the transition rule:
-		// echo 'joinConnectors:';var_dump($joinConnectors);
-		foreach($joinConnectors as $connector){
-			$connector->editPropertyValues(new core_kernel_classes_Property(PROPERTY_CONNECTORS_NEXTACTIVITIES), $followingActivity->uriResource);
-			$connector->editPropertyValues(new core_kernel_classes_Property(PROPERTY_CONNECTORS_TRANSITIONRULE), $transitionRule->uriResource);
-			// var_dump('new transiitonrule:',$transitionRule);
-		}
-		
-		return true;
-	}
-	
 	public function createProcessVariable($label='', $code=''){
 		$processVariable = null;
 		
@@ -1646,7 +1643,69 @@ class wfEngine_models_classes_ProcessAuthoringService
 		
 		return $activityProcessVar;
 	}
-	
+		
+	public function setParallelActivities(core_kernel_classes_Resource $connectorInstance, $newActivitiesArray=array()){
+		
+		$returnValue = false;
+		
+		$propNextActivities = new core_kernel_classes_Property(PROPERTY_CONNECTORS_NEXTACTIVITIES);
+		$processFlow = new wfEngine_models_classes_ProcessFlow();
+		
+		//calculate the number of parallel activities, for each activity definition 
+		$nextActivitiesCollection = $connectorInstance->getPropertyValuesCollection($propNextActivities);
+		$oldActivitiesArray = array();
+		foreach ($nextActivitiesCollection->getIterator() as $activityResource){
+			if(!isset($oldActivitiesArray[$activityResource->uriResource])){
+				$oldActivitiesArray[$activityResource->uriResource] = 1;
+			}else{
+				$oldActivitiesArray[$activityResource->uriResource] += 1;
+			}
+		}
+		
+		$connectorInstance->removePropertyValues($propNextActivities);
+			
+		var_dump($oldActivitiesArray, $newActivitiesArray);
+		//check if the number has changed in the new posted data, otherwise, need to update the related join connector:
+		foreach($oldActivitiesArray as $activityUri=>$count){
+			
+			//need for update:
+			$updateRequired = true;
+			
+			if(isset($newActivitiesArray[$activityUri])){
+				if($newActivitiesArray[$activityUri] == $count){
+					//$ok, no need to update
+					$updateRequired = false;
+				}
+			}
+			
+			if($updateRequired){
+				$processFlow->resetCheckedResources();
+				$joinConnector = null;
+				echo 'req';
+				$joinConnector = $processFlow->findJoinFromActivityForward(new core_kernel_classes_Resource($activityUri));
+				var_dump($joinConnector);
+				if(!is_null($joinConnector)){
+					//removestatement fot that connector:
+					core_kernel_impl_ApiModelOO::singleton()->removeStatement($joinConnector->uriResource, PROPERTY_CONNECTORS_PRECACTIVITIES, $activityUri, '');
+					
+					for($i=0; $i<$newActivitiesArray[$activityUri]; $i++){
+						$joinConnector->setPropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_PRECACTIVITIES), $activityUri);
+					}
+				
+				}
+			}
+		}
+		
+		//finally, set the next activities values for the parallel connector:
+		foreach($newActivitiesArray as $activityUri=>$count){
+			//set property value as much as required
+			for($i=0;$i<$count;$i++){
+				$returnValue = $connectorInstance->setPropertyValue($propNextActivities, $activityUri);
+			}
+		}
+		
+		return $returnValue;
+	}
 	
 } /* end of class wfEngine_models_classes_ProcessAuthoringService */
 
