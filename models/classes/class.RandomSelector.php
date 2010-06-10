@@ -1,6 +1,6 @@
 <?php
 
-error_reporting(-1);
+error_reporting(E_ALL);
 /**
  * @author Lionel Lecaque
  * 	lionel.lecaque@tudor.lu

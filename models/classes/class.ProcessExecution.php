@@ -268,12 +268,20 @@ extends WfResource
 		
 		
 		$connectorsUri = $this->getNextConnectorsUri($this->currentActivity[0]->uri);//could work for join as they share the same connector
+		
 		$arrayOfProcessVars[VAR_PROCESS_INSTANCE] = $this->resource->uriResource;
 		$newActivities = $this->getNewActivities($arrayOfProcessVars, $connectorsUri);
+		
 		if($newActivities === false){
 			//means that the process must be paused:
 			$this->pause();
 			return;
+		}
+		
+		
+		$tokenService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_TokenService');
+		if(count($connectorsUri) > 0){
+			$tokenService->move(new core_kernel_classes_Resource($connectorsUri[0]), $currentUser, $this->resource);
 		}
 		
 		//actual transition starting from here:
@@ -308,7 +316,7 @@ extends WfResource
 				// $activityExecutionService->initExecution($activityAfterTransition->resource, $currentUser, $curret process instance);
 				
 				//check if the current user is allowed to execute the activity
-				if($activityExecutionService->checkAcl($activityAfterTransition->resource, $currentUser)){
+				if($activityExecutionService->checkAcl($activityAfterTransition->resource, $currentUser, $this->resource)){
 					$setPause = false;
 				}
 				else{

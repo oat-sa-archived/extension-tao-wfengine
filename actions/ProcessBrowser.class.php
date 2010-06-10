@@ -41,7 +41,6 @@ class ProcessBrowser extends WfModule
 			}
 		}
 		
-		
 		$userService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_UserService');
 		$currentUser = $userService->getCurrentUser();
 		
@@ -53,11 +52,14 @@ class ProcessBrowser extends WfModule
 		$browserViewData['activityExecutionUri']= $activityExecutionResource->uriResource;
 		
 		//security check if the user is allowed to access this activity
-		if(!$activityExecutionService->checkAcl($activity->resource, $currentUser)){
+		if(!$activityExecutionService->checkAcl($activity->resource, $currentUser, $process->resource)){
 			$_SESSION["processUri"] = null;
 			$this->redirect(_url('index', 'Main'));
 		}
-	
+		
+		$tokenService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_TokenService');
+		$tokenService->dispatch($tokenService->getCurrents($process->resource), $activityExecutionResource);
+		
 		
 		$this->setData('activity',$activity);
 		$activityPerf 		= new Activity($activity->uri, false); // Performance WA

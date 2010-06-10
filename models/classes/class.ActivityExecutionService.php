@@ -237,6 +237,7 @@ class wfEngine_models_classes_ActivityExecutionService
 	        	
 	        	//bind this execution of the activity with the current user and the current process execution
 	        	$this->bindExecution($execution, $currentUser, $processExecution);
+	       	
 	        }
 	        
 	        $returnValue = $execution;

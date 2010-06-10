@@ -183,7 +183,9 @@ class wfEngine_models_classes_TokenService
         	if(is_array($tokens)){
         		$key = $processExecution->uriResource;
         		if(array_key_exists($key, $tokens)){
-        			$returnValue = $tokens[$key];
+        			foreach($tokens[$key] as $tokenUri){
+        				$returnValue[] = new core_kernel_classes_Resource($tokenUri);
+        			}
         		}
         	}
         }
@@ -214,7 +216,12 @@ class wfEngine_models_classes_TokenService
     		 if(Session::hasAttribute(self::CURRENT_KEY)){
     		 	$currentTokens = Session::getAttribute(self::CURRENT_KEY);
     		 }
-    		 $currentTokens[$processExecution->uriResource] = $tokens;
+    		 foreach($tokens as $token){
+    		 	if($token instanceof core_kernel_classes_Resource){
+    		 		$currentTokens[$processExecution->uriResource][] = $token->uriResource;
+    		 	}
+    		 }
+    		 Session::setAttribute(self::CURRENT_KEY, $currentTokens);
     	}
     	
         // section 127-0-1-1-2013ff6:1292105c669:-8000:0000000000001FF3 end
@@ -268,6 +275,8 @@ class wfEngine_models_classes_TokenService
        $returnValue = $this->createInstance($this->tokenClass);
        $returnValue->setPropertyValue($this->tokenActivityProp, $activity->uriResource);
         
+      //echo "Create token ".$returnValue->getLabel()." for activity".$activity->getLabel()."<br>";
+       
         // section 127-0-1-1-2013ff6:1292105c669:-8000:0000000000001FCD end
 
         return $returnValue;
@@ -288,26 +297,69 @@ class wfEngine_models_classes_TokenService
 
         // section 127-0-1-1-2013ff6:1292105c669:-8000:0000000000001FD0 begin
         
+       
         if(!is_null($token) && !is_null($activityExecution)){
-        	
+        	 
         	$user  = $activityExecution->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_CURRENT_USER));
-        	if(!is_null($user) && $user instanceof core_kernel_classes_Resource){
+        	if(!is_null($user)){
         		$token->setPropertyValue($this->tokenCurrentUserProp, $user->uriResource);
         	}
         	
         	$activity  = $activityExecution->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_ACTIVITY));
-        	if(!is_null($activity) && $activity instanceof core_kernel_classes_Resource){
+        	if(!is_null($activity)){
         		$token->setPropertyValue($this->tokenActivityProp, $activity->uriResource);
         	}
         	
         	$token->setPropertyValue($this->tokenActivityExecutionProp, $activityExecution->uriResource);
         
+        	/*error_reporting(E_ALL);
+        	var_dump($token, $activityExecution,$user, $activity);exit;
+        	*/
+        	//echo "Assign token ".$returnValue->getLabel()." to user ".$user->getLabel()." and activity execution of ".$activity->getLabel()."<br>";
         }
         $returnValue = $token;
         
         // section 127-0-1-1-2013ff6:1292105c669:-8000:0000000000001FD0 end
 
         return $returnValue;
+    }
+
+    /**
+     * Short description of method dispatch
+     *
+     * @access public
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @param  array tokens
+     * @param  Resource activityExecution
+     * @return boolean
+     */
+    public function dispatch($tokens,  core_kernel_classes_Resource $activityExecution)
+    {
+        $returnValue = (bool) false;
+
+        // section 127-0-1-1--44e2213d:12922223449:-8000:0000000000001FE0 begin
+        
+        if(!is_null($activityExecution)){
+        	if(count($this->getTokens($activityExecution) == 0)){
+	        	$activity = $activityExecution->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_ACTIVITY));
+		        foreach($tokens as $token){
+		        	
+		        	$tokenActivity = $token->getOnePropertyValue($this->tokenActivityProp);
+		        	$tokenActivityExecution = $token->getOnePropertyValue($this->tokenActivityExecutionProp);
+		        	if(!is_null($tokenActivity)){
+		        		if($tokenActivity->uriResource == $activity->uriResource && is_null($tokenActivityExecution)){
+		        			$this->assign($token, $activityExecution);
+		        			$returnValue = true;
+		        			break;
+		        		}
+		        	}
+		        }
+	        }
+        }
+        
+        // section 127-0-1-1--44e2213d:12922223449:-8000:0000000000001FE0 end
+
+        return (bool) $returnValue;
     }
 
     /**
@@ -440,11 +492,11 @@ class wfEngine_models_classes_TokenService
         	$activityExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityExecutionService');
      		
         	//get the activity around the connector
-        	$previousActivities = $connector->getPropertyValues(new core_kernel_classes_Property(PROPERTY_CONNECTORS_PRECACTIVITIES));
+        	$previousActivities = $connector->getPropertyValuesCollection(new core_kernel_classes_Property(PROPERTY_CONNECTORS_PRECACTIVITIES));
         	
         	//get the tokens on the previous activity
         	$tokens = array();
-        	foreach($previousActivities as $previousActivity){
+        	foreach($previousActivities->getIterator() as $previousActivity){
         		$previousActivityExecution = $activityExecutionService->getExecution($previousActivity, $user, $processExecution);
         		$tokens = array_merge($tokens, $this->getTokens($previousActivityExecution));
         	}
@@ -454,11 +506,12 @@ class wfEngine_models_classes_TokenService
         	if(count($tokens) > 0){
         		
         		$currentTokens = array();
-        		
 	        	$type = $connector->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_TYPE));
 	        	switch($type->uriResource){
 	        		case INSTANCE_TYPEOFCONNECTORS_SEQUENCE:
 	        		case INSTANCE_TYPEOFCONNECTORS_SPLIT:
+	        			//echo "apply sequence/split rules<br>";
+	        			
 	        			foreach($tokens as $token){
 		        			//create the token for next activity
 		        			$newToken = $this->duplicate($token);
@@ -468,7 +521,7 @@ class wfEngine_models_classes_TokenService
 		        			$newToken->setPropertyValue($this->tokenActivityProp, $nextActivity->uriResource);
 		        			
 		        			//set as current
-		        			$currentTokens[] = $newToken;
+		        			$currentTokens[] = $newTokene;
 		        			
 		        			//delete the previous
 		        			$this->delete($token);
@@ -476,9 +529,10 @@ class wfEngine_models_classes_TokenService
 	        			
 	        			break;
 	        		case INSTANCE_TYPEOFCONNECTORS_PARALLEL:
+	        			
 	        			foreach($tokens as $token){
-		        			$nextActivities = $connector->getPropertyValues($connectorNextActivityProp);
-		        			foreach($nextActivities as $nextActivity){
+		        			$nextActivities = $connector->getPropertyValuesCollection($connectorNextActivityProp);
+		        			foreach($nextActivities->getIterator() as $nextActivity){
 		        				$newToken = $this->duplicate($token);
 		        				$newToken->setPropertyValue($this->tokenActivityProp, $nextActivity->uriResource);
 		        				$currentTokens[] = $newToken;
@@ -488,7 +542,7 @@ class wfEngine_models_classes_TokenService
 	        		
 	        			break;	
 	        		case INSTANCE_TYPEOFCONNECTORS_JOIN:
-	        			
+	        				
 	        				//create the token for next activity
 		        			$newToken = $this->merge($tokens);
 		        			

@@ -48,17 +48,24 @@ class ProcessExecutionFactory {
 				$returnValue->resource->setPropertyValue($property,$value);
 			}
 		}
+		
+		$tokenService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_TokenService');
+		
+		$tokens = array();
 		foreach ($initialActivities as $activity)
 		{
+			
 			//add token
 			$pInstanceTokenProp = new core_kernel_classes_Property(PROPERTY_PINSTANCES_TOKEN,__METHOD__);
 			$subjectResource->setPropertyValue($pInstanceTokenProp,$activity->uri);
-
+		
 			// Add in path
 			$pInstanceProcessProp = new core_kernel_classes_Property(PROPERTY_PINSTANCES_PROCESSPATH,__METHOD__);
 			$subjectResource->setPropertyValue($pInstanceProcessProp,$activity->uri);
-
-
+			
+			$token = $tokenService->create($activity->resource);
+			$tokens[] = $token;
+					
 			// OnBefore initial activity.
 			// If the initial Activity has inference rules on before... let's run them !
 			
@@ -70,12 +77,14 @@ class ProcessExecutionFactory {
 					$onbir->execute($processVars);
 				}
 			}
-			
 		}
-
-
+	//	error_reporting(E_ALL);
+		
 		// Feed newly created process.
 		$returnValue->feed();
+
+		$tokenService->setCurrents($returnValue->resource, $tokens);
+		
 /*
 		// If the inital activity is "hidden", let's run it.
 		if (!empty($returnValue->currentActivity)){
