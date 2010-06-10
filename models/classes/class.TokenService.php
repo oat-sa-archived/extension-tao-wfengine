@@ -57,6 +57,14 @@ class wfEngine_models_classes_TokenService
     // --- ATTRIBUTES ---
 
     /**
+     * Short description of attribute CURRENT_KEY
+     *
+     * @access public
+     * @var string
+     */
+    const CURRENT_KEY = 'current_tokens';
+
+    /**
      * Short description of attribute tokenClass
      *
      * @access protected
@@ -120,14 +128,14 @@ class wfEngine_models_classes_TokenService
     }
 
     /**
-     * Short description of method getCurrents
+     * Short description of method getTokens
      *
      * @access public
      * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
      * @param  Resource activityExecution
      * @return array
      */
-    public function getCurrents( core_kernel_classes_Resource $activityExecution)
+    public function getTokens( core_kernel_classes_Resource $activityExecution)
     {
         $returnValue = array();
 
@@ -157,22 +165,149 @@ class wfEngine_models_classes_TokenService
     }
 
     /**
-     * Short description of method build
+     * Short description of method getCurrents
      *
      * @access public
      * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
-     * @param  Resource connector
-     * @param  Resource user
+     * @param  Resource processExecution
      * @return array
      */
-    public function build( core_kernel_classes_Resource $connector,  core_kernel_classes_Resource $user)
+    public function getCurrents( core_kernel_classes_Resource $processExecution)
     {
         $returnValue = array();
 
-        // section 127-0-1-1-bf84135:12912b487a0:-8000:0000000000001F9D begin
-        // section 127-0-1-1-bf84135:12912b487a0:-8000:0000000000001F9D end
+        // section 127-0-1-1-2013ff6:1292105c669:-8000:0000000000001FD8 begin
+        
+        if(Session::hasAttribute(self::CURRENT_KEY) && !is_null($processExecution)){
+        	$tokens = Session::getAttribute(self::CURRENT_KEY);
+        	if(is_array($tokens)){
+        		$key = $processExecution->uriResource;
+        		if(array_key_exists($key, $tokens)){
+        			$returnValue = $tokens[$key];
+        		}
+        	}
+        }
+        
+        // section 127-0-1-1-2013ff6:1292105c669:-8000:0000000000001FD8 end
 
         return (array) $returnValue;
+    }
+
+    /**
+     * Short description of method setCurrents
+     *
+     * @access public
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @param  Resource processExecution
+     * @param  array tokens
+     * @return mixed
+     */
+    public function setCurrents( core_kernel_classes_Resource $processExecution, $tokens)
+    {
+        // section 127-0-1-1-2013ff6:1292105c669:-8000:0000000000001FF3 begin
+        
+    	if(!is_null($processExecution)){
+	    	if(!is_array($tokens) && !empty($tokens)){
+	    		$tokens = array($tokens);
+	    	}
+	    	$currentTokens = array();
+    		 if(Session::hasAttribute(self::CURRENT_KEY)){
+    		 	$currentTokens = Session::getAttribute(self::CURRENT_KEY);
+    		 }
+    		 $currentTokens[$processExecution->uriResource] = $tokens;
+    	}
+    	
+        // section 127-0-1-1-2013ff6:1292105c669:-8000:0000000000001FF3 end
+    }
+
+    /**
+     * Short description of method getVariables
+     *
+     * @access protected
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @param  Resource token
+     * @return array
+     */
+    protected function getVariables( core_kernel_classes_Resource $token)
+    {
+        $returnValue = array();
+
+        // section 127-0-1-1-2013ff6:1292105c669:-8000:0000000000001FCA begin
+        
+        if(!is_null($token)){
+        	$tokenVars = $token->getOnePropertyValue($this->tokenVariableProp);
+        	if(!is_null($tokenVars)){
+	        	if($tokenVars instanceof core_kernel_classes_Literal){
+	        		$result = @unserialize((string)$tokenVars);
+	        		if(is_array($result)){
+	        			$returnValue = $result;
+	        		}
+	        	}
+        	}
+        }
+        
+        // section 127-0-1-1-2013ff6:1292105c669:-8000:0000000000001FCA end
+
+        return (array) $returnValue;
+    }
+
+    /**
+     * Short description of method create
+     *
+     * @access public
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @param  Resource activity
+     * @return core_kernel_classes_Resource
+     */
+    public function create( core_kernel_classes_Resource $activity)
+    {
+        $returnValue = null;
+
+        // section 127-0-1-1-2013ff6:1292105c669:-8000:0000000000001FCD begin
+        
+       $returnValue = $this->createInstance($this->tokenClass);
+       $returnValue->setPropertyValue($this->tokenActivityProp, $activity->uriResource);
+        
+        // section 127-0-1-1-2013ff6:1292105c669:-8000:0000000000001FCD end
+
+        return $returnValue;
+    }
+
+    /**
+     * Short description of method assign
+     *
+     * @access public
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @param  Resource token
+     * @param  Resource activityExecution
+     * @return core_kernel_classes_Resource
+     */
+    public function assign( core_kernel_classes_Resource $token,  core_kernel_classes_Resource $activityExecution)
+    {
+        $returnValue = null;
+
+        // section 127-0-1-1-2013ff6:1292105c669:-8000:0000000000001FD0 begin
+        
+        if(!is_null($token) && !is_null($activityExecution)){
+        	
+        	$user  = $activityExecution->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_CURRENT_USER));
+        	if(!is_null($user) && $user instanceof core_kernel_classes_Resource){
+        		$token->setPropertyValue($this->tokenCurrentUserProp, $user->uriResource);
+        	}
+        	
+        	$activity  = $activityExecution->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_ACTIVITY));
+        	if(!is_null($activity) && $activity instanceof core_kernel_classes_Resource){
+        		$token->setPropertyValue($this->tokenActivityProp, $activity->uriResource);
+        	}
+        	
+        	$token->setPropertyValue($this->tokenActivityExecutionProp, $activityExecution->uriResource);
+        
+        }
+        $returnValue = $token;
+        
+        // section 127-0-1-1-2013ff6:1292105c669:-8000:0000000000001FD0 end
+
+        return $returnValue;
     }
 
     /**
@@ -188,6 +323,17 @@ class wfEngine_models_classes_TokenService
         $returnValue = null;
 
         // section 127-0-1-1-bf84135:12912b487a0:-8000:0000000000001FA2 begin
+        
+        if(!is_null($token)){
+        
+        	$newToken = $this->createInstance($this->tokenClass);
+	        $variables = $this->getVariables($token);
+	        if(count($variables) > 0){
+	        	$newToken->setPropertyValue($this->tokenVariableProp, serialize($variables)); 
+	        }
+	        $returnValue = $newToken;
+        }
+        
         // section 127-0-1-1-bf84135:12912b487a0:-8000:0000000000001FA2 end
 
         return $returnValue;
@@ -206,6 +352,40 @@ class wfEngine_models_classes_TokenService
         $returnValue = null;
 
         // section 127-0-1-1-bf84135:12912b487a0:-8000:0000000000001FA5 begin
+        
+        //get tokens variables 
+        $allVars = array();
+        foreach($tokens as $i => $token){
+        	$allVars[$i] = $this->getVariables($token);
+        }
+        
+        //merge the variables
+        $mergedVars = array();
+        foreach($allVars as $tokenVar){
+        	foreach($tokenVar as $key => $value){
+        		if(array_key_exists($key, $mergedVars)){
+        			if(is_array($mergedVars[$key])){
+        				$mergedVars[$key][] = $value;
+        			}
+        			else{
+        				if($mergedVars[$key] != $value){
+							$mergedVars[$key] = array($mergedVars[$key], $value);
+        				}
+        			}
+        		}
+        		else{
+        			$mergedVars[$key] = $value;
+        		}
+        	}
+        }
+        
+        //create the merged token
+        $newToken = $this->createInstance($this->tokenClass);
+        if(count($mergedVars) > 0){
+        	$newToken->setPropertyValue($this->tokenVariableProp, serialize($mergedVars)); 
+        }
+        $returnValue = $newToken;
+        
         // section 127-0-1-1-bf84135:12912b487a0:-8000:0000000000001FA5 end
 
         return $returnValue;
@@ -237,6 +417,101 @@ class wfEngine_models_classes_TokenService
         // section 127-0-1-1-bf84135:12912b487a0:-8000:0000000000001FA8 end
 
         return (bool) $returnValue;
+    }
+
+    /**
+     * Short description of method move
+     *
+     * @access public
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @param  Resource connector
+     * @param  Resource user
+     * @param  Resource processExecution
+     * @return array
+     */
+    public function move( core_kernel_classes_Resource $connector,  core_kernel_classes_Resource $user,  core_kernel_classes_Resource $processExecution)
+    {
+        $returnValue = array();
+
+        // section 127-0-1-1-2013ff6:1292105c669:-8000:0000000000001FD4 begin
+        
+     	if(!is_null($connector) && !is_null($user) && !is_null($processExecution)){
+        	
+        	$activityExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityExecutionService');
+     		
+        	//get the activity around the connector
+        	$previousActivities = $connector->getPropertyValues(new core_kernel_classes_Property(PROPERTY_CONNECTORS_PRECACTIVITIES));
+        	
+        	//get the tokens on the previous activity
+        	$tokens = array();
+        	foreach($previousActivities as $previousActivity){
+        		$previousActivityExecution = $activityExecutionService->getExecution($previousActivity, $user, $processExecution);
+        		$tokens = array_merge($tokens, $this->getTokens($previousActivityExecution));
+        	}
+        	
+        	$connectorNextActivityProp = new core_kernel_classes_Property(PROPERTY_CONNECTORS_NEXTACTIVITIES);
+        	
+        	if(count($tokens) > 0){
+        		
+        		$currentTokens = array();
+        		
+	        	$type = $connector->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_TYPE));
+	        	switch($type->uriResource){
+	        		case INSTANCE_TYPEOFCONNECTORS_SEQUENCE:
+	        		case INSTANCE_TYPEOFCONNECTORS_SPLIT:
+	        			foreach($tokens as $token){
+		        			//create the token for next activity
+		        			$newToken = $this->duplicate($token);
+		        			
+		        			//bind the next activity
+		        			$nextActivity = $connector->getOnePropertyValue($connectorNextActivityProp);
+		        			$newToken->setPropertyValue($this->tokenActivityProp, $nextActivity->uriResource);
+		        			
+		        			//set as current
+		        			$currentTokens[] = $newToken;
+		        			
+		        			//delete the previous
+		        			$this->delete($token);
+	        			}
+	        			
+	        			break;
+	        		case INSTANCE_TYPEOFCONNECTORS_PARALLEL:
+	        			foreach($tokens as $token){
+		        			$nextActivities = $connector->getPropertyValues($connectorNextActivityProp);
+		        			foreach($nextActivities as $nextActivity){
+		        				$newToken = $this->duplicate($token);
+		        				$newToken->setPropertyValue($this->tokenActivityProp, $nextActivity->uriResource);
+		        				$currentTokens[] = $newToken;
+		        			}
+		        			$this->delete($token);
+	        			}
+	        		
+	        			break;	
+	        		case INSTANCE_TYPEOFCONNECTORS_JOIN:
+	        			
+	        				//create the token for next activity
+		        			$newToken = $this->merge($tokens);
+		        			
+		        			//bind the next activity
+		        			$nextActivity = $connector->getOnePropertyValue($connectorNextActivityProp);
+		        			$newToken->setPropertyValue($this->tokenActivityProp, $nextActivity->uriResource);
+		        			
+		        			//set as current
+		        			$currentTokens[] = $newToken;
+		        			
+		        			//delete the previous
+		        			foreach($tokens as $token){
+		        				$this->delete($token);
+		        			}
+	        			break;
+	        	}
+	        	$this->setCurrents($processExecution, $currentTokens);
+        	}
+        }
+        
+        // section 127-0-1-1-2013ff6:1292105c669:-8000:0000000000001FD4 end
+
+        return (array) $returnValue;
     }
 
 } /* end of class wfEngine_models_classes_TokenService */
