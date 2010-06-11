@@ -165,6 +165,33 @@ class wfEngine_models_classes_TokenService
     }
 
     /**
+     * Short description of method getCurrent
+     *
+     * @access public
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @param  Resource activityExecution
+     * @return core_kernel_classes_Resource
+     */
+    public function getCurrent( core_kernel_classes_Resource $activityExecution)
+    {
+        $returnValue = null;
+
+        // section 127-0-1-1--5f764609:12927334c45:-8000:0000000000001FF2 begin
+        
+        $executionTokens = $this->getTokens($activityExecution);
+        if(count($executionTokens) > 0){
+        	foreach($executionTokens as $token){
+        		 $returnValue = $token;
+        		 break;
+        	}
+        }
+        
+        // section 127-0-1-1--5f764609:12927334c45:-8000:0000000000001FF2 end
+
+        return $returnValue;
+    }
+
+    /**
      * Short description of method getCurrents
      *
      * @access public
@@ -213,15 +240,17 @@ class wfEngine_models_classes_TokenService
 	    		$tokens = array($tokens);
 	    	}
 	    	$currentTokens = array();
-    		 if(Session::hasAttribute(self::CURRENT_KEY)){
-    		 	$currentTokens = Session::getAttribute(self::CURRENT_KEY);
-    		 }
     		 foreach($tokens as $token){
     		 	if($token instanceof core_kernel_classes_Resource){
-    		 		$currentTokens[$processExecution->uriResource][] = $token->uriResource;
+    		 		$currentTokens[] = $token->uriResource;
     		 	}
     		 }
-    		 Session::setAttribute(self::CURRENT_KEY, $currentTokens);
+    		 $tokens = array();
+    		 if(Session::hasAttribute(self::CURRENT_KEY)){
+    		 	$tokens = Session::getAttribute(self::CURRENT_KEY);
+    		 }
+    		 $tokens[$processExecution->uriResource] = $currentTokens;
+    		 Session::setAttribute(self::CURRENT_KEY, $tokens);
     	}
     	
         // section 127-0-1-1-2013ff6:1292105c669:-8000:0000000000001FF3 end
@@ -521,7 +550,7 @@ class wfEngine_models_classes_TokenService
 		        			$newToken->setPropertyValue($this->tokenActivityProp, $nextActivity->uriResource);
 		        			
 		        			//set as current
-		        			$currentTokens[] = $newTokene;
+		        			$currentTokens[] = $newToken;
 		        			
 		        			//delete the previous
 		        			$this->delete($token);

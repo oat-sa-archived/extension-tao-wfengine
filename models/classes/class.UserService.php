@@ -9,7 +9,7 @@ error_reporting(E_ALL);
  *
  * This file is part of Generis Object Oriented API.
  *
- * Automatically generated on 07.06.2010, 14:49:43 with ArgoUML PHP module 
+ * Automatically generated on 11.06.2010, 10:49:49 with ArgoUML PHP module 
  * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
  *
  * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
@@ -167,7 +167,7 @@ class wfEngine_models_classes_UserService
      * @param  Resource role
      * @return boolean
      */
-    public function saveUser( core_kernel_classes_Resource $user, $properties = array(),  core_kernel_classes_Resource $role = null)
+    public function saveUser( core_kernel_classes_Resource $user = null, $properties = array(),  core_kernel_classes_Resource $role = null)
     {
         $returnValue = (bool) false;
 

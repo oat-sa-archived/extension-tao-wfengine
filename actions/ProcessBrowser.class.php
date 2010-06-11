@@ -41,25 +41,27 @@ class ProcessBrowser extends WfModule
 			}
 		}
 		
-		$userService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_UserService');
-		$currentUser = $userService->getCurrentUser();
-		
-		$activityExecutionService 	= tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityExecutionService');
-		
 		$activity 			= $currentActivity;
 		
-		$activityExecutionResource = $activityExecutionService->initExecution($activity->resource, $currentUser, $process->resource);
-		$browserViewData['activityExecutionUri']= $activityExecutionResource->uriResource;
+		$userService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_UserService');
+		$currentUser = $userService->getCurrentUser();
+		if(is_null($currentUser)){
+			throw new Exception("No current user found!");
+		}
 		
 		//security check if the user is allowed to access this activity
+		$activityExecutionService 	= tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityExecutionService');
 		if(!$activityExecutionService->checkAcl($activity->resource, $currentUser, $process->resource)){
 			$_SESSION["processUri"] = null;
 			$this->redirect(_url('index', 'Main'));
 		}
 		
-		$tokenService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_TokenService');
-		$tokenService->dispatch($tokenService->getCurrents($process->resource), $activityExecutionResource);
+		//initialise the activity execution and assign the tokens to the current user
+		$processExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessExecutionService');
+		$processExecutionService->initCurrentExecution($process->resource, $activity->resource, $currentUser);
 		
+		$activityExecutionResource = $activityExecutionService->getExecution($activity->resource, $currentUser, $process->resource);
+		$browserViewData['activityExecutionUri']= $activityExecutionResource->uriResource;
 		
 		$this->setData('activity',$activity);
 		$activityPerf 		= new Activity($activity->uri, false); // Performance WA

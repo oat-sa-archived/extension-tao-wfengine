@@ -3,9 +3,16 @@
 error_reporting(E_ALL);
 
 /**
- * This service enables you to manage, control, restrict the process activities
+ * Generis Object Oriented API -
  *
- * @author firstname and lastname of author, <author@example.org>
+ * $Id$
+ *
+ * This file is part of Generis Object Oriented API.
+ *
+ * Automatically generated on 11.06.2010, 11:24:32 with ArgoUML PHP module 
+ * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
+ *
+ * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
  * @package wfEngine
  * @subpackage models_classes
  */
@@ -18,23 +25,23 @@ if (0 > version_compare(PHP_VERSION, '5')) {
  * The Service class is an abstraction of each service instance. 
  * Used to centralize the behavior related to every servcie instances.
  *
- * @author firstname and lastname of author, <author@example.org>
+ * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
  */
 require_once('tao/models/classes/class.Service.php');
 
 /* user defined includes */
-// section 127-0-1-1--10e47d9e:128d54bbb0d:-8000:0000000000001F5B-includes begin
-// section 127-0-1-1--10e47d9e:128d54bbb0d:-8000:0000000000001F5B-includes end
+// section 127-0-1-1--2bba7ca5:129262ff3bb:-8000:0000000000001FE7-includes begin
+// section 127-0-1-1--2bba7ca5:129262ff3bb:-8000:0000000000001FE7-includes end
 
 /* user defined constants */
-// section 127-0-1-1--10e47d9e:128d54bbb0d:-8000:0000000000001F5B-constants begin
-// section 127-0-1-1--10e47d9e:128d54bbb0d:-8000:0000000000001F5B-constants end
+// section 127-0-1-1--2bba7ca5:129262ff3bb:-8000:0000000000001FE7-constants begin
+// section 127-0-1-1--2bba7ca5:129262ff3bb:-8000:0000000000001FE7-constants end
 
 /**
- * This service enables you to manage, control, restrict the process activities
+ * Short description of class wfEngine_models_classes_ProcessExecutionService
  *
  * @access public
- * @author firstname and lastname of author, <author@example.org>
+ * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
  * @package wfEngine
  * @subpackage models_classes
  */
@@ -47,13 +54,12 @@ class wfEngine_models_classes_ProcessExecutionService
     // --- ATTRIBUTES ---
 
     // --- OPERATIONS ---
-    
+
     /**
-     * Check the ACL of a user for a given process.
-     * It returns false if the user cannot access the process.
+     * Short description of method checkAcl
      *
      * @access public
-     * @author firstname and lastname of author, <author@example.org>
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
      * @param  Resource process
      * @param  Resource currentUser
      * @return boolean
@@ -62,9 +68,9 @@ class wfEngine_models_classes_ProcessExecutionService
     {
         $returnValue = (bool) false;
 
-        // section 127-0-1-1--10e47d9e:128d54bbb0d:-8000:0000000000001F62 begin
+        // section 127-0-1-1--2bba7ca5:129262ff3bb:-8000:0000000000001FE9 begin
         
-        if(!is_null($process)){
+      	if(!is_null($process)){
 		
         	$processModeProp	= new core_kernel_classes_Property(PROPERTY_PROCESS_INIT_ACL_MODE);
         	$restrictedUserProp	= new core_kernel_classes_Property(PROPERTY_PROCESS_INIT_RESTRICTED_USER);
@@ -106,11 +112,48 @@ class wfEngine_models_classes_ProcessExecutionService
         		}
         	}
         }
-        // section 127-0-1-1--10e47d9e:128d54bbb0d:-8000:0000000000001F62 end
+        
+        // section 127-0-1-1--2bba7ca5:129262ff3bb:-8000:0000000000001FE9 end
 
         return (bool) $returnValue;
     }
-    
+
+    /**
+     * Short description of method initCurrentExecution
+     *
+     * @access public
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @param  Resource processExecution
+     * @param  Resource activity
+     * @param  Resource user
+     * @return boolean
+     */
+    public function initCurrentExecution( core_kernel_classes_Resource $processExecution,  core_kernel_classes_Resource $activity,  core_kernel_classes_Resource $user)
+    {
+        $returnValue = (bool) false;
+
+        // section 127-0-1-1--2bba7ca5:129262ff3bb:-8000:0000000000001FED begin
+        
+        if(!is_null($processExecution) && !is_null($activity) && !is_null($user)){
+        	
+        	//initialise the acitivity execution
+        	$activityExecutionService 	= tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityExecutionService');
+			$activityExecutionResource = $activityExecutionService->initExecution($activity, $user, $processExecution);
+			
+			
+			if(!is_null($activityExecutionResource)){
+				//dispatch the tokens to the user and assign him
+				$tokenService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_TokenService');
+				$tokenService->dispatch($tokenService->getCurrents($processExecution), $activityExecutionResource);
+				$returnValue = true;
+			}
+		}
+        
+        // section 127-0-1-1--2bba7ca5:129262ff3bb:-8000:0000000000001FED end
+
+        return (bool) $returnValue;
+    }
+
 } /* end of class wfEngine_models_classes_ProcessExecutionService */
 
 ?>

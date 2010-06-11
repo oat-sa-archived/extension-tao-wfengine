@@ -267,8 +267,16 @@ class Connector
 		$typeOfConnectorProp = new core_kernel_classes_Property(PROPERTY_CONENCTORS_TYPEOF);
 		$this->logger->debug('Next Connector  Name: ' . $this->resource->getLabel(),__FILE__,__LINE__);
 		$this->logger->debug('Next Connector  Uri: ' . $this->resource->uriResource,__FILE__,__LINE__);
+		try{
+		
+		
 		$this->type = $this->resource->getUniquePropertyValue($typeOfConnectorProp);
-
+		}
+		catch(common_Exception $ce){
+			print "<pre>";
+			var_dump($this->resource);
+			print $ce;
+		}
 		// We get the TransitionRule relevant to the connector.
 		$ruleProp = new core_kernel_classes_Property(PROPERTY_CONNECTOR_TRANSITIONRULE);
 		$rule = $this->resource->getPropertyValues($ruleProp);

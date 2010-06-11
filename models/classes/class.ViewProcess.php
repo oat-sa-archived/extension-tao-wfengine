@@ -450,7 +450,7 @@ extends Process
 			$defaultStep = 1;
 			//$this->dimSpace;
 			//$this->dimActivities;
-			error_reporting("^E_NOTICE");
+			//error_reporting("^E_NOTICE");
 			if ($suggestYpositionIndex !="0")
 			{
 
