@@ -57,7 +57,7 @@ class ProcessAuthoringServiceTestCase extends UnitTestCase {
 		$this->authoringService = $authoringService;
 	}
 	
-	
+	/*
 	public function testDeleteProcess(){
 		
 		$processDefinitionClass = new core_kernel_classes_Class(CLASS_PROCESS);
@@ -229,8 +229,55 @@ class ProcessAuthoringServiceTestCase extends UnitTestCase {
 		$transitionRule->delete();
 		$then->delete();
 		$else->delete();
+	}*/
+	
+	public function testParallelJoinActivities(){
+		$activityA = $this->authoringService->createActivity($this->proc, 'A');
+		$connectorA = $this->authoringService->createConnector($activityA);
+		
+		$activityB = $this->authoringService->createSequenceActivity($connectorA, null, 'B');
+		$connectorB = $this->apiModel->getSubject(PROPERTY_CONNECTORS_PRECACTIVITIES, $activityB->uriResource)->get(0);
+		
+		
+		//create the parallel branch 'C' acivities and connectors
+		$activityC = $this->authoringService->createActivity($this->proc, 'C');
+		$connectorC = $this->authoringService->createConnector($activityC);
+				
+		$activityC1 = $this->authoringService->createSequenceActivity($connectorC, null, 'C1');
+		$connectorC1 = $this->apiModel->getSubject(PROPERTY_CONNECTORS_PRECACTIVITIES, $activityC1->uriResource)->get(0);
+		
+		$activityC2 = $this->authoringService->createSequenceActivity($connectorC1, null, 'C2');
+		$connectorC2 = $this->apiModel->getSubject(PROPERTY_CONNECTORS_PRECACTIVITIES, $activityC2->uriResource)->get(0);
+		
+		//create the parallel branch 'D' acivities and connectors
+		$activityD = $this->authoringService->createActivity($this->proc, 'D');
+		$connectorD = $this->authoringService->createConnector($activityD);
+		
+		//create the merging actvity F
+		$activityF = $this->authoringService->createActivity($this->proc, 'F');
+		$connectorF = $this->authoringService->createConnector($activityF);
+		
+		$newActivitiesArray = array(
+			$activityC->uriResource => 2,
+			$activityD->uriResource => 3
+		);
+		
+		$this->assertTrue($this->authoringService->setParallelActivities($connectorB, $newActivitiesArray));
+		// $count = array();
+		// foreach($connectorB->getPropertyValuesCollection(new core_kernel_classes_Property(PROPERTY_CONNECTORS_NEXTACTIVITIES))->getIterator() as $activity){
+		
+		// }
+		
+		//merge all activity D instance to F:
+		$this->authoringService->createJoinActivity($connectorD, $activityF, '', $activityD);
+		$previousActivitiesCollection = $connectorD->getPropertyValuesCollection(new core_kernel_classes_Property(PROPERTY_CONNECTORS_PRECACTIVITIES));
+		var_dump($connectorD);
+		
+		$this->assertEqual($previousActivitiesCollection->count(), 3);
+		// foreach($previousActivitiesCollection->getIterator() as $previousAc
 	}
 	
+	/*
 	public function testCreateJoinActivity(){
 		$parallelActivity1 = $this->authoringService->createActivity($this->proc, 'myActivity1');
 		$connector1 = $this->authoringService->createConnector($parallelActivity1);
@@ -241,8 +288,8 @@ class ProcessAuthoringServiceTestCase extends UnitTestCase {
 		$joinActivity = $this->authoringService->createActivity($this->proc, 'joinActivity');
 		
 		//join parallel Activity 1 and 2 to "joinActivity"
-		$this->assertIsA($this->authoringService->createJoinActivity($connector1, $joinActivity), 'core_kernel_classes_Resource');
-		$this->authoringService->createJoinActivity($connector2, $joinActivity);
+		$this->assertIsA($this->authoringService->createJoinActivity($connector1, $joinActivity, '', $parallelActivity1), 'core_kernel_classes_Resource');
+		$this->authoringService->createJoinActivity($connector2, $joinActivity, '', $parallelActivity2);
 		
 		//both connectors joined to the same activity have the same transition rule?
 		$propTransitionRule = new core_kernel_classes_Property(PROPERTY_CONNECTORS_TRANSITIONRULE);
@@ -271,10 +318,10 @@ class ProcessAuthoringServiceTestCase extends UnitTestCase {
 		$connector2->delete();
 		$transitionRule1->delete();//TODO test all delete methods:
 	}
-	
+	*/
 	
 	public function tearDown() {
-        $this->proc->delete();
+        // $this->proc->delete();
     }
 
 }

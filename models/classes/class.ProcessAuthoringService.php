@@ -666,7 +666,7 @@ class wfEngine_models_classes_ProcessAuthoringService
 			}elseif($this->isConnector($activity)){
 				$connector->setPropertyValue($activityRefProp, $activity->getUniquePropertyValue($activityRefProp)->uriResource);
 			}else{
-				var_dump($activity);
+				// var_dump($activity);
 				throw new Exception("invalid resource type for the activity parameter: {$activity->uriResource}");
 			}
 		}else{
@@ -1553,15 +1553,15 @@ class wfEngine_models_classes_ProcessAuthoringService
 			$parallelConnector = null;
 			$parallelConnector = $processFlow->findParallelFromActivityBackward($previousActivity);
 			
-			var_dump($parallelConnector);
+			var_dump($parallelConnector, $processFlow);
 			if(!is_null($parallelConnector)){
 				$firstActivityOfTheBranch = array_pop($processFlow->getCheckedActivities());
 				//count the number of time theprevious activity must be set as the previous activity of the join connector
 				$multiplicity = 0; //restart counting: we are sure that at least one of such activity will be found
 				$nextActivityCollection = $parallelConnector->getPropertyValuesCollection(new core_kernel_classes_Property(PROPERTY_CONNECTORS_NEXTACTIVITIES));
-				echo '$firstActivityOfTheBranch: ';var_dump($firstActivityOfTheBranch);
-				echo '$processFlow: ';var_dump($processFlow);
-				echo '$colledc: ';var_dump($nextActivityCollection);
+				// echo '$firstActivityOfTheBranch: ';var_dump($firstActivityOfTheBranch);
+				// echo '$processFlow: ';var_dump($processFlow);
+				// echo '$colledc: ';var_dump($nextActivityCollection);
 				foreach($nextActivityCollection->getIterator() as $nextActivity){
 					if($nextActivity->uriResource == $firstActivityOfTheBranch->uriResource){
 						$multiplicity++;
@@ -1569,7 +1569,7 @@ class wfEngine_models_classes_ProcessAuthoringService
 				}
 			}
 			
-			var_dump($multiplicity);
+			// var_dump($multiplicity);
 			if($multiplicity){
 				//delete old connector, and associate the activity to that one:
 				// $this->deleteConnector($connectorInstance);
@@ -1648,6 +1648,8 @@ class wfEngine_models_classes_ProcessAuthoringService
 		
 		$returnValue = false;
 		
+		$this->setConnectorType($connectorInstance, new core_kernel_classes_Resource(INSTANCE_TYPEOFCONNECTORS_PARALLEL));
+		
 		$propNextActivities = new core_kernel_classes_Property(PROPERTY_CONNECTORS_NEXTACTIVITIES);
 		$processFlow = new wfEngine_models_classes_ProcessFlow();
 		
@@ -1664,7 +1666,7 @@ class wfEngine_models_classes_ProcessAuthoringService
 		
 		$connectorInstance->removePropertyValues($propNextActivities);
 			
-		var_dump($oldActivitiesArray, $newActivitiesArray);
+		// var_dump($oldActivitiesArray, $newActivitiesArray);
 		//check if the number has changed in the new posted data, otherwise, need to update the related join connector:
 		foreach($oldActivitiesArray as $activityUri=>$count){
 			
@@ -1681,9 +1683,9 @@ class wfEngine_models_classes_ProcessAuthoringService
 			if($updateRequired){
 				$processFlow->resetCheckedResources();
 				$joinConnector = null;
-				echo 'req';
+				
 				$joinConnector = $processFlow->findJoinFromActivityForward(new core_kernel_classes_Resource($activityUri));
-				var_dump($joinConnector);
+				// var_dump($joinConnector);
 				if(!is_null($joinConnector)){
 					//removestatement fot that connector:
 					core_kernel_impl_ApiModelOO::singleton()->removeStatement($joinConnector->uriResource, PROPERTY_CONNECTORS_PRECACTIVITIES, $activityUri, '');
@@ -1696,7 +1698,7 @@ class wfEngine_models_classes_ProcessAuthoringService
 			}
 		}
 		
-		//finally, set the next activities values for the parallel connector:
+		//finally, set the next activities values of the parallel connector:
 		foreach($newActivitiesArray as $activityUri=>$count){
 			//set property value as much as required
 			for($i=0;$i<$count;$i++){
