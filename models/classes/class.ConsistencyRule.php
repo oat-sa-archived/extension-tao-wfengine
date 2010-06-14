@@ -1,5 +1,5 @@
 <?php
-class ConsistencyRule extends PiaacRule
+class ConsistencyRule extends core_kernel_rules_Rule
 {
 	public $involvedActivities = array();
 	public $suppressable;
