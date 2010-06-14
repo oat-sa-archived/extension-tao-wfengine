@@ -268,8 +268,9 @@ extends WfResource
 		
 		
 		$connectorsUri = $this->getNextConnectorsUri($this->currentActivity[0]->uri);//could work for join as they share the same connector
-		
-		$arrayOfProcessVars[VAR_PROCESS_INSTANCE] = $this->resource->uriResource;
+		$tokenService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_TokenService');
+		$token = $tokenService->getCurrent($activityExecutionResource);
+		$arrayOfProcessVars[VAR_PROCESS_INSTANCE] = $token->uriResource;
 		$newActivities = $this->getNewActivities($arrayOfProcessVars, $connectorsUri);
 		
 		if($newActivities === false){
