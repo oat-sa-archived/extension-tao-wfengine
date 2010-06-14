@@ -58,14 +58,15 @@ class ProcessBrowser extends WfModule
 		
 		//initialise the activity execution and assign the tokens to the current user
 		$processExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessExecutionService');
+	
 		$processExecutionService->initCurrentExecution($process->resource, $activity->resource, $currentUser);
-		
 		$activityExecutionResource = $activityExecutionService->getExecution($activity->resource, $currentUser, $process->resource);
 		$browserViewData['activityExecutionUri']= $activityExecutionResource->uriResource;
 		
 		$this->setData('activity',$activity);
+		
 		$activityPerf 		= new Activity($activity->uri, false); // Performance WA
-		$activityExecution 	= new ActivityExecution($process, $activity);
+		$activityExecution 	= new ActivityExecution($process, $activityExecutionResource);//would need for activityexecution to get the current token and thus the value of the variables
 
 		$browserViewData['activityContentLanguages'] = array();
 
@@ -92,8 +93,6 @@ class ProcessBrowser extends WfModule
 		// process variables data.
 		$variablesViewData = array();
 		$variables = $process->getVariables();
-
-		
 
 		foreach ($variables as $var)
 		{

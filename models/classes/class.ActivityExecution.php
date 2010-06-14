@@ -89,14 +89,16 @@ class ActivityExecution
      * @access public
      * @author firstname and lastname of author, <author@example.org>
      * @param ProcessExecution
-     * @param Activity
+     * @param ActivityExecution
      * @return void
      */
-    public function __construct( ProcessExecution $processExecution,  Activity $activity)
+    public function __construct( ProcessExecution $processExecution,  core_kernel_classes_Resource $activityExecutionResource)
     {
         // section 10-13-1--31-740bb989:119ebfa9b28:-8000:000000000000087B begin
-    	$this->processExecution = $processExecution;
-		$this->activity = $activity;
+    	parent::__construct($activityExecutionResource->uriResource);
+		$this->processExecution = $processExecution;
+		$activityResource = $activityExecutionResource->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_ACTIVITY));
+		$this->activity = new Activity($activityResource->uriResource);
         // section 10-13-1--31-740bb989:119ebfa9b28:-8000:000000000000087B end
     }
 
@@ -169,6 +171,12 @@ class ActivityExecution
 
         return (array) $returnValue;
     }
+	
+	public function getToken(){
+		$tokenService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_TokenService');
+		$token = $tokenService->getCurrent($this->resource);
+		return $token;
+	}
 
 } /* end of class ActivityExecution */
 

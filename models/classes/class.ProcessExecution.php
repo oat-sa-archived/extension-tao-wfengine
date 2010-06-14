@@ -137,7 +137,7 @@ extends WfResource
 
 		$processVarsProp = new core_kernel_classes_Property(PROCESS_VARIABLES);
 		$processVars = $this->process->resource->getPropertyValues($processVarsProp);
-
+		//might need to be changed to : $currentToken = $tokenService->getCurrents($activityExecution);$currentToken->getPropertyValues($processVarsProp);
 		
 		foreach ($processVars as $uriVar)
 		{
@@ -401,10 +401,6 @@ extends WfResource
 					break;
 				}
 				case INSTANCE_TYPEOFCONNECTORS_JOIN : {
-					//TODO
-					echo 'work in progress to join';
-					
-					
 					
 					$completed = false;
 					//count the number of each different activity definition that has to be done parallely:
@@ -422,10 +418,11 @@ extends WfResource
 					// var_dump($activityResourceArray);
 					$debug = array();
 					
+					//for each activity definition, check if there are the required number of activity executions that are completed, if not, break the loop
 					foreach($activityResourceArray as $activityDefinition=>$count){
 						//get all activity execution for the current activity definition and for the current process execution indepedently from the user (which is not known at the authoring time)
 						
-						//get the collection of the execution performed:
+						//get the collection of the activity executions performed for the given actiivty definition:
 						$activityExecutionCollection = core_kernel_impl_ApiModelOO::singleton()->getSubject(PROPERTY_ACTIVITY_EXECUTION_ACTIVITY, $activityDefinition);
 						
 						$activityExecutionArray = array();
@@ -1245,15 +1242,15 @@ extends WfResource
 	{
 		// section 10-13-1--31--7b61b039:11cdba08b1e:-8000:0000000000000A30 begin
 
-		$currentTokenProp = new core_kernel_classes_Property(CURRENT_TOKEN);
+		$currentTokenProp = new core_kernel_classes_Property(CURRENT_TOKEN);//set current token, determine here, which one to take if there are more than one
 		$values = $this->resource->getPropertyValues($currentTokenProp);
 
 		foreach ($values as  $b)
 		{
 			$activity				= new Activity($b);
-			$activityExecution		= new ActivityExecution($this,$activity);
-			$activityExecution->uri = $b;
-			$activityExecution->label = $activity->label;
+			// $activityExecution		= new ActivityExecution($this,$activityExec);
+			// $activityExecution->uri = $b;
+			// $activityExecution->label = $activity->label;
 
 			$this->currentActivity[] = $activity;
 		}

@@ -116,8 +116,6 @@ class Service
         // section 10-13-1--31--23da6e5c:11a2ac14500:-8000:00000000000009B3 begin
         parent::__construct($uri);
 		$this->activityExecution = $activityExecution;
-		
-
 	
 		// Get service definitions
 		$serviceDefinition = $this->resource->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_CALLOFSERVICES_SERVICEDEFINITION));
@@ -161,46 +159,28 @@ class Service
 						throw new Exception("the process variable set as the value of the parameter 'in' is not a resource");
 					}
 					
-					
 					$paramType 	= 'processvar'; 
 					$paramValue = '';
 					
+					// $prop = new core_kernel_classes_Property($inParameterProcessVariable->uriResource);
 					
-					$prop = new core_kernel_classes_Property($inParameterProcessVariable->uriResource);
-					$paramValueResourceArray = $this->activityExecution->processExecution->resource->getPropertyValues($prop);
+					//get the current and unique token to get the process variable value:
+					$token = $this->activityExecution->getToken();
+					$paramValueResourceArray = $token->getPropertyValues(new core_kernel_classes_Property($inParameterProcessVariable->uriResource));
 					
 					// var_dump($inParameterProcessVariable,$paramValueResource);
 					
-					// if($paramValueResource instanceof core_kernel_classes_Literal){
-						// $paramValue = $paramValueResource->literal;
-					// }else if($paramValueResource instanceof core_kernel_classes_Resource){
-						// $paramValue = $paramValueResource->uriResource;//encode??
-					// }
-					
-					// $count = $paramValueResourceCollection->count();
-					// if($count>0){
-						// if($count>1){
-							
-						// }else{
-							// $paramValue = (string) $paramValueResourceCollection->get(0);
-						// }
-					
-					// }
-					
-					
 					$paramValue = '';
-					if(sizeof($paramValueResourceArray)){					
+					if(sizeof($paramValueResourceArray)){
 						if(count($paramValueResourceArray)>1){
+							//allowing multiple values to process variable in service input:
 							$paramValue = serialize($paramValueResourceArray);
 						}else{
-							if (trim(strip_tags($paramValueResourceArray[0])) != "")
-							{
+							if (trim(strip_tags($paramValueResourceArray[0])) != ""){
 								$paramValue = trim($paramValueResourceArray[0]);
-								
 							}
 						}
 					}
-					
 			
 					$this->input[common_Utils::fullTrim($formalParameterName)] = array(
 						'type' => $paramType, 

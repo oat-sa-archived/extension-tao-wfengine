@@ -165,7 +165,7 @@ class wfEngine_models_classes_ProcessAuthoringService
 		$actualParameterClass = new core_kernel_classes_Class(CLASS_ACTUALPARAMETER);
 		
 		//create new resource for the property value of the current call of service PROPERTY_CALLOFSERVICES_ACTUALPARAMIN or PROPERTY_CALLOFSERVICES_ACTUALPARAMOUT
-		$newActualParameter = $actualParameterClass->createInstance($formalParam->getLabel(), "created by Process Authoring Service");
+		$newActualParameter = $actualParameterClass->createInstance($formalParam->getLabel(), "actual parameter created by Process Authoring Service");
 		$newActualParameter->setPropertyValue(new core_kernel_classes_Property(PROPERTY_ACTUALPARAM_FORMALPARAM), $formalParam->uriResource);
 		$newActualParameter->setPropertyValue(new core_kernel_classes_Property($actualParameterType), $value);
 	
