@@ -1,5 +1,5 @@
 <?php
-class InferenceRule extends PiaacRule
+class InferenceRule extends core_kernel_rules_Rule
 {
 	public $then = null;
 	public $else = null;
