@@ -343,7 +343,7 @@ class SasImporter{
 				//set the new instance of process variable as a property of the class process instance:
 				if($processVar->setPropertyValue($this->rdfTypeProp, RDF_PROPERTY)){
 					$newProcessInstanceProperty = new core_kernel_classes_Property($processVar->uriResource);
-					$newProcessInstanceProperty->setDomain($this->processInstanceClass);
+					$newProcessInstanceProperty->setDomain(CLASS_TOKEN);
 					$newProcessInstanceProperty->setRange($this->rdfLiteralClass);
 				}
 				

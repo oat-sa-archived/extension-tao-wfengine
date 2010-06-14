@@ -1614,7 +1614,7 @@ class wfEngine_models_classes_ProcessAuthoringService
 		$ok = $processVariable->setPropertyValue(new core_kernel_classes_Property(RDF_TYPE), RDF_PROPERTY);
 		if($ok){
 			$newProcessInstanceProperty = new core_kernel_classes_Property($processVariable->uriResource);
-			$newProcessInstanceProperty->setDomain(new core_kernel_classes_Class(CLASS_PROCESSINSTANCE));
+			$newProcessInstanceProperty->setDomain(new core_kernel_classes_Class(CLASS_TOKEN));
 			$newProcessInstanceProperty->setRange(new core_kernel_classes_Class(RDFS_LITERAL));//literal only??
 		}else{
 			throw new Exception("the newly created process variable {$label} ({$processVariable->uriResource}) cannot be set as a property of the class process instance");
