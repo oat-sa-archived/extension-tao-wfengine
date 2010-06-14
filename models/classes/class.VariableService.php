@@ -68,12 +68,32 @@ extends tao_models_classes_Service
 		$returnValue = (bool) false;
 
 		// section -87--2--3--76--7eb229c2:12916be1ece:-8000:0000000000003C07 begin
-		$property = new core_kernel_classes_Property(PROPERTY_TOKEN_VARIABLE);
-		$formerVariable = $this->getAll();
-		$newVariable = !empty($formerVariable) ? array_merge($formerVariable,$variable) : $variable;
-		$property = new core_kernel_classes_Property(PROPERTY_TOKEN_VARIABLE);
-		$returnValue = $token->editPropertyValues($property,serialize($newVariable));
+		if(isset($_SESSION["activityExecutionUri"])){
+			$activityExecutionUri = urldecode($_SESSION["activityExecutionUri"]);
+			$activityExecution = new core_kernel_classes_Resource($activityExecutionUri);
+			$tokenService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_TokenService');
+			$token = $tokenService->getCurrent($activityExecution);
+			$tokenVarProp = new core_kernel_classes_Property(PROPERTY_TOKEN_VARIABLE);
+			if(is_null($token)) {
+					throw new Exception('Activity Token should never be null');
+			}
+			
+			$newVar = unserialize($token->getOnePropertyValue($tokenVarProp));
+			foreach($variable as $k) {
+				$collection = core_kernel_impl_ApiModelOO::singleton()->getSubject(PROPERTY_CODE,$k);
+				if(!$collection->isEmpty()){
+						if($collection->count() == 1) {
+							$property = new core_kernel_classes_Property($collection->get(0)->uriResource);
 
+							$returnValue &= $token->editPropertyValues($property,$v);
+							$newVar = array_merge($newVar, array($k)); 
+						}
+				}
+				
+			}
+			$returnValue &= $token->editPropertyValues($tokenVarProp,serialize($newVar));
+		}
+		
 		// section -87--2--3--76--7eb229c2:12916be1ece:-8000:0000000000003C07 end
 
 		return (bool) $returnValue;
@@ -97,20 +117,32 @@ extends tao_models_classes_Service
 			$activityExecution = new core_kernel_classes_Resource($activityExecutionUri);
 			$tokenService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_TokenService');
 			$token = $tokenService->getCurrent($activityExecution);
+			$tokenVarProp = new core_kernel_classes_Property(PROPERTY_TOKEN_VARIABLE);
+			if(is_null($token)) {
+					throw new Exception('Activity Token should never be null');
+			}
+			
+			$oldVar = unserialize($token->getOnePropertyValue($tokenVarProp));
 			if(is_string($params)){
 				$params = array($params);
 			}
+			
 			if(is_array($params)){
 				foreach($params as $param) {
-					$collection = core_kernel_impl_ApiModelOO::singleton()->getSubject(PROPERTY_CODE, $param);
-					if(!$collection->isEmpty()){
-						if($collection->count() == 1) {
-							$property = new core_kernel_classes_Property($collection->get(0)->uriResource);
-							// $apiModel->removeStatement($subjectCollection->get(0)->uriResource, $property->uriResource, $object->uriResource, '');
-							return $token->removePropertyValues($property);
+					if(in_array($param,$oldVar)){
+						$collection = core_kernel_impl_ApiModelOO::singleton()->getSubject(PROPERTY_CODE, $param);
+						if(!$collection->isEmpty()){
+							if($collection->count() == 1) {
+								$property = new core_kernel_classes_Property($collection->get(0)->uriResource);
+								// $apiModel->removeStatement($subjectCollection->get(0)->uriResource, $property->uriResource, $object->uriResource, '');
+								
+								$returnValue &= $token->removePropertyValues($property);
+								$oldVar = array_diff($oldVar,array($param));
+							}
 						}
 					}
 				}
+				$returnValue &= $token->editPropertyValues($tokenVarProp,serialize($oldVar));
 			}
 		}
 
@@ -132,9 +164,25 @@ extends tao_models_classes_Service
 		$returnValue = null;
 
 		// section -87--2--3--76--7eb229c2:12916be1ece:-8000:0000000000003C0E begin
-		$variable = $this->getAll();
-		if(!empty($variable)) {
-			$returnValue = isset($variable[$key]) ? $variable[$key] : null;
+		if(isset($_SESSION["activityExecutionUri"])){
+			$activityExecutionUri = urldecode($_SESSION["activityExecutionUri"]);
+			$activityExecution = new core_kernel_classes_Resource($activityExecutionUri);
+			$tokenService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_TokenService');
+			$token = $tokenService->getCurrent($activityExecution);
+			if(is_null($token)) {
+				throw new Exception('Activity Token should never be null');
+			}
+			$tokenVarProp = new core_kernel_classes_Property(PROPERTY_TOKEN_VARIABLE);
+			$vars = unserialize($token->getOnePropertyValue($tokenVarProp));
+			if(in_array($key,$vars)){
+				$collection = core_kernel_impl_ApiModelOO::singleton()->getSubject(PROPERTY_CODE,$key);
+				if(!$collection->isEmpty()){
+					if($collection->count() == 1) {
+						$property = new core_kernel_classes_Property($collection->get(0)->uriResource);
+						$returnValue = $token->getOnePropertyValue($property);
+					}
+				}
+			}
 		}
 		// section -87--2--3--76--7eb229c2:12916be1ece:-8000:0000000000003C0E end
 
@@ -158,10 +206,24 @@ extends tao_models_classes_Service
 			$activityExecution = new core_kernel_classes_Resource($activityExecutionUri);
 			$tokenService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_TokenService');
 			$token = $tokenService->getCurrent($activityExecution);
+			if(is_null($token)) {
+				throw new Exception('Activity Token should never be null');
+			}
+			$tokenVarProp = new core_kernel_classes_Property(PROPERTY_TOKEN_VARIABLE);
+			$vars = unserialize($token->getOnePropertyValue($tokenVarProp));
 			
-			
+			foreach($vars as $code){
+				$collection = core_kernel_impl_ApiModelOO::singleton()->getSubject(PROPERTY_CODE,$code);
+				if(!$collection->isEmpty()){
+					if($collection->count() == 1) {
+						$property = new core_kernel_classes_Property($collection->get(0)->uriResource);
+						$returnValue[$code] = $token->getOnePropertyValue($property);
+					}
+				}
+			}
 
 		}
+		
 		// section -87--2--3--76--7eb229c2:12916be1ece:-8000:0000000000003C11 end
 
 		return (array) $returnValue;
