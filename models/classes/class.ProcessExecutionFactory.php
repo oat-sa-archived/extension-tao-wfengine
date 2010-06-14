@@ -40,14 +40,7 @@ class ProcessExecutionFactory {
 
 		$initialActivities = $returnValue->process->getRootActivities();
 
-		foreach($this->variables as $uri => $value) {
-			// have to skip name because note work like other variable
-			if($uri != RDFS_LABEL) {
-				
-				$property = new core_kernel_classes_Property($uri);
-				$returnValue->resource->setPropertyValue($property,$value);
-			}
-		}
+		
 		
 		$tokenService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_TokenService');
 		
@@ -78,6 +71,22 @@ class ProcessExecutionFactory {
 				}
 			}
 		}
+		
+		//foreach first tokens, assign the user input prop values:
+		foreach($this->variables as $uri => $value) {
+			// have to skip name because note work like other variable
+			if($uri != RDFS_LABEL) {
+				
+				$property = new core_kernel_classes_Property($uri);
+				// $returnValue->resource->setPropertyValue($property,$value);//old
+				
+				//assign property values to them:
+				foreach($tokens as $token){
+					$token->setPropertyValue($property,$value);
+				}
+			}
+		}
+		
 	//	error_reporting(E_ALL);
 		
 		// Feed newly created process.

@@ -60,7 +60,8 @@ class Processes extends WfModule
 		
 			
 			$processExecutionFactory->variables = $posted["variables"];
-	
+			
+			//inital tokens created, assign user input process variables to initial tokens
 			$newProcessExecution = $processExecutionFactory->create();
 			
 
