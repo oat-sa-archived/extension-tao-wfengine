@@ -70,7 +70,6 @@
 #active_processes .join a
 {
 	display: block;
-	
 	color: #000000;
 	text-align: left;
 	padding: 0 0 0 20px;
@@ -91,6 +90,7 @@
 }
 
 #active_processes .join .activity-denied{
+	display: block;
 	color: red;
 	padding: 0 0 0 20px;
 	height: 16px;

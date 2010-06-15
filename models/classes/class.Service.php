@@ -133,6 +133,9 @@ class Service
 		
 		$inParameterCollection = $this->resource->getPropertyValuesCollection(new core_kernel_classes_Property(PROPERTY_CALLOFSERVICES_ACTUALPARAMETERIN));
         
+		$token = $this->activityExecution->getToken();
+		
+		
 		$this->input 	= array();
 		$this->output	= array();
 		// var_dump($this->resource, $inParameterCollection);
@@ -165,7 +168,6 @@ class Service
 					// $prop = new core_kernel_classes_Property($inParameterProcessVariable->uriResource);
 					
 					//get the current and unique token to get the process variable value:
-					$token = $this->activityExecution->getToken();
 					$paramValueResourceArray = $token->getPropertyValues(new core_kernel_classes_Property($inParameterProcessVariable->uriResource));
 					
 					// var_dump($inParameterProcessVariable,$paramValueResource);

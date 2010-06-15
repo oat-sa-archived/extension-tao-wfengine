@@ -140,7 +140,6 @@ class wfEngine_models_classes_ProcessExecutionService
         	$activityExecutionService 	= tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityExecutionService');
 			$activityExecutionResource = $activityExecutionService->initExecution($activity, $user, $processExecution);
 			
-			
 			if(!is_null($activityExecutionResource)){
 				//dispatch the tokens to the user and assign him
 				$tokenService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_TokenService');

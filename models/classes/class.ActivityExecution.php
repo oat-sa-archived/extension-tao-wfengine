@@ -138,6 +138,14 @@ class ActivityExecution
 		return false;
         // section 10-13-1--31-740bb989:119ebfa9b28:-8000:000000000000087D end
     }
+    
+    public function isFinished(){
+    	$isFinished = $this->resource->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_IS_FINISHED));
+    	if(!is_null($isFinished)){
+    		return ($isFinished->uriResource == GENERIS_TRUE);
+    	}
+    	return false;
+    }
 
     /**
      * Short description of method getStatementsAssignations

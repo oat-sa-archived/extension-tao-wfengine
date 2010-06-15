@@ -60,8 +60,11 @@ class ProcessBrowser extends WfModule
 		$processExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessExecutionService');
 	
 		$processExecutionService->initCurrentExecution($process->resource, $activity->resource, $currentUser);
+		
 		$activityExecutionResource = $activityExecutionService->getExecution($activity->resource, $currentUser, $process->resource);
 		$browserViewData['activityExecutionUri']= $activityExecutionResource->uriResource;
+		$_SESSION['activityExecutionUri'] = $activityExecutionResource->uriResource;
+		
 		
 		$this->setData('activity',$activity);
 		

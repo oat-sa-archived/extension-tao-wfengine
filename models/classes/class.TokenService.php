@@ -104,6 +104,14 @@ class wfEngine_models_classes_TokenService
      */
     protected $tokenVariableProp = null;
 
+    /**
+     * Short description of attribute currentTokenProp
+     *
+     * @access protected
+     * @var Resource
+     */
+    protected $currentTokenProp = null;
+
     // --- OPERATIONS ---
 
     /**
@@ -123,6 +131,7 @@ class wfEngine_models_classes_TokenService
     	$this->tokenActivityExecutionProp 	= new core_kernel_classes_Property(PROPERTY_TOKEN_ACTIVITYEXECUTION);
     	$this->tokenCurrentUserProp 		= new core_kernel_classes_Property(PROPERTY_TOKEN_CURRENTUSER);
     	$this->tokenVariableProp 			= new core_kernel_classes_Property(PROPERTY_TOKEN_VARIABLE);
+    	$this->currentTokenProp				= new core_kernel_classes_Property(CURRENT_TOKEN);
     	
         // section 127-0-1-1-24bd84b1:1291d596dba:-8000:0000000000001FB9 end
     }
@@ -205,7 +214,7 @@ class wfEngine_models_classes_TokenService
 
         // section 127-0-1-1-2013ff6:1292105c669:-8000:0000000000001FD8 begin
         
-        if(Session::hasAttribute(self::CURRENT_KEY) && !is_null($processExecution)){
+   /*     if(Session::hasAttribute(self::CURRENT_KEY) && !is_null($processExecution)){
         	$tokens = Session::getAttribute(self::CURRENT_KEY);
         	if(is_array($tokens)){
         		$key = $processExecution->uriResource;
@@ -215,9 +224,42 @@ class wfEngine_models_classes_TokenService
         			}
         		}
         	}
+        }*/
+        
+        if(!is_null($processExecution)){
+        	$tokens = $processExecution->getPropertyValuesCollection($this->currentTokenProp);
+        	foreach($tokens->getIterator() as $token){
+        		$returnValue[] = $token;
+        	}
         }
         
         // section 127-0-1-1-2013ff6:1292105c669:-8000:0000000000001FD8 end
+
+        return (array) $returnValue;
+    }
+
+    /**
+     * Short description of method getCurrentActivities
+     *
+     * @access public
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @param  Resource processExecution
+     * @return array
+     */
+    public function getCurrentActivities( core_kernel_classes_Resource $processExecution)
+    {
+        $returnValue = array();
+
+        // section 127-0-1-1--6657ec7c:129368db927:-8000:0000000000001FF5 begin
+        
+        foreach($this->getCurrents($processExecution) as $token){
+        	$activity = $token->getOnePropertyValue($this->tokenActivityProp);
+        	if(!is_null($activity)){
+        		$returnValue[] = $activity;
+        	}
+        }
+        
+        // section 127-0-1-1--6657ec7c:129368db927:-8000:0000000000001FF5 end
 
         return (array) $returnValue;
     }
@@ -239,7 +281,7 @@ class wfEngine_models_classes_TokenService
 	    	if(!is_array($tokens) && !empty($tokens)){
 	    		$tokens = array($tokens);
 	    	}
-	    	$currentTokens = array();
+	    	/*$currentTokens = array();
     		 foreach($tokens as $token){
     		 	if($token instanceof core_kernel_classes_Resource){
     		 		$currentTokens[] = $token->uriResource;
@@ -250,10 +292,46 @@ class wfEngine_models_classes_TokenService
     		 	$tokens = Session::getAttribute(self::CURRENT_KEY);
     		 }
     		 $tokens[$processExecution->uriResource] = $currentTokens;
-    		 Session::setAttribute(self::CURRENT_KEY, $tokens);
+    		 Session::setAttribute(self::CURRENT_KEY, $tokens);*/
+    		
+    		$processExecution->removePropertyValues($this->currentTokenProp);
+    		foreach($tokens as $token){
+    			$processExecution->setPropertyValue($this->currentTokenProp, $token->uriResource);
+    		}
     	}
     	
         // section 127-0-1-1-2013ff6:1292105c669:-8000:0000000000001FF3 end
+    }
+
+    /**
+     * Short description of method setCurrentActivities
+     *
+     * @access public
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @param  Resource processExecution
+     * @param  array activities
+     * @param  Resource user
+     * @return mixed
+     */
+    public function setCurrentActivities( core_kernel_classes_Resource $processExecution, $activities,  core_kernel_classes_Resource $user)
+    {
+        // section 127-0-1-1--6657ec7c:129368db927:-8000:0000000000001FFF begin
+        
+    	$tokens = array();
+    	$activityExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityExecutionService');
+    	foreach($activities as $activity){
+    		$execution = $activityExecutionService->getExecution($activity, $user, $processExecution);
+    		if(!is_null($execution)){
+    			foreach($this->getTokens($execution) as $token){
+    				if(!arra_key_exists($token->uriResource, $tokens)){
+    					$tokens[$token->uriResource] = $token;
+    				}
+    			}
+    		}
+    	}
+		$this->setCurrents($processExecution, $tokens);
+    	
+        // section 127-0-1-1--6657ec7c:129368db927:-8000:0000000000001FFF end
     }
 
     /**
@@ -271,15 +349,24 @@ class wfEngine_models_classes_TokenService
         // section 127-0-1-1-2013ff6:1292105c669:-8000:0000000000001FCA begin
         
         if(!is_null($token)){
-        	$tokenVars = $token->getOnePropertyValue($this->tokenVariableProp);
-        	if(!is_null($tokenVars)){
-	        	if($tokenVars instanceof core_kernel_classes_Literal){
-	        		$result = @unserialize((string)$tokenVars);
-	        		if(is_array($result)){
-	        			$returnValue = $result;
-	        		}
-	        	}
-        	}
+			$tokenVarKeys = @unserialize($token->getOnePropertyValue($this->tokenVariableProp));
+			if($tokenVarKeys !== false){
+				if(is_array($tokenVarKeys)){
+					foreach($tokenVarKeys as $key){
+						$collection = core_kernel_impl_ApiModelOO::singleton()->getSubject(PROPERTY_CODE, $key);
+						if(!$collection->isEmpty()){
+							if($collection->count() == 1) {
+								$property = new core_kernel_classes_Property($collection->get(0)->uriResource);
+								$returnValue[] =array(
+									'code'			=> $key,
+									'propertyUri'	=> $property->uriResource,
+									'value'			=> $token->getPropertyValues($property)
+								);
+							}
+						}
+					}
+				}
+			}
         }
         
         // section 127-0-1-1-2013ff6:1292105c669:-8000:0000000000001FCA end
@@ -410,7 +497,14 @@ class wfEngine_models_classes_TokenService
         	$newToken = $this->createInstance($this->tokenClass);
 	        $variables = $this->getVariables($token);
 	        if(count($variables) > 0){
-	        	$newToken->setPropertyValue($this->tokenVariableProp, serialize($variables)); 
+	        	$keys = array();
+	        	foreach($variables as $variable){
+	        		foreach($variable['value'] as $value){
+	        			$newToken->setPropertyValue(new core_kernel_classes_Property($variable['propertyUri']), $value); 
+	        		}
+	        		$keys[] = $variable['code'];
+	        	}
+	        	$newToken->setPropertyValue($this->tokenVariableProp, serialize($keys)); 
 	        }
 	        $returnValue = $newToken;
         }
@@ -442,20 +536,23 @@ class wfEngine_models_classes_TokenService
         
         //merge the variables
         $mergedVars = array();
-        foreach($allVars as $tokenVar){
-        	foreach($tokenVar as $key => $value){
-        		if(array_key_exists($key, $mergedVars)){
-        			if(is_array($mergedVars[$key])){
-        				$mergedVars[$key][] = $value;
-        			}
-        			else{
-        				if($mergedVars[$key] != $value){
-							$mergedVars[$key] = array($mergedVars[$key], $value);
-        				}
-        			}
-        		}
-        		else{
-        			$mergedVars[$key] = $value;
+        foreach($allVars as $tokenVars){
+        	foreach($tokenVars as $tokenVar){
+        		$key = $tokenVar['code'];
+        		foreach($tokenVar['value'] as $value){
+	        		if(array_key_exists($key, $mergedVars)){
+	        			if(is_array($mergedVars[$key])){
+	        				$mergedVars[$key][] = $value;
+	        			}
+	        			else{
+	        				if($mergedVars[$key] != $value){
+								$mergedVars[$key] = array($mergedVars[$key], $value);
+	        				}
+	        			}
+	        		}
+	        		else{
+	        			$mergedVars[$key] = $value;
+	        		}
         		}
         	}
         }
@@ -463,7 +560,26 @@ class wfEngine_models_classes_TokenService
         //create the merged token
         $newToken = $this->createInstance($this->tokenClass);
         if(count($mergedVars) > 0){
-        	$newToken->setPropertyValue($this->tokenVariableProp, serialize($mergedVars)); 
+        	
+        	$keys = array();
+        	foreach($mergedVars as $code => $values){
+        		$collection = core_kernel_impl_ApiModelOO::singleton()->getSubject(PROPERTY_CODE, $code);
+					if(!$collection->isEmpty()){
+						if($collection->count() == 1) {
+							if(is_array($values)){
+								foreach($values as $value){
+									$newToken->setPropertyValue(new core_kernel_classes_Property($collection->get(0)->uriResource),$value);
+								}
+							}
+							else{
+								$newToken->setPropertyValue(new core_kernel_classes_Property($collection->get(0)->uriResource),$values);
+							}
+						}
+				}
+        		$keys[] = $code;
+        	}
+        	
+        	$newToken->setPropertyValue($this->tokenVariableProp, serialize($keys)); 
         }
         $returnValue = $newToken;
         
@@ -530,6 +646,7 @@ class wfEngine_models_classes_TokenService
         		$tokens = array_merge($tokens, $this->getTokens($previousActivityExecution));
         	}
         	
+        	
         	$connectorNextActivityProp = new core_kernel_classes_Property(PROPERTY_CONNECTORS_NEXTACTIVITIES);
         	
         	if(count($tokens) > 0){
@@ -539,10 +656,16 @@ class wfEngine_models_classes_TokenService
 	        	switch($type->uriResource){
 	        		case INSTANCE_TYPEOFCONNECTORS_SEQUENCE:
 	        		case INSTANCE_TYPEOFCONNECTORS_SPLIT:
-	        			//echo "apply sequence/split rules<br>";
 	        			
 	        			foreach($tokens as $token){
-		        			//create the token for next activity
+		        			
+//	        				echo "Token ".$token->getLabel()."<br>";
+//        					echo "Execution ".$token->getOnePropertyValue($this->tokenActivityExecutionProp)."<br>";
+//	        				print "<pre>";
+//        					print_r($this->getVariables($token));
+//        					print "</pre><br>";
+        					
+	        				//create the token for next activity
 		        			$newToken = $this->duplicate($token);
 		        			
 		        			//bind the next activity
@@ -551,6 +674,12 @@ class wfEngine_models_classes_TokenService
 		        			
 		        			//set as current
 		        			$currentTokens[] = $newToken;
+		        			
+//		        			echo "New token ".$newToken->getLabel()."<br>";
+//        					echo "Execution ".$newToken->getOnePropertyValue($this->tokenActivityExecutionProp)."<br>";
+//	        				print "<pre>";
+//        					print_r($this->getVariables($newToken));
+//        					print "</pre><br>";
 		        			
 		        			//delete the previous
 		        			$this->delete($token);

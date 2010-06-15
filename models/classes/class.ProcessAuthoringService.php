@@ -1553,7 +1553,7 @@ class wfEngine_models_classes_ProcessAuthoringService
 			$parallelConnector = null;
 			$parallelConnector = $processFlow->findParallelFromActivityBackward($previousActivity);
 			
-			var_dump($parallelConnector, $processFlow);
+		//	var_dump($parallelConnector, $processFlow);
 			if(!is_null($parallelConnector)){
 				$firstActivityOfTheBranch = array_pop($processFlow->getCheckedActivities());
 				//count the number of time theprevious activity must be set as the previous activity of the join connector

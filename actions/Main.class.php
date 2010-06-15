@@ -76,12 +76,19 @@ class Main extends WfModule
 //				}
 				
 				$isAllowed = $activityExecutionService->checkAcl($activity->resource, $currentUser, $proc->resource);
+				$isFinished = false;
+				$execution = $activityExecutionService->getExecution($activity->resource, $currentUser, $proc->resource);
+				if(!is_null($execution)){
+					$aExecution = new ActivityExecution($proc->resource, $execution);
+					$isFinished = $aExecution->isFinished();
+				}
 				$currentActivities[] = array(
 					'label'				=> $currentActivity->label,
 					'uri' 				=> $currentActivity->uri,
 					'may_participate'	=> (!$proc->isFinished() && $isAllowed),
 					'finished'			=> $proc->isFinished(),
-					'allowed'			=> $isAllowed
+					'allowed'			=> $isAllowed,
+					'activityEnded'		=> $isFinished
 				);
 			}
 			

@@ -137,7 +137,7 @@ extends WfResource
 
 		$processVarsProp = new core_kernel_classes_Property(PROCESS_VARIABLES);
 		$processVars = $this->process->resource->getPropertyValues($processVarsProp);
-		//might need to be changed to : $currentToken = $tokenService->getCurrents($activityExecution);$currentToken->getPropertyValues($processVarsProp);
+
 		
 		foreach ($processVars as $uriVar)
 		{
@@ -195,7 +195,12 @@ extends WfResource
 		$_SESSION["activityExecutionUri"] = $activityExecutionUri;
 		$processVars 				= $this->getVariables();
 		$arrayOfProcessVars 		= Utils::processVarsToArray($processVars);
-		$currentTokenProp = new core_kernel_classes_Property(CURRENT_TOKEN);
+		
+		//init the services
+		$activityExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityExecutionService');
+		$userService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_UserService');
+		$tokenService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_TokenService');
+		$currentUser = $userService->getCurrentUser();
 		
 		//old impl, does not allow parallel activities of a same activity definition:
 		// $activityBeforeTransition 	= new Activity($this->currentActivity[0]->uri);
@@ -245,22 +250,14 @@ extends WfResource
 																$consistencyRule->suppressable);
 
 				// The current token must be the activity we are jumping back 		
-				$this->resource->editPropertyValues($currentTokenProp,$activityToGoBack->uri);
-
+				$tokenService->setCurrentActivities($this->resource, array($activityToGoBack->resource), $currentUser);
+				
 				throw $consistencyException;
 			}
 		}
 		
-		
-		//init the services
-		$activityExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityExecutionService');
-		$userService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_UserService');
-		$currentUser = $userService->getCurrentUser();
-		
-	//	var_dump($activityBeforeTransition->resource, $currentUser, $this->resource);
 		//set the activity execution of the current user as finished:
 		if(!is_null($activityExecutionResource)){
-			//var_dump($activityExecutionResource, new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_IS_FINISHED));
 			$activityExecutionResource->editPropertyValues(new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_IS_FINISHED), GENERIS_TRUE);
 		}else{
 			throw new Exception("cannot find the activity execution of the current activity {$activityBeforeTransition->uri} in perform transition");
@@ -268,7 +265,7 @@ extends WfResource
 		
 		
 		$connectorsUri = $this->getNextConnectorsUri($this->currentActivity[0]->uri);//could work for join as they share the same connector
-		$tokenService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_TokenService');
+		
 		$token = $tokenService->getCurrent($activityExecutionResource);
 		$arrayOfProcessVars[VAR_PROCESS_INSTANCE] = $token->uriResource;
 		$newActivities = $this->getNewActivities($arrayOfProcessVars, $connectorsUri);
@@ -279,29 +276,23 @@ extends WfResource
 			return;
 		}
 		
-		
-		$tokenService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_TokenService');
 		if(count($connectorsUri) > 0){
 			$tokenService->move(new core_kernel_classes_Resource($connectorsUri[0]), $currentUser, $this->resource);
 		}
 		
 		//actual transition starting from here:
-		$this->resource->removePropertyValues($currentTokenProp);
-
 		$this->currentActivity = array();
-
-		foreach ($newActivities as $newActivity){
-
-			$this->resource->setPropertyValue($currentTokenProp,$newActivity->uri);
-			$this->logger->debug('Activiy ' . $newActivity->uri . ' added to current token' ,__FILE__,__LINE__);
-		
-			$this->path->invalidate($activityBeforeTransition,($this->path->contains($newActivity) ? $newActivity : null));
-
+		foreach($tokenService->getCurrentActivities($this->resource) as $currentActivity){
+			
+			$newActivity = new Activity($currentActivity->uriResource);
+			$this->path->invalidate($activityBeforeTransition, ($this->path->contains($newActivity) ? $newActivity : null));
 			// We insert in the ontology the last activity in the path stack.
 			$this->path->insertActivity($newActivity);
+			
 			$this->currentActivity[] = new Activity($newActivity->uri);
-
 		}
+		
+	//	var_dump($this->currentActivity);
 		
 		// If the activity before the transition was the last activity of the process,
 		// we have to finish gracefully the process.
@@ -401,6 +392,10 @@ extends WfResource
 					break;
 				}
 				case INSTANCE_TYPEOFCONNECTORS_JOIN : {
+					//TODO
+				//	echo 'work in progress to join';
+					
+					
 					
 					$completed = false;
 					//count the number of each different activity definition that has to be done parallely:
@@ -418,7 +413,6 @@ extends WfResource
 					// var_dump($activityResourceArray);
 					$debug = array();
 					
-					//for each activity definition, check if there are the required number of activity executions that are completed, if not, break the loop
 					foreach($activityResourceArray as $activityDefinition=>$count){
 						//get all activity execution for the current activity definition and for the current process execution indepedently from the user (which is not known at the authoring time)
 						
@@ -1090,13 +1084,15 @@ extends WfResource
 		// in the digital nirvana...
 		if (null != $activity)
 		{
-			$currentTokenProp = new core_kernel_classes_Property(CURRENT_TOKEN);
-
-			$this->resource->editPropertyValues($currentTokenProp,$activity);
-
+			$tokenService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_TokenService');
+			$userService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_UserService');
+			
+			$tokenService->setCurrentActivities($this->resource, array($activity->resource), $userService->getCurrentUser());
+			
 			$this->currentActivity = array();
 			$beforeActivity = new Activity($activity);
 			$this->currentActivity[] = $beforeActivity;
+			
 
 			if ($beforeActivity->isHidden && !$beforeActivity->isFirst())
 			{
@@ -1142,8 +1138,8 @@ extends WfResource
 		// -- Exit code handling.
 		// I chain removeProp... and editProp... because of an editProp...
 		// malfunction.
-		$currentTokenProp =	new core_kernel_classes_Property(CURRENT_TOKEN);
-		$this->resource->removePropertyValues($currentTokenProp);
+		$tokenService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_TokenService');
+		$tokenService->setCurrents($this->resource, array());
 
 //		$exitCodeProp = new core_kernel_classes_Property(PROPERTY_PROCESSINSTANCE_EXITCODE);
 //		$this->resource->setPropertyValue($exitCodeProp, RESOURCE_EXITCODE_ALL_COVERED);
@@ -1195,20 +1191,13 @@ extends WfResource
 	{
 		$beforeActivityLabel = $this->currentActivity[0]->label;
 		$beforeActivity = $this->currentActivity[0];
+		
 		// Current token is now the activity to jump back.
-		$tokenProp = new core_kernel_classes_Property(CURRENT_TOKEN);
-		$this->resource->editPropertyValues($tokenProp,$activity->uri);
-
-
-		/*
-		 //should be a real boolean, don't know how php framework handle that
-		 //to do after release 5.1.7 change this
-		 if ($testing=="true") {$this->path->insertActivity($activity);}
-
-		 $this->currentActivity = array();
-		 $this->currentActivity[] = new Activity($activity->uri);
-		 */
-
+		$tokenService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_TokenService');
+		$userService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_UserService');
+			
+		$tokenService->setCurrentActivities($this->resource, array($activity->resource), $userService->getCurrentUser());
+		
 		$this->path->invalidate($beforeActivity,
 		($this->path->contains($activity) ? $activity : null));
 
@@ -1242,17 +1231,15 @@ extends WfResource
 	{
 		// section 10-13-1--31--7b61b039:11cdba08b1e:-8000:0000000000000A30 begin
 
-		$currentTokenProp = new core_kernel_classes_Property(CURRENT_TOKEN);//set current token, determine here, which one to take if there are more than one
-		$values = $this->resource->getPropertyValues($currentTokenProp);
-
-		foreach ($values as  $b)
+		$tokenService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_TokenService');
+		foreach($tokenService->getCurrentActivities($this->resource) as $activity)
 		{
-			$activity				= new Activity($b);
+			//$activity					= new Activity($token->uriResource);
 			// $activityExecution		= new ActivityExecution($this,$activityExec);
-			// $activityExecution->uri = $b;
+			// $activityExecution->uri = $token->uriResource;
 			// $activityExecution->label = $activity->label;
-
-			$this->currentActivity[] = $activity;
+			
+			$this->currentActivity[] 	= new Activity($activity->uriResource);
 		}
 
 		$statusProp = new core_kernel_classes_Property(STATUS);

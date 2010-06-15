@@ -201,13 +201,14 @@ class SasImporter{
 		
 		$sasFiles = array();
 		
-		$extensionsManager = common_ext_ExtensionsManager::singleton();
+		/*$extensionsManager = common_ext_ExtensionsManager::singleton();
 		foreach($extensionsManager->getInstalledExtensions() as $extension){
 			$filePath = ROOT_PATH . '/'. $extension->id . '/actions/sas.xml';
 			if(file_exists($filePath)){
 				$sasFiles[$extension->id] = $filePath;
 			}
-		}
+		}*/
+		$sasFiles['taoQual'] = ROOT_PATH . '/taoQual/actions/sas.xml';
 		
 		return $sasFiles;
 	}
@@ -343,7 +344,7 @@ class SasImporter{
 				//set the new instance of process variable as a property of the class process instance:
 				if($processVar->setPropertyValue($this->rdfTypeProp, RDF_PROPERTY)){
 					$newProcessInstanceProperty = new core_kernel_classes_Property($processVar->uriResource);
-					$newProcessInstanceProperty->setDomain(CLASS_TOKEN);
+					$newProcessInstanceProperty->setDomain(new core_kernel_classes_Class(CLASS_TOKEN));
 					$newProcessInstanceProperty->setRange($this->rdfLiteralClass);
 				}
 				

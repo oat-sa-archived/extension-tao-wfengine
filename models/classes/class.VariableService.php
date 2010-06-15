@@ -31,6 +31,9 @@ require_once('tao/models/classes/class.Service.php');
 
 /* user defined includes */
 // section -87--2--3--76--7eb229c2:12916be1ece:-8000:0000000000003C05-includes begin
+
+include_once(dirname(__FILE__).'../../../includes/constants.php');
+
 // section -87--2--3--76--7eb229c2:12916be1ece:-8000:0000000000003C05-includes end
 
 /* user defined constants */
@@ -73,20 +76,26 @@ extends tao_models_classes_Service
 			$activityExecution = new core_kernel_classes_Resource($activityExecutionUri);
 			$tokenService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_TokenService');
 			$token = $tokenService->getCurrent($activityExecution);
+			
 			$tokenVarProp = new core_kernel_classes_Property(PROPERTY_TOKEN_VARIABLE);
 			if(is_null($token)) {
 					throw new Exception('Activity Token should never be null');
 			}
 			
 			$newVar = unserialize($token->getOnePropertyValue($tokenVarProp));
-			foreach($variable as $k) {
+			foreach($variable as $k => $v) {
 				$collection = core_kernel_impl_ApiModelOO::singleton()->getSubject(PROPERTY_CODE,$k);
 				if(!$collection->isEmpty()){
 						if($collection->count() == 1) {
 							$property = new core_kernel_classes_Property($collection->get(0)->uriResource);
 
 							$returnValue &= $token->editPropertyValues($property,$v);
-							$newVar = array_merge($newVar, array($k)); 
+							if(is_array($newVar)){
+								$newVar = array_merge($newVar, array($k)); 
+							}
+							else{
+								$newVar = array($k);
+							}
 						}
 				}
 				

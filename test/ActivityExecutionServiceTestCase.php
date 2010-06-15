@@ -12,6 +12,12 @@ require_once dirname(__FILE__) . '/../includes/common.php';
 class ActivityExecutionServiceTestCase extends UnitTestCase {
 	
 	/**
+	 * CHANGE IT MANNUALLY to see step by step the output
+	 * @var boolean
+	 */
+	const OUTPUT = true;
+	
+	/**
 	 * @var wfEngine_models_classes_ActivityExecutionService the tested service
 	 */
 	protected $service = null;
@@ -59,6 +65,28 @@ class ActivityExecutionServiceTestCase extends UnitTestCase {
 		}
 	}
 	
+	/**
+	 * output messages
+	 * @param string $message
+	 * @param boolean $ln
+	 * @return void
+	 */
+	private function out($message, $ln = false){
+		if(self::OUTPUT){
+			if(PHP_SAPI == 'cli'){
+				if($ln){
+					echo "\n";
+				}
+				echo "$message\n";
+			}
+			else{
+				if($ln){
+					echo "<br />";
+				}
+				echo "$message<br />";
+			}
+		}
+	}
 	
 	/**
 	 * Test the service implementation
@@ -73,9 +101,9 @@ class ActivityExecutionServiceTestCase extends UnitTestCase {
 	}
 	
 	/**
-	 * 
+	 * Test the acl in activity execution in a sequencial process
 	 */
-	public function testVirtualProcess(){
+	public function testVirtualSequencialProcess(){
 		try{
 			
 			$processExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessExecutionService');
@@ -99,6 +127,8 @@ class ActivityExecutionServiceTestCase extends UnitTestCase {
 			
 			//define activities and connectors
 			$activity1 = $authoringService->createActivity($processDefinition, 'activity1');
+			$this->assertNotNull($activity1);
+			
 			$authoringService->setFirstActivity($processDefinition, $activity1);
 			
 			//1st activity is allowed to WORKFLOW USER ROLE
@@ -108,8 +138,11 @@ class ActivityExecutionServiceTestCase extends UnitTestCase {
 			$authoringService->setConnectorType($connector1, new core_kernel_classes_Resource(CONNECTOR_SEQ));
 			$this->assertNotNull($connector1);
 			
-			//2nd activity is allowed to create role
+			
 			$activity2 = $authoringService->createSequenceActivity($connector1, null, 'activity2');
+			$this->assertNotNull($activity2);
+			
+			//2nd activity is allowed to create role
 			$this->service->setAcl($activity2, $aclModeRole, $role2);
 			
 			$connector2  = null; 
@@ -120,8 +153,11 @@ class ActivityExecutionServiceTestCase extends UnitTestCase {
 			}
 			$this->assertNotNull($connector2);
 			
-			//3rd is allowed to the currentUser only
+			
 			$activity3 = $authoringService->createSequenceActivity($connector2, null, 'activity3');
+			$this->assertNotNull($activity3);
+			
+			//3rd is allowed to the currentUser only
 			$this->service->setAcl($activity3, $aclModeUser, $this->currentUser);
 			
 			$connector3  = null; 
@@ -132,8 +168,10 @@ class ActivityExecutionServiceTestCase extends UnitTestCase {
 			}
 			$this->assertNotNull($connector3);
 			
-			//4th is allowed to the first user of a role
 			$activity4 = $authoringService->createSequenceActivity($connector3, null, 'activity4');
+			$this->assertNotNull($activity4);
+			
+			//4th is allowed to the first user of a role
 			$this->service->setAcl($activity4, $aclModeRoleUser, $role2);
 		
 			$connector4  = null; 
@@ -145,8 +183,10 @@ class ActivityExecutionServiceTestCase extends UnitTestCase {
 			$this->assertNotNull($connector4);
 		
 			
-			//5th is inherited of 4th activity ACL
 			$activity5 = $authoringService->createSequenceActivity($connector4, null, 'activity5');
+			$this->assertNotNull($activity5);
+			
+			//5th is inherited of 4th activity ACL
 			$this->service->setAcl($activity5, $aclModeInherited, $role2);
 			
 			$connector5s = $authoringService->getConnectorsByActivity($activity5, array('next'));
@@ -170,6 +210,8 @@ class ActivityExecutionServiceTestCase extends UnitTestCase {
 				
 				$activity = $proc->currentActivity[0];
 				$this->assertTrue($activity->label == 'activity'.$i);
+				
+				$this->out("Activity: ".$activity->label, true);
 				
 				//init execution
 				$this->assertTrue($processExecutionService->initCurrentExecution($proc->resource, $activity->resource, $this->currentUser));
@@ -208,11 +250,6 @@ class ActivityExecutionServiceTestCase extends UnitTestCase {
 			}
 		}
 		catch(common_Exception $ce){
-			
-			print "<pre>";
-			print_r($ce);
-			print "</pre>";
-			
 			$this->fail($ce);
 		}
 	}
