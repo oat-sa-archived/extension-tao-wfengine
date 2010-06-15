@@ -252,10 +252,32 @@ class wfEngine_models_classes_TokenService
 
         // section 127-0-1-1--6657ec7c:129368db927:-8000:0000000000001FF5 begin
         
-        foreach($this->getCurrents($processExecution) as $token){
-        	$activity = $token->getOnePropertyValue($this->tokenActivityProp);
-        	if(!is_null($activity)){
-        		$returnValue[] = $activity;
+		$userService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_UserService');
+		$currentUser = $userService->getCurrentUser();
+		$checkedActivityDefinitions = array();
+		foreach($this->getCurrents($processExecution) as $token){
+        	$activityDefinition = $token->getOnePropertyValue($this->tokenActivityProp);
+        	if(!is_null($activityDefinition)){
+				if(!in_array($activityDefinition->uriResource, $checkedActivityDefinitions)){//check if it is not already checked
+				
+					//check if execution exists:
+					$activityExecution = $token->getOnePropertyValue($this->tokenActivityExecutionProp);
+					if(!is_null($activityExecution)){
+						//check if the activity execution exec belongs to the current user:
+						$user = $activityExecution->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_CURRENT_USER));
+						if($user->uriResource == $currentUser->uriResource){
+							//the execution belongs to the current user:
+							//return it, supposing that getExecution should be able to return the activity execution of the user
+							$returnValue[$activityDefinition->uriResource] = $activityExecution;
+							$checkedActivityDefinitions[] = $activityDefinition->uriResource;
+						}
+					}else{
+						//return it, supposing that getExecution should check the ACL mode against currentUser
+						$returnValue[$activityDefinition->uriResource] = null;
+						$checkedActivityDefinitions[] = $activityDefinition->uriResource;
+					}
+					
+				}
         	}
         }
         
@@ -319,7 +341,9 @@ class wfEngine_models_classes_TokenService
         
     	$tokens = array();
     	$activityExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityExecutionService');
-    	foreach($activities as $activity){
+    	
+		foreach($activities as $activity){
+			
     		$execution = $activityExecutionService->getExecution($activity, $user, $processExecution);
     		if(!is_null($execution)){
     			foreach($this->getTokens($execution) as $token){

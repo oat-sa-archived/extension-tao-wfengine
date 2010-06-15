@@ -424,7 +424,7 @@ extends WfResource
 						foreach($activityExecutionCollection->getIterator() as $activityExecutionResource){
 							$processExecutionResource = $activityExecutionResource->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_PROCESSEXECUTION));
 							
-							$debug[$activityDefinition][$processExecutionResource->uriResource] = $this->resource->uriResource;
+							$debug[$activityDefinition][$activityExecutionResource->getLabel()] = $processExecutionResource->getLabel().':'.$processExecutionResource->uriResource;
 							// $debug[$activityDefinition]['$this->resource->uri'] = $this->resource->uri;
 								
 							if(!is_null($processExecutionResource)){
@@ -459,7 +459,7 @@ extends WfResource
 												
 					}
 					
-					//var_dump($activityResourceArray,$debug, $completed);
+					// var_dump($activityResourceArray,$debug, $completed);die();
 					
 					if($completed){
 						//get THE (unique) next activity
@@ -1078,7 +1078,6 @@ extends WfResource
 		// section 10-13-1-85-16731180:11be4127421:-8000:0000000000000A4D begin
 
 		$activity = $this->path->getActivityBefore($from);
-
 		// Only go backward if there is an activity before the "from Activity".
 		// If you persist in doing so, your process current token will be set
 		// in the digital nirvana...
@@ -1087,7 +1086,7 @@ extends WfResource
 			$tokenService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_TokenService');
 			$userService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_UserService');
 			
-			$tokenService->setCurrentActivities($this->resource, array($activity->resource), $userService->getCurrentUser());
+			$tokenService->setCurrentActivities($this->resource, array(new core_kernel_classes_Resource($activity)), $userService->getCurrentUser());
 			
 			$this->currentActivity = array();
 			$beforeActivity = new Activity($activity);
@@ -1232,14 +1231,14 @@ extends WfResource
 		// section 10-13-1--31--7b61b039:11cdba08b1e:-8000:0000000000000A30 begin
 
 		$tokenService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_TokenService');
-		foreach($tokenService->getCurrentActivities($this->resource) as $activity)
+		foreach($tokenService->getCurrentActivities($this->resource) as $activityDefinitionUri => $activityExecutionResource)
 		{
 			//$activity					= new Activity($token->uriResource);
 			// $activityExecution		= new ActivityExecution($this,$activityExec);
 			// $activityExecution->uri = $token->uriResource;
 			// $activityExecution->label = $activity->label;
 			
-			$this->currentActivity[] 	= new Activity($activity->uriResource);
+			$this->currentActivity[] 	= new Activity($activityDefinitionUri);
 		}
 
 		$statusProp = new core_kernel_classes_Property(STATUS);

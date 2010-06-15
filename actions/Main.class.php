@@ -79,13 +79,14 @@ class Main extends WfModule
 				$isFinished = false;
 				$execution = $activityExecutionService->getExecution($activity->resource, $currentUser, $proc->resource);
 				if(!is_null($execution)){
-					$aExecution = new ActivityExecution($proc->resource, $execution);
+					$aExecution = new ActivityExecution($proc, $execution);
 					$isFinished = $aExecution->isFinished();
 				}
+				echo 'isfinished:'; var_dump($activity->resource, $execution, $isFinished);
 				$currentActivities[] = array(
 					'label'				=> $currentActivity->label,
 					'uri' 				=> $currentActivity->uri,
-					'may_participate'	=> (!$proc->isFinished() && $isAllowed),
+					'may_participate'	=> (!$proc->isFinished() && $isAllowed &&!$isFinished),
 					'finished'			=> $proc->isFinished(),
 					'allowed'			=> $isAllowed,
 					'activityEnded'		=> $isFinished
