@@ -463,10 +463,16 @@ class wfEngine_models_classes_TokenService
 		        	$tokenActivity = $token->getOnePropertyValue($this->tokenActivityProp);
 		        	$tokenActivityExecution = $token->getOnePropertyValue($this->tokenActivityExecutionProp);
 		        	if(!is_null($tokenActivity)){
-		        		if($tokenActivity->uriResource == $activity->uriResource && is_null($tokenActivityExecution)){
-		        			$this->assign($token, $activityExecution);
-		        			$returnValue = true;
-		        			break;
+		        		if($tokenActivity->uriResource == $activity->uriResource){
+		        			
+		        			if(is_null($tokenActivityExecution)){
+			        			$this->assign($token, $activityExecution);
+			        			$returnValue = true;
+			        			break;
+		        			}
+		        			else if($tokenActivityExecution->uriResource == $activityExecution->uriResource){
+		        				break;
+		        			}
 		        		}
 		        	}
 		        }
