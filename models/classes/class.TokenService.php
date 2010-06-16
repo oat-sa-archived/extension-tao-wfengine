@@ -142,9 +142,10 @@ class wfEngine_models_classes_TokenService
      * @access public
      * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
      * @param  Resource activityExecution
+     * @param  boolean checkUser
      * @return array
      */
-    public function getTokens( core_kernel_classes_Resource $activityExecution)
+    public function getTokens( core_kernel_classes_Resource $activityExecution, $checkUser = true)
     {
         $returnValue = array();
 
@@ -160,7 +161,12 @@ class wfEngine_models_classes_TokenService
 	        	foreach($tokenCollection->getIterator() as $token){
 	        		$tokenUser = $token->getOnePropertyValue($this->tokenCurrentUserProp);
 	        		if(!is_null($tokenUser)){
-	        			if($tokenUser->uriResource == $activityUser->uriResource){
+	        			if($checkUser){
+		        			if($tokenUser->uriResource == $activityUser->uriResource){
+		        				$returnValue[$token->uriResource] = $token;
+		        			}
+	        			}
+	        			else{
 	        				$returnValue[$token->uriResource] = $token;
 	        			}
 	        		}
@@ -258,6 +264,7 @@ class wfEngine_models_classes_TokenService
 		foreach($this->getCurrents($processExecution) as $token){
         	$activityDefinition = $token->getOnePropertyValue($this->tokenActivityProp);
         	if(!is_null($activityDefinition)){
+				
 				if(!in_array($activityDefinition->uriResource, $checkedActivityDefinitions)){//check if it is not already checked
 				
 					//check if execution exists:
@@ -268,17 +275,16 @@ class wfEngine_models_classes_TokenService
 						if($user->uriResource == $currentUser->uriResource){
 							//the execution belongs to the current user:
 							//return it, supposing that getExecution should be able to return the activity execution of the user
-							$returnValue[$activityDefinition->uriResource] = $activityExecution;
+							$returnValue[] = $activityDefinition;
 							$checkedActivityDefinitions[] = $activityDefinition->uriResource;
 						}
 					}else{
 						//return it, supposing that getExecution should check the ACL mode against currentUser
-						$returnValue[$activityDefinition->uriResource] = null;
+						$returnValue[] = $activityDefinition;
 						$checkedActivityDefinitions[] = $activityDefinition->uriResource;
 					}
 					
-				}
-        	}
+				}        	}
         }
         
         // section 127-0-1-1--6657ec7c:129368db927:-8000:0000000000001FF5 end
@@ -315,7 +321,6 @@ class wfEngine_models_classes_TokenService
     		 }
     		 $tokens[$processExecution->uriResource] = $currentTokens;
     		 Session::setAttribute(self::CURRENT_KEY, $tokens);*/
-    		
     		// $processExecution->removePropertyValues($this->currentTokenProp);
     		foreach($tokens as $token){
     			$processExecution->setPropertyValue($this->currentTokenProp, $token->uriResource);
@@ -488,7 +493,6 @@ class wfEngine_models_classes_TokenService
 		        	$tokenActivityExecution = $token->getOnePropertyValue($this->tokenActivityExecutionProp);
 		        	if(!is_null($tokenActivity)){
 		        		if($tokenActivity->uriResource == $activity->uriResource){
-		        			
 		        			if(is_null($tokenActivityExecution)){
 			        			$this->assign($token, $activityExecution);
 			        			$returnValue = true;
@@ -659,11 +663,12 @@ class wfEngine_models_classes_TokenService
      * @access public
      * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
      * @param  Resource connector
+     * @param  array nextActivities
      * @param  Resource user
      * @param  Resource processExecution
      * @return array
      */
-    public function move( core_kernel_classes_Resource $connector,  core_kernel_classes_Resource $user,  core_kernel_classes_Resource $processExecution)
+    public function move( core_kernel_classes_Resource $connector, $nextActivities,  core_kernel_classes_Resource $user,  core_kernel_classes_Resource $processExecution)
     {
         $returnValue = array();
 
@@ -676,87 +681,114 @@ class wfEngine_models_classes_TokenService
         	//get the activity around the connector
         	$previousActivities = $connector->getPropertyValuesCollection(new core_kernel_classes_Property(PROPERTY_CONNECTORS_PRECACTIVITIES));
         	
-        	//get the tokens on the previous activity
-        	$tokens = array();
-        	foreach($previousActivities->getIterator() as $previousActivity){
-        		$previousActivityExecution = $activityExecutionService->getExecution($previousActivity, $user, $processExecution);
-        		$tokens = array_merge($tokens, $this->getTokens($previousActivityExecution));
-        	}
-        	
-        	
-        	$connectorNextActivityProp = new core_kernel_classes_Property(PROPERTY_CONNECTORS_NEXTACTIVITIES);
-        	
-        	if(count($tokens) > 0){
+        	$currentTokens = array();
+        	$type = $connector->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_TYPE));
+        	switch($type->uriResource){
         		
-        		$currentTokens = array();
-	        	$type = $connector->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_TYPE));
-	        	switch($type->uriResource){
-	        		case INSTANCE_TYPEOFCONNECTORS_SEQUENCE:
-	        		case INSTANCE_TYPEOFCONNECTORS_SPLIT:
-	        			
-	        			foreach($tokens as $token){
+        	/// SEQUENCE & SPLIT ///
+        		case INSTANCE_TYPEOFCONNECTORS_SEQUENCE:
+        		case INSTANCE_TYPEOFCONNECTORS_SPLIT:
+        			
+        			if(count($nextActivities) == 0){
+        				throw new Exception("No next activity defined");
+        			}
+        			if(count($nextActivities) > 1){
+        				throw new Exception("To many next activities, only one is required after a split or a sequence connector");
+        			}
+        			$nextActivity = $nextActivities[0];
+        			
+        			//get the tokens on the previous activity
+		        	$tokens = array();
+		        	foreach($previousActivities->getIterator() as $previousActivity){
+		        		$previousActivityExecution = $activityExecutionService->getExecution($previousActivity, $user, $processExecution);
+		        		$tokens = array_merge($tokens, $this->getTokens($previousActivityExecution));
+		        	}
+        			
+        			if(count($tokens) == 0){
+        				throw new Exception("No token found for that user");
+        			}
+        			if(count($tokens) > 1){
+        				throw new Exception("To many tokens, unable to move them through a split or a sequence connector");
+        			}
+        			foreach($tokens as $token){
+	        			//create the token for next activity
+	        			$newToken = $this->duplicate($token);
+	
+	        			//bind the next activity
+	        			$newToken->setPropertyValue($this->tokenActivityProp, $nextActivity->uriResource);
 		        			
-//	        				echo "Token ".$token->getLabel()."<br>";
-//        					echo "Execution ".$token->getOnePropertyValue($this->tokenActivityExecutionProp)."<br>";
-//	        				print "<pre>";
-//        					print_r($this->getVariables($token));
-//        					print "</pre><br>";
-        					
-	        				//create the token for next activity
-		        			$newToken = $this->duplicate($token);
+	        			//set as current
+	        			$currentTokens[] = $newToken;
 		        			
-		        			//bind the next activity
-		        			$nextActivity = $connector->getOnePropertyValue($connectorNextActivityProp);
-		        			$newToken->setPropertyValue($this->tokenActivityProp, $nextActivity->uriResource);
-		        			
-		        			//set as current
-		        			$currentTokens[] = $newToken;
-		        			
-//		        			echo "New token ".$newToken->getLabel()."<br>";
-//        					echo "Execution ".$newToken->getOnePropertyValue($this->tokenActivityExecutionProp)."<br>";
-//	        				print "<pre>";
-//        					print_r($this->getVariables($newToken));
-//        					print "</pre><br>";
-		        			
-		        			//delete the previous
-		        			$this->delete($token);
+	        			//delete the previous
+	        			$this->delete($token);
+        			}
+        			
+        			break;
+        			
+        	/// PARALLEL ///
+        		case INSTANCE_TYPEOFCONNECTORS_PARALLEL:
+        			
+        			//get the tokens on the previous activity
+		        	$tokens = array();
+		        	foreach($previousActivities->getIterator() as $previousActivity){
+		        		$previousActivityExecution = $activityExecutionService->getExecution($previousActivity, $user, $processExecution);
+		        		$tokens = array_merge($tokens, $this->getTokens($previousActivityExecution));
+		        	}
+        			
+        			if(count($tokens) == 0){
+        				throw new Exception("No token found for that user");
+        			}
+        			if(count($tokens) > 1){
+        				throw new Exception("To many tokens, unable to move them through a split or a sequence connector");
+        			}
+        			foreach($tokens as $token){
+        			
+	        			foreach($nextActivities as $nextActivity){
+	        				$newToken = $this->duplicate($token);
+	        				$newToken->setPropertyValue($this->tokenActivityProp, $nextActivity->uriResource);
+	        				$currentTokens[] = $newToken;
 	        			}
-	        			
-	        			break;
-	        		case INSTANCE_TYPEOFCONNECTORS_PARALLEL:
-	        			
-	        			foreach($tokens as $token){
-		        			$nextActivities = $connector->getPropertyValuesCollection($connectorNextActivityProp);
-		        			foreach($nextActivities->getIterator() as $nextActivity){
-		        				$newToken = $this->duplicate($token);
-		        				$newToken->setPropertyValue($this->tokenActivityProp, $nextActivity->uriResource);
-		        				$currentTokens[] = $newToken;
-		        			}
-		        			$this->delete($token);
-	        			}
-	        		
-	        			break;	
-	        		case INSTANCE_TYPEOFCONNECTORS_JOIN:
-	        				
-	        				//create the token for next activity
-		        			$newToken = $this->merge($tokens);
-		        			
-		        			//bind the next activity
-		        			$nextActivity = $connector->getOnePropertyValue($connectorNextActivityProp);
-		        			$newToken->setPropertyValue($this->tokenActivityProp, $nextActivity->uriResource);
-		        			
-		        			//set as current
-		        			$currentTokens[] = $newToken;
-		        			
-		        			//delete the previous
-		        			foreach($tokens as $token){
-		        				$this->delete($token);
-		        			}
-	        			break;
-	        	}
-	        	$this->setCurrents($processExecution, $currentTokens);
+	        			$this->delete($token);
+        			}
+        			break;	
+        			
+        	/// JOIN ///
+        		case INSTANCE_TYPEOFCONNECTORS_JOIN:
+        				
+        			if(count($nextActivities) == 0){
+        				throw new Exception("No next activity defined");
+        			}
+        			if(count($nextActivities) > 1){
+        				throw new Exception("To many next activities, only one is required after a split or a sequence connector");
+        			}
+        			$nextActivity = $nextActivities[0];
+        			
+        			//get the tokens on the previous activity
+		        	$tokens = array();
+		        	foreach($previousActivities->getIterator() as $previousActivity){
+		        		$previousActivityExecution = $activityExecutionService->getExecution($previousActivity, $user, $processExecution);
+		        		$tokens = array_merge($tokens, $this->getTokens($previousActivityExecution, false));
+		        	}
+        			
+        			//create the token for next activity
+        			$newToken = $this->merge($tokens);
+        			
+        			//bind the next activity
+        			$newToken->setPropertyValue($this->tokenActivityProp, $nextActivity->uriResource);
+        			
+        			//set as current
+        			$currentTokens[] = $newToken;
+        			
+        			//delete the previous
+        			foreach($tokens as $token){
+        				$this->delete($token);
+        			}
+        			break;
         	}
+        	$this->setCurrents($processExecution, $currentTokens);
         }
+        
         
         // section 127-0-1-1-2013ff6:1292105c669:-8000:0000000000001FD4 end
 

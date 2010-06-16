@@ -87,12 +87,13 @@ class ProcessExecutionFactory {
 			}
 		}
 		
-	//	error_reporting(E_ALL);
+		error_reporting(E_ALL);
+		
+		$tokenService->setCurrents($returnValue->resource, $tokens);
 		
 		// Feed newly created process.
 		$returnValue->feed();
-
-		$tokenService->setCurrents($returnValue->resource, $tokens);
+		
 		
 /*
 		// If the inital activity is "hidden", let's run it.

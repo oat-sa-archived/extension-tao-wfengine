@@ -183,9 +183,10 @@ class ActivityExecutionServiceTestCase extends UnitTestCase {
 			$i = 1;
 			while($i <= 5 ){
 				$activity = $proc->currentActivity[0];
-				$this->assertTrue($activity->label == 'activity'.$i);
-
+				
 				$this->out("<strong>".$activity->label."</strong>", true);
+				$this->assertTrue($activity->label == 'activity'.$i);
+				
 				
 				$currentTokens = $this->service->getCurrents($proc->resource);
 				$this->assertIsA($currentTokens, 'array');

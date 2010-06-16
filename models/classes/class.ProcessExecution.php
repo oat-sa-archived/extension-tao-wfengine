@@ -277,7 +277,12 @@ extends WfResource
 		}
 		
 		if(count($connectorsUri) > 0){
-			$tokenService->move(new core_kernel_classes_Resource($connectorsUri[0]), $currentUser, $this->resource);
+			$connector = new core_kernel_classes_Resource($connectorsUri[0]);
+			$nextActivities = array();
+			foreach($newActivities as $newActivity){
+				$nextActivities[] = $newActivity->resource;
+			}
+			$tokenService->move($connector, $nextActivities, $currentUser, $this->resource);
 		}
 		
 		//actual transition starting from here:
@@ -492,7 +497,7 @@ extends WfResource
 			}
 
 		}
-
+		
 		return $newActivities;
 	}
 
@@ -828,10 +833,9 @@ extends WfResource
 		if ($evaluationResult)	{
 
 			// Prochaines activit�s = THEN
-
+			
 			if ($transitionRule->thenActivity instanceof Activity)
 			{
-
 				$newActivities[] = $transitionRule->thenActivity;
 
 			}
@@ -855,7 +859,6 @@ extends WfResource
 			}
 
 		}
-
 		return $newActivities;
 	}
 
@@ -1231,14 +1234,14 @@ extends WfResource
 		// section 10-13-1--31--7b61b039:11cdba08b1e:-8000:0000000000000A30 begin
 
 		$tokenService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_TokenService');
-		foreach($tokenService->getCurrentActivities($this->resource) as $activityDefinitionUri => $activityExecutionResource)
+		foreach($tokenService->getCurrentActivities($this->resource) as $activity)
 		{
-			//$activity					= new Activity($token->uriResource);
+			//$activity					= new Activity($activity->uriResource);
 			// $activityExecution		= new ActivityExecution($this,$activityExec);
 			// $activityExecution->uri = $token->uriResource;
 			// $activityExecution->label = $activity->label;
 			
-			$this->currentActivity[] 	= new Activity($activityDefinitionUri);
+			$this->currentActivity[] 	= new Activity($activity->uriResource);
 		}
 
 		$statusProp = new core_kernel_classes_Property(STATUS);

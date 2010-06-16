@@ -209,9 +209,9 @@ class ActivityExecutionServiceTestCase extends UnitTestCase {
 			while($i <= 5 ){
 				
 				$activity = $proc->currentActivity[0];
-				$this->assertTrue($activity->label == 'activity'.$i);
 				
 				$this->out("Activity: ".$activity->label, true);
+				$this->assertTrue($activity->label == 'activity'.$i);
 				
 				//init execution
 				$this->assertTrue($processExecutionService->initCurrentExecution($proc->resource, $activity->resource, $this->currentUser));

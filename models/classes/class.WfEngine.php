@@ -163,15 +163,17 @@ class WfEngine
         $returnValue = array();
 
         // section 10-13-1--31-740bb989:119ebfa9b28:-8000:00000000000008E7 begin
-        $class = new core_kernel_classes_Class(CLASS_PROCESS_EXECUTIONS);
-        $processes = $class->getInstances(CLASS_PROCESS_EXECUTIONS);
-//		$processes = getInstances($this->sessionGeneris,array(CLASS_PROCESS_EXECUTIONS),array(""));
-
-		foreach ($processes as $key=>$pInstance){
-			$processInstance = new ProcessExecution($key);
-			$returnValue[]=$processInstance;
+        
+        $apiModel  	= core_kernel_impl_ApiModelOO::singleton();
+    	$class = new core_kernel_classes_Class(CLASS_PROCESS);
+		$processes = $class->getInstances();
+		foreach ($processes as $uri => $process){
+        	$executionCollection = $apiModel->getSubject(EXECUTION_OF, $uri);
+        	foreach($executionCollection->getIterator() as $execution){
+        		$processInstance = new ProcessExecution($execution->uriResource);
+        		$returnValue[]=$processInstance;
+        	}
 		}
-
 
         // section 10-13-1--31-740bb989:119ebfa9b28:-8000:00000000000008E7 end
 
