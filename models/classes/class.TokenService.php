@@ -316,7 +316,7 @@ class wfEngine_models_classes_TokenService
     		 $tokens[$processExecution->uriResource] = $currentTokens;
     		 Session::setAttribute(self::CURRENT_KEY, $tokens);*/
     		
-    		$processExecution->removePropertyValues($this->currentTokenProp);
+    		// $processExecution->removePropertyValues($this->currentTokenProp);
     		foreach($tokens as $token){
     			$processExecution->setPropertyValue($this->currentTokenProp, $token->uriResource);
     		}
@@ -638,6 +638,13 @@ class wfEngine_models_classes_TokenService
         	$token->removePropertyValues($this->tokenCurrentUserProp);
         	$token->removePropertyValues($this->tokenVariableProp);
         	
+			//the token does not exist anymore, remove its reference to that token to allow the new token to be set:
+			$apiModel = core_kernel_impl_ApiModelOO::singleton();
+			$processExecutionCollection = $apiModel->getSubject(PROPERTY_PINSTANCES_TOKEN, $token->uriResource);
+			if(!$processExecutionCollection->isEmpty()){
+				$apiModel->removeStatement($processExecutionCollection->get(0)->uriResource, PROPERTY_PINSTANCES_TOKEN, $token->uriResource, '');//get(0) because there should be only one
+			}
+		
         	$returnValue = $token->delete();
         }
         
