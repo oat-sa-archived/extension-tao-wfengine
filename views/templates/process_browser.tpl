@@ -18,8 +18,12 @@
 			
 			
 			function goToPage(page_str){
-				window.location.href = page_str;
-		    }
+				$("#loader").css({'display': 'block'});
+				$("#tools").empty();
+				setTimeout(function(){
+					window.location.href = page_str;
+				}, 100);
+			   }
 		
 		    $(document).ready(function (){
 
@@ -93,6 +97,7 @@
 	</head>
 	
 	<body>
+		<div id="loader"><img src="<?=BASE_WWW?>img/ajax-loader.gif" /></img></div>
 		<div id="process_view"></div>
 		<ul id="control">
 			

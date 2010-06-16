@@ -188,7 +188,13 @@ extends tao_models_classes_Service
 				if(!$collection->isEmpty()){
 					if($collection->count() == 1) {
 						$property = new core_kernel_classes_Property($collection->get(0)->uriResource);
-						$returnValue = $token->getOnePropertyValue($property);
+						$values = $token->getPropertyValuesCollection($property);
+						if($values->count() == 1){
+							$returnValue = $values->get(0);
+						}
+						if($values->count() > 1){
+							$returnValue = $values->getIterator();
+						}
 					}
 				}
 			}

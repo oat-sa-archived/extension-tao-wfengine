@@ -82,7 +82,7 @@ class Main extends WfModule
 					$aExecution = new ActivityExecution($proc, $execution);
 					$isFinished = $aExecution->isFinished();
 				}
-				echo 'isfinished:'; var_dump($activity->resource, $execution, $isFinished);
+
 				$currentActivities[] = array(
 					'label'				=> $currentActivity->label,
 					'uri' 				=> $currentActivity->uri,
@@ -121,6 +121,19 @@ class Main extends WfModule
 		$this->setData('processViewData',$processViewData);
 		$this->setView('main.tpl');
 	
+	}
+	
+	public function test(){
+		if(isset($_SESSION['activityExecutionUri'])){
+			$activityExe = new core_kernel_classes_Resource($_SESSION['activityExecutionUri']);
+			$activity = $activityExe->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_ACTIVITY));
+			echo "Activity :" . $activity->getLabel() ."<br>";
+		}
+		print "<pre>";
+		
+		print_r(wfEngine_models_classes_VariableService::getAll());
+		
+		print "</pre>";
 	}
 }
 ?>
