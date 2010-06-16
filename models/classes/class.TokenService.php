@@ -693,7 +693,7 @@ class wfEngine_models_classes_TokenService
         				throw new Exception("No next activity defined");
         			}
         			if(count($nextActivities) > 1){
-        				throw new Exception("To many next activities, only one is required after a split or a sequence connector");
+        				throw new Exception("Too many next activities, only one is required after a split or a sequence connector");
         			}
         			$nextActivity = $nextActivities[0];
         			
@@ -760,17 +760,42 @@ class wfEngine_models_classes_TokenService
         				throw new Exception("No next activity defined");
         			}
         			if(count($nextActivities) > 1){
-        				throw new Exception("To many next activities, only one is required after a split or a sequence connector");
+        				throw new Exception("Too many next activities, only one is required after a join connector");
         			}
         			$nextActivity = $nextActivities[0];
         			
         			//get the tokens on the previous activity
-		        	$tokens = array();
-		        	foreach($previousActivities->getIterator() as $previousActivity){
-		        		$previousActivityExecution = $activityExecutionService->getExecution($previousActivity, $user, $processExecution);
-		        		$tokens = array_merge($tokens, $this->getTokens($previousActivityExecution, false));
-		        	}
+		        	// $tokens = array();
+		        	// foreach($previousActivities->getIterator() as $previousActivity){
+						// $previousActivity
+		        		// $previousActivityExecution = $activityExecutionService->getExecution($previousActivity, $user, $processExecution);
+						
+						// $tokens = array_merge($tokens, $this->getTokens($previousActivityExecution, false));
+						
+		        	// }
         			
+					$activityResourceArray = array();
+					$tokens = array();
+					foreach ($previousActivities->getIterator() as $activityResource){
+						if(!isset($activityResourceArray[$activityResource->uriResource])){
+							$activityResourceArray[$activityResource->uriResource] = 1;
+						}else{
+							$activityResourceArray[$activityResource->uriResource] += 1;
+						}
+					}
+					foreach($activityResourceArray as $activityDefinitionUri => $count){
+						//compare with execution and get tokens:
+						$previousActivityExecutions = $activityExecutionService->getExecutions(new core_kernel_classes_Resource($activityDefinitionUri), $processExecution);
+						if(count($previousActivityExecutions) == $count){
+							foreach($previousActivityExecutions as $previousActivityExecution){
+								//get the related tokens:
+								$tokens = array_merge($tokens, $this->getTokens($previousActivityExecution, false));
+							}
+						}else{
+							throw new Exception("the number of activity execution does not correspond to the join connector definition (".count($previousActivityExecutions)." against {$count})");
+						}
+					}
+					
         			//create the token for next activity
         			$newToken = $this->merge($tokens);
         			

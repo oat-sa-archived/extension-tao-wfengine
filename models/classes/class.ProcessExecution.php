@@ -269,7 +269,6 @@ extends WfResource
 		$token = $tokenService->getCurrent($activityExecutionResource);
 		$arrayOfProcessVars[VAR_PROCESS_INSTANCE] = $token->uriResource;
 		$newActivities = $this->getNewActivities($arrayOfProcessVars, $connectorsUri);
-		
 		if($newActivities === false){
 			//means that the process must be paused:
 			$this->pause();
@@ -277,7 +276,7 @@ extends WfResource
 		}
 		
 		if(count($connectorsUri) > 0){
-			$connector = new core_kernel_classes_Resource($connectorsUri[0]);
+			$connector = new core_kernel_classes_Resource(array_pop($connectorsUri));
 			$nextActivities = array();
 			foreach($newActivities as $newActivity){
 				$nextActivities[] = $newActivity->resource;
@@ -357,7 +356,6 @@ extends WfResource
 	private function getNewActivities($arrayOfProcessVars, $nextConnectors)
 	{
 		$newActivities = array();
-
 		foreach ($nextConnectors as $connUri){
 
 			$connector = new Connector($connUri);
@@ -469,7 +467,6 @@ extends WfResource
 					if($completed){
 						//get THE (unique) next activity
 						$nextActivitesCollection = $connector->getNextActivities();
-						// var_dump($nextActivitesCollection);
 						foreach ($nextActivitesCollection->getIterator() as $activityResource){
 							$newActivities[] = new Activity($activityResource->uriResource);//normally, should be only ONE, so could actually break after the first loop
 						}
@@ -996,7 +993,7 @@ extends WfResource
 		foreach ($connectorsCollection->getIterator() as $statement){
 			$this->logger->debug('get Next Connectors Uri : ' . $statement->uriResource,__FILE__,__LINE__);
 			$this->logger->debug('get Next Connectors Name : ' . $statement->getLabel(),__FILE__,__LINE__);
-			$connectorsUri[] = $statement->uriResource;
+			$connectorsUri[$statement->uriResource] = $statement->uriResource;
 		}
 		return $connectorsUri;
 	}
