@@ -163,7 +163,7 @@ class Service
 				
 			if (!(is_null($this->activityExecution))){
 				
-				$formalParameterName = $formalParameter->getUniquePropertyValue( new core_kernel_classes_Property(PROPERTY_FORMALPARAMETER_NAME));
+				$formalParameterName = $formalParameter->getOnePropertyValue( new core_kernel_classes_Property(PROPERTY_FORMALPARAMETER_NAME));
 				
 				// var_dump($inParameter, $formalParameter, $inParameterProcessVariable, $inParameterConstant);
 				

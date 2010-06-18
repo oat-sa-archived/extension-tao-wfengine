@@ -189,7 +189,7 @@ class wfEngine_models_classes_VariableService
 							$returnValue = $values->get(0);
 						}
 						if($values->count() > 1){
-							$returnValue = $values->getIterator();
+							$returnValue = (array)$values->getIterator();
 						}
 					}
 				}
@@ -228,7 +228,13 @@ class wfEngine_models_classes_VariableService
 				if(!$collection->isEmpty()){
 					if($collection->count() == 1) {
 						$property = new core_kernel_classes_Property($collection->get(0)->uriResource);
-						$returnValue[$code] = $token->getOnePropertyValue($property);
+						$values = $token->getPropertyValuesCollection($property);
+						if($values->count() == 1){
+							$returnValue[$code] = $values->get(0);
+						}
+						if($values->count() > 1){
+							$returnValue[$code] = (array)$values->getIterator();
+						}
 					}
 				}
 			}

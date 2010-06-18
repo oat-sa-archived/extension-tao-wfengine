@@ -135,7 +135,7 @@ class SasImporter{
 			log($sasFile." found");
 			$this->parseSasFile($sasFile);
 		}
-		
+	
 		//insert process vars
 		$processVarNum = count($this->processVars);
 		$processVarInserted = 0;
