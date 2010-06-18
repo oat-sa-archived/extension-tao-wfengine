@@ -5,7 +5,7 @@ class ProcessBrowser extends WfModule
 {
 	public function index($processUri, $activityUri='')
 	{
-		
+		try{
 		$_SESSION["processUri"] = $processUri;
 		$processUri 		= urldecode($processUri); // parameters clean-up.
 		$this->setData('processUri',$processUri);
@@ -15,7 +15,7 @@ class ProcessBrowser extends WfModule
 		$userViewData 		= UsersHelper::buildCurrentUserForView(); // user data for browser view.
 		$this->setData('userViewData',$userViewData);
 		$browserViewData 	= array(); // general data for browser view.
-
+		
 		$process 			= new ProcessExecution($processUri);
 		$currentActivity = null;
 		if(!empty($activityUri)){
@@ -48,7 +48,7 @@ class ProcessBrowser extends WfModule
 		if(is_null($currentUser)){
 			throw new Exception("No current user found!");
 		}
-		
+	
 		//security check if the user is allowed to access this activity
 		$activityExecutionService 	= tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityExecutionService');
 		if(!$activityExecutionService->checkAcl($activity->resource, $currentUser, $process->resource)){
@@ -77,6 +77,7 @@ class ProcessBrowser extends WfModule
 		if ($process->status == 'Paused'){
 			$process->resume();
 		}
+		
 		// Browser view main data.
 		$browserViewData['isInteractiveService']	= false;
 
@@ -92,7 +93,7 @@ class ProcessBrowser extends WfModule
 		$browserViewData['activityContentLanguages'] = I18nUtil::getAvailableServiceContentLanguages();
 
 		$browserViewData['showCalendar']			= $activityPerf->showCalendar;
-
+		
 		// process variables data.
 		$variablesViewData = array();
 		$variables = $process->getVariables();
@@ -103,7 +104,7 @@ class ProcessBrowser extends WfModule
 												   // 'value' 	=> urlencode($var->value));
 			$variablesViewData[$var->uri] = urlencode($var->value);	
 		}
-
+		
 		$this->setData('variablesViewData',$variablesViewData);
 		// consistency data.
 
@@ -160,7 +161,7 @@ class ProcessBrowser extends WfModule
 			ksort($qSortedActivities);
 			common_Cache::setCache($qSortedActivities,"aprocess_activities");
 		}
-
+		
 		$browserViewData['annotationsResourcesJsArray'] = array();
 		foreach ($qSortedActivities as $key=>$val){
 			$browserViewData['annotationsResourcesJsArray'][]= array($val,$key);
@@ -171,15 +172,40 @@ class ProcessBrowser extends WfModule
 		
 		
 		$servicesViewData 	= array();
-
-		$services = $activityExecution->getInteractiveServices();
 		
-		//var_dump('activity:',$activity);
+		$services = $activityExecution->getInteractiveServices();
 		
 		$this->setData('services',$services);
 
 		$this->setData('browserViewData', $browserViewData);
-
+		
+		$this->setData('debugWidget', DEBUG_MODE);
+		if(DEBUG_MODE){
+			
+			
+			$tokenService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_TokenService');
+			
+			$servicesResources = array();
+			foreach($services as $service){
+				$servicesResources[] = array(
+					'resource' => $service->resource,
+					'input'		=> $service->input,
+					'output'	=> $service->output
+				);
+			}
+			
+			$this->setData('debugData', array(
+					'Activity' => $activity->resource,
+					'ActivityExecution' => $activityExecutionResource,
+					'token' => $tokenService->getCurrent($activityExecutionResource),
+					'services' => $servicesResources,
+					'variableStack' => wfEngine_models_classes_VariableService::getAll()
+			));
+		}
+		}
+		catch(common_Exception $ce){
+			print $ce;exit;
+		}
 		$this->setView('process_browser.tpl');
 	}
 

@@ -115,6 +115,7 @@ class Service
     {
         // section 10-13-1--31--23da6e5c:11a2ac14500:-8000:00000000000009B3 begin
         parent::__construct($uri);
+        
 		$this->activityExecution = $activityExecution;
 	
 		// Get service definitions
@@ -122,7 +123,7 @@ class Service
 
 		// Get service url for call
 		$serviceUrl = '';
-		$serviceDefinitionUrl = $serviceDefinition->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_SERVICEDEFINITIONS_URL));
+		$serviceDefinitionUrl = $serviceDefinition->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_SERVICEDEFINITIONS_URL));
 		if($serviceDefinitionUrl instanceof core_kernel_classes_Literal){
 			$serviceUrl = $serviceDefinitionUrl->literal;
 		}else if($serviceDefinitionUrl instanceof core_kernel_classes_Resource){
@@ -132,10 +133,9 @@ class Service
 		$this->url = $urlPart[0];
 		
 		$inParameterCollection = $this->resource->getPropertyValuesCollection(new core_kernel_classes_Property(PROPERTY_CALLOFSERVICES_ACTUALPARAMETERIN));
-        
+      	$token = $this->activityExecution->getToken();
 		//debug start
 		/*
-		$token = $this->activityExecution->getToken();
 		echo 'token: ';var_dump($token);
 		$classActivityToken = new core_kernel_classes_Class(CLASS_TOKEN);
 		foreach($classActivityToken->getProperties() as $property){
@@ -177,11 +177,10 @@ class Service
 					$paramValue = '';
 					
 					// $prop = new core_kernel_classes_Property($inParameterProcessVariable->uriResource);
-					
 					//get the current and unique token to get the process variable value:
 					$paramValueResourceArray = $token->getPropertyValues(new core_kernel_classes_Property($inParameterProcessVariable->uriResource));
 					
-					// var_dump($inParameterProcessVariable,$paramValueResource);
+					//var_dump($inParameterProcessVariable,$paramValueResourceArray);
 					
 					$paramValue = '';
 					if(sizeof($paramValueResourceArray)){

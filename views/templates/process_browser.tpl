@@ -22,15 +22,12 @@
 				$("#tools").empty();
 				setTimeout(function(){
 					window.location.href = page_str;
-				}, 100);
+				}, 500);
 			   }
 		
 		    $(document).ready(function (){
 
 		
-		
-				
-				
 		    	
 		       // Back and next function bindings for the ProcessBrowser.
 		       $("#back").click(function(){
@@ -70,7 +67,15 @@
 		
 
 
-			   window.addEventListener('click', mouseclickHandler, true);	  
+			   window.addEventListener('click', mouseclickHandler, true);	 
+
+			   <?if(get_data('debugWidget')):?>
+
+				$("#debug").click(function(){
+					$("#debugWindow").toggle('slow');
+				});
+				
+				<?endif?> 
 		    });
 		    
 			
@@ -87,6 +92,8 @@
 			   						 <?php echo ($consistencyViewData['suppressable']) ? 'true' : 'false'; ?>);
 			   <?php endif; ?>
 			});
+
+			
 			
 		</script>
 		
@@ -99,6 +106,7 @@
 	<body>
 		<div id="loader"><img src="<?=BASE_WWW?>img/ajax-loader.gif" /></img></div>
 		<div id="process_view"></div>
+		
 		<ul id="control">
 			
 			
@@ -112,8 +120,11 @@
          	</li>
 
          	
-			
-        	
+         <?if(get_data('debugWidget')):?>
+			<li>
+				<a id="debug" class="action icon" href="#">Debug</a> <span class="separator" />
+			</li>
+        <?endif?>
          	
          
          	<li>
@@ -121,6 +132,19 @@
          	</li>
 
 		</ul>
+		
+		  <?if(get_data('debugWidget')):?>
+				<div id="debugWindow" style="display:none;">
+					<?foreach(get_data('debugData') as $debugSection => $debugObj):?>
+					<fieldset>
+						<legend><?=$debugSection?></legend>
+						<pre>
+							<?print_r($debugObj);?>
+						</pre>
+					</fieldset>
+					<?endforeach?>
+				</div>
+		  <?endif?>
 
 		<div id="content">
 			<div id="business">
@@ -158,6 +182,8 @@
 
   		<div id="consistency" title="<?php echo ((!$consistencyViewData['isConsistent']) ? $consistencyViewData['source'] : '') . ' ' . __("Edit error"); ?>"></div>
 
+
+		
 	</body>
 
 </html>

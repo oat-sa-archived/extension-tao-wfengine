@@ -9,23 +9,23 @@ error_reporting(E_ALL);
  *
  * This file is part of Generis Object Oriented API.
  *
- * Automatically generated on 08.06.2010, 17:04:50 with ArgoUML PHP module
- * (last revised $Date: 2008-04-19 08:22:08 +0200 (Sat, 19 Apr 2008) $)
+ * Automatically generated on 18.06.2010, 11:47:07 with ArgoUML PHP module 
+ * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
  *
- * @author firstname and lastname of author, <author@example.org>
+ * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
  * @package wfEngine
  * @subpackage models_classes
  */
 
 if (0 > version_compare(PHP_VERSION, '5')) {
-	die('This file was generated for PHP 5');
+    die('This file was generated for PHP 5');
 }
 
 /**
- * The Service class is an abstraction of each service instance.
+ * The Service class is an abstraction of each service instance. 
  * Used to centralize the behavior related to every servcie instances.
  *
- * @author firstname and lastname of author, <author@example.org>
+ * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
  */
 require_once('tao/models/classes/class.Service.php');
 
@@ -44,33 +44,31 @@ include_once(dirname(__FILE__).'../../../includes/constants.php');
  * Short description of class wfEngine_models_classes_VariableService
  *
  * @access public
- * @author firstname and lastname of author, <author@example.org>
+ * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
  * @package wfEngine
  * @subpackage models_classes
  */
 class wfEngine_models_classes_VariableService
-extends tao_models_classes_Service
+    extends tao_models_classes_Service
 {
-	// --- ASSOCIATIONS ---
+    // --- ASSOCIATIONS ---
 
 
-	// --- ATTRIBUTES ---
+    // --- ATTRIBUTES ---
 
-	// --- OPERATIONS ---
+    // --- OPERATIONS ---
 
-	/**
-	 * Short description of method save
-	 *
-	 * @access public
-	 * @author firstname and lastname of author, <author@example.org>
-	 * @param  array variable
-	 * @return boolean
-	 */
-	public function save($variable)
-	{
-		$returnValue = (bool) false;
-
-		// section -87--2--3--76--7eb229c2:12916be1ece:-8000:0000000000003C07 begin
+    /**
+     * Short description of method save
+     *
+     * @access public
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @param  array variable
+     * @return mixed
+     */
+    public function save($variable)
+    {
+        // section -87--2--3--76--7eb229c2:12916be1ece:-8000:0000000000003C07 begin
 		if(isset($_SESSION["activityExecutionUri"])){
 			$activityExecutionUri = urldecode($_SESSION["activityExecutionUri"]);
 			$activityExecution = new core_kernel_classes_Resource($activityExecutionUri);
@@ -103,24 +101,22 @@ extends tao_models_classes_Service
 			$returnValue &= $token->editPropertyValues($tokenVarProp,serialize($newVar));
 		}
 		
-		// section -87--2--3--76--7eb229c2:12916be1ece:-8000:0000000000003C07 end
+        // section -87--2--3--76--7eb229c2:12916be1ece:-8000:0000000000003C07 end
+    }
 
-		return (bool) $returnValue;
-	}
+    /**
+     * Short description of method remove
+     *
+     * @access public
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @param  mixed params
+     * @return boolean
+     */
+    public function remove($params)
+    {
+        $returnValue = (bool) false;
 
-	/**
-	 * Short description of method remove
-	 *
-	 * @access public
-	 * @author firstname and lastname of author, <author@example.org>
-	 * @param  mixed params
-	 * @return boolean
-	 */
-	public function remove($params)
-	{
-		$returnValue = (bool) false;
-
-		// section -87--2--3--76--7eb229c2:12916be1ece:-8000:0000000000003C0B begin
+        // section -87--2--3--76--7eb229c2:12916be1ece:-8000:0000000000003C0B begin
 		if(isset($_SESSION["activityExecutionUri"])){
 			$activityExecutionUri = urldecode($_SESSION["activityExecutionUri"]);
 			$activityExecution = new core_kernel_classes_Resource($activityExecutionUri);
@@ -155,24 +151,24 @@ extends tao_models_classes_Service
 			}
 		}
 
-		// section -87--2--3--76--7eb229c2:12916be1ece:-8000:0000000000003C0B end
+        // section -87--2--3--76--7eb229c2:12916be1ece:-8000:0000000000003C0B end
 
-		return (bool) $returnValue;
-	}
+        return (bool) $returnValue;
+    }
 
-	/**
-	 * Short description of method get
-	 *
-	 * @access public
-	 * @author firstname and lastname of author, <author@example.org>
-	 * @param  string key
-	 * @return mixed
-	 */
-	public function get($key)
-	{
-		$returnValue = null;
+    /**
+     * Short description of method get
+     *
+     * @access public
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @param  string key
+     * @return mixed
+     */
+    public function get($key)
+    {
+        $returnValue = null;
 
-		// section -87--2--3--76--7eb229c2:12916be1ece:-8000:0000000000003C0E begin
+        // section -87--2--3--76--7eb229c2:12916be1ece:-8000:0000000000003C0E begin
 		if(isset($_SESSION["activityExecutionUri"])){
 			$activityExecutionUri = urldecode($_SESSION["activityExecutionUri"]);
 			$activityExecution = new core_kernel_classes_Resource($activityExecutionUri);
@@ -199,23 +195,23 @@ extends tao_models_classes_Service
 				}
 			}
 		}
-		// section -87--2--3--76--7eb229c2:12916be1ece:-8000:0000000000003C0E end
+        // section -87--2--3--76--7eb229c2:12916be1ece:-8000:0000000000003C0E end
 
-		return $returnValue;
-	}
+        return $returnValue;
+    }
 
-	/**
-	 * Short description of method getAll
-	 *
-	 * @access public
-	 * @author firstname and lastname of author, <author@example.org>
-	 * @return array
-	 */
-	public function getAll()
-	{
-		$returnValue = array();
+    /**
+     * Short description of method getAll
+     *
+     * @access public
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @return array
+     */
+    public function getAll()
+    {
+        $returnValue = array();
 
-		// section -87--2--3--76--7eb229c2:12916be1ece:-8000:0000000000003C11 begin
+        // section -87--2--3--76--7eb229c2:12916be1ece:-8000:0000000000003C11 begin
 		if(isset($_SESSION["activityExecutionUri"])){
 			$activityExecutionUri = urldecode($_SESSION["activityExecutionUri"]);
 			$activityExecution = new core_kernel_classes_Resource($activityExecutionUri);
@@ -239,10 +235,58 @@ extends tao_models_classes_Service
 
 		}
 		
-		// section -87--2--3--76--7eb229c2:12916be1ece:-8000:0000000000003C11 end
+        // section -87--2--3--76--7eb229c2:12916be1ece:-8000:0000000000003C11 end
 
-		return (array) $returnValue;
-	}
+        return (array) $returnValue;
+    }
+
+    /**
+     * Short description of method push
+     *
+     * @access public
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @param  string key
+     * @param  string value
+     * @return mixed
+     */
+    public function push($key, $value)
+    {
+        // section 127-0-1-1--55065e1d:1294a729605:-8000:0000000000002006 begin
+        
+    	if(isset($_SESSION["activityExecutionUri"])){
+			$activityExecutionUri = urldecode($_SESSION["activityExecutionUri"]);
+			$activityExecution = new core_kernel_classes_Resource($activityExecutionUri);
+			$tokenService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_TokenService');
+			$token = $tokenService->getCurrent($activityExecution);
+			
+			$tokenVarProp = new core_kernel_classes_Property(PROPERTY_TOKEN_VARIABLE);
+			if(is_null($token)) {
+					throw new Exception('Activity Token should never be null');
+			}
+			
+			$newVar = unserialize($token->getOnePropertyValue($tokenVarProp));
+		
+			$collection = core_kernel_impl_ApiModelOO::singleton()->getSubject(PROPERTY_CODE,$key);
+				
+			if(!$collection->isEmpty()){
+				if($collection->count() == 1) {
+					$property = new core_kernel_classes_Property($collection->get(0)->uriResource);
+					
+					$returnValue &= $token->setPropertyValue($property, $value);
+					if(is_array($newVar)){
+						$newVar = array_merge($newVar, array($key)); 
+					}
+					else{
+						$newVar = array($key);
+					}
+				}
+			}
+				
+			$returnValue &= $token->editPropertyValues($tokenVarProp, serialize($newVar));
+		}
+    	
+        // section 127-0-1-1--55065e1d:1294a729605:-8000:0000000000002006 end
+    }
 
 } /* end of class wfEngine_models_classes_VariableService */
 

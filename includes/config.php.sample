@@ -27,7 +27,7 @@ define("DIR_HELPERS"		, dirname(__FILE__) . "/../helpers/");
 
 
 # default module name
-define('DEFAULT_MODULE_NAME', 'Main');
+define('DEFAULT_MODULE_NAME', 'Authentication');
 
 #default action name
 define('DEFAULT_ACTION_NAME', 'index');

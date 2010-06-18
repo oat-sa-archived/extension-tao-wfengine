@@ -124,6 +124,12 @@ class Main extends WfModule
 	}
 	
 	public function test(){
+		
+		if(!DEBUG_MODE){
+			echo "debug mode deactiviated!";
+			return;
+		}
+		
 		if(isset($_SESSION['activityExecutionUri'])){
 			$activityExe = new core_kernel_classes_Resource($_SESSION['activityExecutionUri']);
 			$activity = $activityExe->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_ACTIVITY));

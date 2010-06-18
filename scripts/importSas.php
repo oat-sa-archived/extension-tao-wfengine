@@ -200,15 +200,14 @@ class SasImporter{
 	private function getSasFiles(){
 		
 		$sasFiles = array();
-		
-		/*$extensionsManager = common_ext_ExtensionsManager::singleton();
+		$sasFiles['taoQual'] = ROOT_PATH . '/taoQual/actions/sas.xml';
+		$extensionsManager = common_ext_ExtensionsManager::singleton();
 		foreach($extensionsManager->getInstalledExtensions() as $extension){
 			$filePath = ROOT_PATH . '/'. $extension->id . '/actions/sas.xml';
 			if(file_exists($filePath)){
 				$sasFiles[$extension->id] = $filePath;
 			}
-		}*/
-		$sasFiles['taoQual'] = ROOT_PATH . '/taoQual/actions/sas.xml';
+		}
 		
 		return $sasFiles;
 	}
