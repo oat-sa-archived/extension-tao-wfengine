@@ -73,18 +73,30 @@ class ProcessExecutionFactory {
 		}
 		
 		//foreach first tokens, assign the user input prop values:
+		$codes[] = array();
+		$processVariableCodeProp = new core_kernel_classes_Property(PROPERTY_PROCESSVARIABLES_CODE);
 		foreach($this->variables as $uri => $value) {
-			// have to skip name because note work like other variable
+			// have to skip name because doesnt work like other variables
 			if($uri != RDFS_LABEL) {
 				
 				$property = new core_kernel_classes_Property($uri);
-				// $returnValue->resource->setPropertyValue($property,$value);//old
 				
 				//assign property values to them:
 				foreach($tokens as $token){
 					$token->setPropertyValue($property,$value);
 				}
+				
+				//prepare the array of codes to be inserted as the "variables" property of the current token
+				$code = $property->getUniquePropertyValue($processVariableCodeProp);
+				$codes[] = (string) $code;
+				
 			}
+		}
+		
+		//set serialized codes array into variable property:
+		$tokenVariableProp = new core_kernel_classes_Property(PROPERTY_TOKEN_VARIABLE);
+		foreach($tokens as $token){
+			$token->setPropertyValue($tokenVariableProp, serialize($codes)); 
 		}
 		
 		error_reporting(E_ALL);
