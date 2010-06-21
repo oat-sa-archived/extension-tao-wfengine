@@ -49,8 +49,8 @@ class ProcessExecutionFactory {
 		{
 			
 			//add token
-			$pInstanceTokenProp = new core_kernel_classes_Property(PROPERTY_PINSTANCES_TOKEN,__METHOD__);
-			$subjectResource->setPropertyValue($pInstanceTokenProp,$activity->uri);
+			/*$pInstanceTokenProp = new core_kernel_classes_Property(PROPERTY_PINSTANCES_TOKEN,__METHOD__);
+			$subjectResource->setPropertyValue($pInstanceTokenProp,$activity->uri);*/
 		
 			// Add in path
 			$pInstanceProcessProp = new core_kernel_classes_Property(PROPERTY_PINSTANCES_PROCESSPATH,__METHOD__);
@@ -99,7 +99,6 @@ class ProcessExecutionFactory {
 			$token->setPropertyValue($tokenVariableProp, serialize($codes)); 
 		}
 		
-		error_reporting(E_ALL);
 		
 		$tokenService->setCurrents($returnValue->resource, $tokens);
 		

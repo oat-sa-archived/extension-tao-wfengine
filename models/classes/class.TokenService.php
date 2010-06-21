@@ -154,6 +154,7 @@ class wfEngine_models_classes_TokenService
         if(!is_null($activityExecution)){
         	
         	$activityUser = $activityExecution->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_CURRENT_USER));
+        	
         	if(!is_null($activityUser)){
 	        	
 	        	$apiModel  	= core_kernel_impl_ApiModelOO::singleton();
@@ -220,18 +221,6 @@ class wfEngine_models_classes_TokenService
 
         // section 127-0-1-1-2013ff6:1292105c669:-8000:0000000000001FD8 begin
         
-   /*     if(Session::hasAttribute(self::CURRENT_KEY) && !is_null($processExecution)){
-        	$tokens = Session::getAttribute(self::CURRENT_KEY);
-        	if(is_array($tokens)){
-        		$key = $processExecution->uriResource;
-        		if(array_key_exists($key, $tokens)){
-        			foreach($tokens[$key] as $tokenUri){
-        				$returnValue[] = new core_kernel_classes_Resource($tokenUri);
-        			}
-        		}
-        	}
-        }*/
-        
         if(!is_null($processExecution)){
         	$tokens = $processExecution->getPropertyValuesCollection($this->currentTokenProp);
         	foreach($tokens->getIterator() as $token){
@@ -278,13 +267,14 @@ class wfEngine_models_classes_TokenService
 							$returnValue[] = $activityDefinition;
 							$checkedActivityDefinitions[] = $activityDefinition->uriResource;
 						}
-					}else{
+					}
+					else{
 						//return it, supposing that getExecution should check the ACL mode against currentUser
 						$returnValue[] = $activityDefinition;
 						$checkedActivityDefinitions[] = $activityDefinition->uriResource;
 					}
-					
-				}        	}
+				}        	
+        	}
         }
         
         // section 127-0-1-1--6657ec7c:129368db927:-8000:0000000000001FF5 end
@@ -705,6 +695,7 @@ class wfEngine_models_classes_TokenService
 		        	}
         			
         			if(count($tokens) == 0){
+        				//var_dump($previousActivities, $nextActivities, $connector, $tokens);
         				throw new Exception("No token found for that user");
         			}
         			if(count($tokens) > 1){
@@ -764,6 +755,8 @@ class wfEngine_models_classes_TokenService
         			}
         			$nextActivity = $nextActivities[0];
         			
+        			//var_dump($nextActivity, $connector);exit;
+        			
         			//get the tokens on the previous activity
 		        	// $tokens = array();
 		        	// foreach($previousActivities->getIterator() as $previousActivity){
@@ -777,10 +770,12 @@ class wfEngine_models_classes_TokenService
 					$activityResourceArray = array();
 					$tokens = array();
 					foreach ($previousActivities->getIterator() as $activityResource){
-						if(!isset($activityResourceArray[$activityResource->uriResource])){
-							$activityResourceArray[$activityResource->uriResource] = 1;
-						}else{
-							$activityResourceArray[$activityResource->uriResource] += 1;
+						if(wfEngine_models_classes_ProcessAuthoringService::isActivity($activityResource)){
+							if(!isset($activityResourceArray[$activityResource->uriResource])){
+								$activityResourceArray[$activityResource->uriResource] = 1;
+							}else{
+								$activityResourceArray[$activityResource->uriResource] += 1;
+							}
 						}
 					}
 					foreach($activityResourceArray as $activityDefinitionUri => $count){

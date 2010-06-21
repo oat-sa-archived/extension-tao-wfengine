@@ -264,11 +264,13 @@ extends WfResource
 		}
 		
 		
-		$connectorsUri = $this->getNextConnectorsUri($this->currentActivity[0]->uri);//could work for join as they share the same connector
+		//$connectorsUri = $this->getNextConnectorsUri($this->currentActivity[0]->uri);//could work for join as they share the same connector
+		$connectorsUri = $this->getNextConnectorsUri($activityDefinition->uriResource);
 		
 		$token = $tokenService->getCurrent($activityExecutionResource);
 		$arrayOfProcessVars[VAR_PROCESS_INSTANCE] = $token->uriResource;
 		$newActivities = $this->getNewActivities($arrayOfProcessVars, $connectorsUri);
+		
 		if($newActivities === false){
 			//means that the process must be paused:
 			$this->pause();
@@ -406,10 +408,12 @@ extends WfResource
 					$connector = new Connector($connUri);
 					$prevActivitesCollection = $connector->getPreviousActivities();
 					foreach ($prevActivitesCollection->getIterator() as $activityResource){
-						if(!isset($activityResourceArray[$activityResource->uriResource])){
-							$activityResourceArray[$activityResource->uriResource] = 1;
-						}else{
-							$activityResourceArray[$activityResource->uriResource] += 1;
+						if(wfEngine_models_classes_ProcessAuthoringService::isActivity($activityResource)){
+							if(!isset($activityResourceArray[$activityResource->uriResource])){
+								$activityResourceArray[$activityResource->uriResource] = 1;
+							}else{
+								$activityResourceArray[$activityResource->uriResource] += 1;
+							}
 						}
 					}
 					
@@ -465,6 +469,7 @@ extends WfResource
 					// var_dump($activityResourceArray,$debug, $completed);die();
 					
 					if($completed){
+						$newActivities = array();
 						//get THE (unique) next activity
 						$nextActivitesCollection = $connector->getNextActivities();
 						foreach ($nextActivitesCollection->getIterator() as $activityResource){
@@ -1241,6 +1246,8 @@ extends WfResource
 			$this->currentActivity[] 	= new Activity($activity->uriResource);
 		}
 
+		
+		
 		$statusProp = new core_kernel_classes_Property(STATUS);
 		$status = $this->resource->getPropertyValues($statusProp);
 

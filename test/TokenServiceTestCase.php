@@ -180,6 +180,8 @@ class ActivityExecutionServiceTestCase extends UnitTestCase {
 			//init 1st activity
 			$proc = $factory->create();
 			
+			$this->out(__METHOD__, true);
+			
 			$i = 1;
 			while($i <= 5 ){
 				$activity = $proc->currentActivity[0];
@@ -189,11 +191,11 @@ class ActivityExecutionServiceTestCase extends UnitTestCase {
 				
 				
 				$currentTokens = $this->service->getCurrents($proc->resource);
+				
 				$this->assertIsA($currentTokens, 'array');
 				foreach($currentTokens as $currentToken){
 					$this->out("Current : ". $currentToken->getLabel());
 				}
-				
 				//init execution
 				$this->assertTrue($processExecutionService->initCurrentExecution($proc->resource, $activity->resource, $this->currentUser));
 				
@@ -235,23 +237,23 @@ class ActivityExecutionServiceTestCase extends UnitTestCase {
 				$this->assertTrue($this->service->delete($currentToken));
 			}
 			
-			$this->assertTrue($activity1->delete());
-			$this->assertTrue($activity2->delete());
-			$this->assertTrue($activity3->delete());
-			$this->assertTrue($activity4->delete());
-			$this->assertTrue($activity5->delete());
+			$activity1->delete();
+			$activity2->delete();
+			$activity3->delete();
+			$activity4->delete();
+			$activity5->delete();
 			
-			$this->assertTrue($connector1->delete());
-			$this->assertTrue($connector2->delete());
-			$this->assertTrue($connector3->delete());
-			$this->assertTrue($connector4->delete());
+			$connector1->delete();
+			$connector2->delete();
+			$connector3->delete();
+			$connector4->delete();
 			
-			$this->assertTrue($proc->resource->delete());
-			$this->assertTrue($processDefinition->delete());
+			$proc->resource->delete();
+			$processDefinition->delete();
 			
 			if(!is_null($this->currentUser)){
 				core_kernel_users_Service::logout();
-				$this->assertTrue($this->userService->removeUser($this->currentUser));
+				$this->userService->removeUser($this->currentUser);
 			}
 		}
 		catch(common_Exception $ce){
@@ -321,6 +323,8 @@ class ActivityExecutionServiceTestCase extends UnitTestCase {
 	
 			
 			$proc = $factory->create();
+			
+			$this->out(__METHOD__, true);
 			
 			$i = 0;
 			$current = 0;
@@ -415,25 +419,25 @@ class ActivityExecutionServiceTestCase extends UnitTestCase {
 			}
 				
 			
-			$this->assertTrue($activity0->delete());
-			$this->assertTrue($connector0->delete());
+			$activity0->delete();
+			$connector0->delete();
 			
-			$this->assertTrue($parallelActivity1->delete());
-			$this->assertTrue($connector1->delete());
+			$parallelActivity1->delete();
+			$connector1->delete();
 			
-			$this->assertTrue($parallelActivity2->delete());
-			//$this->assertTrue($connector2->delete());
+			$parallelActivity2->delete();
+			$connector2->delete();
 			
-			$this->assertTrue($joinActivity->delete());
+			$joinActivity->delete();
 			
-			$this->assertTrue($proc->resource->delete());
+			$proc->resource->delete();
 				
 			//delete processdef:
-			$this->assertTrue($authoringService->deleteProcess($processDefinition));
+			$authoringService->deleteProcess($processDefinition);
 			
 			if(!is_null($this->currentUser)){
 				core_kernel_users_Service::logout();
-				$this->assertTrue($this->userService->removeUser($this->currentUser));
+				$this->userService->removeUser($this->currentUser);
 			}
 		}
 		catch(common_Exception $ce){

@@ -104,7 +104,7 @@
 	</head>
 	
 	<body>
-		<div id="loader"><img src="<?=BASE_WWW?>img/ajax-loader.gif" /></img></div>
+		<div id="loader"><img src="<?=BASE_WWW?>img/ajax-loader.gif" /> <?=__('Loading next activity...')?></div>
 		<div id="process_view"></div>
 		
 		<ul id="control">

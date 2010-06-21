@@ -144,7 +144,7 @@ class ProcessBrowser extends WfModule
 
 		//retrieve activities
 
-		if (!($qSortedActivities = common_Cache::getCache("aprocess_activities"))){
+		/*if (!($qSortedActivities = common_Cache::getCache("aprocess_activities"))){
 
 			$processDefinition = new core_kernel_classes_resource($process->process->uri);
 			$activities = $processDefinition->getPropertyValues(new core_kernel_classes_Property(PROPERTY_PROCESS_ACTIVITIES));
@@ -160,7 +160,7 @@ class ProcessBrowser extends WfModule
 			}
 			ksort($qSortedActivities);
 			common_Cache::setCache($qSortedActivities,"aprocess_activities");
-		}
+		}*/
 		
 		$browserViewData['annotationsResourcesJsArray'] = array();
 		foreach ($qSortedActivities as $key=>$val){
@@ -197,9 +197,11 @@ class ProcessBrowser extends WfModule
 			$this->setData('debugData', array(
 					'Activity' => $activity->resource,
 					'ActivityExecution' => $activityExecutionResource,
-					'token' => $tokenService->getCurrent($activityExecutionResource),
-					'services' => $servicesResources,
-					'variableStack' => wfEngine_models_classes_VariableService::getAll()
+					'Token' => $tokenService->getCurrent($activityExecutionResource),
+					'All tokens' => $tokenService->getCurrents($process->resource),
+					'Current activities' => $tokenService->getCurrentActivities($process->resource),
+					'Services' => $servicesResources,
+					'VariableStack' => wfEngine_models_classes_VariableService::getAll()
 			));
 		}
 		}
