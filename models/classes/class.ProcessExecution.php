@@ -93,7 +93,7 @@ extends WfResource
 	 * @access public
 	 * @var array
 	 */
-	public $currentActivity = array();
+	public $currentActivity = array();//should be renamed to $currentActivities
 
 	/**
 	 * Short description of attribute process
@@ -118,8 +118,6 @@ extends WfResource
 	 * @var ProcessPath
 	 */
 	public $path = null;
-
-
 
 	// --- OPERATIONS ---
 
@@ -277,16 +275,23 @@ extends WfResource
 			return;
 		}
 		
+		echo __LINE__.'* ';
+		//actual transition starting from here:
+		$connector = null;
 		if(count($connectorsUri) > 0){
 			$connector = new core_kernel_classes_Resource(array_pop($connectorsUri));
 			$nextActivities = array();
 			foreach($newActivities as $newActivity){
 				$nextActivities[] = $newActivity->resource;
 			}
+			
+			//transition done here the tokens are "moved" to the next step:
 			$tokenService->move($connector, $nextActivities, $currentUser, $this->resource);
 		}
+		echo __LINE__.'* ';
+		//transition done: now get the following activityies:
 		
-		//actual transition starting from here:
+		//get the current activities, whether the user has the right or not:
 		$this->currentActivity = array();
 		foreach($tokenService->getCurrentActivities($this->resource) as $currentActivity){
 			
@@ -295,61 +300,89 @@ extends WfResource
 			// We insert in the ontology the last activity in the path stack.
 			$this->path->insertActivity($newActivity);
 			
-			$this->currentActivity[] = new Activity($newActivity->uri);
+			$this->currentActivity[] = $newActivity;
+			
 		}
-		
+		echo __LINE__.'* ';
 	//	var_dump($this->currentActivity);
 		
-		// If the activity before the transition was the last activity of the process,
-		// we have to finish gracefully the process.
-
+		//if the connector is not a parallel one, let the user continue in his current branch and prevent the pause:
+		$uniqueNextActivity = null;
+		if(!is_null($connector)){
+			$connectorType = $connector->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_TYPE));
+			echo __LINE__.'* ';
+			if($connectorType->uriResource != INSTANCE_TYPEOFCONNECTORS_PARALLEL){
+				echo __LINE__.'* ';
+				if(count($newActivities)==1){
+					//TODO: could do a double check here: if($newActivities[0] is one of the actiivty found in the current tokens):
+					echo __LINE__.'* ';
+					if($activityExecutionService->checkAcl($newActivities[0]->resource, $currentUser, $this->resource)){
+						echo __LINE__.'* ';
+						$uniqueNextActivity = $newActivities[0];//the Activity Object
+					}
+				}
+			}
+		}
+		
+		echo __LINE__.'* ';
+		$setPause = true;
+		$authorizedActivityDefinitions = array();
+		
 		if (!count($newActivities) || $activityBeforeTransition->isLast()){
+			//there is no following activity so the process ends here:
 			$this->finish();
+		}elseif(!is_null($uniqueNextActivity)){
+			//we are certain what the next activity would be for the user so return it:
+			$authorizedActivityDefinitions[] = $uniqueNextActivity;
+			$this->currentActivity = array();
+			$this->currentActivity[] = $uniqueNextActivity;
+			$setPause = false;
 		}else{
 			
-			
-			$setPause = true;
 			foreach ($this->currentActivity as $activityAfterTransition){
-				
-				// $activityExecutionService->initExecution($activityAfterTransition->resource, $currentUser, $curret process instance);
-				
 				//check if the current user is allowed to execute the activity
 				if($activityExecutionService->checkAcl($activityAfterTransition->resource, $currentUser, $this->resource)){
+					$authorizedActivityDefinitions[] = $activityAfterTransition;
 					$setPause = false;
 				}
 				else{
 					continue;
 				}
-				
-				// The process is not finished.
-				// It means we have to run the onBeforeInference rule of the new current activity.
-				
-				$activityAfterTransition->feedFlow(1);
-	
-				
-				// ONBEFORE INFERENCE RULE
-				// If we are here, no consistency error was thrown. Thus, we can infer something if needed.
-				foreach ($activityAfterTransition->onBeforeInferenceRule as $rule)
-				{
-					$rule->execute($arrayOfProcessVars);
-				}
-			
-	
-				// Last but not least ... is the next activity a machine activity ?
-				// if yes, we perform the transition.
-				if ($activityAfterTransition->isHidden){
-					$this->performTransition($ignoreConsistency);
-				}
-
 			}
-			if($setPause){
-				$this->pause();
+			
+		}
+		echo __LINE__.'* ';
+		//finish actions on the authorized acitivty definitions
+		foreach($authorizedActivityDefinitions as $activityAfterTransition){
+			// The process is not finished.
+			// It means we have to run the onBeforeInference rule of the new current activity.
+			
+			$activityAfterTransition->feedFlow(1);
+
+			
+			// ONBEFORE INFERENCE RULE
+			// If we are here, no consistency error was thrown. Thus, we can infer something if needed.
+			foreach ($activityAfterTransition->onBeforeInferenceRule as $rule)
+			{
+				$rule->execute($arrayOfProcessVars);
+			}
+		
+
+			// Last but not least ... is the next activity a machine activity ?
+			// if yes, we perform the transition.
+			if ($activityAfterTransition->isHidden){
+				$this->performTransition($ignoreConsistency);
+				//service not executed? use curl request?
 			}
 		}
-
+		
+		if($setPause){
+			$this->pause();
+		}
+		
 		// section 10-13-1--31--4660acca:119ecd38e96:-8000:0000000000000866 end
 	}
-
+	
 	/**
 	 * @param $arrayOfProcessVars
 	 * @param $nextConnectors
