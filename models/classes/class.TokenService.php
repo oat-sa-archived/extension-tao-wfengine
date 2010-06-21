@@ -566,11 +566,32 @@ class wfEngine_models_classes_TokenService
         		foreach($tokenVar['value'] as $value){
 	        		if(array_key_exists($key, $mergedVars)){
 	        			if(is_array($mergedVars[$key])){
-	        				$mergedVars[$key][] = $value;
+	        				$found = false;
+	        				foreach($mergedVars[$key] as $tValue){
+	        					if($tValue instanceof core_kernel_classes_Resource && $value instanceof core_kernel_classes_Resource){
+	        						if($tValue->uriResource == $value->uriResource){
+	        							$found = true;
+	        							break;
+	        						}
+	        					}
+	        					else if($tValue == $value){
+	        						$found = true;
+	        						break;
+	        					}
+	        				}
+	        				if(!$found){
+	        					$mergedVars[$key][] = $value;
+	        				}
 	        			}
 	        			else{
-	        				if($mergedVars[$key] != $value){
-								$mergedVars[$key] = array($mergedVars[$key], $value);
+	        				$tValue = $mergedVars[$key];
+	        				if($tValue instanceof core_kernel_classes_Resource && $value instanceof core_kernel_classes_Resource){
+	        					if($tValue->uriResource != $value->uriResource){
+	        						$mergedVars[$key] = array($tValue, $value);
+	        					}
+	        				}
+	        				else if($tValue != $value){
+								$mergedVars[$key] = array($tValue, $value);
 	        				}
 	        			}
 	        		}
