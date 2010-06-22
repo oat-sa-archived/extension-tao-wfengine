@@ -86,7 +86,7 @@ class Main extends WfModule
 				$currentActivities[] = array(
 					'label'				=> $currentActivity->label,
 					'uri' 				=> $currentActivity->uri,
-					'may_participate'	=> (!$proc->isFinished() && $isAllowed &&!$isFinished),
+					'may_participate'	=> (!$proc->isFinished() && $isAllowed),
 					'finished'			=> $proc->isFinished(),
 					'allowed'			=> $isAllowed,
 					'activityEnded'		=> $isFinished
