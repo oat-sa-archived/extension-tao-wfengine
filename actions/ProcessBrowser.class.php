@@ -27,6 +27,7 @@ class ProcessBrowser extends WfModule
 				}
 			}
 		}
+		// var_dump($process, $activityUri,$currentActivity);
 		
 		if(is_null($currentActivity)){
 			//if the activity is still null check if there is a value in $process->currentActivity:
@@ -34,6 +35,7 @@ class ProcessBrowser extends WfModule
 				die('No current activity found in the process: ' . $processUri);
 			}
 			if(count($process->currentActivity) > 1) {
+				// echo 'paused in process browser';exit;
 				$this->redirect(_url('pause', 'processBrowser'));
 			}else{
 				//use the first one:
@@ -239,15 +241,22 @@ class ProcessBrowser extends WfModule
 		{
 
 			$processExecution->performTransition($activityExecutionUri,($ignoreConsistency == 'true') ? true : false);
-
+			// var_dump($processExecution);
+			
 			if ($processExecution->isFinished()){
 				$this->redirect(_url('index', 'Main'));
 			}
 			elseif($processExecution->isPaused()){
+				// echo 'paused'; exit;
 				$this->pause($processUri);
 			}
 			else{
-				$this->redirect(_url('index', 'processBrowser', null, array('processUri' => urlencode($processUri), 'activityUri'=>'my act uri')));
+				//perform transition returns a unique next activity, execute it straight away:
+				$nextActivityDefinitionUri = '';
+				if(count($processExecution->currentActivity) == 1){
+					$nextActivityDefinitionUri = $processExecution->currentActivity[0]->resource->uriResource;
+				}
+				$this->redirect(_url('index', 'processBrowser', null, array('processUri' => urlencode($processUri), 'activityUri'=>urlencode($nextActivityDefinitionUri)) ));
 			}
 		}
 		catch (ConsistencyException $consistencyException)

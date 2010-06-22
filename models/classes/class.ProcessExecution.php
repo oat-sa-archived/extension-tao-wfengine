@@ -275,7 +275,7 @@ extends WfResource
 			return;
 		}
 		
-		echo __LINE__.'* ';
+		
 		//actual transition starting from here:
 		$connector = null;
 		if(count($connectorsUri) > 0){
@@ -288,8 +288,9 @@ extends WfResource
 			//transition done here the tokens are "moved" to the next step:
 			$tokenService->move($connector, $nextActivities, $currentUser, $this->resource);
 		}
-		echo __LINE__.'* ';
-		//transition done: now get the following activityies:
+		
+		//transition done: now get the following activities:
+		
 		
 		//get the current activities, whether the user has the right or not:
 		$this->currentActivity = array();
@@ -303,35 +304,37 @@ extends WfResource
 			$this->currentActivity[] = $newActivity;
 			
 		}
-		echo __LINE__.'* ';
+		
 	//	var_dump($this->currentActivity);
 		
 		//if the connector is not a parallel one, let the user continue in his current branch and prevent the pause:
 		$uniqueNextActivity = null;
 		if(!is_null($connector)){
 			$connectorType = $connector->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_TYPE));
-			echo __LINE__.'* ';
+			
 			if($connectorType->uriResource != INSTANCE_TYPEOFCONNECTORS_PARALLEL){
-				echo __LINE__.'* ';
+				
 				if(count($newActivities)==1){
 					//TODO: could do a double check here: if($newActivities[0] is one of the actiivty found in the current tokens):
-					echo __LINE__.'* ';
+					
 					if($activityExecutionService->checkAcl($newActivities[0]->resource, $currentUser, $this->resource)){
-						echo __LINE__.'* ';
+						
 						$uniqueNextActivity = $newActivities[0];//the Activity Object
 					}
 				}
 			}
 		}
 		
-		echo __LINE__.'* ';
+		
 		$setPause = true;
 		$authorizedActivityDefinitions = array();
-		
+		// var_dump($newActivities, $activityBeforeTransition->isLast());
 		if (!count($newActivities) || $activityBeforeTransition->isLast()){
 			//there is no following activity so the process ends here:
 			$this->finish();
+			return;
 		}elseif(!is_null($uniqueNextActivity)){
+			
 			//we are certain what the next activity would be for the user so return it:
 			$authorizedActivityDefinitions[] = $uniqueNextActivity;
 			$this->currentActivity = array();
@@ -351,7 +354,7 @@ extends WfResource
 			}
 			
 		}
-		echo __LINE__.'* ';
+		
 		//finish actions on the authorized acitivty definitions
 		foreach($authorizedActivityDefinitions as $activityAfterTransition){
 			// The process is not finished.
