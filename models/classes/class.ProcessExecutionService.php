@@ -107,7 +107,7 @@ class wfEngine_models_classes_ProcessExecutionService
 						}
         				break;	
         			default:
-						throw new Exception('unknown mode');
+						throw new Exception('unknown process init mode');
         			
         		}
         	}

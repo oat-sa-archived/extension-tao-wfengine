@@ -123,7 +123,7 @@ class ProcessAuthoring extends TaoModule {
 				case 'variable': 
 					$classUri=CLASS_PROCESSVARIABLES;break;
 				case 'role': 
-					$classUri=CLASS_ROLE_BACKOFFICE;break;//use to be CLASS_ROLE, now only back office roles are authorized to wf users (including TAO managers)
+					$classUri=CLASS_ROLE_WORKFLOWUSER;break;//used to be CLASS_ROLE then CLASS_ROLE_BACKOFFICE, now only back office roles are authorized to wf users (including TAO managers)
 				default:
 					throw new Exception('unknown class');break;
 			}
@@ -263,7 +263,7 @@ class ProcessAuthoring extends TaoModule {
 		//define the type of instance to be edited:
 		if(strcasecmp($clazz->uriResource, CLASS_FORMALPARAMETER) == 0){
 			$formName = "formalParameter";
-		}elseif(strcasecmp($clazz->uriResource, CLASS_ROLE_BACKOFFICE) == 0){
+		}elseif(strcasecmp($clazz->uriResource, CLASS_ROLE_WORKFLOWUSER) == 0){
 			$formName = "role";
 		}elseif( (strcasecmp($clazz->uriResource, CLASS_WEBSERVICES) == 0) || (strcasecmp($clazz->uriResource, CLASS_SUPPORTSERVICES) == 0) ){
 			//note: direct instanciating CLASS_SERVICEDEFINITION should be forbidden
@@ -302,7 +302,8 @@ class ProcessAuthoring extends TaoModule {
 				}
 				
 				$instance = $this->service->bindProperties($instance, $propertyValues);
-				echo __("saved");exit;
+				echo __("saved");
+				return;
 			}
 		}
 		
@@ -486,7 +487,7 @@ class ProcessAuthoring extends TaoModule {
 				//replace with a clean template upload
 				$this->setData('saved', true);
 				$this->setView('process_form_property.tpl');
-				exit;
+				return;
 			}
 		}
 		
