@@ -23,7 +23,7 @@ class UsersHelper
 			core_control_FrontController::connect($currentUser['login'], $currentUser['password'], DATABASE_NAME);
 			
 			//init the languages
-			core_kernel_classes_Session::singleton()->defaultLg = $userService->getDefaultLanguage();
+			core_kernel_classes_Session::singleton()->defaultLg = $GLOBALS['default_lang'];
 			core_kernel_classes_Session::singleton()->setLg($userService->getUserLanguage($currentUser['login']));
 			
 			//log in the wf engines
