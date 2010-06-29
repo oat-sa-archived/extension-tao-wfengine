@@ -1,36 +1,13 @@
 <?php
-require_once dirname(__FILE__) . '/../../generis/common/inc.extension.php';
-require_once dirname(__FILE__) . '/../includes/common.php';
-require_once INCLUDES_PATH.'/simpletest/autorun.php';
-
-if(!defined("LOGIN")){
-	define("LOGIN", "generis", true);
-}
-/**
-* @constant password for the module you wish to connect to 
-*/
-if(!defined("PASS")){
-	define("PASS", "g3n3r1s", true);
-}
-/**
-* @constant module for the module you wish to connect to 
-*/
-if(!defined("MODULE")){
-	define("MODULE", "tao", true);
-}
-
-error_reporting(E_ALL);
+require_once dirname(__FILE__) . '/../../tao/test/TestRunner.php';
+require_once dirname(__FILE__) . '/../includes/constants.php';
 
 class ProcessExecutionTestCase extends UnitTestCase{
 	
 
-	protected $apiModel = null;
 	
 	public function setUp(){
-		$this->apiModel = core_kernel_impl_ApiModelOO::singleton();
-		$this->apiModel->logIn(LOGIN,md5(PASS),DATABASE_NAME,true);
-		
-
+		TestRunner::initTest();
 	}
 	
 	/*
@@ -169,7 +146,7 @@ class ProcessExecutionTestCase extends UnitTestCase{
 
 		$proc = $factory->create();
 		$proc->performTransition();
-		var_dump($proc->currentActivity);
+		
 
 		$parallelActivity1->delete();
 		$connector1->delete();

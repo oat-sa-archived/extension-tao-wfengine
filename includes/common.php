@@ -5,7 +5,10 @@
  * @license GPLv2  http://www.opensource.org/licenses/gpl-2.0.php
  * 
  */
-session_start();
+if(is_null($_SESSION)){
+	session_start();
+}
+
 require_once 	dirname(__FILE__). "/config.php";
 require_once 	dirname(__FILE__). "/constants.php";
 

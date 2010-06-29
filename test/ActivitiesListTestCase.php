@@ -1,26 +1,6 @@
 <?php
-
-error_reporting(E_ALL);
-
-/**
-* @constant login for the generis module you wish to connect to 
-*/
-define("LOGIN", "piaac", true);
-/**
-* @constant password for the module you wish to connect to 
-*/
-define("PASS", "piaac", true);
-/**
-* @constant module for the module you wish to connect to 
-*/
-define("MODULE", "interview", true);
-
-
-
-require_once dirname(__FILE__).'/../common.php';
-
-require_once $GLOBALS['inc_path'].'/simpletest/autorun.php';
-
+require_once dirname(__FILE__) . '/../../tao/test/TestRunner.php';
+require_once dirname(__FILE__) . '/../includes/constants.php';
 
 class ActivitiesListTestCase extends UnitTestCase{
 	
@@ -28,6 +8,7 @@ class ActivitiesListTestCase extends UnitTestCase{
 	protected $activitiesList;
 	
 	public function setUp(){
+		TestRunner::initTest();
 /*
 		if(!isset($_SESSION["session"])) {
 		

@@ -1,43 +1,19 @@
 <?php
-// require_once dirname(__FILE__) . '/../../tao/test/TestRunner.php';
-// set_include_path(get_include_path().';'.dirname(__FILE__).'/../..');
-
-require_once dirname(__FILE__) . '/../../generis/common/inc.extension.php';
-require_once dirname(__FILE__) . '/../includes/common.php';
-require_once INCLUDES_PATH.'/simpletest/autorun.php';
-
-if(!defined("LOGIN")){
-	define("LOGIN", "generis", true);
-}
-/**
-* @constant password for the module you wish to connect to 
-*/
-if(!defined("PASS")){
-	define("PASS", "g3n3r1s", true);
-}
-/**
-* @constant module for the module you wish to connect to 
-*/
-if(!defined("MODULE")){
-	define("MODULE", "tao", true);
-}
-
-error_reporting(E_ALL);
+require_once dirname(__FILE__) . '/../../tao/test/TestRunner.php';
+require_once dirname(__FILE__) . '/../includes/constants.php';
 
 class ProcessAuthoringServiceTestCase extends UnitTestCase {
 	
 	
 	protected $authoringService = null;
 	protected $proc = null;
-	protected $apiModel = null;
 	
 	/**
 	 * tests initialization
 	 */
 	public function setUp(){
-		// TestRunner::initTest();
-		$this->apiModel = core_kernel_impl_ApiModelOO::singleton();
-		$this->apiModel->logIn(LOGIN,md5(PASS),DATABASE_NAME,true);
+		TestRunner::initTest();
+		
 		$processDefinitionClass = new core_kernel_classes_Class(CLASS_PROCESS);
 		$processDefinition = $processDefinitionClass->createInstance('processForUnitTest','created for the unit test of process authoring service');
 		if($processDefinition instanceof core_kernel_classes_Resource){
