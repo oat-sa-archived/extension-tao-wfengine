@@ -3,14 +3,7 @@
 error_reporting(E_ALL);
 
 /**
- * Generis Object Oriented API - wfEngine/models/classes/class.UserService.php
- *
- * $Id$
- *
- * This file is part of Generis Object Oriented API.
- *
- * Automatically generated on 11.06.2010, 10:49:49 with ArgoUML PHP module 
- * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
+ * Manage the user in the workflow engine
  *
  * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
  * @package wfEngine
@@ -37,7 +30,7 @@ require_once('tao/models/classes/class.UserService.php');
 // section 127-0-1-1-951b66:128b0d3ece8:-8000:0000000000001F53-constants end
 
 /**
- * Short description of class wfEngine_models_classes_UserService
+ * Manage the user in the workflow engine
  *
  * @access public
  * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
@@ -55,7 +48,7 @@ class wfEngine_models_classes_UserService
     // --- OPERATIONS ---
 
     /**
-     * Short description of method initRoles
+     * initialize the roles
      *
      * @access public
      * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
@@ -71,7 +64,7 @@ class wfEngine_models_classes_UserService
     }
 
     /**
-     * Short description of method loginUser
+     * login a user
      *
      * @access public
      * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
@@ -117,8 +110,6 @@ class wfEngine_models_classes_UserService
 						$_SESSION['taoqual.userId']				= $login;
 						
 						$returnValue = true;
-						
-						// $this->feedAllowedRoles();
 					}
 	        	}
         	}
@@ -130,7 +121,7 @@ class wfEngine_models_classes_UserService
     }
 
     /**
-     * Short description of method getAllUsers
+     * get all the users
      *
      * @access public
      * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
@@ -158,7 +149,7 @@ class wfEngine_models_classes_UserService
     }
 
     /**
-     * Short description of method saveUser
+     * save a user (the role is managed in addition)
      *
      * @access public
      * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
@@ -211,7 +202,7 @@ class wfEngine_models_classes_UserService
     }
 
     /**
-     * Short description of method toTree
+     * method to format the data
      *
      * @access public
      * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>

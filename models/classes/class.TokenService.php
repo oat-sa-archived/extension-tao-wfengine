@@ -137,7 +137,8 @@ class wfEngine_models_classes_TokenService
     }
 
     /**
-     * Short description of method getTokens
+     * Get the tokens of the activity execution in parameter 
+     * (set checkUser to false in case you want the tokens independant of the
      *
      * @access public
      * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
@@ -181,7 +182,7 @@ class wfEngine_models_classes_TokenService
     }
 
     /**
-     * Short description of method getCurrent
+     * get the token for this execution
      *
      * @access public
      * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
@@ -208,7 +209,7 @@ class wfEngine_models_classes_TokenService
     }
 
     /**
-     * Short description of method getCurrents
+     * get the current tokens of this process (their position in the process)
      *
      * @access public
      * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
@@ -234,7 +235,7 @@ class wfEngine_models_classes_TokenService
     }
 
     /**
-     * Short description of method getCurrentActivities
+     * Get the current activities in the process
      *
      * @access public
      * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
@@ -283,7 +284,7 @@ class wfEngine_models_classes_TokenService
     }
 
     /**
-     * Short description of method setCurrents
+     * set the current tokens
      *
      * @access public
      * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
@@ -299,19 +300,6 @@ class wfEngine_models_classes_TokenService
 	    	if(!is_array($tokens) && !empty($tokens)){
 	    		$tokens = array($tokens);
 	    	}
-	    	/*$currentTokens = array();
-    		 foreach($tokens as $token){
-    		 	if($token instanceof core_kernel_classes_Resource){
-    		 		$currentTokens[] = $token->uriResource;
-    		 	}
-    		 }
-    		 $tokens = array();
-    		 if(Session::hasAttribute(self::CURRENT_KEY)){
-    		 	$tokens = Session::getAttribute(self::CURRENT_KEY);
-    		 }
-    		 $tokens[$processExecution->uriResource] = $currentTokens;
-    		 Session::setAttribute(self::CURRENT_KEY, $tokens);*/
-    		// $processExecution->removePropertyValues($this->currentTokenProp);
     		foreach($tokens as $token){
     			$processExecution->setPropertyValue($this->currentTokenProp, $token->uriResource);
     		}
@@ -321,7 +309,7 @@ class wfEngine_models_classes_TokenService
     }
 
     /**
-     * Short description of method setCurrentActivities
+     * set the current activities
      *
      * @access public
      * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
@@ -354,12 +342,13 @@ class wfEngine_models_classes_TokenService
     }
 
     /**
-     * Short description of method getVariables
+     * get the variables in that token
      *
      * @access protected
      * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
      * @param  Resource token
      * @return array
+     * @see wfEngine_models_classes_VariableService
      */
     protected function getVariables( core_kernel_classes_Resource $token)
     {
@@ -394,7 +383,7 @@ class wfEngine_models_classes_TokenService
     }
 
     /**
-     * Short description of method create
+     * Create a new token for an activity
      *
      * @access public
      * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
@@ -418,7 +407,7 @@ class wfEngine_models_classes_TokenService
     }
 
     /**
-     * Short description of method assign
+     * Assign a newly created token to an execution
      *
      * @access public
      * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
@@ -447,10 +436,6 @@ class wfEngine_models_classes_TokenService
         	
         	$token->setPropertyValue($this->tokenActivityExecutionProp, $activityExecution->uriResource);
         
-        	/*error_reporting(E_ALL);
-        	var_dump($token, $activityExecution,$user, $activity);exit;
-        	*/
-        	//echo "Assign token ".$returnValue->getLabel()." to user ".$user->getLabel()." and activity execution of ".$activity->getLabel()."<br>";
         }
         $returnValue = $token;
         
@@ -503,7 +488,7 @@ class wfEngine_models_classes_TokenService
     }
 
     /**
-     * Short description of method duplicate
+     * Clone a token (and it's variables)
      *
      * @access public
      * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
@@ -539,7 +524,7 @@ class wfEngine_models_classes_TokenService
     }
 
     /**
-     * Short description of method merge
+     * Merge somes tokens (and their variables)
      *
      * @access public
      * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
@@ -634,7 +619,7 @@ class wfEngine_models_classes_TokenService
     }
 
     /**
-     * Short description of method delete
+     * Remove a token
      *
      * @access public
      * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
@@ -669,7 +654,7 @@ class wfEngine_models_classes_TokenService
     }
 
     /**
-     * Short description of method move
+     * move the tokens throught the activities during a transition
      *
      * @access public
      * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
@@ -716,7 +701,6 @@ class wfEngine_models_classes_TokenService
 		        	}
         			
         			if(count($tokens) == 0){
-        				//var_dump($previousActivities, $nextActivities, $connector, $tokens);
         				throw new Exception("No token found for that user");
         			}
         			if(count($tokens) > 1){
@@ -775,18 +759,6 @@ class wfEngine_models_classes_TokenService
         				throw new Exception("Too many next activities, only one is required after a join connector");
         			}
         			$nextActivity = $nextActivities[0];
-        			
-        			//var_dump($nextActivity, $connector);exit;
-        			
-        			//get the tokens on the previous activity
-		        	// $tokens = array();
-		        	// foreach($previousActivities->getIterator() as $previousActivity){
-						// $previousActivity
-		        		// $previousActivityExecution = $activityExecutionService->getExecution($previousActivity, $user, $processExecution);
-						
-						// $tokens = array_merge($tokens, $this->getTokens($previousActivityExecution, false));
-						
-		        	// }
         			
 					$activityResourceArray = array();
 					$tokens = array();

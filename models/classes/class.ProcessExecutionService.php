@@ -3,14 +3,7 @@
 error_reporting(E_ALL);
 
 /**
- * Generis Object Oriented API -
- *
- * $Id$
- *
- * This file is part of Generis Object Oriented API.
- *
- * Automatically generated on 11.06.2010, 11:24:32 with ArgoUML PHP module 
- * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
+ * Manage the particular executions of a process definition
  *
  * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
  * @package wfEngine
@@ -38,7 +31,7 @@ require_once('tao/models/classes/class.Service.php');
 // section 127-0-1-1--2bba7ca5:129262ff3bb:-8000:0000000000001FE7-constants end
 
 /**
- * Short description of class wfEngine_models_classes_ProcessExecutionService
+ * Manage the particular executions of a process definition
  *
  * @access public
  * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
@@ -56,7 +49,7 @@ class wfEngine_models_classes_ProcessExecutionService
     // --- OPERATIONS ---
 
     /**
-     * Short description of method checkAcl
+     * Check the ACL of a user for the given process
      *
      * @access public
      * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
@@ -119,7 +112,7 @@ class wfEngine_models_classes_ProcessExecutionService
     }
 
     /**
-     * Short description of method initCurrentExecution
+     * Initialize the current process execution
      *
      * @access public
      * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>

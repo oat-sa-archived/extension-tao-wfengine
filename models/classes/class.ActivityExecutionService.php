@@ -127,7 +127,7 @@ class wfEngine_models_classes_ActivityExecutionService
     }
 
     /**
-     * Short description of method getExecution
+     * get the execution of this activity for the user
      *
      * @access public
      * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
@@ -169,7 +169,7 @@ class wfEngine_models_classes_ActivityExecutionService
     }
 
     /**
-     * Short description of method getExecutions
+     * get the executions of this activity
      *
      * @access public
      * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
@@ -206,7 +206,7 @@ class wfEngine_models_classes_ActivityExecutionService
     }
 
     /**
-     * Short description of method initExecution
+     * initialize the exectuion of that activity by the currentUser
      *
      * @access public
      * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
@@ -288,13 +288,7 @@ class wfEngine_models_classes_ActivityExecutionService
 	        		
 	        		if($mode->uriResource == INSTANCE_ACL_ROLE_RESTRICTED_USER){
 	        			if(is_null($activity->getOnePropertyValue($restrictedUserProp))){
-		        			
-	        			//	echo "bind activity ". $activity->getLabel()." to ".$currentUser->getLabel()."<br>";
-	        				
 	        				$activity->setPropertyValue($restrictedUserProp, $currentUser->uriResource);
-	        			}
-	        			else{
-	        				var_dump($activity->getOnePropertyValue($restrictedUserProp));
 	        			}
 	        		}
 	        	}
@@ -459,7 +453,7 @@ class wfEngine_models_classes_ActivityExecutionService
     }
 
     /**
-     * Short description of method getEstimatedExecutionCount
+     * Get the estimated number of execution of this activity
      *
      * @access public
      * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>

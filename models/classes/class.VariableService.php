@@ -3,14 +3,7 @@
 error_reporting(E_ALL);
 
 /**
- * Generis Object Oriented API -
- *
- * $Id$
- *
- * This file is part of Generis Object Oriented API.
- *
- * Automatically generated on 18.06.2010, 11:47:07 with ArgoUML PHP module 
- * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
+ * Enable you to manage the process variables
  *
  * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
  * @package wfEngine
@@ -41,7 +34,7 @@ include_once(dirname(__FILE__).'../../../includes/constants.php');
 // section -87--2--3--76--7eb229c2:12916be1ece:-8000:0000000000003C05-constants end
 
 /**
- * Short description of class wfEngine_models_classes_VariableService
+ * Enable you to manage the process variables
  *
  * @access public
  * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
@@ -59,7 +52,7 @@ class wfEngine_models_classes_VariableService
     // --- OPERATIONS ---
 
     /**
-     * Short description of method save
+     * save a list of process variable by key/value pair
      *
      * @access public
      * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
@@ -105,14 +98,14 @@ class wfEngine_models_classes_VariableService
     }
 
     /**
-     * Short description of method remove
+     * Remove the variables in parameter (list the keys)
      *
      * @access public
      * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
      * @param  mixed params
      * @return boolean
      */
-    public function remove($params)
+    public function remove( mixed $params)
     {
         $returnValue = (bool) false;
 
@@ -139,7 +132,6 @@ class wfEngine_models_classes_VariableService
 						if(!$collection->isEmpty()){
 							if($collection->count() == 1) {
 								$property = new core_kernel_classes_Property($collection->get(0)->uriResource);
-								// $apiModel->removeStatement($subjectCollection->get(0)->uriResource, $property->uriResource, $object->uriResource, '');
 								
 								$returnValue &= $token->removePropertyValues($property);
 								$oldVar = array_diff($oldVar,array($param));
@@ -157,7 +149,7 @@ class wfEngine_models_classes_VariableService
     }
 
     /**
-     * Short description of method get
+     * get the variable matching the key
      *
      * @access public
      * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
@@ -201,7 +193,7 @@ class wfEngine_models_classes_VariableService
     }
 
     /**
-     * Short description of method getAll
+     * Get all the v ariables
      *
      * @access public
      * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
@@ -247,7 +239,7 @@ class wfEngine_models_classes_VariableService
     }
 
     /**
-     * Short description of method push
+     * add a variable (different of save in case of multiple values)
      *
      * @access public
      * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
