@@ -84,7 +84,6 @@ class Role extends TaoModule {
 	
 	/**
 	 * Edit a group instance
-	 * @see tao_helpers_form_GenerisFormFactory::instanceEditor
 	 * @return void
 	 */
 	public function editRole(){

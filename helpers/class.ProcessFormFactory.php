@@ -47,6 +47,11 @@ class wfEngine_helpers_ProcessFormFactory extends tao_helpers_form_GenerisFormFa
      */
     const DEFAULT_TOP_LEVEL_CLASS = 'http://www.tao.lu/Ontologies/generis.rdf#generis_Ressource';
 	
+    /**
+     * @var array
+     */
+    protected static $forms = array();
+    
 	/**
      * Create a form from a class of your ontology, the form data comes from the
      * The default rendering is in xhtml
