@@ -327,9 +327,6 @@ class wfEngine_models_classes_ProcessAuthoringService
 		
 		$apiModel = core_kernel_impl_ApiModelOO::singleton();
 		
-		
-		
-		
 		//delete related connector
 		$connectorCollection = $apiModel->getSubject(PROPERTY_CONNECTORS_ACTIVITYREFERENCE , $activity->uriResource);
 		foreach($connectorCollection->getIterator() as $connector){
@@ -712,7 +709,7 @@ class wfEngine_models_classes_ProcessAuthoringService
 		if(!$processCollection->isEmpty()){
 			$followingActivity = $this->createActivity($processCollection->get(0), $newActivityLabel);
 			//warning: a connector is created at the same time of the activity:
-			$newConnector = $this->createConnector($followingActivity);
+			// $newConnector = $this->createConnector($followingActivity);//no longer used
 		}else{
 			throw new Exception("no related process instance found to create an activity");
 		}
@@ -1083,7 +1080,7 @@ class wfEngine_models_classes_ProcessAuthoringService
 				$processCollection = core_kernel_impl_ApiModelOO::getSubject(PROPERTY_PROCESS_ACTIVITIES, $relatedActivity->uriResource);
 				if(!$processCollection->isEmpty()){
 					$followingActivity = $this->createActivity($processCollection->get(0), $newActivityLabel);
-					$newConnector = $this->createConnector($followingActivity);
+					// $newConnector = $this->createConnector($followingActivity);
 				}else{
 					throw new Exception("no related process instance found to create an activity");
 				}

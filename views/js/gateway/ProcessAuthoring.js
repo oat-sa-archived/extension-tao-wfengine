@@ -44,3 +44,24 @@ GatewayProcessAuthoring.addInteractiveService = function(url, activityUri, servi
 	});
 	
 }
+
+GatewayProcessAuthoring.addConnector = function(url, prevActivityUri,typeOfConnector){
+	
+	// prevActivityUri of either a connector or an activity
+	
+	$.ajax({
+		url: url,
+		type: "POST",
+		data: {"uri": prevActivityUri, "type":typeOfConnector},
+		dataType: 'json',
+		success: function(response){
+			// console.log(response);
+			if (response.uri) {
+				EventMgr.trigger('connectorAdded', response);
+			}else{
+				console.log('error in adding a connector');
+			}
+		}
+	});
+	
+}

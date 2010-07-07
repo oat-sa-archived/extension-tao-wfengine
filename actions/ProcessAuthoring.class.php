@@ -77,6 +77,21 @@ class ProcessAuthoring extends TaoModule {
 		return $instance;
 	}
 	
+	protected function getCurrentConnector(){
+		$uri = tao_helpers_Uri::decode($this->getRequestParameter('connectorUri'));
+		if(is_null($uri) || empty($uri)){
+			throw new Exception("No valid activity uri found");
+		}
+		
+		$instance = $this->service->getInstance($uri, 'uri', new core_kernel_classes_Class(CLASS_CONNECTORS));
+		if(is_null($instance)){
+			//var_dump($uri, $instance);
+			throw new Exception("No instance of the class Connectors found for the uri {$uri}");
+		}
+		
+		return $instance;
+	}
+	
 	protected function getCurrentProcess(){
 		$uri = tao_helpers_Uri::decode($this->getRequestParameter('processUri'));
 		if(is_null($uri) || empty($uri)){
@@ -145,14 +160,26 @@ class ProcessAuthoring extends TaoModule {
 	}
 	
 	public function getActivities(){
-		//getCurrentProcess from delivery
-		
-		// $processUri = tao_helpers_Uri::decode($_POST["processUri"]);
-		// $processUri = "http://127.0.0.1/middleware/demo.rdf#i1265636054002217400";
 		$currentProcess = null;
 		$currentProcess = $this->getCurrentProcess();
 		if(!empty($currentProcess)){
-			echo json_encode($this->processTreeService->activityTree($currentProcess));
+			$activityData = $this->processTreeService->activityTree($currentProcess);
+			$_POST["diagramData"] = true;
+			if(isset($_POST["diagramData"])){
+				if($_POST["diagramData"]) {
+					$diagramData = $currentProcess->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_PROCESS_DIAGRAMDATA));//should get a literal
+					if(is_null($diagramData)){//TODO: use getUniqueProperty instead and remove the following lines
+						//no position data set: return empty array:
+						$diagramData = json_encode(array(
+							"arrowData" => array(),
+							"positionData" => array()
+						));
+					}
+					
+					$activityData["diagramData"] = json_decode($diagramData);
+				}
+			}
+			echo json_encode($activityData);
 		}else{
 			throw new Exception("no process uri found");
 		}
@@ -173,11 +200,12 @@ class ProcessAuthoring extends TaoModule {
 		
 		$currentProcess = $this->getCurrentProcess();
 		$newActivity = $this->service->createActivity($currentProcess, $label);
-		$newConnector = $this->service->createConnector($newActivity);
+		// $newConnector = $this->service->createConnector($newActivity);
 		
 		//attach the created activity to the process
 		if(!is_null($newActivity) && $newActivity instanceof core_kernel_classes_Resource){
 			$class = 'node-activity';
+			$class .= ' node-activity-last';//now that the connector is not build at the same time as a new activity, the default, build activity is a final one:
 			if($newActivity->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_ACTIVITIES_ISINITIAL))->uriResource == GENERIS_TRUE){
 				//just set the first activity as a such
 				$class .= ' node-activity-initial';
@@ -186,7 +214,7 @@ class ProcessAuthoring extends TaoModule {
 			echo json_encode(array(
 				'label'	=> $newActivity->getLabel(),
 				'uri' 	=> tao_helpers_Uri::encode($newActivity->uriResource),
-				'connector' => $this->processTreeService->defaultConnectorNode($newConnector),
+				// 'connector' => $this->processTreeService->defaultConnectorNode($newConnector),
 				'class' => $class
 			));
 		}
@@ -1297,6 +1325,81 @@ class ProcessAuthoring extends TaoModule {
 		}
 		
 		echo json_encode(array('created' => $created));
+	}
+	
+	public function addConnector(){
+		
+		//get activity or connector:
+		$activityOrConnector = null;
+		
+		$activityOrConnectorUri = tao_helpers_Uri::decode($this->getRequestParameter('uri'));
+		$created = false;
+		if(!empty($activityOrConnectorUri)){
+			$activityOrConnector = new core_kernel_classes_Resource($activityOrConnectorUri);
+			if(!wfEngine_models_classes_ProcessAuthoringService::isActivity($activityOrConnector)
+			&& !wfEngine_models_classes_ProcessAuthoringService::isConnector($activityOrConnector)){
+				
+				throw new Exception('no activity nor connector uri found to create a connector');
+			
+			}else{
+				$connector = $this->service->createConnector($activityOrConnector);
+				if(!is_null($connector) && $connector instanceof core_kernel_classes_Resource){
+					$created = true;
+					
+					$typeOfConnector = '';
+					if(!empty($_POST['type'])){
+						switch($_POST['type']){
+							case 'sequence':{
+								$typeOfConnectorUri = INSTANCE_TYPEOFCONNECTORS_SEQUENCE;
+								$typeOfConnector = 'sequence';
+								break;
+							}
+							case 'conditional':{
+								$typeOfConnectorUri = INSTANCE_TYPEOFCONNECTORS_SPLIT;
+								$typeOfConnector = 'conditional';
+								break;
+							}
+							case 'parallel':{
+								$typeOfConnectorUri = INSTANCE_TYPEOFCONNECTORS_PARALLEL;
+								$typeOfConnector = 'parallel';
+								break;
+							}
+							case 'join':{
+								$typeOfConnectorUri = INSTANCE_TYPEOFCONNECTORS_JOIN;
+								$typeOfConnector = 'join';
+								break;
+							}
+							default:{
+								
+							}
+						}
+						
+						if(!empty($typeOfConnector)){
+							//means that the type of connector has been recognized:
+							$this->service->setConnectorType($connector, new core_kernel_classes_Resource($typeOfConnectorUri));
+						}
+					}
+						
+					echo json_encode(array(
+						'created' => $created,
+						'label'	=> $connector->getLabel(),
+						'uri' 	=> tao_helpers_Uri::encode($connector->uriResource),
+						'type' => $typeOfConnector,
+						'previousActivityUri' => tao_helpers_Uri::encode($activityOrConnector->uriResource),
+						'previousIsActivity' => wfEngine_models_classes_ProcessAuthoringService::isActivity($activityOrConnector)
+					));
+					return $created;
+				}
+			}
+		}
+				echo json_encode(array('created' => $created));
+		return $created;
+	}
+	
+	public function saveDiagram(){
+		$process = $this->getCurrentProcess();
+		$saved = $process->editPropertyValues(new core_kernel_classes_Property(PROPERTY_PROCESS_DIAGRAMDATA), $_POST['data']);
+		echo json_encode(array('ok'=>$saved));
 	}
 	
 	/*
