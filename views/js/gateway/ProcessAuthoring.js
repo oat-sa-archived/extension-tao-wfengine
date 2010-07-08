@@ -65,3 +65,27 @@ GatewayProcessAuthoring.addConnector = function(url, prevActivityUri,typeOfConne
 	});
 	
 }
+
+GatewayProcessAuthoring.saveActivityProperties = function(url, activityUri, serializedProperties){
+	
+	// prevActivityUri of either a connector or an activity
+	var data = '';
+	data += 'activityUri='+activityUri;
+	data += '&' + serializedProperties;
+	
+	$.ajax({
+		url: url,
+		type: "POST",
+		data: data,
+		dataType: 'json',
+		success: function(response){
+			if (response.saved) {
+				EventMgr.trigger('activityPropertiesSaved', response);
+			}else{
+				// console.log(response);
+				throw 'error in saving activity properties';
+			}
+		}
+	});
+	
+}

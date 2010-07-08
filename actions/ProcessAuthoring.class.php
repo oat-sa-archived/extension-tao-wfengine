@@ -356,6 +356,7 @@ class ProcessAuthoring extends TaoModule {
 			'http://www.tao.lu/middleware/Interview.rdf#i122354397139712'
 		);
 		
+		$this->setData('newLabel', '');
 		$this->setData('saved', false);
 		$this->setData('sectionName', 'activity');
 		
@@ -371,6 +372,7 @@ class ProcessAuthoring extends TaoModule {
 				if($this->saveActivityProperty($properties)){
 					//replace with a clean template upload
 					$this->setData('saved', true);
+					$this->setData('newLabel', $activity->getLabel());
 				}
 				$this->setView('process_form_property.tpl');
 				return;
@@ -386,6 +388,7 @@ class ProcessAuthoring extends TaoModule {
 	
 		$activity = $this->getCurrentActivity();
 		
+		$ajaxReturn = array();
 		$saved = true;
 		
 		$properties = array();
@@ -403,6 +406,7 @@ class ProcessAuthoring extends TaoModule {
 		//set label:
 		if(isset($properties[RDFS_LABEL])){
 			$activity->setLabel($properties[RDFS_LABEL]);
+			$ajaxReturn[tao_helpers_Uri::encode(RDFS_LABEL)] = $properties[RDFS_LABEL];
 		}
 		
 		//set role:
@@ -448,6 +452,12 @@ class ProcessAuthoring extends TaoModule {
 				}
 			}
 		}
+		
+		$ajaxReturn['saved'] = $saved;
+		if(isset($properties['ajaxReturn'])){
+			echo json_encode($ajaxReturn);
+		}
+		
 		return $saved;
 	}
 	
