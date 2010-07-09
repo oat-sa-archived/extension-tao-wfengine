@@ -1062,6 +1062,7 @@ class ProcessAuthoring extends TaoModule {
 					$this->service->deleteConnectorNextActivity($connectorInstance, 'else');
 				}
 			}
+		
 		}elseif($data[PROPERTY_CONNECTORS_TYPE] == INSTANCE_TYPEOFCONNECTORS_PARALLEL){
 			
 			$newActivityArray = array();
@@ -1380,6 +1381,7 @@ class ProcessAuthoring extends TaoModule {
 								break;
 							}
 							default:{
+								//SEt the default connector type as sequence
 								$typeOfConnectorUri = INSTANCE_TYPEOFCONNECTORS_SEQUENCE;
 								$typeOfConnector = 'sequence';
 							}

@@ -111,7 +111,11 @@ class wfEngine_models_classes_ProcessTreeService
 			$last = false;
 			
 			$activityData = array();
-			$activityData = $this->activityNode($activity, 'next', false);
+			$activityData = $this->activityNode(
+				$activity,
+				'next',
+				false
+			);//default value will do
 			
 			//set property node:
 			$activityData['children'][] = array(
@@ -376,7 +380,7 @@ class wfEngine_models_classes_ProcessTreeService
 	 * @param boolean recursive
      * @return array
      */
-	public function connectorNode(core_kernel_classes_Resource $connector, $nodeClass='', $recursive=false){//put the current activity as a protected property of the class Process aythoring Tree
+	public function connectorNode(core_kernel_classes_Resource $connector, $nodeClass='', $recursive=false, $portInfo=array()){//put the current activity as a protected property of the class Process aythoring Tree
 		
 		$returnValue = array();
 		$connectorData = array();
@@ -401,38 +405,48 @@ class wfEngine_models_classes_ProcessTreeService
 				//get the "THEN"
 				$then = $connectorRule->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_TRANSITIONRULES_THEN), false);
 				if(!is_null($then)){
+					$portData = array(
+						'id' => 0,
+						'label' => 'then',
+						'multiplicity' => 1
+					);
 					if(wfEngine_models_classes_ProcessAuthoringService::isConnector($then)){
 						$connectorActivityReference = $then->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_ACTIVITYREFERENCE))->uriResource;
 						if( ($connectorActivityReference == $this->currentActivity->uriResource) && !in_array($then->uriResource, $this->addedConnectors) ){
 							if($recursive){
-								$connectorData[] = $this->connectorNode($then, 'then', true);
+								$connectorData[] = $this->connectorNode($then, 'then', true, $portData);
 							}else{
-								$connectorData[] = $this->activityNode($then, 'then', false);
+								$connectorData[] = $this->activityNode($then, 'then', false, $portData);
 							}
 						}else{
-							$connectorData[] = $this->activityNode($then, 'then', true);
+							$connectorData[] = $this->activityNode($then, 'then', true, $portData);
 						}
 					}else{
-						$connectorData[] = $this->activityNode($then, 'then', true);
+						$connectorData[] = $this->activityNode($then, 'then', true, $portData);
 					}
 				}
 				
 				//same for the "ELSE"
 				$else = $connectorRule->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_TRANSITIONRULES_ELSE), false);
 				if(!is_null($else)){
+					$portData = array(
+						'id' => 1,
+						'label' => 'else',
+						'multiplicity' => 1
+					);
 					if(wfEngine_models_classes_ProcessAuthoringService::isConnector($else)){
 						$connectorActivityReference = $else->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_ACTIVITYREFERENCE))->uriResource;
 						if( ($connectorActivityReference == $this->currentActivity->uriResource) && !in_array($else->uriResource, $this->addedConnectors) ){
 							if($recursive){
-								$connectorData[] = $this->connectorNode($else, 'else', true);
+								$connectorData[] = $this->connectorNode($else, 'else', true, $portData);
 							}else{
-								$connectorData[] = $this->activityNode($else, 'else', false);
+								$connectorData[] = $this->activityNode($else, 'else', false, $portData);
 							}
 						}else{
-							$connectorData[] = $this->activityNode($else, 'else', true);
+							$connectorData[] = $this->activityNode($else, 'else', true, $portData);
 						}
 					}else{
-						$connectorData[] = $this->activityNode($else, 'else', true);
+						$connectorData[] = $this->activityNode($else, 'else', true, $portData);
 					}
 				}
 			}
@@ -440,7 +454,7 @@ class wfEngine_models_classes_ProcessTreeService
 			$next = $connector->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_NEXTACTIVITIES), false);
 			
 			if(!is_null($next)){
-				$connectorData[] = $this->activityNode($next, 'next', true);
+				$connectorData[] = $this->activityNode($next, 'next', true);//the default portData array will do
 			}
 		}elseif($connectorType->uriResource == INSTANCE_TYPEOFCONNECTORS_PARALLEL){
 			$nextActivitiesCollection = $connector->getPropertyValuesCollection(new core_kernel_classes_Property(PROPERTY_CONNECTORS_NEXTACTIVITIES));
@@ -457,30 +471,65 @@ class wfEngine_models_classes_ProcessTreeService
 				}
 			}
 			
+			$portId = 0;
 			foreach($activityCount as $activityUri=>$number){
 				
-				$connectorData[] = $this->activityNode(new core_kernel_classes_Resource($activityUri), 'next', true, "(count: $number)");
+				$activity = new core_kernel_classes_Resource($activityUri);
+				$connectorData[] = $this->activityNode(
+					$activity,
+					'next',
+					true,
+					array(
+						'id' => $portId,
+						'multiplicity' => $number,
+						'label' => $activity->getLabel()
+					),
+					"(count: $number)"
+				);
+				$portId ++;
 			}
+			
+			//add one extra one, which is empty:
+			
 			
 		}elseif($connectorType->uriResource == INSTANCE_TYPEOFCONNECTORS_JOIN){
 			$next = $connector->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_NEXTACTIVITIES), false);
 			
 			if(!is_null($next)){
-				$connectorData[] = $this->activityNode($next, 'next', true);
+				$connectorData[] = $this->activityNode($next, 'next', true);//the default portData array will do
 			}
 		}else{
 			throw new Exception("unknown connector type: {$connectorType->getLabel()} for connector {$connector->uriResource}");
 		}
-					
+		
+		if(empty($portInfo)){
+			$portInfo = array(
+				'id' => 0,
+				'label' => 'next',
+				'multiplicity' => 1,
+			);
+		}else{
+			if(!isset($portInfo['id'])){
+				$portInfo['id'] = 0;
+			}
+			if(!isset($portInfo['id'])){
+				$portInfo['label'] = 'next';
+			}
+			if(!isset($portInfo['id'])){
+				$portInfo['multiplicity'] = 1;
+			}
+		}
+		
 		//add to data
 		$returnValue = array(
 			'data' => $connectorType->getLabel().":".$connector->getLabel(),
 			'attributes' => array(
 				'id' => tao_helpers_Uri::encode($connector->uriResource),
-				'class' => 'node-connector',
+				'class' => 'node-connector'
 			),
-			'type'=>$connectorType->getLabel(),
-			'port'=>$nodeClass
+			'type' => $connectorType->getLabel(),
+			'port' => $nodeClass,
+			'portData' => $portInfo
 		);
 		$returnValue = self::addNodePrefix($returnValue, $nodeClass);
 		
@@ -600,7 +649,7 @@ class wfEngine_models_classes_ProcessTreeService
 	 * @param boolean goto
      * @return array
      */
-	public function activityNode(core_kernel_classes_Resource $activity, $nodeClass='', $goto=false, $labelSuffix=''){
+	public function activityNode(core_kernel_classes_Resource $activity, $nodeClass='', $goto=false, $portInfo=array(), $labelSuffix=''){
 		$nodeData = array();
 		$class = '';
 		$linkAttribute = 'id';
@@ -617,16 +666,37 @@ class wfEngine_models_classes_ProcessTreeService
 			$class .= "-goto";
 			$linkAttribute = "rel";
 		}
-				
+		
+		if(empty($portInfo)){
+			$portInfo = array(
+				'id' => 0,
+				'label' => 'next',
+				'multiplicity' => 1,
+			);
+		}else{
+			if(!isset($portInfo['id'])){
+				$portInfo['id'] = 0;
+			}
+			if(!isset($portInfo['id'])){
+				$portInfo['label'] = 'next';
+			}
+			if(!isset($portInfo['id'])){
+				$portInfo['multiplicity'] = 1;
+			}
+		}
+		
 		$nodeData = array(
 			'data' => $activity->getLabel().' '.$labelSuffix,
 			'attributes' => array(
 				$linkAttribute => tao_helpers_Uri::encode($activity->uriResource),
 				'class' => $class
 			),
-			'port'=>$nodeClass
+			'port' => $nodeClass,
+			'portData' => $portInfo
 		);
+		
 		$nodeData = self::addNodePrefix($nodeData, $nodeClass);
+		
 		return $nodeData;
 	}
 	
