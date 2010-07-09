@@ -1380,7 +1380,8 @@ class ProcessAuthoring extends TaoModule {
 								break;
 							}
 							default:{
-								
+								$typeOfConnectorUri = INSTANCE_TYPEOFCONNECTORS_SEQUENCE;
+								$typeOfConnector = 'sequence';
 							}
 						}
 						
@@ -1388,6 +1389,12 @@ class ProcessAuthoring extends TaoModule {
 							//means that the type of connector has been recognized:
 							$this->service->setConnectorType($connector, new core_kernel_classes_Resource($typeOfConnectorUri));
 						}
+					}else{
+						//set the default connector type as sequential:
+						$typeOfConnectorUri = INSTANCE_TYPEOFCONNECTORS_SEQUENCE;
+						$typeOfConnector = 'sequence';
+						$this->service->setConnectorType($connector, new core_kernel_classes_Resource($typeOfConnectorUri));
+						
 					}
 						
 					echo json_encode(array(

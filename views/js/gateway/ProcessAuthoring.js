@@ -89,3 +89,41 @@ GatewayProcessAuthoring.saveActivityProperties = function(url, activityUri, seri
 	});
 	
 }
+
+GatewayProcessAuthoring.deleteActivity = function(url, activityUri){
+	if(confirm(__("Please confirm the deletion of the activity"))){
+		$.ajax({
+			url: url,
+			type: "POST",
+			data: {"activityUri": activityUri},
+			dataType: 'json',
+			success: function(response){
+				if(response.deleted){
+					EventMgr.trigger('activityDeleted', response);
+				}else{
+					// console.log(response);
+					throw 'error in deleteing the activity';
+				}
+			}
+		});
+	}
+}
+
+GatewayProcessAuthoring.deleteConnector = function(url, connectorUri){
+	
+	$.ajax({
+		url: url,
+		type: "POST",
+		data: {"connectorUri": connectorUri},
+		dataType: 'json',
+		success: function(response){
+			if(response.deleted){
+				EventMgr.trigger('connectorDeleted', response);
+			}else{
+				// console.log(response);
+				throw 'error in deleteing the connector';
+			}
+		}
+	});
+	
+}
