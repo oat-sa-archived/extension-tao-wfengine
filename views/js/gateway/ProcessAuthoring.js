@@ -69,6 +69,10 @@ GatewayProcessAuthoring.addConnector = function(url, prevActivityUri,typeOfConne
 GatewayProcessAuthoring.saveActivityProperties = function(url, activityUri, serializedProperties){
 	
 	// prevActivityUri of either a connector or an activity
+	if(serializedProperties.substr(0,1) == '&'){
+		serializedProperties = serializedProperties.substr(1);
+	}
+	
 	var data = '';
 	data += 'activityUri='+activityUri;
 	data += '&' + serializedProperties;
@@ -122,6 +126,33 @@ GatewayProcessAuthoring.deleteConnector = function(url, connectorUri){
 			}else{
 				// console.log(response);
 				throw 'error in deleteing the connector';
+			}
+		}
+	});
+	
+}
+
+GatewayProcessAuthoring.saveConnector = function(url, connectorUri, prevActivityUri, serializedProperties){
+	if(serializedProperties.substr(0,1) == '&'){
+		serializedProperties = serializedProperties.substr(1);
+	}
+	
+	var data = '';
+	data += 'connectorUri=' + connectorUri;
+	data += '&activityUri=' + prevActivityUri;
+	data += '&' + serializedProperties;
+	
+	$.ajax({
+		url: url,
+		type: "POST",
+		data: data,
+		dataType: 'json',
+		success: function(response){
+			if (response.saved) {
+				EventMgr.trigger('connectorSaved', response);
+			}else{
+				// console.log(response);
+				throw 'error in saving connector';
 			}
 		}
 	});

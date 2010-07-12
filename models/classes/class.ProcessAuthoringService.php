@@ -418,7 +418,7 @@ class wfEngine_models_classes_ProcessAuthoringService
 				//delete the related rule:
 				$relatedRule = $connector->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_TRANSITIONRULE));
 				if(!is_null($relatedRule)){
-					$this->deleteRule($relatedRule);//warning: do not do this for a join connector
+					$this->deleteRule($relatedRule);
 				}
 			}
 		}
