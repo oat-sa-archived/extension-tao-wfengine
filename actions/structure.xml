@@ -2,7 +2,7 @@
 <!DOCTYPE extension SYSTEM "../../tao/doc/structure.dtd">
 <extension name="Processes" url="/wfEngine/Process/index" level="6">
 	<sections>
-		<section id="manage_process" name="Manage Process" url="/wfEngine/Process/index">
+		<section id="manage_process" name="Manage processes" url="/wfEngine/Process/index">
 			<trees>
 				<tree name="Process library" 
 					dataUrl="/wfEngine/Process/getOntologyData" 
@@ -14,21 +14,17 @@
 			</trees>
 			<actions>
 				<action name="search" url="/wfEngine/Process/search" context="*" />
-				<!--<action name="new class" js="GenerisAction.subClass" url="/wfEngine/Process/addProcessClass" context="class" />-->
 				<action name="new process" js="GenerisAction.instanciate" url="/wfEngine/Process/addInstance" context="class" />
 				<action name="delete" js="GenerisAction.removeNode" url="/wfEngine/Process/delete" context="resource" />
-				<!--<action name="duplicate" js="GenerisAction.duplicateNode" url="/wfEngine/Process/cloneInstance" context="instance" />-->
-				<!--<action name="new property" js="GenerisAction.addProperty" url="/wfEngine/Process/addClassProperty" context="class" />-->
 				<action name="meta data" js="GenerisAction.loadMetaData" url="/taoTests/Tests/getMetaData"  context="instance" />
 				<action name="create table" js="GenerisAction.resultTable" url="/taoResults/Results/createTable"  context="class" />
-				<!--<action name="import" url="/wfEngine/Process/import"  context="class" />-->
-				<action name="export" url="/wfEngine/Process/export"  context="class" reload="true" />
+				<action name="rdf" url="/tao/Export/index"  context="*" /> 
 			</actions>
 		</section>
 		
 		<section id="process_authoring" name="Process authoring" url="/wfEngine/Process/authoring" />
 		
-		<section id="manage_roles" name="Manage Role" url="/wfEngine/Role/index">
+		<section id="manage_roles" name="Manage roles" url="/wfEngine/Role/index">
 			<trees>
 				<tree name="Role library" 
 					dataUrl="/wfEngine/Role/getOntologyData" 
@@ -44,7 +40,8 @@
 				<action name="delete" js="GenerisAction.removeNode" url="/wfEngine/Role/delete" context="resource" />
 				<action name="meta data" js="GenerisAction.loadMetaData" url="/taoTests/Tests/getMetaData"  context="instance" />
 				<action name="create table" js="GenerisAction.resultTable" url="/taoResults/Results/createTable"  context="class" />
-				<action name="export" url="/wfEngine/Process/export"  context="class" reload="true" />
+				<action name="rdf" url="/tao/Export/index"  context="*" /> 
+				<action name="import" url="/tao/Import/index"  context="class" /> 
 			</actions>
 		</section>
 		

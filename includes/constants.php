@@ -203,6 +203,24 @@ $todefine = array(
 	'PROPERTY_TOKEN_ACTIVITYEXECUTION'				=> NS_TAOQUAL  .'#127565960419850',
 	'PROPERTY_TOKEN_CURRENTUSER'					=> NS_TAOQUAL  .'#127565939760310',
 
+	'CLASS_NOTIFICATION_MODE' 						=> NS_TAOQUAL  .'#NotificationMode',
+	'INSTANCE_NOTIFY_USER' 							=> NS_TAOQUAL  .'#NotifyUser',
+	'INSTANCE_NOTIFY_NEXT'	 						=> NS_TAOQUAL  .'#NotifyNextActivityUsers',
+	'INSTANCE_NOTIFY_PREVIOUS' 						=> NS_TAOQUAL  .'#NotifyPreviousActivityUsers',
+	'INSTANCE_NOTIFY_ROLE' 							=> NS_TAOQUAL  .'#NotifyGroup',
+	
+	'PROPERTY_CONNECTOR_NOTIFY'						=> NS_TAOQUAL  .'#Notify',
+	'PROPERTY_CONNECTOR_USER_NOTIFIED'				=> NS_TAOQUAL  .'#UserNotified',
+	'PROPERTY_CONNECTOR_ROLE_NOTIFIED'				=> NS_TAOQUAL  .'#GroupNotified',
+	'PROPERTY_CONNECTOR_NOTIFICATION_MESSAGE'		=> NS_TAOQUAL  .'#NotificationMessage',
+
+	'CLASS_NOTIFICATION' 							=> NS_TAOQUAL  .'#Notification',
+	'PROPERTY_NOTIFICATION_TO' 						=> NS_TAOQUAL  .'#NotificationTo',
+	'PROPERTY_NOTIFICATION_CONNECTOR' 				=> NS_TAOQUAL  .'#NotificationConnector',
+	'PROPERTY_NOTIFICATION_PROCESS_EXECUTION' 		=> NS_TAOQUAL  .'#NotificationProcessExecution',
+	'PROPERTY_NOTIFICATION_SENT' 					=> NS_TAOQUAL  .'#NotificationSent',
+	'PROPERTY_NOTIFICATION_DATE' 					=> NS_TAOQUAL  .'#NotificationDate',
+
 	'API_LOGIN' 	=> SYS_USER_LOGIN,
 	'API_PASSWORD' 	=> SYS_USER_PASS
 

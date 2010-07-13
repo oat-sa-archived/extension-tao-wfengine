@@ -16,16 +16,6 @@ require_once dirname(__FILE__).'/SaSManager.php';
 class SaSImporter extends SasManager{
 
 	/**
-	 * @var array
-	 */
-	private $processVars = array();
-	
-	/**
-	 * @var array
-	 */
-	private $formalParams = array();
-	
-	/**
 	 * @var core_kernel_classes_Class
 	 */
 	private $serviceDefClass = null;

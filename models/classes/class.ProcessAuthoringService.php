@@ -628,6 +628,8 @@ class wfEngine_models_classes_ProcessAuthoringService
 			//by default, set the 'isHidden' property value to false:
 			$activity->editPropertyValues(new core_kernel_classes_Property(PROPERTY_ACTIVITIES_ISHIDDEN), GENERIS_FALSE);
 			
+			$this->createConnector($activity);
+			
 		}else{
 			throw new Exception("the activity cannot be created for the process {$process->uriResource}");
 		}
@@ -709,7 +711,7 @@ class wfEngine_models_classes_ProcessAuthoringService
 		if(!$processCollection->isEmpty()){
 			$followingActivity = $this->createActivity($processCollection->get(0), $newActivityLabel);
 			//warning: a connector is created at the same time of the activity:
-			// $newConnector = $this->createConnector($followingActivity);//no longer used
+			$newConnector = $this->createConnector($followingActivity);//no longer used
 		}else{
 			throw new Exception("no related process instance found to create an activity");
 		}

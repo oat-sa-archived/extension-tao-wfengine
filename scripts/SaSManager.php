@@ -24,7 +24,15 @@ class SaSManager{
 	 */
 	protected $services = array();
 	
-
+	/**
+	 * @var array
+	 */
+	protected $processVars = array();
+	
+	/**
+	 * @var array
+	 */
+	protected $formalParams = array();
 	
 	/**
 	 * Constructor

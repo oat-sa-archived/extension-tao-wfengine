@@ -545,13 +545,11 @@ class wfEngine_helpers_ProcessFormFactory extends tao_helpers_form_GenerisFormFa
 		//add a hidden input to post the uri of the connector that is being edited
 		$elementConnectorUri = tao_helpers_form_FormFactory::getElement('connectorUri', 'Hidden');
 		$elementConnectorUri->setValue(tao_helpers_Uri::encode($connector->uriResource));
-		// $classUriElt->setLevel($level);
 		$myForm->addElement($elementConnectorUri);
 		
 		//add a hidden input to post the uri of the activity of the connector that is being edited
 		$elementActivityUri = tao_helpers_form_FormFactory::getElement('activityUri', 'Hidden');
 		$elementActivityUri->setValue(tao_helpers_Uri::encode($activity->uriResource));
-		// $classUriElt->setLevel($level);
 		$myForm->addElement($elementActivityUri);
 		
 		//add label input: authorize connector label editing or not?
@@ -566,7 +564,6 @@ class wfEngine_helpers_ProcessFormFactory extends tao_helpers_form_GenerisFormFa
 		$range = new core_kernel_classes_Class(CLASS_TYPEOFCONNECTORS);
 		if($range != null){
 			$options = array();
-			// $options = array('none' => ' ');
 			foreach($range->getInstances(true) as $rangeInstance){
 				$options[ tao_helpers_Uri::encode($rangeInstance->uriResource) ] = $rangeInstance->getLabel();
 			}
@@ -603,6 +600,34 @@ class wfEngine_helpers_ProcessFormFactory extends tao_helpers_form_GenerisFormFa
 			return $myForm;
 		}
 		
+		//notification system
+		$myForm->addElement(tao_helpers_form_FormFactory::getElement('notify_set', 'Hidden'));
+		
+		$notifyMsgProperty = new core_kernel_classes_Property(PROPERTY_CONNECTOR_NOTIFICATION_MESSAGE);
+		$notifyMsgElt = tao_helpers_form_GenerisFormFactory::elementMap($notifyMsgProperty);
+		
+		$notifyMsgElt->setValue((string)$connector->getOnePropertyValue($notifyMsgProperty));
+		$myForm->addElement($notifyMsgElt);
+		
+		$notifyProperty = new core_kernel_classes_Property(PROPERTY_CONNECTOR_NOTIFY);
+		$notifyElt = tao_helpers_form_GenerisFormFactory::elementMap($notifyProperty);
+		$notifyElt->addAttribute('class', 'notify-element');
+		$notifyElt->setValues(tao_helpers_Uri::encodeArray($connector->getPropertyValues($notifyProperty)));
+		$myForm->addElement($notifyElt);
+		
+		$notifyUserProperty = new core_kernel_classes_Property(PROPERTY_CONNECTOR_USER_NOTIFIED);
+		$notifyUserElt = tao_helpers_form_GenerisFormFactory::elementMap($notifyUserProperty);
+		$notifyUserElt->addAttribute('class', 'notify-user');
+		$notifyUserElt->setValues(tao_helpers_Uri::encodeArray($connector->getPropertyValues($notifyUserProperty)));
+		$myForm->addElement($notifyUserElt);
+		
+		$notifyGroupProperty = new core_kernel_classes_Property(PROPERTY_CONNECTOR_ROLE_NOTIFIED);
+		$notifyGroupElt = tao_helpers_form_GenerisFormFactory::elementMap($notifyGroupProperty);
+		$notifyGroupElt->addAttribute('class', 'notify-group');
+		$notifyGroupElt->setValues(tao_helpers_Uri::encodeArray($connector->getPropertyValues($notifyGroupProperty)));
+		$myForm->addElement($notifyGroupElt);
+		
+		
 		//continue building the form according the the type of connector:
 		$elementInputs=array();
 		if($connectorType->uriResource == INSTANCE_TYPEOFCONNECTORS_SEQUENCE){
@@ -628,8 +653,6 @@ class wfEngine_helpers_ProcessFormFactory extends tao_helpers_form_GenerisFormFa
 		}else{
 			throw new Exception("the selected type of connector {$connectorType->getLabel()} is not supported");
 		}
-		
-		//var_dump($elementInputs);
 		
 		foreach($elementInputs as $elementInput){
 			$myForm->addElement($elementInput);

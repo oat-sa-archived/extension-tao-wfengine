@@ -875,6 +875,9 @@ class ProcessAuthoring extends TaoModule {
 		$formName=uniqid("connectorEditor_");
 		$myForm = wfEngine_helpers_ProcessFormFactory::connectorEditor(new core_kernel_classes_Resource($connectorUri), null, $formName, $this->getCurrentActivity());
 		
+		$this->setData('notifyUserUri', tao_helpers_Uri::encode(INSTANCE_NOTIFY_USER));
+		$this->setData('notifyRoleUri', tao_helpers_Uri::encode(INSTANCE_NOTIFY_ROLE));
+		
 		$this->setData('formId', $formName);
 		$this->setData('formConnector', $myForm->render());
 		$this->setView('process_form_connector.tpl');
@@ -1177,12 +1180,50 @@ class ProcessAuthoring extends TaoModule {
 		}
 		
 		
-		// if(!is_null($newActivity)){
+		//save notification properties
+		if(isset($data['notify_set'])){
 			
-		// }
-		// if(!is_null($newConnector)){
+			//save //save messsage messsage
+			$connectorInstance->editPropertyValues(new core_kernel_classes_Property(PROPERTY_CONNECTOR_NOTIFICATION_MESSAGE), $data[PROPERTY_CONNECTOR_NOTIFICATION_MESSAGE]);
 			
-		// }
+			//notification modes
+			$modes = array();
+			$expression = "/^".preg_quote(PROPERTY_CONNECTOR_NOTIFY, '/')."/";
+			foreach($data as $key => $value){
+				if(preg_match($expression, $key)){
+					$modes[] = $value;
+				}
+			}
+			$connectorInstance->editPropertyValues(new core_kernel_classes_Property(PROPERTY_CONNECTOR_NOTIFY), $modes);
+			
+			
+			//save notified users if user mode selected
+			if(in_array(INSTANCE_NOTIFY_USER, $modes)){
+				
+				$users = array();
+				$expression = "/^".preg_quote(PROPERTY_CONNECTOR_USER_NOTIFIED, '/')."/";
+				foreach($data as $key => $value){
+					if(preg_match($expression, $key)){
+						$users[] = $value;
+					}
+				}
+				$connectorInstance->editPropertyValues(new core_kernel_classes_Property(PROPERTY_CONNECTOR_USER_NOTIFIED), $users);
+			}
+			
+			//save notified roles if role mode selected
+			if(in_array(INSTANCE_NOTIFY_ROLE, $modes)){
+				$roles = array();
+				$expression = "/^".preg_quote(PROPERTY_CONNECTOR_ROLE_NOTIFIED, '/')."/";
+				foreach($data as $key => $value){
+					if(preg_match($expression, $key)){
+						$roles[] = $value;
+					}
+				}
+				$connectorInstance->editPropertyValues(new core_kernel_classes_Property(PROPERTY_CONNECTOR_ROLE_NOTIFIED), $roles);
+			}
+			
+		}
+		
 		
 		
 		echo json_encode(array(
