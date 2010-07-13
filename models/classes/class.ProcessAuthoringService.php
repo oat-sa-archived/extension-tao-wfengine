@@ -1410,7 +1410,7 @@ class wfEngine_models_classes_ProcessAuthoringService
 		return $returnValue;
 	}
 	
-	public function setConnectorType(core_kernel_classes_Resource $connector,core_kernel_classes_Resource $typeOfConnector){
+	public function setConnectorType(core_kernel_classes_Resource $connector, core_kernel_classes_Resource $typeOfConnector){
 		
 		//TODO: check range of type of connectors:
 		return $connector->editPropertyValues(new core_kernel_classes_Property(PROPERTY_CONNECTORS_TYPE), $typeOfConnector->uriResource);

@@ -900,11 +900,11 @@ class ProcessAuthoring extends TaoModule {
 		); 
 	}
 	
-	protected function newConnectorTransferData(core_kernel_classes_Resource $newConnector, $port=0){
+	protected function newConnectorTransferData(core_kernel_classes_Resource $newConnector, $port=0, $type='sequence'){
 		return array(
 			'label'	=> $newConnector->getLabel(),
 			'uri' 	=> tao_helpers_Uri::encode($newConnector->uriResource),
-			'type' => 'sequential',
+			'type' => $type,
 			'port' => $port
 		); 
 	}
@@ -1087,6 +1087,7 @@ class ProcessAuthoring extends TaoModule {
 			}elseif(($data['then_activityOrConnector']=="connector") && isset($data["then_connectorUri"])){
 				if($data["then_connectorUri"]=="newConnector"){
 					$newConnector = $this->service->createSplitActivity($connectorInstance, 'then', null, '', true);
+					$this->service->setConnectorType($newConnector, new core_kernel_classes_Resource(INSTANCE_TYPEOFCONNECTORS_SEQUENCE));
 					$newConnectors[] = $this->newConnectorTransferData($newConnector, 0);
 					
 				}else{
@@ -1112,6 +1113,7 @@ class ProcessAuthoring extends TaoModule {
 			}elseif(($data['else_activityOrConnector']=="connector") && isset($data["else_connectorUri"])){
 				if($data["else_connectorUri"]=="newConnector"){
 					$newConnector = $this->service->createSplitActivity($connectorInstance, 'else', null, '', true);
+					$this->service->setConnectorType($newConnector, new core_kernel_classes_Resource(INSTANCE_TYPEOFCONNECTORS_SEQUENCE));
 					$newConnectors[] = $this->newConnectorTransferData($newConnector, 1);
 				}else{
 					$followingActivity = new core_kernel_classes_Resource($data["else_connectorUri"]);
