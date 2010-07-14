@@ -195,14 +195,14 @@ extends WfResource
 		$arrayOfProcessVars 		= Utils::processVarsToArray($processVars);
 		
 		//init the services
-		$activityExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityExecutionService');
-		$userService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_UserService');
-		$tokenService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_TokenService');
+		$activityExecutionService 	= tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityExecutionService');
+		$userService 				= tao_models_classes_ServiceFactory::get('wfEngine_models_classes_UserService');
+		$tokenService 				= tao_models_classes_ServiceFactory::get('wfEngine_models_classes_TokenService');
+		$notificationService 		= tao_models_classes_ServiceFactory::get('wfEngine_models_classes_NotificationService');
+		
+		//get the current user
 		$currentUser = $userService->getCurrentUser();
 		
-		//old impl, does not allow parallel activities of a same activity definition:
-		// $activityBeforeTransition 	= new Activity($this->currentActivity[0]->uri);
-		// $activityExecutionResource = $activityExecutionService->getExecution(new core_kernel_classes_Resource($activityBeforeTransition->uri), $currentUser, $this->resource) ;
 		
 		//new:
 		$activityExecutionResource = new core_kernel_classes_Resource($activityExecutionUri);
@@ -210,8 +210,6 @@ extends WfResource
 		$activityBeforeTransition 	= new Activity($activityDefinition->uriResource);
 		
 		$activityBeforeTransition->feedFlow(1);
-
-		//common_Cache::setCache($activityBeforeTransition,$this->currentActivity[0]->uri);
 
 		// ONAFTER INFERENCE RULE
 		// If we are here, no consistency error was thrown. Thus, we can infer something if needed.
@@ -262,7 +260,6 @@ extends WfResource
 		}
 		
 		
-		//$connectorsUri = $this->getNextConnectorsUri($this->currentActivity[0]->uri);//could work for join as they share the same connector
 		$connectorsUri = $this->getNextConnectorsUri($activityDefinition->uriResource);
 		
 		$token = $tokenService->getCurrent($activityExecutionResource);
@@ -277,6 +274,7 @@ extends WfResource
 		
 		
 		//actual transition starting from here:
+		
 		$connector = null;
 		if(count($connectorsUri) > 0){
 			$connector = new core_kernel_classes_Resource(array_pop($connectorsUri));
@@ -287,6 +285,9 @@ extends WfResource
 			
 			//transition done here the tokens are "moved" to the next step:
 			$tokenService->move($connector, $nextActivities, $currentUser, $this->resource);
+			
+			//trigger the notifications
+			$notificationService->trigger($connector, $this->resource);
 		}
 		
 		//transition done: now get the following activities:
@@ -304,8 +305,6 @@ extends WfResource
 			$this->currentActivity[] = $newActivity;
 			
 		}
-		
-	//	var_dump($this->currentActivity);
 		
 		//if the connector is not a parallel one, let the user continue in his current branch and prevent the pause:
 		$uniqueNextActivity = null;
@@ -328,7 +327,6 @@ extends WfResource
 		
 		$setPause = true;
 		$authorizedActivityDefinitions = array();
-		// var_dump($newActivities, $activityBeforeTransition->isLast());
 		if (!count($newActivities) || $activityBeforeTransition->isLast()){
 			//there is no following activity so the process ends here:
 			$this->finish();

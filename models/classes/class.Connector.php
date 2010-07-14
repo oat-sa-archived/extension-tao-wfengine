@@ -208,11 +208,9 @@ class Connector
 		try {
     		
 			$returnValue = $resource->getUniquePropertyValue($connTypeProp);
-//			var_dump($resource,$connTypeProp, $returnValue);
 		}
 		catch (common_Exception $e) {
 			echo 'Exception when retreiving Connector type ' . $this->uri;
-			var_dump($e->getMessage(), $e->getTraceAsString());
 		}
     	return $returnValue;
     }
@@ -264,18 +262,15 @@ class Connector
         // section -64--88-1-64--7117f567:11a0527df60:-8000:0000000000000935 begin
 
 		parent::__construct($uri);
+		
 		$typeOfConnectorProp = new core_kernel_classes_Property(PROPERTY_CONENCTORS_TYPEOF);
 		$this->logger->debug('Next Connector  Name: ' . $this->resource->getLabel(),__FILE__,__LINE__);
 		$this->logger->debug('Next Connector  Uri: ' . $this->resource->uriResource,__FILE__,__LINE__);
 		try{
-		
-		
-		$this->type = $this->resource->getUniquePropertyValue($typeOfConnectorProp);
+			$this->type = $this->resource->getUniquePropertyValue($typeOfConnectorProp);
 		}
 		catch(common_Exception $ce){
-			print "<pre>";
-			var_dump($this->resource);
-			print $ce;
+			echo 'Exception when retreiving Connector type ' . $this->uri;
 		}
 		// We get the TransitionRule relevant to the connector.
 		$ruleProp = new core_kernel_classes_Property(PROPERTY_CONNECTOR_TRANSITIONRULE);

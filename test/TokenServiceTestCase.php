@@ -15,7 +15,7 @@ class TokenServiceTestCase extends UnitTestCase {
 	 * CHANGE IT MANNUALLY to see step by step the output
 	 * @var boolean
 	 */
-	const OUTPUT = true;
+	const OUTPUT = false;
 	
 	/**
 	 * @var wfEngine_models_classes_ActivityExecutionService the tested service
@@ -123,6 +123,7 @@ class TokenServiceTestCase extends UnitTestCase {
 			$this->assertNotNull($activity1);
 			$authoringService->setFirstActivity($processDefinition, $activity1);
 			
+			$connector1 = null;
 			$connector1 = $authoringService->createConnector($activity1);
 			$authoringService->setConnectorType($connector1, new core_kernel_classes_Resource(CONNECTOR_SEQ));
 			$this->assertNotNull($connector1);
@@ -131,45 +132,28 @@ class TokenServiceTestCase extends UnitTestCase {
 			$this->assertNotNull($activity2);
 			
 			$connector2  = null; 
-			$connector2s = $authoringService->getConnectorsByActivity($activity2, array('next'));
-			foreach($connector2s['next'] as $connector){
-				$connector2 = $connector;
-				break;
-			}
+			$connector2 = $authoringService->createConnector($activity2);
+			$authoringService->setConnectorType($connector2, new core_kernel_classes_Resource(CONNECTOR_SEQ));
 			$this->assertNotNull($connector2);
 			
 			$activity3 = $authoringService->createSequenceActivity($connector2, null, 'activity3');
 			$this->assertNotNull($activity3);
 			
 			$connector3  = null; 
-			$connector3s = $authoringService->getConnectorsByActivity($activity3, array('next'));
-			foreach($connector3s['next'] as $connector){
-				$connector3 = $connector;
-				break;
-			}
+			$connector3 = $authoringService->createConnector($activity3);
+			$authoringService->setConnectorType($connector3, new core_kernel_classes_Resource(CONNECTOR_SEQ));
 			$this->assertNotNull($connector3);
 			
 			$activity4 = $authoringService->createSequenceActivity($connector3, null, 'activity4');
 			$this->assertNotNull($activity4);
 			
 			$connector4  = null; 
-			$connector4s = $authoringService->getConnectorsByActivity($activity4, array('next'));
-			foreach($connector4s['next'] as $connector){
-				$connector4 = $connector;
-				break;
-			}
+			$connector4 = $authoringService->createConnector($activity4);
+			$authoringService->setConnectorType($connector4, new core_kernel_classes_Resource(CONNECTOR_SEQ));
 			$this->assertNotNull($connector4);
 		
-			
 			$activity5 = $authoringService->createSequenceActivity($connector4, null, 'activity5');
 			$this->assertNotNull($activity5);
-			
-			$connector5s = $authoringService->getConnectorsByActivity($activity5, array('next'));
-			foreach($connector5s['next'] as $connector){
-				if(!is_null($connector)){
-					$connector->delete();
-				}
-			}
 			
 			//run the process
 			$factory = new ProcessExecutionFactory();
@@ -277,29 +261,31 @@ class TokenServiceTestCase extends UnitTestCase {
 				
 			//process definition
 			$processDefinitionClass = new core_kernel_classes_Class(CLASS_PROCESS);
-			$processDefinition = $processDefinitionClass->createInstance('processForUnitTest_' . date(DATE_ISO8601),'created for the unit test of process execution');
+			$processDefinition = $processDefinitionClass->createInstance('PJ processForUnitTest_' . date(DATE_ISO8601),'created for the unit test of process execution');
 			$this->assertNotNull($processDefinition);
 			
 			//activities definitions
 			$activity0 = $authoringService->createActivity($processDefinition, 'activity0');
 			$this->assertNotNull($activity0);
 			
+			$connector0 = null;
 			$authoringService->setFirstActivity($processDefinition,$activity0);
 			$connector0 = $authoringService->createConnector($activity0);
-			$this->assertNotNull($connector0);
-			
 			$connectorParallele = new core_kernel_classes_Resource(INSTANCE_TYPEOFCONNECTORS_PARALLEL);
-			$authoringService->setConnectorType($connector0,$connectorParallele);
+			$authoringService->setConnectorType($connector0, $connectorParallele);
+			$this->assertNotNull($connector0);
 			
 			$parallelActivity1 = $authoringService->createActivity($processDefinition, 'activity1');
 			$this->assertNotNull($parallelActivity1);
 			
+			$connector1 = null;
 			$connector1 = $authoringService->createConnector($parallelActivity1);
 			$this->assertNotNull($connector1);
 			
 			$parallelActivity2 = $authoringService->createActivity($processDefinition, 'activity2');
 			$this->assertNotNull($parallelActivity2);
 			
+			$connector2 = null;
 			$connector2 = $authoringService->createConnector($parallelActivity2);
 			$this->assertNotNull($connector2);
 			

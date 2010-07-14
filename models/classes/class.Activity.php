@@ -185,7 +185,7 @@ extends WfResource
 	{
 		// section -64--88-1-64--7117f567:11a0527df60:-8000:00000000000008F4 begin
 		// We get the next connectors.
-		$nextConnectors = core_kernel_impl_ApiModelOO::singleton()->getSubject(PROPERTY_CONNECTORS_PRECACTIVITIES,$this->uri);
+		$nextConnectors = core_kernel_impl_ApiModelOO::singleton()->getSubject(PROPERTY_CONNECTORS_PRECACTIVITIES, $this->uri);
 		$connectors =array();
 		foreach ($nextConnectors->getIterator() as $resource)
 		{

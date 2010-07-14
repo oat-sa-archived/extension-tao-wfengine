@@ -305,10 +305,13 @@ class Token { // implements IteratorAggregate {
       //BUG: when a class derives from IteratorAggregate, same result.
       //echo "XXX $className\n";
       if (preg_match("/^Token[A-Z]/", $className)) {
-        //TODO: filter condition: inherits from Token class
-        //echo "XXX $className\n";
         $class = new $className();
-        self::$tokenObjects->add($class);
+		if($class instanceof Token){
+       		self::$tokenObjects->add($class);
+		}
+		else{
+			unset($class);
+		}
       }
     }
 
