@@ -111,7 +111,7 @@ class ActivityExecutionServiceTestCase extends UnitTestCase {
 			
 			//create a new process def
 			$processDefinitionClass = new core_kernel_classes_Class(CLASS_PROCESS);
-			$processDefinition = $processDefinitionClass->createInstance('ProcessForUnitTest', 'Unit test');
+			$processDefinition = $processDefinitionClass->createInstance('AE ProcessForUnitTest', 'Unit test');
 			$this->assertIsA($processDefinition, 'core_kernel_classes_Resource');
 			
 			$aclModeRole		 = new core_kernel_classes_Resource(INSTANCE_ACL_ROLE);
@@ -126,7 +126,7 @@ class ActivityExecutionServiceTestCase extends UnitTestCase {
 			$roleService->setRoleToUsers($role2, array($this->currentUser->uriResource));
 			
 			//define activities and connectors
-			$activity1 = $authoringService->createActivity($processDefinition, 'activity1');
+			$activity1 = $authoringService->createActivity($processDefinition, 'AE activity1');
 			$this->assertNotNull($activity1);
 			
 			$authoringService->setFirstActivity($processDefinition, $activity1);
@@ -134,23 +134,20 @@ class ActivityExecutionServiceTestCase extends UnitTestCase {
 			//1st activity is allowed to WORKFLOW USER ROLE
 			$this->service->setAcl($activity1, $aclModeRole, $role1);
 			
+			$connector1  = null; 
 			$connector1 = $authoringService->createConnector($activity1);
 			$authoringService->setConnectorType($connector1, new core_kernel_classes_Resource(CONNECTOR_SEQ));
 			$this->assertNotNull($connector1);
 			
-			
-			$activity2 = $authoringService->createSequenceActivity($connector1, null, 'activity2');
+			$activity2 = $authoringService->createSequenceActivity($connector1, null, 'AE activity2');
 			$this->assertNotNull($activity2);
 			
 			//2nd activity is allowed to create role
 			$this->service->setAcl($activity2, $aclModeRole, $role2);
 			
 			$connector2  = null; 
-			$connector2s = $authoringService->getConnectorsByActivity($activity2, array('next'));
-			foreach($connector2s['next'] as $connector){
-				$connector2 = $connector;
-				break;
-			}
+			$connector2 = $authoringService->createConnector($activity2);
+			$authoringService->setConnectorType($connector2, new core_kernel_classes_Resource(CONNECTOR_SEQ));
 			$this->assertNotNull($connector2);
 			
 			
@@ -161,11 +158,8 @@ class ActivityExecutionServiceTestCase extends UnitTestCase {
 			$this->service->setAcl($activity3, $aclModeUser, $this->currentUser);
 			
 			$connector3  = null; 
-			$connector3s = $authoringService->getConnectorsByActivity($activity3, array('next'));
-			foreach($connector3s['next'] as $connector){
-				$connector3 = $connector;
-				break;
-			}
+			$connector3 = $authoringService->createConnector($activity3);
+			$authoringService->setConnectorType($connector3, new core_kernel_classes_Resource(CONNECTOR_SEQ));
 			$this->assertNotNull($connector3);
 			
 			$activity4 = $authoringService->createSequenceActivity($connector3, null, 'activity4');
@@ -175,11 +169,8 @@ class ActivityExecutionServiceTestCase extends UnitTestCase {
 			$this->service->setAcl($activity4, $aclModeRoleUser, $role2);
 		
 			$connector4  = null; 
-			$connector4s = $authoringService->getConnectorsByActivity($activity4, array('next'));
-			foreach($connector4s['next'] as $connector){
-				$connector4 = $connector;
-				break;
-			}
+			$connector4 = $authoringService->createConnector($activity4);
+			$authoringService->setConnectorType($connector4, new core_kernel_classes_Resource(CONNECTOR_SEQ));
 			$this->assertNotNull($connector4);
 		
 			
@@ -189,12 +180,6 @@ class ActivityExecutionServiceTestCase extends UnitTestCase {
 			//5th is inherited of 4th activity ACL
 			$this->service->setAcl($activity5, $aclModeInherited, $role2);
 			
-			$connector5s = $authoringService->getConnectorsByActivity($activity5, array('next'));
-			foreach($connector5s['next'] as $connector){
-				if(!is_null($connector)){
-					$connector->delete();
-				}
-			}
 			
 			//run the process
 			$factory = new ProcessExecutionFactory();
@@ -250,6 +235,7 @@ class ActivityExecutionServiceTestCase extends UnitTestCase {
 			}
 		}
 		catch(common_Exception $ce){
+			print '<pre>';
 			$this->fail($ce);
 		}
 	}
