@@ -1,23 +1,29 @@
 <?include(BASE_PATH.'/'.DIR_VIEWS.$GLOBALS['dir_theme'].'header.tpl')?>
 
-
-
 <?if(get_data('error')):?>
 
 	<div class="main-container">
 		<div class="ui-state-error ui-corner-all" style="padding:5px;">
-			<?=__('Please select a delivery before authoring it!')?>
+			<?if(get_data('extension')=='taoDelivery'){
+				echo __('Please select a delivery before authoring it');
+			}else{//==wfEngine
+				echo __('Please select a process before authoring it');
+			}?>
 			<br/>
 			<?=get_data('errorMessage')?>
 		</div>
 		<br />
 		<span class="ui-widget ui-state-default ui-corner-all" style="padding:5px;">
-			<a href="#" onclick="selectTabByName('manage_deliveries');"><?=__('Back')?></a>
+			<?if(get_data('extension')=='taoDelivery'):?>
+				<a href="#" onclick="selectTabByName('manage_deliveries');"><?=__('Back')?></a>
+			<?else://==wfEngine?>
+				<a href="#" onclick="selectTabByName('manage_process');"><?=__('Back')?></a>
+			<?endif;?>
 		</span>
 	</div>
 	
 <?else:?>
-	<link rel="stylesheet" type="text/css" href="/<?=get_data('extension')?>/views/css/process_authoring_tool.css" />
+	<link rel="stylesheet" type="text/css" href="<?=PROCESS_BASE_WWW?>css/process_authoring_tool.css" />
 	
 	<script type="text/javascript">
 		//constants:
@@ -29,49 +35,38 @@
 		INSTANCE_TYPEOFCONNECTORS_JOIN = "<?=tao_helpers_Uri::encode(INSTANCE_TYPEOFCONNECTORS_JOIN)?>";
 	</script>
 	
-	<script type="text/javascript" src="/<?=get_data('extension')?>/views/js/authoring/authoringConfig.js"></script>
-	<script type="text/javascript" src="/<?=get_data('extension')?>/views/js/authoring/json2.js"></script>
-	<script type="text/javascript" src="/<?=get_data('extension')?>/views/js/authoring/util.js"></script>
-	<script type="text/javascript" src="/<?=get_data('extension')?>/views/js/authoring/arrows.js"></script>
-	<script type="text/javascript" src="/<?=get_data('extension')?>/views/js/authoring/activityDiagram.js"></script>
-	<script type="text/javascript" src="/<?=get_data('extension')?>/views/js/authoring/modeController.js"></script>
-	<script type="text/javascript" src="/<?=get_data('extension')?>/views/js/authoring/modeInitial.js"></script>
-	<script type="text/javascript" src="/<?=get_data('extension')?>/views/js/authoring/modeActivityLabel.js"></script>
-	<script type="text/javascript" src="/<?=get_data('extension')?>/views/js/authoring/modeActivityAdd.js"></script>
-	<script type="text/javascript" src="/<?=get_data('extension')?>/views/js/authoring/modeActivityMenu.js"></script>
-	<script type="text/javascript" src="/<?=get_data('extension')?>/views/js/authoring/modeArrowLink.js"></script>
-	<script type="text/javascript" src="/<?=get_data('extension')?>/views/js/authoring/modeActivityMove.js"></script>
-	<script type="text/javascript" src="/<?=get_data('extension')?>/views/js/authoring/modeConnectorMove.js"></script>
-	<script type="text/javascript" src="/<?=get_data('extension')?>/views/js/authoring/modeArrowEdit.js"></script>
-	<script type="text/javascript" src="/<?=get_data('extension')?>/views/js/authoring/modeLinkedActivityAdd.js"></script>
+	<script type="text/javascript" src="<?=BASE_WWW.'js/authoring/'?>authoringConfig.js"></script>
+	<script type="text/javascript" src="<?=PROCESS_SCRIPT_URL?>json2.js"></script>
+	<script type="text/javascript" src="<?=PROCESS_SCRIPT_URL?>util.js"></script>
+	<script type="text/javascript" src="<?=PROCESS_SCRIPT_URL?>arrows.js"></script>
+	<script type="text/javascript" src="<?=PROCESS_SCRIPT_URL?>activityDiagram.js"></script>
+	<script type="text/javascript" src="<?=PROCESS_SCRIPT_URL?>modeController.js"></script>
+	<script type="text/javascript" src="<?=PROCESS_SCRIPT_URL?>modeInitial.js"></script>
+	<script type="text/javascript" src="<?=PROCESS_SCRIPT_URL?>modeActivityLabel.js"></script>
+	<script type="text/javascript" src="<?=PROCESS_SCRIPT_URL?>modeActivityAdd.js"></script>
+	<script type="text/javascript" src="<?=PROCESS_SCRIPT_URL?>modeActivityMenu.js"></script>
+	<script type="text/javascript" src="<?=PROCESS_SCRIPT_URL?>modeArrowLink.js"></script>
+	<script type="text/javascript" src="<?=PROCESS_SCRIPT_URL?>modeActivityMove.js"></script>
+	<script type="text/javascript" src="<?=PROCESS_SCRIPT_URL?>modeConnectorMove.js"></script>
+	<script type="text/javascript" src="<?=PROCESS_SCRIPT_URL?>modeArrowEdit.js"></script>
+	<script type="text/javascript" src="<?=PROCESS_SCRIPT_URL?>modeLinkedActivityAdd.js"></script>
 	
 	<script type="text/javascript">
 	//init:
-	var canvas = "#process_diagram_container";
-	ActivityDiagramClass.canvas = "#process_diagram_container";
-	ArrowClass.canvas = ActivityDiagramClass.canvas;
 	var processUri = "<?=get_data("processUri")?>";
+	ActivityDiagramClass.canvas = "#process_diagram_container";
 	ActivityDiagramClass.localNameSpace = "<?=tao_helpers_Uri::encode(core_kernel_classes_Session::singleton()->getNameSpace().'#')?>";
 	
 	
 	
 	$(function() {
-		// window.loadFirebugConsole();
-		
 		$(ActivityDiagramClass.canvas).scroll(function(){
 			//TODO: set a more cross-browser way to retrieve scroll left and top values:
 			ActivityDiagramClass.scrollLeft = this.scrollLeft;
 			ActivityDiagramClass.scrollTop = this.scrollTop;
 		});
 		
-		// $(ArrowClass.canvas).mousemove(function(e){
-			  // $('#status').html(e.pageX +', '+ e.pageY);
-		// });
-		
 		try{
-			
-			
-			
 			// ActivityDiagramClass.setActivityMenuHandler("ActivityTempId");
 			// console.log('ModeActivityMenu', ModeActivityMenu);
 			// ModeActivityMenu.on("ActivityTempId");
@@ -130,45 +125,35 @@
 			<div id="activity_tree"/>
 			<div id="activity_form"/>
 		</div>
-		<!--<h3><a href="#">Specialized form</a></h3>
-		<div>
-			<div id="spForm"><a id="ancre_spForm" href="#">spForm</a></div>
-		</div>-->
 		<h3><a href="#"><?=__('Process Property')?></a></h3>
 		<div>
-			<!--<div id="process_info"><?=__('loading...')?></div>-->
 			<div id="process_form"><?=__('loading...')?></div>
 		</div>
+		<?if(get_data('extension')=='taoDelivery'):?>
 		<h3><a href="#"><?=__('Compilation')?></a></h3>
 		<div>
 			<div id="compile_info"><?=__('loading...')?></div>
 			<div id="compile_form"></div>
 		</div>
+		<?endif;?>
 	</div><!--end accordion -->
 	</div><!--end accordion_container_2 -->
 	
 	</div><!--end authoring-container -->
 	
-	<script type="text/javascript" src="/<?=get_data('extension')?>/views/js/authoring/activity.tree.js"></script>
+	<script type="text/javascript" src="<?=PROCESS_SCRIPT_URL?>activity.tree.js"></script>
 	<script type="text/javascript">
 	
-	
-	
 	$(function(){
-		 
-	
-		// EventMgr.unbind('activityAdded');
 		EventMgr.unbind();
 		
 		EventMgr.bind('activityAdded', function(event, response){
-			console.log('adding act response:', response);
+			
 			try{
 				var activity = ActivityDiagramClass.feedActivity({
 					"data": response.label,
 					"attributes": {"id": response.uri}
 				});
-				
-				console.log('activity', activity);
 				
 				//draw activity with the default positionning:
 				ActivityDiagramClass.drawActivity(activity.id);
@@ -238,8 +223,6 @@
 					activityRefId
 				);
 				
-				
-				
 				//draw connector and reposition it:
 				var connectorId = ActivityDiagramClass.getActivityId('connector', connector.id);
 				var connectorTopId = ActivityDiagramClass.getActivityId('connector', connector.id, 'top');
@@ -255,7 +238,6 @@
 					arrowWidth: 2
 				});
 				
-				
 				//save diagram:
 				ActivityDiagramClass.saveDiagram();
 			}catch(ex){
@@ -269,8 +251,6 @@
 		});
 		
 		EventMgr.bind('connectorSaved', function(event, response){
-			console.log('connectorSaved triggered');
-			
 			var added = false
 			if(response.newActivities && response.previousConnectorUri){
 				if(response.newActivities.length > 0){
@@ -348,9 +328,10 @@
 		loadSectionTree("variable");
 		
 		processProperty();
-		/*
+		
+		<?if(get_data('extension')=='taoDelivery'):?>
 		loadCompilationForm();
-		*/
+		<?endif;?>
 	});
 	
 	$(function(){
@@ -411,6 +392,6 @@
 	}
 	</script>
 	
-<?endif?>
+<?endif;?>
 
 <?include(BASE_PATH.'/'.DIR_VIEWS.$GLOBALS['dir_theme'].'footer.tpl')?>

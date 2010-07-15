@@ -554,7 +554,7 @@ ArrowClass.getCenterCoordinate = function(element){
 		throw 'the element "'+element.attr('id')+'" do not exists';
 		return null;
 	}
-	var canvasElt = $(ArrowClass.canvas);
+	var canvasElt = $(ActivityDiagramClass.canvas);
 	if(!canvasElt.length){
 		throw 'no canvas defined';
 		return null
