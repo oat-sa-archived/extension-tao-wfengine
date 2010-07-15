@@ -281,7 +281,7 @@ class wfEngine_models_classes_ActivityExecutionService
 	        	//in case of role and user restriction, set the current user as activty user
 	        	$activityUri	= $activityExecution->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_ACTIVITY));
 	        	$activity		= new core_kernel_classes_Resource($activityUri);
-	        	$mode		= $activity->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_ACTIVITIES_ACL_MODE));
+	        	$mode			= $activity->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_ACTIVITIES_ACL_MODE));
 	        	if(!is_null($mode)){
 
 	        		$restrictedUserProp = new core_kernel_classes_Property(PROPERTY_ACTIVITIES_RESTRICTED_USER);

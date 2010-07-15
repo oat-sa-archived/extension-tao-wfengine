@@ -36,12 +36,9 @@ class Processes extends WfModule
 															'key' => 	$key
 														   	 );
 			}
-		
 
 			$this->setData('processAuthoringData',$processAuthoringData);
-			// $this->setView('process_authoring_old.tpl');
 			$this->setView('process_authoring_old.tpl');
-
 	}
 
 	public function add($posted)

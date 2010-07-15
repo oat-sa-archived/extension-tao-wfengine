@@ -50,7 +50,8 @@ class NotificationServiceTestCase extends UnitTestCase {
 		$userData = array(
 			PROPERTY_USER_LOGIN		=> 	$login,
 			PROPERTY_USER_PASSWORD	=>	md5($pass),
-			PROPERTY_USER_DEFLG		=>	'EN'
+			PROPERTY_USER_DEFLG		=>	'EN',
+			PROPERTY_USER_MAIL		=> 'bertrand.chevrier@tudor.lu'
 		);
 		
 		$this->currentUser = $this->userService->getOneUser($login);
@@ -254,6 +255,11 @@ class NotificationServiceTestCase extends UnitTestCase {
 			} 
 			
 			$this->assertEqual($notificationCount, 4);
+			
+//			$this->out("$notificationCount notification to send");
+//			$this->service->sendNotifications(new tao_helpers_transfert_MailAdapter());
+//			$this->out("All notifications sent");
+			
 			
 			$this->assertTrue($activity1->delete());
 			$this->assertTrue($activity2->delete());

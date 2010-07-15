@@ -298,8 +298,8 @@ class wfEngine_models_classes_NotificationService
         	$userMailProp 						= new core_kernel_classes_Property(PROPERTY_USER_MAIL);
         	$processExecutionOfProp 			= new core_kernel_classes_Property(EXECUTION_OF);
         	
-        	
         	//create messages from the notifications resources
+        	$messages = array();
         	$notificationsToSend = $this->getNotificationsToSend();
         	foreach($notificationsToSend as $notificationResource){
         		
@@ -312,7 +312,7 @@ class wfEngine_models_classes_NotificationService
         		
         		//get the email of the user
         		$toEmail = '';
-        		$to = (string)$notificationResource->getOnePropertyValue($this->notificationToProp);
+        		$to = $notificationResource->getOnePropertyValue($this->notificationToProp);
         		if(!is_null($to)){
         			$toEmail = (string)$to->getOnePropertyValue($userMailProp);
         		}
@@ -321,14 +321,14 @@ class wfEngine_models_classes_NotificationService
         		$processName = '';
         		$processExec = $notificationResource->getOnePropertyValue($this->notificationProcessExecProp);
         		if($processExec instanceof core_kernel_classes_Resource){
-        			$process = $process->getOnePropertyValue($processExecutionOfProp);
+        			$process = $processExec->getOnePropertyValue($processExecutionOfProp);
         			if($process instanceof core_kernel_classes_Resource){
-        				$processName = $process->getLabel();
+        				$processName = $process->getLabel()." / ".$processExec->getLabel();
         			}
         		}
         		
         		//create the message instance
-        		$messages = array();
+        		
         		if(!empty($toEmail) && !empty($content)){
         			$message = new tao_helpers_transfert_Message();
         			$message->setTitle(__("[TAO Notification System] Process").' : '.$processName);

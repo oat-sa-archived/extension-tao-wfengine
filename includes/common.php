@@ -5,7 +5,6 @@
  * @license GPLv2  http://www.opensource.org/licenses/gpl-2.0.php
  * 
  */
-
 session_start();
 
 require_once 	dirname(__FILE__). "/config.php";

@@ -84,7 +84,7 @@ class ProcessExecutionTestCase extends UnitTestCase{
 		//delete processdef:
 		$authoringService->deleteProcess($processDefinition);
 		
-	}*/
+	}
 	
 	public function testCreateJoinProcess(){
 		
@@ -159,7 +159,7 @@ class ProcessExecutionTestCase extends UnitTestCase{
 		//delete processdef:
 		$authoringService->deleteProcess($processDefinition);
 	}
-	
+*/
 }
 
 ?>
