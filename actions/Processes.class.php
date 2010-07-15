@@ -39,8 +39,8 @@ class Processes extends WfModule
 		
 
 			$this->setData('processAuthoringData',$processAuthoringData);
+			// $this->setView('process_authoring_old.tpl');
 			$this->setView('process_authoring_old.tpl');
-
 
 	}
 

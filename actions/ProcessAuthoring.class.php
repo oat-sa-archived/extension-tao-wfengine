@@ -186,7 +186,7 @@ class ProcessAuthoring extends TaoModule {
 	}
 	
 	public function getActivityTree(){
-		$this->setView('process_tree_activity.tpl');
+		$this->setView('authoring/process_tree_activity.tpl');
 	}
 	
 	public function addActivity(){
@@ -277,7 +277,7 @@ class ProcessAuthoring extends TaoModule {
 	public function getSectionTrees(){
 		$section = $_POST["section"];
 		$this->setData('section', $section);
-		$this->setView('process_tree.tpl');
+		$this->setView('authoring/process_tree.tpl');
 	}
 	
 	public function editInstance(){
@@ -337,7 +337,7 @@ class ProcessAuthoring extends TaoModule {
 		
 		$this->setData('section', $formName);
 		$this->setData('formPlus', $myForm->render());
-		$this->setView('process_form_tree.tpl');
+		$this->setView('authoring/process_form_tree.tpl');
 	}
 	
 	public function editActivityProperty(){
@@ -374,14 +374,14 @@ class ProcessAuthoring extends TaoModule {
 					$this->setData('saved', true);
 					$this->setData('newLabel', $activity->getLabel());
 				}
-				$this->setView('process_form_property.tpl');
+				$this->setView('authoring/process_form_property.tpl');
 				return;
 			}
 		}
 		
 		
 		$this->setData('myForm', $myForm->render());
-		$this->setView('process_form_property.tpl');
+		$this->setView('authoring/process_form_property.tpl');
 	}
 	
 	public function saveActivityProperty($param = array()){
@@ -524,13 +524,13 @@ class ProcessAuthoring extends TaoModule {
 				
 				//replace with a clean template upload
 				$this->setData('saved', true);
-				$this->setView('process_form_property.tpl');
+				$this->setView('authoring/process_form_property.tpl');
 				return;
 			}
 		}
 		
 		$this->setData('myForm', $myForm->render());
-		$this->setView('process_form_property.tpl');
+		$this->setView('authoring/process_form_property.tpl');
 	}
 	
 	public function editConsistencyRule(){
@@ -539,7 +539,7 @@ class ProcessAuthoring extends TaoModule {
 
 		$this->setData('formId', $formName);
 		$this->setData('formConsistencyRule', $myForm->render());
-		$this->setView('process_form_consistencyRule.tpl');
+		$this->setView('authoring/process_form_consistencyRule.tpl');
 	}
 	
 	/**
@@ -747,7 +747,7 @@ class ProcessAuthoring extends TaoModule {
 		$this->setData('formId', $formName);
 		$this->setData('formInteractionService', $myForm->render());
 		$this->setData('servicesData', $servicesData);
-		$this->setView('process_form_interactiveServices.tpl');
+		$this->setView('authoring/process_form_interactiveServices.tpl');
 	}
 			
 	public function saveCallOfService($param = array()){
@@ -880,7 +880,7 @@ class ProcessAuthoring extends TaoModule {
 		
 		$this->setData('formId', $formName);
 		$this->setData('formConnector', $myForm->render());
-		$this->setView('process_form_connector.tpl');
+		$this->setView('authoring/process_form_connector.tpl');
 	}
 	
 	public function editInferenceRule(){
@@ -891,7 +891,7 @@ class ProcessAuthoring extends TaoModule {
 		
 		$this->setData('formId', $formName);
 		$this->setData('formInferenceRule', $myForm->render());
-		$this->setView('process_form_inferenceRule.tpl');
+		$this->setView('authoring/process_form_inferenceRule.tpl');
 	}
 	
 	protected function newActivityTransferData(core_kernel_classes_Resource $newActivity, $port=0){

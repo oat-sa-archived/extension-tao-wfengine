@@ -132,7 +132,7 @@ class Process extends TaoModule {
 			$this->setData('error', true);
 			$this->setData('errorMessage', $e);
 		}
-		$this->setView('process_authoring_tool.tpl');
+		$this->setView('authoring/process_authoring_tool.tpl');
 	}
 	
 	public function editProcessClass(){

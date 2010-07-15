@@ -135,16 +135,16 @@ class Service
 		$inParameterCollection = $this->resource->getPropertyValuesCollection(new core_kernel_classes_Property(PROPERTY_CALLOFSERVICES_ACTUALPARAMETERIN));
       	$token = $this->activityExecution->getToken();
 		//debug start
-		/*
-		echo 'token: ';var_dump($token);
-		$classActivityToken = new core_kernel_classes_Class(CLASS_TOKEN);
-		foreach($classActivityToken->getProperties() as $property){
-			$value = $token->getPropertyValuesCollection($property);
-			if(!$value->isEmpty()){
-				echo $property->getLabel().':';var_dump($value);echo '<br/>';
-			}
-		}
-		*/
+		
+		// echo 'token: ';var_dump($token);
+		// $classActivityToken = new core_kernel_classes_Class(CLASS_TOKEN);
+		// foreach($classActivityToken->getProperties() as $property){
+			// $value = $token->getPropertyValuesCollection($property);
+			// if(!$value->isEmpty()){
+				// echo $property->getLabel().':';var_dump($value);echo '<br/>';
+			// }
+		// }
+		
 		//debug end
 		
 		$this->input 	= array();

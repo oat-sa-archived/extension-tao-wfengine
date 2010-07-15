@@ -204,7 +204,7 @@ class ProcessPath
 		 
 		$processPathProp = new core_kernel_classes_Property(PROPERTY_PINSTANCES_PROCESSPATH);
 		$path = $processExecution->resource->getPropertyValues($processPathProp);
-
+		//replace processExecution by token:
 			
 		$explodeToken = '|';
 

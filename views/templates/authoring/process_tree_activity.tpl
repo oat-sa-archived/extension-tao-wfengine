@@ -6,7 +6,9 @@
 			
 <script type="text/javascript">
 	$(function(){
+		
 		initActivityTree();
+		
 	});
 	
 	function initActivityTree(){
@@ -28,9 +30,12 @@
 			deleteInferenceRuleAction: authoringControllerPath+"deleteInferenceRule",
 			deleteConsistencyRuleAction: authoringControllerPath+"deleteConsistencyRule",
 			setFirstActivityAction: authoringControllerPath+"setFirstActivity",
-			unsetLastActivityAction: authoringControllerPath+"unsetLastActivity"
+			createConnectorAction: authoringControllerPath+"addConnector"
 		});
 	}
+	
+	//link the tree to the activity diagram:
+	ActivityDiagramClass.relatedTree = 'tree-activity';
 	
 	function refreshActivityTree(){
 		$.tree.reference('#tree-activity').refresh();

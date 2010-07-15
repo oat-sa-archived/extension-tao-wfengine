@@ -77,7 +77,7 @@
 
 				//change to submit event interception would be "cleaner" than adding a button
 				$("#submit-<?=$sectionName?>-property").click(function(){
-					// console.log('data', $("#<?=$sectionName?>-property-form :input").serialize());
+					
 					$.ajax({
 						url: authoringControllerPath+'edit<?=ucfirst($sectionName)?>Property',
 						type: "POST",
@@ -116,7 +116,18 @@
 			});
 		</script>
 	<?else:?>
+		
+		<?if(get_data('newLabel')):?>
+			<script type="text/javascript">
+				//TODO: check if the label has been updated then replace it in the activity diagram object anyway:
+				
+				//for the time being, simply reload the whole diagram (not resource efficient):
+				ActivityDiagramClass.reloadDiagram();
+			</script>
+		<?endif;?>
+		
 		<p><?=ucfirst($sectionName)?> property saved</p>
+		
 	<?endif;?>
 </div>
 

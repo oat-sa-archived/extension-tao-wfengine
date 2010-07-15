@@ -5,6 +5,7 @@
 </div>
 
 <style type="text/css">
+/*
 	#checkbox_wrap {}
 	
 	#accordion1 {position:absolute;left:0%;top:0%;width:30%;height:100%;}
@@ -14,7 +15,7 @@
 	#demo {position:absolute;left:27%;top:1%;width:50%;height=auto;}
 	#process {position:absolute;left:78%;top:1%;width:21%;height=auto;}
 	#main {width:1000px;height:700px;}
-	
+*/
 </style>
 
 <script type="text/javascript">
@@ -27,7 +28,7 @@ $(function(){
 	
 	if(initalSelectedValue != 'none' && selectElement.length){
 		selectElement.change(function(e){
-			if(confirm(__("Sure?"))){
+			if(confirm(__("Do you want to change the connector type? \n THe child connectors will be deleted."))){
 				
 				// $("#<?=get_data("formId")?> :INPUT :gt(3)").attr("disabled","disabled");
 				$("select[id=<?=tao_helpers_Uri::encode(PROPERTY_CONNECTORS_TYPE)?>]").removeAttr("disabled");
@@ -46,6 +47,8 @@ $(function(){
 							// initActivityTree();
 							refreshActivityTree();
 							ActivityTreeClass.selectTreeNode(selectedNode);
+							
+							ActivityDiagramClass.loadDiagram();
 						}else{
 							$("#connector-form").html("save failed:" + response);
 						}
@@ -136,10 +139,13 @@ $(function(){
 				if(response.saved){
 					var selectedNode = $("#connectorUri").val();
 					$("#connector-form").html("connector saved");
-					// initActivityTree();
+					
+					ActivityDiagramClass.loadDiagram();
+					
 					refreshActivityTree();
-					// reselectActivityTree();
+					
 					ActivityTreeClass.selectTreeNode(selectedNode);
+					
 				}else{
 					$("#connector-form").html("connector save failed:" + response);
 				}
