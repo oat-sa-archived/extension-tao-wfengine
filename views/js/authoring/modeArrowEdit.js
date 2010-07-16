@@ -16,8 +16,10 @@ ModeArrowEdit.on = function(options){
 	
 	ModeArrowEdit.tempId = arrowId;
 	
-	//create the menu delete:
-	ModeArrowEdit.createArrowMenu(arrowId);
+	//create the menu delete only if the arrow comes from a connector (i.e. and not from an activity):
+	if(arrowId.indexOf('connector_')==0){
+		ModeArrowEdit.createArrowMenu(arrowId);
+	}
 	
 	//activate droppable points of the target object:
 	var arrow = ArrowClass.arrows[arrowId];
