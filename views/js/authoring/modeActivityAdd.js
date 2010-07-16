@@ -1,3 +1,5 @@
+// currently, no longer used
+
 ModeActivityAdd = [];
 ModeActivityAdd.tempId = '';
 

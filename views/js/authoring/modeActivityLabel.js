@@ -47,7 +47,6 @@ ModeActivityLabel.createLabelTextbox = function(activityId){
 	
 		var elementLabelId = ActivityDiagramClass.getActivityId('activityLabel', activityId);
 		var elementLabel = $('#'+elementLabelId);
-		// console.log('lbl', elementLabelId);
 		
 		if(elementLabel.length){
 			var currentLabel = elementLabel.text();

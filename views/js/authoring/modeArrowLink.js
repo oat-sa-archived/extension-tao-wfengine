@@ -239,10 +239,7 @@ ModeArrowLink.activateDroppablePoint = function(DOMElementId){
 	elt.css('display','block');
 	return elt.droppable({
 		over: function(event, ui) {
-			// console.dir(ui);
-			
 			var id = $(this).attr('id');
-			console.log(id);
 			
 			var startIndex = id.indexOf('_pos_');
 			var newType = id.substr(startIndex+5); 
@@ -266,11 +263,10 @@ ModeArrowLink.activateDroppablePoint = function(DOMElementId){
 			var startIndex = id.indexOf('_pos_');
 			var draggableId = ui.draggable.attr('id');
 			var arrowName = draggableId.substring(0,draggableId.indexOf('_tip'));
-			//console.dir(ArrowClass.tempArrows[arrowName]);
 			ArrowClass.tempArrows[arrowName].target = id;
 			ArrowClass.tempArrows[arrowName].targetObject = ArrowClass.getTargetFromId(id);
 			ArrowClass.tempArrows[arrowName].actualTarget = id;
-			//console.dir(ArrowClass.tempArrows[arrowName]);
+			
 			ModeArrowLink.targetObject = ArrowClass.getTargetFromId(id);
 		}
 	});
@@ -286,20 +282,19 @@ ModeArrowLink.save = function(){
 		// save the temporay arrow data into the actual arrows array:
 		if(ArrowClass.tempArrows[connectorId]){
 			if(!processUtil.isset(ModeArrowLink.targetObject)){
-				console.log('no arrow dropped');
+				// console.log('no arrow dropped');
+				throw 'no arrow dropped';
 				return false;
 			}else{
 				ArrowClass.saveTemporaryArrowToReal(connectorId);
 				
 				//save the connection information in the client side model:
 				var connectorId = ModeArrowLink.connector.id;
-				// console.dir(ActivityDiagramClass.connectors[connectorId]);
 				ActivityDiagramClass.connectors[connectorId].port[ModeArrowLink.connector.port] = {
 					"targetId":ModeArrowLink.targetObject,
 					"multiplicity":1,
 					"label": 'newly added'
 				};
-				// console.dir(ActivityDiagramClass.connectors[connectorId]);
 				
 				//save the connector
 				ActivityDiagramClass.saveConnector(connectorId);
@@ -309,26 +304,14 @@ ModeArrowLink.save = function(){
 			}
 		}
 	}
+	
 	//return to initial mode:
 	ModeArrowLink.tempId = 'empty';
 	ModeController.setMode('ModeInitial');
 	return true;
-	
-	//unquote section below when the communication with server is established:
-	/*
-	
-	//send the coordinate + label to server
-	//call processAuthoring/saveConnector:
-	
-	//on success, delete the temp activity:
-	update the local ActivityDiagramClass.connectors array:
-	
-	*/
 }
 
 ModeArrowLink.cancel = function(){
-	console.log('ModeArrowLink.cancel', ModeArrowLink);
-		
 	if(ModeArrowLink.tempId){
 		var connectorId = ModeArrowLink.tempId;
 		
@@ -346,7 +329,6 @@ ModeArrowLink.cancel = function(){
 			
 		}
 	}
-	
 	
 	ModeArrowLink.tempId = 'empty';
 	return true;

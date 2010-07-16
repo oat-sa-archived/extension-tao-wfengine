@@ -23,7 +23,6 @@ ModeArrowEdit.on = function(options){
 	var arrow = ArrowClass.arrows[arrowId];
 	if(arrow.target && arrow.targetObject){
 		var targetType = '';
-		// console.log(arrow.target, arrow.target.indexOf('connector_'));
 		if(arrow.target.indexOf('activity_')==0){
 			targetType = 'activity';
 		}else if(arrow.target.indexOf('connector_')==0){
@@ -37,7 +36,6 @@ ModeArrowEdit.on = function(options){
 	}
 	
 	ModeArrowEdit.createDraggableTempArrow(arrowId);
-	//console.dir(ArrowClass.tempArrows);
 	return true;
 }
 
@@ -77,13 +75,10 @@ ModeArrowEdit.createArrowMenu = function(arrowId){
 		label: "Delete",
 		icon: img_url + "delete.png",
 		action: function(arrowId){
-			console.log('delete => ',arrowId);
 			ModeArrowEdit.deleteArrow(arrowId);
 		},
 		autoclose: true
 	});
-	
-	// console.log('actions',actions);
 	
 	ModeActivityMenu.createMenu(
 		arrowId,
@@ -94,9 +89,7 @@ ModeArrowEdit.createArrowMenu = function(arrowId){
 	);
 	// ModeActivityMenu.existingMenu = new Array();
 	ModeActivityMenu.existingMenu[arrowId] = arrowId;
-	// console.log("created menus:", ModeActivityMenu.existingMenu);
 }
-
 
 //TODO: reverse if not dropped!
 ModeArrowEdit.createDraggableTempArrow = function(originId){
@@ -136,7 +129,6 @@ ModeArrowEdit.createDraggableTempArrow = function(originId){
 	}else{
 		throw 'the arrow '+originId+' does not exist';
 	}
-	
 }
 
 ModeArrowEdit.save = function(){
@@ -158,7 +150,6 @@ ModeArrowEdit.save = function(){
 }
 
 ModeArrowEdit.cancel = function(){
-	console.log('ModeArrowLink.cancel', ModeArrowEdit);
 		
 	if(ModeArrowEdit.tempId){
 		var connectorId = ModeArrowEdit.tempId;

@@ -27,8 +27,6 @@ ModeConnectorMove.on = function(options){
 	//destroy click event handler, to prevent activity menu from poping up:
 	ActivityDiagramClass.unsetConnectorMenuHandler(connectorId);
 	
-	// console.log(ArrowClass.arrows);
-	
 	var containerId = ActivityDiagramClass.getActivityId('connector', connectorId);
 	if(!$('#'+containerId).length){
 		throw 'The connector element '+containerId+' does not exist.';
@@ -59,8 +57,6 @@ ModeConnectorMove.getArrowsConnectedToConnector = function(connectorId){
 	
 	for(var arrowId in ArrowClass.arrows){
 		var arrow = ArrowClass.arrows[arrowId];
-		// console.dir(arrow);
-		// console.dir(ModeConnectorMove);
 		if(arrow.targetObject == connectorId || (arrowId.indexOf(bottomBorderPointIdPart))==0){
 			arrows[arrowId] = arrow;
 		}

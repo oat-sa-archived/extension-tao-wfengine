@@ -8,7 +8,6 @@ ModeController.setMode = function(mode, data){
 	
 	var modeObject = null;
 	if(!window[mode]){
-		console.log('modeObj['+mode+']', window[mode]);
 		return false;
 	}else{
 		modeObject = window[mode];
@@ -26,9 +25,8 @@ ModeController.setMode = function(mode, data){
 }
 
 ModeController.disable = function(mode){
-	console.log('disabling', mode);
+	// console.log('disabling', mode);
 	if(!window[mode]){
-		console.log('modeObj to disable '+mode+': ',window[mode]);
 		return false;
 	}else{
 		var modeObject = window[mode];
@@ -39,8 +37,8 @@ ModeController.disable = function(mode){
 	
 }
 
-ModeController.enable = function(mode, data){	
-	console.log('enabling', mode);
+ModeController.enable = function(mode, data){
+	// console.log('enabling', mode);
 	if(window[mode]){
 	
 		if(ActivityDiagramClass.setFeedbackMenu(mode)){

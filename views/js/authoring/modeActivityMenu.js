@@ -35,7 +35,6 @@ ModeActivityMenu.createActivityMenu = function(activityId){
 		label: "Define as the first activity",
 		icon: img_url + "flag-green.png",
 		action: function(actId){
-			console.log('isFirst => ',actId);
 			//then reload all:
 		}
 	});
@@ -67,11 +66,9 @@ ModeActivityMenu.createActivityMenu = function(activityId){
 		label: "Delete",
 		icon: img_url + "delete.png",
 		action: function(actId){
-			// console.log('delete => ',actId);
 			GatewayProcessAuthoring.deleteActivity(authoringControllerPath+"deleteActivity", ActivityDiagramClass.getActivityUri(actId));
 		}
 	});
-	// console.log('actions',actions);
 	
 	ModeActivityMenu.createMenu(
 		activityId,
@@ -81,7 +78,6 @@ ModeActivityMenu.createActivityMenu = function(activityId){
 	);
 	// ModeActivityMenu.existingMenu = new Array();
 	ModeActivityMenu.existingMenu[containerId] = containerId;
-	// console.log("created menus:", ModeActivityMenu.existingMenu);
 	
 	//depending if the activity had a connector or not, build the bottom menu:
 	var connectorActions = [];
@@ -94,9 +90,6 @@ ModeActivityMenu.createActivityMenu = function(activityId){
 			icon: img_url + "flag-red.png",
 			action: function(actId){
 				//go deleting the activity's connector:
-				//console.log('set as final & delete connector');
-				
-				
 				var activityConnectorUri = ActivityDiagramClass.getActivityUri(connectors[0]);
 				
 				if(confirm(__('Set the activity as a final one will delete its following connector. \n Are you sure?'))){
@@ -112,19 +105,9 @@ ModeActivityMenu.createActivityMenu = function(activityId){
 			icon: img_url + "process_connector.png",
 			action: function(actId, data){
 				//go deleting the activity's connector:
-				console.log('add connector adding submenu, displaying the types of available connector');
 				
 				//TODO: make it global array, feedale by a call of server action:
 				var typesOfConnectorSelectionActions = [];
-				
-				// var typesOfConnector = new Array();
-				// typesOfConnector[0] = 'sequence';
-				// typesOfConnector[1] = 'conditional';
-				// typesOfConnector[2] = 'parallel';
-				// typesOfConnector[3] = 'join';
-								
-				//close the top activity menu:
-				
 				
 				//create
 				typesOfConnectorSelectionActions.push({
@@ -204,7 +187,6 @@ ModeActivityMenu.createConnectorMenu = function(connectorId){
 		label: "Move",
 		icon: img_url + "move.png",
 		action: function(connectorId){
-			// console.log('move => ',connectorId);
 			ModeController.setMode('ModeConnectorMove', {"connectorId": connectorId});
 		}
 	});
@@ -220,7 +202,6 @@ ModeActivityMenu.createConnectorMenu = function(connectorId){
 		label: "Delete",
 		icon: img_url + "delete.png",
 		action: function(connectorId){
-			// console.log('delete => ',connectorId);
 			var connectorUri = ActivityDiagramClass.getActivityUri(connectorId);
 			if(confirm(__('Please confirm the deletion of the connector: \n child connectors will be delete at the same time'))){
 				GatewayProcessAuthoring.deleteConnector(authoringControllerPath+"deleteConnector", connectorUri);
@@ -292,7 +273,6 @@ ModeActivityMenu.createConnectorMenu = function(connectorId){
 								label: "New Activity",
 								icon: img_url + "process_activity.png",
 								action: function(id, data, e){
-									// console.log('ModeConnectedActivityAdd.on("activity", '+data.connectorId+', '+data.port+')');
 									ActivityDiagramClass.editConnector(data.connectorId, data.port, 'newActivity');
 									ActivityDiagramClass.saveConnector(data.connectorId);
 								}
@@ -306,7 +286,6 @@ ModeActivityMenu.createConnectorMenu = function(connectorId){
 								label: "New Connector",
 								icon: img_url + "process_connector.png",
 								action: function(id, data){
-									// console.log('ModeConnectedActivityAdd.on("connector", '+data.connectorId+', '+data.port+')');
 									ActivityDiagramClass.editConnector(data.connectorId, data.port, 'newConnector');
 									ActivityDiagramClass.saveConnector(data.connectorId);
 								}
@@ -328,7 +307,6 @@ ModeActivityMenu.createConnectorMenu = function(connectorId){
 									left:e.pageX - canvasPosition.left + ActivityDiagramClass.scrollLeft,
 									top:e.pageY - canvasPosition.top + ActivityDiagramClass.scrollTop
 								};
-								// ModeArrowLink.on(data.connectorId, data.port, position);
 								ModeController.setMode('ModeArrowLink', {"connectorId": connectorId, "port":data.port, "position":position});
 							}
 						});
@@ -383,7 +361,6 @@ ModeActivityMenu.createMenu = function(targetId, containerId, position, actions,
 	var autoclose = true;
 	var data = [];
 	if(options){
-		// console.log('options of the menu for '+containerId, options);
 		if(options.offset != null){
 			offset = options.offset;
 		}
@@ -473,9 +450,6 @@ ModeActivityMenu.createMenu = function(targetId, containerId, position, actions,
 			if(action.autoclose!=null){
 				autoclose = action.autoclose;//if the autoclose option is set, overwrite the value
 			}
-			// console.log('i:',i);
-			// console.log('action',action);
-			// console.log('autoclose',autoclose);
 			anchor.bind('click', {id:targetId, action:action.action, autoclose: autoclose, data:data}, function(event){
 				event.preventDefault();
 				event.stopPropagation();
@@ -503,7 +477,6 @@ ModeActivityMenu.removeMenu = function(containerId){
 }
 
 ModeActivityMenu.removeAllMenu = function(){
-	// console.log('menus to delete', ModeActivityMenu.existingMenu);
 	if(ModeActivityMenu.existingMenu){
 		for(containerId in ModeActivityMenu.existingMenu){
 			ModeActivityMenu.removeMenu(containerId);

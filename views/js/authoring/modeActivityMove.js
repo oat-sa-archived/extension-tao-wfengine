@@ -29,7 +29,6 @@ ModeActivityMove.on = function(options){
 	//destroy click event handler, to prevent activity menu from poping up:
 	ActivityDiagramClass.unsetActivityMenuHandler(activityId);
 	
-	// console.log(ArrowClass.arrows);
 	//transform the activity to draggable (with itself as a helper opacity .7)
 	var containerId = ActivityDiagramClass.getActivityId('container', activityId);
 	if(!$('#'+containerId).length){
@@ -40,9 +39,6 @@ ModeActivityMove.on = function(options){
 		handle: '#'+ActivityDiagramClass.getActivityId('activity', activityId),
 		scroll: true,
 		drag: function(event, ui){
-		
-			// console.log('position');console.dir($(this).position());
-			// console.log('offset');console.dir($(this).offset());
 			
 			//ondrag, update all connected arrows:
 			var activityId = ModeActivityMove.tempId;
@@ -65,8 +61,6 @@ ModeActivityMove.getArrowsConnectedToActivity = function(activityId){
 	var activityBottomBorderPointId = ActivityDiagramClass.getActivityId('activity',activityId,'bottom');
 	for(var arrowId in ArrowClass.arrows){
 		var arrow = ArrowClass.arrows[arrowId];
-		// console.dir(arrow);
-		// console.dir(ModeActivityMove);
 		if(arrow.targetObject == activityId || arrowId == activityBottomBorderPointId){
 			arrows[arrowId] = arrow;
 		}

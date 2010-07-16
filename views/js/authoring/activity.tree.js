@@ -206,7 +206,7 @@ function ActivityTreeClass(selector, dataUrl, options){
 										throw "no activity tree instance found";
 									}
 								}catch(error){
-									console.log(error);
+									// console.log(error);
 								}
 								
 							}
@@ -299,7 +299,7 @@ function ActivityTreeClass(selector, dataUrl, options){
 										throw "no activity tree instance found";
 									}
 								}catch(error){
-									console.log(error);
+									// console.log(error);
 								}
 								return false;
 							},
@@ -327,7 +327,7 @@ function ActivityTreeClass(selector, dataUrl, options){
 										throw "no activity tree instance found for the interactive service";
 									}
 								}catch(error){
-									console.log(error);
+									// console.log(error);
 								}
 												
 							}
@@ -567,7 +567,7 @@ function ActivityTreeClass(selector, dataUrl, options){
 
 	}
 	catch(exp){
-		console.log('ActivityTreeClass exception', exp);
+		// console.log('ActivityTreeClass exception', exp);
 	}
 }
 

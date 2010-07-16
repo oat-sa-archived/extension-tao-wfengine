@@ -29,7 +29,6 @@ ModeLinkedActivityAdd.on = function(connectorId, portId, position){
 	
 	//create a temporary arrow:
 	var activityTopBorderPtId = ActivityDiagramClass.getActivityId('activity', tempActivity.id, 'top');
-	console.log(connectorPortId, activityTopBorderPtId);
 	ArrowClass.tempArrows[connectorPortId] = ArrowClass.calculateArrow($('#'+connectorPortId),$('#'+activityTopBorderPtId), 'top', null, true);
 	ArrowClass.drawArrow(connectorPortId, {
 		container: ActivityDiagramClass.canvas,
@@ -55,7 +54,6 @@ ModeLinkedActivityAdd.on = function(connectorId, portId, position){
 			if(ModeLinkedActivityAdd.arrowId){
 				var arrow = ArrowClass.tempArrows[ModeLinkedActivityAdd.arrowId];
 				//recalculate and redraw it:
-				// console.log(ModeLinkedActivityAdd.arrowId, activityTopBorderPtId);
 				ArrowClass.tempArrows[ModeLinkedActivityAdd.arrowId] = ArrowClass.calculateArrow($('#'+ModeLinkedActivityAdd.arrowId), $('#'+activityTopBorderPtId), arrow.type, null, true);
 				ArrowClass.redrawArrow(ModeLinkedActivityAdd.arrowId, true);
 				
@@ -95,19 +93,5 @@ ModeLinkedActivityAdd.cancel = function(){
 ModeLinkedActivityAdd.save = function(){
 	console.log('ModeLinkedActivityAdd.save:', 'not implemented yet');
 	
-	//unquote section below when the communication with server is established:
-	/*
 	
-	//send the coordinate + label to server
-	//call processAuthoring/addActivity:
-	
-	//on success, delete the temp activity:
-	ModeLinkedActivityAdd.cancel();
-	
-	//draw the real activity:
-	positionData = 'positon of temp activity';
-	activityData = [];
-	newActivity = ActivityDiagramClass.feedActivity = function(activityData, positionData);//no need for array data since it is not connnected yet
-	ActivityDiagramClass.drawActivity(newActivity.id);	
-	*/
 }
