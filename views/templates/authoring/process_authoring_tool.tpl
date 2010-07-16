@@ -67,17 +67,10 @@
 		});
 		
 		try{
-			// ActivityDiagramClass.setActivityMenuHandler("ActivityTempId");
-			// console.log('ModeActivityMenu', ModeActivityMenu);
-			// ModeActivityMenu.on("ActivityTempId");
-			
-			// ActivityDiagramClass.feedDiagram();
-			// ActivityDiagramClass.drawDiagram();
 			ActivityDiagramClass.loadDiagram();
-			
 		}
 		catch(err){
-			console.log('feed&draw diagram exception', err);
+			// console.log('feed&draw diagram exception', err);
 		}
 		
 	});
@@ -182,7 +175,7 @@
 					ActivityDiagramClass.saveDiagram();
 				}
 			}catch(ex){
-				console.log('activityAdded exception:', ex);
+				// console.log('activityAdded exception:', ex);
 			}
 		});
 		
@@ -241,11 +234,11 @@
 				//save diagram:
 				ActivityDiagramClass.saveDiagram();
 			}catch(ex){
-				console.log('connectorAdded exception:', ex);
-				console.log('connector', connector);
-				console.log('originEltId', originEltId);
-				console.log('connectorId', connectorId);
-				console.log('arrowId', arrowId);
+				// console.log('connectorAdded exception:', ex);
+				// console.log('connector', connector);
+				// console.log('originEltId', originEltId);
+				// console.log('connectorId', connectorId);
+				// console.log('arrowId', arrowId);
 			}
 				
 		});
@@ -305,7 +298,7 @@
 				GatewayProcessAuthoring.addActivity(authoringControllerPath+"addActivity", processUri);
 			}
 			catch(err){
-				console.log('addactivity on click:', err);
+				// console.log('addactivity on click:', err);
 			}
 		});
 		
