@@ -74,11 +74,10 @@ $(function(){
 	
 	//add listener to check box (only if the type of connector is parallel):
 	if(initalSelectedValue == '<?=tao_helpers_Uri::encode(INSTANCE_TYPEOFCONNECTORS_PARALLEL)?>'){
-	
-		$('#<?=get_data("formId")?> input:checkbox').css('position','relative');
-		$('#<?=get_data("formId")?> input:checkbox').css('top','3.5px');
-		
-		$('#<?=get_data("formId")?> input:checkbox').each(function(){
+
+		checkboxeSelector = $("#<?=get_data('formId')?> input:checkbox[name^='parallel_activityUri']");
+		checkboxeSelector.css({ 'position' : 'relative', 'top' : '3.5px'});
+		checkboxeSelector.each(function(){
 			
 			var number = 9;
 			var checked = $(this).attr('checked');
@@ -104,8 +103,7 @@ $(function(){
 			
 		});
 		
-		
-		$('#<?=get_data("formId")?> input:checkbox').click(function(){
+		checkboxeSelector.click(function(){
 			var checked = $(this).attr('checked');
 			var id = $(this).val();
 			var input_id = id+'_num';
@@ -127,9 +125,7 @@ $(function(){
 	}
 	
 	
-	$("#submit-connector-<?=get_data("formId")?>").click(function(){
-		// console.log($("#<?=get_data("formId")?>").serialize());
-		
+	$("#submit-connector-<?=get_data('formId')?>").click(function(){
 		$.ajax({
 			url: authoringControllerPath+'saveConnector',
 			type: "POST",
