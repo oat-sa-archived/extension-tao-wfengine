@@ -1,10 +1,5 @@
 // alert('arrowClass loaded');
 
-//TODO: replace attribute 'name' by 'class'
-
-// var arrows = new Array();
-// var tempArrows = new Array();
-
 ArrowClass = new Object();
 ArrowClass.margin = 20;
 ArrowClass.arrows = [];
@@ -28,12 +23,8 @@ ArrowClass.updateArrow = function(arrowId){
 		ArrowClass.redrawArrow(arrowId);
 	}
 }
+
 ArrowClass.calculateArrow = function(point1, point2, type, flex, temp){
-	
-	//init values:
-	//type in array('left','top','right');
-	// alert("dsfdf"+type);
-	// type ='top';
 	
 	var p1 = ArrowClass.getCenterCoordinate(point1);
 	var p2 = ArrowClass.getCenterCoordinate(point2);
@@ -92,7 +83,7 @@ ArrowClass.calculateArrow = function(point1, point2, type, flex, temp){
 	}else{
 		flexPointNumber = 2;
 	}
-	// alert("flexPointNb: "+flexPointNumber+ ", Dx: "+ Dx+ ", Dy: "+ Dy);
+	//console.log("flexPointNb: "+flexPointNumber+ ", Dx: "+ Dx+ ", Dy: "+ Dy);
 	
 	
 	var arrow = new Array();
@@ -184,15 +175,6 @@ ArrowClass.calculateArrow = function(point1, point2, type, flex, temp){
 		}
 	}
 	
-	//modify the global array table
-	// ArrowClass.arrows[point1.attr('id')] = {
-		// 'target': point2.attr('id'),
-		// 'coord': arrow,
-		// 'type': type,
-		// 'flex': flexPoints
-	// }
-	
-	
 	return {
 			'targetObject': ArrowClass.getTargetFromId(point2.attr('id')),
 			'target': point2.attr('id'),
@@ -200,18 +182,6 @@ ArrowClass.calculateArrow = function(point1, point2, type, flex, temp){
 			'type': type,
 			'flex': flexPoints
 		};
-	// console.log('test',point1.attr('id'));
-	//console.log('x1',p1.x);
-	//console.log('y1',p1.y);
-	//console.log('x2',p2.x);
-	//console.log('y2',p2.y);
-	//console.log('Dx',Dx);
-	//console.log('Dy',Dy);
-	//console.log('flexPt', flexPointNumber);
-	//console.log('flex1', flex1);
-	//console.log('flex2', flex2);
-	// console.log('flex3', flex3);
-	//console.dir(arrows);
 }
 
 ArrowClass.getTargetFromId = function(destinationId){
@@ -229,67 +199,6 @@ ArrowClass.getTargetFromId = function(destinationId){
 	return targetObject;
 }
 
-function createArrow(origineId, position){
-
-	//initialize the arrow:
-	var left = 0;
-	var top = 0;
-	if(isset(position.left)){
-		left = position.left;
-	}
-	if(isset(position.top)){
-		top = position.top;
-	}
-	
-	//the origin of an arrow is always the bottom of the origine a connector
-	
-	//add the arrow tip element
-	var tipId = origineId + '_tip';
-	var elementTip = $('<div id="'+tipId+'"></div>');//put connector id here instead
-	elementTip.addClass('diagram_arrow_tip');
-	elementTip.css('position', 'absolute');
-	elementTip.css('left', Math.round(left)+'px');
-	elementTip.css('top', Math.round(top)+'px');
-	elementTip.appendTo(canvas);
-	
-	//calculate the initial position & draw it
-	calculateArrow($('#'+origineId), elementTip, 'top', null);//default value of the 'type' set to 'top' ...
-	drawArrow(origineId, {
-		container: canvas,
-		arrowWidth: 1
-	});
-	
-	//transform to draggable
-	$('#'+elementTip.attr('id')).draggable({
-		snap: '.diagram_activity_droppable',
-		snapMode: 'inner',
-		drag: function(event, ui){
-			
-			// var position = $(this).position();
-			// $("#message").html("<p> left: "+position.left+", top: "+position.top+"</p>");
-			var id = $(this).attr('id');
-			var arrowName = id.substring(0,id.indexOf('_tip'));
-			
-			var arrow = arrows[arrowName];
-			
-			//TODO edit 'type' at the same time:
-			
-			removeArrow(arrowName);
-			calculateArrow($('#'+arrowName), $(this), arrow.type, null);
-			drawArrow(arrowName, {
-				container: canvas,
-				arrowWidth: 1
-			});
-		},
-		containment: canvas,
-		stop: function(event, ui){
-			var id = $(this).attr('id');
-			var arrowName = id.substring(0,id.indexOf('_tip'));
-			getDraggableFlexPoints(arrowName);
-		}
-	});
-	
-}
 ArrowClass.redrawArrow = function(activityId, temp, options){
 	if(temp){
 		ArrowClass.removeArrow(activityId, false, true);
@@ -358,7 +267,7 @@ ArrowClass.drawArrow = function(arrowName, options){
 			}
 		}
 		
-		//draw the extremity: the tip (a picture?)
+		//TODO: draw the extremity: the tip (a picture?)
 	}
 	
 }
@@ -406,7 +315,7 @@ ArrowClass.drawHorizontalLine = function(p1, p2, options){
 ArrowClass.drawArrowPart = function(border,left,top,width,height,container,name,arrowPartIndex,classes){
 	
 	if(container && name){
-	//"#"+arrowName+"_arrowPart_"+arrowPartIndex
+	
 		var borderStr = Math.round(border)+'px '+'solid'+' '+'red';
 		var element = $('<div id="'+name+'_arrowPart_'+arrowPartIndex+'"></div>');
 		element.addClass(name);
@@ -416,7 +325,7 @@ ArrowClass.drawArrowPart = function(border,left,top,width,height,container,name,
 				element.addClass(classes[i]);
 			}
 		}
-		// element.css('border', borderStr);//no border
+		
 		element.css('position', 'absolute');
 		element.css('background-color', 'black');
 		element.css('left', Math.round(left)+'px');
@@ -442,8 +351,6 @@ ArrowClass.removeArrow = function(name, complete, temp){
 	if(!processUtil.isset(temp)){
 		temp = false;
 	}
-	// console.log('complete', complete);
-	// console.log('temp', temp);
 	
 	if(temp){
 		if(complete){
@@ -466,12 +373,13 @@ ArrowClass.getDraggableFlexPoints = function(tempArrowName){
 	for(i=1;i<=arrow.flex.length;i++){
 		
 		if(isset(arrow.flex[i])){
+			
 			if(i%2){
 				//vertical only:
-				authorizedAxis = 'y';
+				var authorizedAxis = 'y';
 			}else{
 				//horizontal only:
-				authorizedAxis = 'x';
+				var authorizedAxis = 'x';
 			}
 			
 			var arrowPartIndex = i + 1 ;
@@ -482,10 +390,6 @@ ArrowClass.getDraggableFlexPoints = function(tempArrowName){
 			var handleElement = $('<div id="'+dragHandleId+'"/>');
 			handleElement.addClass(tempArrowName);
 			handleElement.addClass('flex_point');
-			// var borderStr = '1px '+'solid'+' '+'green';
-			// handleElement.css('border', borderStr);
-			// handleElement.css('width', '5px');
-			// handleElement.css('height', '5px');
 			handleElement.appendTo("#"+arrowPartId);
 			$('#'+dragHandleId).position({
 				of: "#"+arrowPartId,
@@ -523,9 +427,7 @@ ArrowClass.getDraggableFlexPoints = function(tempArrowName){
 					var id = $(this).attr('id');
 					var tempIndex = parseInt(id.substr(id.lastIndexOf("arrowPart_")+10)) - 1;
 					
-					// arrowNameTemp = $(this).attr('name');
 					var arrowNameTemp = id.substring(0,id.indexOf('_arrowPart_'));
-					// console.log(arrowNameTemp);
 					var arrowTemp = ArrowClass.tempArrows[arrowNameTemp];
 					var flexPoints = ArrowClass.editArrowFlex(arrowNameTemp, tempIndex, offset);
 					
@@ -543,9 +445,6 @@ ArrowClass.getDraggableFlexPoints = function(tempArrowName){
 			break;
 		}
 	}
-	//clear momemory:
-	arrowName = '';
-	authorizedAxis = '';
 }
 
 ArrowClass.getCenterCoordinate = function(element){
@@ -609,9 +508,6 @@ ArrowClass.editArrowFlex = function(arrowName, flexPosition, offset){
 						target = ArrowClass.getCenterCoordinate($('#'+arrow.target));
 						origin = ArrowClass.getCenterCoordinate($('#'+arrowName));
 						Dx = (target.x + offset) - origin.x;
-						// console.log(Dx);
-						// console.dir(target);
-						// console.dir(origin);
 						if(Dx > 0 && arrow.type=='left'){
 							continue;
 						}
@@ -663,28 +559,6 @@ ArrowClass.saveTemporaryArrowToReal = function(arrowId){
 	}
 }
 
-/*
-ArrowClass.editArrowType = function(arrowName, newType, temp){
-	//newType in left, top, right
-	
-		arrowTemp = ArrowClass.arrows[arrowName];
-		if(isset(arrowTemp)){
-			// calculateArrow($("#"+arrowNameTemp), $("#"+arrowTemp.target), newType);
-			ArrowClass.arrows[arrowName].type = newType;
-		}
-	}else{
-		arrowTemp = ArrowClass.tempArrows[arrowName];
-		if(isset(arrowTemp)){
-			// calculateArrow($("#"+arrowNameTemp), $("#"+arrowTemp.target), newType);
-			ArrowClass.tempArrows[arrowName].type = newType;
-		}
-	}
-	
-	
-	// console.dir(arrowTemp);
-	//do not forget to draw it when done;
-}*/
-
 ArrowClass.getArrow = function(arrowName, temp){
 	
 	var arrow = null;
@@ -706,6 +580,3 @@ ArrowClass.getArrow = function(arrowName, temp){
 	return arrow;
 }
 
-function editArrowClass(){
-
-}
