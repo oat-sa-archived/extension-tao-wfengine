@@ -307,7 +307,11 @@ class wfEngine_models_classes_NotificationService
         		$content = '';
         		$connector = $notificationResource->getOnePropertyValue($this->notificationConnectorProp);
         		if(!is_null($connector)){
-        			$content = (string)$connector->getOnePropertyValue($connectorNotificationMessageProp);
+        			foreach($connector->getPropertyValues(new core_kernel_classes_Property(PROPERTY_CONNECTOR_NOTIFICATION_MESSAGE)) as $content){
+        				if(strlen(trim($content)) > 0){
+        					break;
+        				}
+        			}
         		}
         		
         		//get the email of the user

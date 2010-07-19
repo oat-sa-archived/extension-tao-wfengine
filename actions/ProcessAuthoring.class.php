@@ -1184,8 +1184,12 @@ class ProcessAuthoring extends TaoModule {
 		if(isset($data['notify_set'])){
 			
 			//save //save messsage messsage
-			$connectorInstance->editPropertyValues(new core_kernel_classes_Property(PROPERTY_CONNECTOR_NOTIFICATION_MESSAGE), $data[PROPERTY_CONNECTOR_NOTIFICATION_MESSAGE]);
-			
+			if(trim($data[PROPERTY_CONNECTOR_NOTIFICATION_MESSAGE]) == ''){
+				$connectorInstance->removePropertyValues(new core_kernel_classes_Property(PROPERTY_CONNECTOR_NOTIFICATION_MESSAGE));
+			}
+			else{
+				$connectorInstance->editPropertyValues(new core_kernel_classes_Property(PROPERTY_CONNECTOR_NOTIFICATION_MESSAGE), $data[PROPERTY_CONNECTOR_NOTIFICATION_MESSAGE]);
+			}
 			//notification modes
 			$modes = array();
 			$expression = "/^".preg_quote(PROPERTY_CONNECTOR_NOTIFY, '/')."/";
