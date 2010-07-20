@@ -91,7 +91,7 @@ ModeLinkedActivityAdd.cancel = function(){
 
 
 ModeLinkedActivityAdd.save = function(){
-	console.log('ModeLinkedActivityAdd.save:', 'not implemented yet');
+	//console.log('ModeLinkedActivityAdd.save:', 'not implemented yet');
 	
 	
 }

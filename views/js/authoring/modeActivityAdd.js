@@ -40,7 +40,7 @@ ModeActivityAdd.on = function(){
 }
 
 ModeActivityAdd.save = function(){
-	console.log('ModeActivityAdd.save:', 'not implemented yet');
+	//console.log('ModeActivityAdd.save:', 'not implemented yet');
 	
 	//unquote section below when the communication with server is established:
 	/*

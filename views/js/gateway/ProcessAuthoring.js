@@ -15,7 +15,7 @@ GatewayProcessAuthoring.addActivity = function(url, processUri){
 			if (response.uri) {
 				EventMgr.trigger('activityAdded', response);
 			}else{
-				console.log('error in adding an activity');
+				//console.log('error in adding an activity');
 			}
 		}
 	});
@@ -59,7 +59,7 @@ GatewayProcessAuthoring.addConnector = function(url, prevActivityUri,typeOfConne
 			if (response.uri) {
 				EventMgr.trigger('connectorAdded', response);
 			}else{
-				console.log('error in adding a connector');
+				//console.log('error in adding a connector');
 			}
 		}
 	});
