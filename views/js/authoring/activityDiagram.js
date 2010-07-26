@@ -113,7 +113,6 @@ ActivityDiagramClass.feedDiagram = function(processData){
 }
 
 ActivityDiagramClass.feedActivity = function(activityData, positionData, arrowData){
-		
 	
 	if(activityData.attributes.id){
 		
@@ -543,14 +542,13 @@ ActivityDiagramClass.feedConnector = function(connectorData, positionData, prevA
 	if(!connectorData.type){
 		throw 'no connector type  found in connectorData';
 	}
-	ActivityDiagramClass.connectors[connectorId].type = connectorData.type;
-
+	ActivityDiagramClass.connectors[connectorId].type = connectorData.type.toLowerCase();
 	ActivityDiagramClass.connectors[connectorId].activityRef = activityRefId;//get the real activity reference instead
 	ActivityDiagramClass.connectors[connectorId].previousActivity = prevActivityId;
 	
 //do not draw connector here, feed them first until everything is fed:
 	
-	//inti port value:
+	//init port value:
 	ActivityDiagramClass.connectors[connectorId].port = new Array();
 	
 	//check if the connector has another connector:
@@ -561,6 +559,16 @@ ActivityDiagramClass.feedConnector = function(connectorData, positionData, prevA
 			if(!nextActivityData.attributes){
 				continue; //should be a non activity nor connector node:
 			}
+			
+			//check if there is need for feeding the condition:
+			//if it is a conditional connector, store the condition:
+			if(ActivityDiagramClass.connectors[connectorId].type == 'conditional'){
+				if(nextActivityData.attributes.id && nextActivityData.attributes.class=='node-rule'){
+					//the condition node has been found:
+					ActivityDiagramClass.connectors[connectorId].condition = nextActivityData.data;
+				}
+			}
+			
 			if(nextActivityData.attributes.id && nextActivityData.attributes.class=='node-connector'){
 				//recursively continue with the connector of connector:
 				ActivityDiagramClass.feedConnector(nextActivityData, positionData, connectorId, arrowData, activityRefId);//use the current connector as the activityRef of the child connector
@@ -1078,6 +1086,9 @@ ActivityDiagramClass.drawConnector = function(connectorId, position, connectorTy
 	var elementConnectorId = ActivityDiagramClass.getActivityId('connector', connectorId);
 	
 	var elementConnector = $('<div id="'+elementConnectorId+'"></div>');//put connector id here instead
+	if(ActivityDiagramClass.connectors[connectorId].condition){
+		elementConnector.attr('title', ActivityDiagramClass.connectors[connectorId].condition);
+	}
 	elementConnector.addClass('diagram_connector');
 	elementConnector.addClass(connectorTypeDescription.className);
 	elementConnector.addClass(elementActivityId);
@@ -1119,7 +1130,7 @@ ActivityDiagramClass.drawConnector = function(connectorId, position, connectorTy
 	
 	//set the border points:
 	for(i=0; i<connectorTypeDescription.portNumber; i++){
-		ActivityDiagramClass.setBorderPoint(connectorId, 'connector', 'bottom', Math.round(offsetStart+i*offsetStep), i);
+		ActivityDiagramClass.setBorderPoint(connectorId, 'connector', 'bottom', Math.round(offsetStart+i*offsetStep), i, connectorTypeDescription.portNames[i]);
 	}
 	
 }
@@ -1205,7 +1216,7 @@ ActivityDiagramClass.getConnectorTypeDescription = function(connector){
 		};
 }
 
-ActivityDiagramClass.setBorderPoint = function(targetId, type, position, offset, port){
+ActivityDiagramClass.setBorderPoint = function(targetId, type, position, offset, port, portName){
 	
 	var pos = '';
 	var	my = '';
@@ -1257,6 +1268,9 @@ ActivityDiagramClass.setBorderPoint = function(targetId, type, position, offset,
 	var containerId = ActivityDiagramClass.getActivityId(type, targetId);	//which add the point to the element
 	var pointId = ActivityDiagramClass.getActivityId(type, targetId, pos, portSet);
 	var elementPoint = $('<div id="'+pointId+'"></div>');//put connector id here instead
+	if(portName){
+		elementPoint.attr('title', portName);
+	}
 	elementPoint.addClass('diagram_activity_border_point');
 	elementPoint.appendTo('#'+containerId).position({
 		my: my,
@@ -1303,6 +1317,10 @@ ActivityDiagramClass.setFeedbackMenu = function(mode){
 				ModeInitial.save();
 			});
 			$("#feedback_menu_cancel").parent().remove();
+			$('<li><a id="feedback_menu_addActivity" class="feedback_menu_list_element" href="#">Add Activity</a></li>').appendTo(eltList).click(function(event){
+				GatewayProcessAuthoring.addActivity(authoringControllerPath+"addActivity", processUri);
+			});
+			
 			break;
 		}
 		case 'ModeActivityLabel':{

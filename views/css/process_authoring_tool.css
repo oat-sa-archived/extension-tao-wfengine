@@ -1,14 +1,18 @@
+.ui-accordion .ui-accordion-content {
+	padding: 5px 5px;
+}
+/*
 #draggable {width:5px;height:5px;border:1px solid blue;}
 #draggable1 {width:5px;height:5px;border:1px solid blue;}
-
-#accordion1 {position:absolute;left:0%;top:0%;width:15%;height:100%;}
-#accordion_container_2 {position:absolute;left:75%;top:0%;width:25%;height:100%;}
+*/
+#accordion1 {position:absolute;left:0%;top:0%;width:19%;height:100%;}
+#accordion_container_2 {position:absolute;left:76%;top:0%;width:24%;height:100%;}
 #process_center_panel{
 	position:absolute;
 	top:0%;
-	left:15%;
+	left:19%;
 	height:95%;
-	width:60%;
+	width:57%;
 }
 
 #process_diagram_feedback {
@@ -35,6 +39,12 @@
 #process {position:absolute;left:78%;top:1%;width:21%;height=auto;}
 #main {width:1000px;height:700px;}
 
+#feedback_message_container{
+	padding:3px 5px 3px 10px;
+}
+#feedback_menu_list_container{
+	padding:3px 10px 3px 5px;
+}
 .diagram_arrow_tip {width:8px;height:8px;border:1px solid red;background-color:#CF0606;}
 .diagram_activity {
 	width:120px;

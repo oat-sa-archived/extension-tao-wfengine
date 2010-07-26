@@ -110,9 +110,6 @@
 	<div id="accordion2" style="font-size:0.8em;">
 		<h3><a href="#"><?=__('Activity Editor')?></a></h3>
 		<div>
-			<div id="activity_menu">
-				<a href="#" id="activity_menu_addActivity">Add Activity</a><br/><br/>
-			</div>
 			<div id="activity_tree"/>
 			<div id="activity_form"/>
 		</div>
@@ -290,15 +287,6 @@
 			}
 		});
 		
-		$("#activity_menu_addActivity").click(function(event){
-			try{
-				event.preventDefault();
-				GatewayProcessAuthoring.addActivity(authoringControllerPath+"addActivity", processUri);
-			}
-			catch(err){
-				// console.log('addactivity on click:', err);
-			}
-		});
 		
 		$("#accordion1").accordion({
 			fillSpace: false,

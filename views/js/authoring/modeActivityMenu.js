@@ -31,13 +31,12 @@ ModeActivityMenu.createActivityMenu = function(activityId){
 	var actions = [];
 	
 	//if is not the first activity:
-	actions.push({
-		label: "Define as the first activity",
-		icon: img_url + "flag-green.png",
-		action: function(actId){
-			//then reload all:
-		}
-	});
+	// actions.push({
+		// label: "Define as the first activity",
+		// icon: img_url + "flag-green.png",
+		// action: function(actId){
+		// }
+	// });
 	// actions.push({
 		// label: "Define as a last activity",
 		// icon: img_url + "flag-red.png",
