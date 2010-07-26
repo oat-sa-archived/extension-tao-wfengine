@@ -43,13 +43,11 @@
 	<script type="text/javascript" src="<?=PROCESS_SCRIPT_URL?>modeController.js"></script>
 	<script type="text/javascript" src="<?=PROCESS_SCRIPT_URL?>modeInitial.js"></script>
 	<script type="text/javascript" src="<?=PROCESS_SCRIPT_URL?>modeActivityLabel.js"></script>
-	<script type="text/javascript" src="<?=PROCESS_SCRIPT_URL?>modeActivityAdd.js"></script>
 	<script type="text/javascript" src="<?=PROCESS_SCRIPT_URL?>modeActivityMenu.js"></script>
 	<script type="text/javascript" src="<?=PROCESS_SCRIPT_URL?>modeArrowLink.js"></script>
 	<script type="text/javascript" src="<?=PROCESS_SCRIPT_URL?>modeActivityMove.js"></script>
 	<script type="text/javascript" src="<?=PROCESS_SCRIPT_URL?>modeConnectorMove.js"></script>
 	<script type="text/javascript" src="<?=PROCESS_SCRIPT_URL?>modeArrowEdit.js"></script>
-	<script type="text/javascript" src="<?=PROCESS_SCRIPT_URL?>modeLinkedActivityAdd.js"></script>
 	
 	<script type="text/javascript">
 	//init:
