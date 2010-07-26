@@ -35,21 +35,33 @@ ModeConnectorMove.on = function(options){
 		containment: ActivityDiagramClass.canvas,
 		scroll: true,
 		drag: function(event, ui){
-			//ondrag, update all connected arrows:
 			var connectorId = ModeConnectorMove.tempId;
-			
-			//arrows that are connected to that activity:
-			var arrows = ModeConnectorMove.getArrowsConnectedToConnector(connectorId);
-			for(arrowId in arrows){
-				var arrow = ArrowClass.arrows[arrowId];
-				ArrowClass.arrows[arrowId] = ArrowClass.calculateArrow($('#'+arrowId), $('#'+arrow.target), arrow.type, new Array(), false);
-				ArrowClass.redrawArrow(arrowId);
-			}
+			$('#'+ActivityDiagramClass.getActivityId('connector', connectorId)).addClass('diagram_activity_drag');
+			ModeConnectorMove.updateConnectedArrows(connectorId);
+		},
+		stop: function(event, ui){
+			var connectorId = ModeConnectorMove.tempId;
+			ModeConnectorMove.updateConnectedArrows(ModeConnectorMove.tempId);
+			$('#'+ActivityDiagramClass.getActivityId('connector', connectorId)).removeClass('diagram_activity_drag');
 		}
 	});
 	
 	return true;
 }
+
+ModeConnectorMove.updateConnectedArrows = function(connectorId){
+	if(ActivityDiagramClass.isConnector(connectorId)){
+		var arrows = ModeConnectorMove.getArrowsConnectedToConnector(connectorId);
+		for(arrowId in arrows){
+			var arrow = ArrowClass.arrows[arrowId];
+			ArrowClass.arrows[arrowId] = ArrowClass.calculateArrow($('#'+arrowId), $('#'+arrow.target), arrow.type, new Array(), false);
+			ArrowClass.redrawArrow(arrowId);
+		}
+	}else{
+		throw 'no valid connector id to update arrows';
+	}
+}
+
 
 ModeConnectorMove.getArrowsConnectedToConnector = function(connectorId){
 	var arrows = [];

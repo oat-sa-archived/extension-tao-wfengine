@@ -1,4 +1,4 @@
-// alert('ModeActivityMove loaded');
+//alert('ModeActivityMove loaded');
 
 ModeActivityMove = [];
 ModeActivityMove.tempId = '';
@@ -39,21 +39,32 @@ ModeActivityMove.on = function(options){
 		handle: '#'+ActivityDiagramClass.getActivityId('activity', activityId),
 		scroll: true,
 		drag: function(event, ui){
-			
-			//ondrag, update all connected arrows:
 			var activityId = ModeActivityMove.tempId;
-			
-			//arrows that are connected to that activity:
-			var arrows = ModeActivityMove.getArrowsConnectedToActivity(activityId);
-			for(arrowId in arrows){
-				var arrow = ArrowClass.arrows[arrowId];
-				ArrowClass.arrows[arrowId] = ArrowClass.calculateArrow($('#'+arrowId), $('#'+arrow.target), arrow.type, new Array(), false);
-				ArrowClass.redrawArrow(arrowId);
-			}
+			//add transparent class:
+			$('#'+ActivityDiagramClass.getActivityId('activity', activityId)).addClass('diagram_activity_drag');
+			ModeActivityMove.updateConnectedArrows(activityId);
+		},
+		stop: function(event, ui){
+			var activityId = ModeActivityMove.tempId;
+			ModeActivityMove.updateConnectedArrows(activityId);
+			$('#'+ActivityDiagramClass.getActivityId('activity', activityId)).removeClass('diagram_activity_drag');
 		}
 	});
 	
 	return true;
+}
+
+ModeActivityMove.updateConnectedArrows = function(activityId){
+	if(ActivityDiagramClass.isActivity(activityId)){
+		var arrows = ModeActivityMove.getArrowsConnectedToActivity(activityId);
+		for(arrowId in arrows){
+			var arrow = ArrowClass.arrows[arrowId];
+			ArrowClass.arrows[arrowId] = ArrowClass.calculateArrow($('#'+arrowId), $('#'+arrow.target), arrow.type, new Array(), false);
+			ArrowClass.redrawArrow(arrowId);
+		}
+	}else{
+		throw 'no valid activity id to update arrows';
+	}
 }
 
 ModeActivityMove.getArrowsConnectedToActivity = function(activityId){

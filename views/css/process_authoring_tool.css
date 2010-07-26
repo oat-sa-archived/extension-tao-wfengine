@@ -52,6 +52,15 @@
 	border:1px solid black;
 	background-color:#F3FF8A;
 }
+
+.diagram_activity_drag{
+	/* for IE */
+	filter:alpha(opacity=60);
+	/* CSS3 standard */
+	opacity:0.6;
+	z-index:100;
+}
+
 .diagram_activity_final {
 	background-color:#F78686;
 }
