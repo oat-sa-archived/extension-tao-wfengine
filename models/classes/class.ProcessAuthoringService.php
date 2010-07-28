@@ -127,7 +127,7 @@ class wfEngine_models_classes_ProcessAuthoringService
 		$callOfServiceClass = new core_kernel_classes_Class(CLASS_CALLOFSERVICES);
 		
 		//create new resource for the property value of the current call of service PROPERTY_CALLOFSERVICES_ACTUALPARAMIN or PROPERTY_CALLOFSERVICES_ACTUALPARAMOUT
-		$callOfService = $callOfServiceClass->createInstance("InteractiveService_$number", "created by ProcessAuthoringService.Class");
+		$callOfService = $callOfServiceClass->createInstance($activity->getLabel()."_service_".$number, "created by ProcessAuthoringService.Class");
 		
 		if(!empty($callOfService)){
 			//associate the new instance to the activity instance
@@ -378,6 +378,12 @@ class wfEngine_models_classes_ProcessAuthoringService
 		}
 		foreach($activity->getPropertyValuesCollection(new core_kernel_classes_Property(PROPERTY_ACTIVITIES_ONAFTERINFERENCERULE))->getIterator() as $inferenceRule){
 			$this->deleteInferenceRule($inferenceRule);
+		}
+		
+		//delete call of service!!
+		$interactiveServices = $activity->getPropertyValuesCollection(new core_kernel_classes_Property(PROPERTY_ACTIVITIES_INTERACTIVESERVICES));
+		foreach($interactiveServices->getIterator() as $service){
+			$service->delete();
 		}
 		
 		//delete activity itself:
