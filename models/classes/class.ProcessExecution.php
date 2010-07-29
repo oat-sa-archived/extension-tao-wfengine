@@ -260,11 +260,11 @@ extends WfResource
 		}
 		
 		
-		$connectorsUri = $this->getNextConnectorsUri($activityDefinition->uriResource);
+		$nextConnectorUri = $this->getNextConnectorsUri($activityDefinition->uriResource);
 		
 		$token = $tokenService->getCurrent($activityExecutionResource);
 		$arrayOfProcessVars[VAR_PROCESS_INSTANCE] = $token->uriResource;
-		$newActivities = $this->getNewActivities($arrayOfProcessVars, $connectorsUri);
+		$newActivities = $this->getNewActivities($arrayOfProcessVars, $nextConnectorUri);
 		
 		if($newActivities === false){
 			//means that the process must be paused:
@@ -273,21 +273,23 @@ extends WfResource
 		}
 		
 		
-		//actual transition starting from here:
+		// The actual transition starts here:
 		
 		$connector = null;
-		if(count($connectorsUri) > 0){
-			$connector = new core_kernel_classes_Resource(array_pop($connectorsUri));
+		if(!empty($nextConnectorUri)){
+			$connector = new core_kernel_classes_Resource($nextConnectorUri);
+		
 			$nextActivities = array();
 			foreach($newActivities as $newActivity){
 				$nextActivities[] = $newActivity->resource;
 			}
 			
-			//transition done here the tokens are "moved" to the next step:
+			//transition done here the tokens are "moved" to the next step: even when it is the last, i.e. newActivity empty
 			$tokenService->move($connector, $nextActivities, $currentUser, $this->resource);
 			
 			//trigger the notifications
 			$notificationService->trigger($connector, $this->resource);
+			
 		}
 		
 		//transition done: now get the following activities:
@@ -386,152 +388,143 @@ extends WfResource
 	
 	/**
 	 * @param $arrayOfProcessVars
-	 * @param $nextConnectors
+	 * @param $nextConnectorUri
 	 * @return array of Activity or Boolean (false) 
 	 */
-	private function getNewActivities($arrayOfProcessVars, $nextConnectors)
+	private function getNewActivities($arrayOfProcessVars, $nextConnectorUri)
 	{
 		$newActivities = array();
-		foreach ($nextConnectors as $connUri){
-
-			$connector = new Connector($connUri);
-			
-			$connType = $connector->getType();
-			if(!($connType instanceof core_kernel_classes_Resource)){
-				throw new common_Exception('Connector type should be a Resource');
+		if(empty($nextConnectorUri)){
+			return $newActivities;//certainly the last activity
+		}
+		
+		$connector = new Connector($nextConnectorUri);
+		
+		$connType = $connector->getType();
+		if(!($connType instanceof core_kernel_classes_Resource)){
+			var_dump($nextConnectorUri, $connector, $connType);
+			throw new common_Exception('Connector type must be a Resource');
+		}
+		$this->logger->debug('Next Connector Type : ' . $connType->getLabel(),__FILE__,__LINE__);
+		
+		
+		switch ($connType->uriResource) {
+			case CONNECTOR_SPLIT : {
+				$newActivities = $this->getSplitConnectorNewActivity($arrayOfProcessVars,$nextConnectorUri);
+				break;
 			}
-			$this->logger->debug('Next Connector Type : ' . $connType->getLabel(),__FILE__,__LINE__);
+			case CONNECTOR_LIST_UP:
+			case CONNECTOR_LIST : {
+
+				$newActivities = $this->getListConnectorNewActivity($arrayOfProcessVars,$connector);
+
+				break;
+			}
+			case INSTANCE_TYPEOFCONNECTORS_PARALLEL : {
+
+				$nextActivitesCollection = $connector->getNextActivities();
+				// var_dump($nextActivitesCollection);
+				foreach ($nextActivitesCollection->getIterator() as $activityResource){
+					$newActivities[] = 	new Activity($activityResource->uriResource);
+				}
+				
+				break;
+			}
+			case INSTANCE_TYPEOFCONNECTORS_JOIN : {
 			
-			
-			switch ($connType->uriResource) {
-				case CONNECTOR_SPLIT : {
-					$newActivities = $this->getSplitConnectorNewActivity($arrayOfProcessVars,$connUri);
-					break;
-				}
-				case CONNECTOR_LIST_UP:
-				case CONNECTOR_LIST : {
-
-					$connector = new Connector($connUri);
-					$newActivities = $this->getListConnectorNewActivity($arrayOfProcessVars,$connector);
-
-					break;
-				}
-				case INSTANCE_TYPEOFCONNECTORS_PARALLEL : {
-					//TODO
-					// echo 'work in progress to parallel';
-					$connector = new Connector($connUri);
-
-					$nextActivitesCollection = $connector->getNextActivities();
-					// var_dump($nextActivitesCollection);
-					foreach ($nextActivitesCollection->getIterator() as $activityResource){
-						$newActivities[] = 	new Activity($activityResource->uriResource);
-					}
-
-					
-					break;
-				}
-				case INSTANCE_TYPEOFCONNECTORS_JOIN : {
-					//TODO
-				//	echo 'work in progress to join';
-					
-					
-					
-					$completed = false;
-					//count the number of each different activity definition that has to be done parallely:
-					$activityResourceArray = array();
-					$connector = new Connector($connUri);
-					$prevActivitesCollection = $connector->getPreviousActivities();
-					foreach ($prevActivitesCollection->getIterator() as $activityResource){
-						if(wfEngine_models_classes_ProcessAuthoringService::isActivity($activityResource)){
-							if(!isset($activityResourceArray[$activityResource->uriResource])){
-								$activityResourceArray[$activityResource->uriResource] = 1;
-							}else{
-								$activityResourceArray[$activityResource->uriResource] += 1;
-							}
+				$completed = false;
+				
+				//count the number of each different activity definition that has to be done parallely:
+				$activityResourceArray = array();
+				$prevActivitesCollection = $connector->getPreviousActivities();
+				foreach ($prevActivitesCollection->getIterator() as $activityResource){
+					if(wfEngine_models_classes_ProcessAuthoringService::isActivity($activityResource)){
+						if(!isset($activityResourceArray[$activityResource->uriResource])){
+							$activityResourceArray[$activityResource->uriResource] = 1;
+						}else{
+							$activityResourceArray[$activityResource->uriResource] += 1;
 						}
 					}
+				}
+				
+				// var_dump($activityResourceArray);
+				$debug = array();
+				
+				foreach($activityResourceArray as $activityDefinition=>$count){
+					//get all activity execution for the current activity definition and for the current process execution indepedently from the user (which is not known at the authoring time)
 					
-					// var_dump($activityResourceArray);
-					$debug = array();
+					//get the collection of the activity executions performed for the given actiivty definition:
+					$activityExecutionCollection = core_kernel_impl_ApiModelOO::singleton()->getSubject(PROPERTY_ACTIVITY_EXECUTION_ACTIVITY, $activityDefinition);
 					
-					foreach($activityResourceArray as $activityDefinition=>$count){
-						//get all activity execution for the current activity definition and for the current process execution indepedently from the user (which is not known at the authoring time)
+					$activityExecutionArray = array();
+					$debug[$activityDefinition] = array();
+					foreach($activityExecutionCollection->getIterator() as $activityExecutionResource){
+						$processExecutionResource = $activityExecutionResource->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_PROCESSEXECUTION));
 						
-						//get the collection of the activity executions performed for the given actiivty definition:
-						$activityExecutionCollection = core_kernel_impl_ApiModelOO::singleton()->getSubject(PROPERTY_ACTIVITY_EXECUTION_ACTIVITY, $activityDefinition);
-						
-						$activityExecutionArray = array();
-						$debug[$activityDefinition] = array();
-						foreach($activityExecutionCollection->getIterator() as $activityExecutionResource){
-							$processExecutionResource = $activityExecutionResource->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_PROCESSEXECUTION));
+						$debug[$activityDefinition][$activityExecutionResource->getLabel()] = $processExecutionResource->getLabel().':'.$processExecutionResource->uriResource;
+						// $debug[$activityDefinition]['$this->resource->uri'] = $this->resource->uri;
 							
-							$debug[$activityDefinition][$activityExecutionResource->getLabel()] = $processExecutionResource->getLabel().':'.$processExecutionResource->uriResource;
-							// $debug[$activityDefinition]['$this->resource->uri'] = $this->resource->uri;
-								
-							if(!is_null($processExecutionResource)){
-								if($processExecutionResource->uriResource == $this->resource->uriResource){
-									//found one: check if it is finished:
-									$isFinished = $activityExecutionResource->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_IS_FINISHED));
-									if(!$isFinished instanceof core_kernel_classes_Resource || $isFinished->uriResource == GENERIS_FALSE){
-										$completed = false;
-										break(2); //leave the $completed value as false, no neet to continue
-									}else{
-										//a finished activity execution for the process execution
-										$activityExecutionArray[] = $activityExecutionResource;
-									}
+						if(!is_null($processExecutionResource)){
+							if($processExecutionResource->uriResource == $this->resource->uriResource){
+								//found one: check if it is finished:
+								$isFinished = $activityExecutionResource->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_IS_FINISHED));
+								if(!$isFinished instanceof core_kernel_classes_Resource || $isFinished->uriResource == GENERIS_FALSE){
+									$completed = false;
+									break(2); //leave the $completed value as false, no neet to continue
+								}else{
+									//a finished activity execution for the process execution
+									$activityExecutionArray[] = $activityExecutionResource;
 								}
 							}
 						}
-						
-						$debug[$activityDefinition]['activityExecutionArray'] = $activityExecutionArray;
-						
-						if(count($activityExecutionArray) == $count){
-							//ok for this activity definiton, continue to the next loop
-							$completed = true;
-						}else{
-							$completed = false;
-							break;
-						}
-						
-						//for debug only:
-						// $activityResourceArray[$activityDefinition] = $activityExecutionCollection->count();
-						
-						// echo '$activityExecutionCollection of '.$activityDefinition; var_dump($activityExecutionCollection);
-												
 					}
 					
-					// var_dump($activityResourceArray,$debug, $completed);die();
+					$debug[$activityDefinition]['activityExecutionArray'] = $activityExecutionArray;
 					
-					if($completed){
-						$newActivities = array();
-						//get THE (unique) next activity
-						$nextActivitesCollection = $connector->getNextActivities();
-						foreach ($nextActivitesCollection->getIterator() as $activityResource){
-							$newActivities[] = new Activity($activityResource->uriResource);//normally, should be only ONE, so could actually break after the first loop
-						}
+					if(count($activityExecutionArray) == $count){
+						//ok for this activity definiton, continue to the next loop
+						$completed = true;
 					}else{
-						//pause, do not allow transition so return boolean false
-						return false;
+						$completed = false;
+						break;
 					}
-					//var_dump($nextActivitesCollection, $newActivities);
-					// die();
 					
-					break;
+					//for debug only:
+					// $activityResourceArray[$activityDefinition] = $activityExecutionCollection->count();
+					
+					// echo '$activityExecutionCollection of '.$activityDefinition; var_dump($activityExecutionCollection);
+											
 				}
-				default : {
-					
-					foreach ($connector->getNextActivities()->getIterator() as $val){
-						$this->logger->debug('Next Activity  Name: ' . $val->getLabel(),__FILE__,__LINE__);
-						$this->logger->debug('Next Activity  Uri: ' . $val->uriResource,__FILE__,__LINE__);
-						$activity = new Activity($val->uriResource);
-						$activity->getActors();
-						$newActivities[]= $activity;
-
+				
+				// var_dump($activityResourceArray,$debug, $completed);die();
+				
+				if($completed){
+					$newActivities = array();
+					//get THE (unique) next activity
+					$nextActivitesCollection = $connector->getNextActivities();
+					foreach ($nextActivitesCollection->getIterator() as $activityResource){
+						$newActivities[] = new Activity($activityResource->uriResource);//normally, should be only ONE, so could actually break after the first loop
 					}
-					break;
+				}else{
+					//pause, do not allow transition so return boolean false
+					return false;
 				}
+				//var_dump($nextActivitesCollection, $newActivities);
+				// die();
+				
+				break;
 			}
-
+			default : {
+				//considered as a sequential connector
+				foreach ($connector->getNextActivities()->getIterator() as $val){
+					$this->logger->debug('Next Activity  Name: ' . $val->getLabel(),__FILE__,__LINE__);
+					$this->logger->debug('Next Activity  Uri: ' . $val->uriResource,__FILE__,__LINE__);
+					$activity = new Activity($val->uriResource);
+					$activity->getActors();
+					$newActivities[]= $activity;
+				}
+				break;
+			}
 		}
 		
 		return $newActivities;
@@ -796,7 +789,7 @@ extends WfResource
 				$logger->debug('next connector uri : ' . $nextConnectorInst->getLabel() ,__FILE__,__LINE__);
 
 				$nextConnector = $this->getNextConnectorsUri($this->getActivityList($connector,true)->resource->uriResource);
-				$plop = new Connector($nextConnector[0]);
+				$plop = new Connector($nextConnector);
 				if(!$plop->getNextActivities()->isEmpty()) {
 					$fatherActivity = $plop->getNextActivities()->get(0);
 					$fatherConnector = $this->getNextConnectorsUri($fatherActivity->uriResource);
@@ -877,8 +870,8 @@ extends WfResource
 			}
 			else
 			{
-				$connectors = array($transitionRule->thenActivity->uri);
-				$newActivities = $this->getNewActivities($arrayOfProcessVars, $connectors);
+				$connectorUri = $transitionRule->thenActivity->uri;
+				$newActivities = $this->getNewActivities($arrayOfProcessVars, $connectorUri);
 			}
 		}
 		else
@@ -890,8 +883,8 @@ extends WfResource
 			}
 			else
 			{
-				$connectors = array($transitionRule->elseActivity->uri);
-				$newActivities = $this->getNewActivities($arrayOfProcessVars, $connectors);
+				$connectorUri = $transitionRule->elseActivity->uri;
+				$newActivities = $this->getNewActivities($arrayOfProcessVars, $connectorUri);
 			}
 
 		}
@@ -1024,17 +1017,36 @@ extends WfResource
 	 * @param $uri
 	 * @return unknown_type
 	 */
-	private function getNextConnectorsUri($uri){
-
-		$connectorsCollection = core_kernel_impl_ApiModelOO::singleton()->getSubject(PREC_ACTIVITIES,$uri);
-
-		$connectorsUri = array();
-		foreach ($connectorsCollection->getIterator() as $statement){
-			$this->logger->debug('get Next Connectors Uri : ' . $statement->uriResource,__FILE__,__LINE__);
-			$this->logger->debug('get Next Connectors Name : ' . $statement->getLabel(),__FILE__,__LINE__);
-			$connectorsUri[$statement->uriResource] = $statement->uriResource;
+	private function getNextConnectorsUri($activityUri){
+		
+		$returnValue = '';
+		
+		$connectorsCollection = core_kernel_impl_ApiModelOO::singleton()->getSubject(PREC_ACTIVITIES, $activityUri);
+		
+		if($connectorsCollection->count()>1){
+			//there might be a join connector among them or an issue
+			$connectorsUri = array();
+			foreach ($connectorsCollection->getIterator() as $connector){
+				$connectorType = $connector->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_TYPE));
+				//drop the connector join for now 
+				//(a join connector is considered only when it is only one found, i.e. the "else" case below)
+				if($connectorType->uriResource != INSTANCE_TYPEOFCONNECTORS_JOIN){
+					$connectorsUri[] = $connector->uriResource;
+				}
+			}
+			
+			if(count($connectorsUri) == 1){
+				//ok, the unique next connector has been found
+				$returnValue = $connectorsUri[0];
+			}
+		}else if($connectorsCollection->count() == 1){
+			$returnValue = $connectorsCollection->get(0)->uriResource;
+		}else{
+			// $connectorsCollection->count() == 0:
+			//it is the final activity
 		}
-		return $connectorsUri;
+		
+		return $returnValue;
 	}
 
 	/**

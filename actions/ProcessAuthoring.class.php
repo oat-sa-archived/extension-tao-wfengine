@@ -1175,7 +1175,6 @@ class ProcessAuthoring extends TaoModule {
 						throw new Exception('no activity found to be joined');
 					}
 				}
-				//echo '$returnNextAct';var_dump($returnNextAct);
 			}
 		}
 		
