@@ -756,7 +756,7 @@ class wfEngine_models_classes_TokenService
         				throw new Exception("No next activity defined");
         			}
         			if(count($nextActivities) > 1){
-        				throw new Exception("Too many next activities, only one is required after a join connector");
+        				throw new Exception("Too many next activities, only one is allowed after a join connector");
         			}
         			$nextActivity = $nextActivities[0];
         			

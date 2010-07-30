@@ -272,7 +272,6 @@ extends WfResource
 			return;
 		}
 		
-		
 		// The actual transition starts here:
 		
 		$connector = null;
@@ -466,14 +465,19 @@ extends WfResource
 							
 						if(!is_null($processExecutionResource)){
 							if($processExecutionResource->uriResource == $this->resource->uriResource){
-								//found one: check if it is finished:
-								$isFinished = $activityExecutionResource->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_IS_FINISHED));
-								if(!$isFinished instanceof core_kernel_classes_Resource || $isFinished->uriResource == GENERIS_FALSE){
-									$completed = false;
-									break(2); //leave the $completed value as false, no neet to continue
-								}else{
-									//a finished activity execution for the process execution
-									$activityExecutionArray[] = $activityExecutionResource;
+								//check if the activity execution is associated to a token: 
+								//take the activity exec into account only if it is the case:
+								$tokenCollection = core_kernel_impl_ApiModelOO::singleton()->getSubject(PROPERTY_TOKEN_ACTIVITYEXECUTION, $activityExecutionResource->uriResource);
+								if($tokenCollection->count()>0){
+									//found one: check if it is finished:
+									$isFinished = $activityExecutionResource->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_IS_FINISHED));
+									if(!$isFinished instanceof core_kernel_classes_Resource || $isFinished->uriResource == GENERIS_FALSE){
+										$completed = false;
+										break(2); //leave the $completed value as false, no neet to continue
+									}else{
+										//a finished activity execution for the process execution
+										$activityExecutionArray[] = $activityExecutionResource;
+									}
 								}
 							}
 						}
