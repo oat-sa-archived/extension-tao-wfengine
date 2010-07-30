@@ -1,4 +1,4 @@
-// alert("activity diagram Class loaded");
+alert("activity diagram Class loaded");
 
 //require arrows.js
 
@@ -1374,16 +1374,16 @@ ActivityDiagramClass.setFeedbackMenu = function(mode){
 			return false;
 		}
 		
-		//the same cancel button for every mode:
-		if($("#feedback_menu_cancel").length){
-			$("#feedback_menu_cancel").click(function(event){
-				event.preventDefault();
-				ModeController.setMode('ModeInitial');
-			});
-		}
-		
 	}
 	
+	//the same cancel button for every mode:
+	if($("#feedback_menu_cancel").length){
+		$("#feedback_menu_cancel").click(function(event){
+			event.preventDefault();
+			ModeController.setMode('ModeInitial');
+		});
+	}
+		
 	return true;
 }
 
