@@ -239,6 +239,10 @@ class wfEngine_models_classes_ActivityExecutionService
 	        	$this->bindExecution($execution, $currentUser, $processExecution);
 	       	
 	        }
+	        else{
+	       		//execution is initialized back if it already exists
+	        	$execution->editPropertyValues(new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_IS_FINISHED), GENERIS_FALSE);
+	        }
 	        
 	        $returnValue = $execution;
         }
