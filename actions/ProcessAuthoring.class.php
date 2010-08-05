@@ -167,15 +167,17 @@ class ProcessAuthoring extends TaoModule {
 			$_POST["diagramData"] = true;
 			if(isset($_POST["diagramData"])){
 				if($_POST["diagramData"]) {
-					$diagramData = $currentProcess->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_PROCESS_DIAGRAMDATA));//should get a literal
-					if(is_null($diagramData)){//TODO: use getUniqueProperty instead and remove the following lines
+					$diagramDataResource = $currentProcess->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_PROCESS_DIAGRAMDATA));//should get a literal
+					$diagramData = json_encode(array(
+						"arrowData" => array(),
+						"positionData" => array()
+					));
+					if($diagramDataResource instanceof core_kernel_classes_Literal){//TODO: use getUniqueProperty instead and remove the following lines
 						//no position data set: return empty array:
-						$diagramData = json_encode(array(
-							"arrowData" => array(),
-							"positionData" => array()
-						));
+						$diagramData = $diagramDataResource->literal;
 					}
-					
+					//echo $diagramData;
+					//var_dump($diagramData, json_decode($diagramData));
 					$activityData["diagramData"] = json_decode($diagramData);
 				}
 			}
@@ -1539,7 +1541,8 @@ class ProcessAuthoring extends TaoModule {
 				}
 			}
 		}
-				echo json_encode(array('created' => $created));
+		
+		echo json_encode(array('created' => $created));
 		return $created;
 	}
 	
