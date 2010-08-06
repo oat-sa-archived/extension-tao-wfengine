@@ -16,7 +16,9 @@
 				'http://www.tao.lu/middleware/taoqual.rdf',
 				'http://www.tao.lu/middleware/Rules.rdf',
 				'http://www.tao.lu/middleware/Interview.rdf',
-				'http://www.tao.lu/middleware/review.rdf'
+				'http://www.tao.lu/middleware/review.rdf',
+				'http://www.tao.lu/middleware/translation.rdf',
+				'http://www.tao.lu/middleware/coding.rdf'
 			),
 		
 			'classLoaderPackages' => array( 
