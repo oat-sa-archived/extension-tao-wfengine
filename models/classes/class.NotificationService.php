@@ -3,13 +3,13 @@
 error_reporting(E_ALL);
 
 /**
- * Generis Object Oriented API -
+ * TAO - wfEngine/models/classes/class.NotificationService.php
  *
  * $Id$
  *
- * This file is part of Generis Object Oriented API.
+ * This file is part of TAO.
  *
- * Automatically generated on 14.07.2010, 16:10:41 with ArgoUML PHP module 
+ * Automatically generated on 10.08.2010, 16:41:04 with ArgoUML PHP module 
  * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
  *
  * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
@@ -27,7 +27,7 @@ if (0 > version_compare(PHP_VERSION, '5')) {
  *
  * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
  */
-require_once('tao/models/classes/class.Service.php');
+require_once('tao/models/classes/class.GenerisService.php');
 
 /* user defined includes */
 // section 127-0-1-1-1609ec43:129caf00b07:-8000:0000000000002233-includes begin
@@ -46,7 +46,7 @@ require_once('tao/models/classes/class.Service.php');
  * @subpackage models_classes
  */
 class wfEngine_models_classes_NotificationService
-    extends tao_models_classes_Service
+    extends tao_models_classes_GenerisService
 {
     // --- ASSOCIATIONS ---
 

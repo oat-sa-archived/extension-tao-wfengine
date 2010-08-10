@@ -20,7 +20,7 @@ if (0 > version_compare(PHP_VERSION, '5')) {
  *
  * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
  */
-require_once('tao/models/classes/class.Service.php');
+require_once('tao/models/classes/class.GenerisService.php');
 
 /* user defined includes */
 // section -87--2--3--76--7eb229c2:12916be1ece:-8000:0000000000003C05-includes begin
@@ -42,7 +42,7 @@ include_once(dirname(__FILE__).'../../../includes/constants.php');
  * @subpackage models_classes
  */
 class wfEngine_models_classes_VariableService
-    extends tao_models_classes_Service
+    extends tao_models_classes_GenerisService
 {
     // --- ASSOCIATIONS ---
 
@@ -105,7 +105,7 @@ class wfEngine_models_classes_VariableService
      * @param  mixed params
      * @return boolean
      */
-    public function remove($params)
+    public function remove( mixed $params)
     {
         $returnValue = (bool) false;
 
