@@ -353,6 +353,9 @@ class SaSImporter extends SasManager{
 	
 }
 
+set_time_limit(900);
+ini_set('max_execution_time', 900);
+
 /*
  * Run the importer by calling me
  */
