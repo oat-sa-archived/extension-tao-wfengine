@@ -50,7 +50,7 @@ require_once('wfEngine/plugins/CapiImport/models/class.DescriptorFactory.php');
  * @license GPLv2  http://www.opensource.org/licenses/gpl-2.0.php
  */
 class wfEngine_models_classes_ProcessAuthoringService
-    extends tao_models_classes_Service
+    extends tao_models_classes_GenerisService
 {
     // --- ASSOCIATIONS ---
 	

@@ -105,7 +105,7 @@ class wfEngine_models_classes_VariableService
      * @param  mixed params
      * @return boolean
      */
-    public function remove( mixed $params)
+    public function remove($params)
     {
         $returnValue = (bool) false;
 
