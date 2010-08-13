@@ -600,34 +600,6 @@ class wfEngine_helpers_ProcessFormFactory extends tao_helpers_form_GenerisFormFa
 			return $myForm;
 		}
 		
-		//notification system
-		$myForm->addElement(tao_helpers_form_FormFactory::getElement('notify_set', 'Hidden'));
-		
-		$notifyMsgProperty = new core_kernel_classes_Property(PROPERTY_CONNECTOR_NOTIFICATION_MESSAGE);
-		$notifyMsgElt = tao_helpers_form_GenerisFormFactory::elementMap($notifyMsgProperty);
-		
-		$notifyMsgElt->setValue((string)$connector->getOnePropertyValue($notifyMsgProperty));
-		$myForm->addElement($notifyMsgElt);
-		
-		$notifyProperty = new core_kernel_classes_Property(PROPERTY_CONNECTOR_NOTIFY);
-		$notifyElt = tao_helpers_form_GenerisFormFactory::elementMap($notifyProperty);
-		$notifyElt->addAttribute('class', 'notify-element');
-		$notifyElt->setValues(tao_helpers_Uri::encodeArray($connector->getPropertyValues($notifyProperty)));
-		$myForm->addElement($notifyElt);
-		
-		$notifyUserProperty = new core_kernel_classes_Property(PROPERTY_CONNECTOR_USER_NOTIFIED);
-		$notifyUserElt = tao_helpers_form_GenerisFormFactory::elementMap($notifyUserProperty);
-		$notifyUserElt->addAttribute('class', 'notify-user');
-		$notifyUserElt->setValues(tao_helpers_Uri::encodeArray($connector->getPropertyValues($notifyUserProperty)));
-		$myForm->addElement($notifyUserElt);
-		
-		$notifyGroupProperty = new core_kernel_classes_Property(PROPERTY_CONNECTOR_ROLE_NOTIFIED);
-		$notifyGroupElt = tao_helpers_form_GenerisFormFactory::elementMap($notifyGroupProperty);
-		$notifyGroupElt->addAttribute('class', 'notify-group');
-		$notifyGroupElt->setValues(tao_helpers_Uri::encodeArray($connector->getPropertyValues($notifyGroupProperty)));
-		$myForm->addElement($notifyGroupElt);
-		
-		
 		//continue building the form according the the type of connector:
 		$elementInputs=array();
 		if($connectorType->uriResource == INSTANCE_TYPEOFCONNECTORS_SEQUENCE){
@@ -657,6 +629,33 @@ class wfEngine_helpers_ProcessFormFactory extends tao_helpers_form_GenerisFormFa
 		foreach($elementInputs as $elementInput){
 			$myForm->addElement($elementInput);
 		}
+		
+		//notification system
+		$myForm->addElement(tao_helpers_form_FormFactory::getElement('notify_set', 'Hidden'));
+		
+		$notifyMsgProperty = new core_kernel_classes_Property(PROPERTY_CONNECTOR_NOTIFICATION_MESSAGE);
+		$notifyMsgElt = tao_helpers_form_GenerisFormFactory::elementMap($notifyMsgProperty);
+		
+		$notifyMsgElt->setValue((string)$connector->getOnePropertyValue($notifyMsgProperty));
+		$myForm->addElement($notifyMsgElt);
+		
+		$notifyProperty = new core_kernel_classes_Property(PROPERTY_CONNECTOR_NOTIFY);
+		$notifyElt = tao_helpers_form_GenerisFormFactory::elementMap($notifyProperty);
+		$notifyElt->addAttribute('class', 'notify-element');
+		$notifyElt->setValues(tao_helpers_Uri::encodeArray($connector->getPropertyValues($notifyProperty)));
+		$myForm->addElement($notifyElt);
+		
+		$notifyUserProperty = new core_kernel_classes_Property(PROPERTY_CONNECTOR_USER_NOTIFIED);
+		$notifyUserElt = tao_helpers_form_GenerisFormFactory::elementMap($notifyUserProperty);
+		$notifyUserElt->addAttribute('class', 'notify-user');
+		$notifyUserElt->setValues(tao_helpers_Uri::encodeArray($connector->getPropertyValues($notifyUserProperty)));
+		$myForm->addElement($notifyUserElt);
+		
+		$notifyGroupProperty = new core_kernel_classes_Property(PROPERTY_CONNECTOR_ROLE_NOTIFIED);
+		$notifyGroupElt = tao_helpers_form_GenerisFormFactory::elementMap($notifyGroupProperty);
+		$notifyGroupElt->addAttribute('class', 'notify-group');
+		$notifyGroupElt->setValues(tao_helpers_Uri::encodeArray($connector->getPropertyValues($notifyGroupProperty)));
+		$myForm->addElement($notifyGroupElt);
 		
         return $myForm;
 	}
