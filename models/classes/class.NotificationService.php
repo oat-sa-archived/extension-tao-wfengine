@@ -345,7 +345,7 @@ class wfEngine_models_classes_NotificationService
         	}
         	
         	if(count($messages) > 0){
-        		$adapter->setMessages(&$messages);
+        		$adapter->setMessages($messages);
         		$returnValue = (count($messages) == $adapter->send());
         		
         		foreach($adapter->getMessages() as $notificationUri => $message){
