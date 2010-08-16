@@ -4,20 +4,6 @@
 	<input type="button" name="submit-connector" id="submit-connector-<?=get_data("formId")?>" value="save"/>
 </div>
 
-<style type="text/css">
-/*
-	#checkbox_wrap {}
-	
-	#accordion1 {position:absolute;left:0%;top:0%;width:30%;height:100%;}
-	#accordion_container_2 {position:absolute;left:30%;top:0%;width:70%;height:100%;}
-	#process_diagram_container {position:absolute;left:0%;top:0%;width:75%;height:100%;}
-	
-	#demo {position:absolute;left:27%;top:1%;width:50%;height=auto;}
-	#process {position:absolute;left:78%;top:1%;width:21%;height=auto;}
-	#main {width:1000px;height:700px;}
-*/
-</style>
-
 <script type="text/javascript">
 
 $(function(){
