@@ -116,16 +116,7 @@ class wfEngine_models_classes_ProcessTreeService
 				'next',
 				false
 			);//default value will do
-			
-			//set property node:
-			$activityData['children'][] = array(
-				'data' => __("Property"),
-				'attributes' => array(
-					'id' => "prop_".tao_helpers_Uri::encode($activity->uriResource),
-					'class' => 'node-property'
-				)
-			);
-			
+						
 			//get connectors
 			$connectors = $processAuthoringService->getConnectorsByActivity($activity);
 			// throw new Exception("data=".var_dump($connectors));	
