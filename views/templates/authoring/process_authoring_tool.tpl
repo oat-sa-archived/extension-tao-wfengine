@@ -293,7 +293,7 @@
 			autoHeight: false,
 			collapsible: false,
 			active: 0,
-			icons: { 'header': 'ui-icon-plus', 'headerSelected': 'ui-icon-minus' }
+			icons: { 'header': 'ui-icon-circle-triangle-s', 'headerSelected': 'ui-icon-circle-triangle-e' }
 		});
 		
 		//load activity tree:
@@ -318,8 +318,7 @@
 			fillSpace: false,
 			autoHeight: false,
 			collapsible: false,
-			
-			icons: { 'header': 'ui-icon-plus', 'headerSelected': 'ui-icon-minus' }
+			icons: { 'header': 'ui-icon-circle-triangle-s', 'headerSelected': 'ui-icon-circle-triangle-e' }
 		});
 		
 		//load the trees:
