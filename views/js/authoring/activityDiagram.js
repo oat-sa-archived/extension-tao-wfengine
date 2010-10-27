@@ -905,6 +905,7 @@ ActivityDiagramClass.drawActivity  = function (activityId, position, activityLab
 	var elementActivityId = ActivityDiagramClass.getActivityId('activity', activityId);
 	var elementActivity = $('<div id="'+elementActivityId+'"></div>');
 	elementActivity.addClass('diagram_activity');
+	elementActivity.addClass('ui-corner-all');
 	elementActivity.addClass(elementActivityId);
 	elementActivity.appendTo('#'+containerId);
 	$('#'+elementActivity.attr('id')).position({
@@ -1090,6 +1091,7 @@ ActivityDiagramClass.drawConnector = function(connectorId, position, connectorTy
 		elementConnector.attr('title', ActivityDiagramClass.connectors[connectorId].condition);
 	}
 	elementConnector.addClass('diagram_connector');
+	elementConnector.addClass('ui-corner-all');
 	elementConnector.addClass(connectorTypeDescription.className);
 	elementConnector.addClass(elementActivityId);
 	
