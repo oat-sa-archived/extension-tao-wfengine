@@ -3,7 +3,7 @@
 error_reporting(E_ALL);
 
 /**
- * The GenerisFormFactory enables you to create Forms using rdf data and the
+ * The ProcessFormFactory enables you to create Forms using rdf data and the
  * api to provide it. You can give any node of your ontology and the factory
  * create the appriopriate form. The Generis ontology (with the Widget Property)
  * required to use it.

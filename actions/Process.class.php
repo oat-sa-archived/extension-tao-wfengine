@@ -96,7 +96,7 @@ class Process extends TaoModule {
 		
 		$this->setData('uri', tao_helpers_Uri::encode($process->uriResource));
 		$this->setData('classUri', tao_helpers_Uri::encode($clazz->uriResource));
-		$this->setData('formTitle', 'Edit process');
+		$this->setData('formTitle', 'Process properties');
 		$this->setData('myForm', $myForm->render());
 		$this->setView('form_process.tpl');
 	}
@@ -136,9 +136,12 @@ class Process extends TaoModule {
 	}
 	
 	public function editProcessClass(){
+		set_time_limit(900);
+		ini_set('max_execution_time', 900);
+
 		$clazz = $this->getCurrentClass();
 		//display it but do not allow it to be saved
-		$myForm = $this->editClass($clazz, $this->service->getProcessClass());
+		$myForm = $this->editClass($clazz, $this->service->getProcessClass(), array('topClazz' => CLASS_PROCESS));
 		if($myForm->isSubmited()){
 			if($myForm->isValid()){
 				if($clazz instanceof core_kernel_classes_Resource){

@@ -735,7 +735,7 @@ class wfEngine_models_classes_ProcessAuthoringService
      * @return core_kernel_classes_Resource
      */	
 	public function createRule(core_kernel_classes_Resource $connector, $question=''){//transiiton rule only! rename as such!
-		
+		//TODO: rename the function to createTrasitionRule
 		$returnValue = null;
 			
 		// $xmlDom = $this->analyseExpression($condition);
@@ -1147,7 +1147,16 @@ class wfEngine_models_classes_ProcessAuthoringService
 	}
 	
 	public function getServicesByActivity(core_kernel_classes_Resource $activity){
+		$returnValue = array();
 		
+		$services = $activity->getPropertyValuesCollection(new core_kernel_classes_Property(PROPERTY_ACTIVITIES_INTERACTIVESERVICES));
+		foreach($services->getIterator() as $service){
+			if($service instanceof core_kernel_classes_Resource){
+				$returnValue[$service->uriResource] = $service;
+			}
+		}
+		
+		return $returnValue;
 	}	
 	
 	
@@ -1714,6 +1723,12 @@ class wfEngine_models_classes_ProcessAuthoringService
 		
 		return $returnValue;
 	}
+	
+	public function cloneProcess(){
+	
+	}
+	
+	
 	
 } /* end of class wfEngine_models_classes_ProcessAuthoringService */
 
