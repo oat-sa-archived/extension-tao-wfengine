@@ -412,7 +412,7 @@ class wfEngine_models_classes_ProcessAuthoringService
 		
 		$returnValue = false;
 		
-		if(!self::isConnector($connector)){
+		if(!wfEngine_helpers_ProcessUtil::isConnector($connector)){
 			throw new Exception("the resource in the parameter is not a connector");
 			return $returnValue;
 		}

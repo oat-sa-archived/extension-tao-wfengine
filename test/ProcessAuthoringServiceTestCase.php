@@ -135,7 +135,7 @@ class ProcessAuthoringServiceTestCase extends UnitTestCase {
 		$this->assertEqual($connector1->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_TYPE))->uriResource, INSTANCE_TYPEOFCONNECTORS_SEQUENCE);
 		
 		// $followingConnector1 = $this->apiModel->getSubject(PROPERTY_CONNECTORS_PRECACTIVITIES, $followingActivity1->uriResource)->get(0);
-		$followingConnector1 = $this->createConnector($followingActivity1);
+		$followingConnector1 = $this->authoringService->createConnector($followingActivity1);
 		$this->assertIsA($followingConnector1, 'core_kernel_classes_Resource');
 
 		$shouldBeActivity1 = null;
@@ -151,7 +151,7 @@ class ProcessAuthoringServiceTestCase extends UnitTestCase {
 		$followingActivity1->delete();
 		$followingConnector1->delete();
 	}
-		/*
+		
 	public function testCreateSplitActivity(){
 		$activity1 = $this->authoringService->createActivity($this->proc, 'myActivity');
 		$connector1 = $this->authoringService->createConnector($activity1);
@@ -258,7 +258,6 @@ class ProcessAuthoringServiceTestCase extends UnitTestCase {
 		$this->assertEqual($previousActivitiesCollection->count(), 3);
 		// foreach($previousActivitiesCollection->getIterator() as $previousAc
 	}
-	*/
 	
 	/*
 	public function testCreateJoinActivity(){
