@@ -39,13 +39,8 @@ class wfEngine_helpers_ProcessUtil
 	public static function isActivity(core_kernel_classes_Resource $resource){
 		$returnValue = false;
 		
-		$activityType = core_kernel_impl_ApiModelOO::singleton()->getObject($resource->uriResource, RDF_TYPE);
-		if($activityType->count()>0){
-			if($activityType->get(0) instanceof core_kernel_classes_Resource){//should be a generis class
-				if( $activityType->get(0)->uriResource == CLASS_ACTIVITIES){
-					$returnValue = true;
-				}
-			}
+		if(!is_null($resource)){
+			$returnValue = self::checkType($resource, new core_kernel_classes_Class(CLASS_ACTIVITIES));
 		}
 		
 		return $returnValue;
@@ -89,10 +84,20 @@ class wfEngine_helpers_ProcessUtil
 	public static function isConnector(core_kernel_classes_Resource $resource){
 		$returnValue = false;
 		
-		$activityType = core_kernel_impl_ApiModelOO::singleton()->getObject($resource->uriResource, RDF_TYPE);
-		if($activityType->count()>0){
-			if($activityType->get(0) instanceof core_kernel_classes_Resource){
-				if( $activityType->get(0)->uriResource == CLASS_CONNECTORS){
+		if(!is_null($resource)){
+			$returnValue = self::checkType($resource, new core_kernel_classes_Class(CLASS_CONNECTORS));
+		}
+		
+		return $returnValue;
+	}
+	
+	public static function checkType(core_kernel_classes_Resource $resource, core_kernel_classes_Class $clazz){
+		$returnValue = false;
+		
+		$type = core_kernel_impl_ApiModelOO::singleton()->getObject($resource->uriResource, RDF_TYPE);
+		if($type->count()>0){
+			if($type->get(0) instanceof core_kernel_classes_Resource){
+				if( $type->get(0)->uriResource == $clazz->uriResource){
 					$returnValue = true;
 				}
 			}
