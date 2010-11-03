@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>wfApi Test Suite</title>
+	<link rel="stylesheet" href="../../tao/test/qunit/qunit.css" type="text/css" media="screen">
+	<script type="text/javascript" src='../../tao/views/js/jquery-1.4.2.min.js'></script>
+	<script type="text/javascript" src="../../tao/test/qunit/qunit.js"></script>
+	<!-- 	
+	
+	<script type="text/javascript" src="../views/js/wfApi/src/constants.js"></script>
+	<script type="text/javascript" src="../views/js/wfApi/src/context.js"></script>
+	<script type="text/javascript" src="../views/js/wfApi/src/api.js"></script>
+	 -->
+	 
+	 <script type="text/javascript" src="../views/js/wfApi/wfApi.min.js"></script>
+	 
+	
+	<script type="text/javascript">
+
+		module("constants");
+
+		test("Test the constants availability", function() {
+			equals( STATE.ITEM.FINISHED, 'item_finished', 'the state finished is defined '); 
+		});
+	
+		module("context");
+
+		test("Test the context recovery", function() {
+			
+		});
+
+
+	</script>
+	
+</head>
+<body>
+	<h1 id="qunit-header">WORKFLOW API Test Suite</h1>
+	<h2 id="qunit-banner"></h2>
+	<div id="qunit-testrunner-toolbar"></div>
+	<h2 id="qunit-userAgent"></h2>
+	<ol id="qunit-tests"></ol>
+	<div id="qunit-fixture">test markup</div>
+	<div id="controls">
+		<a href="#" id='next' >Next</a>
+		<a href="#" id='back' >Back</a>
+		<a href="#" id='pause' >Pause</a>
+	</div>
+</body>
+</html>
