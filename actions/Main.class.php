@@ -130,8 +130,8 @@ class Main extends WfModule
 			return;
 		}
 		
-		if(isset($_SESSION['activityExecutionUri'])){
-			$activityExe = new core_kernel_classes_Resource($_SESSION['activityExecutionUri']);
+		if(Session::hasAttribute('activityExecutionUri')){
+			$activityExe = new core_kernel_classes_Resource(Session::getAttribute('activityExecutionUri'));
 			$activity = $activityExe->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_ACTIVITY));
 			echo "Activity :" . $activity->getLabel() ."<br>";
 		}

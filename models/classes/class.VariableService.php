@@ -62,9 +62,9 @@ class wfEngine_models_classes_VariableService
     public function save($variable)
     {
         // section -87--2--3--76--7eb229c2:12916be1ece:-8000:0000000000003C07 begin
-		if(isset($_SESSION["activityExecutionUri"])){
-			$activityExecutionUri = urldecode($_SESSION["activityExecutionUri"]);
-			$activityExecution = new core_kernel_classes_Resource($activityExecutionUri);
+		if(Session::hasAttribute("activityExecutionUri")){
+			$activityExecution = new core_kernel_classes_Resource(Session::getAttribute("activityExecutionUri"));
+			
 			$tokenService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_TokenService');
 			$token = $tokenService->getCurrent($activityExecution);
 			
@@ -110,9 +110,9 @@ class wfEngine_models_classes_VariableService
         $returnValue = (bool) false;
 
         // section -87--2--3--76--7eb229c2:12916be1ece:-8000:0000000000003C0B begin
-		if(isset($_SESSION["activityExecutionUri"])){
-			$activityExecutionUri = urldecode($_SESSION["activityExecutionUri"]);
-			$activityExecution = new core_kernel_classes_Resource($activityExecutionUri);
+		if(Session::hasAttribute("activityExecutionUri")){
+			$activityExecution = new core_kernel_classes_Resource(Session::getAttribute("activityExecutionUri"));
+			
 			$tokenService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_TokenService');
 			$token = $tokenService->getCurrent($activityExecution);
 			$tokenVarProp = new core_kernel_classes_Property(PROPERTY_TOKEN_VARIABLE);
@@ -161,9 +161,9 @@ class wfEngine_models_classes_VariableService
         $returnValue = null;
 
         // section -87--2--3--76--7eb229c2:12916be1ece:-8000:0000000000003C0E begin
-		if(isset($_SESSION["activityExecutionUri"])){
-			$activityExecutionUri = urldecode($_SESSION["activityExecutionUri"]);
-			$activityExecution = new core_kernel_classes_Resource($activityExecutionUri);
+		if(Session::hasAttribute("activityExecutionUri")){
+			$activityExecution = new core_kernel_classes_Resource(Session::getAttribute("activityExecutionUri"));
+			
 			$tokenService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_TokenService');
 			$token = $tokenService->getCurrent($activityExecution);
 			if(is_null($token)) {
@@ -204,9 +204,9 @@ class wfEngine_models_classes_VariableService
         $returnValue = array();
 
         // section -87--2--3--76--7eb229c2:12916be1ece:-8000:0000000000003C11 begin
-		if(isset($_SESSION["activityExecutionUri"])){
-			$activityExecutionUri = urldecode($_SESSION["activityExecutionUri"]);
-			$activityExecution = new core_kernel_classes_Resource($activityExecutionUri);
+		if(Session::hasAttribute("activityExecutionUri")){
+			$activityExecution = new core_kernel_classes_Resource(Session::getAttribute("activityExecutionUri"));
+			
 			$tokenService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_TokenService');
 			$token = $tokenService->getCurrent($activityExecution);
 			if(is_null($token)) {
@@ -251,9 +251,9 @@ class wfEngine_models_classes_VariableService
     {
         // section 127-0-1-1--55065e1d:1294a729605:-8000:0000000000002006 begin
         
-    	if(isset($_SESSION["activityExecutionUri"])){
-			$activityExecutionUri = urldecode($_SESSION["activityExecutionUri"]);
-			$activityExecution = new core_kernel_classes_Resource($activityExecutionUri);
+    	if(Session::hasAttribute("activityExecutionUri")){
+			$activityExecution = new core_kernel_classes_Resource(Session::getAttribute("activityExecutionUri"));
+			
 			$tokenService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_TokenService');
 			$token = $tokenService->getCurrent($activityExecution);
 			

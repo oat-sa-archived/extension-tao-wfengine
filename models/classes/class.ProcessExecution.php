@@ -190,7 +190,7 @@ extends WfResource
 		//the activity definition is set into cache .. about 0.06 -> 0.01
 		//$value = common_Cache::getCache($this->currentActivity[0]->uri);
 
-		$_SESSION["activityExecutionUri"] = $activityExecutionUri;
+		Session::setAttribute("activityExecutionUri", $activityExecutionUri);
 		$processVars 				= $this->getVariables();
 		$arrayOfProcessVars 		= Utils::processVarsToArray($processVars);
 		

@@ -20,11 +20,8 @@ class ServiceApi extends Module
 		$logger = new common_Logger('Sevice API SAVE',Logger::debug_level);
 		
 		
-		if(isset($_SESSION["processUri"])){
-			$processUri = $_SESSION["processUri"];
-			$process = new core_kernel_classes_Resource(urldecode($processUri));
-			// var_dump($variable);
-			
+		if(Session::hasAttribute("processUri")){
+			$process = new core_kernel_classes_Resource(Session::getAttribute("processUri"));
 			
 			
 			foreach($variable as $k=>$v) {
@@ -53,9 +50,8 @@ class ServiceApi extends Module
 	 */
 	public static function remove($params){
 		
-		if(isset($_SESSION["processUri"])){
-			$processUri = $_SESSION["processUri"];
-			$process = new core_kernel_classes_Resource(urldecode($processUri));
+		if(Session::hasAttribute("processUri")){
+			$process = new core_kernel_classes_Resource(Session::getAttribute("processUri"));
 			if(is_string($params)){
 				$params = array($params);
 			}

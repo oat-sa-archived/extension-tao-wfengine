@@ -139,14 +139,14 @@ var recoveryCtx = new RecoveryContext();
  * @param {Object} source 
  * @param {String} [source.type = "sync"] the type of source <b>(sync|async|manual)</b>
  * @param {Object} [source.data] For the <i>manual</i> source type, set direclty the context data structure
- * @param {String} [source.url = "/wfEngine/Context/retrieve"] For the <i>sync</i> and <i>async</i> source type, the URL of the remote service
+ * @param {String} [source.url = "/wfEngine/RecoveryContext/retrieve"] For the <i>sync</i> and <i>async</i> source type, the URL of the remote service
  * @param {Object} [source.params] the parameters to send to the remote service
  * @param {String} [source.format = "json"] the data format. <i>Only json is supported in the current version</i> 
  * @param {String} [source.method = "post"] HTTP method of the sync service <b>(get|post)</b>
  * 
  * @param {Object} destination
  * @param {String} [destination.type = "async"] the type of source <b>(sync|async)</b>
- * @param {String} [destination.url = "/wfEngine/Context/save"] the URL of the remote service
+ * @param {String} [destination.url = "/wfEngine/RecoveryContext/save"] the URL of the remote service
  * @param {Object} [destination.params] the common parameters to send to the service
  * @param {String} [destination.format = "json"] the data format. <i>Only json is supported in the current version</i> 
  * @param {String} [destination.method = "post"] HTTP method of the service <b>(get|post)</b>

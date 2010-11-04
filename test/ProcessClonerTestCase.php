@@ -2,7 +2,7 @@
 require_once dirname(__FILE__) . '/../../tao/test/TestRunner.php';
 require_once dirname(__FILE__) . '/../includes/common.php';
 
-class ProcessAuthoringServiceTestCase extends UnitTestCase {
+class ProcessClonerTestCase extends UnitTestCase {
 	
 	
 	protected $processCloner = null;
