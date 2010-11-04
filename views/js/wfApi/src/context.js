@@ -1,4 +1,6 @@
 /**
+ * WF API
+ * It provides a tool to manage a recoverable context.
  * 
  * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
  * @license GPLv2  http://www.opensource.org/licenses/gpl-2.0.php
@@ -8,6 +10,9 @@
  */
 
 /**
+ *  The RecoveryContext enables you to initialize, 
+ *  send and retrieve a data structure (a context).
+ *  It can be used to recover a context in case of crash.
  *  
  * @namespace wfApi
  * @class RecoveryContext
@@ -18,11 +23,13 @@ function RecoveryContext (){
 	var _recoveryCtx = this;
 	
 	/**
+	 * The registry store the contexts 
 	 * @type {Object}
 	 */
 	this.registry = null;
 	
 	/**
+	 * The parameters defining how and where to retrieve a context
 	 * @type {Object}
 	 */
 	this.sourceService = {
@@ -35,9 +42,11 @@ function RecoveryContext (){
 	};
 	
 	/**
+	 * The parameters defining how and where to send a context
 	 * @type {Object}
 	 */
 	this.destinationService = {
+			type:	'sync',										// (async | sync)
 			url:	'/wfEngine/Context/save',					//the url where we send the context
 			params:  {},										//the common parameters to send to the service
 			method: 'post',										//sending method
@@ -47,6 +56,7 @@ function RecoveryContext (){
 	
 	/**
 	 * Initialize the service interface for the source service: 
+	 * how and where we retrieve a context
 	 *  
 	 * @param {Object} environment
 	 */
@@ -65,7 +75,7 @@ function RecoveryContext (){
 				}
 				else{ 	//remote behaviour
 			
-					if(source.url){
+					if(environment.url){
 						if(/(\/[-a-z\d%_.~+]*)*(\?[;&a-z\d%_.~+=-]*)?(\#[-a-z\d_]*)?$/.test(environment.url)){	//test url
 							this.sourceService.url = environment.url;		//set url
 						}
@@ -73,7 +83,7 @@ function RecoveryContext (){
 					//ADD parameters
 					if($.isPlainObject(environment.params)){	
 						for(key in environment.params){
-							if(isScalar(environment.params[key])){	
+							if($.inArray((typeof environment.params[key]).toLowerCase(), ['string', 'number', 'int', 'float', 'boolean']) > -1){
 								this.sourceService.params[key] = environment.params[key]; 
 							}
 						}
@@ -89,13 +99,12 @@ function RecoveryContext (){
 	};
 	
 	/**
-	 * 
+	 * Retrieve a context and populate the registry
 	 */
 	this.retrieveContext = function(){
-		
+	
 		switch(this.sourceService.type){
 		
-		//we load it manually by calling directly the method with the data
 		case 'manual':
 			this.registry = this.sourceService.data;
 			break;
@@ -124,12 +133,21 @@ function RecoveryContext (){
 	};
 	
 	/**
-	 * Initialize the service interface forthe destination service:  
+	 * Initialize the service interface forthe destination service: 
+	 * how and where we send the contexts
 	 *  
 	 * @param {Object} environment
 	 */
 	this.initDestinationService = function(environment){
+		
 		if($.isPlainObject(environment)){
+			
+			if(environment.type){
+				if($.inArray(environment.type, ['sync', 'async']) > -1){
+					this.destinationService.type = environment.type;
+				}
+			}
+			
 			if(environment.url){
 				if(/(\/[-a-z\d%_.~+]*)*(\?[;&a-z\d%_.~+=-]*)?(\#[-a-z\d_]*)?$/.test(environment.url)){	//test url
 					this.destinationService.url = environment.url;		//set url
@@ -138,7 +156,7 @@ function RecoveryContext (){
 			//ADD parameters
 			if($.isPlainObject(environment.params)){	
 				for(key in environment.params){
-					if(isScalar(environment.params[key])){	
+					if($.inArray((typeof environment.params[key]).toLowerCase(), ['string', 'number', 'int', 'float', 'boolean']) > -1){
 						this.destinationService.params[key] = environment.params[key]; 
 					}
 				}
@@ -148,11 +166,14 @@ function RecoveryContext (){
 					this.destinationService.method = environment.method;
 				}
 			}
+			if(environment.flush){
+				this.destinationService.flush = (environment.flush === true);
+			}
 		}
 	};
 	
 	/**
-	 * 
+	 * Save the contexts by sending them to the destination service 
 	 */
 	this.saveContext = function(){
 		
@@ -164,10 +185,11 @@ function RecoveryContext (){
 				url  		: this.destinationService.url,
 				data 		: parameters,
 				type 		: this.destinationService.method,
+				dataType	: this.destinationService.format,
 				success		: function(data){
 			 		if(data.saved){
 			 			if(_recoveryCtx.destinationService.flush){
-			 				this.registry = new Object();	//clear it but don't set it to null, to prevent retrieving
+			 				_recoveryCtx.registry = new Object();	//clear it but don't set it to null, to prevent retrieving
 			 			}
 			 		}
 		 		}
@@ -175,7 +197,11 @@ function RecoveryContext (){
 	};
 	
 	/**
+	 * Get a context defined by the key. 
+	 * If not loaded, we retrieve it⋅
+	 * 
 	 * @param {String} key
+	 * @returns {mixed} the context
 	 */
 	this.getContext = function(key){
 		if(this.registry == null){
@@ -185,10 +211,15 @@ function RecoveryContext (){
 	};
 	
 	/**
+	 * Create/edit a context
+	 * 
 	 * @param {String} key
 	 * @param {Object} value
 	 */
 	this.setContext = function(key, value){
+		if(this.registry == null){
+			this.registry = new Object();
+		}
 		this.registry[key] = value;
 	};
 }

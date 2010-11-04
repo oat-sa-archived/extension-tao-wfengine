@@ -1,19 +1,23 @@
 <?php
 
-switch($_GET['action']){
+switch($_POST['action']){
 
-	case 'push':
+	case 'get':
 		(isset($_POST['token'])) ? ($_POST['token'] == '7114e56cb3b9423314a425500afb41fc56183000') ? $saved = true : $saved = false : $saved = false;
-		echo json_encode(array('saved' => $saved));
+		$context =array('myContext' => 
+						array(
+							'integer' =>	12,
+							'obj'	=> array( 'arr' => array(1, 2) )
+						)
+					);
+		echo json_encode($context);
 		break;
 		
-	case 'traceEvents':
+	case 'set':
 		(isset($_POST['token'])) ? ($_POST['token'] == '7114e56cb3b9423314a425500afb41fc56183000') ? $saved = true : $saved = false : $saved = false;
-		if($saved){
-			if($saved = $saved && isset($_POST['events'])){
-				$saved = $saved && count($_POST['events']) > 0;
-			}
-		}
+		
+		
+		$saved = $saved && (isset($_POST['context']['myContext']['obj']['arr']));
 		echo json_encode(array('saved' => $saved));
 		break;
 }

@@ -35,7 +35,9 @@ const URI = URI || {
  */
 const STATE = STATE || {
 	'ITEM' : {
-		'FINISHED' : 'item_finished'
+		'PRE_FINISHED' 	: 'pre_item_finished',
+		'FINISHED' 		: 'item_finished',
+		'POST_FINISHED' : 'post_item_finished'
 	}
 }
 
