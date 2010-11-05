@@ -51,7 +51,6 @@ class SaSManager{
 	protected function getSasFiles(){
 		
 		$sasFiles = array();
-		//$sasFiles['taoQual'] = ROOT_PATH . '/taoQual/actions/sas.xml';
 		$extensionsManager = common_ext_ExtensionsManager::singleton();
 		foreach($extensionsManager->getInstalledExtensions() as $extension){
 			$filePath = ROOT_PATH . '/'. $extension->id . '/actions/sas.xml';

@@ -297,7 +297,6 @@ class SaSImporter extends SasManager{
 				$label = self::unCamelize($formalParam['name']);
 			}
 			
-			
 			$formalParamResource = $this->formalParamClass->createInstance($label);
 			if(!is_null($formalParamResource)){
 				$formalParamResource->setPropertyValue($this->formalParamNameProp, $formalParam['name']);
