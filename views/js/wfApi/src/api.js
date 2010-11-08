@@ -15,7 +15,9 @@
  // WF Controls    //
 ////////////////////
 
-var wfApi = { context : window.top.document };
+var wfApi = { 
+	context : window.top.document || window.document
+};
 
 
 /**
@@ -26,7 +28,10 @@ var wfApi = { context : window.top.document };
  * @namespace wfApi
  */
 function forward(){
-	wfApi.context.getElementById('next').click();
+	var next = wfApi.context.getElementById('next');
+	if(next){
+		//$(next).trigger('click');
+	}
 }
 
 /**
@@ -37,7 +42,10 @@ function forward(){
  * @namespace wfApi
  */
 function backward(){
-	wfApi.context.getElementById('back').click();
+	var back = wfApi.context.getElementById('back');
+	if(back){
+		$(back).trigger('click');
+	}
 }
 
 /**
@@ -48,7 +56,10 @@ function backward(){
  * @namespace wfApi
  */
 function pause(){
-	wfApi.context.getElementById('pause').click();
+	var pause = wfApi.context.getElementById('pause');
+	if(pause){
+		$(pause).trigger('click');
+	}
 }
 
 
@@ -59,7 +70,7 @@ function pause(){
 if(typeof(finish) != 'function'){
 
 	//get the highest context 
-	var _stateContext = window.top || window;
+	var _stateContext = window;
 	
 	/**
 	 * Define the item's state as finished.
@@ -69,9 +80,9 @@ if(typeof(finish) != 'function'){
 	 * @namespace wfApi
 	 */
 	function finish(){
-		$(_stateContext).trigger(STATE.ITEM.PRE_FINISHED);
-		$(_stateContext).trigger(STATE.ITEM.FINISHED);
-		$(_stateContext).trigger(STATE.ITEM.POST_FINISHED);
+		$(_stateContext).trigger(wf_STATE.ITEM.PRE_FINISHED);
+		$(_stateContext).trigger(wf_STATE.ITEM.FINISHED);
+		$(_stateContext).trigger(wf_STATE.ITEM.POST_FINISHED);
 	}
 	
 	/**
@@ -82,7 +93,7 @@ if(typeof(finish) != 'function'){
 	 * @param {function} callback
 	 */
 	function onFinish(callback){
-		$(_stateContext).bind(STATE.ITEM.FINISHED, callback);
+		$(_stateContext).bind(wf_STATE.ITEM.FINISHED, callback);
 	}
 	
 	/**
@@ -93,7 +104,7 @@ if(typeof(finish) != 'function'){
 	 * @param {function} callback
 	 */
 	function beforeFinish(callback){
-		$(_stateContext).bind(STATE.ITEM.PRE_FINISHED, callback);
+		$(_stateContext).bind(wf_STATE.ITEM.PRE_FINISHED, callback);
 	}
 	
 	/**
@@ -104,7 +115,7 @@ if(typeof(finish) != 'function'){
 	 * @param {function} callback
 	 */
 	function afterFinish(callback){
-		$(_stateContext).bind(STATE.ITEM.POST_FINISHED, callback);
+		$(_stateContext).bind(wf_STATE.ITEM.POST_FINISHED, callback);
 	}
 
 }
