@@ -79,7 +79,7 @@ class WfResource
 		$this->logger = new common_Logger('WfEngine', Logger::debug_level);
 		$this->resource = new core_kernel_classes_Resource($uri,__METHOD__);
 		$this->setLabel($this->resource->getLabel());
-		$this->setComment($this->resource->comment);
+		$this->setComment($this->resource->getComment());
 			
         // section 10-13-1--31-740bb989:119ebfa9b28:-8000:00000000000008B2 end
     }

@@ -104,7 +104,7 @@ class ActivitiesList extends Activity {
 	public function createExecution(core_kernel_classes_RdfList $remainning) {
 		$class = new core_kernel_classes_Class(CLASS_ACTIVITIES_LIST_EXECUTION);
 		$label = 'Execution of ' . $this->resource->getLabel();
-		$comment = 'Execution of ' . $this->resource->comment;
+		$comment = 'Execution of ' . $this->resource->getComment();
 		$returnValueIns = core_kernel_classes_ResourceFactory::create($class,$label, $comment);
 		$remainingActivitiesProp = new core_kernel_classes_Property(PROPERTY_REMAINING_ACTIVITIES);
 		$returnValueIns->setPropertyValue($remainingActivitiesProp,$remainning->uriResource);
