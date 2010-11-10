@@ -105,6 +105,22 @@ class wfEngine_helpers_ProcessUtil
 		
 		return $returnValue;
 	}
+	
+	public static function getServiceDefinition($url){
+		$serviceDefinition = null;
+		
+		//get the item runner service definition, if does not exist, create one:
+		$itemRunnerServiceUrl = '/taoDelivery/ItemDelivery/runner?itemUri=^itemUri&testUri=^testUri&deliveryUri=^deliveryUri&';
+		
+		$serviceDefinitionCollection = core_kernel_impl_ApiModelOO::singleton()->getSubject(PROPERTY_SUPPORTSERVICES_URL, $url);
+		if(!$serviceDefinitionCollection->isEmpty()){
+			if($serviceDefinitionCollection->get(0) instanceof core_kernel_classes_Resource){
+				$serviceDefinition = $serviceDefinitionCollection->get(0);
+			}
+		}		
+		
+		return $serviceDefinition;
+	}
 
 } /* end of class wfEngine_helpers_ProcessUtil */
 
