@@ -840,7 +840,7 @@ extends tao_models_classes_GenerisService
                 $newToken = $this->duplicate($token);
 
                 //bind the next activity
-                $newToken->setPropertyValue($this->tokenActivityProp, $previousActivities->uriResource);
+                $newToken->setPropertyValue($this->tokenActivityProp, $previousActivity->uriResource);
                  
                 //set as current
                 $currentTokens[] = $newToken;
