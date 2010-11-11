@@ -172,7 +172,7 @@ class wfEngine_models_classes_ProcessCloner
 	
 	public function cloneProcessSegment(core_kernel_classes_Resource $process, $addTransitionalActivity=false, core_kernel_classes_Resource $startActivity = null, core_kernel_classes_Resource $endActivity = null){
 		
-		$this->initCloningVariables();
+		// $this->initCloningVariables();
 		
 		$initialActivity = null;
 		$finalActivities = array();
@@ -205,13 +205,16 @@ class wfEngine_models_classes_ProcessCloner
 			
 			//reloop for connectors this time:
 			foreach($activities as $activityUri => $activity){
+				echo "clone connector of the activity {$activity->getLabel()} \n";
 				$this->currentActivity = $activity;
 				$connectors = $this->authoringService->getConnectorsByActivity($activity, array('next'));
+				echo "connectors found:";print_r($connectors);
 				if(empty($connectors['next'])){
 					//it is a final activity
-					$finalActivities[] = $activity;
+					$finalActivities[] = $this->getClonedActivity($activity, 'out');
 				}else{
 					foreach($connectors['next'] as $connector){
+						echo "cloning connector {$connector->getLabel()} ({$connector->uriResource}) \n";
 						$this->cloneConnector($connector);
 					}
 				}
@@ -228,21 +231,22 @@ class wfEngine_models_classes_ProcessCloner
 		}
 		
 		if($addTransitionalActivity){
+			echo "adding transitionnal actiivties";
 			//init the required properties:
 			$propInitial = new core_kernel_classes_Property(PROPERTY_ACTIVITIES_ISINITIAL);
 			$propHidden = new core_kernel_classes_Property(PROPERTY_ACTIVITIES_ISHIDDEN);
 			
 			//build the $firstActivity:
 			$activityClass = new core_kernel_classes_Class(CLASS_ACTIVITIES);
-			$firstActivity = $activityClass->createInstance('process_start', "created by ProcessCloner.Class");
-			$firstActivity->editPropertyValues($propInitial, GENERIS_TRUE);
+			$firstActivity = $activityClass->createInstance("process_start ({$process->getLabel()})", "created by ProcessCloner.Class");
+			$firstActivity->editPropertyValues($propInitial, GENERIS_TRUE);//do set it here, the property will be modified automatically by create "following" activity
 			$firstActivity->editPropertyValues($propHidden, GENERIS_TRUE);
 			$connector = $this->authoringService->createConnector($firstActivity);
-			$this->authoringService->createSequenceActivity($connector, $initialActivity);
-			$initialActivity->editPropertyValues($propHidden, GENERIS_FALSE);
+			$this->authoringService->createSequenceActivity($connector, $initialActivity);//this function also automatically set the former $iniitalAcitivty to "not initial"
+			//TODO: rename the function createSequenceActivity to addSequenceActivity, clearer that way
 			
 			//build the last activity:
-			$lastActivity = $activityClass->createInstance('process_end', "created by ProcessCloner.Class");
+			$lastActivity = $activityClass->createInstance("process_end ({$process->getLabel()})", "created by ProcessCloner.Class");
 			$lastActivity->editPropertyValues($propHidden, GENERIS_TRUE);
 			foreach($finalActivities as $activity){
 				//TODO: determine if there is need for merging multiple instances of a parallelized activity that has not been merged 
@@ -389,9 +393,11 @@ class wfEngine_models_classes_ProcessCloner
 							foreach($transitionRuleActivityProperties as $activityType => $connectorActivityProperty){
 								$activity = $transitionRule->getOnePropertyValue($connectorActivityProperty);
 								if(!is_null($activity)){
-									$newPropActivityUri = $this->getNewActivityUriFromOldActivity($activity, $oldReferenceActivity, $activityType);
-									if(!empty($newPropActivityUri)){
-										$transitionRuleClone->setPropertyValue($connectorActivityProperty, $newPropActivityUri);
+									
+									$newPropActivity = $this->getNewActivityFromOldActivity($activity, $oldReferenceActivity, $activityType);
+									if(!is_null($newPropActivity)){
+										$transitionRuleClone->setPropertyValue($connectorActivityProperty, $newPropActivity);
+										$newPropActivity->editPropertyValues(new core_kernel_classes_Property(PROPERTY_ACTIVITIES_ISINITIAL), GENERIS_FALSE);
 									}
 								}
 							}
@@ -414,9 +420,12 @@ class wfEngine_models_classes_ProcessCloner
 							// var_dump('$activities', $activities);
 							foreach($activities->getIterator() as $activity){
 								if(!is_null($activity)){
-									
-									$newPropActivitiesUri = $this->getNewActivityUriFromOldActivity($activity, $oldReferenceActivity, $activityType);
-									if(!empty($newPropActivitiesUri)) $newPropActivitiesUris[] = $newPropActivitiesUri;
+									echo "activity type {$activityType} \n";
+									$newPropActivity = $this->getNewActivityFromOldActivity($activity, $oldReferenceActivity, $activityType);
+									if(!is_null($newPropActivity)){
+										$newPropActivitiesUris[] = $newPropActivity->uriResource;
+										$newPropActivity->editPropertyValues(new core_kernel_classes_Property(PROPERTY_ACTIVITIES_ISINITIAL), GENERIS_FALSE);
+									} 
 									
 								}
 							}
@@ -435,9 +444,9 @@ class wfEngine_models_classes_ProcessCloner
 		
 	}
 	
-	protected function getNewActivityUriFromOldActivity(core_kernel_classes_Resource $activity, core_kernel_classes_Resource $oldReferenceActivity, $connectionType){
+	protected function getNewActivityFromOldActivity(core_kernel_classes_Resource $activity, core_kernel_classes_Resource $oldReferenceActivity, $connectionType){
 		// var_dump($activity, $oldReferenceActivity, $connectionType);
-		$newPropActivitiesUri = '';
+		$returnValue = null;
 		$activityIO = '';
 		switch($connectionType){
 			case 'next':
@@ -462,18 +471,18 @@ class wfEngine_models_classes_ProcessCloner
 			if(wfEngine_models_classes_ProcessAuthoringService::isActivity($activity)){
 				$newActivity = $this->getClonedActivity($activity, $activityIO);
 				if(!is_null($newActivity)){
-					$newPropActivitiesUri = $newActivity->uriResource;
+					$returnValue = $newActivity;
 					//note: works for parallel activity too, where multiple branch is created a parallelized branch
 				}else{
 					//must have been cloned!
-					// $this->waitingActivities[] = 
-					throw new Exception('the previous activity has not been cloned! s');
+					print_r($this->clonedActivities);
+					throw new Exception("the previous activity has not been cloned! {$activity->getLabel()}({$activity->uriResource})");
 				}
 			}else if(wfEngine_models_classes_ProcessAuthoringService::isConnector($activity)){
 				$newConnector = $this->getClonedConnector($activity);
 				if(!is_null($activity)){
 					//it is a reference to a connector with another activity reference and it has been cloned already
-					$newPropActivitiesUri = $newConnector->uriResource;
+					$returnValue = $newConnector;
 				}else{
 					//not cloned yet:
 					//clone it only if the reference id is the current activity
@@ -482,7 +491,7 @@ class wfEngine_models_classes_ProcessCloner
 						//recursively clone it
 							$nextConnectorClone = $this->cloneConnector($activity);
 							if(!is_null($nextConnectorClone)){
-								$newPropActivitiesUri = $nextConnectorClone->uriResource;
+								$returnValue = $nextConnectorClone;
 							}else{
 								throw new Exception("the next connector cannot be cloned");
 							}
@@ -497,10 +506,10 @@ class wfEngine_models_classes_ProcessCloner
 			}
 		}
 		
-		return $newPropActivitiesUri;
+		return $returnValue;
 	}
 	
-	protected function cloneWfResource(core_kernel_classes_Resource $instance,  core_kernel_classes_Class $clazz, $forbiddenProperties = array())
+	protected function cloneWfResource(core_kernel_classes_Resource $instance,  core_kernel_classes_Class $clazz, $forbiddenProperties = array(), $newLabel='')
     {
         $returnValue = null;
         
@@ -514,8 +523,8 @@ class wfEngine_models_classes_ProcessCloner
 					$returnValue->editPropertyValues($property, $instance->getPropertyValues($property));
 				}
 			}
-			$label = $instance->getLabel();
-			$cloneLabel = "$label";
+			// $label = $instance->getLabel();
+			$cloneLabel = empty($newLabel)? $instance->getLabel():$newLabel;
 			// var_dump('before', $instance, $returnValue);
 			$returnValue->setLabel($cloneLabel);
 			// var_dump('after', $instance, $returnValue);

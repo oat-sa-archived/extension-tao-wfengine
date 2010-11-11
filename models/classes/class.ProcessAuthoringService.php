@@ -702,6 +702,8 @@ class wfEngine_models_classes_ProcessAuthoringService
 		if($followingActivity instanceof core_kernel_classes_Resource){
 			//associate it to the property value of the connector
 			$connector->editPropertyValues(new core_kernel_classes_Property(PROPERTY_CONNECTORS_NEXTACTIVITIES), $followingActivity->uriResource);
+			//obvisouly, set the following actiivty as not initial (if it happened to be so):
+			$followingActivity->editPropertyValues(new core_kernel_classes_Property(PROPERTY_ACTIVITIES_ISINITIAL), GENERIS_FALSE);
 		}
 		
 		return $followingActivity;
