@@ -235,24 +235,41 @@ class wfEngine_models_classes_ProcessCloner
 			//init the required properties:
 			$propInitial = new core_kernel_classes_Property(PROPERTY_ACTIVITIES_ISINITIAL);
 			$propHidden = new core_kernel_classes_Property(PROPERTY_ACTIVITIES_ISHIDDEN);
+			$activityClass = new core_kernel_classes_Class(CLASS_ACTIVITIES);
 			
 			//build the $firstActivity:
-			$activityClass = new core_kernel_classes_Class(CLASS_ACTIVITIES);
 			$firstActivity = $activityClass->createInstance("process_start ({$process->getLabel()})", "created by ProcessCloner.Class");
 			$firstActivity->editPropertyValues($propInitial, GENERIS_TRUE);//do set it here, the property will be modified automatically by create "following" activity
 			$firstActivity->editPropertyValues($propHidden, GENERIS_TRUE);
 			$connector = $this->authoringService->createConnector($firstActivity);
-			$this->authoringService->createSequenceActivity($connector, $initialActivity);//this function also automatically set the former $iniitalAcitivty to "not initial"
+			
+			//get the clone of the intiial acitivty:
+			$newInitialActivity = $this->getClonedActivity($initialActivity, 'out');	
+			if(is_null($newInitialActivity)){
+				throw new Exception("the intial activity has not been cloned: {$initialActivity->getLabel()}({$initialActivity->uriResource})");
+			}
+						
+			$this->authoringService->createSequenceActivity($connector, $newInitialActivity);//this function also automatically set the former $iniitalAcitivty to "not initial"
 			//TODO: rename the function createSequenceActivity to addSequenceActivity, clearer that way
 			
 			//build the last activity:
 			$lastActivity = $activityClass->createInstance("process_end ({$process->getLabel()})", "created by ProcessCloner.Class");
 			$lastActivity->editPropertyValues($propHidden, GENERIS_TRUE);
-			foreach($finalActivities as $activity){
+			foreach($finalActivities as $newActivity){
+				
+				// $newActivity = $this->getClonedActivity($oldActivity, 'in');
+				// echo __LINE__.'*';
+				// if(is_null($newActivity)){
+					// var_dump($this);
+					// throw new Exception("the final activity has not been cloned: {$oldActivity->getLabel()}({$oldActivity->uriResource})");
+				// }
+				// echo __LINE__.'*';
 				//TODO: determine if there is need for merging multiple instances of a parallelized activity that has not been merged 
-				$connector = $this->authoringService->createConnector($activity);
+				$connector = $this->authoringService->createConnector($newActivity);
+				
 				$this->authoringService->createSequenceActivity($connector, $lastActivity);
 			}
+			
 			
 			$initialActivity = $firstActivity;
 			$finalActivities = $lastActivity;
