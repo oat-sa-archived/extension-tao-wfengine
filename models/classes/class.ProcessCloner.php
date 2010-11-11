@@ -205,16 +205,16 @@ class wfEngine_models_classes_ProcessCloner
 			
 			//reloop for connectors this time:
 			foreach($activities as $activityUri => $activity){
-				echo "clone connector of the activity {$activity->getLabel()} \n";
+				//echo "clone connector of the activity {$activity->getLabel()} \n";
 				$this->currentActivity = $activity;
 				$connectors = $this->authoringService->getConnectorsByActivity($activity, array('next'));
-				echo "connectors found:";print_r($connectors);
+				//echo "connectors found:";print_r($connectors);
 				if(empty($connectors['next'])){
 					//it is a final activity
 					$finalActivities[] = $this->getClonedActivity($activity, 'out');
 				}else{
 					foreach($connectors['next'] as $connector){
-						echo "cloning connector {$connector->getLabel()} ({$connector->uriResource}) \n";
+						//echo "cloning connector {$connector->getLabel()} ({$connector->uriResource}) \n";
 						$this->cloneConnector($connector);
 					}
 				}
@@ -231,7 +231,7 @@ class wfEngine_models_classes_ProcessCloner
 		}
 		
 		if($addTransitionalActivity){
-			echo "adding transitionnal actiivties";
+			//echo "adding transitionnal actiivties";
 			//init the required properties:
 			$propInitial = new core_kernel_classes_Property(PROPERTY_ACTIVITIES_ISINITIAL);
 			$propHidden = new core_kernel_classes_Property(PROPERTY_ACTIVITIES_ISHIDDEN);
@@ -420,7 +420,7 @@ class wfEngine_models_classes_ProcessCloner
 							// var_dump('$activities', $activities);
 							foreach($activities->getIterator() as $activity){
 								if(!is_null($activity)){
-									echo "activity type {$activityType} \n";
+									//echo "activity type {$activityType} \n";
 									$newPropActivity = $this->getNewActivityFromOldActivity($activity, $oldReferenceActivity, $activityType);
 									if(!is_null($newPropActivity)){
 										$newPropActivitiesUris[] = $newPropActivity->uriResource;
