@@ -1140,11 +1140,13 @@ extends WfResource
 		{
 			$tokenService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_TokenService');
 			$userService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_UserService');
+			$user = $userService->getCurrentUser();
 			
-			$tokenService->setCurrentActivities($this->resource, array(new core_kernel_classes_Resource($activity)), $userService->getCurrentUser());
+			$tokenService->setCurrentActivities($this->resource, array(new core_kernel_classes_Resource($activity)), $user);
 			
 			$this->currentActivity = array();
 			$beforeActivity = new Activity($activity);
+			$tokenService->moveBack($from->resource, $beforeActivity->resource,$user, $this->resource);
 			$this->currentActivity[] = $beforeActivity;
 			
 
