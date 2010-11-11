@@ -721,12 +721,17 @@ ActivityDiagramClass.drawDiagram = function(){
 		ActivityDiagramClass.setActivityMenuHandler(activityId);
 	}
 	
+	
 	for(connectorId in ActivityDiagramClass.connectors){
-		if(ActivityDiagramClass.connectors[connectorId].position){
-			ActivityDiagramClass.drawConnector(connectorId);
-			ActivityDiagramClass.setConnectorMenuHandler(connectorId);
-			//do not draw the first connector of an activity, only the connector of the connector, since the first one will de drawn with drawActivity
+		try{
+			if(ActivityDiagramClass.connectors[connectorId].position){
+				ActivityDiagramClass.drawConnector(connectorId);
+				ActivityDiagramClass.setConnectorMenuHandler(connectorId);
+			}
+		}catch(err){
+			// CL('error drawing connector '+connectorId+': '+err);
 		}
+		
 	}
 	
 	for(arrowId in ArrowClass.arrows){
@@ -747,7 +752,7 @@ ActivityDiagramClass.drawDiagram = function(){
 				delete ArrowClass.arrows[arrowId];
 			}	
 		}else{
-			throw 'the followgin arrow cannot be drawn: '+arrowId;
+			throw 'the following arrow cannot be drawn: '+arrowId;
 		}
 	}
 	

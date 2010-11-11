@@ -518,7 +518,7 @@ class wfEngine_models_classes_ProcessTreeService
 				'id' => tao_helpers_Uri::encode($connector->uriResource),
 				'class' => 'node-connector'
 			),
-			'type' => $connectorType->getLabel(),
+			'type' => trim(strtolower($connectorType->getLabel())),
 			'port' => $nodeClass,
 			'portData' => $portInfo
 		);

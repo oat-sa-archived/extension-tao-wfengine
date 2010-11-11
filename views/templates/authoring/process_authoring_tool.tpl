@@ -68,7 +68,7 @@
 			ActivityDiagramClass.loadDiagram();
 		}
 		catch(err){
-			// console.log('feed&draw diagram exception', err);
+			// CL('feed&draw diagram exception', err);
 		}
 		
 	});
@@ -170,7 +170,7 @@
 					ActivityDiagramClass.saveDiagram();
 				}
 			}catch(ex){
-				// console.log('activityAdded exception:', ex);
+				// CL('activityAdded exception:', ex);
 			}
 		});
 		
@@ -183,6 +183,7 @@
 					var arrowId = ActivityDiagramClass.getActivityId('activity', previousObjectId, 'bottom');
 					
 					var activityRefId = previousObjectId;
+					ActivityDiagramClass.refreshRelatedTree();
 				}else{
 					//should be a connector:
 					var originEltId = ActivityDiagramClass.getActivityId('connector', previousObjectId);
@@ -229,11 +230,11 @@
 				//save diagram:
 				ActivityDiagramClass.saveDiagram();
 			}catch(ex){
-				// console.log('connectorAdded exception:', ex);
-				// console.log('connector', connector);
-				// console.log('originEltId', originEltId);
-				// console.log('connectorId', connectorId);
-				// console.log('arrowId', arrowId);
+				// CL('connectorAdded exception:', ex);
+				// CL('connector', connector);
+				// CL('originEltId', originEltId);
+				// CL('connectorId', connectorId);
+				// CL('arrowId', arrowId);
 			}
 				
 		});
