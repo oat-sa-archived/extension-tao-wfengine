@@ -30,7 +30,7 @@ var wfApi = {
 function forward(){
 	var next = wfApi.context.getElementById('next');
 	if(next){
-		//$(next).trigger('click');
+		$(next).trigger('click');
 	}
 }
 
