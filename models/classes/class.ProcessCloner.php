@@ -194,8 +194,13 @@ class wfEngine_models_classes_ProcessCloner
 				throw new Exception('no initial activity found to the process');
 			}
 			
+			$newInitialActivity = null;
 			foreach($activities as $activityUri => $activity){
 				$activityClone = $this->cloneActivity($activity);
+				if($activity->uriResource == $initialActivity->uriResource){
+					$newInitialActivity = $activityClone;
+				}
+				
 				if(!is_null($activityClone)){
 					$this->addClonedActivity($activity, $activityClone);
 				}else{
@@ -244,11 +249,9 @@ class wfEngine_models_classes_ProcessCloner
 			$connector = $this->authoringService->createConnector($firstActivity);
 			
 			//get the clone of the intiial acitivty:
-			$newInitialActivity = $this->getClonedActivity($initialActivity, 'out');	
 			if(is_null($newInitialActivity)){
 				throw new Exception("the intial activity has not been cloned: {$initialActivity->getLabel()}({$initialActivity->uriResource})");
 			}
-						
 			$this->authoringService->createSequenceActivity($connector, $newInitialActivity);//this function also automatically set the former $iniitalAcitivty to "not initial"
 			//TODO: rename the function createSequenceActivity to addSequenceActivity, clearer that way
 			
@@ -257,19 +260,11 @@ class wfEngine_models_classes_ProcessCloner
 			$lastActivity->editPropertyValues($propHidden, GENERIS_TRUE);
 			foreach($finalActivities as $newActivity){
 				
-				// $newActivity = $this->getClonedActivity($oldActivity, 'in');
-				// echo __LINE__.'*';
-				// if(is_null($newActivity)){
-					// var_dump($this);
-					// throw new Exception("the final activity has not been cloned: {$oldActivity->getLabel()}({$oldActivity->uriResource})");
-				// }
-				// echo __LINE__.'*';
 				//TODO: determine if there is need for merging multiple instances of a parallelized activity that has not been merged 
 				$connector = $this->authoringService->createConnector($newActivity);
 				
 				$this->authoringService->createSequenceActivity($connector, $lastActivity);
 			}
-			
 			
 			$initialActivity = $firstActivity;
 			$finalActivities = $lastActivity;
