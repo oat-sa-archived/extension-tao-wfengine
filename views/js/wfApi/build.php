@@ -1,12 +1,12 @@
 <?php 
-include_once("../../../../tao/lib/jstools/jsmin.php");
+include_once("../../../../tao/lib/jstools/minify.php");
 
 $files = array ();
 $files[] = "./src/constants.js";
 $files[] = "./src/context.js";
 $files[] = "./src/api.js";
 
-minify_files ($files, "wfApi.min.js");
+minifyJSFiles ($files, "wfApi.min.js");
 
 exit(0);
 ?>
