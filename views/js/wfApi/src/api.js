@@ -69,9 +69,6 @@ function pause(){
 
 if(typeof(finish) != 'function'){
 
-	//get the highest context 
-	var _stateContext = window;
-	
 	/**
 	 * Define the item's state as finished.
 	 * This state can have some consequences.
@@ -80,9 +77,9 @@ if(typeof(finish) != 'function'){
 	 * @namespace wfApi
 	 */
 	function finish(){
-		$(_stateContext).trigger(wf_STATE.ITEM.PRE_FINISHED);
-		$(_stateContext).trigger(wf_STATE.ITEM.FINISHED);
-		$(_stateContext).trigger(wf_STATE.ITEM.POST_FINISHED);
+		$(window).trigger(wf_STATE.ITEM.PRE_FINISHED);
+		$(window).trigger(wf_STATE.ITEM.FINISHED);
+		$(window).trigger(wf_STATE.ITEM.POST_FINISHED);
 	}
 	
 	/**
@@ -93,7 +90,7 @@ if(typeof(finish) != 'function'){
 	 * @param {function} callback
 	 */
 	function onFinish(callback){
-		$(_stateContext).bind(wf_STATE.ITEM.FINISHED, callback);
+		$(window).bind(wf_STATE.ITEM.FINISHED, callback);
 	}
 	
 	/**
@@ -104,7 +101,7 @@ if(typeof(finish) != 'function'){
 	 * @param {function} callback
 	 */
 	function beforeFinish(callback){
-		$(_stateContext).bind(wf_STATE.ITEM.PRE_FINISHED, callback);
+		$(window).bind(wf_STATE.ITEM.PRE_FINISHED, callback);
 	}
 	
 	/**
@@ -115,7 +112,7 @@ if(typeof(finish) != 'function'){
 	 * @param {function} callback
 	 */
 	function afterFinish(callback){
-		$(_stateContext).bind(wf_STATE.ITEM.POST_FINISHED, callback);
+		$(window).bind(wf_STATE.ITEM.POST_FINISHED, callback);
 	}
 
 }
