@@ -151,17 +151,23 @@ class wfEngine_models_classes_ActivityExecutionService
         	$apiModel  	= core_kernel_impl_ApiModelOO::singleton();
         	$activityExecutionCollection = $apiModel->getSubject(PROPERTY_ACTIVITY_EXECUTION_ACTIVITY, $activity->uriResource);
         	foreach($activityExecutionCollection->getIterator() as $activityExecution){
-        		$activityExecutionUser = $activityExecution->getOnePropertyValue($currentUserProp);
-				$activityExecutionProcessExecution = $activityExecution->getOnePropertyValue($processExecutionProp);
+        		$activityExecutionUserCollection = $activityExecution->getPropertyValuesCollection($currentUserProp);
+				
         		
-				if(!is_null($activityExecutionUser) && !is_null($activityExecutionProcessExecution)){
-	        		if($currentUser->uriResource == $activityExecutionUser->uriResource && $processExecution->uriResource == $activityExecutionProcessExecution->uriResource){
-	        			$returnValue = $activityExecution;
-	        			break;
-	        		}
+        		$activityExecutionProcessExecution = $activityExecution->getOnePropertyValue($processExecutionProp);
+        		foreach ($activityExecutionUserCollection->getIterator() as $activityExecutionUser) {
+    				if(!is_null($activityExecutionUser) && !is_null($activityExecutionProcessExecution)){
+    				    if($currentUser->uriResource == $activityExecutionUser->uriResource && $processExecution->uriResource == $activityExecutionProcessExecution->uriResource){
+    	        			$returnValue = $activityExecution;
+    	        			break;
+    	        			break;
+    				    }
+    	        		
+    	        		
+    				}
+			
         		}
         	}
-			
         }
         // section 127-0-1-1--11ec324e:128d9678eea:-8000:0000000000001F80 end
 
