@@ -5,7 +5,7 @@ error_reporting(E_ALL);
 /**
  * Manage the particular executions of a process definition
  *
- * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+ * @author Lionel Lecaque, <lionel.lecaque@tudor.lu>
  * @package wfEngine
  * @subpackage models_classes
  */
@@ -18,7 +18,7 @@ if (0 > version_compare(PHP_VERSION, '5')) {
  * The Service class is an abstraction of each service instance. 
  * Used to centralize the behavior related to every servcie instances.
  *
- * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+ * @author Lionel Lecaque, <lionel.lecaque@tudor.lu>
  */
 require_once('tao/models/classes/class.GenerisService.php');
 
@@ -34,7 +34,7 @@ require_once('tao/models/classes/class.GenerisService.php');
  * Manage the particular executions of a process definition
  *
  * @access public
- * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+ * @author Lionel Lecaque, <lionel.lecaque@tudor.lu>
  * @package wfEngine
  * @subpackage models_classes
  */
@@ -52,7 +52,7 @@ class wfEngine_models_classes_ProcessExecutionService
      * Check the ACL of a user for the given process
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Lionel Lecaque, <lionel.lecaque@tudor.lu>
      * @param  Resource process
      * @param  Resource currentUser
      * @return boolean
@@ -115,7 +115,7 @@ class wfEngine_models_classes_ProcessExecutionService
      * Initialize the current process execution
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Lionel Lecaque, <lionel.lecaque@tudor.lu>
      * @param  Resource processExecution
      * @param  Resource activity
      * @param  Resource user
@@ -142,6 +142,33 @@ class wfEngine_models_classes_ProcessExecutionService
 		}
         
         // section 127-0-1-1--2bba7ca5:129262ff3bb:-8000:0000000000001FED end
+
+        return (bool) $returnValue;
+    }
+
+    /**
+     * Short description of method initCurrentExecutionRole
+     *
+     * @access public
+     * @author Lionel Lecaque, <lionel.lecaque@tudor.lu>
+     * @param  Resource processExecution
+     * @param  Resource activity
+     * @param  Resource role
+     * @return boolean
+     */
+    public function initCurrentExecutionRole( core_kernel_classes_Resource $processExecution,  core_kernel_classes_Resource $activity,  core_kernel_classes_Resource $role)
+    {
+        $returnValue = (bool) false;
+
+        // section 127-0-1-1-1e955b39:12c536a700c:-8000:0000000000002720 begin
+         if(!is_null($processExecution) && !is_null($activity) && !is_null($role)){
+             $roleClass = new core_kernel_classes_Class($role->uriResource);
+             
+             foreach ($roleClass->getInstances() as $user){
+                 $this->initCurrentExecution($processExecution,$activity,$user);
+             }
+         }
+        // section 127-0-1-1-1e955b39:12c536a700c:-8000:0000000000002720 end
 
         return (bool) $returnValue;
     }
