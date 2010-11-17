@@ -1112,6 +1112,8 @@ class wfEngine_models_classes_ProcessAuthoringService
 				$transitionRule->editPropertyValues(new core_kernel_classes_Property(PROPERTY_TRANSITIONRULES_THEN), $followingActivity->uriResource);
 			}elseif(strtolower($connectorType) == 'else'){
 				$transitionRule->editPropertyValues(new core_kernel_classes_Property(PROPERTY_TRANSITIONRULES_ELSE), $followingActivity->uriResource);
+			}else{
+				throw new Exception("wrong connection type then/else");
 			}
 		}
 		return $followingActivity;
