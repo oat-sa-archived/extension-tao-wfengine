@@ -333,7 +333,7 @@ class wfEngine_models_classes_ProcessCloner
 	
 	public function cloneConnector(core_kernel_classes_Resource $connector){
 		$returnValue = null;
-		echo __LINE__.'*coloning connector '.$connector->getLabel();
+//		echo __LINE__.'*coloning connector '.$connector->getLabel();
 		if(wfEngine_models_classes_ProcessAuthoringService::isConnector($connector)){
 			$connectorClone = $this->cloneWfResource(
 				$connector, 
@@ -359,7 +359,7 @@ class wfEngine_models_classes_ProcessCloner
 				// foreach($this->waitingConnectors[$connector->uriResource][$activityType] as $activity){
 					// $activity->setPropertyValue($connectorProperty, $connectorClone->uriResource);
 				// }
-				var_dump($this->waitingConnectors);
+				//var_dump($this->waitingConnectors);
 				foreach($this->waitingConnectors[$connector->uriResource] as $connectionType=>$connectors){
 					if(isset($activityPropertiesMap[$connectionType])){
 						$connectorProperty = $activityPropertiesMap[$connectionType];
@@ -402,7 +402,7 @@ class wfEngine_models_classes_ProcessCloner
 			}else{
 				throw new Exception("the new activity reference cannot be found among the cloned activities");
 			}
-			echo __LINE__.'*<br/>';
+			//echo __LINE__.'*<br/>';
 			$connectorType = $connector->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_TYPE));
 			if(!is_null($connectorType)){
 				switch($connectorType->uriResource){
@@ -467,7 +467,7 @@ class wfEngine_models_classes_ProcessCloner
 					}
 				}
 			}
-			echo __LINE__.'*<br/>';
+		//	echo __LINE__.'*<br/>';
 			$this->addClonedConnector($connector, $connectorClone);
 			$returnValue = $connectorClone;
 		}

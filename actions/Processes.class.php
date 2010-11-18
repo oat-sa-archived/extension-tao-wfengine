@@ -50,6 +50,9 @@ class Processes extends WfModule
 			
 						
 			$processExecutionFactory->name = $posted["variables"][RDFS_LABEL];
+			if(empty($processExecutionFactory->name)){
+				$processExecutionFactory->name = "Process execution of ".urldecode($posted['executionOf']);
+			}
 			$processExecutionFactory->comment = 'Created ' . date(DATE_ISO8601);
 			
 			$processExecutionFactory->execution = urldecode($posted['executionOf']);
