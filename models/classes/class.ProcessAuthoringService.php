@@ -383,7 +383,7 @@ class wfEngine_models_classes_ProcessAuthoringService
 		//delete call of service!!
 		$interactiveServices = $activity->getPropertyValuesCollection(new core_kernel_classes_Property(PROPERTY_ACTIVITIES_INTERACTIVESERVICES));
 		foreach($interactiveServices->getIterator() as $service){
-			$service->delete();
+			$this->deleteCallOfService($service);
 		}
 		
 		//delete activity itself:
@@ -400,6 +400,22 @@ class wfEngine_models_classes_ProcessAuthoringService
 		return $returnValue=true;
 	}
 	
+	public function deleteCallOfService(core_kernel_classes_Resource $service){
+		//delete related actual param as well:
+			
+		$propActualParamIn = new core_kernel_classes_Property(PROPERTY_CALLOFSERVICES_ACTUALPARAMIN);
+		$propActualParamOut = new core_kernel_classes_Property(PROPERTY_CALLOFSERVICES_ACTUALPARAMOUT);
+		
+		foreach($service->getPropertyValuesCollection($propActualParamIn)->getIterator() as $actualParam){
+			$actualParam->delete();
+		}
+		foreach($service->getPropertyValuesCollection($propActualParamOut)->getIterator() as $actualParam){
+			$actualParam->delete();
+		}
+		
+		$service->delete();
+	}
+	
 	/**
      * delete a connector and its related resources
      *
@@ -413,7 +429,7 @@ class wfEngine_models_classes_ProcessAuthoringService
 		$returnValue = false;
 		
 		if(!wfEngine_helpers_ProcessUtil::isConnector($connector)){
-			throw new Exception("the resource in the parameter is not a connector");
+			throw new Exception("the resource in the parameter is not a connector: {$connector->getLabel()} ({$connector->uriResource})");
 			return $returnValue;
 		}
 		
