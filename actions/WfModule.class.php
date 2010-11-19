@@ -11,8 +11,6 @@ class WfModule extends Module
 			//Authentication and API initialization
 			$userService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_UserService');
 			$userService->connectCurrentUser();
-			
-			
 		}
 		else{
 			$this->redirect(_url('index', 'Authentication', 'wfEngine', array('errorMessage' => urlencode(__('Access denied. Please renew your authentication!')))));

@@ -6,6 +6,7 @@ header("HTTP/1.0 503 Internal Error");
 	<title>503 Internal Error</title>
 </head>
 <body>
-	<p><?php echo __("An error occured during request processing") ?>.</p>
+	<p><strong><?php echo __("An error occured during request processing") ?></strong></p>
+	<p><?=(isset($message))?$message:""?></p>
 </body>
 </html>

@@ -27,7 +27,6 @@ class ProcessBrowser extends WfModule
 				}
 			}
 		}
-		// var_dump($process, $activityUri,$currentActivity);
 		
 		if(is_null($currentActivity)){
 			//if the activity is still null check if there is a value in $process->currentActivity:
@@ -227,7 +226,7 @@ class ProcessBrowser extends WfModule
 		}
 		else
 		{
-			$this->redirect(_url('index', 'processBrowser', null, array('processUri' => urlencode($processUri))));
+			$this->redirect(_url('index', get_class($this), null, array('processUri' => urlencode($processUri))));
 		}
 	}
 
@@ -256,7 +255,7 @@ class ProcessBrowser extends WfModule
 				if(count($processExecution->currentActivity) == 1){
 					$nextActivityDefinitionUri = $processExecution->currentActivity[0]->resource->uriResource;
 				}
-				$this->redirect(_url('index', 'processBrowser', null, array('processUri' => urlencode($processUri), 'activityUri'=>urlencode($nextActivityDefinitionUri)) ));
+				$this->redirect(_url('index', get_class($this), null, array('processUri' => urlencode($processUri), 'activityUri'=>urlencode($nextActivityDefinitionUri)) ));
 			}
 		}
 		catch (ConsistencyException $consistencyException)
@@ -344,7 +343,7 @@ class ProcessBrowser extends WfModule
 			$consistency = ConsistencyHelper::BuildConsistencyStructure($e);
 			$_SESSION['taoqual.flashvar.consistency'] = $consistency;
 
-			$this->redirect(_url('index', 'processBrowser', null, array('processUri' => urlencode($processUri))));
+			$this->redirect(_url('index', get_class($this), null, array('processUri' => urlencode($processUri))));
 		}
 	}
 }
