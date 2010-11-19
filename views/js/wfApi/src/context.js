@@ -26,7 +26,7 @@ function RecoveryContext (){
 	 * The registry store the contexts 
 	 * @type {Object}
 	 */
-	this.registry = new Object();
+	this.registry = null;
 	
 	/**
 	 * The parameters defining how and where to retrieve a context
@@ -220,6 +220,9 @@ function RecoveryContext (){
 	 * @param {Object} value
 	 */
 	this.setContext = function(key, value){
+		if(this.registry == null){
+			this.registry = new Object();
+		}
 		if(key != ''){
 			this.registry[key] = value;
 		}
