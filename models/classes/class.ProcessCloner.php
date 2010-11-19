@@ -93,20 +93,26 @@ class wfEngine_models_classes_ProcessCloner
 		if(!is_null($oldActivity)){
 			//set the in:
 			$this->clonedActivities[$oldActivity->uriResource]['in'] = $newActivityIn->uriResource;
-			
+			//debug:
+			$this->setDebugClonedActivities($oldActivity);
+				
 			//set the out:
 			if($newActivityOut instanceof core_kernel_classes_Resource){
+			
 				$this->clonedActivities[$oldActivity->uriResource]['out'] = $newActivityOut->uriResource;
-				
 				//debug:
-				$this->setDebugClonedActivities($oldActivity);
-			}else if(is_array($newActivityOut)){
-				$this->clonedActivities[$oldActivity->uriResource]['out'] = $newActivityOut;
+				$this->setDebugClonedActivities($newActivityOut);
 				
+			}else if(is_array($newActivityOut)){
+				//debug
+				$this->clonedActivities[$oldActivity->uriResource]['out'] = array();
 				foreach($newActivityOut as $aNewActivityOut){
-					//debug
-					if($aNewActivityOut instanceof core_kernel_classes_Resource) $this->setDebugClonedActivities($aNewActivityOut);
+					if($aNewActivityOut instanceof core_kernel_classes_Resource) {
+						$this->clonedActivities[$oldActivity->uriResource]['out'][] = $aNewActivityOut->uriResource;
+						$this->setDebugClonedActivities($aNewActivityOut);
+					}
 				}
+				
 			}
 		}else{
 			$this->clonedActivities[] = $newActivityIn->uriResource;
@@ -493,23 +499,66 @@ class wfEngine_models_classes_ProcessCloner
 							foreach($activities->getIterator() as $activity){
 								if(!is_null($activity)){
 									
+									/*
+									* "new prop acitivy" can be:
+									* 1 - an activity resource
+									* 2 - an array of activity resources
+									* 3 - a connector resource
+									*/
 									$newPropActivity = $this->getNewActivityFromOldActivity($activity, $oldReferenceActivity, $activityType, $connectorClone);
-									if(!is_null($newPropActivity)){
 									
-										if(is_array($newPropActivity)){
-											foreach($newPropActivity as $activityResource){
-												if($activityResource instanceof core_kernel_classes_Resource){
-													$newPropActivitiesUris[] = $activityResource->uriResource;
-													if($activityType == 'next') $activityResource->editPropertyValues(new core_kernel_classes_Property(PROPERTY_ACTIVITIES_ISINITIAL), GENERIS_FALSE);
-												}
-											}
-										}else if($newPropActivity instanceof core_kernel_classes_Resource){
-											$newPropActivitiesUris[] = $newPropActivity->uriResource;
-											if($activityType == 'next') 
-												$newPropActivity->editPropertyValues(new core_kernel_classes_Property(PROPERTY_ACTIVITIES_ISINITIAL), GENERIS_FALSE);
-										}
+									// if(!is_null($newPropActivity)){
+									
+										// if(is_array($newPropActivity)){
+											// foreach($newPropActivity as $activityResource){
+												// if($activityResource instanceof core_kernel_classes_Resource){
+													// $newPropActivitiesUris[] = $activityResource->uriResource;
+													// if($activityType == 'next')
+														// $activityResource->editPropertyValues(new core_kernel_classes_Property(PROPERTY_ACTIVITIES_ISINITIAL), GENERIS_FALSE);
+												// }
+											// }
+										// }else if($newPropActivity instanceof core_kernel_classes_Resource){
+											// $newPropActivitiesUris[] = $newPropActivity->uriResource;
+											// if($activityType == 'next') 
+												// $newPropActivity->editPropertyValues(new core_kernel_classes_Property(PROPERTY_ACTIVITIES_ISINITIAL), GENERIS_FALSE);
+										// }
 										
-									} 
+									// }
+									
+									if(!is_null($newPropActivity)){
+										if($activityType == 'next'){
+											if($newPropActivity instanceof core_kernel_classes_Resource){
+												$newPropActivitiesUris[] = $newPropActivity->uriResource;
+												$newPropActivity->editPropertyValues(new core_kernel_classes_Property(PROPERTY_ACTIVITIES_ISINITIAL), GENERIS_FALSE);
+											}else{
+												throw new Exception('the next activity must be a single activity resource');
+											}
+										}else if($activityType == 'prev'){
+											//prev:
+											if($newPropActivity instanceof core_kernel_classes_Resource){
+												$newPropActivitiesUris[] = $newPropActivity->uriResource;
+											}else if(is_array($newPropActivity)){
+												$count = 0;
+												$sequentialConnectorType = new core_kernel_classes_Resource(INSTANCE_TYPEOFCONNECTORS_SEQUENCE);
+												foreach($newPropActivity as $inputActivity){
+													if($count == 0){
+														$newPropActivitiesUris[] = $inputActivity->uriResource;
+													}else{
+														//required to build a new sequential connector:
+														$sequentialConnector = $this->authoringService->createConnector($inputActivity);
+														// $this->authoringService->setConnectorType($sequentialConnector, $sequentialConnectorType);
+														// $newPropActivitiesUris[] = $sequentialConnector->uriResource;
+														$this->authoringService->createSequenceActivity($sequentialConnector, $connectorClone);
+													}
+													$count++;
+												}
+											}else{
+												throw new Exception('the next activity must be a single activity resource');
+											}
+										}else{
+											throw new Exception('unknown connection type in connector clone: '.$activityType);
+										}
+									}
 									
 								}
 							}
