@@ -26,7 +26,7 @@ function RecoveryContext (){
 	 * The registry store the contexts 
 	 * @type {Object}
 	 */
-	this.registry = null;
+	this.registry = new Object();
 	
 	/**
 	 * The parameters defining how and where to retrieve a context
@@ -46,7 +46,7 @@ function RecoveryContext (){
 	 * @type {Object}
 	 */
 	this.destinationService = {
-			type:	'sync',										// (async | sync)
+			type:	'async',									// (async | sync)
 			url:	'/wfEngine/RecoveryContext/save',			//the url where we send the context
 			params:  {},										//the common parameters to send to the service
 			method: 'post',										//sending method
@@ -177,13 +177,16 @@ function RecoveryContext (){
 	 */
 	this.saveContext = function(){
 		
-		var parameters = this.destinationService.params;
-		parameters['context'] = this.registry;
+		var registryParams = this.destinationService.params;
+		registryParams['context'] = new Object();
+		for(key in this.registry){
+			registryParams['context'][key] = this.registry[key];
+		}
 		
 		 $.ajax({
 				async		: (this.destinationService.type == 'async'),
 				url  		: this.destinationService.url,
-				data 		: parameters,
+				data 		: registryParams,
 				type 		: this.destinationService.method,
 				dataType	: this.destinationService.format,
 				success		: function(data){
@@ -217,9 +220,8 @@ function RecoveryContext (){
 	 * @param {Object} value
 	 */
 	this.setContext = function(key, value){
-		if(this.registry == null){
-			this.registry = new Object();
+		if(key != ''){
+			this.registry[key] = value;
 		}
-		this.registry[key] = value;
 	};
 }

@@ -35,7 +35,8 @@
 		});
 		
 		test("Test the context recovery", function() {
-			setRecoveryContext('myContext', {integer: '12', obj: {arr: [1,2]} });
+			var myContext = {integer: '12', obj: {arr: [1,2]} };
+			setRecoveryContext('myContext', myContext);
 
 			ok($.isPlainObject(recoveryCtx.registry), 'test if the registry has been initialized');
 			equals( typeof(recoveryCtx.registry['myContext']), 'undefined',  'test if the registry has flushed');
