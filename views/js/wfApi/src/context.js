@@ -88,6 +88,7 @@ function RecoveryContext (){
 							}
 						}
 					}
+					
 					if(environment.method){
 						if(/^get|post$/i.test(environment.method)){
 							this.sourceService.method = environment.method;
@@ -102,7 +103,7 @@ function RecoveryContext (){
 	 * Retrieve a context and populate the registry
 	 */
 	this.retrieveContext = function(){
-	
+
 		switch(this.sourceService.type){
 		
 		case 'manual':
@@ -110,20 +111,26 @@ function RecoveryContext (){
 			break;
 		
 		case 'sync':
-			this.registry = $.parseJSON($.ajax({
-				async		: false,
-				url  		: this.sourceService.url,
-				data 		: this.sourceService.params,
-				type 		: this.sourceService.method
+			var response = $.parseJSON($.ajax({
+				async	 : false,
+				url  		  : this.sourceService.url,
+				data 		:this.sourceService.params,
+				type			: this.sourceService.method,
+				dataType	:this.sourceService.format
 			}).responseText);
+			if(response.length > 0){
+				this.registry = response;
+			}
 			break;
 		
 		case 'async':
+				
 			$.ajax({
 				async		: false,
-				url  		: this.sourceService.url,
-				data 		: this.sourceService.params,
-				type 		: this.sourceService.method,
+				url				: this.sourceService.url,
+				data			:this.sourceService.params,
+				type			: this.sourceService.method,
+				dataType	:this.sourceService.format,
 				success		: function(received){
 					this.registry = received;
 				}
@@ -210,7 +217,10 @@ function RecoveryContext (){
 		if(this.registry == null){
 			this.retrieveContext();
 		}
-		return (this.registry[key]) ? this.registry[key] : false;
+		if(this.registry != null){
+			return (this.registry[key]) ? this.registry[key] : {};
+		}
+		return  {};
 	};
 	
 	/**
