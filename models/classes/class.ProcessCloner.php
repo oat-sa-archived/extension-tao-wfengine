@@ -430,6 +430,12 @@ class wfEngine_models_classes_ProcessCloner
 			$newReferenceActivity = $this->getClonedActivity($oldReferenceActivity, 'out');
 			
 			if(!is_null($newReferenceActivity)){
+				if(is_array($newReferenceActivity)){
+					$newReferenceActivity = $newReferenceActivity[0];
+				}
+				if(!$newReferenceActivity instanceof $newReferenceActivity){
+					throw new Exception("the cloned reference activity found is not a resource!");
+				}
 				$connectorClone->setPropertyValue($propActivityRef, $newReferenceActivity->uriResource);
 			}else{
 				throw new Exception("the new activity reference cannot be found among the cloned activities");
