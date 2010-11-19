@@ -44,6 +44,8 @@ class wfEngine_models_classes_ProcessCloner
 	protected $clonedActivities = array();
 	protected $clonedConnectors = array();
 	protected $waitingConnectors = array();
+	public $debugClonedActivities = array();
+	public $debugClonedConnectors = array();
 	
     // --- OPERATIONS ---
 
@@ -79,21 +81,38 @@ class wfEngine_models_classes_ProcessCloner
 		$this->waitingConnectors = array();
 	}
 	
+	private function setDebugClonedActivities(core_kernel_classes_Resource $activity){
+		if(!is_null($activity))
+		$this->debugClonedActivities[$activity->uriResource] = $activity->getLabel();
+	}
+	
 	public function addClonedActivity(core_kernel_classes_Resource $oldActivity = null, core_kernel_classes_Resource $newActivityIn, $newActivityOut = null){
 		
 		if(is_null($newActivityOut)) $newActivityOut = $newActivityIn;
 		
 		if(!is_null($oldActivity)){
+			//set the in:
 			$this->clonedActivities[$oldActivity->uriResource]['in'] = $newActivityIn->uriResource;
+			
+			//set the out:
 			if($newActivityOut instanceof core_kernel_classes_Resource){
-				$this->clonedActivities[$oldActivity->uriResource]['out'] = $newActivityIn->uriResource;
-			}else if(is_array($newActivityIn)){
-				$this->clonedActivities[$oldActivity->uriResource]['out'] = $newActivityIn;
+				$this->clonedActivities[$oldActivity->uriResource]['out'] = $newActivityOut->uriResource;
+				
+				//debug:
+				$this->setDebugClonedActivities($oldActivity);
+			}else if(is_array($newActivityOut)){
+				$this->clonedActivities[$oldActivity->uriResource]['out'] = $newActivityOut;
+				
+				foreach($newActivityOut as $aNewActivityOut){
+					//debug
+					if($aNewActivityOut instanceof core_kernel_classes_Resource) $this->setDebugClonedActivities($aNewActivityOut);
+				}
 			}
 		}else{
 			$this->clonedActivities[] = $newActivityIn->uriResource;
 		}
 		
+		$this->setDebugClonedActivities($newActivityIn);
 	}
 	
 	//return an activity resource or an array of activity resources
@@ -478,12 +497,12 @@ class wfEngine_models_classes_ProcessCloner
 									if(!is_null($newPropActivity)){
 									
 										if(is_array($newPropActivity)){
-										foreach($newPropActivity as $activityResource){
-											if($activityResource instanceof core_kernel_classes_Resource){
-												$newPropActivitiesUris[] = $activityResource->uriResource;
-												if($activityType == 'next') $activityResource->editPropertyValues(new core_kernel_classes_Property(PROPERTY_ACTIVITIES_ISINITIAL), GENERIS_FALSE);
+											foreach($newPropActivity as $activityResource){
+												if($activityResource instanceof core_kernel_classes_Resource){
+													$newPropActivitiesUris[] = $activityResource->uriResource;
+													if($activityType == 'next') $activityResource->editPropertyValues(new core_kernel_classes_Property(PROPERTY_ACTIVITIES_ISINITIAL), GENERIS_FALSE);
+												}
 											}
-										}
 										}else if($newPropActivity instanceof core_kernel_classes_Resource){
 											$newPropActivitiesUris[] = $newPropActivity->uriResource;
 											if($activityType == 'next') 

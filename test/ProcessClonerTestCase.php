@@ -109,7 +109,7 @@ class ProcessClonerTestCase extends UnitTestCase {
 		}
 		
 		$this->authoringService->deleteProcess($processClone);
-	}*/
+	}
 	
 	public function testCloneProcessSegment(){
 		$activity1 = $this->authoringService->createActivity($this->proc);
@@ -120,7 +120,6 @@ class ProcessClonerTestCase extends UnitTestCase {
 		$activity3 = $this->authoringService->createSequenceActivity($connector2);
 		
 		$segmentInterface = $this->processCloner->cloneProcessSegment($this->proc);
-		
 		$this->assertEqual($segmentInterface['in']->getLabel(), $activity1->getLabel());
 		$this->assertEqual($segmentInterface['out'][0]->getLabel(), $activity3->getLabel());
 		$this->assertEqual(count($this->processCloner->getClonedActivities()), 3);
@@ -132,10 +131,107 @@ class ProcessClonerTestCase extends UnitTestCase {
 		
 		$this->processCloner->revertCloning();
 	}
+	*/
 	
-	public function testCloneConditionnnalProcess(){
-	
+	public function testCloneConditionnalProcess(){
+		$id = "P_condProc7_";//for var_dump identification
+		$this->processCloner->setCloneLabel("__Clone7");
+		
+		$activity1 = $this->authoringService->createActivity($this->proc, "{$id}Activity_1");
+		$activity1->editPropertyValues(new core_kernel_classes_Property(PROPERTY_ACTIVITIES_ISINITIAL), GENERIS_TRUE);
+		$connector1 = $this->authoringService->createConnector($activity1);
+		
+		$then1 = $this->authoringService->createSplitActivity($connector1, 'then', null, "{$id}Activity_2");//create "Activity_2"
+		$else1 = $this->authoringService->createSplitActivity($connector1, 'else', null, '', true);//create another connector
+		// $else1 = $this->authoringService->createSplitActivity($connector1, 'else');
+		
+		$this->assertEqual($connector1->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_TYPE))->uriResource, INSTANCE_TYPEOFCONNECTORS_SPLIT);
+		$this->assertTrue(wfEngine_models_classes_ProcessAuthoringService::isActivity($then1));
+		$this->assertTrue(wfEngine_models_classes_ProcessAuthoringService::isConnector($else1));
+		
+		$transitionRule = $connector1->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_TRANSITIONRULE));
+		$this->assertEqual($then1->uriResource, $transitionRule->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_TRANSITIONRULES_THEN))->uriResource);
+		$this->assertEqual($else1->uriResource, $transitionRule->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_TRANSITIONRULES_ELSE))->uriResource);
+		
+		//create a sequential a
+		$connector2 = $this->authoringService->createConnector($then1);
+		$lastActivity = $this->authoringService->createSequenceActivity($connector2, null, "{$id}Activity_3");
+		
+		//connector "else1": connect the "then" to the activity "then1" and the "else" to 
+		$then2 = $this->authoringService->createSplitActivity($else1, 'then', $connector2);//connect to the activity $then1
+		$else2 = $this->authoringService->createSplitActivity($else1, 'else', $lastActivity);//connect to the connector of the activity $then1
+		$this->assertEqual($then2->uriResource, $connector2->uriResource);
+		$this->assertEqual($else2->uriResource, $lastActivity->uriResource);
+		
+		//clone the process now!
+		
+		$processClone = $this->processCloner->cloneProcess($this->proc);
+		
+		var_dump($this->processCloner);
+		
+		$this->assertIsA($processClone, 'core_kernel_classes_Resource');
+		$this->assertEqual(count($this->processCloner->getClonedActivities()), 3);
+		$this->assertEqual(count($this->processCloner->getClonedConnectors()), 3);
+		
+		//count the number of activities in the cloned process
+		$activities = $this->authoringService->getActivitiesByProcess($processClone);
+		$this->assertEqual(count($activities), 3);
+		foreach($activities as $activity){
+			$this->assertTrue(wfEngine_helpers_ProcessUtil::isActivity($activity));
+		}
+		
+		$this->authoringService->deleteProcess($processClone);
 	}
+	
+	
+	public function testCloneConditionnalProcessSegment(){
+	
+		$id = "P_condSeg3_";//for var_dump identification
+		$this->processCloner->setCloneLabel("__Clone3");
+		
+		$activity1 = $this->authoringService->createActivity($this->proc, "{$id}Activity_1");
+		$activity1->editPropertyValues(new core_kernel_classes_Property(PROPERTY_ACTIVITIES_ISINITIAL), GENERIS_TRUE);
+		$connector1 = $this->authoringService->createConnector($activity1);
+		
+		$then1 = $this->authoringService->createSplitActivity($connector1, 'then', null, "{$id}Activity_2");//create "Activity_2"
+		$else1 = $this->authoringService->createSplitActivity($connector1, 'else', null, '', true);//create another connector
+		// $else1 = $this->authoringService->createSplitActivity($connector1, 'else');
+		
+		$this->assertEqual($connector1->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_TYPE))->uriResource, INSTANCE_TYPEOFCONNECTORS_SPLIT);
+		$this->assertTrue(wfEngine_models_classes_ProcessAuthoringService::isActivity($then1));
+		$this->assertTrue(wfEngine_models_classes_ProcessAuthoringService::isConnector($else1));
+		
+		$transitionRule = $connector1->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_TRANSITIONRULE));
+		$this->assertEqual($then1->uriResource, $transitionRule->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_TRANSITIONRULES_THEN))->uriResource);
+		$this->assertEqual($else1->uriResource, $transitionRule->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_TRANSITIONRULES_ELSE))->uriResource);
+		
+		//create a sequential a
+		$connector2 = $this->authoringService->createConnector($then1);
+		$lastActivity = $this->authoringService->createSequenceActivity($connector2, null, "{$id}Activity_3");
+		
+		//connector "else1": connect the "then" to the activity "then1" and the "else" to 
+		$then2 = $this->authoringService->createSplitActivity($else1, 'then', $connector2);//connect to the activity $then1
+		$else2 = $this->authoringService->createSplitActivity($else1, 'else', $lastActivity);//connect to the connector of the activity $then1
+		$this->assertEqual($then2->uriResource, $connector2->uriResource);
+		$this->assertEqual($else2->uriResource, $lastActivity->uriResource);
+		
+		// var_dump($this->processCloner);
+		
+		$segmentInterface = $this->processCloner->cloneProcessSegment($this->proc);
+		$this->assertEqual($segmentInterface['in']->getLabel(), $activity1->getLabel().$this->processCloner->getCloneLabel());
+		// $this->assertEqual($segmentInterface['out'][0]->getLabel(), $activity3->getLabel());
+		$this->assertEqual(count($this->processCloner->getClonedActivities()), 3);
+		var_dump($segmentInterface, $segmentInterface['in']->getLabel(), $segmentInterface['out'][0]->getLabel());
+		
+		
+		// $segmentInterface = $this->processCloner->cloneProcessSegment($this->proc, true);
+		// $this->assertEqual(count($this->processCloner->getClonedActivities()), 5);
+		// $this->assertEqual($segmentInterface['in']->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_ACTIVITIES_ISHIDDEN))->uriResource, GENERIS_TRUE);
+		// var_dump($segmentInterface);
+		
+		// $this->processCloner->revertCloning();
+	}
+	/**/
 	
 	public function tearDown() {
        $this->authoringService->deleteProcess($this->proc);
