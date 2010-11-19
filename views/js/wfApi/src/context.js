@@ -118,9 +118,9 @@ function RecoveryContext (){
 				type			: this.sourceService.method,
 				dataType	:this.sourceService.format
 			}).responseText);
-			if(response.length > 0){
+			/*if(response.length > 0){*/
 				this.registry = response;
-			}
+			/*}*/
 			break;
 		
 		case 'async':
