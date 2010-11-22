@@ -373,7 +373,38 @@ extends WfResource
 			// Last but not least ... is the next activity a machine activity ?
 			// if yes, we perform the transition.
 			if ($activityAfterTransition->isHidden){
-				$this->performTransition($ignoreConsistency);
+				//required to create an activity execution here with:
+				
+				//get the process exectuion uri from the session
+				// $processUri = Session::getAttribute("processUri", $processUri);
+				// $processUri 		= urldecode($processUri);
+				// $processExecutionResource = new core_kernel_classes_Resource($processUri);
+				// if(!wfEngine_helpers_ProcessUtil::checkType($processExecutionResource, new core_kernel_classes_Class(CLASS_PROCESS_EXECUTIONS))){
+					// throw new Exception('No process execution found');
+				// }
+				
+				$currentUser = $userService->getCurrentUser();
+				if(is_null($currentUser)){
+					throw new Exception("No current user found!");
+				}
+				//security check if the user is allowed to access this activity
+				// if(!$activityExecutionService->checkAcl($activity->resource, $currentUser, $this->resource)){
+					// Session::removeAttribute("processUri");
+					// $this->redirect(_url('index', 'Main'));
+				// }//already performed above...
+				
+				$activityExecutionResource = $activityExecutionService->initExecution($activityAfterTransition->resource, $currentUser, $this->resource);
+				if(!is_null($activityExecutionResource)){
+					$this->performTransition($activityExecutionResource->uriResource, $ignoreConsistency);
+				}else{
+					var_dump($_SESSION);
+					var_dump('$activityExecutionResource hidden params:');
+					// var_dump($activityExecutionResource);
+					var_dump($activityAfterTransition->resource, $currentUser, $processExecutionResource);
+					throw new Exception('the activit execution cannot be create for the hidden actiivty');
+				}
+				
+				
 				//service not executed? use curl request?
 			}
 		}
@@ -523,9 +554,18 @@ extends WfResource
 				foreach ($connector->getNextActivities()->getIterator() as $val){
 					$this->logger->debug('Next Activity  Name: ' . $val->getLabel(),__FILE__,__LINE__);
 					$this->logger->debug('Next Activity  Uri: ' . $val->uriResource,__FILE__,__LINE__);
-					$activity = new Activity($val->uriResource);
-					$activity->getActors();
-					$newActivities[]= $activity;
+					
+					if(wfEngine_helpers_ProcessUtil::isActivity($val)){
+						$activity = new Activity($val->uriResource);
+						$activity->getActors();
+						$newActivities[]= $activity;
+					}else if(wfEngine_helpers_ProcessUtil::isConnector($val)){
+						$newActivities = $this->getNewActivities($arrayOfProcessVars, $val->uriResource);
+					}
+					
+					if(!empty($newActivities)){
+						break;//since it is a sequential one, stop at the first valid loop:
+					}
 				}
 				break;
 			}
