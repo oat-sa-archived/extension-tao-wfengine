@@ -104,38 +104,46 @@ function RecoveryContext (){
 	 */
 	this.retrieveContext = function(){
 
-		switch(this.sourceService.type){
-		
-		case 'manual':
-			this.registry = this.sourceService.data;
-			break;
-		
-		case 'sync':
-			var response = $.parseJSON($.ajax({
-				async	 : false,
-				url  		  : this.sourceService.url,
-				data 		:this.sourceService.params,
-				type			: this.sourceService.method,
-				dataType	:this.sourceService.format
-			}).responseText);
-			/*if(response.length > 0){*/
-				this.registry = response;
-			/*}*/
-			break;
-		
-		case 'async':
-				
-			$.ajax({
-				async		: false,
-				url				: this.sourceService.url,
-				data			:this.sourceService.params,
-				type			: this.sourceService.method,
-				dataType	:this.sourceService.format,
-				success		: function(received){
-					this.registry = received;
+		if(key != ''){
+			
+			switch(this.sourceService.type){
+			
+			case 'manual':
+				this.registry = this.sourceService.data;
+				break;
+			
+			case 'sync':
+				try{
+					var response = $.parseJSON($.ajax({
+						async	: false,
+						url  	: this.sourceService.url,
+						data 	: this.sourceService.params,
+						type	: this.sourceService.method,
+						dataType: this.sourceService.format
+					}).responseText);
+					
+					if($.isPlainObject(response) || $.isArray(response)) {
+						this.registry = response;
+					}
+					
 				}
-			});
-			break;
+				catch(jsonException){ }
+				break;
+			
+			case 'async':
+					
+				$.ajax({
+					async		: false,
+					url			: this.sourceService.url,
+					data		: this.sourceService.params,
+					type		: this.sourceService.method,
+					dataType	: this.sourceService.format,
+					success		: function(received){
+						this.registry = received;
+					}
+				});
+				break;
+			}
 		}
 	};
 	
@@ -154,7 +162,6 @@ function RecoveryContext (){
 					this.destinationService.type = environment.type;
 				}
 			}
-			
 			if(environment.url){
 				if(/(\/[-a-z\d%_.~+]*)*(\?[;&a-z\d%_.~+=-]*)?(\#[-a-z\d_]*)?$/.test(environment.url)){	//test url
 					this.destinationService.url = environment.url;		//set url
@@ -190,7 +197,7 @@ function RecoveryContext (){
 			registryParams['context'][key] = this.registry[key];
 		}
 		
-		 $.ajax({
+		$.ajax({
 				async		: (this.destinationService.type == 'async'),
 				url  		: this.destinationService.url,
 				data 		: registryParams,
@@ -215,7 +222,7 @@ function RecoveryContext (){
 	 */
 	this.getContext = function(key){
 		if(this.registry == null){
-			this.retrieveContext();
+			this.retrieveContext(key);
 		}
 		if(this.registry != null){
 			return (this.registry[key]) ? this.registry[key] : {};

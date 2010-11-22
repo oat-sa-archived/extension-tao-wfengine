@@ -13,7 +13,7 @@
  * @type {Object}
  * @constant 
  */
-const wf_STATE = {
+var wf_STATE = {
 	'ITEM' : {
 		'PRE_FINISHED' 	: 'pre_item_finished',
 		'FINISHED' 		: 'item_finished',

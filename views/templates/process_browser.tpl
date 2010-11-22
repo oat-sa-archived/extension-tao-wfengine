@@ -18,54 +18,40 @@
 			
 			
 			function goToPage(page_str){
-				$("#loader").css({'display': 'block'});
+				$("#loader").show();
 				$("#tools").empty();
 				setTimeout(function(){
 					window.location.href = page_str;
-				}, 500);
+				}, 100);
 			   }
 		
 		    $(document).ready(function (){
 
-		
-		    	
 		       // Back and next function bindings for the ProcessBrowser.
 		       $("#back").click(function(){
-		      
-			       			
-				goToPage('<?php echo BASE_URL;?>/processBrowser/back?processUri=<?php echo urlencode($processUri); ?>');
-		       					
-			       			
-		       			
-		       		
-		       	});
+			       	$(this).attr('disabled', true);
+					goToPage('<?php echo BASE_URL;?>/processBrowser/back?processUri=<?php echo urlencode($processUri); ?>');
+		       });
 		       
 		       if ($('#back_floating').length)
 		       {
 		       		$('#back_floating').click(function(){
-			
-			       					goToPage('<?php echo BASE_URL;?>/processBrowser/back?processUri=<?php echo urlencode($processUri); ?>');
-		       					
+			       		goToPage('<?php echo BASE_URL;?>/processBrowser/back?processUri=<?php echo urlencode($processUri); ?>');
 			       	});
 		       }	
 		       	
 			   $("#next").click(function(){
-			   		
-			       				goToPage('<?php echo BASE_URL;?>/processBrowser/next?processUri=<?php echo urlencode($processUri); ?>&activityExecutionUri=<?php echo urlencode($browserViewData['activityExecutionUri']);?>');
-			   					
+					$(this).attr('disabled', true);
+			       	goToPage('<?php echo BASE_URL;?>/processBrowser/next?processUri=<?php echo urlencode($processUri); ?>&activityExecutionUri=<?php echo urlencode($browserViewData['activityExecutionUri']);?>');
 			   	});
 			   	
 			   if ($('#next_floating').length)
 		       {
 		       		$('#next_floating').click(function(){
-			       		
-			       					goToPage('<?php echo BASE_URL;?>/processBrowser/next?processUri=<?php echo urlencode($processUri); ?>&activityExecutionUri=<?php echo urlencode($browserViewData['activityExecutionUri']);?>');
-			   				
+			       		goToPage('<?php echo BASE_URL;?>/processBrowser/next?processUri=<?php echo urlencode($processUri); ?>&activityExecutionUri=<?php echo urlencode($browserViewData['activityExecutionUri']);?>');
 			       	});
 		       }	
 		
-		
-
 
 			   window.addEventListener('click', mouseclickHandler, true);	 
 
@@ -183,7 +169,6 @@
   		<div id="consistency" title="<?php echo ((!$consistencyViewData['isConsistent']) ? $consistencyViewData['source'] : '') . ' ' . __("Edit error"); ?>"></div>
 
 
-		
 	</body>
 
 </html>
