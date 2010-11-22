@@ -103,8 +103,6 @@ function RecoveryContext (){
 	 * Retrieve a context and populate the registry
 	 */
 	this.retrieveContext = function(){
-
-		if(key != ''){
 			
 			switch(this.sourceService.type){
 			
@@ -144,7 +142,6 @@ function RecoveryContext (){
 				});
 				break;
 			}
-		}
 	};
 	
 	/**
@@ -222,7 +219,7 @@ function RecoveryContext (){
 	 */
 	this.getContext = function(key){
 		if(this.registry == null){
-			this.retrieveContext(key);
+			this.retrieveContext();
 		}
 		if(this.registry != null){
 			return (this.registry[key]) ? this.registry[key] : {};
