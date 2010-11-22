@@ -104,43 +104,22 @@ function RecoveryContext (){
 	 */
 	this.retrieveContext = function(){
 			
-			switch(this.sourceService.type){
-			
-			case 'manual':
+			if(this.sourceService.type == 'manual'){
 				this.registry = this.sourceService.data;
-				break;
-			
-			case 'sync':
-				try{
-					var response = $.parseJSON($.ajax({
-						async	: false,
-						url  	: this.sourceService.url,
-						data 	: this.sourceService.params,
-						type	: this.sourceService.method,
-						dataType: this.sourceService.format
-					}).responseText);
-					
-					if($.isPlainObject(response) || $.isArray(response)) {
-						this.registry = response;
-					}
-					
-				}
-				catch(jsonException){ }
-				break;
-			
-			case 'async':
-					
-				$.ajax({
+			}
+			else{
+				var ctxResponse = $.ajax({
 					async		: false,
 					url			: this.sourceService.url,
 					data		: this.sourceService.params,
 					type		: this.sourceService.method,
-					dataType	: this.sourceService.format,
-					success		: function(received){
-						this.registry = received;
-					}
-				});
-				break;
+					dataType	: this.sourceService.format
+				}).responseText;
+				try{
+					this.registry = $.parseJSON(ctxResponse);
+				}
+				catch(jsonException){ console.log(ctxResponse); }
+				
 			}
 	};
 	
