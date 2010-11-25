@@ -46,7 +46,7 @@ function RecoveryContext (){
 	 * @type {Object}
 	 */
 	this.destinationService = {
-			type:	'async',									// (async | sync)
+			type:	'sync',									// (async | sync)
 			url:	'/wfEngine/RecoveryContext/save',			//the url where we send the context
 			params:  {},										//the common parameters to send to the service
 			method: 'post',										//sending method
@@ -65,34 +65,34 @@ function RecoveryContext (){
 		//define the source service
 		if($.isPlainObject(environment)){
 			
-			if($.inArray(environment.type, ['manual','sync', 'async']) > -1){
-				
-				this.sourceService.type = environment.type;
-				
-				//manual behaviour
-				if(this.sourceService.type == 'manual' && $.isPlainObject(environment.data)){
-					this.sourceService.data = environment.data;
+			if(environment.type){
+				if($.inArray(environment.type, ['manual','sync', 'async']) > -1){
+					this.sourceService.type = environment.type;
 				}
-				else{ 	//remote behaviour
-			
-					if(environment.url){
-						if(/(\/[-a-z\d%_.~+]*)*(\?[;&a-z\d%_.~+=-]*)?(\#[-a-z\d_]*)?$/.test(environment.url)){	//test url
-							this.sourceService.url = environment.url;		//set url
+			}
+			//manual behaviour
+			if(this.sourceService.type == 'manual' && $.isPlainObject(environment.data)){
+				this.sourceService.data = environment.data;
+			}
+			else{ 	//remote behaviour
+		
+				if(environment.url){
+					if(/(\/[-a-z\d%_.~+]*)*(\?[;&a-z\d%_.~+=-]*)?(\#[-a-z\d_]*)?$/.test(environment.url)){	//test url
+						this.sourceService.url = environment.url;		//set url
+					}
+				}
+				//ADD parameters
+				if($.isPlainObject(environment.params)){	
+					for(key in environment.params){
+						if($.inArray((typeof environment.params[key]).toLowerCase(), ['string', 'number', 'int', 'float', 'boolean']) > -1){
+							this.sourceService.params[key] = environment.params[key]; 
 						}
 					}
-					//ADD parameters
-					if($.isPlainObject(environment.params)){	
-						for(key in environment.params){
-							if($.inArray((typeof environment.params[key]).toLowerCase(), ['string', 'number', 'int', 'float', 'boolean']) > -1){
-								this.sourceService.params[key] = environment.params[key]; 
-							}
-						}
-					}
-					
-					if(environment.method){
-						if(/^get|post$/i.test(environment.method)){
-							this.sourceService.method = environment.method;
-						}
+				}
+				
+				if(environment.method){
+					if(/^get|post$/i.test(environment.method)){
+						this.sourceService.method = environment.method;
 					}
 				}
 			}
@@ -104,23 +104,23 @@ function RecoveryContext (){
 	 */
 	this.retrieveContext = function(){
 			
-			if(this.sourceService.type == 'manual'){
-				this.registry = this.sourceService.data;
+		if(this.sourceService.type == 'manual'){
+			this.registry = this.sourceService.data;
+		}
+		else{
+			var ctxResponse = $.ajax({
+				async		: false,
+				url			: this.sourceService.url,
+				data		: this.sourceService.params,
+				type		: this.sourceService.method,
+				dataType	: this.sourceService.format
+			}).responseText;
+			try{
+				this.registry = $.parseJSON(ctxResponse);
 			}
-			else{
-				var ctxResponse = $.ajax({
-					async		: false,
-					url			: this.sourceService.url,
-					data		: this.sourceService.params,
-					type		: this.sourceService.method,
-					dataType	: this.sourceService.format
-				}).responseText;
-				try{
-					this.registry = $.parseJSON(ctxResponse);
-				}
-				catch(jsonException){ console.log(ctxResponse); }
-				
-			}
+			catch(jsonException){ console.log(ctxResponse); }
+			
+		}
 	};
 	
 	/**
