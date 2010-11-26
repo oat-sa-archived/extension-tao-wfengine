@@ -9,6 +9,7 @@
 		
 		<script type="text/javascript" src="<?echo BASE_WWW; ?>/js/jquery.js"></script>
 		<script type="text/javascript" src="<?echo BASE_WWW; ?>/js/process_authoring.js"></script>
+		<script type="text/javascript" src="<?echo BASE_WWW; ?>/js/gateway/ProcessAuthoring.js"></script>
 	</head>
 	<body>
 		<ul id="control">

@@ -34,7 +34,7 @@
 		INSTANCE_TYPEOFCONNECTORS_PARALLEL = "<?=tao_helpers_Uri::encode(INSTANCE_TYPEOFCONNECTORS_PARALLEL)?>";
 		INSTANCE_TYPEOFCONNECTORS_JOIN = "<?=tao_helpers_Uri::encode(INSTANCE_TYPEOFCONNECTORS_JOIN)?>";
 	</script>
-	
+	<script type="text/javascript" src="<?=PROCESS_BASE_WWW?>js/gateway/ProcessAuthoring.js"></script>
 	<script type="text/javascript" src="<?=BASE_WWW.'js/authoring/'?>authoringConfig.js"></script>
 	<script type="text/javascript" src="<?=PROCESS_SCRIPT_URL?>json2.js"></script>
 	<script type="text/javascript" src="<?=PROCESS_SCRIPT_URL?>util.js"></script>
