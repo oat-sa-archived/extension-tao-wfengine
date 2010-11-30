@@ -29,6 +29,11 @@ function RecoveryContext (){
 	this.registry = null;
 	
 	/**
+	 * @type {bool}
+	 */
+	this.enabled = true;
+	
+	/**
 	 * The parameters defining how and where to retrieve a context
 	 * @type {Object}
 	 */
@@ -194,14 +199,16 @@ function RecoveryContext (){
 	 * If not loaded, we retrieve it⋅
 	 * 
 	 * @param {String} key
-	 * @returns {mixed} the context
+	 * @returns {Object} the context
 	 */
 	this.getContext = function(key){
-		if(this.registry == null){
-			this.retrieveContext();
-		}
-		if(this.registry != null){
-			return (this.registry[key]) ? this.registry[key] : {};
+		if(this.enabled){
+			if(this.registry == null){
+				this.retrieveContext();
+			}
+			if(this.registry != null){
+				return (this.registry[key]) ? this.registry[key] : {};
+			}
 		}
 		return  {};
 	};
@@ -213,11 +220,13 @@ function RecoveryContext (){
 	 * @param {Object} value
 	 */
 	this.setContext = function(key, value){
-		if(this.registry == null){
-			this.registry = new Object();
-		}
-		if(key != ''){
-			this.registry[key] = value;
+		if(this.enabled){
+			if(this.registry == null){
+				this.registry = new Object();
+			}
+			if(key != ''){
+				this.registry[key] = value;
+			}
 		}
 	};
 }
