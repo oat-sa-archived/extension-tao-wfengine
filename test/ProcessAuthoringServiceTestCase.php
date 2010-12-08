@@ -253,7 +253,7 @@ class ProcessAuthoringServiceTestCase extends UnitTestCase {
 		//merge all activity D instance to F:
 		$this->authoringService->createJoinActivity($connectorD, $activityF, '', $activityD);
 		$previousActivitiesCollection = $connectorD->getPropertyValuesCollection(new core_kernel_classes_Property(PROPERTY_CONNECTORS_PRECACTIVITIES));
-		var_dump($connectorD);
+//		var_dump($connectorD);
 		
 		$this->assertEqual($previousActivitiesCollection->count(), 3);
 		// foreach($previousActivitiesCollection->getIterator() as $previousAc

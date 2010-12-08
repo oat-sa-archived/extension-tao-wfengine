@@ -167,7 +167,7 @@ class ProcessClonerTestCase extends UnitTestCase {
 		
 		$processClone = $this->processCloner->cloneProcess($this->proc);
 		
-		var_dump($this->processCloner);
+//		var_dump($this->processCloner);
 		
 		$this->assertIsA($processClone, 'core_kernel_classes_Resource');
 		$this->assertEqual(count($this->processCloner->getClonedActivities()), 3);
@@ -221,7 +221,7 @@ class ProcessClonerTestCase extends UnitTestCase {
 		$this->assertEqual($segmentInterface['in']->getLabel(), $activity1->getLabel().$this->processCloner->getCloneLabel());
 		// $this->assertEqual($segmentInterface['out'][0]->getLabel(), $activity3->getLabel());
 		$this->assertEqual(count($this->processCloner->getClonedActivities()), 3);
-		var_dump($segmentInterface, $segmentInterface['in']->getLabel(), $segmentInterface['out'][0]->getLabel());
+//		var_dump($segmentInterface, $segmentInterface['in']->getLabel(), $segmentInterface['out'][0]->getLabel());
 		
 		
 		// $segmentInterface = $this->processCloner->cloneProcessSegment($this->proc, true);
