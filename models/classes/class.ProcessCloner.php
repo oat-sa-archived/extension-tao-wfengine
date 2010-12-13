@@ -392,8 +392,13 @@ class wfEngine_models_classes_ProcessCloner
 				//clone the interactive service:
 				$services = $this->authoringService->getServicesByActivity($activity);
 				foreach($services as $service){
-					$serviceClone = $this->cloneWfResource($service, new core_kernel_classes_Class(CLASS_CALLOFSERVICES));
-					$activityClone->setPropertyValue(new core_kernel_classes_Property(PROPERTY_ACTIVITIES_INTERACTIVESERVICES), $serviceClone->uriResource);
+					$serviceClone = $this->cloneInteractiveService($service);
+					if(!is_null($serviceClone)){
+						$activityClone->setPropertyValue(new core_kernel_classes_Property(PROPERTY_ACTIVITIES_INTERACTIVESERVICES), $serviceClone->uriResource);
+					}else{
+						throw new Exception("the interactive service cannot be cloned: {$service->getLabel()}({$service->uriResource}) for the activity {$activityClone->getLabel()}({$activityClone->uriResource}) ");
+					}
+					
 				}
 				
 				//TODO: the related rules, when implementation has been confirmed
@@ -406,9 +411,36 @@ class wfEngine_models_classes_ProcessCloner
 		return $activityClone;
 	}
 	
-	public function cloneConnector(core_kernel_classes_Resource $connector){
+	public function cloneInteractiveService(core_kernel_classes_Resource $service){
 		$returnValue = null;
 		
+		$classCallOfServices = new core_kernel_classes_Class(CLASS_CALLOFSERVICES);
+		$classActualParam = new core_kernel_classes_Class(CLASS_ACTUALPARAMETER);
+		$propActualParamIn = new core_kernel_classes_Property(PROPERTY_CALLOFSERVICES_ACTUALPARAMETERIN);
+		
+		$serviceClone = $this->cloneWfResource($service, $classCallOfServices, array($propActualParamIn->uriResource, PROPERTY_CALLOFSERVICES_ACTUALPARAMETEROUT));
+		if(!is_null($serviceClone)){
+			foreach($service->getPropertyValuesCollection($propActualParamIn)->getIterator() as $actualParamIn){
+				if($actualParamIn instanceof core_kernel_classes_Resource){
+					$actualParamInClone = $this->cloneWfResource($actualParamIn, $classActualParam);
+					if(!is_null($actualParamInClone)){
+						$serviceClone->setPropertyValue($propActualParamIn, $actualParamInClone->uriResource);
+					}else{
+						throw new Exception('an input actual parameter cannot be clonned');
+					}
+				}
+				
+			}
+			
+			$returnValue = $serviceClone;
+		}
+		
+		return $returnValue;
+	}
+	
+	
+	public function cloneConnector(core_kernel_classes_Resource $connector){
+		$returnValue = null;
 	
 		if(wfEngine_models_classes_ProcessAuthoringService::isConnector($connector)){
 			$connectorClone = $this->cloneWfResource(
