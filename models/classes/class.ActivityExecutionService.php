@@ -46,7 +46,76 @@ class wfEngine_models_classes_ActivityExecutionService
 
     // --- ATTRIBUTES ---
 
+    /**
+     * Short description of attribute processExecutionProperty
+     *
+     * @access protected
+     * @var Property
+     */
+    protected $processExecutionProperty = null;
+
+    /**
+     * Short description of attribute currentUserProperty
+     *
+     * @access protected
+     * @var Property
+     */
+    protected $currentUserProperty = null;
+
+    /**
+     * Short description of attribute ACLModeProperty
+     *
+     * @access protected
+     * @var Property
+     */
+    protected $ACLModeProperty = null;
+
+    /**
+     * Short description of attribute restrictedUserProperty
+     *
+     * @access protected
+     * @var Property
+     */
+    protected $restrictedUserProperty = null;
+
+    /**
+     * Short description of attribute restrictedRoleProperty
+     *
+     * @access protected
+     * @var Property
+     */
+    protected $restrictedRoleProperty = null;
+
+    /**
+     * Short description of attribute activityProperty
+     *
+     * @access protected
+     * @var Property
+     */
+    protected $activityProperty = null;
+
     // --- OPERATIONS ---
+
+    /**
+     * Short description of method __construct
+     *
+     * @access public
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @return mixed
+     */
+    public function __construct()
+    {
+        // section 127-0-1-1--14d619a:12ce565682e:-8000:000000000000297B begin
+        
+    	$this->processExecutionProperty = new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_PROCESSEXECUTION);
+        $this->currentUserProperty		= new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_CURRENT_USER);
+    	$this->activityProperty			= new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_ACTIVITY);
+    	$this->ACLModeProperty			= new core_kernel_classes_Property(PROPERTY_ACTIVITIES_ACL_MODE);
+        $this->restrictedUserProperty	= new core_kernel_classes_Property(PROPERTY_ACTIVITIES_RESTRICTED_USER);
+        $this->restrictedRoleProperty	= new core_kernel_classes_Property(PROPERTY_ACTIVITIES_RESTRICTED_ROLE);
+    	
+        // section 127-0-1-1--14d619a:12ce565682e:-8000:000000000000297B end
+    }
 
     /**
      * Get the list of available ACL modes
@@ -144,28 +213,24 @@ class wfEngine_models_classes_ActivityExecutionService
         
         if(!is_null($activity) && !is_null($currentUser) && !is_null($processExecution)){
         	
-        	$processExecutionProp = new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_PROCESSEXECUTION);
-        	$currentUserProp = new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_CURRENT_USER);
-        	
         	//retrieve the process containing the activity
         	$apiModel  	= core_kernel_impl_ApiModelOO::singleton();
-        	$activityExecutionCollection = $apiModel->getSubject(PROPERTY_ACTIVITY_EXECUTION_ACTIVITY, $activity->uriResource);
+        	$activityExecutionCollection 	= $apiModel->getSubject(PROPERTY_ACTIVITY_EXECUTION_ACTIVITY, $activity->uriResource);
         	foreach($activityExecutionCollection->getIterator() as $activityExecution){
-        		$activityExecutionUserCollection = $activityExecution->getPropertyValuesCollection($currentUserProp);
-				
         		
-        		$activityExecutionProcessExecution = $activityExecution->getOnePropertyValue($processExecutionProp);
+        		$activityExecutionUserCollection 	= $activityExecution->getPropertyValuesCollection($this->currentUserProperty);
+        		$activityExecutionProcessExecution 	= $activityExecution->getOnePropertyValue($this->processExecutionProperty);
+        		
         		foreach ($activityExecutionUserCollection->getIterator() as $activityExecutionUser) {
     				if(!is_null($activityExecutionUser) && !is_null($activityExecutionProcessExecution)){
     				    if($currentUser->uriResource == $activityExecutionUser->uriResource && $processExecution->uriResource == $activityExecutionProcessExecution->uriResource){
     	        			$returnValue = $activityExecution;
     	        			break;
-    	        			break;
     				    }
-    	        		
-    	        		
     				}
-			
+        		}
+        		if(!is_null($returnValue)){
+        			break;
         		}
         	}
         }
@@ -191,12 +256,10 @@ class wfEngine_models_classes_ActivityExecutionService
         
           if(!is_null($activity) &&  !is_null($processExecution)){
           	
-          	$processExecutionProp = new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_PROCESSEXECUTION);
-          	
           	$apiModel  	= core_kernel_impl_ApiModelOO::singleton();
         	$activityExecutionCollection = $apiModel->getSubject(PROPERTY_ACTIVITY_EXECUTION_ACTIVITY, $activity->uriResource);
         	foreach($activityExecutionCollection->getIterator() as $activityExecution){
-				$activityExecutionProcessExecution = $activityExecution->getOnePropertyValue($processExecutionProp);
+				$activityExecutionProcessExecution = $activityExecution->getOnePropertyValue($this->processExecutionProperty);
         		
 				if(!is_null($activityExecutionProcessExecution)){
 	        		if($processExecution->uriResource == $activityExecutionProcessExecution->uriResource){
@@ -235,11 +298,14 @@ class wfEngine_models_classes_ActivityExecutionService
 	        //if no activty execution, create one for that user
 	        if(is_null($execution)){
 	        	
+	        	
+	        	$label = 'Activity Execution of '.$activity->getLabel();
+	        	
 	        	//create a new activity execution
-	        	$execution = $this->createInstance(new core_kernel_classes_Class(CLASS_ACTIVITY_EXECUTION));
+	        	$execution = $this->createInstance(new core_kernel_classes_Class(CLASS_ACTIVITY_EXECUTION),  $label);
 	        	
 	        	//link it to the activity definition:
-	        	$execution->setPropertyValue(new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_ACTIVITY), $activity->uriResource);
+	        	$execution->setPropertyValue($this->activityProperty, $activity->uriResource);
 	        	
 	        	//bind this execution of the activity with the current user and the current process execution
 	        	$this->bindExecution($execution, $currentUser, $processExecution);
@@ -277,28 +343,23 @@ class wfEngine_models_classes_ActivityExecutionService
         
         if(!is_null($activityExecution) && !is_null($currentUser)){
         	
-        	$currentUserProp = new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_CURRENT_USER);
-        	
         	//check if the activity execution isn't already bound
-        	if(is_null($activityExecution->getOnePropertyValue($currentUserProp))){
+        	if(is_null($activityExecution->getOnePropertyValue($this->currentUserProperty))){
 
         		//link the current user
-	        	$activityExecution->setPropertyValue(new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_CURRENT_USER), $currentUser->uriResource);
+	        	$activityExecution->setPropertyValue( $this->currentUserProperty, $currentUser->uriResource);
 	        	
 				//link the current process execution
-	        	$activityExecution->setPropertyValue(new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_PROCESSEXECUTION), $processExecution->uriResource);
+	        	$activityExecution->setPropertyValue( $this->processExecutionProperty, $processExecution->uriResource);
 	        	
 	        	//in case of role and user restriction, set the current user as activty user
-	        	$activityUri	= $activityExecution->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_ACTIVITY));
+	        	$activityUri	= $activityExecution->getUniquePropertyValue($this->activityProperty);
 	        	$activity		= new core_kernel_classes_Resource($activityUri);
-	        	$mode			= $activity->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_ACTIVITIES_ACL_MODE));
+	        	$mode			= $activity->getOnePropertyValue($this->ACLModeProperty);
 	        	if(!is_null($mode)){
-
-	        		$restrictedUserProp = new core_kernel_classes_Property(PROPERTY_ACTIVITIES_RESTRICTED_USER);
-	        		
 	        		if($mode->uriResource == INSTANCE_ACL_ROLE_RESTRICTED_USER){
-	        			if(is_null($activity->getOnePropertyValue($restrictedUserProp))){
-	        				$activity->setPropertyValue($restrictedUserProp, $currentUser->uriResource);
+	        			if(is_null($activity->getOnePropertyValue($this->restrictedUserProperty))){
+	        				$activity->setPropertyValue($this->restrictedUserProperty, $currentUser->uriResource);
 	        			}
 	        		}
 	        	}
@@ -329,15 +390,11 @@ class wfEngine_models_classes_ActivityExecutionService
         
         if(!is_null($activity)){
         	
-        	$activityModeProp	= new core_kernel_classes_Property(PROPERTY_ACTIVITIES_ACL_MODE);
-        	$restrictedUserProp	= new core_kernel_classes_Property(PROPERTY_ACTIVITIES_RESTRICTED_USER);
-        	$restrictedRoleProp	= new core_kernel_classes_Property(PROPERTY_ACTIVITIES_RESTRICTED_ROLE);
         	$rdfsTypeProp		= new core_kernel_classes_Property(RDF_TYPE);
-        	$currentUserProp 	= new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_CURRENT_USER);
         	
         	//activity and current must be set to the activty execution otherwise a common Exception is thrown
         	
-        	$modeUri 		= $activity->getOnePropertyValue($activityModeProp);
+        	$modeUri 		= $activity->getOnePropertyValue($this->ACLModeProperty);
         	
         	if(is_null($modeUri)){
         		$returnValue = true;	//if no mode defined, the activity is allowed
@@ -347,7 +404,7 @@ class wfEngine_models_classes_ActivityExecutionService
         			
         			//check if th current user is the restricted user
         			case INSTANCE_ACL_USER:
-        				$activityUser = $activity->getOnePropertyValue($restrictedUserProp);
+        				$activityUser = $activity->getOnePropertyValue($this->restrictedUserProperty);
         				if(!is_null($activityUser)){
 	        				if($activityUser->uriResource == $currentUser->uriResource) {
 	        					$returnValue = true;
@@ -357,7 +414,7 @@ class wfEngine_models_classes_ActivityExecutionService
         			
         			//check if the current user has the restricted role
         			case INSTANCE_ACL_ROLE:
-        				$activityRole 	= $activity->getOnePropertyValue($restrictedRoleProp);
+        				$activityRole 	= $activity->getOnePropertyValue($this->restrictedRoleProperty);
         				$userRoles 		= $currentUser->getPropertyValues($rdfsTypeProp);
 						if(!is_null($activityRole) && is_array($userRoles)){
 	        				if(in_array($activityRole->uriResource, $userRoles)){
@@ -374,7 +431,7 @@ class wfEngine_models_classes_ActivityExecutionService
 						//need to know the current process execution, from it, get the process definition and the number of activity executions associated to it.
 						//from the process definition get the number of allowed activity executions for this activity definition (normally only 1 but can be more, for a parallel connector)
 						
-        				$activityRole 	= $activity->getOnePropertyValue($restrictedRoleProp);
+        				$activityRole 	= $activity->getOnePropertyValue($this->restrictedRoleProperty);
 						$userRoles 		= $currentUser->getPropertyValues($rdfsTypeProp);
         				if(!is_null($activityRole) && is_array($userRoles)){
 	        				if(in_array($activityRole->uriResource, $userRoles)){
@@ -395,7 +452,7 @@ class wfEngine_models_classes_ActivityExecutionService
         			//check if the current user has the restricted role and is the restricted user based on the previous activity with the given role
         			case INSTANCE_ACL_ROLE_RESTRICTED_USER_INHERITED:
         				
-        				$activityRole 	= $activity->getUniquePropertyValue($restrictedRoleProp);
+        				$activityRole 	= $activity->getUniquePropertyValue($this->restrictedRoleProperty);
         				$userRoles 		= $currentUser->getPropertyValues($rdfsTypeProp);
         				
         				if(!is_null($activityRole) && is_array($userRoles)){
@@ -413,7 +470,7 @@ class wfEngine_models_classes_ActivityExecutionService
 									$pactivity = new core_kernel_classes_Resource($pactivityUri);
 									
 					        		//with the same mode
-					        		$mode = $pactivity->getOnePropertyValue($activityModeProp);
+					        		$mode = $pactivity->getOnePropertyValue($this->ACLModeProperty);
 					        		if($mode->uriResource == INSTANCE_ACL_ROLE_RESTRICTED_USER){
 					        			$returnValue = $this->checkAcl($pactivity, $currentUser, $processExecution);
 					        			break;
@@ -488,6 +545,35 @@ class wfEngine_models_classes_ActivityExecutionService
         // section 127-0-1-1-6c2b28ea:1291bc8511a:-8000:0000000000001FB7 end
 
         return (int) $returnValue;
+    }
+
+    /**
+     * Short description of method remove
+     *
+     * @access public
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @param  Resource processExecution
+     * @return boolean
+     */
+    public function remove( core_kernel_classes_Resource $processExecution)
+    {
+        $returnValue = (bool) false;
+
+        // section 127-0-1-1--14d619a:12ce565682e:-8000:0000000000002981 begin
+        
+    	if(!is_null($processExecution)){
+          	
+          	$apiModel  	= core_kernel_impl_ApiModelOO::singleton();
+        	$activityExecutionCollection = $apiModel->getSubject(PROPERTY_ACTIVITY_EXECUTION_PROCESSEXECUTION, $processExecution->uriResource);
+        	foreach($activityExecutionCollection->getIterator() as $activityExecution){
+				$activityExecution->delete();
+        	}
+        }
+        
+        
+        // section 127-0-1-1--14d619a:12ce565682e:-8000:0000000000002981 end
+
+        return (bool) $returnValue;
     }
 
 } /* end of class wfEngine_models_classes_ActivityExecutionService */

@@ -1230,12 +1230,19 @@ extends WfResource
 		$this->resource->editPropertyValues($statusProp,STATUS_FINISHED);
 
 		$this->status = 'Finished';
+		
+		//remove the current tokens
+		$tokenService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_TokenService');
+		$tokenService->setCurrents($this->resource, array());
+		
+		//remove the activityExecutions
+		/*$activtyExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityExecutionService');
+		$activtyExecutionService->remove($this->resource);*/
 
 		// -- Exit code handling.
 		// I chain removeProp... and editProp... because of an editProp...
 		// malfunction.
-		$tokenService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_TokenService');
-		$tokenService->setCurrents($this->resource, array());
+		
 
 //		$exitCodeProp = new core_kernel_classes_Property(PROPERTY_PROCESSINSTANCE_EXITCODE);
 //		$this->resource->setPropertyValue($exitCodeProp, RESOURCE_EXITCODE_ALL_COVERED);

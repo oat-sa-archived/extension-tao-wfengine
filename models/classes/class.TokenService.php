@@ -250,6 +250,9 @@ extends tao_models_classes_GenerisService
 
         $userService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_UserService');
         $currentUser = $userService->getCurrentUser();
+
+        $activityExecUserProp = null;
+        
         $checkedActivityDefinitions = array();
         foreach($this->getCurrents($processExecution) as $token){
             $activityDefinition = $token->getOnePropertyValue($this->tokenActivityProp);
@@ -260,8 +263,14 @@ extends tao_models_classes_GenerisService
                     //check if execution exists:
                     $activityExecution = $token->getOnePropertyValue($this->tokenActivityExecutionProp);
                     if(!is_null($activityExecution)){
-                        //check if the activity execution exec belongs to the current user:
-                        $user = $activityExecution->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_CURRENT_USER));
+                        
+                    	
+                    	if(is_null($activityExecUserProp)){
+                    		$activityExecUserProp = new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_CURRENT_USER);
+                    	}
+                    	
+                    	//check if the activity execution exec belongs to the current user:
+                        $user = $activityExecution->getUniquePropertyValue($activityExecUserProp);
                         if($user->uriResource == $currentUser->uriResource){
                             //the execution belongs to the current user:
                             //return it, supposing that getExecution should be able to return the activity execution of the user
@@ -396,7 +405,7 @@ extends tao_models_classes_GenerisService
 
         // section 127-0-1-1-2013ff6:1292105c669:-8000:0000000000001FCD begin
 
-        $returnValue = $this->createInstance($this->tokenClass);
+        $returnValue = $this->createInstance($this->tokenClass, 'Token '.count($this->tokenClass->getInstances()) + 1);
         $returnValue->setPropertyValue($this->tokenActivityProp, $activity->uriResource);
 
         //echo "Create token ".$returnValue->getLabel()." for activity".$activity->getLabel()."<br>";
