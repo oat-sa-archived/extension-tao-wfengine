@@ -1,14 +1,32 @@
 #draggable {width:5px;height:5px;border:1px solid blue;}
 #draggable1 {width:5px;height:5px;border:1px solid blue;}
 
-#accordion1 {position:absolute;left:0%;top:0%;width:15%;height:100%;}
-#accordion_container_2 {position:absolute;left:75%;top:0%;width:25%;height:100%;}
-#process_center_panel{
-	position:absolute;
+#authoring-container {
+	width: 100%;
+	height: 100%;
+	position: relative;
 	top:0%;
-	left:15%;
-	height:95%;
+	left:0%;}
+#accordion_container_1 {
+	float:left;
+	height:100%;
+	width:15%;
+	padding:0px;
+	/*position:absolute;left:0%;top:0%;width:15%;height:100%;*/
+}
+#accordion_container_2 {
+	float:left;
+	height:100%;
+	width:25%;
+	padding:1px 0 0;
+	/*position:absolute;left:75%;top:0%;width:25%;height:100%;*/
+}
+#process_center_panel{
+	float:left;
+	height:100%;
 	width:60%;
+	padding:1px 0 0;
+	/*position:absolute;top:0%;left:15%;height:95%;width:60%;*/
 }
 
 #process_diagram_feedback {
@@ -24,11 +42,11 @@
 	position:relative;
 	top:1px;
 	border:1px solid #C4C4C4;
-	height:100%;
+	height:90%;
 	width:98%;
 	margin:1px 1%;
 	background-color:#FAF7E3;
-	overflow:scroll;
+	overflow:auto;
 }
 
 #demo {position:absolute;left:27%;top:1%;width:50%;height=auto;}
@@ -138,3 +156,6 @@
 	border-width:4px 6px 2px 4px;
 }
 
+/*accordion styling*/
+#accordion1 div.ui-widget-content div{border: none;}
+#accordion1 div.ui-accordion-content {padding: 10px 3px;}

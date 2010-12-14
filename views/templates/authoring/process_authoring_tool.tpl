@@ -77,56 +77,61 @@
 
 	<div class="main-container" style="display:none;"></div>
 	<div id="authoring-container" class="ui-helper-reset">
-	<div id="process_center_panel">
-		<div id="process_diagram_feedback" ></div>
-		<div id="process_diagram_container" >
-			<div id="status"/>
+		
+		<div id="accordion_container_1">
+			<div id="accordion1" style="font-size:0.8em;">
+				<h3><a href="#"><?=__('Service Definition')?></a></h3>
+				<div>
+					<div id="serviceDefinition_tree"/>
+					<div id="serviceDefinition_form"/>
+				</div>
+				<h3><a href="#"><?=__('Formal Parameter')?></a></h3>
+				<div>
+					<div id="formalParameter_tree"/>
+					<div id="formalParameter_form"/>
+				</div>
+				<h3><a href="#"><?=__('Role')?></a></h3>
+				<div>
+					<div id="role_tree"/>
+					<div id="role_form"/>
+				</div>
+				<h3><a href="#"><?=__('Process Variables')?></a></h3>
+				<div>
+					<div id="variable_tree"/>
+					<div id="variable_form"/>
+				</div>
+			</div>
+		</div><!--end accordion -->
+		
+		<div id="process_center_panel">
+			<div id="process_diagram_feedback" ></div>
+			<div id="process_diagram_container" >
+				<div id="status"/>
+			</div>
 		</div>
-	</div>
-	<div id="accordion1" style="font-size:0.8em;">
-		<h3><a href="#"><?=__('Service Definition')?></a></h3>
-		<div>
-			<div id="serviceDefinition_tree"/>
-			<div id="serviceDefinition_form"/>
-		</div>
-		<h3><a href="#"><?=__('Formal Parameter')?></a></h3>
-		<div>
-			<div id="formalParameter_tree"/>
-			<div id="formalParameter_form"/>
-		</div>
-		<h3><a href="#"><?=__('Role')?></a></h3>
-		<div>
-			<div id="role_tree"/>
-			<div id="role_form"/>
-		</div>
-		<h3><a href="#"><?=__('Process Variables')?></a></h3>
-		<div>
-			<div id="variable_tree"/>
-			<div id="variable_form"/>
-		</div>
-	</div><!--end accordion -->
-	
-	<div id="accordion_container_2">
-	<div id="accordion2" style="font-size:0.8em;">
-		<h3><a href="#"><?=__('Activity Editor')?></a></h3>
-		<div>
-			<div id="activity_tree"/>
-			<div id="activity_form"/>
-		</div>
-		<h3><a href="#"><?=__('Process Property')?></a></h3>
-		<div>
-			<div id="process_form"><?=__('loading...')?></div>
-		</div>
-		<?if(get_data('extension')=='taoDelivery'):?>
-		<h3><a href="#"><?=__('Compilation')?></a></h3>
-		<div>
-			<div id="compile_info"><?=__('loading...')?></div>
-			<div id="compile_form"></div>
-		</div>
-		<?endif;?>
-	</div><!--end accordion -->
-	</div><!--end accordion_container_2 -->
-	
+		
+		<div id="accordion_container_2">
+			<div id="accordion2" style="font-size:0.8em;">
+				<h3><a href="#"><?=__('Activity Editor')?></a></h3>
+				<div>
+					<div id="activity_tree"/>
+					<div id="activity_form"/>
+				</div>
+				<h3><a href="#"><?=__('Process Property')?></a></h3>
+				<div>
+					<div id="process_form"><?=__('loading...')?></div>
+				</div>
+				<?if(get_data('extension')=='taoDelivery'):?>
+				<h3><a href="#"><?=__('Compilation')?></a></h3>
+				<div>
+					<div id="compile_info"><?=__('loading...')?></div>
+					<div id="compile_form"></div>
+				</div>
+				<?endif;?>
+			</div><!--end accordion -->
+		</div><!--end accordion_container_2 -->
+		
+		<div style="clear:both"/>
 	</div><!--end authoring-container -->
 	
 	<script type="text/javascript" src="<?=PROCESS_SCRIPT_URL?>activity.tree.js"></script>
@@ -290,7 +295,7 @@
 		
 		
 		$("#accordion1").accordion({
-			fillSpace: false,
+			fillSpace: true,
 			autoHeight: false,
 			collapsible: false,
 			active: 0,
@@ -316,7 +321,7 @@
 	
 	$(function(){
 		$("#accordion2").accordion({
-			fillSpace: false,
+			fillSpace: true,
 			autoHeight: false,
 			collapsible: false,
 			icons: { 'header': 'ui-icon-circle-triangle-s', 'headerSelected': 'ui-icon-circle-triangle-e' }
