@@ -35,7 +35,7 @@
 #process {position:absolute;left:78%;top:1%;width:21%;height=auto;}
 #main {width:1000px;height:700px;}
 
-.diagram_arrow_tip {width:8px;height:8px;border:1px solid red;background-color:#CF0606;}
+.diagram_arrow_tip {width:8px;height:8px;border:1px solid red;background-color:#CF0606;cursor:pointer;}
 .diagram_activity {
 	width:120px;
 	height:50px;
@@ -71,7 +71,7 @@
 
 .diagram_activity_droppable {width:5px;height:5px;border:1px solid blue;}
 .diagram_activity_border_point {width:5px;height:5px;border:1px dotted blue;}
-.flex_point{width:8px;height:8px;border:1px solid green;background-color:#81FF73;}
+.flex_point{width:8px;height:8px;border:1px solid green;background-color:#81FF73;cursor:pointer;}
 
 #feedback_message_container{position:absolute; top:0px; left:0px;height:100%;width:70%;}
 #feedback_menu_list_container{

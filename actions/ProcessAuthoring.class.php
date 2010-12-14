@@ -1013,6 +1013,16 @@ class ProcessAuthoring extends TaoModule {
 		
 		if($data[PROPERTY_CONNECTORS_TYPE] == INSTANCE_TYPEOFCONNECTORS_SEQUENCE){
 			//get form input starting with "next_"
+			$connectorInstance->removePropertyValues(new core_kernel_classes_Property(PROPERTY_CONNECTORS_NEXTACTIVITIES));
+			
+			//manage the case when a conditionnal connector is changed to a sequential one:
+			if(isset($data["then_activityOrConnector"])){
+				$data['next_activityOrConnector'] = $data["then_activityOrConnector"];
+				$data['next_activityUri'] = $data["then_activityUri"];
+				$data['next_activityLabel'] = $data["then_activityLabel"];
+				// $data['next_connectorUri'] = $data["then_connectorUri"];//connector forbidden
+			}
+			
 			if($data["next_activityOrConnector"] == 'activity'){
 				if(isset($data["next_activityUri"])){
 					if($data["next_activityUri"]=="newActivity"){
@@ -1075,6 +1085,14 @@ class ProcessAuthoring extends TaoModule {
 						throw new Exception("the condition \"{$condition}\" cannot be created");
 					}
 				}
+			}
+			
+			//manage the case when a sequential connector is changed to conditionnal one:
+			if(isset($data["next_activityOrConnector"]) && !isset($data['then_activityOrConnector'])){
+				$data['then_activityOrConnector'] = $data["next_activityOrConnector"];
+				$data['then_activityUri'] = $data["next_activityUri"];
+				$data['then_activityLabel'] = $data["next_activityLabel"];
+				// $data['then_connectorUri'] = $data["next_connectorUri"];//connector not authorized
 			}
 			
 			//save the "then" and the "else" activity (or connector)
