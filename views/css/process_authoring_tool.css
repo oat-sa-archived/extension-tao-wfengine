@@ -12,21 +12,16 @@
 	height:100%;
 	width:15%;
 	padding:0px;
-	/*position:absolute;left:0%;top:0%;width:15%;height:100%;*/
 }
 #accordion_container_2 {
 	float:left;
 	height:100%;
 	width:25%;
-	padding:1px 0 0;
-	/*position:absolute;left:75%;top:0%;width:25%;height:100%;*/
 }
 #process_center_panel{
 	float:left;
 	height:100%;
 	width:60%;
-	padding:1px 0 0;
-	/*position:absolute;top:0%;left:15%;height:95%;width:60%;*/
 }
 
 #process_diagram_feedback {
@@ -42,7 +37,7 @@
 	position:relative;
 	top:1px;
 	border:1px solid #C4C4C4;
-	height:90%;
+	height:570px;
 	width:98%;
 	margin:1px 1%;
 	background-color:#FAF7E3;
@@ -92,6 +87,7 @@
 .flex_point{width:8px;height:8px;border:1px solid green;background-color:#81FF73;cursor:pointer;}
 
 #feedback_message_container{position:absolute; top:0px; left:0px;height:100%;width:70%;}
+#feedback_message{margin:5px;}
 #feedback_menu_list_container{
 	position:absolute; 
 	top:0px; right:0px;

@@ -36,7 +36,7 @@
 	</script>
 	<script type="text/javascript" src="<?=PROCESS_BASE_WWW?>js/gateway/ProcessAuthoring.js"></script>
 	<script type="text/javascript" src="<?=BASE_WWW.'js/authoring/'?>authoringConfig.js"></script>
-	<script type="text/javascript" src="<?=PROCESS_SCRIPT_URL?>json2.js"></script>
+	<script type="text/javascript" src="<?=PROCESS_SCRIPT_URL?>lib/json2.js"></script>
 	<script type="text/javascript" src="<?=PROCESS_SCRIPT_URL?>util.js"></script>
 	<script type="text/javascript" src="<?=PROCESS_SCRIPT_URL?>arrows.js"></script>
 	<script type="text/javascript" src="<?=PROCESS_SCRIPT_URL?>activityDiagram.js"></script>
@@ -104,8 +104,8 @@
 		</div><!--end accordion -->
 		
 		<div id="process_center_panel">
-			<div id="process_diagram_feedback" ></div>
-			<div id="process_diagram_container" >
+			<div id="process_diagram_feedback" class="ui-corner-top"></div>
+			<div id="process_diagram_container" class="ui-corner-bottom">
 				<div id="status"/>
 			</div>
 		</div>
