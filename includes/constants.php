@@ -220,6 +220,11 @@ $todefine = array(
 	'PROPERTY_NOTIFICATION_SENT' 					=> NS_TAOQUAL  .'#NotificationSent',
 	'PROPERTY_NOTIFICATION_DATE' 					=> NS_TAOQUAL  .'#NotificationDate',
 
+	'CLASS_CONTROLS'								=> NS_TAOQUAL  .'#Controls',
+	'INSTANCE_CONTROL_BACKWARD'						=> NS_TAOQUAL  .'#BackwardControl',
+	'INSTANCE_CONTROL_FORWARD'						=> NS_TAOQUAL  .'#ForwardControl',
+	'PROPERTY_ACTIVITY_CONTROL'						=> NS_TAOQUAL  .'#ActivityControl',
+
 	'API_LOGIN' 	=> SYS_USER_LOGIN,
 	'API_PASSWORD' 	=> SYS_USER_PASS
 

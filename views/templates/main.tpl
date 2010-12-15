@@ -4,6 +4,7 @@
 		<title><?php echo __("WorkflowEngine Process Browser "); ?></title>
 		<script type="text/javascript" src="<?echo BASE_WWW; ?>/js/jquery.js"/></script>
 		<script type="text/javascript" src="<?echo BASE_WWW; ?>/js/wfEngine.js"/></script>
+		<link rel="stylesheet" type="text/css" href="<?=TAOBASE_WWW?>/css/custom-theme/jquery-ui-1.8.custom.css" />
 		<style media="screen">
 			@import url(<?echo BASE_WWW; ?>/css/main.css);
 		</style>
@@ -27,7 +28,7 @@
          	</li>
 		</ul>
 		
-		<div id="content">
+		<div id="content" class='ui-corner-bottom'>
 			<h1 id="welcome_message"><img src="<?=BASE_WWW?>/img/wf_engine_logo.png" /><?php echo __("Welcome to TAO Process Engine"); ?></h1>	
 			<div id="business">
 				<h2 class="section_title"><?php echo __("Active Process"); ?></h2>
@@ -91,5 +92,8 @@
 			
 		</div>
 		<!-- End of content -->
+		<div id="footer">
+			TAO<sup>&reg;</sup> - <?=date('Y')?> - A joint initiative of CRP Henri Tudor and the University of Luxembourg
+		</div>
 	</body>
 </html>

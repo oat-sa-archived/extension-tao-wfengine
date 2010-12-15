@@ -13,6 +13,15 @@ body
 	background: #FFFFFF url(../img/background.png) repeat-x;
 }
 
+div#content{
+	width: 960px;
+	margin: 0px auto 0px auto;
+	border: solid 1px #ddd;
+	border-top-width: 0px;
+	padding: 3px 3px 50px 3px;
+	min-height:400px;
+}
+
 /* The control area contains a list of various actions/items that are always reachable
    through the graphical user interface, such as change the UI language,
    return to the main page and logoff. It also contains the identifier
@@ -22,12 +31,13 @@ body
 	width: 960px;
 	height:17px;
 	margin: 0px auto 0px auto;
-	padding: 3px 10px 0px 0px;
-	
+	padding: 3px;
 	text-align:right;
-	
 	border-bottom: 1px solid #000000;
 	background: #CCCCCC;
+	border: solid 1px #ccc;
+	border-top-width: 0px;
+	border-bottom-width: 0px;
 }
 
 .icon
@@ -161,7 +171,8 @@ background-image:url('../img/bug.png');
 #business
 {
 	position: relative;
-	width: 1024px;
+	width: 100%;
+	padding:0;
 	margin: 0 auto 0 auto;
 }
 
@@ -189,4 +200,12 @@ div#debugWindow pre{
 	background-color:#e0e0e0;
 	margin:10px;
 	text-align:left;
+}
+
+#footer{
+	width:100%;
+	text-align:center;
+	font-size:10px;
+	color:#666;
+	padding:5px;
 }

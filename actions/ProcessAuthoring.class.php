@@ -369,9 +369,7 @@ class ProcessAuthoring extends TaoModule {
 		if($myForm->isSubmited()){
 			if($myForm->isValid()){
 				
-				
-				$properties = $myForm->getValues();
-				if($this->saveActivityProperty($properties)){
+				if($this->saveActivityProperty()){
 					//replace with a clean template upload
 					$this->setData('saved', true);
 					$this->setData('newLabel', $activity->getLabel());
@@ -454,6 +452,16 @@ class ProcessAuthoring extends TaoModule {
 				}
 			}
 		}
+		
+		//save Activity controls
+		$activityControlProperty = new core_kernel_classes_Property(PROPERTY_ACTIVITY_CONTROL);
+		$activity->removePropertyValues($activityControlProperty);
+		foreach($properties as $key => $value){
+			if(preg_match("/^".preg_quote(PROPERTY_ACTIVITY_CONTROL, '/')."_[0-9]*$/", $key)){
+				$activity->setPropertyValue($activityControlProperty, $value);
+			}
+		}
+		
 		
 		$ajaxReturn['saved'] = $saved;
 		if(isset($properties['ajaxReturn'])){

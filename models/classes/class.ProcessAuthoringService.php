@@ -650,7 +650,8 @@ class wfEngine_models_classes_ProcessAuthoringService
 			//by default, set the 'isHidden' property value to false:
 			$activity->editPropertyValues(new core_kernel_classes_Property(PROPERTY_ACTIVITIES_ISHIDDEN), GENERIS_FALSE);
 			
-		//	$this->createConnector($activity);
+			//by default we add the back and forward controls to the activity 		
+			$activity->editPropertyValues(new core_kernel_classes_Property(PROPERTY_ACTIVITY_CONTROL), array(INSTANCE_CONTROL_BACKWARD, INSTANCE_CONTROL_FORWARD));
 			
 		}else{
 			throw new Exception("the activity cannot be created for the process {$process->uriResource}");

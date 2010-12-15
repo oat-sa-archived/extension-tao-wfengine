@@ -5,6 +5,7 @@ class ProcessBrowser extends WfModule
 {
 	public function index($processUri, $activityUri='')
 	{
+
 		try{
 		Session::setAttribute("processUri", $processUri);
 		$processUri 		= urldecode($processUri); // parameters clean-up.
@@ -56,7 +57,7 @@ class ProcessBrowser extends WfModule
 			Session::removeAtrribute("processUri");
 			$this->redirect(_url('index', 'Main'));
 		}
-		
+	
 		//initialise the activity execution and assign the tokens to the current user
 		$processExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessExecutionService');
 	
@@ -79,6 +80,13 @@ class ProcessBrowser extends WfModule
 			$process->resume();
 		}
 		
+		$controls = $activity->getControls();
+		$browserViewData['controls'] = array(
+			'backward' 	=> (in_array(INSTANCE_CONTROL_BACKWARD, $controls)),
+			'forward'	=> (in_array(INSTANCE_CONTROL_FORWARD, $controls))
+		);
+		
+		
 		// Browser view main data.
 		$browserViewData['isInteractiveService']	= false;
 
@@ -90,7 +98,7 @@ class ProcessBrowser extends WfModule
 		$browserViewData['contentlanguage']			= $_SESSION['taoqual.serviceContentLang'];
 		$browserViewData['processUri']				= $processUri ;
 
-		$browserViewData['uiLanguages']				= I18nUtil::getAvailableLanguages();
+		$browserViewData['uiLanguages']				 = I18nUtil::getAvailableLanguages();
 		$browserViewData['activityContentLanguages'] = I18nUtil::getAvailableServiceContentLanguages();
 
 		$browserViewData['showCalendar']			= $activityPerf->showCalendar;

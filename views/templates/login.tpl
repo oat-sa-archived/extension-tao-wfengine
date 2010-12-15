@@ -14,7 +14,7 @@
 		<ul id="control">    
 			<li></li>
 		</ul>
-		<div id="content">
+		<div id="content" class='ui-corner-bottom'>
 			<h1 id="welcome_message"><img src="<?=BASE_WWW?>/img/wf_engine_logo.png" /><?= __("TAO Process Engine"); ?></h1>
 			<div id="business">
 				<br />
@@ -30,6 +30,9 @@
 					<?=get_data('form')?>
 				</div>
 			</div>
+		</div>
+		<div id="footer">
+			TAO<sup>&reg;</sup> - <?=date('Y')?> - A joint initiative of CRP Henri Tudor and the University of Luxembourg
 		</div>
 	</body>
 </html>
