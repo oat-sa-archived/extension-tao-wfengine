@@ -1241,7 +1241,7 @@ class wfEngine_models_classes_ProcessAuthoringService
 		
 		if(in_array('prev',$option)){
 		
-			$previousConnectorsCollection=core_kernel_impl_ApiModelOO::singleton()->getSubject(PROPERTY_CONNECTORS_NEXTACTIVITIES, $activity->uriResource);
+			$previousConnectorsCollection = core_kernel_impl_ApiModelOO::singleton()->getSubject(PROPERTY_CONNECTORS_NEXTACTIVITIES, $activity->uriResource);
 		
 			foreach ($previousConnectorsCollection->getIterator() as $connector){
 				if(!is_null($connector)){
@@ -1254,7 +1254,7 @@ class wfEngine_models_classes_ProcessAuthoringService
 		
 		if(in_array('next',$option)){
 		
-			$followingConnectorsCollection=core_kernel_impl_ApiModelOO::singleton()->getSubject(PROPERTY_CONNECTORS_PRECACTIVITIES, $activity->uriResource);
+			$followingConnectorsCollection = core_kernel_impl_ApiModelOO::singleton()->getSubject(PROPERTY_CONNECTORS_PRECACTIVITIES, $activity->uriResource);
 		
 			foreach ($followingConnectorsCollection->getIterator() as $connector){
 				if(!is_null($connector)){
