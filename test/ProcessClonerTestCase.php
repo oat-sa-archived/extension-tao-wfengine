@@ -34,8 +34,10 @@ class ProcessClonerTestCase extends UnitTestCase {
 
 		$this->processCloner = $processCloner;
 	}
-	/*
+	
 	public function testCloneActivity(){
+		$this->processCloner->initCloningVariables();
+		
 		$activity1 = $this->authoringService->createActivity($this->proc);
 		$this->authoringService->createInteractiveService($activity1);
 		$activity1Clone = $this->processCloner->cloneActivity($activity1);
@@ -53,16 +55,17 @@ class ProcessClonerTestCase extends UnitTestCase {
 		$this->assertEqual($activity1clonedServices->count(), 1);
 		
 		$clonedService = $activity1clonedServices->get(0);
+		
 		$this->assertIsA($clonedService, 'core_kernel_classes_Resource');
 		$this->assertNotEqual($clonedService->uriResource, $activity1services->get(0)->uriResource);
-		
-		
 		
 		$this->authoringService->deleteActivity($activity1);
 		$this->authoringService->deleteActivity($activity1Clone);
 	}
 	
 	public function testCloneConnector(){
+		$this->processCloner->initCloningVariables();
+		
 		$activity1 = $this->authoringService->createActivity($this->proc);
 		$this->authoringService->createInteractiveService($activity1);
 		$connector1 = $this->authoringService->createConnector($activity1);
@@ -76,9 +79,6 @@ class ProcessClonerTestCase extends UnitTestCase {
 		//clone it!
 		$connector1Clone = $this->processCloner->cloneConnector($connector1);
 		
-		// var_dump($this->processCloner);
-		// var_dump($connector1Clone);
-		
 		$this->assertTrue(wfEngine_helpers_ProcessUtil::isConnector($connector1Clone));
 		
 		$this->assertIsA($this->processCloner->getClonedConnector($connector1), 'core_kernel_classes_Resource');
@@ -90,6 +90,8 @@ class ProcessClonerTestCase extends UnitTestCase {
 	}
 	
 	public function testCloneSequentialProcess(){
+		$this->processCloner->initCloningVariables();
+		
 		$activity1 = $this->authoringService->createActivity($this->proc);
 		$this->authoringService->createInteractiveService($activity1);
 		$connector1 = $this->authoringService->createConnector($activity1);
@@ -98,8 +100,6 @@ class ProcessClonerTestCase extends UnitTestCase {
 		$activity3 = $this->authoringService->createSequenceActivity($connector2);
 		
 		$processClone = $this->processCloner->cloneProcess($this->proc);
-		
-		// var_dump($this->processCloner);
 		
 		$this->assertIsA($processClone, 'core_kernel_classes_Resource');
 		$activities = $this->authoringService->getActivitiesByProcess($processClone);
@@ -111,7 +111,10 @@ class ProcessClonerTestCase extends UnitTestCase {
 		$this->authoringService->deleteProcess($processClone);
 	}
 	
+	
 	public function testCloneProcessSegment(){
+		$this->processCloner->initCloningVariables();
+		
 		$activity1 = $this->authoringService->createActivity($this->proc);
 		$this->authoringService->createInteractiveService($activity1);
 		$connector1 = $this->authoringService->createConnector($activity1);
@@ -125,15 +128,19 @@ class ProcessClonerTestCase extends UnitTestCase {
 		$this->assertEqual(count($this->processCloner->getClonedActivities()), 3);
 		
 		$segmentInterface = $this->processCloner->cloneProcessSegment($this->proc, true);
-		var_dump($this->processCloner, $segmentInterface);
+		
 		$this->assertEqual(count($this->processCloner->getClonedActivities()), 5);
 		$this->assertEqual($segmentInterface['in']->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_ACTIVITIES_ISHIDDEN))->uriResource, GENERIS_TRUE);
 		
+		// var_dump($this->processCloner);
+		
 		$this->processCloner->revertCloning();
 	}
-	*/
+	
 	
 	public function testCloneConditionnalProcess(){
+		$this->processCloner->initCloningVariables();
+		
 		$id = "P_condProc7_";//for var_dump identification
 		$this->processCloner->setCloneLabel("__Clone7");
 		
@@ -164,10 +171,7 @@ class ProcessClonerTestCase extends UnitTestCase {
 		$this->assertEqual($else2->uriResource, $lastActivity->uriResource);
 		
 		//clone the process now!
-		
 		$processClone = $this->processCloner->cloneProcess($this->proc);
-		
-//		var_dump($this->processCloner);
 		
 		$this->assertIsA($processClone, 'core_kernel_classes_Resource');
 		$this->assertEqual(count($this->processCloner->getClonedActivities()), 3);
@@ -185,8 +189,9 @@ class ProcessClonerTestCase extends UnitTestCase {
 	
 	
 	public function testCloneConditionnalProcessSegment(){
-	
-		$id = "P_condSeg3_";//for var_dump identification
+		$this->processCloner->initCloningVariables();
+		
+		$id = "P_condSeg_";//for var_dump identification
 		$this->processCloner->setCloneLabel("__Clone3");
 		
 		$activity1 = $this->authoringService->createActivity($this->proc, "{$id}Activity_1");
@@ -223,15 +228,14 @@ class ProcessClonerTestCase extends UnitTestCase {
 		$this->assertEqual(count($this->processCloner->getClonedActivities()), 3);
 //		var_dump($segmentInterface, $segmentInterface['in']->getLabel(), $segmentInterface['out'][0]->getLabel());
 		
-		
-		// $segmentInterface = $this->processCloner->cloneProcessSegment($this->proc, true);
-		// $this->assertEqual(count($this->processCloner->getClonedActivities()), 5);
-		// $this->assertEqual($segmentInterface['in']->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_ACTIVITIES_ISHIDDEN))->uriResource, GENERIS_TRUE);
+		$segmentInterface = $this->processCloner->cloneProcessSegment($this->proc, true);
+		$this->assertEqual(count($this->processCloner->getClonedActivities()), 5);
+		$this->assertEqual($segmentInterface['in']->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_ACTIVITIES_ISHIDDEN))->uriResource, GENERIS_TRUE);
 		// var_dump($segmentInterface);
 		
-		// $this->processCloner->revertCloning();
+		$this->processCloner->revertCloning();
 	}
-	/**/
+
 	
 	public function tearDown() {
        $this->authoringService->deleteProcess($this->proc);

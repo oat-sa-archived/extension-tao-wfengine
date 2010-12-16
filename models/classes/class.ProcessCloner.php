@@ -73,7 +73,7 @@ class wfEngine_models_classes_ProcessCloner
 		return $this->cloneLabel;
 	}
 	
-	protected function initCloningVariables(){
+	public function initCloningVariables(){
 		$this->currentActivity = null;
 		$this->clonedProcess = null;
 		$this->clonedActivities = array();
@@ -157,6 +157,8 @@ class wfEngine_models_classes_ProcessCloner
 					$activity = new core_kernel_classes_Resource($newActivityIO[$interface]);
 					if(wfEngine_helpers_ProcessUtil::isActivity($activity)){
 						$returnValue[$activity->uriResource] = $activity;
+					}else{
+						// var_dump($activity->getPropertyValues(new core_kernel_classes_Property(RDF_TYPE)));
 					}
 				}
 			}else if(is_string($newActivityIO)){
@@ -200,7 +202,7 @@ class wfEngine_models_classes_ProcessCloner
 	}
 	
 	
-	public function cloneProcess(core_kernel_classes_Resource $process){
+	public function cloneProcess(core_kernel_classes_Resource $process, $processCheck = false){
 		
 		$processClone = $this->cloneWfResource($process, new core_kernel_classes_Class(CLASS_PROCESS), array(PROPERTY_PROCESS_ACTIVITIES, PROPERTY_PROCESS_DIAGRAMDATA));
 		
@@ -470,6 +472,8 @@ class wfEngine_models_classes_ProcessCloner
 				}
 				$connectorClone->setPropertyValue($propActivityRef, $newReferenceActivity->uriResource);
 			}else{
+				//echo 'oldReferenceActivity label: '.$oldReferenceActivity->getLabel();
+				//print_r($this);
 				throw new Exception("the new activity reference cannot be found among the cloned activities");
 			}
 			
@@ -784,6 +788,7 @@ class wfEngine_models_classes_ProcessCloner
 		if(!is_null($this->clonedProcess) && $this->clonedProcess instanceof core_kernel_classes_Resource){
 			$this->authoringService->deleteProcess($this->clonedProcess);
 		}
+		
 		
 		foreach($this->getClonedActivities() as $activity){
 			$this->authoringService->deleteActivity($activity);

@@ -73,7 +73,7 @@ class wfEngine_models_classes_ProcessChecker
 		return $this->isolatedConnectors;
 	}
 	
-	public function checkProcess(){
+	public function checkProcess($checkList = array()){
 	
 		$returnValue = false;
 		
@@ -82,6 +82,9 @@ class wfEngine_models_classes_ProcessChecker
 			'hasNoIsolatedActivity', 
 			'hasNoIsolatedConnector'
 		);
+		if(!empty($checkList)){
+			$checkFunctions = array_intersect($checkFunctions, $checkList);
+		}
 		
 		foreach($checkFunctions as $function){
 			if(method_exists($this, $function)){
@@ -93,8 +96,8 @@ class wfEngine_models_classes_ProcessChecker
 		return $returnValue;
 	}
 	
-	public function hasInitialActivity($number = 1){
-		
+	public function hasInitialActivity($number = 0){
+			
 		$returnValue = false;
 		
 		$number = intval($number);
@@ -103,10 +106,11 @@ class wfEngine_models_classes_ProcessChecker
 		$process = $this->process;
 		$count = 0;
 		foreach($this->authoringService->getActivitiesByProcess($process) as $activity){
+			
 			if(wfEngine_helpers_ProcessUtil::isActivityInitial($activity)){
 				$this->initialActivities[$activity->uriResource] = $activity;
 				$count++;
-				if($count>$number){
+				if($number && ($count>$number)){
 					// throw new wfEngine_models_classes_QTI_ProcessDefinitionException('too many initial activity');
 					$returnValue = false;
 					break;
@@ -114,7 +118,12 @@ class wfEngine_models_classes_ProcessChecker
 			}
 		}
 		
-		$returnValue = ($count==$number)?true:false;
+		if($number){
+			$returnValue = ($count==$number)?true:false;
+		}else{
+			//number == 0 means at least one
+			$returnValue = ($count>0)?true:false;
+		}
 		
 		return $returnValue;
 	}
