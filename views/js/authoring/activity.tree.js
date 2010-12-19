@@ -336,6 +336,7 @@ function ActivityTreeClass(selector, dataUrl, options){
 							label: "Add 'OnBefore' InferenceRule",
 							icon: img_url + "inference-rule.png",
 							visible : function (NODE, TREE_OBJ) {
+								return -1; //temporarily set as unavailable
 								if(NODE.length != 1) {
 									return -1; 
 								}
@@ -359,6 +360,7 @@ function ActivityTreeClass(selector, dataUrl, options){
 							label: "Add 'OnAfter' InferenceRule",
 							icon: img_url + "inference-rule.png",
 							visible : function (NODE, TREE_OBJ) {
+								return -1; //temporarily set as unavailable
 								if(NODE.length != 1) {
 									return -1; 
 								}
@@ -382,6 +384,7 @@ function ActivityTreeClass(selector, dataUrl, options){
 							label: "Add Consistency Rule",
 							icon: img_url + "process_consistency_rule.png",
 							visible : function (NODE, TREE_OBJ) {
+								return -1; //temporarily set as unavailable
 								if(NODE.length != 1) {
 									return -1; 
 								}
