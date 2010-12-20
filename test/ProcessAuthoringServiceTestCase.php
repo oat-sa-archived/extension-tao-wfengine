@@ -134,7 +134,6 @@ class ProcessAuthoringServiceTestCase extends UnitTestCase {
 		$this->assertEqual($followingActivity1->getLabel(), 'Activity_2');
 		$this->assertEqual($connector1->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_TYPE))->uriResource, INSTANCE_TYPEOFCONNECTORS_SEQUENCE);
 		
-		// $followingConnector1 = $this->apiModel->getSubject(PROPERTY_CONNECTORS_PRECACTIVITIES, $followingActivity1->uriResource)->get(0);
 		$followingConnector1 = $this->authoringService->createConnector($followingActivity1);
 		$this->assertIsA($followingConnector1, 'core_kernel_classes_Resource');
 
@@ -188,7 +187,6 @@ class ProcessAuthoringServiceTestCase extends UnitTestCase {
 		$followingActivity1 = $connector1->getOnePropertyValue($nextActivitiesProp);
 		$this->assertNull($followingActivity1);
 		
-		// $connector2 = $this->apiModel->getSubject(PROPERTY_CONNECTORS_PRECACTIVITIES, $activity2->uriResource)->get(0);
 		$connector2 = $this->authoringService->createConnector($activity2);
 		$then = $this->authoringService->createSplitActivity($connector2, 'then');//create "Activity_2"
 		$else = $this->authoringService->createSplitActivity($connector2, 'else', null, '', true);//create another connector
@@ -245,18 +243,13 @@ class ProcessAuthoringServiceTestCase extends UnitTestCase {
 		);
 		
 		$this->assertTrue($this->authoringService->setParallelActivities($connectorB, $newActivitiesArray));
-		// $count = array();
-		// foreach($connectorB->getPropertyValuesCollection(new core_kernel_classes_Property(PROPERTY_CONNECTORS_NEXTACTIVITIES))->getIterator() as $activity){
-		
-		// }
 		
 		//merge all activity D instance to F:
 		$this->authoringService->createJoinActivity($connectorD, $activityF, '', $activityD);
 		$previousActivitiesCollection = $connectorD->getPropertyValuesCollection(new core_kernel_classes_Property(PROPERTY_CONNECTORS_PRECACTIVITIES));
-//		var_dump($connectorD);
+
 		
 		$this->assertEqual($previousActivitiesCollection->count(), 3);
-		// foreach($previousActivitiesCollection->getIterator() as $previousAc
 	}
 	
 	/*
@@ -303,7 +296,7 @@ class ProcessAuthoringServiceTestCase extends UnitTestCase {
 	*/
 	
 	public function tearDown() {
-        // $this->proc->delete();
+        $this->proc->delete();
     }
 
 }
