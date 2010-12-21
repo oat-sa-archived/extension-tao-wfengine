@@ -277,7 +277,7 @@ class Activity
      * @param  string uri
      * @return void
      */
-    public function __construct($uri)
+    public function __construct($uri, $feed = true)
     {
         // section 10-13-1-85-16731180:11be4127421:-8000:00000000000009FA begin
 		 
@@ -294,14 +294,12 @@ class Activity
 			if (isset($acceptedRole[0])) {
 				$this->acceptedRole = new WfRole($acceptedRole[0]);
 			}
-			
-			 
-
 			 
 			// Hidden
 			$isHiddenProp = new core_kernel_classes_Property(PROPERTY_ACTIVITIES_ISHIDDEN);
 			$isHidden = $this->resource->getPropertyValues($isHiddenProp);
-
+			
+			$this->isHidden = false;
 			if (count($isHidden))
 			{
 				if ($isHidden[0] == GENERIS_TRUE)
