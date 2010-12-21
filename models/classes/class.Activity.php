@@ -301,7 +301,7 @@ class Activity
 			$isHiddenProp = new core_kernel_classes_Property(PROPERTY_ACTIVITIES_ISHIDDEN);
 			$isHidden = $this->resource->getPropertyValues($isHiddenProp);
 
-
+			$this->isHidden = false;
 			if (count($isHidden))
 			{
 				if ($isHidden[0] == GENERIS_TRUE)
