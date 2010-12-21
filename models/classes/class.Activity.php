@@ -284,6 +284,7 @@ class Activity
 		parent::__construct($uri);
 		$this->logger->debug('Build Activity  Name: ' . $this->resource->getLabel(),__FILE__,__LINE__);
 		$this->logger->debug('Build Activity  Uri: ' . $this->resource->uriResource,__FILE__,__LINE__);
+		
 		if ($feed)
 		{
 			$activityRoleProp = new core_kernel_classes_Property(ACTIVITY_ROLE);
@@ -301,7 +302,6 @@ class Activity
 			$isHiddenProp = new core_kernel_classes_Property(PROPERTY_ACTIVITIES_ISHIDDEN);
 			$isHidden = $this->resource->getPropertyValues($isHiddenProp);
 
-			$this->isHidden = false;
 			if (count($isHidden))
 			{
 				if ($isHidden[0] == GENERIS_TRUE)
