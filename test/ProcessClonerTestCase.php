@@ -74,8 +74,8 @@ class ProcessClonerTestCase extends UnitTestCase {
 		
 		$activity1Clone = $this->processCloner->cloneActivity($activity1);
 		$activity2Clone = $this->processCloner->cloneActivity($activity2);
-		$this->processCloner->addClonedActivity($activity1, $activity1Clone);
-		$this->processCloner->addClonedActivity($activity2, $activity2Clone);
+		$this->processCloner->addClonedActivity($activity1Clone, $activity1);
+		$this->processCloner->addClonedActivity($activity2Clone, $activity2);
 		
 		//clone it!
 		$connector1Clone = $this->processCloner->cloneConnector($connector1);

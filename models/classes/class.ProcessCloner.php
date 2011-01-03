@@ -3,12 +3,18 @@
 error_reporting(E_ALL);
 
 /**
+ * TAO - wfEngine\models\classes\class.ProcessCloner.php
  *
+ * $Id$
  *
- * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
+ * This file is part of TAO.
+ *
+ * Automatically generated on 03.01.2011, 17:38:06 with ArgoUML PHP module 
+ * (last revised $Date: 2008-04-19 08:22:08 +0200 (Sat, 19 Apr 2008) $)
+ *
+ * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
  * @package wfEngine
  * @subpackage models_classes
- * @license GPLv2  http://www.opensource.org/licenses/gpl-2.0.php
  */
 
 if (0 > version_compare(PHP_VERSION, '5')) {
@@ -17,77 +23,146 @@ if (0 > version_compare(PHP_VERSION, '5')) {
 
 /**
  * The Service class is an abstraction of each service instance. 
- * Used to centralize the behavior related to every service instances.
+ * Used to centralize the behavior related to every servcie instances.
  *
- * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
+ * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
  */
-require_once('tao/models/classes/class.Service.php');
+require_once('tao/models/classes/class.GenerisService.php');
 
 /**
- * The wfEngine_models_classes_ProcessAuthoringService class provides methods to access and edit the process ontology
+ * include wfEngine_models_classes_ProcessAuthoringService
+ *
+ * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+ */
+require_once('wfEngine/models/classes/class.ProcessAuthoringService.php');
+
+/* user defined includes */
+// section 10-13-1-39--56440278:12d4c05ae3c:-8000:0000000000004FAB-includes begin
+// section 10-13-1-39--56440278:12d4c05ae3c:-8000:0000000000004FAB-includes end
+
+/* user defined constants */
+// section 10-13-1-39--56440278:12d4c05ae3c:-8000:0000000000004FAB-constants begin
+// section 10-13-1-39--56440278:12d4c05ae3c:-8000:0000000000004FAB-constants end
+
+/**
+ * Short description of class wfEngine_models_classes_ProcessCloner
  *
  * @access public
- * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
+ * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
  * @package wfEngine
  * @subpackage models_classes
- * @license GPLv2  http://www.opensource.org/licenses/gpl-2.0.php
  */
 class wfEngine_models_classes_ProcessCloner
     extends tao_models_classes_GenerisService
 {
     // --- ASSOCIATIONS ---
-	
-	protected $authoringService = null;
-	protected $currentActivity = null;
-	protected $clonedProcess = null;
-	protected $cloneLabel = '';	
-	protected $clonedActivities = array();
-	protected $clonedConnectors = array();
-	protected $waitingConnectors = array();
-	public $debugClonedActivities = array();
-	public $debugClonedConnectors = array();
-	
-    // --- OPERATIONS ---
+    // generateAssociationEnd : 
 
-	/**
-     * The method __construct intiates the DeliveryService class and loads the required ontologies from the other extensions 
+    // --- ATTRIBUTES ---
+
+    /**
+     * Short description of attribute authoringService
+     *
+     * @access protected
+     * @var ProcessAuthoringService
+     */
+    protected $authoringService = null;
+
+    /**
+     * Short description of attribute currentActivity
+     *
+     * @access protected
+     * @var Resource
+     */
+    protected $currentActivity = null;
+
+    /**
+     * Short description of attribute clonedProcess
+     *
+     * @access protected
+     * @var Resource
+     */
+    protected $clonedProcess = null;
+
+    /**
+     * Short description of attribute cloneLabel
+     *
+     * @access protected
+     * @var string
+     */
+    protected $cloneLabel = '';
+
+    /**
+     * Short description of attribute clonedActivities
+     *
+     * @access protected
+     * @var array
+     */
+    protected $clonedActivities = array();
+
+    /**
+     * Short description of attribute clonedConnectors
+     *
+     * @access protected
+     * @var array
+     */
+    protected $clonedConnectors = array();
+
+    /**
+     * Short description of attribute waitingConnectors
+     *
+     * @access protected
+     * @var array
+     */
+    protected $waitingConnectors = array();
+
+    /**
+     * Short description of attribute debugClonedActivities
      *
      * @access public
-     * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
-     * @return mixed
-     */	
+     * @var array
+     */
+    public $debugClonedActivities = array();
+
+    /**
+     * Short description of attribute debugClonedConnectors
+     *
+     * @access public
+     * @var array
+     */
+    public $debugClonedConnectors = array();
+
+    // --- OPERATIONS ---
+
+    /**
+     * Short description of method __construct
+     *
+     * @access public
+     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+     */
     public function __construct($cloneLabel='')
     {
+        // section 10-13-1-39--56440278:12d4c05ae3c:-8000:0000000000004FB5 begin
 		$this->cloneLabel = $cloneLabel;
 		$this->authoringService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessAuthoringService');
 		$this->initCloningVariables();
 		parent::__construct();
-		
+        // section 10-13-1-39--56440278:12d4c05ae3c:-8000:0000000000004FB5 end
     }
-	
-	public function setCloneLabel($cloneLabel=''){
-		$this->cloneLabel = $cloneLabel;
-	}
-	
-	public function getCloneLabel(){
-		return $this->cloneLabel;
-	}
-	
-	public function initCloningVariables(){
-		$this->currentActivity = null;
-		$this->clonedProcess = null;
-		$this->clonedActivities = array();
-		$this->clonedConnectors = array();
-		$this->waitingConnectors = array();
-	}
-	
-	private function setDebugClonedActivities(core_kernel_classes_Resource $activity){
-		if(!is_null($activity))
-		$this->debugClonedActivities[$activity->uriResource] = $activity->getLabel();
-	}
-	
-	public function addClonedActivity(core_kernel_classes_Resource $oldActivity = null, core_kernel_classes_Resource $newActivityIn, $newActivityOut = null){
-		
+
+    /**
+     * Short description of method addClonedActivity
+     *
+     * @access public
+     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+     * @param  Resource newActivityIn
+     * @param  Resource oldActivity
+     * @param  Resource newActivityOut
+     * @return mixed
+     */
+    public function addClonedActivity( core_kernel_classes_Resource $newActivityIn,  core_kernel_classes_Resource $oldActivity = null,  core_kernel_classes_Resource $newActivityOut = null)
+    {
+        // section 10-13-1-39--56440278:12d4c05ae3c:-8000:0000000000004FCC begin
 		if(is_null($newActivityOut)) $newActivityOut = $newActivityIn;
 		
 		if(!is_null($oldActivity)){
@@ -119,264 +194,38 @@ class wfEngine_models_classes_ProcessCloner
 		}
 		
 		$this->setDebugClonedActivities($newActivityIn);
-	}
-	
-	//return an activity resource or an array of activity resources
-	public function getClonedActivity(core_kernel_classes_Resource $oldActivity, $InOut ='in'){
-		$returnValue = null;
-		
-		$InOut = strtolower($InOut);
-		if(in_array($InOut, array('in', 'out')) && isset($this->clonedActivities[$oldActivity->uriResource])){
-			if(isset($this->clonedActivities[$oldActivity->uriResource][$InOut])){
-				$activities = $this->clonedActivities[$oldActivity->uriResource][$InOut];
-				if(is_array($activities)){
-					$returnValue = array();
-					foreach($activities as $activityUri){
-						$returnValue[] = new core_kernel_classes_Resource($activityUri);
-					}
-				}else if(is_string($activities)){
-					$returnValue = new core_kernel_classes_Resource($activities);
-				}
-				else{
-					throw new Exception("unkown type in getClonedActivity array ({$activities})");
-				}
-				
-			}
-		}
-		
-		return $returnValue;
-		
-	}
-	
-	public function getClonedActivities(){
-		$returnValue = array();
-		
-		foreach($this->clonedActivities as $newActivityIO){
-			if(is_array($newActivityIO)){
-				foreach(array('in', 'out') as $interface){
-					$activity = new core_kernel_classes_Resource($newActivityIO[$interface]);
-					if(wfEngine_helpers_ProcessUtil::isActivity($activity)){
-						$returnValue[$activity->uriResource] = $activity;
-					}else{
-						// var_dump($activity->getPropertyValues(new core_kernel_classes_Property(RDF_TYPE)));
-					}
-				}
-			}else if(is_string($newActivityIO)){
-				$activity = new core_kernel_classes_Resource($newActivityIO);
-				if(wfEngine_helpers_ProcessUtil::isActivity($activity)){
-					$returnValue[$activity->uriResource] = $activity;
-				}
-				
-			}
-			
-		}
-		
-		return $returnValue;
-	}
-	
-	public function addClonedConnector(core_kernel_classes_Resource $oldConnector, core_kernel_classes_Resource $newConnector){
+        // section 10-13-1-39--56440278:12d4c05ae3c:-8000:0000000000004FCC end
+    }
+
+    /**
+     * Short description of method addClonedConnector
+     *
+     * @access public
+     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+     * @param  Resource oldConnector
+     * @param  Resource newConnector
+     * @return mixed
+     */
+    public function addClonedConnector( core_kernel_classes_Resource $oldConnector,  core_kernel_classes_Resource $newConnector)
+    {
+        // section 10-13-1-39--56440278:12d4c05ae3c:-8000:0000000000004FDC begin
 		$this->clonedConnectors[$oldConnector->uriResource] = $newConnector->uriResource;
-	}
-	
-	public function getClonedConnector(core_kernel_classes_Resource $oldConnector){
-		$returnValue = null;
-		
-		if(isset($this->clonedConnectors[$oldConnector->uriResource])){
-			$returnValue = new core_kernel_classes_Resource($this->clonedConnectors[$oldConnector->uriResource]);
-		}
-		
-		return $returnValue;
-	}
-	
-	public function getClonedConnectors(){
-		$returnValue = array();
-		
-		foreach($this->clonedConnectors as $connectorUri){
-			$connector = new core_kernel_classes_Resource($connectorUri);
-			if(wfEngine_helpers_ProcessUtil::isConnector($connector)){
-				$returnValue[$connector->uriResource] = $connector;
-			}
-		}
-		
-		return $returnValue;
-	}
-	
-	
-	public function cloneProcess(core_kernel_classes_Resource $process, $processCheck = false){
-		
-		$processClone = $this->cloneWfResource($process, new core_kernel_classes_Class(CLASS_PROCESS), array(PROPERTY_PROCESS_ACTIVITIES, PROPERTY_PROCESS_DIAGRAMDATA));
-		
-		$this->initCloningVariables();
-		
-		if(!is_null($processClone)){
-			//get all activity processes and clone them:
-			$activities = $this->authoringService->getActivitiesByProcess($process);
-			foreach($activities as $activityUri => $activity){
-				$activityClone = $this->cloneActivity($activity);
-				if(!is_null($activityClone)){
-					$this->addClonedActivity($activity, $activityClone);
-					$processClone->setPropertyValue(new core_kernel_classes_Property(PROPERTY_PROCESS_ACTIVITIES), $activityClone->uriResource);
-				}else{
-					throw new Exception("the activity '{$activity->getLabel()}'({$activity->uriResource}) cannot be cloned");
-				}
-			}
-			
-			//reloop for connectors this time:
-			foreach($activities as $activityUri => $activity){
-				$this->currentActivity = $activity;
-				$connectors = $this->authoringService->getConnectorsByActivity($activity, array('next'));
-				
-				foreach($connectors['next'] as $connector){
-					$this->cloneConnector($connector);
-				}
-			}
-			
-			if(!empty($this->waitingConnectors)){
-				//update the remaing connectors:
-				foreach($this->clonedConnectors as $oldConnectorUri => $newConnectorUri){
-					$this->updateWaitingConnector(new core_kernel_classes_Resource($oldConnectorUri), new core_kernel_classes_Resource($newConnectorUri));
-				}
-			}
-				
-			$this->clonedProcess = $processClone;
-		}
-		
-		return $processClone;
-	
-	}
-	
-	//TODO: return the new activity as an array
-	public function cloneProcessSegment(core_kernel_classes_Resource $process, $addTransitionalActivity=false, core_kernel_classes_Resource $startActivity = null, core_kernel_classes_Resource $endActivity = null){
-		
-		// $this->initCloningVariables();
-		
-		$initialActivity = null;
-		
-		$newInitialActivity = null;
-		$newFinalActivities = array();
-		
-		if(is_null($startActivity) && is_null($endActivity)){
-			
-			
-			$activities = $this->authoringService->getActivitiesByProcess($process);
-			
-			$initialActivity = null;
-			//find the first activity:
-			foreach($activities as $activityUri => $activity){
-				if(wfEngine_helpers_ProcessUtil::isActivityInitial($activity)){
-					$initialActivity = $activity;
-					break;
-				}
-			}	
-			if(is_null($initialActivity)){
-				throw new Exception('no initial activity found to the process');
-			}
-			
-			
-			foreach($activities as $activityUri => $activity){
-				$activityClone = $this->cloneActivity($activity);
-				if($activity->uriResource == $initialActivity->uriResource){
-					$newInitialActivity = $activityClone;
-				}
-				
-				if(!is_null($activityClone)){
-					$this->addClonedActivity($activity, $activityClone);
-				}else{
-					throw new Exception("the activity '{$activity->getLabel()}'({$activity->getLabel()}) cannot be cloned");
-				}
-			}
-				
-			//reloop for connectors this time:
-			foreach($activities as $activityUri => $activity){
-				
-				$this->currentActivity = $activity;
-				$connectors = $this->authoringService->getConnectorsByActivity($activity, array('next'));
-				
-				if(empty($connectors['next'])){
-					//it is a final activity
-					
-					$clonedActivitiesOut = $this->getClonedActivity($activity, 'out');
-					if(is_array($clonedActivitiesOut)){
-						foreach($clonedActivitiesOut as $clonedActivityOut){
-							if($clonedActivityOut instanceof core_kernel_classes_Resource){
-								$newFinalActivities[] = $clonedActivityOut;
-							}
-						}
-					}else if($clonedActivitiesOut instanceof core_kernel_classes_Resource){
-						$newFinalActivities[] = $clonedActivitiesOut;
-					}
-				}else{
-					foreach($connectors['next'] as $connector){
-						
-						$this->cloneConnector($connector);
-					}
-				}
-			}
-			
-			if(!empty($this->waitingConnectors)){
-				//update the remaing connectors:
-				foreach($this->clonedConnectors as $oldConnectorUri => $newConnectorUri){
-					$this->updateWaitingConnector(new core_kernel_classes_Resource($oldConnectorUri), new core_kernel_classes_Resource($newConnectorUri));
-				}
-			}
-		}
-		
-		if(is_null($initialActivity)){
-			throw new Exception('no initial activity found to the defined process segment');
-		}
-		if(is_null($newFinalActivities)){
-			//TODO: check that every connector has a following activity
-			throw new Exception('no terminal activity found to the defined process segment');
-		}
-		
-		if($addTransitionalActivity){
-			//echo "adding transitionnal actiivties";
-			//init the required properties:
-			$propInitial = new core_kernel_classes_Property(PROPERTY_ACTIVITIES_ISINITIAL);
-			$propHidden = new core_kernel_classes_Property(PROPERTY_ACTIVITIES_ISHIDDEN);
-			$activityClass = new core_kernel_classes_Class(CLASS_ACTIVITIES);
-			
-			//build the $firstActivity:
-			$firstActivity = $activityClass->createInstance("process_start ({$process->getLabel()})", "created by ProcessCloner.Class");
-			$firstActivity->editPropertyValues($propInitial, GENERIS_TRUE);//do set it here, the property will be modified automatically by create "following" activity
-			$firstActivity->editPropertyValues($propHidden, GENERIS_TRUE);
-			$connector = $this->authoringService->createConnector($firstActivity);
-			
-			//get the clone of the intiial acitivty:
-			if(is_null($newInitialActivity)){
-				throw new Exception("the intial activity has not been cloned: {$initialActivity->getLabel()}({$initialActivity->uriResource})");
-			}
-			$this->authoringService->createSequenceActivity($connector, $newInitialActivity);//this function also automatically set the former $iniitalAcitivty to "not initial"
-			//TODO: rename the function createSequenceActivity to addSequenceActivity, clearer that way
-			
-			//build the last activity:
-			$lastActivity = $activityClass->createInstance("process_end ({$process->getLabel()})", "created by ProcessCloner.Class");
-			$lastActivity->editPropertyValues($propHidden, GENERIS_TRUE);
-			foreach($newFinalActivities as $newActivity){
-				
-				//TODO: determine if there is need for merging multiple instances of a parallelized activity that has not been merged 
-				$connector = $this->authoringService->createConnector($newActivity);
-				
-				$this->authoringService->createSequenceActivity($connector, $lastActivity);
-			}
-			
-			$newInitialActivity = $firstActivity;
-			$newFinalActivities = $lastActivity;
-			
-			$this->addClonedActivity(null, $firstActivity);
-			$this->addClonedActivity(null, $lastActivity);
-		}
-		
-		return array(
-			'in' => $newInitialActivity,
-			'out' => $newFinalActivities
-		);
-	}
-	
-	
-	public function cloneActivity(core_kernel_classes_Resource $activity){
-		$returnValue = null;
-		
+        // section 10-13-1-39--56440278:12d4c05ae3c:-8000:0000000000004FDC end
+    }
+
+    /**
+     * Short description of method cloneActivity
+     *
+     * @access public
+     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+     * @param  Resource activity
+     * @return core_kernel_classes_Resource
+     */
+    public function cloneActivity( core_kernel_classes_Resource $activity)
+    {
+        $returnValue = null;
+
+        // section 10-13-1-39--56440278:12d4c05ae3c:-8000:0000000000004FE3 begin
 		if(wfEngine_helpers_ProcessUtil::isActivity($activity)){
 			$activityClone = $this->cloneWfResource(
 				$activity, 
@@ -409,41 +258,24 @@ class wfEngine_models_classes_ProcessCloner
 			}
 			
 		}
-				
-		return $activityClone;
-	}
-	
-	public function cloneInteractiveService(core_kernel_classes_Resource $service){
-		$returnValue = null;
-		
-		$classCallOfServices = new core_kernel_classes_Class(CLASS_CALLOFSERVICES);
-		$classActualParam = new core_kernel_classes_Class(CLASS_ACTUALPARAMETER);
-		$propActualParamIn = new core_kernel_classes_Property(PROPERTY_CALLOFSERVICES_ACTUALPARAMETERIN);
-		
-		$serviceClone = $this->cloneWfResource($service, $classCallOfServices, array($propActualParamIn->uriResource, PROPERTY_CALLOFSERVICES_ACTUALPARAMETEROUT));
-		if(!is_null($serviceClone)){
-			foreach($service->getPropertyValuesCollection($propActualParamIn)->getIterator() as $actualParamIn){
-				if($actualParamIn instanceof core_kernel_classes_Resource){
-					$actualParamInClone = $this->cloneWfResource($actualParamIn, $classActualParam);
-					if(!is_null($actualParamInClone)){
-						$serviceClone->setPropertyValue($propActualParamIn, $actualParamInClone->uriResource);
-					}else{
-						throw new Exception('an input actual parameter cannot be clonned');
-					}
-				}
-				
-			}
-			
-			$returnValue = $serviceClone;
-		}
-		
-		return $returnValue;
-	}
-	
-	
-	public function cloneConnector(core_kernel_classes_Resource $connector){
-		$returnValue = null;
-	
+        // section 10-13-1-39--56440278:12d4c05ae3c:-8000:0000000000004FE3 end
+
+        return $returnValue;
+    }
+
+    /**
+     * Short description of method cloneConnector
+     *
+     * @access public
+     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+     * @param  Resource connector
+     * @return core_kernel_classes_Resource
+     */
+    public function cloneConnector( core_kernel_classes_Resource $connector)
+    {
+        $returnValue = null;
+
+        // section 10-13-1-39--56440278:12d4c05ae3c:-8000:0000000000004FE6 begin
 		if(wfEngine_helpers_ProcessUtil::isConnector($connector)){
 			$connectorClone = $this->cloneWfResource(
 				$connector, 
@@ -614,15 +446,433 @@ class wfEngine_models_classes_ProcessCloner
 			$this->addClonedConnector($connector, $connectorClone);
 			$returnValue = $connectorClone;
 		}
+        // section 10-13-1-39--56440278:12d4c05ae3c:-8000:0000000000004FE6 end
+
+        return $returnValue;
+    }
+
+    /**
+     * Short description of method cloneInteractiveService
+     *
+     * @access public
+     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+     * @param  Resource service
+     * @return core_kernel_classes_Resource
+     */
+    public function cloneInteractiveService( core_kernel_classes_Resource $service)
+    {
+        $returnValue = null;
+
+        // section 10-13-1-39--56440278:12d4c05ae3c:-8000:0000000000004FE9 begin
+		$classCallOfServices = new core_kernel_classes_Class(CLASS_CALLOFSERVICES);
+		$classActualParam = new core_kernel_classes_Class(CLASS_ACTUALPARAMETER);
+		$propActualParamIn = new core_kernel_classes_Property(PROPERTY_CALLOFSERVICES_ACTUALPARAMETERIN);
 		
-		return $returnValue;
+		$serviceClone = $this->cloneWfResource($service, $classCallOfServices, array($propActualParamIn->uriResource, PROPERTY_CALLOFSERVICES_ACTUALPARAMETEROUT));
+		if(!is_null($serviceClone)){
+			foreach($service->getPropertyValuesCollection($propActualParamIn)->getIterator() as $actualParamIn){
+				if($actualParamIn instanceof core_kernel_classes_Resource){
+					$actualParamInClone = $this->cloneWfResource($actualParamIn, $classActualParam);
+					if(!is_null($actualParamInClone)){
+						$serviceClone->setPropertyValue($propActualParamIn, $actualParamInClone->uriResource);
+					}else{
+						throw new Exception('an input actual parameter cannot be clonned');
+					}
+				}
+				
+			}
+			
+			$returnValue = $serviceClone;
+		}
+        // section 10-13-1-39--56440278:12d4c05ae3c:-8000:0000000000004FE9 end
+
+        return $returnValue;
+    }
+
+    /**
+     * Short description of method cloneProcess
+     *
+     * @access public
+     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+     * @param  Resource process
+     * @return core_kernel_classes_Resource
+     */
+    public function cloneProcess( core_kernel_classes_Resource $process)
+    {
+        $returnValue = null;
+
+        // section 10-13-1-39--56440278:12d4c05ae3c:-8000:0000000000004FEC begin
+		$processClone = $this->cloneWfResource($process, new core_kernel_classes_Class(CLASS_PROCESS), array(PROPERTY_PROCESS_ACTIVITIES, PROPERTY_PROCESS_DIAGRAMDATA));
 		
-	}
-	
-	protected function getNewActivityFromOldActivity(core_kernel_classes_Resource $oldActivity, core_kernel_classes_Resource $oldReferenceActivity, $connectionType, core_kernel_classes_Resource $clonedConnector){
+		$this->initCloningVariables();
 		
+		if(!is_null($processClone)){
+			//get all activity processes and clone them:
+			$activities = $this->authoringService->getActivitiesByProcess($process);
+			foreach($activities as $activityUri => $activity){
+				$activityClone = $this->cloneActivity($activity);
+				if(!is_null($activityClone)){
+					$this->addClonedActivity($activityClone, $activity);
+					$processClone->setPropertyValue(new core_kernel_classes_Property(PROPERTY_PROCESS_ACTIVITIES), $activityClone->uriResource);
+				}else{
+					throw new Exception("the activity '{$activity->getLabel()}'({$activity->uriResource}) cannot be cloned");
+				}
+			}
+			
+			//reloop for connectors this time:
+			foreach($activities as $activityUri => $activity){
+				$this->currentActivity = $activity;
+				$connectors = $this->authoringService->getConnectorsByActivity($activity, array('next'));
+				
+				foreach($connectors['next'] as $connector){
+					$this->cloneConnector($connector);
+				}
+			}
+			
+			if(!empty($this->waitingConnectors)){
+				//update the remaing connectors:
+				foreach($this->clonedConnectors as $oldConnectorUri => $newConnectorUri){
+					$this->updateWaitingConnector(new core_kernel_classes_Resource($oldConnectorUri), new core_kernel_classes_Resource($newConnectorUri));
+				}
+			}
+				
+			$this->clonedProcess = $processClone;
+			
+			$returnValue = $processClone;
+		}
+        // section 10-13-1-39--56440278:12d4c05ae3c:-8000:0000000000004FEC end
+
+        return $returnValue;
+    }
+
+    /**
+     * Short description of method cloneProcessSegment
+     *
+     * @access public
+     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+     * @param  Resource process
+     * @param  boolean addTransitionalActivity
+     * @param  Resource startActivity
+     * @param  Resource endActivity
+     * @return core_kernel_classes_Array
+     */
+    public function cloneProcessSegment( core_kernel_classes_Resource $process, $addTransitionalActivity = false,  core_kernel_classes_Resource $startActivity = null,  core_kernel_classes_Resource $endActivity = null)
+    {
+        $returnValue = null;
+
+        // section 10-13-1-39--56440278:12d4c05ae3c:-8000:0000000000004FEF begin
+		$initialActivity = null;
+		
+		$newInitialActivity = null;
+		$newFinalActivities = array();
+		
+		if(is_null($startActivity) && is_null($endActivity)){
+			
+			
+			$activities = $this->authoringService->getActivitiesByProcess($process);
+			
+			$initialActivity = null;
+			//find the first activity:
+			foreach($activities as $activityUri => $activity){
+				if(wfEngine_helpers_ProcessUtil::isActivityInitial($activity)){
+					$initialActivity = $activity;
+					break;
+				}
+			}	
+			if(is_null($initialActivity)){
+				throw new Exception('no initial activity found to the process');
+			}
+			
+			
+			foreach($activities as $activityUri => $activity){
+				$activityClone = $this->cloneActivity($activity);
+				if($activity->uriResource == $initialActivity->uriResource){
+					$newInitialActivity = $activityClone;
+				}
+				
+				if(!is_null($activityClone)){
+					$this->addClonedActivity($activityClone, $activity);
+				}else{
+					throw new Exception("the activity '{$activity->getLabel()}'({$activity->getLabel()}) cannot be cloned");
+				}
+			}
+				
+			//reloop for connectors this time:
+			foreach($activities as $activityUri => $activity){
+				
+				$this->currentActivity = $activity;
+				$connectors = $this->authoringService->getConnectorsByActivity($activity, array('next'));
+				
+				if(empty($connectors['next'])){
+					//it is a final activity
+					
+					$clonedActivitiesOut = $this->getClonedActivity($activity, 'out');
+					if(is_array($clonedActivitiesOut)){
+						foreach($clonedActivitiesOut as $clonedActivityOut){
+							if($clonedActivityOut instanceof core_kernel_classes_Resource){
+								$newFinalActivities[] = $clonedActivityOut;
+							}
+						}
+					}else if($clonedActivitiesOut instanceof core_kernel_classes_Resource){
+						$newFinalActivities[] = $clonedActivitiesOut;
+					}
+				}else{
+					foreach($connectors['next'] as $connector){
+						
+						$this->cloneConnector($connector);
+					}
+				}
+			}
+			
+			if(!empty($this->waitingConnectors)){
+				//update the remaing connectors:
+				foreach($this->clonedConnectors as $oldConnectorUri => $newConnectorUri){
+					$this->updateWaitingConnector(new core_kernel_classes_Resource($oldConnectorUri), new core_kernel_classes_Resource($newConnectorUri));
+				}
+			}
+		}
+		
+		if(is_null($initialActivity)){
+			throw new Exception('no initial activity found to the defined process segment');
+		}
+		if(is_null($newFinalActivities)){
+			//TODO: check that every connector has a following activity
+			throw new Exception('no terminal activity found to the defined process segment');
+		}
+		
+		if($addTransitionalActivity){
+			//echo "adding transitionnal actiivties";
+			//init the required properties:
+			$propInitial = new core_kernel_classes_Property(PROPERTY_ACTIVITIES_ISINITIAL);
+			$propHidden = new core_kernel_classes_Property(PROPERTY_ACTIVITIES_ISHIDDEN);
+			$activityClass = new core_kernel_classes_Class(CLASS_ACTIVITIES);
+			
+			//build the $firstActivity:
+			$firstActivity = $activityClass->createInstance("process_start ({$process->getLabel()})", "created by ProcessCloner.Class");
+			$firstActivity->editPropertyValues($propInitial, GENERIS_TRUE);//do set it here, the property will be modified automatically by create "following" activity
+			$firstActivity->editPropertyValues($propHidden, GENERIS_TRUE);
+			$connector = $this->authoringService->createConnector($firstActivity);
+			
+			//get the clone of the intiial acitivty:
+			if(is_null($newInitialActivity)){
+				throw new Exception("the intial activity has not been cloned: {$initialActivity->getLabel()}({$initialActivity->uriResource})");
+			}
+			$this->authoringService->createSequenceActivity($connector, $newInitialActivity);//this function also automatically set the former $iniitalAcitivty to "not initial"
+			//TODO: rename the function createSequenceActivity to addSequenceActivity, clearer that way
+			
+			//build the last activity:
+			$lastActivity = $activityClass->createInstance("process_end ({$process->getLabel()})", "created by ProcessCloner.Class");
+			$lastActivity->editPropertyValues($propHidden, GENERIS_TRUE);
+			foreach($newFinalActivities as $newActivity){
+				
+				//TODO: determine if there is need for merging multiple instances of a parallelized activity that has not been merged 
+				$connector = $this->authoringService->createConnector($newActivity);
+				
+				$this->authoringService->createSequenceActivity($connector, $lastActivity);
+			}
+			
+			$newInitialActivity = $firstActivity;
+			$newFinalActivities = $lastActivity;
+			
+			$this->addClonedActivity($firstActivity);
+			$this->addClonedActivity($lastActivity);
+		}
+		
+		$returnValue = array(
+			'in' => $newInitialActivity,
+			'out' => $newFinalActivities
+		);
+        // section 10-13-1-39--56440278:12d4c05ae3c:-8000:0000000000004FEF end
+
+        return $returnValue;
+    }
+
+    /**
+     * Short description of method cloneWfResource
+     *
+     * @access public
+     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+     * @param  Resource instance
+     * @param  Class clazz
+     * @param  array forbiddenProperties
+     * @param  string newLabel
+     * @return core_kernel_classes_Resource
+     */
+    public function cloneWfResource( core_kernel_classes_Resource $instance,  core_kernel_classes_Class $clazz, $forbiddenProperties = array(), $newLabel = '')
+    {
+        $returnValue = null;
+
+        // section 10-13-1-39--56440278:12d4c05ae3c:-8000:0000000000005004 begin
+		$returnValue = $this->createInstance($clazz);
+		if(!is_null($returnValue)){
+			foreach($clazz->getProperties(true) as $property){
+				if(!in_array($property->uriResource, $forbiddenProperties)){
+					$returnValue->editPropertyValues($property, $instance->getPropertyValues($property));
+				}
+			}
+			// $label = $instance->getLabel();
+			$cloneLabel = empty($newLabel)? $instance->getLabel().$this->cloneLabel:$newLabel;
+			
+			$returnValue->setLabel($cloneLabel);
+			
+		}
+        // section 10-13-1-39--56440278:12d4c05ae3c:-8000:0000000000005004 end
+
+        return $returnValue;
+    }
+
+    /**
+     * Short description of method getClonedActivities
+     *
+     * @access public
+     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+     * @return array
+     */
+    public function getClonedActivities()
+    {
+        $returnValue = array();
+
+        // section 10-13-1-39--56440278:12d4c05ae3c:-8000:0000000000005015 begin
+		foreach($this->clonedActivities as $newActivityIO){
+			if(is_array($newActivityIO)){
+				foreach(array('in', 'out') as $interface){
+					$activity = new core_kernel_classes_Resource($newActivityIO[$interface]);
+					if(wfEngine_helpers_ProcessUtil::isActivity($activity)){
+						$returnValue[$activity->uriResource] = $activity;
+					}else{
+						// var_dump($activity->getPropertyValues(new core_kernel_classes_Property(RDF_TYPE)));
+					}
+				}
+			}else if(is_string($newActivityIO)){
+				$activity = new core_kernel_classes_Resource($newActivityIO);
+				if(wfEngine_helpers_ProcessUtil::isActivity($activity)){
+					$returnValue[$activity->uriResource] = $activity;
+				}
+				
+			}
+			
+		}
+        // section 10-13-1-39--56440278:12d4c05ae3c:-8000:0000000000005015 end
+
+        return (array) $returnValue;
+    }
+
+    /**
+     * Short description of method getClonedActivity
+     *
+     * @access public
+     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+     * @param  Resource oldActivity
+     * @param  string InOut
+     * @return core_kernel_classes_Resource
+     */
+    public function getClonedActivity( core_kernel_classes_Resource $oldActivity, $InOut = 'in')
+    {
+        $returnValue = null;
+
+        // section 10-13-1-39--56440278:12d4c05ae3c:-8000:0000000000005018 begin
+		$InOut = strtolower($InOut);
+		if(in_array($InOut, array('in', 'out')) && isset($this->clonedActivities[$oldActivity->uriResource])){
+			if(isset($this->clonedActivities[$oldActivity->uriResource][$InOut])){
+				$activities = $this->clonedActivities[$oldActivity->uriResource][$InOut];
+				if(is_array($activities)){
+					$returnValue = array();
+					foreach($activities as $activityUri){
+						$returnValue[] = new core_kernel_classes_Resource($activityUri);
+					}
+				}else if(is_string($activities)){
+					$returnValue = new core_kernel_classes_Resource($activities);
+				}
+				else{
+					throw new Exception("unkown type in getClonedActivity array ({$activities})");
+				}
+				
+			}
+		}
+        // section 10-13-1-39--56440278:12d4c05ae3c:-8000:0000000000005018 end
+
+        return $returnValue;
+    }
+
+    /**
+     * Short description of method getClonedConnector
+     *
+     * @access public
+     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+     * @param  Resource oldConnector
+     * @return core_kernel_classes_Resource
+     */
+    public function getClonedConnector( core_kernel_classes_Resource $oldConnector)
+    {
+        $returnValue = null;
+
+        // section 10-13-1-39--56440278:12d4c05ae3c:-8000:0000000000005020 begin
+		if(isset($this->clonedConnectors[$oldConnector->uriResource])){
+			$returnValue = new core_kernel_classes_Resource($this->clonedConnectors[$oldConnector->uriResource]);
+		}
+        // section 10-13-1-39--56440278:12d4c05ae3c:-8000:0000000000005020 end
+
+        return $returnValue;
+    }
+
+    /**
+     * Short description of method getClonedConnectors
+     *
+     * @access public
+     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+     * @return array
+     */
+    public function getClonedConnectors()
+    {
+        $returnValue = array();
+
+        // section 10-13-1-39--56440278:12d4c05ae3c:-8000:0000000000005024 begin
+		foreach($this->clonedConnectors as $connectorUri){
+			$connector = new core_kernel_classes_Resource($connectorUri);
+			if(wfEngine_helpers_ProcessUtil::isConnector($connector)){
+				$returnValue[$connector->uriResource] = $connector;
+			}
+		}
+        // section 10-13-1-39--56440278:12d4c05ae3c:-8000:0000000000005024 end
+
+        return (array) $returnValue;
+    }
+
+    /**
+     * Short description of method getCloneLabel
+     *
+     * @access public
+     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+     * @return string
+     */
+    public function getCloneLabel()
+    {
+        $returnValue = (string) '';
+
+        // section 10-13-1-39--56440278:12d4c05ae3c:-8000:0000000000005026 begin
+		$returnValue = $this->cloneLabel;
+        // section 10-13-1-39--56440278:12d4c05ae3c:-8000:0000000000005026 end
+
+        return (string) $returnValue;
+    }
+
+    /**
+     * Short description of method getNewActivityFromOldActivity
+     *
+     * @access protected
+     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+     * @param  Resource oldActivity
+     * @param  Resource oldReferenceActivity
+     * @param  string connectionType
+     * @param  Resource clonedConnector
+     * @return core_kernel_classes_Resource
+     */
+    protected function getNewActivityFromOldActivity( core_kernel_classes_Resource $oldActivity,  core_kernel_classes_Resource $oldReferenceActivity, $connectionType,  core_kernel_classes_Resource $clonedConnector)
+    {
+        $returnValue = null;
+
+        // section 10-13-1-39--56440278:12d4c05ae3c:-8000:0000000000005028 begin
 		$activity = $oldActivity;
-		$returnValue = null;
 		$activityIO = '';
 		switch($connectionType){
 			case 'next':
@@ -686,15 +936,125 @@ class wfEngine_models_classes_ProcessCloner
 				}
 			}
 		}
+        // section 10-13-1-39--56440278:12d4c05ae3c:-8000:0000000000005028 end
+
+        return $returnValue;
+    }
+
+    /**
+     * Short description of method initCloningVariables
+     *
+     * @access public
+     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+     * @return mixed
+     */
+    public function initCloningVariables()
+    {
+        // section 10-13-1-39--56440278:12d4c05ae3c:-8000:000000000000714F begin
+		$this->currentActivity = null;
+		$this->clonedProcess = null;
+		$this->clonedActivities = array();
+		$this->clonedConnectors = array();
+		$this->waitingConnectors = array();
+        // section 10-13-1-39--56440278:12d4c05ae3c:-8000:000000000000714F end
+    }
+
+    /**
+     * Short description of method revertCloning
+     *
+     * @access public
+     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+     * @return mixed
+     */
+    public function revertCloning()
+    {
+        // section 10-13-1-39--56440278:12d4c05ae3c:-8000:0000000000007151 begin
+		if(!is_null($this->clonedProcess) && $this->clonedProcess instanceof core_kernel_classes_Resource){
+			$this->authoringService->deleteProcess($this->clonedProcess);
+		}
 		
-		return $returnValue;
-	}
-	
-	protected function updateWaitingConnector(core_kernel_classes_Resource $expectedConnector, core_kernel_classes_Resource $expectedConnectorClone){
+		foreach($this->getClonedActivities() as $activity){
+			$this->authoringService->deleteActivity($activity);
+		}
 		
+		$this->initCloningVariables();
+        // section 10-13-1-39--56440278:12d4c05ae3c:-8000:0000000000007151 end
+    }
+
+    /**
+     * Short description of method setCloneLabel
+     *
+     * @access public
+     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+     * @param  string cloneLabel
+     */
+    public function setCloneLabel($cloneLabel = '')
+    {
+        // section 10-13-1-39--56440278:12d4c05ae3c:-8000:0000000000007153 begin
+		$this->cloneLabel = $cloneLabel;
+        // section 10-13-1-39--56440278:12d4c05ae3c:-8000:0000000000007153 end
+    }
+
+    /**
+     * Short description of method setDebugClonedActivities
+     *
+     * @access public
+     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+     * @param  Resource activity
+     * @return mixed
+     */
+    public function setDebugClonedActivities( core_kernel_classes_Resource $activity)
+    {
+        // section 10-13-1-39--56440278:12d4c05ae3c:-8000:000000000000715A begin
+		if(!is_null($activity))
+			$this->debugClonedActivities[$activity->uriResource] = $activity->getLabel();
+        // section 10-13-1-39--56440278:12d4c05ae3c:-8000:000000000000715A end
+    }
+
+    /**
+     * Short description of method setWaitingConnector
+     *
+     * @access protected
+     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+     * @param  Resource waitingOldConnectorToBeCloned
+     * @param  string connectionType
+     * @param  Resource clonedConnectorToUpdate
+     * @return mixed
+     */
+    protected function setWaitingConnector( core_kernel_classes_Resource $waitingOldConnectorToBeCloned, $connectionType,  core_kernel_classes_Resource $clonedConnectorToUpdate)
+    {
+        // section 10-13-1-39--56440278:12d4c05ae3c:-8000:000000000000715D begin
 		
+		$authorizedConnectionTypes = array('prev', 'next', 'then', 'else');
 		
-		$returnValue = false;
+		if(!in_array($connectionType, $authorizedConnectionTypes)){
+			throw new Exception("unavailable connection type");
+		}
+		if(!isset($this->waitingConnectors[$waitingOldConnectorToBeCloned->uriResource])){
+			foreach($authorizedConnectionTypes as $authorizedConnectionType){
+				$this->waitingConnectors[$waitingOldConnectorToBeCloned->uriResource][$authorizedConnectionType] = array();
+			}
+			
+		}
+		$this->waitingConnectors[$waitingOldConnectorToBeCloned->uriResource][$connectionType][] = $clonedConnectorToUpdate;
+		
+        // section 10-13-1-39--56440278:12d4c05ae3c:-8000:000000000000715D end
+    }
+
+    /**
+     * Short description of method updateWaitingConnector
+     *
+     * @access protected
+     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+     * @param  Resource expectedConnector
+     * @param  Resource expectedConnectorClone
+     * @return boolean
+     */
+    protected function updateWaitingConnector( core_kernel_classes_Resource $expectedConnector,  core_kernel_classes_Resource $expectedConnectorClone)
+    {
+        $returnValue = (bool) false;
+
+        // section 10-13-1-39--56440278:12d4c05ae3c:-8000:0000000000007162 begin
 		
 		//check if it is in the waiting expectedConnector list:
 		$activityPropertiesMap = array(
@@ -744,59 +1104,11 @@ class wfEngine_models_classes_ProcessCloner
 			
 		}
 		
-		return $returnValue;
-	}
-	
-	protected function setWaitingConnector($waitingOldConnectorToBeCloned, $connectionType, $clonedConnectorToUpdate){
-		$authorizedConnectionTypes = array('prev', 'next', 'then', 'else');
-		
-		if(!in_array($connectionType, $authorizedConnectionTypes)){
-			throw new Exception("unavailable connection type");
-		}
-		if(!isset($this->waitingConnectors[$waitingOldConnectorToBeCloned->uriResource])){
-			foreach($authorizedConnectionTypes as $authorizedConnectionType){
-				$this->waitingConnectors[$waitingOldConnectorToBeCloned->uriResource][$authorizedConnectionType] = array();
-			}
-			
-		}
-		$this->waitingConnectors[$waitingOldConnectorToBeCloned->uriResource][$connectionType][] = $clonedConnectorToUpdate;
-	}
-	
-	protected function cloneWfResource(core_kernel_classes_Resource $instance,  core_kernel_classes_Class $clazz, $forbiddenProperties = array(), $newLabel='')
-    {
-        $returnValue = null;
-        
-   		$returnValue = $this->createInstance($clazz);
-		if(!is_null($returnValue)){
-			foreach($clazz->getProperties(true) as $property){
-				if(!in_array($property->uriResource, $forbiddenProperties)){
-					$returnValue->editPropertyValues($property, $instance->getPropertyValues($property));
-				}
-			}
-			// $label = $instance->getLabel();
-			$cloneLabel = empty($newLabel)? $instance->getLabel().$this->cloneLabel:$newLabel;
-			
-			$returnValue->setLabel($cloneLabel);
-			
-		}
+        // section 10-13-1-39--56440278:12d4c05ae3c:-8000:0000000000007162 end
 
-        return $returnValue;
+        return (bool) $returnValue;
     }
-	
-	public function revertCloning(){
-		
-		if(!is_null($this->clonedProcess) && $this->clonedProcess instanceof core_kernel_classes_Resource){
-			$this->authoringService->deleteProcess($this->clonedProcess);
-		}
-		
-		
-		foreach($this->getClonedActivities() as $activity){
-			$this->authoringService->deleteActivity($activity);
-		}
-		
-		$this->initCloningVariables();
-	}
-	
-} /* end of class wfEngine_models_classes_ProcessAuthoringService */
+
+} /* end of class wfEngine_models_classes_ProcessCloner */
 
 ?>
