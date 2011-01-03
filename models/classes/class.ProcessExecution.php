@@ -468,7 +468,7 @@ extends WfResource
 				$activityResourceArray = array();
 				$prevActivitesCollection = $connector->getPreviousActivities();
 				foreach ($prevActivitesCollection->getIterator() as $activityResource){
-					if(wfEngine_models_classes_ProcessAuthoringService::isActivity($activityResource)){
+					if(wfEngine_helpers_ProcessUtil::isActivity($activityResource)){
 						if(!isset($activityResourceArray[$activityResource->uriResource])){
 							$activityResourceArray[$activityResource->uriResource] = 1;
 						}else{

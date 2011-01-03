@@ -772,7 +772,7 @@ extends tao_models_classes_GenerisService
                     $activityResourceArray = array();
                     $tokens = array();
                     foreach ($previousActivities->getIterator() as $activityResource){
-                        if(wfEngine_models_classes_ProcessAuthoringService::isActivity($activityResource)){
+                        if(wfEngine_helpers_ProcessUtil::isActivity($activityResource)){
                             if(!isset($activityResourceArray[$activityResource->uriResource])){
                                 $activityResourceArray[$activityResource->uriResource] = 1;
                             }else{

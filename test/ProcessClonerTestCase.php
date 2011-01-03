@@ -35,6 +35,7 @@ class ProcessClonerTestCase extends UnitTestCase {
 		$this->processCloner = $processCloner;
 	}
 	
+	
 	public function testCloneActivity(){
 		$this->processCloner->initCloningVariables();
 		
@@ -88,7 +89,7 @@ class ProcessClonerTestCase extends UnitTestCase {
 		$this->authoringService->deleteActivity($activity2Clone);
 		// $this->authoringService->deleteConnector($connector1Clone);
 	}
-	
+
 	public function testCloneSequentialProcess(){
 		$this->processCloner->initCloningVariables();
 		
@@ -153,8 +154,8 @@ class ProcessClonerTestCase extends UnitTestCase {
 		// $else1 = $this->authoringService->createSplitActivity($connector1, 'else');
 		
 		$this->assertEqual($connector1->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_TYPE))->uriResource, INSTANCE_TYPEOFCONNECTORS_SPLIT);
-		$this->assertTrue(wfEngine_models_classes_ProcessAuthoringService::isActivity($then1));
-		$this->assertTrue(wfEngine_models_classes_ProcessAuthoringService::isConnector($else1));
+		$this->assertTrue(wfEngine_helpers_ProcessUtil::isActivity($then1));
+		$this->assertTrue(wfEngine_helpers_ProcessUtil::isConnector($else1));
 		
 		$transitionRule = $connector1->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_TRANSITIONRULE));
 		$this->assertEqual($then1->uriResource, $transitionRule->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_TRANSITIONRULES_THEN))->uriResource);
@@ -170,8 +171,10 @@ class ProcessClonerTestCase extends UnitTestCase {
 		$this->assertEqual($then2->uriResource, $connector2->uriResource);
 		$this->assertEqual($else2->uriResource, $lastActivity->uriResource);
 		
+		
 		//clone the process now!
 		$processClone = $this->processCloner->cloneProcess($this->proc);
+		
 		
 		$this->assertIsA($processClone, 'core_kernel_classes_Resource');
 		$this->assertEqual(count($this->processCloner->getClonedActivities()), 3);
@@ -203,8 +206,8 @@ class ProcessClonerTestCase extends UnitTestCase {
 		// $else1 = $this->authoringService->createSplitActivity($connector1, 'else');
 		
 		$this->assertEqual($connector1->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_TYPE))->uriResource, INSTANCE_TYPEOFCONNECTORS_SPLIT);
-		$this->assertTrue(wfEngine_models_classes_ProcessAuthoringService::isActivity($then1));
-		$this->assertTrue(wfEngine_models_classes_ProcessAuthoringService::isConnector($else1));
+		$this->assertTrue(wfEngine_helpers_ProcessUtil::isActivity($then1));
+		$this->assertTrue(wfEngine_helpers_ProcessUtil::isConnector($else1));
 		
 		$transitionRule = $connector1->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_TRANSITIONRULE));
 		$this->assertEqual($then1->uriResource, $transitionRule->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_TRANSITIONRULES_THEN))->uriResource);
@@ -235,7 +238,7 @@ class ProcessClonerTestCase extends UnitTestCase {
 		
 		$this->processCloner->revertCloning();
 	}
-
+	/**/
 	
 	public function tearDown() {
        $this->authoringService->deleteProcess($this->proc);

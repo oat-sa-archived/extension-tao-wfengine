@@ -377,7 +377,7 @@ class wfEngine_models_classes_ProcessCloner
 	public function cloneActivity(core_kernel_classes_Resource $activity){
 		$returnValue = null;
 		
-		if(wfEngine_models_classes_ProcessAuthoringService::isActivity($activity)){
+		if(wfEngine_helpers_ProcessUtil::isActivity($activity)){
 			$activityClone = $this->cloneWfResource(
 				$activity, 
 				new core_kernel_classes_Class(CLASS_ACTIVITIES),
@@ -444,7 +444,7 @@ class wfEngine_models_classes_ProcessCloner
 	public function cloneConnector(core_kernel_classes_Resource $connector){
 		$returnValue = null;
 	
-		if(wfEngine_models_classes_ProcessAuthoringService::isConnector($connector)){
+		if(wfEngine_helpers_ProcessUtil::isConnector($connector)){
 			$connectorClone = $this->cloneWfResource(
 				$connector, 
 				new core_kernel_classes_Class(CLASS_CONNECTORS),
@@ -643,7 +643,7 @@ class wfEngine_models_classes_ProcessCloner
 		//note: most of the time, $this->clonedActivities[$activity->uriResource]['in'] = $this->clonedActivities[$activity->uriResource]['out']
 		
 		if(!is_null($activity) && !is_null($oldReferenceActivity)){
-			if(wfEngine_models_classes_ProcessAuthoringService::isActivity($activity)){
+			if(wfEngine_helpers_ProcessUtil::isActivity($activity)){
 				$newActivity = $this->getClonedActivity($activity, $activityIO);
 				if(!is_null($newActivity)){
 					$returnValue = $newActivity;
@@ -653,7 +653,7 @@ class wfEngine_models_classes_ProcessCloner
 					// print_r($this->clonedActivities);
 					throw new Exception("the previous activity has not been cloned! {$activity->getLabel()}({$activity->uriResource})");
 				}
-			}else if(wfEngine_models_classes_ProcessAuthoringService::isConnector($activity)){
+			}else if(wfEngine_helpers_ProcessUtil::isConnector($activity)){
 				$newConnector = $this->getClonedConnector($activity);
 				if(!is_null($newConnector)){
 					//it is a reference to a connector with another activity reference and it has been cloned already

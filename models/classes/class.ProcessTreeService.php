@@ -148,7 +148,7 @@ class wfEngine_models_classes_ProcessTreeService
 												
 					}elseif(strtolower($connectorType->getLabel()) == "sequence"){
 						$prev = $connector->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_PRECACTIVITIES));
-						if(!wfEngine_models_classes_ProcessAuthoringService::isActivity($prev)){
+						if(!wfEngine_helpers_ProcessUtil::isActivity($prev)){
 							throw new Exception("the previous activity of a sequence connector {$connector->uriResource} must be an activity {$prev->uriResource}");
 						}
 						$connectorData[] = $this->activityNode($prev, 'next', true);
@@ -401,7 +401,7 @@ class wfEngine_models_classes_ProcessTreeService
 						'label' => 'then',
 						'multiplicity' => 1
 					);
-					if(wfEngine_models_classes_ProcessAuthoringService::isConnector($then)){
+					if(wfEngine_helpers_ProcessUtil::isConnector($then)){
 						$connectorActivityReference = $then->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_ACTIVITYREFERENCE))->uriResource;
 						if( ($connectorActivityReference == $this->currentActivity->uriResource) && !in_array($then->uriResource, $this->addedConnectors) ){
 							if($recursive){
@@ -425,7 +425,7 @@ class wfEngine_models_classes_ProcessTreeService
 						'label' => 'else',
 						'multiplicity' => 1
 					);
-					if(wfEngine_models_classes_ProcessAuthoringService::isConnector($else)){
+					if(wfEngine_helpers_ProcessUtil::isConnector($else)){
 						$connectorActivityReference = $else->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_ACTIVITYREFERENCE))->uriResource;
 						if( ($connectorActivityReference == $this->currentActivity->uriResource) && !in_array($else->uriResource, $this->addedConnectors) ){
 							if($recursive){
@@ -645,9 +645,9 @@ class wfEngine_models_classes_ProcessTreeService
 		$class = '';
 		$linkAttribute = 'id';
 		
-		if(wfEngine_models_classes_ProcessAuthoringService::isActivity($activity)){
+		if(wfEngine_helpers_ProcessUtil::isActivity($activity)){
 			$class = 'node-activity';
-		}elseif(wfEngine_models_classes_ProcessAuthoringService::isConnector($activity)){
+		}elseif(wfEngine_helpers_ProcessUtil::isConnector($activity)){
 			$class = 'node-connector';
 		}else{
 			return $nodeData;//unknown type

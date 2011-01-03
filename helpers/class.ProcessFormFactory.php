@@ -1035,11 +1035,11 @@ class wfEngine_helpers_ProcessFormFactory extends tao_helpers_form_GenerisFormFa
 				
 				
 			}elseif($nextActivity instanceof core_kernel_classes_Resource){
-				if(wfEngine_models_classes_ProcessAuthoringService::isActivity($nextActivity)){
+				if(wfEngine_helpers_ProcessUtil::isActivity($nextActivity)){
 					if($includeConnectors) $elementChoice->setValue("activity");
 					$elementActivities->setValue($nextActivity->uriResource);//no need for tao_helpers_Uri::encode
 				}
-				if(wfEngine_models_classes_ProcessAuthoringService::isConnector($nextActivity) && $includeConnectors){
+				if(wfEngine_helpers_ProcessUtil::isConnector($nextActivity) && $includeConnectors){
 					$elementChoice->setValue("connector");
 					$elementConnectors->setValue($nextActivity->uriResource);
 				}

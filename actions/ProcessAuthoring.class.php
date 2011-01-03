@@ -1040,7 +1040,7 @@ class ProcessAuthoring extends TaoModule {
 						}
 					}else{
 						$followingActivity = new core_kernel_classes_Resource($data["next_activityUri"]);
-						if(wfEngine_models_classes_ProcessAuthoringService::isActivity($followingActivity)){
+						if(wfEngine_helpers_ProcessUtil::isActivity($followingActivity)){
 							$this->service->createSequenceActivity($connectorInstance, $followingActivity);
 						}else{
 							throw new Exception("the uri is not an activity's one");
@@ -1503,8 +1503,8 @@ class ProcessAuthoring extends TaoModule {
 		$created = false;
 		if(!empty($activityOrConnectorUri)){
 			$activityOrConnector = new core_kernel_classes_Resource($activityOrConnectorUri);
-			if(!wfEngine_models_classes_ProcessAuthoringService::isActivity($activityOrConnector)
-			&& !wfEngine_models_classes_ProcessAuthoringService::isConnector($activityOrConnector)){
+			if(!wfEngine_helpers_ProcessUtil::isActivity($activityOrConnector)
+			&& !wfEngine_helpers_ProcessUtil::isConnector($activityOrConnector)){
 				
 				throw new Exception('no activity nor connector uri found to create a connector');
 			
@@ -1561,7 +1561,7 @@ class ProcessAuthoring extends TaoModule {
 						'uri' 	=> tao_helpers_Uri::encode($connector->uriResource),
 						'type' => $typeOfConnector,
 						'previousActivityUri' => tao_helpers_Uri::encode($activityOrConnector->uriResource),
-						'previousIsActivity' => wfEngine_models_classes_ProcessAuthoringService::isActivity($activityOrConnector)
+						'previousIsActivity' => wfEngine_helpers_ProcessUtil::isActivity($activityOrConnector)
 					));
 					return $created;
 				}

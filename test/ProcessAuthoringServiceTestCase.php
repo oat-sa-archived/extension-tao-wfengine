@@ -29,6 +29,7 @@ class ProcessAuthoringServiceTestCase extends UnitTestCase {
 	public function testService(){
 		
 		$authoringService = new wfEngine_models_classes_ProcessAuthoringService();
+		
 		$this->assertIsA($authoringService, 'tao_models_classes_Service');
 		$this->assertIsA($authoringService, 'wfEngine_models_classes_ProcessAuthoringService');
 
@@ -49,23 +50,23 @@ class ProcessAuthoringServiceTestCase extends UnitTestCase {
 	
 	public function testCreateActivity(){
 		
-			$activity1 = $this->authoringService->createActivity($this->proc);
-			$this->assertEqual($activity1->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_ACTIVITIES_ISINITIAL))->uriResource, GENERIS_TRUE);
-			$this->assertEqual($activity1->getLabel(), 'Activity_1');
-			$this->assertEqual($activity1->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_ACTIVITIES_ISHIDDEN))->uriResource, GENERIS_FALSE);
-			
-			$activity2 = $this->authoringService->createActivity($this->proc, 'myActivity');
-			$this->assertEqual($activity2->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_ACTIVITIES_ISINITIAL))->uriResource, GENERIS_FALSE);
-			
-			$activity1->delete();
-			$activity2->delete();
+		$activity1 = $this->authoringService->createActivity($this->proc);
+		$this->assertEqual($activity1->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_ACTIVITIES_ISINITIAL))->uriResource, GENERIS_TRUE);
+		$this->assertEqual($activity1->getLabel(), 'Activity_1');
+		$this->assertEqual($activity1->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_ACTIVITIES_ISHIDDEN))->uriResource, GENERIS_FALSE);
+		
+		$activity2 = $this->authoringService->createActivity($this->proc, 'myActivity');
+		$this->assertEqual($activity2->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_ACTIVITIES_ISINITIAL))->uriResource, GENERIS_FALSE);
+		
+		$activity1->delete();
+		$activity2->delete();
 		
 	}
 	
 	public function testIsActivity(){
 		$activity1 = $this->authoringService->createActivity($this->proc);
 		
-		$this->assertTrue(wfEngine_models_classes_ProcessAuthoringService::isActivity($activity1));
+		$this->assertTrue(wfEngine_helpers_ProcessUtil::isActivity($activity1));
 		
 		$activity1->delete();
 	}
@@ -73,8 +74,7 @@ class ProcessAuthoringServiceTestCase extends UnitTestCase {
 	public function testIsConnector(){
 		$activity1 = $this->authoringService->createActivity($this->proc, 'myActivity');
 		$connector1 = $this->authoringService->createConnector($activity1);
-		
-		$this->assertTrue(wfEngine_models_classes_ProcessAuthoringService::isConnector($connector1));
+		$this->assertTrue(wfEngine_helpers_ProcessUtil::isConnector($connector1));
 		
 		$activity1->delete();
 		$connector1->delete();
@@ -125,10 +125,11 @@ class ProcessAuthoringServiceTestCase extends UnitTestCase {
 		$this->assertTrue($isAssignment);
 		
 	}
-
+	
 	public function testCreateSequenceActivity(){
 		$activity1 = $this->authoringService->createActivity($this->proc, 'myActivity');
 		$connector1 = $this->authoringService->createConnector($activity1);
+		
 		$followingActivity1 = $this->authoringService->createSequenceActivity($connector1);
 		$this->assertIsA($followingActivity1, 'core_kernel_classes_Resource');
 		$this->assertEqual($followingActivity1->getLabel(), 'Activity_2');
@@ -150,7 +151,7 @@ class ProcessAuthoringServiceTestCase extends UnitTestCase {
 		$followingActivity1->delete();
 		$followingConnector1->delete();
 	}
-		
+	
 	public function testCreateSplitActivity(){
 		$activity1 = $this->authoringService->createActivity($this->proc, 'myActivity');
 		$connector1 = $this->authoringService->createConnector($activity1);
@@ -158,8 +159,8 @@ class ProcessAuthoringServiceTestCase extends UnitTestCase {
 		$then = $this->authoringService->createSplitActivity($connector1, 'then');//create "Activity_2"
 		$else = $this->authoringService->createSplitActivity($connector1, 'else', null, '', true);//create another connector
 		$this->assertEqual($connector1->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_TYPE))->uriResource, INSTANCE_TYPEOFCONNECTORS_SPLIT);
-		$this->assertTrue(wfEngine_models_classes_ProcessAuthoringService::isActivity($then));
-		$this->assertTrue(wfEngine_models_classes_ProcessAuthoringService::isConnector($else));
+		$this->assertTrue(wfEngine_helpers_ProcessUtil::isActivity($then));
+		$this->assertTrue(wfEngine_helpers_ProcessUtil::isConnector($else));
 		
 		$transitionRule = $connector1->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_TRANSITIONRULE));
 		$this->assertEqual($then->uriResource, $transitionRule->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_TRANSITIONRULES_THEN))->uriResource);
