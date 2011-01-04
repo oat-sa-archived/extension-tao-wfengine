@@ -9,7 +9,7 @@ error_reporting(E_ALL);
  *
  * This file is part of TAO.
  *
- * Automatically generated on 03.01.2011, 17:38:06 with ArgoUML PHP module 
+ * Automatically generated on 04.01.2011, 11:16:39 with ArgoUML PHP module 
  * (last revised $Date: 2008-04-19 08:22:08 +0200 (Sat, 19 Apr 2008) $)
  *
  * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
@@ -139,8 +139,9 @@ class wfEngine_models_classes_ProcessCloner
      *
      * @access public
      * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+     * @param  string cloneLabel
      */
-    public function __construct($cloneLabel='')
+    public function __construct($cloneLabel = '')
     {
         // section 10-13-1-39--56440278:12d4c05ae3c:-8000:0000000000004FB5 begin
 		$this->cloneLabel = $cloneLabel;
@@ -157,10 +158,10 @@ class wfEngine_models_classes_ProcessCloner
      * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
      * @param  Resource newActivityIn
      * @param  Resource oldActivity
-     * @param  Resource newActivityOut
+     * @param  array newActivityOut
      * @return mixed
      */
-    public function addClonedActivity( core_kernel_classes_Resource $newActivityIn,  core_kernel_classes_Resource $oldActivity = null,  core_kernel_classes_Resource $newActivityOut = null)
+    public function addClonedActivity( core_kernel_classes_Resource $newActivityIn,  core_kernel_classes_Resource $oldActivity = null, $newActivityOut = null)
     {
         // section 10-13-1-39--56440278:12d4c05ae3c:-8000:0000000000004FCC begin
 		if(is_null($newActivityOut)) $newActivityOut = $newActivityIn;
