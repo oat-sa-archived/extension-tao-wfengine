@@ -129,7 +129,15 @@ class Activity
      * @var object
      */
     public $consistencyRule = null;
+	
+	public $inferenceRule = array();
 
+	public $onBeforeInferenceRule = array();
+
+	public $showCalendar = false;
+
+	public $isHidden = false;
+	
     // --- OPERATIONS ---
 
     /**
