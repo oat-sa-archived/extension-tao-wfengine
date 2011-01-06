@@ -53,8 +53,6 @@ class Main extends WfModule
 		}
 
 		$processViewData 	= array();
-		$uiLanguages		= I18nUtil::getAvailableLanguages();
-		$this->setData('uiLanguages',$uiLanguages);
 		foreach ($processes as $proc){
 	
 			$type 	= $proc->process->label;
@@ -71,9 +69,6 @@ class Main extends WfModule
 			{
 				$activity = $currentActivity;
 				
-//				if(!is_null($activity->resource->getOnePropertyValue($activityIsInitialProp))){
-//					$activityExecutionService->initExecution($activity->resource, $currentUser);
-//				}
 				
 				$isAllowed = $activityExecutionService->checkAcl($activity->resource, $currentUser, $proc->resource);
 				$isFinished = false;
@@ -122,24 +117,6 @@ class Main extends WfModule
 		$this->setView('main.tpl');
 	
 	}
-	
-	public function test(){
-		
-		if(!DEBUG_MODE){
-			echo "debug mode deactiviated!";
-			return;
-		}
-		
-		if(Session::hasAttribute('activityExecutionUri')){
-			$activityExe = new core_kernel_classes_Resource(Session::getAttribute('activityExecutionUri'));
-			$activity = $activityExe->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_ACTIVITY));
-			echo "Activity :" . $activity->getLabel() ."<br>";
-		}
-		print "<pre>";
-		
-		print_r(wfEngine_models_classes_VariableService::getAll());
-		
-		print "</pre>";
-	}
+
 }
 ?>

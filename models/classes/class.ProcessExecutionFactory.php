@@ -48,9 +48,6 @@ class ProcessExecutionFactory {
 		foreach ($initialActivities as $activity)
 		{
 			
-			//add token
-			/*$pInstanceTokenProp = new core_kernel_classes_Property(PROPERTY_PINSTANCES_TOKEN,__METHOD__);
-			$subjectResource->setPropertyValue($pInstanceTokenProp,$activity->uri);*/
 		
 			// Add in path
 			$pInstanceProcessProp = new core_kernel_classes_Property(PROPERTY_PINSTANCES_PROCESSPATH,__METHOD__);
@@ -59,17 +56,7 @@ class ProcessExecutionFactory {
 			$token = $tokenService->create($activity->resource);
 			$tokens[] = $token;
 					
-			// OnBefore initial activity.
-			// If the initial Activity has inference rules on before... let's run them !
-			
 			$activity->feedFlow(0);
-			if (count($activity->onBeforeInferenceRule))
-			{
-				foreach ($activity->onBeforeInferenceRule as $onbir)
-				{
-					$onbir->execute($processVars);
-				}
-			}
 		}
 		
 		//foreach first tokens, assign the user input prop values:
@@ -105,18 +92,6 @@ class ProcessExecutionFactory {
 		// Feed newly created process.
 		$returnValue->feed();
 		
-		
-/*
-		// If the inital activity is "hidden", let's run it.
-		if (!empty($returnValue->currentActivity)){
-			if ($returnValue->currentActivity[0]->isHidden)
-			{
-				$returnValue->performTransition();
-			}
-		}
-
-*/
-
 		return $returnValue;
 	}
 }

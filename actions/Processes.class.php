@@ -8,21 +8,15 @@ class Processes extends WfModule
 
 			$processDefinitionUri = urldecode($processDefinitionUri);
 				
-			$wfEngine 			= $_SESSION["WfEngine"];
 			$userViewData 		= UsersHelper::buildCurrentUserForView();
 			$this->setData('userViewData',$userViewData);
-			$process 			= new Process(urldecode($processDefinitionUri));
-
+			$process 			= new wfEngine_models_classes_Process(urldecode($processDefinitionUri));
 		
 			$processAuthoringData 	= array();
 			$processAuthoringData['processUri'] 	= $processDefinitionUri;
 			$processAuthoringData['processLabel']	= "Process' variables initialization";
 			$processAuthoringData['variables']		= array();
 				
-			$uiLanguages		= I18nUtil::getAvailableLanguages();
-					
-			$this->setData('uiLanguages',$uiLanguages);
-			
 			// Process variables retrieving.
 			$variables = $process->getProcessVars();
 
@@ -38,7 +32,7 @@ class Processes extends WfModule
 			}
 
 			$this->setData('processAuthoringData',$processAuthoringData);
-			$this->setView('process_authoring_old.tpl');
+			$this->setView('process_authoring.tpl');
 	}
 
 	public function add($posted)
@@ -75,25 +69,6 @@ class Processes extends WfModule
 			$viewState = _url('index', 'processBrowser', null, array('processUri' => $processUri));
 			$this->redirect($viewState);
 
-}
-
-protected static function compareCaseFile($a, $b)
-{
-	$a = $a['id'];
-	$b = $b['id'];
-
-	if ($a > $b)
-	{
-		return 1;
 	}
-	else if ($a == $b)
-	{
-		return 0;
-	}
-	else
-	{
-		return -1;
-	}
-}
 }
 ?>

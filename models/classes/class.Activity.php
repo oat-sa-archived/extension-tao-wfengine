@@ -100,75 +100,11 @@ class Activity
      */
     public $nextConnectors = array();
 
-    /**
-     * Short description of attribute actors
-     *
-     * @access public
-     * @var array
-     */
-    public $actors = array();
 
-    /**
-     * Short description of attribute acceptedRole
-     *
-     * @access public
-     * @var WfRole
-     */
-    public $acceptedRole = null;
-
-    /**
-     * Short description of attribute consistencyRule
-     *
-     * @access public
-     * @var object
-     */
-    public $consistencyRule = null;
-	
-	public $inferenceRule = array();
-
-	public $onBeforeInferenceRule = array();
-
-	public $showCalendar = false;
 
 	public $isHidden = false;
 	
     // --- OPERATIONS ---
-
-    /**
-     * Short description of method getActors
-     *
-     * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
-     * @return array
-     */
-    public function getActors()
-    {
-        $returnValue = array();
-
-        // section 10-13-1--31-740bb989:119ebfa9b28:-8000:0000000000000850 begin
-
-
-		$activityRoleProp = new core_kernel_classes_Property(ACTIVITY_ROLE);
-		$activityroles = $this->resource->getPropertyValuesCollection($activityRoleProp);
-		foreach ($activityroles->getIterator() as $role)
-		{
-			$roleLabel = '';
-			$roleUri = '';
-			if($role instanceof core_kernel_classes_Resource){
-				$roleLabel = $role->getLabel();
-				$roleUri = $role->uriResource;
-			}
-			if($role instanceof core_kernel_classes_Literal){
-				$roleLabel = $role->literal;
-				
-			}
-			$returnValue[]=array($roleUri,trim(strip_tags($roleLabel)));
-		}
-		$this->actors = $returnValue;
-        // section 10-13-1--31-740bb989:119ebfa9b28:-8000:0000000000000850 end
-
-        return (array) $returnValue;
-    }
 
     /**
      * feeds connector attribute and recursively through the complete definiton
@@ -199,38 +135,6 @@ class Activity
 			}
 				
 		}
-		
-		// We get the associated consistency rule.
-		// Please be carefull that an activity wihtout any transition rule is absolutely valid.
-		$consistencyRulesActivitiesProp = new core_kernel_classes_Property(PROPERTY_ACTIVITIES_CONSISTENCYRULE);
-		$consistencyRules = $this->resource->getPropertyValues($consistencyRulesActivitiesProp);
-
-
-		if (count($consistencyRules) && $consistencyRules[0] != false) {
-			$this->consistencyRule = new ConsistencyRule($consistencyRules[0]);
-		}
-			
-		
-		// We get the associated onAfterInferenceRule.
-			
-		$infRulesProp = new core_kernel_classes_Property(PROPERTY_ACTIVITIES_INFERENCERULE);
-		$inferenceRules = $this->resource->getPropertyValues($infRulesProp);
-
-		if (count($inferenceRules))
-		{
-			foreach ($inferenceRules as $inf)
-			$this->inferenceRule[] = new InferenceRule($inf);
-		}
-
-		// We get the associated onBeforeInferenceRule.
-		$infRulesOnBeforeProp = new core_kernel_classes_Property(PROPERTY_ACTIVITIES_ONBEFOREINFERENCERULE);
-		$inferenceRules = $this->resource->getPropertyValues($infRulesOnBeforeProp);
-
-		if (count($inferenceRules))
-		{
-			foreach ($inferenceRules as $inf)
-			$this->onBeforeInferenceRule[] = new InferenceRule($inf);
-		}
 
         // section -64--88-1-64--7117f567:11a0527df60:-8000:00000000000008F4 end
     }
@@ -258,7 +162,6 @@ class Activity
 			{
 				foreach ($interactiveServices as $interactiveService)
 				{
-						
 					$interactiveServicesDescription[] = new Service($interactiveService,$execution);
 				}
 			}

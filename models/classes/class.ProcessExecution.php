@@ -1,6 +1,6 @@
 <?php
 
-error_reporting(E_ALL);
+error_reporting(-1);
 
 /**
  * WorkFlowEngine - class.ProcessExecution.php
@@ -154,7 +154,6 @@ extends WfResource
 				if ((sizeOf($values) > 0) && (trim(strip_tags($values[0])) != ""))
 				{
 					$actualValue = trim($values[0]);
-					
 				}
 			}
 			
@@ -175,7 +174,7 @@ extends WfResource
 	 * @author firstname and lastname of author, <author@example.org>
 	 * @return void
 	 */
-	public function performTransition($activityExecutionUri, $ignoreConsistency = false){
+	public function performTransition($activityExecutionUri){
 	
 		
 			
@@ -211,47 +210,6 @@ extends WfResource
 		
 		$activityBeforeTransition->feedFlow(1);
 
-		// ONAFTER INFERENCE RULE
-		// If we are here, no consistency error was thrown. Thus, we can infer something if needed.
-		foreach ($activityBeforeTransition->inferenceRule as $rule){
-			$rule->execute($arrayOfProcessVars);
-		}
-		
-		// -- ONAFTER CONSISTENCY CHECKING
-		// First of all, we check if the consistency rule is respected.
-		if (!$ignoreConsistency && $activityBeforeTransition->consistencyRule){
-			$consistencyRule 		= $activityBeforeTransition->consistencyRule;
-			$consistencyCheckResult = $consistencyRule->getExpression()->evaluate($arrayOfProcessVars);
-			$activityToGoBack		= null;
-
-			if ($consistencyCheckResult){
-				// Were do we jump back ?
-				if ($activityBeforeTransition->isHidden){
-					$activityToGoBack = Utils::getLastViewableActivityFromPath($this->path->activityStack,
-					$activityBeforeTransition->uri);
-				}
-				else{
-					$activityToGoBack = $activityBeforeTransition;
-				}
-
-				//the consistency notification is updated with the actual values of variables
-				$activeLiteral = new core_kernel_classes_ActiveLiteral($consistencyRule->notification);
-				$consistencyRule->notification = $activeLiteral->getDisplayedText($arrayOfProcessVars);
-
-				// If the consistency result is negative, we throw a ConsistencyException.
-				$consistencyException = new ConsistencyException('The consistency test was negative',
-																$activityBeforeTransition,
-																$consistencyRule->involvedActivities,
-																$consistencyRule->notification,
-																$consistencyRule->suppressable);
-
-				// The current token must be the activity we are jumping back 		
-				$tokenService->setCurrentActivities($this->resource, array($activityToGoBack->resource), $currentUser);
-				
-				throw $consistencyException;
-			}
-		}
-		
 		//set the activity execution of the current user as finished:
 		if(!is_null($activityExecutionResource)){
 			$activityExecutionResource->editPropertyValues(new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_IS_FINISHED), GENERIS_TRUE);
@@ -299,12 +257,12 @@ extends WfResource
 		foreach($tokenService->getCurrentActivities($this->resource) as $currentActivity){
 			
 			$newActivity = new Activity($currentActivity->uriResource);
+			
 			$this->path->invalidate($activityBeforeTransition, ($this->path->contains($newActivity) ? $newActivity : null));
 			// We insert in the ontology the last activity in the path stack.
 			$this->path->insertActivity($newActivity);
 			
 			$this->currentActivity[] = $newActivity;
-			
 		}
 		
 		//if the connector is not a parallel one, let the user continue in his current branch and prevent the pause:
@@ -361,27 +319,14 @@ extends WfResource
 			
 			$activityAfterTransition->feedFlow(1);
 
-			
-			// ONBEFORE INFERENCE RULE
-			// If we are here, no consistency error was thrown. Thus, we can infer something if needed.
-			foreach ($activityAfterTransition->onBeforeInferenceRule as $rule)
-			{
-				$rule->execute($arrayOfProcessVars);
-			}
-		
 
 			// Last but not least ... is the next activity a machine activity ?
 			// if yes, we perform the transition.
+			/*
+			 * @todo to be tested
+			 */
 			if ($activityAfterTransition->isHidden){
 				//required to create an activity execution here with:
-				
-				//get the process exectuion uri from the session
-				// $processUri = Session::getAttribute("processUri", $processUri);
-				// $processUri 		= urldecode($processUri);
-				// $processExecutionResource = new core_kernel_classes_Resource($processUri);
-				// if(!wfEngine_helpers_ProcessUtil::checkType($processExecutionResource, new core_kernel_classes_Class(CLASS_PROCESS_EXECUTIONS))){
-					// throw new Exception('No process execution found');
-				// }
 				
 				$currentUser = $userService->getCurrentUser();
 				if(is_null($currentUser)){
@@ -395,13 +340,9 @@ extends WfResource
 				
 				$activityExecutionResource = $activityExecutionService->initExecution($activityAfterTransition->resource, $currentUser, $this->resource);
 				if(!is_null($activityExecutionResource)){
-					$this->performTransition($activityExecutionResource->uriResource, $ignoreConsistency);
+					$this->performTransition($activityExecutionResource->uriResource);
 				}else{
-					var_dump($_SESSION);
-					var_dump('$activityExecutionResource hidden params:');
-					// var_dump($activityExecutionResource);
-					var_dump($activityAfterTransition->resource, $currentUser, $processExecutionResource);
-					throw new Exception('the activit execution cannot be create for the hidden actiivty');
+					throw new WfException('the activit execution cannot be create for the hidden activity');
 				}
 				
 				
@@ -470,7 +411,6 @@ extends WfResource
 					}
 				}
 				
-				// var_dump($activityResourceArray);
 				$debug = array();
 				
 				foreach($activityResourceArray as $activityDefinition=>$count){
@@ -516,15 +456,7 @@ extends WfResource
 						$completed = false;
 						break;
 					}
-					
-					//for debug only:
-					// $activityResourceArray[$activityDefinition] = $activityExecutionCollection->count();
-					
-					// echo '$activityExecutionCollection of '.$activityDefinition; var_dump($activityExecutionCollection);
-											
 				}
-				
-				// var_dump($activityResourceArray,$debug, $completed);die();
 				
 				if($completed){
 					$newActivities = array();
@@ -537,8 +469,6 @@ extends WfResource
 					//pause, do not allow transition so return boolean false
 					return false;
 				}
-				//var_dump($nextActivitesCollection, $newActivities);
-				// die();
 				
 				break;
 			}
@@ -550,7 +480,6 @@ extends WfResource
 					
 					if(wfEngine_helpers_ProcessUtil::isActivity($val)){
 						$activity = new Activity($val->uriResource);
-						$activity->getActors();
 						$newActivities[]= $activity;
 					}else if(wfEngine_helpers_ProcessUtil::isConnector($val)){
 						$newActivities = $this->getNewActivities($arrayOfProcessVars, $val->uriResource);
@@ -585,7 +514,7 @@ extends WfResource
 
 		if ($evaluationResult)	{
 
-			// Prochaines activit�s = THEN
+			// next activities = THEN
 			
 			if ($transitionRule->thenActivity instanceof Activity)
 			{
@@ -600,7 +529,7 @@ extends WfResource
 		}
 		else
 		{
-			// Prochaines activit�s = ELSE
+			// next activities = ELSE
 			if ($transitionRule->elseActivity instanceof Activity)
 			{
 				$newActivities[] = $transitionRule->elseActivity;
@@ -615,19 +544,6 @@ extends WfResource
 		return $newActivities;
 	}
 
-	/**
-	 * Short description of method warnNextRole
-	 *
-	 * @access private
-	 * @author firstname and lastname of author, <author@example.org>
-	 * @param Activity
-	 * @return void
-	 */
-	private function warnNextRole( Activity $activity)
-	{
-		// section 10-13-1--31--4660acca:119ecd38e96:-8000:0000000000000869 begin
-		// section 10-13-1--31--4660acca:119ecd38e96:-8000:0000000000000869 end
-	}
 
 	/**
 	 * builds $this->currentactivities an array of activityExecution
@@ -649,7 +565,7 @@ extends WfResource
 		
 		foreach ($values as $a => $b)
 		{
-			$process 		= new Process($b);
+			$process 		= new wfEngine_models_classes_Process($b);
 			$this->process 	= $process;
 		}
 
@@ -688,18 +604,6 @@ extends WfResource
 		// section 10-13-1--31-7f1456d9:11a242e5517:-8000:0000000000000F26 end
 	}
 
-	/**
-	 * Short description of method back
-	 *
-	 * @access public
-	 * @author firstname and lastname of author, <author@example.org>
-	 * @return void
-	 */
-	public function back()
-	{
-		// section 10-13-1-85-746e873e:11bb0a6f076:-8000:00000000000009A3 begin
-		// section 10-13-1-85-746e873e:11bb0a6f076:-8000:00000000000009A3 end
-	}
 
 	/**
 	 * Short description of method pause
@@ -717,23 +621,8 @@ extends WfResource
 		$this->resource->editPropertyValues($statusProp,RESOURCE_PROCESSSTATUS_PAUSED);
 		$this->status = 'Paused';
 
-
 		// section 10-13-1-85-746e873e:11bb0a6f076:-8000:00000000000009A5 end
 	}
-
-	/**
-	 * Short description of method restart
-	 *
-	 * @access public
-	 * @author firstname and lastname of author, <author@example.org>
-	 * @return void
-	 */
-	public function restart()
-	{
-		// section 10-13-1-85-746e873e:11bb0a6f076:-8000:00000000000009A7 begin
-		// section 10-13-1-85-746e873e:11bb0a6f076:-8000:00000000000009A7 end
-	}
-
 
 
 
@@ -877,23 +766,6 @@ extends WfResource
 		}
 	}
 
-	/**
-	 * Short description of method getPreviousConnectors
-	 *
-	 * @access public
-	 * @author firstname and lastname of author, <author@example.org>
-	 * @return array
-	 */
-	public function getPreviousConnectors()
-	{
-		$returnValue = array();
-
-		// section 10-13-1-85-16731180:11be4127421:-8000:0000000000000A4F begin
-
-		// section 10-13-1-85-16731180:11be4127421:-8000:0000000000000A4F end
-
-		return (array) $returnValue;
-	}
 
 	/**
 	 * Short description of method finish
@@ -915,92 +787,8 @@ extends WfResource
 		$tokenService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_TokenService');
 		$tokenService->setCurrents($this->resource, array());
 		
-		//remove the activityExecutions
-		/*$activtyExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityExecutionService');
-		$activtyExecutionService->remove($this->resource);*/
-
-		// -- Exit code handling.
-		// I chain removeProp... and editProp... because of an editProp...
-		// malfunction.
-		
-
-//		$exitCodeProp = new core_kernel_classes_Property(PROPERTY_PROCESSINSTANCE_EXITCODE);
-//		$this->resource->setPropertyValue($exitCodeProp, RESOURCE_EXITCODE_ALL_COVERED);
-//
-//		// -- Action code handling.
-//		$actionCodeProp = new core_kernel_classes_Property(PROPERTY_PROCESSINSTANCE_ACTIONCODE);
-//		$this->resource->removePropertyValues($actionCodeProp);
-//		$this->resource->setPropertyValue($actionCodeProp,'');
-
 
 		// section 10-13-1-85-19c5934a:11cae6d4e92:-8000:0000000000000A28 end
-	}
-
-	/**
-	 * Short description of method remove
-	 *
-	 * @access public
-	 * @author firstname and lastname of author, <author@example.org>
-	 * @return void
-	 */
-	public function remove()
-	{
-		// section 10-13-1-85-19c5934a:11cae6d4e92:-8000:0000000000000A2A begin
-
-		// -- Will flush the Path and its PathItems in the KM if needed.
-		// After that we simply kill the current process :D !
-		$this->path->remove();
-		parent::remove();
-
-		// We log the "CASE DESTROYED" event in the log file.
-		if (defined('PIAAC_ENABLED'))
-		{
-			$event = new PiaacEvent('BQ_ENGINE', 'Removing process',
-									'process_removed', getIntervieweeUriByProcessExecutionUri($this->uri));
-			PiaacEventLogger::getInstance()->trigEvent();
-		}
-		// section 10-13-1-85-19c5934a:11cae6d4e92:-8000:0000000000000A2A end
-	}
-
-
-
-
-	/**
-	 * @param $activity
-	 * @param $testing
-	 * @return unknown_type
-	 */
-	public function jumpBack(Activity $activity, $testing="")
-	{
-		$beforeActivityLabel = $this->currentActivity[0]->label;
-		$beforeActivity = $this->currentActivity[0];
-		
-		// Current token is now the activity to jump back.
-		$tokenService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_TokenService');
-		$userService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_UserService');
-			
-		$tokenService->setCurrentActivities($this->resource, array($activity->resource), $userService->getCurrentUser());
-		
-		$this->path->invalidate($beforeActivity,
-		($this->path->contains($activity) ? $activity : null));
-
-		// We insert in the ontology the last activity in the path stack.
-		$this->path->insertActivity($activity);
-		$this->currentActivity[] = new Activity($activity->uri);
-
-
-
-		// We log the "MOVE_JUMP" in the log file.
-		if (defined('PIAAC_ENABLED'))
-		{
-			$event = new PiaacBusinessEvent('BQ_ENGINE', 'MOVE_JUMP',
-											'The interviewer jumped to a previous question', 
-			getIntervieweeUriByProcessExecutionUri($this->uri),
-			$beforeActivityLabel,
-			$this->currentActivity[0]->label);
-
-			PiaacEventLogger::getInstance()->trigEvent($event);
-		}
 	}
 
 	/**
@@ -1017,11 +805,6 @@ extends WfResource
 		$tokenService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_TokenService');
 		foreach($tokenService->getCurrentActivities($this->resource) as $activity)
 		{
-			//$activity					= new Activity($activity->uriResource);
-			// $activityExecution		= new ActivityExecution($this,$activityExec);
-			// $activityExecution->uri = $token->uriResource;
-			// $activityExecution->label = $activity->label;
-			
 			$this->currentActivity[] 	= new Activity($activity->uriResource);
 		}
 
@@ -1048,57 +831,6 @@ extends WfResource
 		// section 10-13-1--31--7b61b039:11cdba08b1e:-8000:0000000000000A30 end
 	}
 
-
-	public function performTransitionToLast() // throws ConsistencyException
-	{
-		$logger = Utils::getGenericLogger();
-
-		// We get the part of the valid path between the current activity and
-		// the last valid activity.
-		$fromActivity = $this->currentActivity[0];
-		$partialPath = $this->path->getPathFrom($fromActivity);
-
-
-		for ($i = 0; $i < (count($partialPath) - 1); $i++)
-		{
-			$pathItemUri = $partialPath[$i];
-
-			$currentActivity = $this->currentActivity[0];
-			$currentActivityUri = $currentActivity->uri;
-
-
-			if ($pathItemUri != $currentActivityUri)
-			{
-				$pathItemActivity = new Activity($pathItemUri);
-
-				if (!$pathItemActivity->isHidden)
-				{
-					// We changed our route regarding the path before jumping.
-					// or we are at the very last activity we may go to.
-					break;
-				}
-				else
-				{
-					// Hidden activity problem... then I have to increase the lookup
-					// of pathItems until we find a not hidden activity in the path stack.
-					while ($i < count($partialPath) - 1)
-					{
-						$pathItemUri = $partialPath[$i];
-						$pathItemActivity = new Activity($pathItemUri);
-
-						if ($pathItemActivity->isHidden)
-						$i++;
-						else
-						break;
-					}
-				}
-
-
-			}
-			// We try to go further !
-			$this->performTransition();
-		}
-	}
 
 	public function isBackable()
 	{

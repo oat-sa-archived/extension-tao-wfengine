@@ -1,5 +1,5 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<?php echo $GLOBALS['lang']; ?>" lang="<?php echo $GLOBALS['lang']; ?>">
+<html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
 		<title><?php echo __("TAO - An Open and Versatile Computer-Based Assessment Platform"); ?></title>
 		
@@ -14,7 +14,6 @@
 			window.processUri = '<?php echo urlencode($processUri); ?>';
 			window.activityUri = '<?php echo urlencode($activity->uri); ?>';
 			window.activeResources = <?php echo $browserViewData['active_Resource']; ?>;
-			window.uiLanguage = '<?php echo $browserViewData['uiLanguage']; ?>';
 			
 			
 			function goToPage(page_str){
@@ -33,28 +32,12 @@
 					goToPage('<?php echo BASE_URL;?>/processBrowser/back?processUri=<?php echo urlencode($processUri); ?>');
 		       });
 		       
-		       if ($('#back_floating').length)
-		       {
-		       		$('#back_floating').click(function(){
-			       		goToPage('<?php echo BASE_URL;?>/processBrowser/back?processUri=<?php echo urlencode($processUri); ?>');
-			       	});
-		       }	
 		       	
 			   $("#next").click(function(){
 					$(this).attr('disabled', true);
 			       	goToPage('<?php echo BASE_URL;?>/processBrowser/next?processUri=<?php echo urlencode($processUri); ?>&activityExecutionUri=<?php echo urlencode($browserViewData['activityExecutionUri']);?>');
 			   	});
 			   	
-			   if ($('#next_floating').length)
-		       {
-		       		$('#next_floating').click(function(){
-			       		goToPage('<?php echo BASE_URL;?>/processBrowser/next?processUri=<?php echo urlencode($processUri); ?>&activityExecutionUri=<?php echo urlencode($browserViewData['activityExecutionUri']);?>');
-			       	});
-		       }	
-		
-
-			   window.addEventListener('click', mouseclickHandler, true);	 
-
 			   <?if(get_data('debugWidget')):?>
 
 				$("#debug").click(function(){
@@ -64,23 +47,6 @@
 				<?endif?> 
 		    });
 		    
-			
-			$(window).load(function(){
-			   adjustFloatingButtons();
-			
-			   <?php if (!$consistencyViewData['isConsistent']): 
-			   // Consistency checking.
-			   ?>
-			   openConsistencyDialog('<?php echo $consistencyViewData['processExecutionUri']; ?>', 
-			   						 '<?php echo $consistencyViewData['activityUri']; ?>', 
-			   						 <?php echo GUIHelper::buildActivitiesList($consistencyViewData['involvedActivities']); ?>, 
-			   						 '<?php echo addslashes($consistencyViewData['notification']); ?>',  
-			   						 <?php echo ($consistencyViewData['suppressable']) ? 'true' : 'false'; ?>);
-			   <?php endif; ?>
-			});
-
-			
-			
 		</script>
 		
 		<style media="screen">
@@ -152,13 +118,6 @@
 				</div>
 			
 				
-				<div id="navigation_floating">
-					<input type="button" id="back_floating" value="&lt;&lt;"/>
-					<input type="button" id="next_floating" value="&gt;&gt;"/>
-				</div>
-				
-				
-
 			
 				<div id="tools">
 					<?php foreach($services as $service): ?>
@@ -172,7 +131,6 @@
   		</div>
  
 
-  		<div id="consistency" title="<?php echo ((!$consistencyViewData['isConsistent']) ? $consistencyViewData['source'] : '') . ' ' . __("Edit error"); ?>"></div>
 		<div id="footer">
 			TAO<sup>&reg;</sup> - <?=date('Y')?> - A joint initiative of CRP Henri Tudor and the University of Luxembourg
 		</div>

@@ -142,7 +142,6 @@ class Connector
 					
 					$activity = new Activity($val->uriResource);
 					$_SESSION["activities"][$val->uriResource] = $activity;
-					$activity->getActors();
 
 					$this->nextActivities[] = $activity;						
 				}
@@ -178,8 +177,6 @@ class Connector
 					
 					$activity = new Activity($val->uriResource);
 					$_SESSION["activities"][$val->uriResource] = $activity;
-					$activity->getActors();
-					//$activity->feedFlow($recursivityLevel);
 						
 					$this->prevActivities[] = $activity;	
 					

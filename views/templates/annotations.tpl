@@ -1,1 +1,0 @@
-<?php echo GUIHelper::jsonIfY($browserViewData["annotationsJsArray"]);?>

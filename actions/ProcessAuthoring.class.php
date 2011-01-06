@@ -416,10 +416,7 @@ class ProcessAuthoring extends TaoModule {
 		
 		//set ishidden:
 		if(isset($properties[PROPERTY_ACTIVITIES_ISHIDDEN])){
-			$bool = wfEngine_models_classes_ProcessAuthoringService::generisBooleanConvertor($properties[PROPERTY_ACTIVITIES_ISHIDDEN]);
-			if(!is_null($bool)){
-				$this->service->setActivityHidden($activity, $bool);
-			}
+			$this->service->setActivityHidden($activity, false);
 		}
 		//save ACL mode:
 		if(isset($properties[PROPERTY_ACTIVITIES_ACL_MODE])){

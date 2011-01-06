@@ -1,6 +1,6 @@
 <?php
 
-error_reporting(E_ALL);
+error_reporting(-1);
 
 /**
  * WorkFlowEngine - class.Process.php
@@ -53,7 +53,7 @@ require_once('class.WfResource.php');
  * @access public
  * @author firstname and lastname of author, <author@example.org>
  */
-class Process
+class wfEngine_models_classes_Process
 extends WfResource
 {
 	// --- ATTRIBUTES ---
@@ -75,49 +75,6 @@ extends WfResource
 	public $activities = array();
 
 	// --- OPERATIONS ---
-
-	/**
-	 * Short description of method getActors
-	 *
-	 * @access public
-	 * @author firstname and lastname of author, <author@example.org>
-	 * @return array
-	 */
-	public function getActors()
-	{
-		$returnValue = array();
-
-		// section 10-13-1--31-740bb989:119ebfa9b28:-8000:000000000000081E begin
-
-
-		$activitiesProp = new core_kernel_classes_Property(PROPERTY_PROCESS_ACTIVITIES);
-		$activities = $this->resource->getPropertyValuesCollection($activitiesProp);
-		$roles = array();
-
-		foreach ($activities->getIterator() as $activity)
-		{
-			$activityObject 	= new Activity($activity->uriResource);
-			$roles				= array_merge($roles, $activityObject->getActors());
-		}
-
-
-		//hack to get unique array ...
-		//as described http://lu.php.net/array_unique
-		foreach ($roles as $key => $value){
-			$roles[$key] = "'" . serialize($value) . "'";
-		}
-
-		$roles = array_unique($roles);
-
-		foreach ($roles as $key=>$value){
-			$roles[$key] = unserialize(trim($value, "'"));
-		}
-
-		$returnValue = $roles;
-		// section 10-13-1--31-740bb989:119ebfa9b28:-8000:000000000000081E end
-
-		return (array) $returnValue;
-	}
 
 	/**
 	 * Short description of method getRootActivities
@@ -144,7 +101,6 @@ extends WfResource
 			if ($isInitialCollection!= null && $isInitialCollection->uriResource == GENERIS_TRUE)
 			{
 				$activityObject = new Activity($activity->uriResource);
-				$activityObject->getActors();
 				$returnValue[] =$activityObject;
 			}
 		}
@@ -167,6 +123,7 @@ extends WfResource
 		// section 10-13-1--31-740bb989:119ebfa9b28:-8000:000000000000085C begin
 		// section 10-13-1--31-740bb989:119ebfa9b28:-8000:000000000000085C end
 	}
+	
 
 	/**
 	 * Short description of method getProcessVars
