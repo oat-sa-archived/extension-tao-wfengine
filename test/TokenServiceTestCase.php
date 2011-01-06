@@ -251,6 +251,8 @@ class TokenServiceTestCase extends UnitTestCase {
 	 */
 	public function testVirtualParallelJoinProcess(){
 		
+		echo 'testVirtualParallelJoinProcess...<br>';
+		
 		error_reporting(E_ALL);
 		
 		try{
@@ -329,8 +331,9 @@ class TokenServiceTestCase extends UnitTestCase {
 						
 				//init execution
 				$this->assertTrue($processExecutionService->initCurrentExecution($proc->resource, $activity->resource, $this->currentUser));
-						
+				
 				$activityExecuction = $activityExecutionService->getExecution($activity->resource, $this->currentUser, $proc->resource);
+				
 				$this->assertNotNull($activityExecuction);
 				$this->out("Execution: ".$activityExecuction->getLabel());
 				

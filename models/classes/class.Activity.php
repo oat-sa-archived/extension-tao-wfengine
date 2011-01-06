@@ -61,12 +61,6 @@ require_once('class.Service.php');
  */
 require_once('class.WfResource.php');
 
-/**
- * include WfRole
- *
- * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
- */
-require_once('class.WfRole.php');
 
 /* user defined includes */
 // section 10-13-1--31-740bb989:119ebfa9b28:-8000:0000000000000820-includes begin
@@ -295,13 +289,6 @@ class Activity
 		
 		if ($feed)
 		{
-			$activityRoleProp = new core_kernel_classes_Property(ACTIVITY_ROLE);
-			$acceptedRole = $this->resource->getPropertyValues($activityRoleProp);
-			
-
-			if (isset($acceptedRole[0])) {
-				$this->acceptedRole = new WfRole($acceptedRole[0]);
-			}
 			 
 			// Hidden
 			$isHiddenProp = new core_kernel_classes_Property(PROPERTY_ACTIVITIES_ISHIDDEN);
@@ -388,7 +375,13 @@ class Activity
         // section 127-0-1-1--12200f09:12ce9a71a5e:-8000:00000000000010C7 begin
         
         if(!is_null( $this->resource)){
+        	
         	$returnValue = $this->resource->getPropertyValues(new core_kernel_classes_Property(PROPERTY_ACTIVITY_CONTROL));
+        
+       		if($this->isFirst() && isset($returnValue[INSTANCE_CONTROL_BACKWARD])){
+        		unset($returnValue[INSTANCE_CONTROL_BACKWARD]);
+        	}
+        	
         }
         
         // section 127-0-1-1--12200f09:12ce9a71a5e:-8000:00000000000010C7 end

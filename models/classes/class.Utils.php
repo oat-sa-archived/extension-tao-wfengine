@@ -81,18 +81,6 @@ class Utils
 		return (bool) $returnValue;
 	}
 
-	/**
-	 * Short description of method deleteR
-	 *
-	 * @access public
-	 * @author firstname and lastname of author, <author@example.org>
-	 * @return void
-	 */
-	public function deleteR()
-	{
-		// section 10-13-1--31--4660acca:119ecd38e96:-8000:0000000000000875 begin
-		// section 10-13-1--31--4660acca:119ecd38e96:-8000:0000000000000875 end
-	}
 
 	/**
 	 * Short description of method contains
@@ -117,85 +105,7 @@ class Utils
 		return (bool) $returnValue;
 	}
 
-	/**
-	 * Short description of method getRemoteKB
-	 *
-	 * @access public
-	 * @author firstname and lastname of author, <author@example.org>
-	 * @param string
-	 * @return string
-	 */
-	public function getRemoteKB($baseClass)
-	{
-		$returnValue = (string) '';
-
-		// section 10-13-1--31-7f1456d9:11a242e5517:-8000:0000000000000967 begin
-		include_once("../../../generis/core/view/generis_utils.php");
-		include_once("../../../generis/core/view/generis_tree.php");
-		$urimodel = substr($baseClass,0,strpos($baseClass,"#"));
-		$file = str_replace("www.tao.lu/Ontologies/",$_SERVER["HTTP_HOST"]."/generis/Ontologies/",$urimodel);
-		$dlmodel = importrdfs($_SESSION["session"],$urimodel,$file);
-		WfEngine::singleton()->sessionGeneris=$dlmodel["pSession"];
-
-		$idsub = getSubscribeesurl(WfEngine::singleton()->sessionGeneris,array($baseClass),"");
-		foreach ($idsub as $key => $val)
-		{
-			$result = getRDFfromaremotemodule(WfEngine::singleton()->sessionGeneris,array($_SESSION["datalg"]), array($val[0]),false,"1");
-			if (!(is_string($result))) {
-				WfEngine::singleton()->sessionGeneris=$result["pSession"];
-				$_SESSION["session"]=$result["pSession"];
-					
-			}
-			else
-			{
-				$output.="<script language=\"JavaScript\">window.alert('At least one module has not been reached (Bad login/password/url)');</script>";
-			}
-		}
-
-
-		// section 10-13-1--31-7f1456d9:11a242e5517:-8000:0000000000000967 end
-
-		return (string) $returnValue;
-	}
-
-
-
-	/**
-	 * Short description of method renderSvg
-	 *
-	 * @access public
-	 * @author firstname and lastname of author, <author@example.org>
-	 * @param string
-	 * @param string
-	 * @return string
-	 */
-	public function renderSvg($uri, $svg)
-	{
-		$returnValue = (string) '';
-
-		// section 10-13-1--31-7f1456d9:11a242e5517:-8000:0000000000000971 begin
-		$file = "./view/svgprocess/".base64_encode($uri).".svg";
-		$svgfile = fopen($file,"wb");fwrite($svgfile,$svg);fclose($svgfile);
-		$file = "../../../WorkFlowEngine/view/svgprocess/".base64_encode($uri).".svg";
-		$returnValue= '<span style="position:relative;"><embed src="'.$file.'" type="image/svg+xml"  width="665" height="2800"/></span>';
-		/*
-		 $returnValue= '
-		 <span style=width=50%>
-		 <object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="http://fpdownload.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=7,0,0,0" width="1000" height="920" id="process_svgm" align="middle">
-			<param name="allowScriptAccess" value="sameDomain" />
-			<param name="movie" value="exulis.swf?file='.$file.'" />
-			<param name="quality" value="high" />
-			<param name="bgcolor" value="#ffffff" />
-			<embed src="./view/exulis/eXULiS.swf?file='.$file.'" quality="high" bgcolor="#ffffff" width="1000" height="920" name="process_svg" align="middle" allowScriptAccess="sameDomain" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" />
-			</object>
-			</span>';
-			*/
-
-		// section 10-13-1--31-7f1456d9:11a242e5517:-8000:0000000000000971 end
-
-		return (string) $returnValue;
-	}
-
+	
 	/**
 	 * Short description of method processVarsToArray
 	 *

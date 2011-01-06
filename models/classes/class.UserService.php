@@ -92,25 +92,13 @@ class wfEngine_models_classes_UserService
 					catch(common_Exception $ce){
 						$dataLang 	= 'EN';
 					}
-					
-	        		//log in the wf engines
-					$_SESSION["WfEngine"] 		= WfEngine::singleton($login, $password);
-					$user = WfEngine::singleton()->getUser();
-					
-					if($user == null) {
-						$returnValue=  false;
-					}
-					else{
-						$_SESSION["userObject"] 	= $user;
 							
-						// Taoqual authentication and language markers.
-						$_SESSION['taoqual.authenticated'] 		= true;
-						$_SESSION['taoqual.lang']				= $dataLang;
-						$_SESSION['taoqual.serviceContentLang'] = $dataLang;
-						$_SESSION['taoqual.userId']				= $login;
-						
-						$returnValue = true;
-					}
+					$_SESSION['taoqual.authenticated'] 		= true;
+					$_SESSION['taoqual.lang']				= $dataLang;
+					$_SESSION['taoqual.serviceContentLang'] = $dataLang;
+					$_SESSION['taoqual.userId']				= $login;
+					
+					$returnValue = true;
 	        	}
         	}
         }

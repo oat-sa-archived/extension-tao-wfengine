@@ -118,20 +118,6 @@ class ActivityExecution
 		
 		if (in_array($this->activity->uri,$tokens))
 			{
-				/*$rolesAllowedProp = new core_kernel_classes_Property(ACTIVITY_ROLE);
-				$rolesAllowed = $this->activity->resource->getPropertyValues($rolesAllowedProp);
-
-				$rolesUserProp = new core_kernel_classes_Property(USER_ROLE);
-				$rolesUser = WfEngine::singleton()->user->resource->getPropertyValues($rolesUserProp);
-				
-				foreach ($rolesAllowed as $roleAllowed)
-
-					{
-						if (in_array($roleAllowed,$rolesUser)) return true;
-					}
-				
-				trigger_error("<div style=\"background-color:white;padding:2px;\">Sorry, You are not allowed to perform this activity</div>");
-				*/
 				return true;
 			}
 		else trigger_error("<div style=\"background-color:white;padding:2px;\">This activity may not be  run for the moment</div>");

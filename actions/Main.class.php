@@ -13,13 +13,13 @@ class Main extends WfModule
 	public function index($caseId = null, $login = null, $pwd = null)
 	{
 
-		$wfEngine 			= $_SESSION["WfEngine"];
+		$wfEngineService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_WfEngineService');
 		
 		$userViewData 		= UsersHelper::buildCurrentUserForView();
 		$this->setData('userViewData',$userViewData);
 		
 		//list of available process executions:
-		$processes = $wfEngine->getProcessExecutions();
+		$processes = $wfEngineService->getProcessExecutions();
 		
 		$activityExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityExecutionService');
 		$userService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_UserService');

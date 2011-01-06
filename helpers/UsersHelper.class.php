@@ -26,15 +26,6 @@ class UsersHelper
 			core_kernel_classes_Session::singleton()->defaultLg = $GLOBALS['default_lang'];
 			core_kernel_classes_Session::singleton()->setLg($userService->getUserLanguage($currentUser['login']));
 			
-			//log in the wf engines
-			$_SESSION["WfEngine"] 		= WfEngine::singleton($currentUser['login'], $currentUser['password']);
-			$user = WfEngine::singleton()->getUser();
-			if($user == null) {
-				return false;
-			}
-			
-			$_SESSION["userObject"] 	= $user;
-				
 			// Taoqual authentication and language markers.
 			$_SESSION['taoqual.authenticated'] 		= true;
 			$_SESSION['taoqual.lang']				= 'EN';
@@ -65,44 +56,6 @@ class UsersHelper
 		}
 		
 		return $data;
-	}
-
-	public static function mayAccessActivity(Activity $activity)
-	{
-		$WfEngine 	= WfEngine::singleton();
-		$user		= $WfEngine->getUser();
-
-		$acceptedRole = $activity->acceptedRole;
-
-		$mayAccess = false;
-
-		foreach ($user->roles as $role)
-		{
-			if ($acceptedRole->uri == $role->uri)
-			{
-				$mayAccess = true;
-				break;
-			}
-		}
-
-		return $mayAccess;
-	}
-
-	public static function mayAccessProcess(Process $process)
-	{
-		$mayAccess 	= false;
-		$activities = $process->getAllActivities();
-
-		foreach ($activities as $activity)
-		{
-			if (self::mayAccessActivity($activity))
-			{
-				$mayAccess = true;
-				break;
-			}
-		}
-
-		return $mayAccess;
 	}
 
 	/**

@@ -93,7 +93,6 @@ class ProcessBrowser extends WfModule
 		$browserViewData['processLabel'] 			= $process->process->label;
 		$browserViewData['processExecutionLabel']	= $process->label;
 		$browserViewData['activityLabel'] 			= $activity->label;
-		$browserViewData['isBackable']				= (FlowHelper::isProcessBackable($process));
 		$browserViewData['uiLanguage']				= $GLOBALS['lang'];
 		$browserViewData['contentlanguage']			= $_SESSION['taoqual.serviceContentLang'];
 		$browserViewData['processUri']				= $processUri ;
@@ -241,48 +240,26 @@ class ProcessBrowser extends WfModule
 	public function next($processUri, $activityExecutionUri, $ignoreConsistency = 'false')
 	{
 	
-		$processUri 	= urldecode($processUri);
-		$processExecution = new ProcessExecution($processUri);
-	
-		try
-		{
+		$processUri 		= urldecode($processUri);
+		$processExecution 	= new ProcessExecution($processUri);
 
-			$processExecution->performTransition($activityExecutionUri,($ignoreConsistency == 'true') ? true : false);
-			// var_dump($processExecution);
-			
-			if ($processExecution->isFinished()){
-				$this->redirect(_url('index', 'Main'));
-			}
-			elseif($processExecution->isPaused()){
-				// echo 'paused'; exit;
-				$this->pause($processUri);
-			}
-			else{
-				//perform transition returns a unique next activity, execute it straight away:
-				$nextActivityDefinitionUri = '';
-				if(count($processExecution->currentActivity) == 1){
-					$nextActivityDefinitionUri = $processExecution->currentActivity[0]->resource->uriResource;
-				}
-				$this->redirect(_url('index', get_class($this), null, array('processUri' => urlencode($processUri), 'activityUri'=>urlencode($nextActivityDefinitionUri)) ));
-			}
-		}
-		catch (ConsistencyException $consistencyException)
-		{
-			// A consistency error occured when trying to go
-			// forward in the process. Let's try to get useful
-			// information from the exception.
+		$processExecution->performTransition($activityExecutionUri,($ignoreConsistency == 'true') ? true : false);
 		
-			// We need to tell the "index" action of the "ProcessBrowser" controller
-			// that a consistency exception occured. To do so, we will use the concept
-			// of flash variable. This kind of variable survives during one and only one
-			// HTTP request lifecycle. So that in the "index" action, the session variable
-			// depicting the error will be systematically erased after each processing.
-			//$_SESSION['taoqual.flashvar.consistency'] = $consistencyException;
-			$consistency = ConsistencyHelper::BuildConsistencyStructure($consistencyException);
-			$_SESSION['taoqual.flashvar.consistency'] = $consistency;
-		
-			$this->redirect(_url('index', 'processBrowser', null, array('processUri' => urlencode($processUri))));
+		if ($processExecution->isFinished()){
+			$this->redirect(_url('index', 'Main'));
 		}
+		elseif($processExecution->isPaused()){
+			$this->pause($processUri);
+		}
+		else{
+			//perform transition returns a unique next activity, execute it straight away:
+			$nextActivityDefinitionUri = '';
+			if(count($processExecution->currentActivity) == 1){
+				$nextActivityDefinitionUri = $processExecution->currentActivity[0]->resource->uriResource;
+			}
+			$this->redirect(_url('index', get_class($this), null, array('processUri' => urlencode($processUri), 'activityUri'=>urlencode($nextActivityDefinitionUri)) ));
+		}
+
 	}
 
 	public function pause($processUri)
@@ -296,63 +273,6 @@ class ProcessBrowser extends WfModule
 		$this->redirect(_url('index', 'Main'));
 	}
 
-	public function jumpBack($processUri, $activityUri, $testing="",$ignoreHidden=false)
-	{
 
-		$processUri = urldecode($processUri);
-		$activityUri = urldecode($activityUri);
-
-		$processExecution = new ProcessExecution($processUri);
-		$newActivity = new Activity($activityUri);
-		$processExecution->jumpBack(new Activity($activityUri), $testing);
-
-		if ($ignoreHidden == true)
-		{
-			$newActivity->feedFlow(1);
-			if ($newActivity->isHidden)
-			{
-				$this->next(urlencode($processUri));
-				die();
-			}
-		}
-
-
-		$this->redirect(_url('index', 'processBrowser', null, array('processUri' => urlencode($processUri))));
-	}
-
-	public function breakOff($processUri)
-	{
-		PiaacDataHolder::build($processUri);
-
-		$processUri = urldecode($processUri);
-		$process = new ProcessExecution($processUri);
-		$activityUri = $process->currentActivity[0]->uri;
-
-		//returns uri of activity to jump to if the user want to break off
-		$endingActivityUri = getBreakOffEndingActivityUri($activityUri);
-
-		$this->jumpBack($processUri, $endingActivityUri, '', true);
-	}
-
-	public function jumpLast($processUri)
-	{
-		PiaacDataHolder::build($processUri);
-
-		$processUri = urldecode($processUri);
-		$processExecution = new ProcessExecution($processUri);
-
-		try
-		{
-			$processExecution->performTransitionToLast();
-			$this->index($processUri);
-		}
-		catch (ConsistencyException $e)
-		{
-			$consistency = ConsistencyHelper::BuildConsistencyStructure($e);
-			$_SESSION['taoqual.flashvar.consistency'] = $consistency;
-
-			$this->redirect(_url('index', get_class($this), null, array('processUri' => urlencode($processUri))));
-		}
-	}
 }
 ?>

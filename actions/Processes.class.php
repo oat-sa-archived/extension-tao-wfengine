@@ -11,7 +11,7 @@ class Processes extends WfModule
 			$wfEngine 			= $_SESSION["WfEngine"];
 			$userViewData 		= UsersHelper::buildCurrentUserForView();
 			$this->setData('userViewData',$userViewData);
-			$process 			= new ViewProcess(urldecode($processDefinitionUri));
+			$process 			= new Process(urldecode($processDefinitionUri));
 
 		
 			$processAuthoringData 	= array();
