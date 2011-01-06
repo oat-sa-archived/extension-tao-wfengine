@@ -54,7 +54,7 @@ require_once('class.WfResource.php');
  * @access public
  * @author firstname and lastname of author, <author@example.org>
  */
-class Service
+class wfEngine_models_classes_InteractiveService
     extends WfResource
 {
     // --- ASSOCIATIONS ---

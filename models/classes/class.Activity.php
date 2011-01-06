@@ -48,13 +48,6 @@ require_once('class.Process.php');
 require_once('class.ProcessExecution.php');
 
 /**
- * include Service
- *
- * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
- */
-require_once('class.Service.php');
-
-/**
  * include WfResource
  *
  * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
@@ -162,7 +155,7 @@ class Activity
 			{
 				foreach ($interactiveServices as $interactiveService)
 				{
-					$interactiveServicesDescription[] = new Service($interactiveService,$execution);
+					$interactiveServicesDescription[] = new wfEngine_models_classes_InteractiveService($interactiveService,$execution);
 				}
 			}
 		}

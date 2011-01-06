@@ -32,12 +32,6 @@ require_once('class.Activity.php');
  */
 require_once('class.ProcessExecution.php');
 
-/**
- * include Service
- *
- * @author firstname and lastname of author, <author@example.org>
- */
-require_once('class.Service.php');
 
 /**
  * include WfResource
