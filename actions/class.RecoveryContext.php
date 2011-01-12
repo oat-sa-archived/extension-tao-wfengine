@@ -1,6 +1,4 @@
 <?php
-require_once ('tao/actions/Api.class.php');
-
 /**
  * Service interface to save and retrieve recovery contexts
  * 
@@ -10,7 +8,7 @@ require_once ('tao/actions/Api.class.php');
  * @subpackage actions
  *
  */
-class RecoveryContext extends Api {
+class wfEngine_actions_RecoveryContext extends tao_actions_Api {
 	
 	/**
 	 * Retrieve the current context

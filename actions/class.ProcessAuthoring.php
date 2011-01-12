@@ -1,6 +1,4 @@
 <?php
-require_once('tao/actions/CommonModule.class.php');
-require_once('tao/actions/TaoModule.class.php');
 
 /**
  * ProcessAuthoring Controller provide actions to edit a process
@@ -11,7 +9,7 @@ require_once('tao/actions/TaoModule.class.php');
  * @license GPLv2  http://www.opensource.org/licenses/gpl-2.0.php
  */
  
-class ProcessAuthoring extends TaoModule {
+class wfEngine_actions_ProcessAuthoring extends tao_actions_TaoModule {
 	
 	protected $processTreeService = null;
 	

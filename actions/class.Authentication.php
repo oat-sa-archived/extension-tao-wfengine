@@ -1,5 +1,5 @@
 <?php
-class Authentication extends Module
+class wfEngine_actions_Authentication extends Module
 {
 	public function index()
 	{

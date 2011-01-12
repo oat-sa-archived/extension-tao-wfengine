@@ -1,5 +1,5 @@
 <?php
-class Processes extends WfModule
+class wfEngine_actions_Processes extends wfEngine_actions_WfModule
 {
 	public function authoring($processDefinitionUri)
 	{

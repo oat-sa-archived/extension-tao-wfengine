@@ -1,6 +1,5 @@
 <?php
-error_reporting(E_ALL);
-class WfModule extends Module
+class wfEngine_actions_WfModule extends Module
 {
 	
 	public function __construct(){

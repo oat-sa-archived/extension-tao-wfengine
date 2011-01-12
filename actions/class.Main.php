@@ -1,5 +1,5 @@
 <?php
-class Main extends WfModule
+class wfEngine_actions_Main extends wfEngine_actions_WfModule
 {
 
 

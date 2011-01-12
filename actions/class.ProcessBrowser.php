@@ -1,7 +1,5 @@
 <?php
-error_reporting(E_ALL);
-
-class ProcessBrowser extends WfModule
+class wfEngine_actions_ProcessBrowser extends wfEngine_actions_WfModule
 {
 	public function index($processUri, $activityUri='')
 	{

@@ -1,7 +1,4 @@
 <?php
-require_once('tao/actions/CommonModule.class.php');
-require_once('tao/actions/TaoModule.class.php');
-
 /**
  * Role Controller provide actions performed from url resolution
  * 
@@ -10,7 +7,7 @@ require_once('tao/actions/TaoModule.class.php');
  * @subpackage actions
  * @license GPLv2  http://www.opensource.org/licenses/gpl-2.0.php
  */
-class Role extends TaoModule {
+class wfEngine_actions_Role extends tao_actions_TaoModule {
 	
 	
 	protected $authoringService = null;

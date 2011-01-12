@@ -8,7 +8,7 @@
  * @subpackage action
  *
  */
-class Users extends CommonModule {
+class wfEngine_actions_Users extends tao_actions_CommonModule {
 
 	protected $userService = null;
 	
