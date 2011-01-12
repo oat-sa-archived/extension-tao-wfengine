@@ -27,7 +27,7 @@ class ActivitiesListTestCase extends UnitTestCase{
 
 		core_control_FrontController::connect(LOGIN,md5(PASS),MODULE);
 
-		$factory = new ProcessExecutionFactory();
+		$factory = new wfEngine_models_classes_ProcessExecutionFactory();
 		$factory->name = 'Test Process Execution';
 		$factory->intervieweeInst = '#test4';
 		$factory->execution = PIAAC_PROCESS_URI;

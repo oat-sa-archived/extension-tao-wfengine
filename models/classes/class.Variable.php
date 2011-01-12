@@ -18,13 +18,6 @@ if (0 > version_compare(PHP_VERSION, '5')) {
     die('This file was generated for PHP 5');
 }
 
-/**
- * include WfResource
- *
- * @author firstname and lastname of author, <author@example.org>
- */
-require_once('class.WfResource.php');
-
 /* user defined includes */
 // section 10-13-1-85-16731180:11be4127421:-8000:0000000000000A14-includes begin
 // section 10-13-1-85-16731180:11be4127421:-8000:0000000000000A14-includes end
@@ -34,13 +27,13 @@ require_once('class.WfResource.php');
 // section 10-13-1-85-16731180:11be4127421:-8000:0000000000000A14-constants end
 
 /**
- * Short description of class Variable
+ * Short description of class wfEngine_models_classes_Variable
  *
  * @access public
  * @author firstname and lastname of author, <author@example.org>
  */
-class Variable
-    extends WfResource
+class wfEngine_models_classes_Variable
+    extends wfEngine_models_classes_WfResource
 {
     // --- ATTRIBUTES ---
 
@@ -81,6 +74,6 @@ class Variable
         // section 10-13-1-85-16731180:11be4127421:-8000:0000000000000A43 end
     }
 
-} /* end of class Variable */
+} /* end of class wfEngine_models_classes_Variable */
 
 ?>

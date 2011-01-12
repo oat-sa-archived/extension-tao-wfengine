@@ -16,13 +16,13 @@ class wfEngine_actions_ProcessBrowser extends wfEngine_actions_WfModule
 		$this->setData('userViewData',$userViewData);
 		$browserViewData 	= array(); // general data for browser view.
 		
-		$process 			= new ProcessExecution($processUri);
+		$process 			= new wfEngine_models_classes_ProcessExecution($processUri);
 		$currentActivity = null;
 		if(!empty($activityUri)){
 			//check that it is an uri of a valid activity definition (which is contained in currentActivity):
 			foreach($process->currentActivity as $processCurrentActivity){
 				if($processCurrentActivity->uri == $activityUri){
-					$currentActivity = new Activity($activityUri);
+					$currentActivity = new wfEngine_models_classes_Activity($activityUri);
 					break;
 				}
 			}
@@ -70,8 +70,8 @@ class wfEngine_actions_ProcessBrowser extends wfEngine_actions_WfModule
 		
 		$this->setData('activity',$activity);
 		
-		$activityPerf 		= new Activity($activity->uri, false); // Performance WA
-		$activityExecution 	= new ActivityExecution($process, $activityExecutionResource);//would need for activityexecution to get the current token and thus the value of the variables
+		$activityPerf 		= new wfEngine_models_classes_Activity($activity->uri, false); // Performance WA
+		$activityExecution 	= new wfEngine_models_classes_ActivityExecution($process, $activityExecutionResource);//would need for activityexecution to get the current token and thus the value of the variables
 
 		$browserViewData['activityContentLanguages'] = array();
 
@@ -156,7 +156,7 @@ class wfEngine_actions_ProcessBrowser extends wfEngine_actions_WfModule
 	public function back($processUri)
 	{
 		$processUri 	= urldecode($processUri);
-		$processExecution = new ProcessExecution($processUri);
+		$processExecution = new wfEngine_models_classes_ProcessExecution($processUri);
 		$activity = $processExecution->currentActivity[0];
 		$processExecution->performBackwardTransition($activity);
 		$processUri 	 = urlencode($processUri);
@@ -175,7 +175,7 @@ class wfEngine_actions_ProcessBrowser extends wfEngine_actions_WfModule
 	{
 	
 		$processUri 		= urldecode($processUri);
-		$processExecution 	= new ProcessExecution($processUri);
+		$processExecution 	= new wfEngine_models_classes_ProcessExecution($processUri);
 
 		$processExecution->performTransition($activityExecutionUri);
 		
@@ -200,7 +200,7 @@ class wfEngine_actions_ProcessBrowser extends wfEngine_actions_WfModule
 	{
 
 		$processUri 	= urldecode($processUri);
-		$processExecution = new ProcessExecution($processUri);
+		$processExecution = new wfEngine_models_classes_ProcessExecution($processUri);
 
 		$processExecution->pause();
 		Session::removeAttribute("processUri");

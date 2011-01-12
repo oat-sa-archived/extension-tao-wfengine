@@ -18,20 +18,6 @@ if (0 > version_compare(PHP_VERSION, '5')) {
     die('This file was generated for PHP 5');
 }
 
-/**
- * include Activity
- *
- * @author firstname and lastname of author, <author@example.org>
- */
-require_once('class.Activity.php');
-
-/**
- * include WfResource
- *
- * @author firstname and lastname of author, <author@example.org>
- */
-require_once('class.WfResource.php');
-
 /* user defined includes */
 // section -64--88-1-64--7117f567:11a0527df60:-8000:00000000000008D4-includes begin
 // section -64--88-1-64--7117f567:11a0527df60:-8000:00000000000008D4-includes end
@@ -41,13 +27,13 @@ require_once('class.WfResource.php');
 // section -64--88-1-64--7117f567:11a0527df60:-8000:00000000000008D4-constants end
 
 /**
- * Short description of class Connector
+ * Short description of class wfEngine_models_classes_Connector
  *
  * @access public
  * @author firstname and lastname of author, <author@example.org>
  */
-class Connector
-    extends WfResource
+class wfEngine_models_classes_Connector
+    extends wfEngine_models_classes_WfResource
 {
     // --- ATTRIBUTES ---
 
@@ -140,7 +126,7 @@ class Connector
 				else
 				{
 					
-					$activity = new Activity($val->uriResource);
+					$activity = new wfEngine_models_classes_Activity($val->uriResource);
 					$_SESSION["activities"][$val->uriResource] = $activity;
 
 					$this->nextActivities[] = $activity;						
@@ -175,7 +161,7 @@ class Connector
 					//we should detect loops, todo
 					
 					
-					$activity = new Activity($val->uriResource);
+					$activity = new wfEngine_models_classes_Activity($val->uriResource);
 					$_SESSION["activities"][$val->uriResource] = $activity;
 						
 					$this->prevActivities[] = $activity;	

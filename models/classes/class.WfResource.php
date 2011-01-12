@@ -27,12 +27,12 @@ if (0 > version_compare(PHP_VERSION, '5')) {
 // section 10-13-1--31-740bb989:119ebfa9b28:-8000:0000000000000831-constants end
 
 /**
- * Short description of class WfResource
+ * Short description of class wfEngine_models_classes_WfResource
  *
  * @access public
  * @author firstname and lastname of author, <author@example.org>
  */
-class WfResource
+class wfEngine_models_classes_WfResource
 {
     // --- ATTRIBUTES ---
 
@@ -128,6 +128,6 @@ class WfResource
         // section 10-13-1--31-7f1456d9:11a242e5517:-8000:000000000000096F end
     }
 
-} /* end of class WfResource */
+} /* end of class wfEngine_models_classes_WfResource */
 
 ?>

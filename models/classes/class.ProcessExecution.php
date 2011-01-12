@@ -18,48 +18,6 @@ if (0 > version_compare(PHP_VERSION, '5')) {
 	die('This file was generated for PHP 5');
 }
 
-/**
- * include Activity
- *
- * @author firstname and lastname of author, <author@example.org>
- */
-require_once('class.Activity.php');
-
-/**
- * include ActivityExecution
- *
- * @author firstname and lastname of author, <author@example.org>
- */
-require_once('class.ActivityExecution.php');
-
-/**
- * include ProcessPath
- *
- * @author firstname and lastname of author, <author@example.org>
- */
-require_once('class.ProcessPath.php');
-
-/**
- * include Process
- *
- * @author firstname and lastname of author, <author@example.org>
- */
-require_once('class.Process.php');
-
-/**
- * include Variable
- *
- * @author firstname and lastname of author, <author@example.org>
- */
-require_once('class.Variable.php');
-
-/**
- * include WfResource
- *
- * @author firstname and lastname of author, <author@example.org>
- */
-require_once('class.WfResource.php');
-
 /* user defined includes */
 // section 10-13-1--31-740bb989:119ebfa9b28:-8000:00000000000007E9-includes begin
 // section 10-13-1--31-740bb989:119ebfa9b28:-8000:00000000000007E9-includes end
@@ -69,13 +27,13 @@ require_once('class.WfResource.php');
 // section 10-13-1--31-740bb989:119ebfa9b28:-8000:00000000000007E9-constants end
 
 /**
- * Short description of class ProcessExecution
+ * Short description of class wfEngine_models_classes_ProcessExecution
  *
  * @access public
  * @author firstname and lastname of author, <author@example.org>
  */
-class ProcessExecution
-extends WfResource
+class wfEngine_models_classes_ProcessExecution
+extends wfEngine_models_classes_WfResource
 {
 	// --- ATTRIBUTES ---
 
@@ -115,7 +73,7 @@ extends WfResource
 	 * Short description of attribute path
 	 *
 	 * @access public
-	 * @var ProcessPath
+	 * @var wfEngine_models_classes_ProcessPath
 	 */
 	public $path = null;
 
@@ -191,7 +149,7 @@ extends WfResource
 
 		Session::setAttribute("activityExecutionUri", $activityExecutionUri);
 		$processVars 				= $this->getVariables();
-		$arrayOfProcessVars 		= Utils::processVarsToArray($processVars);
+		$arrayOfProcessVars 		= wfEngine_models_classes_Utils::processVarsToArray($processVars);
 		
 		//init the services
 		$activityExecutionService 	= tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityExecutionService');
@@ -206,7 +164,7 @@ extends WfResource
 		//new:
 		$activityExecutionResource = new core_kernel_classes_Resource($activityExecutionUri);
 		$activityDefinition = $activityExecutionResource->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_ACTIVITY));
-		$activityBeforeTransition 	= new Activity($activityDefinition->uriResource);
+		$activityBeforeTransition 	= new wfEngine_models_classes_Activity($activityDefinition->uriResource);
 		
 		$activityBeforeTransition->feedFlow(1);
 
@@ -256,7 +214,7 @@ extends WfResource
 		$this->currentActivity = array();
 		foreach($tokenService->getCurrentActivities($this->resource) as $currentActivity){
 			
-			$newActivity = new Activity($currentActivity->uriResource);
+			$newActivity = new wfEngine_models_classes_Activity($currentActivity->uriResource);
 			
 			$this->path->invalidate($activityBeforeTransition, ($this->path->contains($newActivity) ? $newActivity : null));
 			// We insert in the ontology the last activity in the path stack.
@@ -342,7 +300,7 @@ extends WfResource
 				if(!is_null($activityExecutionResource)){
 					$this->performTransition($activityExecutionResource->uriResource);
 				}else{
-					throw new WfException('the activit execution cannot be create for the hidden activity');
+					throw new wfEngine_models_classes_WfException('the activit execution cannot be create for the hidden activity');
 				}
 				
 				
@@ -369,7 +327,7 @@ extends WfResource
 			return $newActivities;//certainly the last activity
 		}
 		
-		$connector = new Connector($nextConnectorUri);
+		$connector = new wfEngine_models_classes_Connector($nextConnectorUri);
 		
 		$connType = $connector->getType();
 		if(!($connType instanceof core_kernel_classes_Resource)){
@@ -389,7 +347,7 @@ extends WfResource
 				$nextActivitesCollection = $connector->getNextActivities();
 				// var_dump($nextActivitesCollection);
 				foreach ($nextActivitesCollection->getIterator() as $activityResource){
-					$newActivities[] = 	new Activity($activityResource->uriResource);
+					$newActivities[] = 	new wfEngine_models_classes_Activity($activityResource->uriResource);
 				}
 				
 				break;
@@ -463,7 +421,7 @@ extends WfResource
 					//get THE (unique) next activity
 					$nextActivitesCollection = $connector->getNextActivities();
 					foreach ($nextActivitesCollection->getIterator() as $activityResource){
-						$newActivities[] = new Activity($activityResource->uriResource);//normally, should be only ONE, so could actually break after the first loop
+						$newActivities[] = new wfEngine_models_classes_Activity($activityResource->uriResource);//normally, should be only ONE, so could actually break after the first loop
 					}
 				}else{
 					//pause, do not allow transition so return boolean false
@@ -479,7 +437,7 @@ extends WfResource
 					$this->logger->debug('Next Activity  Uri: ' . $val->uriResource,__FILE__,__LINE__);
 					
 					if(wfEngine_helpers_ProcessUtil::isActivity($val)){
-						$activity = new Activity($val->uriResource);
+						$activity = new wfEngine_models_classes_Activity($val->uriResource);
 						$newActivities[]= $activity;
 					}else if(wfEngine_helpers_ProcessUtil::isConnector($val)){
 						$newActivities = $this->getNewActivities($arrayOfProcessVars, $val->uriResource);
@@ -505,7 +463,7 @@ extends WfResource
 
 		$newActivities = array();
 		// We get the TransitionRule relevant to the connector.
-		$connector = new Connector($connUri);
+		$connector = new wfEngine_models_classes_Connector($connUri);
 	
 		$transitionRule 	= $connector->transitionRule;
 
@@ -516,7 +474,7 @@ extends WfResource
 
 			// next activities = THEN
 			
-			if ($transitionRule->thenActivity instanceof Activity)
+			if ($transitionRule->thenActivity instanceof wfEngine_models_classes_Activity)
 			{
 				$newActivities[] = $transitionRule->thenActivity;
 
@@ -530,7 +488,7 @@ extends WfResource
 		else
 		{
 			// next activities = ELSE
-			if ($transitionRule->elseActivity instanceof Activity)
+			if ($transitionRule->elseActivity instanceof wfEngine_models_classes_Activity)
 			{
 				$newActivities[] = $transitionRule->elseActivity;
 			}
@@ -682,7 +640,7 @@ extends WfResource
 
 		foreach ($nextConnectorsCollection->getIterator() as $statement)
 		{
-			$newConn = new Connector($statement->uriResource);
+			$newConn = new wfEngine_models_classes_Connector($statement->uriResource);
 			$newConn->feedFlow(1);
 
 			$connectors[] = $newConn;
@@ -737,7 +695,7 @@ extends WfResource
 	 * @author firstname and lastname of author, <author@example.org>
 	 * @return void
 	 */
-	public function performBackwardTransition(Activity $from)
+	public function performBackwardTransition(wfEngine_models_classes_Activity $from)
 	{
 		// section 10-13-1-85-16731180:11be4127421:-8000:0000000000000A4D begin
 
@@ -754,7 +712,7 @@ extends WfResource
 			$tokenService->setCurrentActivities($this->resource, array(new core_kernel_classes_Resource($activity)), $user);
 			
 			$this->currentActivity = array();
-			$beforeActivity = new Activity($activity);
+			$beforeActivity = new wfEngine_models_classes_Activity($activity);
 			$tokenService->moveBack($from->resource, $beforeActivity->resource,$user, $this->resource);
 			$this->currentActivity[] = $beforeActivity;
 			
@@ -805,7 +763,7 @@ extends WfResource
 		$tokenService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_TokenService');
 		foreach($tokenService->getCurrentActivities($this->resource) as $activity)
 		{
-			$this->currentActivity[] 	= new Activity($activity->uriResource);
+			$this->currentActivity[] 	= new wfEngine_models_classes_Activity($activity->uriResource);
 		}
 
 		
@@ -826,7 +784,7 @@ extends WfResource
 		}
 
 		// Build the path of the process execution.
-		$this->path = new ProcessPath($this);
+		$this->path = new wfEngine_models_classes_ProcessPath($this);
 
 		// section 10-13-1--31--7b61b039:11cdba08b1e:-8000:0000000000000A30 end
 	}
@@ -838,7 +796,7 @@ extends WfResource
 		$previousActivity = $this->path->getActivityBefore($this->currentActivity[0]);
 		if ($previousActivity)
 		{
-			$previousActivity = new Activity($previousActivity);
+			$previousActivity = new wfEngine_models_classes_Activity($previousActivity);
 		}
 		else
 		{
@@ -858,13 +816,13 @@ extends WfResource
 			$previousActivity = $this->path->getActivityBefore($scannedActivity);
 			if ($previousActivity)
 			{
-				$previousActivity = new Activity($previousActivity);
+				$previousActivity = new wfEngine_models_classes_Activity($previousActivity);
 			}
 		}
 			
 		return $backable;
 	}
 
-} /* end of class ProcessExecution */
+} /* end of class wfEngine_models_classes_ProcessExecution */
 
 ?>

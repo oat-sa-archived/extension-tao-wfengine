@@ -19,27 +19,6 @@ if (0 > version_compare(PHP_VERSION, '5')) {
     die('This file was generated for PHP 5');
 }
 
-/**
- * include Activity
- *
- * @author firstname and lastname of author, <author@example.org>
- */
-require_once('class.Activity.php');
-
-/**
- * include ActivityExecution
- *
- * @author firstname and lastname of author, <author@example.org>
- */
-require_once('class.ActivityExecution.php');
-
-/**
- * include WfResource
- *
- * @author firstname and lastname of author, <author@example.org>
- */
-require_once('class.WfResource.php');
-
 /* user defined includes */
 // section 10-13-1--31--23da6e5c:11a2ac14500:-8000:000000000000099B-includes begin
 // section 10-13-1--31--23da6e5c:11a2ac14500:-8000:000000000000099B-includes end
@@ -55,7 +34,7 @@ require_once('class.WfResource.php');
  * @author firstname and lastname of author, <author@example.org>
  */
 class wfEngine_models_classes_InteractiveService
-    extends WfResource
+    extends wfEngine_models_classes_WfResource
 {
     // --- ASSOCIATIONS ---
     // generateAssociationEnd :     // generateAssociationEnd : 
@@ -111,7 +90,7 @@ class wfEngine_models_classes_InteractiveService
      * @param  ActivityExecution activityExecution
      * @return void
      */
-    public function __construct($uri,  ActivityExecution $activityExecution = null)
+    public function __construct($uri,  wfEngine_models_classes_ActivityExecution $activityExecution = null)
     {
         // section 10-13-1--31--23da6e5c:11a2ac14500:-8000:00000000000009B3 begin
         parent::__construct($uri);

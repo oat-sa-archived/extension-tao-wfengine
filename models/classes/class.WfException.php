@@ -1,5 +1,5 @@
 <?php
-class WfException extends Exception
+class wfEngine_models_classes_WfException extends Exception
 {
 	public function __construct($message, $code = null)
 	{

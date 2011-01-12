@@ -200,7 +200,7 @@ class NotificationServiceTestCase extends UnitTestCase {
 			$this->assertNotNull($activity5);
 			
 			//run the process
-			$factory = new ProcessExecutionFactory();
+			$factory = new wfEngine_models_classes_ProcessExecutionFactory();
 			$factory->name = 'Test Process Execution';
 			$factory->execution = $processDefinition->uriResource;
 			$factory->ownerUri = SYS_USER_LOGIN;

@@ -50,7 +50,7 @@ class ProcessExecutionTestCase extends UnitTestCase{
 		$this->assertEqual($connector3->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_NEXTACTIVITIES))->uriResource, $connector4->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_NEXTACTIVITIES))->uriResource);
 		
 		
-		$factory = new ProcessExecutionFactory();
+		$factory = new wfEngine_models_classes_ProcessExecutionFactory();
 		$factory->name = 'Test Process Execution';
 		$factory->execution = $processDefinition->uriResource;
 		$factory->ownerUri = LOGIN;
@@ -139,7 +139,7 @@ class ProcessExecutionTestCase extends UnitTestCase{
 		// var_dump($transitionRule1, $transitionRule1bis);
 		
 		
-		$factory = new ProcessExecutionFactory();
+		$factory = new wfEngine_models_classes_ProcessExecutionFactory();
 		$factory->name = 'Test Process Execution Parallele';
 		$factory->execution = $processDefinition->uriResource;
 		$factory->ownerUri = LOGIN;

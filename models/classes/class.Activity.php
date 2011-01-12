@@ -19,41 +19,6 @@ if (0 > version_compare(PHP_VERSION, '5')) {
     die('This file was generated for PHP 5');
 }
 
-/**
- * include ActivityExecution
- *
- * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
- */
-require_once('class.ActivityExecution.php');
-
-/**
- * include Connector
- *
- * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
- */
-require_once('class.Connector.php');
-
-/**
- * include Process
- *
- * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
- */
-require_once('class.Process.php');
-
-/**
- * include ProcessExecution
- *
- * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
- */
-require_once('class.ProcessExecution.php');
-
-/**
- * include WfResource
- *
- * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
- */
-require_once('class.WfResource.php');
-
 
 /* user defined includes */
 // section 10-13-1--31-740bb989:119ebfa9b28:-8000:0000000000000820-includes begin
@@ -64,13 +29,13 @@ require_once('class.WfResource.php');
 // section 10-13-1--31-740bb989:119ebfa9b28:-8000:0000000000000820-constants end
 
 /**
- * Short description of class Activity
+ * Short description of class wfEngine_models_classes_Activity
  *
  * @access public
  * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
  */
-class Activity
-    extends WfResource
+class wfEngine_models_classes_Activity
+    extends wfEngine_models_classes_WfResource
 {
     // --- ASSOCIATIONS ---
     // generateAssociationEnd :     // generateAssociationEnd :     // generateAssociationEnd :     // generateAssociationEnd :     // generateAssociationEnd :     // generateAssociationEnd :     // generateAssociationEnd :     // generateAssociationEnd :     // generateAssociationEnd :     // generateAssociationEnd :     // generateAssociationEnd : 
@@ -122,7 +87,7 @@ class Activity
 			if ($isAConnector->get(0)->uriResource == CLASS_CONNECTORS)
 			{
 						
-				$connector	= new Connector($resource->uriResource);
+				$connector	= new wfEngine_models_classes_Connector($resource->uriResource);
 				$this->nextConnectors[] = $connector;		
 
 			}
@@ -140,7 +105,7 @@ class Activity
      * @param  ActivityExecution execution
      * @return array
      */
-    public function getServices( ActivityExecution $execution = null)
+    public function getServices( wfEngine_models_classes_ActivityExecution $execution = null)
     {
         $returnValue = array();
 

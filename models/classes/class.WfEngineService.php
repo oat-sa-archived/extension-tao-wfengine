@@ -52,7 +52,7 @@ class wfEngine_models_classes_WfEngineService
 		foreach ($processes as $uri => $process){
         	$executionCollection = $apiModel->getSubject(EXECUTION_OF, $uri);
         	foreach($executionCollection->getIterator() as $execution){
-        		$processInstance = new ProcessExecution($execution->uriResource);
+        		$processInstance = new wfEngine_models_classes_ProcessExecution($execution->uriResource);
         		$returnValue[]=$processInstance;
         	}
 		}

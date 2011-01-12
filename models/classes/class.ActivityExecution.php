@@ -18,28 +18,6 @@ if (0 > version_compare(PHP_VERSION, '5')) {
     die('This file was generated for PHP 5');
 }
 
-/**
- * include Activity
- *
- * @author firstname and lastname of author, <author@example.org>
- */
-require_once('class.Activity.php');
-
-/**
- * include ProcessExecution
- *
- * @author firstname and lastname of author, <author@example.org>
- */
-require_once('class.ProcessExecution.php');
-
-
-/**
- * include WfResource
- *
- * @author firstname and lastname of author, <author@example.org>
- */
-require_once('class.WfResource.php');
-
 /* user defined includes */
 // section 10-13-1--31-740bb989:119ebfa9b28:-8000:0000000000000860-includes begin
 // section 10-13-1--31-740bb989:119ebfa9b28:-8000:0000000000000860-includes end
@@ -49,13 +27,13 @@ require_once('class.WfResource.php');
 // section 10-13-1--31-740bb989:119ebfa9b28:-8000:0000000000000860-constants end
 
 /**
- * Short description of class ActivityExecution
+ * Short description of class wfEngine_models_classes_ActivityExecution
  *
  * @access public
  * @author firstname and lastname of author, <author@example.org>
  */
-class ActivityExecution
-    extends WfResource
+class wfEngine_models_classes_ActivityExecution
+    extends wfEngine_models_classes_WfResource
 {
     // --- ATTRIBUTES ---
 
@@ -63,7 +41,7 @@ class ActivityExecution
      * Short description of attribute processExecution
      *
      * @access public
-     * @var ProcessExecution
+     * @var wfEngine_models_classes_ProcessExecution
      */
     public $processExecution = null;
 
@@ -82,17 +60,17 @@ class ActivityExecution
      *
      * @access public
      * @author firstname and lastname of author, <author@example.org>
-     * @param ProcessExecution
+     * @param wfEngine_models_classes_ProcessExecution
      * @param ActivityExecution
      * @return void
      */
-    public function __construct( ProcessExecution $processExecution,  core_kernel_classes_Resource $activityExecutionResource)
+    public function __construct( wfEngine_models_classes_ProcessExecution $processExecution,  core_kernel_classes_Resource $activityExecutionResource)
     {
         // section 10-13-1--31-740bb989:119ebfa9b28:-8000:000000000000087B begin
     	parent::__construct($activityExecutionResource->uriResource);
 		$this->processExecution = $processExecution;
 		$activityResource = $activityExecutionResource->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_ACTIVITY));
-		$this->activity = new Activity($activityResource->uriResource);
+		$this->activity = new wfEngine_models_classes_Activity($activityResource->uriResource);
         // section 10-13-1--31-740bb989:119ebfa9b28:-8000:000000000000087B end
     }
 

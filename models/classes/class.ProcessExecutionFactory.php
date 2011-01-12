@@ -1,12 +1,10 @@
 <?php
 
-
-
 /**
  * @author Lionel Lionel Lecaque lionel.lecaque@tudor.lu
  *
  */
-class ProcessExecutionFactory {
+class wfEngine_models_classes_ProcessExecutionFactory {
 
 	public $name;
 	public $comment;
@@ -32,11 +30,11 @@ class ProcessExecutionFactory {
 		$processExecutionOfProp = new core_kernel_classes_Property(PROPERTY_PINSTANCES_EXECUTIONOF,__METHOD__);
 		$subjectResource->setPropertyValue($processExecutionOfProp,$this->execution);
 
-		$returnValue = new ProcessExecution($subjectResource->uriResource,false);
+		$returnValue = new wfEngine_models_classes_ProcessExecution($subjectResource->uriResource,false);
 		
 		$processVars = $returnValue->getVariables();
 
-		$processVars = Utils::processVarsToArray($processVars);
+		$processVars = wfEngine_models_classes_Utils::processVarsToArray($processVars);
 
 		$initialActivities = $returnValue->process->getRootActivities();
 

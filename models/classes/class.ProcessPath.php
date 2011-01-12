@@ -18,13 +18,6 @@ if (0 > version_compare(PHP_VERSION, '5')) {
 	die('This file was generated for PHP 5');
 }
 
-/**
- * include ProcessExecution
- *
- * @author firstname and lastname of author, <author@example.org>
- */
-require_once('class.ProcessExecution.php');
-
 /* user defined includes */
 // section 10-13-1-85--29df164:11c79d4c931:-8000:0000000000000A1F-includes begin
 // section 10-13-1-85--29df164:11c79d4c931:-8000:0000000000000A1F-includes end
@@ -34,12 +27,12 @@ require_once('class.ProcessExecution.php');
 // section 10-13-1-85--29df164:11c79d4c931:-8000:0000000000000A1F-constants end
 
 /**
- * Short description of class ProcessPath
+ * Short description of class wfEngine_models_classes_ProcessPath
  *
  * @access public
  * @author firstname and lastname of author, <author@example.org>
  */
-class ProcessPath
+class wfEngine_models_classes_ProcessPath
 {
 	// --- ATTRIBUTES ---
 
@@ -55,7 +48,7 @@ class ProcessPath
 	 * Short description of attribute processExecution
 	 *
 	 * @access public
-	 * @var ProcessExecution
+	 * @var wfEngine_models_classes_ProcessExecution
 	 */
 	public $processExecution = null;
 
@@ -71,7 +64,7 @@ class ProcessPath
 	 * @param Activity
 	 * @return void
 	 */
-	public function insertActivity( Activity $activity)
+	public function insertActivity( wfEngine_models_classes_Activity $activity)
 	{
 		// section 10-13-1-85--29df164:11c79d4c931:-8000:0000000000000A28 begin
 
@@ -193,10 +186,10 @@ class ProcessPath
 	 *
 	 * @access public
 	 * @author firstname and lastname of author, <author@example.org>
-	 * @param ProcessExecution
+	 * @param wfEngine_models_classes_ProcessExecution
 	 * @return void
 	 */
-	public function __construct( ProcessExecution $processExecution)
+	public function __construct( wfEngine_models_classes_ProcessExecution $processExecution)
 	{
 		// section 10-13-1-85--29df164:11c79d4c931:-8000:0000000000000A47 begin
 
@@ -259,7 +252,7 @@ class ProcessPath
 	 * @param Activity
 	 * @return boolean
 	 */
-	public function contains(Activity $activity)
+	public function contains(wfEngine_models_classes_Activity $activity)
 	{
 		$returnValue = (bool) false;
 
@@ -286,7 +279,7 @@ class ProcessPath
 	 * @param Activity
 	 * @return void
 	 */
-	public function invalidate(Activity $to, Activity $currentActivity = null)
+	public function invalidate(wfEngine_models_classes_Activity $to, wfEngine_models_classes_Activity $currentActivity = null)
 	{
 		// section 10-13-1-85-7282d1cf:11cf4fd21dd:-8000:0000000000000A40 begin
 		// $to is the activity before the current one.
@@ -349,7 +342,7 @@ class ProcessPath
 		// section 10-13-1-85-7282d1cf:11cf4fd21dd:-8000:0000000000000A40 end
 	}
 
-	public function getActivityBefore(Activity $activity)
+	public function getActivityBefore(wfEngine_models_classes_Activity $activity)
 	{
 		for ($i = 0; $i < count($this->activityStack); $i++)
 		{
@@ -363,7 +356,7 @@ class ProcessPath
 		return null;
 	}
 
-	public function getPathFrom(Activity $activity)
+	public function getPathFrom(wfEngine_models_classes_Activity $activity)
 	{
 		$pathPortion = array();
 		$store = false;
@@ -393,6 +386,6 @@ class ProcessPath
 		return $toString;
 	}
 
-} /* end of class ProcessPath */
+} /* end of class wfEngine_models_classes_ProcessPath */
 
 ?>

@@ -156,7 +156,7 @@ class TokenServiceTestCase extends UnitTestCase {
 			$this->assertNotNull($activity5);
 			
 			//run the process
-			$factory = new ProcessExecutionFactory();
+			$factory = new wfEngine_models_classes_ProcessExecutionFactory();
 			$factory->name = 'Test Process Execution';
 			$factory->execution = $processDefinition->uriResource;
 			$factory->ownerUri = SYS_USER_LOGIN;
@@ -251,8 +251,6 @@ class TokenServiceTestCase extends UnitTestCase {
 	 */
 	public function testVirtualParallelJoinProcess(){
 		
-		echo 'testVirtualParallelJoinProcess...<br>';
-		
 		error_reporting(E_ALL);
 		
 		try{
@@ -304,7 +302,7 @@ class TokenServiceTestCase extends UnitTestCase {
 			
 			
 			//run process
-			$factory = new ProcessExecutionFactory();
+			$factory = new wfEngine_models_classes_ProcessExecutionFactory();
 			$factory->name = 'Test Process Execution Parallel';
 			$factory->execution = $processDefinition->uriResource;
 			$factory->ownerUri = SYS_USER_LOGIN;

@@ -40,7 +40,7 @@ class wfEngine_actions_Processes extends wfEngine_actions_WfModule
 		ini_set('max_execution_time', 200);
 
 
-			$processExecutionFactory = new ProcessExecutionFactory();
+			$processExecutionFactory = new wfEngine_models_classes_ProcessExecutionFactory();
 			
 						
 			$processExecutionFactory->name = $posted["variables"][RDFS_LABEL];

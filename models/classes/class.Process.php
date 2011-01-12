@@ -18,27 +18,6 @@ if (0 > version_compare(PHP_VERSION, '5')) {
 	die('This file was generated for PHP 5');
 }
 
-/**
- * include Activity
- *
- * @author firstname and lastname of author, <author@example.org>
- */
-require_once('class.Activity.php');
-
-/**
- * include ProcessExecution
- *
- * @author firstname and lastname of author, <author@example.org>
- */
-require_once('class.ProcessExecution.php');
-
-/**
- * include WfResource
- *
- * @author firstname and lastname of author, <author@example.org>
- */
-require_once('class.WfResource.php');
-
 /* user defined includes */
 // section 10-13-1--31-740bb989:119ebfa9b28:-8000:00000000000007DB-includes begin
 // section 10-13-1--31-740bb989:119ebfa9b28:-8000:00000000000007DB-includes end
@@ -54,7 +33,7 @@ require_once('class.WfResource.php');
  * @author firstname and lastname of author, <author@example.org>
  */
 class wfEngine_models_classes_Process
-extends WfResource
+extends wfEngine_models_classes_WfResource
 {
 	// --- ATTRIBUTES ---
 
@@ -100,7 +79,7 @@ extends WfResource
 		
 			if ($isInitialCollection!= null && $isInitialCollection->uriResource == GENERIS_TRUE)
 			{
-				$activityObject = new Activity($activity->uriResource);
+				$activityObject = new wfEngine_models_classes_Activity($activity->uriResource);
 				$returnValue[] =$activityObject;
 			}
 		}
@@ -202,7 +181,7 @@ extends WfResource
 
 		foreach ($acts->getIterator() as $activityResource)
 		{
-			$activities[] = new Activity($activityResource->uriResource);
+			$activities[] = new wfEngine_models_classes_Activity($activityResource->uriResource);
 		}
 
 		$returnValue = $activities;

@@ -29,7 +29,7 @@ class wfEngine_actions_Main extends wfEngine_actions_WfModule
 		if ($caseId != null){
 			foreach ($processes as $proc){
 
-				$procVariables = Utils::processVarsToArray($proc->getVariables());
+				$procVariables = wfEngine_models_classes_Utils::processVarsToArray($proc->getVariables());
 				$intervieweeInst = new core_kernel_classes_Resource($procVariables[VAR_INTERVIEWEE_URI],__METHOD__);
 				$property = propertyExists(CASE_ID_CODE);
 				
@@ -74,7 +74,7 @@ class wfEngine_actions_Main extends wfEngine_actions_WfModule
 				$isFinished = false;
 				$execution = $activityExecutionService->getExecution($activity->resource, $currentUser, $proc->resource);
 				if(!is_null($execution)){
-					$aExecution = new ActivityExecution($proc, $execution);
+					$aExecution = new wfEngine_models_classes_ActivityExecution($proc, $execution);
 					$isFinished = $aExecution->isFinished();
 				}
 

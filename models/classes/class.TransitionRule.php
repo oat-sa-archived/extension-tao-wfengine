@@ -44,11 +44,11 @@ class TransitionRule extends core_kernel_rules_Rule
 			
 			if ($thenType->uriResource == CLASS_CONNECTORS)
 			{
-					$this->thenActivity = new Connector($thenPropertyValue->uriResource);
+					$this->thenActivity = new wfEngine_models_classes_Connector($thenPropertyValue->uriResource);
 					//$this->thenActivity->feedFlow(1);
 			}
 			else
-				$this->thenActivity = new Activity($thenPropertyValue->uriResource);
+				$this->thenActivity = new wfEngine_models_classes_Activity($thenPropertyValue->uriResource);
 
 			if ($hasElse)
 			{
@@ -56,13 +56,13 @@ class TransitionRule extends core_kernel_rules_Rule
 				if ($elseType->uriResource == CLASS_CONNECTORS)
 				{
 		
-						$this->elseActivity = new Connector($elsePropertyValue->uriResource);
+						$this->elseActivity = new wfEngine_models_classes_Connector($elsePropertyValue->uriResource);
 						//$this->elseActivity->feedFlow(1);
 				}
 				else
 				{
 
-					$this->elseActivity = new Activity($elsePropertyValue->uriResource);
+					$this->elseActivity = new wfEngine_models_classes_Activity($elsePropertyValue->uriResource);
 				}
 			}
 		}

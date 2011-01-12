@@ -27,12 +27,12 @@ if (0 > version_compare(PHP_VERSION, '5')) {
 // section 10-13-1--31--4660acca:119ecd38e96:-8000:000000000000086C-constants end
 
 /**
- * Short description of class Utils
+ * Short description of class wfEngine_models_classes_Utils
  *
  * @access public
  * @author firstname and lastname of author, <author@example.org>
  */
-class Utils
+class wfEngine_models_classes_Utils
 {
 	// --- ATTRIBUTES ---
 
@@ -87,11 +87,11 @@ class Utils
 	 *
 	 * @access public
 	 * @author firstname and lastname of author, <author@example.org>
-	 * @param WfResource
+	 * @param wfEngine_models_classes_WfResource
 	 * @param array
 	 * @return boolean
 	 */
-	public static function contains( WfResource $resource, $setOfResources)
+	public static function contains( wfEngine_models_classes_WfResource $resource, $setOfResources)
 	{
 		$returnValue = (bool) false;
 
@@ -143,7 +143,7 @@ class Utils
 
 		while ($i >= 0)
 		{
-			$activity = new Activity($path[$i], true);
+			$activity = new wfEngine_models_classes_Activity($path[$i], true);
 			if (!$activity->isHidden)
 			return $activity;
 
@@ -161,6 +161,6 @@ class Utils
 		return self::$logger;
 	}
 
-} /* end of class Utils */
+} /* end of class wfEngine_models_classes_Utils */
 
 ?>

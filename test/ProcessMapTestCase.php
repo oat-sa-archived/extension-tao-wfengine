@@ -187,7 +187,7 @@ class ProcessMapTestCase extends UnitTestCase {
 		
 		//execute the process definition:
 		/*
-		$factory = new ProcessExecutionFactory();
+		$factory = new wfEngine_models_classes_ProcessExecutionFactory();
 		$factory->name = 'ProcessMap Process Execution';
 		$factory->execution = $processDefinition->uriResource;
 		$factory->ownerUri = SYS_USER_LOGIN;
