@@ -253,48 +253,6 @@ class ProcessAuthoringServiceTestCase extends UnitTestCase {
 		$this->assertEqual($previousActivitiesCollection->count(), 3);
 	}
 	
-	/*
-	public function testCreateJoinActivity(){
-		$parallelActivity1 = $this->authoringService->createActivity($this->proc, 'myActivity1');
-		$connector1 = $this->authoringService->createConnector($parallelActivity1);
-		
-		$parallelActivity2 = $this->authoringService->createActivity($this->proc, 'myActivity2');
-		$connector2 = $this->authoringService->createConnector($parallelActivity2);
-		
-		$joinActivity = $this->authoringService->createActivity($this->proc, 'joinActivity');
-		
-		//join parallel Activity 1 and 2 to "joinActivity"
-		$this->assertIsA($this->authoringService->createJoinActivity($connector1, $joinActivity, '', $parallelActivity1), 'core_kernel_classes_Resource');
-		$this->authoringService->createJoinActivity($connector2, $joinActivity, '', $parallelActivity2);
-		
-		//both connectors joined to the same activity have the same transition rule?
-		$propTransitionRule = new core_kernel_classes_Property(PROPERTY_CONNECTORS_TRANSITIONRULE);
-		$transitionRule1 = $connector1->getUniquePropertyValue($propTransitionRule);
-		$this->assertIsA($transitionRule1, 'core_kernel_classes_Resource');
-		$transitionRule2 = $connector2->getUniquePropertyValue($propTransitionRule);
-		$this->assertEqual($transitionRule1->uriResource, $transitionRule2->uriResource);
-		
-		//same activity in 'then' property?
-		$propThen = new core_kernel_classes_Property(PROPERTY_TRANSITIONRULES_THEN);
-		$this->assertEqual($transitionRule1->getUniquePropertyValue($propThen)->uriResource, $joinActivity->uriResource);
-		
-		//test update of the joined activity after a connector has been disonnected from it:
-		$oldConditonIf = $transitionRule1->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_RULE_IF));
-		$connector2->removePropertyValues(new core_kernel_classes_Property(PROPERTY_CONNECTORS_NEXTACTIVITIES));
-		$this->authoringService->updateJoinedActivity($joinActivity);
-		
-		//the condition of transition rule of the connector 1 has been modified?
-		$newConditionIf = $transitionRule1->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_RULE_IF));
-		$this->assertNotEqual($oldConditonIf->uriResource, $newConditionIf->uriResource);
-		
-		
-		$parallelActivity1->delete();
-		$connector1->delete();
-		$parallelActivity2->delete();
-		$connector2->delete();
-		$transitionRule1->delete();//TODO test all delete methods:
-	}
-	*/
 	
 	public function tearDown() {
         $this->proc->delete();
