@@ -40,7 +40,7 @@ function RecoveryContext (){
 	this.sourceService = {
 			type:	'sync',										// (async | sync | manual)
 			data:	null,										//if type is manual, contains the data in JSON, else it should be null
-			url:	'/wfEngine/RecoveryContext/retrieve',		//the url where we retrieve the context
+			url:	root_url + '/wfEngine/RecoveryContext/retrieve',		//the url where we retrieve the context
 			params: {},	 										//the common parameters to send to the service
 			method: 'post',										//sending method
 			format: 'json'										//the response format, now ONLY JSON is supported
@@ -52,7 +52,7 @@ function RecoveryContext (){
 	 */
 	this.destinationService = {
 			type:	'sync',									// (async | sync)
-			url:	'/wfEngine/RecoveryContext/save',			//the url where we send the context
+			url:	root_url + '/wfEngine/RecoveryContext/save',			//the url where we send the context
 			params:  {},										//the common parameters to send to the service
 			method: 'post',										//sending method
 			format: 'json',										//the response format, now ONLY JSON is supported
