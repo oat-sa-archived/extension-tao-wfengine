@@ -19,6 +19,8 @@ var wfApi = {
 	context : window.top.document || window.document
 };
 
+var root_url = root_url || '';
+
 
 /**
  * Trigger the forward control:
