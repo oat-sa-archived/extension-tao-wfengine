@@ -215,7 +215,7 @@ class wfEngine_actions_ProcessAuthoring extends tao_actions_TaoModule {
 				'label'	=> $newActivity->getLabel(),
 				'uri' 	=> tao_helpers_Uri::encode($newActivity->uriResource),
 				// 'connector' => $this->processTreeService->defaultConnectorNode($newConnector),
-				'class' => $class
+				'clazz' => $class
 			));
 		}
 	}

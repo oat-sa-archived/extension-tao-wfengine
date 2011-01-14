@@ -34,11 +34,15 @@
 		INSTANCE_TYPEOFCONNECTORS_PARALLEL = "<?=tao_helpers_Uri::encode(INSTANCE_TYPEOFCONNECTORS_PARALLEL)?>";
 		INSTANCE_TYPEOFCONNECTORS_JOIN = "<?=tao_helpers_Uri::encode(INSTANCE_TYPEOFCONNECTORS_JOIN)?>";
 	</script>
-	<script type="text/javascript" src="<?=PROCESS_BASE_WWW?>js/gateway/ProcessAuthoring.js"></script>
-	<script type="text/javascript" src="<?=BASE_WWW.'js/authoring/'?>authoringConfig.js"></script>
+	<!--<script type="text/javascript" src="https://getfirebug.com/firebug-lite.js"></script>-->
+	
 	<script type="text/javascript" src="<?=PROCESS_SCRIPT_URL?>lib/json2.js"></script>
 	<script type="text/javascript" src="<?=PROCESS_SCRIPT_URL?>util.js"></script>
-	<script type="text/javascript" src="<?=PROCESS_SCRIPT_URL?>arrows.js"></script>
+	<script type="text/javascript" src="<?=BASE_WWW.'js/authoring/'?>authoringConfig.js"></script>
+	
+	<script type="text/javascript" src="<?=PROCESS_BASE_WWW?>js/gateway/ProcessAuthoring.js"></script>
+	<script type="text/javascript" src="<?=PROCESS_SCRIPT_URL?>activity.tree.js"></script>
+	<!--<script type="text/javascript" src="<?=PROCESS_SCRIPT_URL?>arrows.js"></script>
 	<script type="text/javascript" src="<?=PROCESS_SCRIPT_URL?>activityDiagram.js"></script>
 	<script type="text/javascript" src="<?=PROCESS_SCRIPT_URL?>modeController.js"></script>
 	<script type="text/javascript" src="<?=PROCESS_SCRIPT_URL?>modeInitial.js"></script>
@@ -47,11 +51,93 @@
 	<script type="text/javascript" src="<?=PROCESS_SCRIPT_URL?>modeArrowLink.js"></script>
 	<script type="text/javascript" src="<?=PROCESS_SCRIPT_URL?>modeActivityMove.js"></script>
 	<script type="text/javascript" src="<?=PROCESS_SCRIPT_URL?>modeConnectorMove.js"></script>
-	<script type="text/javascript" src="<?=PROCESS_SCRIPT_URL?>modeArrowEdit.js"></script>
+	<script type="text/javascript" src="<?=PROCESS_SCRIPT_URL?>modeArrowEdit.js"></script>-->
 	
 	<script type="text/javascript">
 	//init:
+	
 	var processUri = "<?=get_data("processUri")?>";
+	
+	function processProperty(){
+		_load("#process_form", 
+			authoringControllerPath+"editProcessProperty", 
+			{processUri: processUri}
+		);
+	}
+	
+	function loadSectionTree(section){
+	//section in [serviceDefinition, formalParameter, role]
+		
+		$.ajax({
+			url: authoringControllerPath+'getSectionTrees',
+			type: "POST",
+			data: {section: section},
+			dataType: 'html',
+			success: function(response){
+				$('#'+section+'_tree').html(response);
+			}
+		});
+	}
+	
+	function loadActivityTree(){
+		$.ajax({
+			url: authoringControllerPath+'getActivityTree',
+			type: "POST",
+			data: {section: "activity"},
+			dataType: 'html',
+			success: function(response){
+				$('#activity_tree').html(response);
+			}
+		});
+	}
+	
+	function loadCompilationForm(){
+		$.ajax({
+			url: authoringControllerPath+'compileView',
+			type: "POST",
+			data: {processUri: processUri},
+			dataType: 'html',
+			success: function(response){
+				$('#compile_info').html(response);
+			}
+		});
+	}
+	
+	$(function(){
+		
+		$("#accordion1").accordion({
+			fillSpace: true,
+			autoHeight: false,
+			collapsible: false,
+			active: 0,
+			icons: { 'header': 'ui-icon-circle-triangle-s', 'headerSelected': 'ui-icon-circle-triangle-e' }
+		});
+		
+		$("#accordion2").accordion({
+			fillSpace: true,
+			autoHeight: false,
+			collapsible: false,
+			icons: { 'header': 'ui-icon-circle-triangle-s', 'headerSelected': 'ui-icon-circle-triangle-e' }
+		});
+		
+		//load activity tree:
+		loadActivityTree();
+		
+		
+		//load the trees:
+		// loadSectionTree("serviceDefinition");//use get_value instead to get the uriResource of the service definition class and make
+		// loadSectionTree("formalParameter");
+		// loadSectionTree("role");
+		// loadSectionTree("variable");
+		
+		// processProperty();
+		
+		<?if(get_data('extension')=='taoDelivery'):?>
+		loadCompilationForm();
+		<?endif;?>
+	});
+	
+	/*
 	ActivityDiagramClass.canvas = "#process_diagram_container";
 	ActivityDiagramClass.localNameSpace = "<?=tao_helpers_Uri::encode(core_kernel_classes_Session::singleton()->getNameSpace().'#')?>";
 	
@@ -59,7 +145,7 @@
 	
 	$(function() {
 		$(ActivityDiagramClass.canvas).scroll(function(){
-			//TODO: set a more cross-browser way to retrieve scroll left and top values:
+			// TODO: set a more cross-browser way to retrieve scroll left and top values:
 			ActivityDiagramClass.scrollLeft = this.scrollLeft;
 			ActivityDiagramClass.scrollTop = this.scrollTop;
 		});
@@ -68,11 +154,11 @@
 			ActivityDiagramClass.loadDiagram();
 		}
 		catch(err){
-			// CL('feed&draw diagram exception', err);
+			CL('feed&draw diagram exception', err);
 		}
 		
 	});
-
+	*/
 	</script>
 
 	<div class="main-container" style="display:none;"></div>
@@ -134,10 +220,13 @@
 		<div style="clear:both"/>
 	</div><!--end authoring-container -->
 	
-	<script type="text/javascript" src="<?=PROCESS_SCRIPT_URL?>activity.tree.js"></script>
+	
 	<script type="text/javascript">
 	
+	
+	/*
 	$(function(){
+		
 		EventMgr.unbind();
 		
 		EventMgr.bind('activityAdded', function(event, response){
@@ -294,86 +383,12 @@
 		});
 		
 		
-		$("#accordion1").accordion({
-			fillSpace: true,
-			autoHeight: false,
-			collapsible: false,
-			active: 0,
-			icons: { 'header': 'ui-icon-circle-triangle-s', 'headerSelected': 'ui-icon-circle-triangle-e' }
-		});
 		
-		//load activity tree:
-		loadActivityTree();
-		
-		
-		//load the trees:
-		loadSectionTree("serviceDefinition");//use get_value instead to get the uriResource of the service definition class and make
-		loadSectionTree("formalParameter");
-		loadSectionTree("role");
-		loadSectionTree("variable");
-		
-		processProperty();
-		
-		<?if(get_data('extension')=='taoDelivery'):?>
-		loadCompilationForm();
-		<?endif;?>
-	});
+	});*/
 	
-	$(function(){
-		$("#accordion2").accordion({
-			fillSpace: true,
-			autoHeight: false,
-			collapsible: false,
-			icons: { 'header': 'ui-icon-circle-triangle-s', 'headerSelected': 'ui-icon-circle-triangle-e' }
-		});
-		
-		//load the trees:
-		
-	});
 	
-	function processProperty(){
-		_load("#process_form", 
-			authoringControllerPath+"editProcessProperty", 
-			{processUri: processUri}
-		);
-	}
 	
-	function loadSectionTree(section){
-	//section in [serviceDefinition, formalParameter, role]
-		$.ajax({
-			url: authoringControllerPath+'getSectionTrees',
-			type: "POST",
-			data: {section: section},
-			dataType: 'html',
-			success: function(response){
-				$('#'+section+'_tree').html(response);
-			}
-		});
-	}
 	
-	function loadActivityTree(){
-		$.ajax({
-			url: authoringControllerPath+'getActivityTree',
-			type: "POST",
-			data: {section: "activity"},
-			dataType: 'html',
-			success: function(response){
-				$('#activity_tree').html(response);
-			}
-		});
-	}
-	
-	function loadCompilationForm(){
-		$.ajax({
-			url: authoringControllerPath+'compileView',
-			type: "POST",
-			data: {processUri: processUri},
-			dataType: 'html',
-			success: function(response){
-				$('#compile_info').html(response);
-			}
-		});
-	}
 	</script>
 	
 <?endif;?>

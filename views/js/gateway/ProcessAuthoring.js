@@ -2,20 +2,17 @@
 var GatewayProcessAuthoring = {name: 'process authoring ontology gateway'};
 
 GatewayProcessAuthoring.addActivity = function(url, processUri){
-	// console.log('url', url);	
-	// console.log('processUri', processUri);
-	
 	$.ajax({
 		url: url,
 		type: "POST",
 		data: {processUri: processUri, type: 'activity'},
 		dataType: 'json',
 		success: function(response){
-			// console.log(response);
+			// CL(response);
 			if (response.uri) {
 				EventMgr.trigger('activityAdded', response);
 			}else{
-				//console.log('error in adding an activity');
+				CL('error in adding an activity');
 			}
 		}
 	});

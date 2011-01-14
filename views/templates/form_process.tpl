@@ -1,3 +1,4 @@
+
 <?include(TAO_TPL_PATH . 'header.tpl')?>
 
 <div class="main-container">
@@ -10,33 +11,34 @@
 </div>
 
 <script type="text/javascript">
+function disableInput($input){
+	// $input.attr('disabled', 'disabled').hide();
+	$input.hide();
+}
+
+function enableInput($input){
+	// $input.attr('disabled', '').show();
+	$input.show();
+}
+
+function switchACLmode(){
+	var restrictedUserElt = $('select[id=<?=tao_helpers_Uri::encode(PROPERTY_PROCESS_INIT_RESTRICTED_USER)?>]').parent();
+	var restrictedRoleElt = $('select[id=<?=tao_helpers_Uri::encode(PROPERTY_PROCESS_INIT_RESTRICTED_ROLE)?>]').parent();
+	var mode = $('select[id=<?=tao_helpers_Uri::encode(PROPERTY_PROCESS_INIT_ACL_MODE)?>]').val();
+
+	if(mode == '<?=tao_helpers_Uri::encode(INSTANCE_ACL_USER)?>'){//mode "user"
+		enableInput(restrictedUserElt);
+		disableInput(restrictedRoleElt);
+	}else if(mode == ''){
+		disableInput(restrictedRoleElt);
+		disableInput(restrictedUserElt);
+	}else{
+		enableInput(restrictedRoleElt);
+		disableInput(restrictedUserElt);
+	}
+}
+
 $(document).ready(function(){
-	var disableInput = function($input){
-		$input.attr('disabled', 'disabled').hide();
-	}
-	
-	var enableInput = function($input){
-		$input.attr('disabled', '').show();
-	}
-	
-	var switchACLmode = function(){
-	
-		var restrictedUserElt = $('select[id=<?=tao_helpers_Uri::encode(PROPERTY_PROCESS_INIT_RESTRICTED_USER)?>]').parent();
-		var restrictedRoleElt = $('select[id=<?=tao_helpers_Uri::encode(PROPERTY_PROCESS_INIT_RESTRICTED_ROLE)?>]').parent();
-		var mode = $('select[id=<?=tao_helpers_Uri::encode(PROPERTY_PROCESS_INIT_ACL_MODE)?>]').val();
-		
-		if(mode == '<?=tao_helpers_Uri::encode(INSTANCE_ACL_USER)?>'){//mode "user"
-			enableInput(restrictedUserElt);
-			disableInput(restrictedRoleElt);
-		}else if(mode == ''){
-			disableInput(restrictedRoleElt);
-			disableInput(restrictedUserElt);
-		}else{
-			enableInput(restrictedRoleElt);
-			disableInput(restrictedUserElt);
-		}
-	}
-			
 	switchACLmode();
 	$('select[id=<?=tao_helpers_Uri::encode(PROPERTY_PROCESS_INIT_ACL_MODE)?>]').change(switchACLmode);
 });

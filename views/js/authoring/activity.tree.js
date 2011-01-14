@@ -1,4 +1,4 @@
-// alert('ActivityTreeClass loaded');
+alert('ActivityTreeClass loaded 1');
 
 ActivityTreeClass.instances = [];
 
@@ -18,6 +18,7 @@ function ActivityTreeClass(selector, dataUrl, options){
 		this.dataUrl = dataUrl;
 		var instance = this;
 		
+		
 		if(!options.instanceName){
 			options.instanceName = 'instance';
 		}
@@ -27,10 +28,12 @@ function ActivityTreeClass(selector, dataUrl, options){
 			//no good selection by id:
 			throw 'no correct selector in the activity tree selector';
 		}
-		var treeId = this.selector.substr(1);;
+		var treeId = this.selector.substr(1);
+		this.treeId = treeId;
 		ActivityTreeClass.instances[treeId] = instance;
-		ActivityTreeClass.instances[treeId].currentNode = null;
-		ActivityTreeClass.instances[treeId].treeObj = null;
+		
+		this.currentNode = null;
+		this.treeObj = null;
 		
 		this.treeOptions = {
 			data: {
@@ -61,9 +64,7 @@ function ActivityTreeClass(selector, dataUrl, options){
 					}
 				},
 				oninit:function(TREE_OBJ){
-					// console.dir(TREE_OBJ);
-					// console.log(TREE_OBJ.container[0].id);
-					ActivityTreeClass.instances[treeId].treeObj = TREE_OBJ;
+					instance.treeObj = TREE_OBJ;
 				},
 				onload: function(TREE_OBJ){
 					if (instance.options.selectNode && !instance.nodeSelected) {
@@ -76,7 +77,7 @@ function ActivityTreeClass(selector, dataUrl, options){
 					}
 					
 					//set the "default" current node as the root:
-					ActivityTreeClass.instances[treeId].currentNode = ActivityTreeClass.getTreeNode('node-process-root');
+					instance.currentNode = ActivityTreeClass.getTreeNode('node-process-root', instance.treeId);
 				},
 				ondata: function(DATA, TREE_OBJ){
 				
@@ -106,19 +107,21 @@ function ActivityTreeClass(selector, dataUrl, options){
 						);
 						
 					}else if( $(NODE).hasClass('node-connector') && instance.options.editConnectorAction){
-						//console.log(TREE_OBJ.parent(NODE).attr('id'));
-						activityUri = false;
-						currentNode = TREE_OBJ.parent(NODE);
+						//CL(TREE_OBJ.parent(NODE).attr('id'));
+						var activityUri = false;
+						var currentNode = TREE_OBJ.parent(NODE);
 						do{
 							if($(currentNode).hasClass('node-activity')){
 								activityUri = $(currentNode).attr('id');
 							}
 							currentNode = TREE_OBJ.parent(currentNode);
 						}while(!activityUri && currentNode);
+						
 						_load(instance.options.formContainer, 
 							instance.options.editConnectorAction,
 							{connectorUri:$(NODE).attr('id'), activityUri:activityUri}
 						);
+						
 					}else if( ($(NODE).hasClass('node-connector-goto')||$(NODE).hasClass('node-connector-prev')) && instance.options.editConnectorAction){
 						//hightlight the target node
 						// TREE_OBJ.select_branch(NODE);
@@ -198,17 +201,8 @@ function ActivityTreeClass(selector, dataUrl, options){
 								return -1;
 							},
 							action  : function(NODE, TREE_OBJ){
-								try{
-									if(ActivityTreeClass.instances[TREE_OBJ.container.context.id]){
-										ActivityTreeClass.instances[TREE_OBJ.container.context.id].currentNode = NODE;
-										GatewayProcessAuthoring.addActivity(instance.options.createActivityAction, $(NODE).attr('rel'));
-									}else{
-										throw "no activity tree instance found";
-									}
-								}catch(error){
-									// console.log(error);
-								}
-								
+								instance.currentNode = NODE;
+								GatewayProcessAuthoring.addActivity(instance.options.createActivityAction, $(NODE).attr('rel'));
 							}
 						},
 						isFirst:{
@@ -260,24 +254,6 @@ function ActivityTreeClass(selector, dataUrl, options){
 								return false;
 							}
 						},
-						unsetLast:{
-							label	: "Unset the final activity",
-							icon	: img_url + "unset-flag-red.png",
-							visible	: function (NODE, TREE_OBJ) {
-								if($(NODE).hasClass('node-activity-last')){ 
-									return 1;
-								}
-								return -1;
-							}, 
-							action	: function (NODE, TREE_OBJ) {
-								ActivityTreeClass.unsetLastActivity({
-									url: instance.options.unsetLastActivityAction,
-									NODE: NODE,
-									TREE_OBJ: TREE_OBJ
-								});
-								return false;
-							}
-						},
 						addConnector:{
 							label	: "Add connector",
 							icon	: img_url + "process_connector.png",
@@ -299,7 +275,7 @@ function ActivityTreeClass(selector, dataUrl, options){
 										throw "no activity tree instance found";
 									}
 								}catch(error){
-									// console.log(error);
+									CL(error);
 								}
 								return false;
 							},
@@ -327,7 +303,7 @@ function ActivityTreeClass(selector, dataUrl, options){
 										throw "no activity tree instance found for the interactive service";
 									}
 								}catch(error){
-									// console.log(error);
+									CL(error);
 								}
 												
 							}
@@ -533,7 +509,7 @@ function ActivityTreeClass(selector, dataUrl, options){
 							}, 
 							action	: function (NODE, TREE_OBJ) {
 								//hightlight the target node
-								targetId = $(NODE).attr('rel');
+								var targetId = $(NODE).attr('rel');
 								TREE_OBJ.select_branch($("li[id='"+targetId+"']"));
 								return false;
 							}
@@ -550,122 +526,95 @@ function ActivityTreeClass(selector, dataUrl, options){
 		$(selector).tree(this.treeOptions);
 		
 		//bind listeners:
-		ActivityTreeClass.bindListeners(treeId);
-	
-		// $("#open-action-" + options.actionId).click(function(){
-			// $.tree.reference(instance.selector).open_all();
-		// });
-		// $("#close-action-" + options.actionId).click(function(){
-			// $.tree.reference(instance.selector).close_all();
-		// });
-		
-		// $("#filter-action-" + options.actionId).click(function(){
-			// $.tree.reference(instance.selector).refresh();
-		// });
-		// $("#filter-content-" + options.actionId).bind('keypress', function(e) {
-	        // if(e.keyCode==13 && this.value.length > 0){
-				// $.tree.reference(instance.selector).refresh();
-	        // }
-		// });
+		this.bindListeners();
 
 	}
 	catch(exp){
-		// console.log('ActivityTreeClass exception', exp);
+		CL('ActivityTreeClass exception : ', exp);
 	}
 }
 
-ActivityTreeClass.bindListeners = function(treeId){
+
+ActivityTreeClass.prototype.bindListeners = function(){
 	
 	//TODO: put treeId in evnt data object: data = {treeId: treeId}
+	var _this = this;
 	
-	EventMgr.bind('activityAdded', function(event, response){
-		var response = ActivityTreeClass.feedCurrentNode(treeId, response);
+	EventMgr.unbind('activityAdded').bind('activityAdded', function(event, response){
+		var response = _this.feedCurrentNode(response);
 		if(response.NODE && response.TREE_OBJ){
-			ActivityTreeClass.addActivity(response);
+			_this.addActivity(response);
 		}
-		// console.dir(EventMgr);
+		// CD(EventMgr);
 	});
 	
-	EventMgr.bind('interactiveServiceAdded', function(event, response){
-		var response = ActivityTreeClass.feedCurrentNode(treeId, response);
+	EventMgr.unbind('interactiveServiceAdded').bind('interactiveServiceAdded', function(event, response){
+		var response = _this.feedCurrentNode(response);
 		if(response.NODE && response.TREE_OBJ){
-			ActivityTreeClass.addInteractiveService(response);
-		}
-	});
-	
-	EventMgr.bind('connectorAdded', function(event, response){
-		var response = ActivityTreeClass.feedCurrentNode(treeId, response);
-		if(response.NODE && response.TREE_OBJ){
-			ActivityTreeClass.addConnector(response);
+			_this.addInteractiveService(response);
 		}
 	});
 	
-	EventMgr.bind('activityDeleted', function(event, response){
-		var response = ActivityTreeClass.feedCurrentNode(treeId, response);
+	EventMgr.unbind('connectorAdded').bind('connectorAdded', function(event, response){
+		var response = _this.feedCurrentNode(response);
+		if(response.NODE && response.TREE_OBJ){
+			_this.addConnector(response);
+		}
+	});
+	
+	EventMgr.unbind('activityDeleted').bind('activityDeleted', function(event, response){
+		var response = _this.feedCurrentNode(response);
 		if(response.TREE_OBJ){
 			response.TREE_OBJ.refresh();
 		}
 	});
 	
-	EventMgr.bind('connectorDeleted', function(event, response){
-		var response = ActivityTreeClass.feedCurrentNode(treeId, response);
+	EventMgr.unbind('connectorDeleted').bind('connectorDeleted', function(event, response){
+		var response = _this.feedCurrentNode(response);
 		if(response.TREE_OBJ){
 			response.TREE_OBJ.refresh();
 		}
 	});
 }
 
-ActivityTreeClass.feedCurrentNode = function(treeId, object){
-	if(ActivityTreeClass.instances[treeId]){
-		if(ActivityTreeClass.instances[treeId].treeObj && ActivityTreeClass.instances[treeId].currentNode){
-			object.TREE_OBJ = ActivityTreeClass.instances[treeId].treeObj;
-			object.NODE = ActivityTreeClass.instances[treeId].currentNode;
-		}
+ActivityTreeClass.prototype.feedCurrentNode = function(object){
+	if(this.treeObj && this.currentNode){
+		object.TREE_OBJ = this.treeObj;
+		object.NODE = this.currentNode;
 	}
 	
 	return object;
 }
-
+/*
 ActivityTreeClass.setCurrentNode = function(treeId, nodeId){
-	// console.log('setCurrentNode::treeId',treeId);
+	// CL('setCurrentNode::treeId',treeId);
 	
 	var node = ActivityTreeClass.getTreeNode(nodeId, treeId);
 	if(ActivityTreeClass.instances[treeId]){
-		// console.log('setCurrentNode::node',node);
+		// CL('setCurrentNode::node',node);
 		ActivityTreeClass.instances[treeId].currentNode = node;
 	}else{
 		throw 'no instance of activity tree has been found with the id '+treeId;
 	}
 	
 }
+*/
+ActivityTreeClass.prototype.addActivity = function(response){
+	var TREE_OBJ = this.treeObj;
+	var NODE = this.getTreeNode('node-process-root');//always add to the root, process node
+	
+	if(NODE && TREE_OBJ){
 		
-/**
- * add an activity
- * @param {Object} options
- */
-ActivityTreeClass.addActivity = function(response){
-	var TREE_OBJ = response.TREE_OBJ;
-	var NODE = ActivityTreeClass.getTreeNode('node-process-root');//always add to the root, process node
-	
-	TREE_OBJ.select_branch(TREE_OBJ.create({
-		data: response.label,
-		attributes: {
-			id: response.uri,
-			'class': response.class
-		}
-	}, TREE_OBJ.get_node(NODE[0])));
-	
-	// console.log('TREE_OBJ', TREE_OBJ);
-	
-	//create property node:
-	TREE_OBJ.create({
-		data: 'property',
-		attributes: {
-			id: 'prop_'+response.uri,
-			'class': 'node-property'
-		}
-	});
+		TREE_OBJ.select_branch(TREE_OBJ.create({
+			data: response.label,
+			attributes: {
+				id: response.uri,
+				'class': response.clazz
+			}
+		}, TREE_OBJ.get_node(NODE[0])));
 		
+	}
+	
 	// if(response.connector){
 		
 		// TREE_OBJ.create({
@@ -678,11 +627,7 @@ ActivityTreeClass.addActivity = function(response){
 	// }
 		
 }
-
-/**
- * refresh the tree
- * @param {Object} options
- */
+/*
 ActivityTreeClass.refreshTree = function(options){
 	var TREE_OBJ = options.TREE_OBJ;
 	// var NODE = options.NODE;
@@ -690,10 +635,6 @@ ActivityTreeClass.refreshTree = function(options){
 	// TREE_OBJ.reselect(true);
 }
 		
-/**
- * add an activity
- * @param {Object} options
- */
 ActivityTreeClass.addInteractiveService = function(response){
 	var TREE_OBJ = response.TREE_OBJ;
 	var NODE = response.NODE;
@@ -739,25 +680,22 @@ ActivityTreeClass.addInferenceRule = function(options){
 		dataType: 'json',
 		success: function(response){
 			if (response.uri) {
-				TREE_OBJ.select_branch(TREE_OBJ.create(
-					{	
-						data: response.label,
-						attributes: {
-							id: response.uri,
-							'class': cssClass
-						}
-					}, 
-					TREE_OBJ.get_node(NODE[0])
-					));
+				TREE_OBJ.select_branch(
+					TREE_OBJ.create({	
+							data: response.label,
+							attributes: {
+								id: response.uri,
+								'class': cssClass
+							}
+						}, 
+						TREE_OBJ.get_node(NODE[0])
+					)
+				);
 			}
 		}
 	});
 }
 
-/**
- * add a consistency rule
- * @param {Object} options
- */
 ActivityTreeClass.addConsistencyRule = function(options){
 	var TREE_OBJ = options.TREE_OBJ;
 	var NODE = options.NODE;
@@ -784,28 +722,18 @@ ActivityTreeClass.addConsistencyRule = function(options){
 		}
 	});
 }
-
-/**
- * @return {Object} the tree instance
- */
+*/
 ActivityTreeClass.prototype.getTree = function(){
 	return $.tree.reference(this.selector);
 }
-
-/**
- * select a node in a tree instance
- * @param {String} nodeId
-  * @param {String} treeId
- * @return {Boolean}
- */
+/*
 ActivityTreeClass.selectTreeNode = function(nodeId, treeId){
 	
 	if(treeId){
-		// console.log('in if');
 		if(ActivityTreeClass.instances[treeId]){
-			anActivityTree = ActivityTreeClass.instances[treeId];
+			var anActivityTree = ActivityTreeClass.instances[treeId];
 			if(anActivityTree){
-				aJsTree = anActivityTree.getTree();
+				var aJsTree = anActivityTree.getTree();
 				if(aJsTree){
 					if(aJsTree.select_branch($("li[id='"+nodeId+"']"))){
 						aJsTree.open_branch($("li[id='"+nodeId+"']"));
@@ -815,13 +743,11 @@ ActivityTreeClass.selectTreeNode = function(nodeId, treeId){
 			}
 		}
 	}else{
-		// console.log('in else');
-		// console.dir(ActivityTreeClass.instances);
 		for(treeName in ActivityTreeClass.instances){
-			anActivityTree = null;
+			var anActivityTree = null;
 			anActivityTree = ActivityTreeClass.instances[treeName];
 			if(anActivityTree){
-				aJsTree = anActivityTree.getTree();
+				var aJsTree = anActivityTree.getTree();
 				if(aJsTree){
 					if(aJsTree.select_branch($("li[id='"+nodeId+"']"))){
 						aJsTree.open_branch($("li[id='"+nodeId+"']"));
@@ -833,22 +759,18 @@ ActivityTreeClass.selectTreeNode = function(nodeId, treeId){
 	}
 	
 	return false;
+}*/
+ActivityTreeClass.prototype.getTreeNode = function(nodeId){
+	return ActivityTreeClass.getTreeNode(nodeId, this.treeId);
 }
 
-/**
- * get a node from a tree instance
- * @param {String} nodeId
-  * @param {String} treeId
- * @return {Object}
- */
 ActivityTreeClass.getTreeNode = function(nodeId, treeId){
 	
 	if(treeId){
-		// console.log('in if');
 		if(ActivityTreeClass.instances[treeId]){
-			anActivityTree = ActivityTreeClass.instances[treeId];
+			var anActivityTree = ActivityTreeClass.instances[treeId];
 			if(anActivityTree){
-				aJsTree = anActivityTree.getTree();
+				var aJsTree = anActivityTree.getTree();
 				if(aJsTree){
 					if(aJsTree.get_node($("li[id='"+nodeId+"']"))){
 						return aJsTree.get_node($("li[id='"+nodeId+"']"));
@@ -857,21 +779,14 @@ ActivityTreeClass.getTreeNode = function(nodeId, treeId){
 			}
 		}
 	}else{
-		// console.log('in else');
-		// console.dir(ActivityTreeClass.instances);
 		for(treeName in ActivityTreeClass.instances){
-			anActivityTree = null;
+			var anActivityTree = null;
 			anActivityTree = ActivityTreeClass.instances[treeName];
 			if(anActivityTree){
-				aJsTree = anActivityTree.getTree();
-				// console.log("aJsTree:");
-				// console.dir(aJsTree);
+				var aJsTree = anActivityTree.getTree();
 				if(aJsTree){
 					if(aJsTree.get_node($("li[id='"+nodeId+"']"))){
-						node = aJsTree.get_node($("li[id='"+nodeId+"']"));
-						// console.log("aJsTree's node:");
-						// console.dir(node);
-						return node;
+						return aJsTree.get_node($("li[id='"+nodeId+"']"));
 					}
 				}
 			}
@@ -880,17 +795,18 @@ ActivityTreeClass.getTreeNode = function(nodeId, treeId){
 	
 	return null;
 }
-
-/**
- * remove a resource
- * @param {Object} options
- */
+/*
 ActivityTreeClass.removeNode0 = function(options){
+	if(options.TREE_OBJ && options.NODE){
+	
+	}
+	
+	
 	var TREE_OBJ = options.TREE_OBJ;
 	var NODE = options.NODE;
 	if(confirm(__("Please confirm deletion"))){
 		$.each(NODE, function () { 
-			data = false;
+			var data = false;
 			var selectedNode = this;
 			if($(selectedNode).hasClass('node-activity')){
 				data =  {activityUri: $(selectedNode).attr('id')}
@@ -916,16 +832,15 @@ ActivityTreeClass.removeNode0 = function(options){
 	}
 }
 
-/**
- * remove an activity or a connector node:
- * @param {Object} options
- */
 ActivityTreeClass.removeNode = function(options){
-	var TREE_OBJ = options.TREE_OBJ;
-	var NODE = options.NODE;
-	if(confirm(__("Please confirm deletion.\n Warning: related resources might be affected."))){
-		
-			data = false;
+
+	if(options.TREE_OBJ && options.NODE){
+	
+		var TREE_OBJ = options.TREE_OBJ;
+		var NODE = options.NODE;
+		if(confirm(__("Please confirm deletion.\n Warning: related resources might be affected."))){
+			
+			var data = false;
 			// var selectedNode = this;
 			if(NODE.hasClass('node-connector')){
 				// PNODE = TREE_OBJ.parent(selectedNode);
@@ -959,42 +874,55 @@ ActivityTreeClass.removeNode = function(options){
 					}
 				});
 			}
-		
+			
+		}
 	}
+	
+	
 }
 
 ActivityTreeClass.setFirstActivity = function(options){
-	var TREE_OBJ = options.TREE_OBJ;
-	var NODE = options.NODE;
-	data = {processUri:TREE_OBJ.parent(NODE).attr('rel'), activityUri:NODE.attr('id')};
-	
-	if(data){
-		$.ajax({
-			url: options.url,
-			type: "POST",
-			data: data,
-			dataType: 'json',
-			success: function(response){
-				if(response.set){
-					TREE_OBJ.refresh();
+
+	if(options.NODE && options.TREE_OBJ){
+		var TREE_OBJ = options.TREE_OBJ;
+		var NODE = options.NODE;
+		var data = {processUri:TREE_OBJ.parent(NODE).attr('rel'), activityUri:NODE.attr('id')};
+		
+		if(data){
+			$.ajax({
+				url: options.url,
+				type: "POST",
+				data: data,
+				dataType: 'json',
+				success: function(response){
+					if(response.set){
+						TREE_OBJ.refresh();
+					}
 				}
-			}
-		});
+			});
+		}
 	}
 	
 }
 
 ActivityTreeClass.addConnector = function(response){
 	
-	var TREE_OBJ = response.TREE_OBJ;
-	var NODE = response.NODE;
+	if(response.TREE_OBJ && response.NODE){
 	
-	TREE_OBJ.select_branch(TREE_OBJ.create({
-		data: response.label,
-		attributes: {
-			id: response.uri,
-			'class': 'node-connector'
+		var TREE_OBJ = response.TREE_OBJ;
+		var NODE = response.NODE;
+		
+		if(NODE[0]){
+			TREE_OBJ.select_branch(TREE_OBJ.create({
+				data: response.label,
+				attributes: {
+					id: response.uri,
+					'class': 'node-connector'
+				}
+			}, TREE_OBJ.get_node(NODE[0])));
 		}
-	}, TREE_OBJ.get_node(NODE[0])));
+		
+	}
 	
 }
+*/
