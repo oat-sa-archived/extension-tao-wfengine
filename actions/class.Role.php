@@ -71,11 +71,11 @@ class wfEngine_actions_Role extends tao_actions_TaoModule {
 	*	index:
 	*/
 	public function index(){
-		if($this->getData('reload') == true){
-			unset($_SESSION[SESSION_NAMESPACE]['uri']);
-			unset($_SESSION[SESSION_NAMESPACE]['classUri']);
-		}
-		$this->setData('section',Session::getAttribute('currentSection'));
+		
+		unset($_SESSION[SESSION_NAMESPACE]['uri']);
+		unset($_SESSION[SESSION_NAMESPACE]['classUri']);
+		
+		$this->setData('section', Session::getAttribute('currentSection'));
 		$this->setView('role/index.tpl');
 	}
 	

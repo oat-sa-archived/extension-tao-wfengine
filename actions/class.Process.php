@@ -64,6 +64,19 @@ class wfEngine_actions_Process extends tao_actions_TaoModule {
  * controller actions
  */
 	
+	/**
+	 * Overriden to remove URIS set in other section 
+	 * and to prevent a wrong action state based on the resource.
+	 * @return void
+	 */
+	public function index(){
+		
+		$this->removeSessionAttribute('uri');
+		$this->removeSessionAttribute('classUri');
+		
+		parent::index();
+	}
+	
 	
 	/**
 	 * Edit a group instance
