@@ -1,4 +1,4 @@
-// alert("activity diagram Class loaded");
+alert("activity diagram Class loaded");
 
 //require arrows.js
 
@@ -1129,10 +1129,10 @@ ActivityDiagramClass.drawConnector = function(connectorId, position, connectorTy
 	
 	//debug:
 	/*
-	console.log('width', width);
-	console.log('portNumber', portNumber);
-	console.log('offsetStart', offsetStart);
-	console.log('offsetStep', offsetStep);
+	CL('width', width);
+	CL('portNumber', portNumber);
+	CL('offsetStart', offsetStart);
+	CL('offsetStep', offsetStep);
 	*/
 	
 	//set the border points:

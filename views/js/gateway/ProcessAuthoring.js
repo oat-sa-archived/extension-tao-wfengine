@@ -120,8 +120,8 @@ GatewayProcessAuthoring.deleteConnector = function(url, connectorUri){
 		success: function(response){
 			if(response.deleted){
 				EventMgr.trigger('connectorDeleted', response);
+				
 			}else{
-				// console.log(response);
 				throw 'error in deleteing the connector';
 			}
 		}
