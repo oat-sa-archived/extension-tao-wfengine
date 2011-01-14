@@ -33,6 +33,12 @@
 		INSTANCE_TYPEOFCONNECTORS_SPLIT = "<?=tao_helpers_Uri::encode(INSTANCE_TYPEOFCONNECTORS_SPLIT)?>";
 		INSTANCE_TYPEOFCONNECTORS_PARALLEL = "<?=tao_helpers_Uri::encode(INSTANCE_TYPEOFCONNECTORS_PARALLEL)?>";
 		INSTANCE_TYPEOFCONNECTORS_JOIN = "<?=tao_helpers_Uri::encode(INSTANCE_TYPEOFCONNECTORS_JOIN)?>";
+		
+		//unbind events:
+		EventMgr.unbind();
+		
+		//init values:
+		var processUri = "<?=get_data("processUri")?>";
 	</script>
 	<!--<script type="text/javascript" src="https://getfirebug.com/firebug-lite.js"></script>-->
 	
@@ -42,7 +48,7 @@
 	
 	<script type="text/javascript" src="<?=PROCESS_BASE_WWW?>js/gateway/ProcessAuthoring.js"></script>
 	<script type="text/javascript" src="<?=PROCESS_SCRIPT_URL?>activity.tree.js"></script>
-	<!--<script type="text/javascript" src="<?=PROCESS_SCRIPT_URL?>arrows.js"></script>
+	<script type="text/javascript" src="<?=PROCESS_SCRIPT_URL?>arrows.js"></script>
 	<script type="text/javascript" src="<?=PROCESS_SCRIPT_URL?>activityDiagram.js"></script>
 	<script type="text/javascript" src="<?=PROCESS_SCRIPT_URL?>modeController.js"></script>
 	<script type="text/javascript" src="<?=PROCESS_SCRIPT_URL?>modeInitial.js"></script>
@@ -51,13 +57,9 @@
 	<script type="text/javascript" src="<?=PROCESS_SCRIPT_URL?>modeArrowLink.js"></script>
 	<script type="text/javascript" src="<?=PROCESS_SCRIPT_URL?>modeActivityMove.js"></script>
 	<script type="text/javascript" src="<?=PROCESS_SCRIPT_URL?>modeConnectorMove.js"></script>
-	<script type="text/javascript" src="<?=PROCESS_SCRIPT_URL?>modeArrowEdit.js"></script>-->
+	<script type="text/javascript" src="<?=PROCESS_SCRIPT_URL?>modeArrowEdit.js"></script><!---->
 	
 	<script type="text/javascript">
-	//init:
-	
-	var processUri = "<?=get_data("processUri")?>";
-	
 	function processProperty(){
 		_load("#process_form", 
 			authoringControllerPath+"editProcessProperty", 
@@ -123,7 +125,6 @@
 		//load activity tree:
 		loadActivityTree();
 		
-		
 		//load the trees:
 		// loadSectionTree("serviceDefinition");//use get_value instead to get the uriResource of the service definition class and make
 		// loadSectionTree("formalParameter");
@@ -137,13 +138,16 @@
 		<?endif;?>
 	});
 	
-	/*
-	ActivityDiagramClass.canvas = "#process_diagram_container";
-	ActivityDiagramClass.localNameSpace = "<?=tao_helpers_Uri::encode(core_kernel_classes_Session::singleton()->getNameSpace().'#')?>";
-	
-	
-	
 	$(function() {
+		ActivityDiagramClass.canvas = "#process_diagram_container";
+		ActivityDiagramClass.localNameSpace = "<?=tao_helpers_Uri::encode(core_kernel_classes_Session::singleton()->getNameSpace().'#')?>";
+	
+		//test:
+		// ActivityDiagramClass.feedDiagram();
+		// ActivityDiagramClass.drawDiagram();
+		
+		//draw diagram:
+		
 		$(ActivityDiagramClass.canvas).scroll(function(){
 			// TODO: set a more cross-browser way to retrieve scroll left and top values:
 			ActivityDiagramClass.scrollLeft = this.scrollLeft;
@@ -158,7 +162,7 @@
 		}
 		
 	});
-	*/
+	
 	</script>
 
 	<div class="main-container" style="display:none;"></div>
@@ -222,12 +226,9 @@
 	
 	
 	<script type="text/javascript">
-	
-	
-	/*
 	$(function(){
 		
-		EventMgr.unbind();
+		
 		
 		EventMgr.bind('activityAdded', function(event, response){
 			
@@ -383,11 +384,7 @@
 		});
 		
 		
-		
-	});*/
-	
-	
-	
+	});
 	
 	</script>
 	

@@ -155,3 +155,7 @@ GatewayProcessAuthoring.saveConnector = function(url, connectorUri, prevActivity
 	});
 	
 }
+
+GatewayProcessAuthoring.selectElement = function(elementUri){
+	EventMgr.trigger('elementSelected', response);
+}

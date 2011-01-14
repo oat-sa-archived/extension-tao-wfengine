@@ -52,7 +52,7 @@ ArrowClass.calculateArrow = function(point1, point2, type, flex, temp){
 			}
 		}
 	}else{
-		// console.dir(ArrowClass.tempArrows[point1.attr('id')]);
+		// CD(ArrowClass.tempArrows[point1.attr('id')]);
 		if(!processUtil.isset(ArrowClass.tempArrows[point1.attr('id')])){
 			ArrowClass.tempArrows[point1.attr('id')] = new Array();
 		}else{
@@ -83,7 +83,7 @@ ArrowClass.calculateArrow = function(point1, point2, type, flex, temp){
 	}else{
 		flexPointNumber = 2;
 	}
-	//console.log("flexPointNb: "+flexPointNumber+ ", Dx: "+ Dx+ ", Dy: "+ Dy);
+	//CL("flexPointNb: "+flexPointNumber+ ", Dx: "+ Dx+ ", Dy: "+ Dy);
 	
 	
 	var arrow = new Array();
@@ -234,16 +234,17 @@ ArrowClass.drawArrow = function(arrowName, options){
 	if(!isset(options)){
 		throw 'no options set';
 	}
+	var p = [];
 	if(options.temp){
 		if(!isset(ArrowClass.tempArrows[arrowName].coord)){
 			throw 'the temporary arrow does not exist';
 		}
-		var p = ArrowClass.tempArrows[arrowName].coord;
+		p = ArrowClass.tempArrows[arrowName].coord;
 	}else{
 		if(!isset(ArrowClass.arrows[arrowName].coord)){
 			throw 'the arrow does not exist';
 		}
-		var p = ArrowClass.arrows[arrowName].coord;
+		p = ArrowClass.arrows[arrowName].coord;
 	}
 	
 	options.name = arrowName;
@@ -333,12 +334,12 @@ ArrowClass.drawArrowPart = function(border,left,top,width,height,container,name,
 		element.css('width', Math.round(width)+'px');
 		element.css('height', Math.round(height)+'px');
 		
-		//console.log('left:',element.css('left'));
-		//console.log('top:',element.css('top'));
-		//console.log('w:',element.css('width'));
-		//console.log('h:',element.css('height'));
-		// console.log('x2',p2.x);
-		// console.log('y2',p2.y);
+		//CL('left:',element.css('left'));
+		//CL('top:',element.css('top'));
+		//CL('w:',element.css('width'));
+		//CL('h:',element.css('height'));
+		// CL('x2',p2.x);
+		// CL('y2',p2.y);
 	
 		element.appendTo(container);
 	}
@@ -405,7 +406,7 @@ ArrowClass.getDraggableFlexPoints = function(tempArrowName){
 				helper: 'clone',
 				handle: "#"+dragHandleId,
 				start: function(event, ui){
-					// console.log($(this).draggable('option', 'handle'));
+					// CL($(this).draggable('option', 'handle'));
 				},
 				drag: function(event, ui){
 										
@@ -464,13 +465,13 @@ ArrowClass.getCenterCoordinate = function(element){
 	
 	x = (position.left-canvasOffset.left+ActivityDiagramClass.scrollLeft) + element.width()/2;
 	y = (position.top-canvasOffset.top+ActivityDiagramClass.scrollTop) + element.height()/2;
-	// console.log('ActivityDiagramClass.scrollLeft', ActivityDiagramClass.scrollLeft);
-	// console.log('ActivityDiagramClass.scrollTop', ActivityDiagramClass.scrollTop);
+	// CL('ActivityDiagramClass.scrollLeft', ActivityDiagramClass.scrollLeft);
+	// CL('ActivityDiagramClass.scrollTop', ActivityDiagramClass.scrollTop);
 	
-	// console.log('Cx',element.width());
-	// console.log('Cy',element.height());
-	// console.log('x', x);
-	// console.log('y', y);
+	// CL('Cx',element.width());
+	// CL('Cy',element.height());
+	// CL('x', x);
+	// CL('y', y);
 	
 	return {x:x, y:y};
 }
@@ -554,7 +555,7 @@ ArrowClass.saveTemporaryArrowToReal = function(arrowId){
 			container: ActivityDiagramClass.canvas,
 			arrowWidth: 2
 		});
-		// console.dir(ArrowClass.arrows);
+		// CD(ArrowClass.arrows);
 		ActivityDiagramClass.setArrowMenuHandler(arrowId);
 	}
 }
@@ -566,6 +567,7 @@ ArrowClass.getArrow = function(arrowName, temp){
 	if(!processUtil.isset(temp)){
 		temp = false;
 	}
+	var arrowTemp = null;
 	if(!temp){
 		arrowTemp = ArrowClass.arrows[arrowName];
 		if(processUtil.isset(arrowTemp)){

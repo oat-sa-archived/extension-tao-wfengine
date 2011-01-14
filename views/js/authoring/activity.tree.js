@@ -390,7 +390,7 @@ ActivityTreeClass.prototype.bindListeners = function(){
 	//TODO: put treeId in evnt data object: data = {treeId: treeId}
 	var _this = this;
 	
-	EventMgr.unbind('activityAdded').bind('activityAdded', function(event, response){
+	EventMgr.bind('activityAdded', function(event, response){
 		var response = _this.feedCurrentNode(response);
 		if(response.NODE && response.TREE_OBJ){
 			_this.addActivity(response);
@@ -398,27 +398,27 @@ ActivityTreeClass.prototype.bindListeners = function(){
 		// CD(EventMgr);
 	});
 	
-	EventMgr.unbind('interactiveServiceAdded').bind('interactiveServiceAdded', function(event, response){
+	EventMgr.bind('interactiveServiceAdded', function(event, response){
 		var response = _this.feedCurrentNode(response);
 		if(response.NODE && response.TREE_OBJ){
 			_this.addInteractiveService(response);
 		}
 	});
 	
-	EventMgr.unbind('connectorAdded').bind('connectorAdded', function(event, response){
+	EventMgr.bind('connectorAdded', function(event, response){
 		var response = _this.feedCurrentNode(response);
 		if(response.NODE && response.TREE_OBJ){
 			_this.addConnector(response);
 		}
 	});
 	
-	EventMgr.unbind('activityDeleted').bind('activityDeleted', function(event, response){
+	EventMgr.bind('activityDeleted', function(event, response){
 		if(_this.treeObj){
 			_this.treeObj.refresh();
 		}
 	});
 	
-	EventMgr.unbind('connectorDeleted').bind('connectorDeleted', function(event, response){
+	EventMgr.bind('connectorDeleted', function(event, response){
 		CL('deleting connect');
 		if(_this.treeObj){
 			CL('deleting connect1');
@@ -448,7 +448,11 @@ ActivityTreeClass.setCurrentNode = function(treeId, nodeId){
 
 ActivityTreeClass.prototype.addActivity = function(response){
 	var TREE_OBJ = this.treeObj;
-	var NODE = this.getTreeNode('node-process-root');//always add to the root, process node
+	var NODE = this.currentNode;
+	if(!NODE){
+		NODE = this.getTreeNode('node-process-root');//always add to the root, process node
+	}
+	
 	
 	if(NODE && TREE_OBJ){
 		
