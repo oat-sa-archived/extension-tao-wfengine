@@ -393,7 +393,7 @@ ModeActivityMenu.createMenu = function(targetId, containerId, position, actions,
 		
 		if(targetId && action.label && action.icon && action.action){
 			
-			$anchor = $('<div style="background-image: url(\''+action.icon+'\');">&nbsp;</span>').appendTo($menu);
+			var $anchor = $('<div style="background-image: url(\''+action.icon+'\');">&nbsp;</span>').appendTo($menu);
 			$anchor.addClass('ui-corner-all');
 			$anchor.attr('title', action.label);
 			$anchor.attr('rel', targetId);

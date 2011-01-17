@@ -8,6 +8,7 @@ ModeArrowLink.arrowTipPosition = null;
 ModeArrowLink.arrowType = null;
 ModeArrowLink.connector = null;
 ModeArrowLink.tempId = "defaultConnectorId";
+ModeArrowLink.dropped = false;
 
 ModeArrowLink.on = function(options){
 	
@@ -39,6 +40,7 @@ ModeArrowLink.on = function(options){
 	
 	//set droppable points:
 	ModeArrowLink.activateAllDroppablePoints(connectorId);
+	ModeArrowLink.dropped = false;
 	
 	return true;
 }
@@ -166,6 +168,9 @@ ModeArrowLink.createDraggableTempArrow = function(originId, position, options){
 			ArrowClass.tempArrows[arrowName] = ArrowClass.calculateArrow($('#'+arrowName), $(this), arrow.type, null, true);
 			ArrowClass.tempArrows[arrowName].actualTarget = actualTarget;
 			ArrowClass.redrawArrow(arrowName, true);
+			
+			//always reinitialize the dropped value to false
+			ModeArrowLink.dropped = false;
 		},
 		containment: ActivityDiagramClass.canvas,
 		stop: function(event, ui){
@@ -268,6 +273,7 @@ ModeArrowLink.activateDroppablePoint = function(DOMElementId){
 			ArrowClass.tempArrows[arrowName].actualTarget = id;
 			
 			ModeArrowLink.targetObject = ArrowClass.getTargetFromId(id);
+			ModeArrowLink.dropped = true;
 		}
 	});
 	
@@ -281,9 +287,10 @@ ModeArrowLink.save = function(){
 		
 		// save the temporay arrow data into the actual arrows array:
 		if(ArrowClass.tempArrows[connectorId]){
-			if(!processUtil.isset(ModeArrowLink.targetObject)){
-				// console.log('no arrow dropped');
-				throw 'no arrow dropped';
+			if(!processUtil.isset(ModeArrowLink.targetObject) || !ModeArrowLink.dropped){
+				//CL('no arrow dropped');
+				// throw 'no arrow dropped';
+				ModeArrowLink.cancel();
 				return false;
 			}else{
 				ArrowClass.saveTemporaryArrowToReal(connectorId);
@@ -317,7 +324,7 @@ ModeArrowLink.cancel = function(){
 		
 		if(ArrowClass.tempArrows[connectorId]){
 			//delete the temp arrows and draw the actual one:
-			ModeArrowLink.removeTempArrow(connectorId);
+			ArrowClass.removeTempArrow(connectorId);
 		}
 				
 		if(ArrowClass.arrows[connectorId]){
@@ -332,11 +339,4 @@ ModeArrowLink.cancel = function(){
 	
 	ModeArrowLink.tempId = 'empty';
 	return true;
-}
-
-ModeArrowLink.removeTempArrow = function(arrowName){
-	ArrowClass.removeArrow(arrowName, true, true);
-	//remove arrow tip:
-	var tipId = arrowName + '_tip';
-	$('#'+tipId).remove();
 }

@@ -82,7 +82,7 @@ ModeActivityLabel.save = function(activityId){
 	
 	if(!activityId){
 		if(ModeActivityLabel.tempId){
-			activityId = ModeActivityLabel.tempId;
+			var activityId = ModeActivityLabel.tempId;
 		}else{
 			throw 'no actiivty id set in the activity label editing mode';
 		}
@@ -137,7 +137,7 @@ ModeActivityLabel.destroyLabelTextbox = function(activityId){
 	
 	if(!activityId){
 		if(ModeActivityLabel.tempId){
-			activityId = ModeActivityLabel.tempId;
+			var activityId = ModeActivityLabel.tempId;
 		}else{
 			throw 'no actiivty id set in the activity label editing mode';
 		}

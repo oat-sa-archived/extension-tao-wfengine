@@ -72,7 +72,7 @@ ModeArrowEdit.deleteArrow = function(arrowId){
 ModeArrowEdit.createArrowMenu = function(arrowId){
 	//create top menu for the activity: first, last, edit, delete
 	var containerId = ActivityDiagramClass.getActivityId('activity', activityId);
-	actions = [];
+	var actions = [];
 	actions.push({
 		label: "Delete",
 		icon: img_url + "delete.png",
@@ -158,7 +158,7 @@ ModeArrowEdit.cancel = function(){
 		
 		if(ArrowClass.tempArrows[connectorId]){
 			//delete the temp arrows and draw the actual one:
-			ModeArrowLink.removeTempArrow(connectorId);
+			ArrowClass.removeTempArrow(connectorId);
 		}
 				
 		if(ArrowClass.arrows[connectorId]){

@@ -434,6 +434,8 @@ ArrowClass.getDraggableFlexPoints = function(tempArrowName){
 					
 					ArrowClass.tempArrows[arrowNameTemp] = ArrowClass.calculateArrow($("#"+arrowNameTemp), $("#"+arrowTemp.target), arrowTemp.type, flexPoints, true);
 					ArrowClass.tempArrows[arrowNameTemp].actualTarget = arrowTemp.actualTarget;
+					ArrowClass.tempArrows[arrowNameTemp].targetObject = arrowTemp.targetObject;//focring targetObject value
+					
 					ArrowClass.redrawArrow(arrowNameTemp, true);
 					ArrowClass.getDraggableFlexPoints(arrowNameTemp);
 				}
@@ -544,20 +546,26 @@ ArrowClass.saveTemporaryArrowToReal = function(arrowId){
 		
 		var tempArrow = ArrowClass.tempArrows[arrowId];
 		ArrowClass.arrows[arrowId] = tempArrow;
-		
+
 		//set the real target element (not the deleted arrow tip)
 		ArrowClass.arrows[arrowId].target = tempArrow.actualTarget;
 		// delete ArrowClass.arrows[arrowId].actualTarget;
 		
 		//delete the temp arrows and draw the actual one:
-		ModeArrowLink.removeTempArrow(arrowId);
+		ArrowClass.removeTempArrow(arrowId);
 		ArrowClass.drawArrow(arrowId, {
 			container: ActivityDiagramClass.canvas,
 			arrowWidth: 2
 		});
-		// CD(ArrowClass.arrows);
 		ActivityDiagramClass.setArrowMenuHandler(arrowId);
 	}
+}
+
+ArrowClass.removeTempArrow = function(arrowName){
+	ArrowClass.removeArrow(arrowName, true, true);
+	//remove arrow tip:
+	var tipId = arrowName + '_tip';
+	$('#'+tipId).remove();
 }
 
 ArrowClass.getArrow = function(arrowName, temp){
