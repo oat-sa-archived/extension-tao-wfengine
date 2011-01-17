@@ -904,7 +904,7 @@ class wfEngine_actions_ProcessAuthoring extends tao_actions_TaoModule {
 			'label'	=> $newActivity->getLabel(),
 			'uri' => tao_helpers_Uri::encode($newActivity->uriResource),
 			'port' => $port,
-			'class' => "node-activity node-activity-last"
+			'clazz' => "node-activity node-activity-last"
 		); 
 	}
 	

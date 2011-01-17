@@ -419,9 +419,7 @@ ActivityTreeClass.prototype.bindListeners = function(){
 	});
 	
 	EventMgr.bind('connectorDeleted', function(event, response){
-		CL('deleting connect');
 		if(_this.treeObj){
-			CL('deleting connect1');
 			_this.treeObj.refresh();
 		}
 	});

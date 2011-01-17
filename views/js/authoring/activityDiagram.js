@@ -1,4 +1,4 @@
-alert("activity diagram Class loaded");
+// alert("activity diagram Class loaded");
 
 //require arrows.js
 

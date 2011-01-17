@@ -105,29 +105,16 @@
 }
 
 
-.activity_menu_horizontal{
+div.activity_menu_horizontal{
 	padding:0;
 	margin:0;
 }
 
 
-.activity_menu_horizontal li{
-	display: inline;
-	list-style-type: none;
-	margin:0 5px;
-	height: 22px;
-	width: 22px;
-	cursor:pointer;
-}
-
-.activity_menu_horizontal li a{
-	height: 22px;
-	width: 22px;
-}
-
-.activity_menu_horizontal li a ins {
+div.activity_menu_horizontal div{
+	float: left;
 	background-color:#F0F0F0;
-	border-color:#D7D8D9;
+	border-color:#AAAAAA;
 	border-style:solid;
 	border-width:3px 5px 3px 5px;
 	float:left;
@@ -136,17 +123,19 @@
 	margin:0 5px;
 	text-decoration:none;
 	width:16px;
+	cursor:pointer;
+	z-index:1002;
 }
 
-.activity_menu_horizontal li a:hover ins{
+div.activity_menu_horizontal div:hover{
 	background-color:#E7F4F9;
 	border-color:#99E6F0;
 	border-width:4px 6px 2px 4px;
 	position:relative;
-	z-index:100;
+	z-index:1003;
 }
 
-.activity_menu_active_action li a ins{
+div.activity_menu_horizontal_active div{
 	background-color:#E7F4F9;
 	border-color:#99E6F0;
 	border-width:4px 6px 2px 4px;

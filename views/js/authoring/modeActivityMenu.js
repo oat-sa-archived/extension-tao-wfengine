@@ -27,7 +27,7 @@ ModeActivityMenu.on = function(options){
 
 ModeActivityMenu.createActivityMenu = function(activityId){
 	//create top menu for the activity: first, last, edit, delete
-	var containerId = ActivityDiagramClass.getActivityId('activity', activityId);
+	var containerId = ActivityDiagramClass.getActivityId('activity', activityId, 'top');
 	var actions = [];
 	
 	//if is not the first activity:
@@ -73,7 +73,8 @@ ModeActivityMenu.createActivityMenu = function(activityId){
 		activityId,
 		containerId,
 		'top',
-		actions
+		actions,
+		{offset:10}
 	);
 	// ModeActivityMenu.existingMenu = new Array();
 	ModeActivityMenu.existingMenu[containerId] = containerId;
@@ -298,9 +299,6 @@ ModeActivityMenu.createConnectorMenu = function(connectorId){
 								// ModeArrowLink.on(data.connectorId, data.port);
 								
 								var canvasPosition = $(ActivityDiagramClass.canvas).offset();
-								// console.log('canvasPosition', canvasPosition);
-								// console.log('e.pageX', e.pageX);
-								// console.log('e.e.pageY', e.pageY);
 								//real offset need to be calculated:
 								var position = {
 									left:e.pageX - canvasPosition.left + ActivityDiagramClass.scrollLeft,
@@ -378,12 +376,43 @@ ModeActivityMenu.createMenu = function(targetId, containerId, position, actions,
 	
 	var menuContainer = $('<div id="'+menuContainerId+'"/>');
 	var calculatedWith = (10+5+16+5)*parseInt(actions.length);
-	var calculatedHeight = (3+16+3);
+	// var calculatedHeight = (3+16+3);
+	var calculatedHeight = 26;
 	menuContainer.width(calculatedWith+"px");
 	menuContainer.height(calculatedHeight+"px");
+	menuContainer.addClass('activity_menu_container');
 	menuContainer.css('z-index',1001);//always on top
 	menuContainer.css('position','absolute');
 	menuContainer.appendTo(container);
+	
+	var $menu = $('<div id="'+menuId+'"/>').appendTo(menuContainer);
+	$menu.addClass('activity_menu_horizontal');
+	
+	for(var i=0; i<actions.length; i++){
+		var action = actions[i];
+		
+		if(targetId && action.label && action.icon && action.action){
+			
+			$anchor = $('<div style="background-image: url(\''+action.icon+'\');">&nbsp;</span>').appendTo($menu);
+			$anchor.addClass('ui-corner-all');
+			$anchor.attr('title', action.label);
+			$anchor.attr('rel', targetId);
+			
+			initialAutoclose = autoclose;
+			if(action.autoclose!=null){
+				autoclose = action.autoclose;//if the autoclose option is set, overwrite the value
+			}
+			$anchor.bind('click', {id:targetId, action:action.action, autoclose: autoclose, data:data}, function(event){
+				event.preventDefault();
+				event.stopPropagation();
+				if(event.data.autoclose){
+					ModeActivityMenu.cancel();
+				}
+				event.data.action(event.data.id, event.data.data, event);
+			});
+			autoclose = initialAutoclose;//restore intial value, useful only when action.autoclose is set
+		}
+	}
 	
 	//position the menu with respect to the container:
 	//correct offset value, due to absolute positionning... TODO redo that;
@@ -393,7 +422,8 @@ ModeActivityMenu.createMenu = function(targetId, containerId, position, actions,
 				my: "center bottom",
 				at: "center top",
 				of: '#'+containerId,
-				offset: "0 -"+offset
+				offset: "0 -"+offset,
+				collision: 'fit none'
 			});
 			break;
 		}
@@ -428,36 +458,6 @@ ModeActivityMenu.createMenu = function(targetId, containerId, position, actions,
 			//destroy all and return error:
 			// menu.remove();
 			return false
-		}
-	}
-	
-	var menu = $('<ul id="'+menuId+'"/>').appendTo(menuContainer);
-	menu.addClass('activity_menu_horizontal');
-	
-	for(var i=0; i<actions.length; i++){
-		var action = actions[i];
-		
-		if(targetId && action.label && action.icon && action.action){
-			
-			var anchorId = menuId+'_action_'+i;
-			var anchor = $('<a id="'+anchorId+'"/>').appendTo($('<li/>').appendTo(menu));
-			anchor.attr('title', action.label);
-			anchor.attr('rel', targetId);
-			anchor.append('<ins style="background-image: url(\''+action.icon+'\');">&nbsp;</ins>');
-			
-			initialAutoclose = autoclose;
-			if(action.autoclose!=null){
-				autoclose = action.autoclose;//if the autoclose option is set, overwrite the value
-			}
-			anchor.bind('click', {id:targetId, action:action.action, autoclose: autoclose, data:data}, function(event){
-				event.preventDefault();
-				event.stopPropagation();
-				if(event.data.autoclose){
-					ModeActivityMenu.cancel();
-				}
-				event.data.action(event.data.id, event.data.data, event);
-			});
-			autoclose = initialAutoclose;//restore intial value, useful only when action.autoclose is set
 		}
 	}
 	
