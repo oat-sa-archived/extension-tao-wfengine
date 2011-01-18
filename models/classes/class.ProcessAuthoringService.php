@@ -1933,17 +1933,21 @@ class wfEngine_models_classes_ProcessAuthoringService
 
         // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004E79 begin
 		
-		//to be clarified:
-		// $actualParameterType = PROPERTY_ACTUALPARAM_CONSTANTVALUE; //PROPERTY_ACTUALPARAM_CONSTANTVALUE;//PROPERTY_ACTUALPARAM_PROCESSVARIABLE //PROPERTY_ACTUALPARAM_QUALITYMETRIC
+		//must exist:
+		if(wfEngine_helpers_ProcessUtil::checkType($formalParam, new core_kernel_classes_Class(CLASS_FORMALPARAMETER))){
 		
-		$actualParameterClass = new core_kernel_classes_Class(CLASS_ACTUALPARAMETER);
-		
-		//create new resource for the property value of the current call of service PROPERTY_CALLOFSERVICES_ACTUALPARAMIN or PROPERTY_CALLOFSERVICES_ACTUALPARAMOUT
-		$newActualParameter = $actualParameterClass->createInstance($formalParam->getLabel(), "actual parameter created by Process Authoring Service");
-		$newActualParameter->setPropertyValue(new core_kernel_classes_Property(PROPERTY_ACTUALPARAM_FORMALPARAM), $formalParam->uriResource);
-		$newActualParameter->setPropertyValue(new core_kernel_classes_Property($actualParameterType), $value);
+			$actualParameterClass = new core_kernel_classes_Class(CLASS_ACTUALPARAMETER);
 	
-		$returnValue = $callOfService->setPropertyValue(new core_kernel_classes_Property($parameterInOrOut), $newActualParameter->uriResource);
+			//create new resource for the property value of the current call of service PROPERTY_CALLOFSERVICES_ACTUALPARAMIN or PROPERTY_CALLOFSERVICES_ACTUALPARAMOUT
+			$newActualParameter = $actualParameterClass->createInstance($formalParam->getLabel(), "actual parameter created by Process Authoring Service");
+			$newActualParameter->setPropertyValue(new core_kernel_classes_Property(PROPERTY_ACTUALPARAM_FORMALPARAM), $formalParam->uriResource);
+			$newActualParameter->setPropertyValue(new core_kernel_classes_Property($actualParameterType), $value);
+
+			$returnValue = $callOfService->setPropertyValue(new core_kernel_classes_Property($parameterInOrOut), $newActualParameter->uriResource);
+	
+		}else{
+			throw new Exception('the formal parameter does not exist');
+		}
 		
         // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004E79 end
 

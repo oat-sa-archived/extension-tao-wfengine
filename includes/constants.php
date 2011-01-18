@@ -118,7 +118,6 @@ include_once ROOT_PATH . '/tao/includes/constants.php';
 $todefine = array(
 	'GENERIS_BOOLEAN' => 'http://www.tao.lu/Ontologies/generis.rdf#Boolean',
 	
-	
 	'CLASS_SERVICESDEFINITION' => NS_TAOQUAL . '#i118588759532084',
 	'CLASS_ROLE' => NS_TAOQUAL . '#Role',
 	'CLASS_FORMALPARAMETER' => NS_TAOQUAL . '#i118588904546812',
@@ -224,10 +223,10 @@ $todefine = array(
 	'INSTANCE_CONTROL_BACKWARD'						=> NS_TAOQUAL  .'#BackwardControl',
 	'INSTANCE_CONTROL_FORWARD'						=> NS_TAOQUAL  .'#ForwardControl',
 	'PROPERTY_ACTIVITY_CONTROL'						=> NS_TAOQUAL  .'#ActivityControl',
-
+	
 	'API_LOGIN' 	=> SYS_USER_LOGIN,
 	'API_PASSWORD' 	=> SYS_USER_PASS
-
+	
 );
 
 foreach($todefine as $constName => $constValue){
