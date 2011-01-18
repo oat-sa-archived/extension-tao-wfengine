@@ -125,20 +125,20 @@
 		loadActivityTree();
 		
 		//load the trees:
-		// loadSectionTree("serviceDefinition");//use get_value instead to get the uriResource of the service definition class and make
-		// loadSectionTree("formalParameter");
-		// loadSectionTree("role");
-		// loadSectionTree("variable");
+		loadSectionTree("serviceDefinition");//use get_value instead to get the uriResource of the service definition class and make
+		loadSectionTree("formalParameter");
+		loadSectionTree("role");
+		loadSectionTree("variable");
 		
 		//load process property form
-		// processProperty();
+		processProperty();
 		
 		<?if(get_data('extension')=='taoDelivery'):?>
 		loadCompilationForm();
 		<?endif;?>
 	});
 	
-	$(function() {
+	$(function(){
 	
 		ActivityDiagramClass.canvas = "#process_diagram_container";
 		ActivityDiagramClass.localNameSpace = "<?=tao_helpers_Uri::encode(core_kernel_classes_Session::singleton()->getNameSpace().'#')?>";
