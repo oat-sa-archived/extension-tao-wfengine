@@ -52,7 +52,7 @@ ModeArrowEdit.deleteArrow = function(arrowId){
 		
 		//edit connector:
 		
-		ActivityDiagramClass.editConnector(connectorId, portId, 'delete', 0);//leave the default value of "value" to trigger the deletion
+		ActivityDiagramClass.editConnectorPort(connectorId, portId, 'delete', 0);//leave the default value of "value" to trigger the deletion
 		ActivityDiagramClass.saveConnector(connectorId);
 		
 		

@@ -899,12 +899,13 @@ class wfEngine_actions_ProcessAuthoring extends tao_actions_TaoModule {
 		$this->setView('authoring/process_form_inferenceRule.tpl');
 	}
 	
-	protected function newActivityTransferData(core_kernel_classes_Resource $newActivity, $port=0){
+	protected function newActivityTransferData(core_kernel_classes_Resource $newActivity, $port=0, $multiplicity=1){
 		return array(
 			'label'	=> $newActivity->getLabel(),
 			'uri' => tao_helpers_Uri::encode($newActivity->uriResource),
 			'port' => $port,
-			'clazz' => "node-activity node-activity-last"
+			'clazz' => "node-activity node-activity-last",
+			'multiplicity' => $multiplicity
 		); 
 	}
 	
@@ -1181,11 +1182,7 @@ class wfEngine_actions_ProcessAuthoring extends tao_actions_TaoModule {
 					// echo 'creating new joined activity';
 					$newActivity = $this->service->createJoinActivity($connectorInstance, null, $data["join_activityLabel"], $activity);
 					if($newActivity instanceof core_kernel_classes_Resource){
-						$newActivities[] = array(
-							'label'	=> $newActivity->getLabel(),
-							'uri' => tao_helpers_Uri::encode($newActivity->uriResource),
-							'port' => 0
-						); 
+						$newActivities[] = $this->newActivityTransferData($newActivity, 0);
 					}
 					
 				}elseif($data["join_activityUri"] == 'delete'){

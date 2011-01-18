@@ -31,11 +31,14 @@ if(EventMgr && ActivityDiagramClass && ArrowClass){
 					arrowWidth: 2
 				});
 				
+				//update connector in connectors array:
+				ActivityDiagramClass.editConnectorPort(previousObjectId, response.port, activity.id, response.multiplicity);//multiplicity to be defined
+				
 				//save diagram:
 				ActivityDiagramClass.saveDiagram();
 			}
 		}catch(ex){
-			// CL('activityAdded exception:', ex);
+			CL('activityAdded exception:', ex);
 		}
 	});
 
@@ -95,7 +98,7 @@ if(EventMgr && ActivityDiagramClass && ArrowClass){
 			//save diagram:
 			ActivityDiagramClass.saveDiagram();
 		}catch(ex){
-			// CL('connectorAdded exception:', ex);
+			CL('connectorAdded exception:', ex);
 			// CL('connector', connector);
 			// CL('originEltId', originEltId);
 			// CL('connectorId', connectorId);

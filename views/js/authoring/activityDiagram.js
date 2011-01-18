@@ -241,18 +241,30 @@ ActivityDiagramClass.loadDiagram = function(){
 }
 
 
-ActivityDiagramClass.editConnector = function(connectorId, port, value, multiplicity){
+ActivityDiagramClass.editConnectorPort = function(connectorId, port, value, multiplicity, label){
 	var connector = ActivityDiagramClass.getConnector(connectorId);
 	if(connector.port){
 		if(value){
+		
 			var num = 1;
 			if(multiplicity){
 				num = multiplicity;
 			}
+			
+			var labl = __('newly edited');
+			if(label){
+				labl = label;
+			}else{
+				var connectDesc = ActivityDiagramClass.getConnectorTypeDescription(connector);
+				if(connectDesc.portNames){
+					labl = connectDesc.portNames[port];
+				}
+			}
+			
 			connector.port[port] = {
 				"targetId": value,
 				"multiplicity": num,
-				"label": 'newly edited'
+				"label": labl
 			}
 		}
 	}

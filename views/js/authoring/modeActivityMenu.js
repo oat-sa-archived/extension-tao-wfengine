@@ -132,6 +132,9 @@ ModeActivityMenu.createActivityMenu = function(activityId){
 						);
 					}
 				});
+				
+				//parallel and join connector currently disabled
+				/*
 				typesOfConnectorSelectionActions.push({
 					label: 'parallel',
 					icon: img_url + "process_connector.png",
@@ -154,6 +157,7 @@ ModeActivityMenu.createActivityMenu = function(activityId){
 						);
 					}
 				});
+				*/
 				
 				ModeActivityMenu.createMenu(
 					data.selfId,
@@ -273,7 +277,7 @@ ModeActivityMenu.createConnectorMenu = function(connectorId){
 								label: "New Activity",
 								icon: img_url + "process_activity.png",
 								action: function(id, data, e){
-									ActivityDiagramClass.editConnector(data.connectorId, data.port, 'newActivity');
+									ActivityDiagramClass.editConnectorPort(data.connectorId, data.port, 'newActivity');
 									ActivityDiagramClass.saveConnector(data.connectorId);
 								}
 							});
@@ -286,7 +290,7 @@ ModeActivityMenu.createConnectorMenu = function(connectorId){
 								label: "New Connector",
 								icon: img_url + "process_connector.png",
 								action: function(id, data){
-									ActivityDiagramClass.editConnector(data.connectorId, data.port, 'newConnector');
+									ActivityDiagramClass.editConnectorPort(data.connectorId, data.port, 'newConnector');
 									ActivityDiagramClass.saveConnector(data.connectorId);
 								}
 							});
