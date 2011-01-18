@@ -232,6 +232,9 @@ ActivityDiagramClass.loadDiagram = function(){
 				
 				//initiate the mode to initial:
 				ModeController.setMode('ModeInitial');
+				
+				//trigger the loaded event:
+				EventMgr.trigger('diagramLoaded');
 			}
 			catch(err){
 				CL('loading diagram exception : ', err);
@@ -733,7 +736,6 @@ ActivityDiagramClass.drawDiagram = function(){
 		ActivityDiagramClass.drawActivity(activityId);
 		ActivityDiagramClass.setActivityMenuHandler(activityId);
 	}
-	
 	
 	for(connectorId in ActivityDiagramClass.connectors){
 		try{

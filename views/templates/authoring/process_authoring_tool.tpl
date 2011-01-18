@@ -23,7 +23,20 @@
 	</div>
 	
 <?else:?>
+	<style type="text/css">
+		/*need to be loaded fast*/
+		#accordion_container_1 {float:left;height:100%;width:15%;padding:0px;}
+		#accordion_container_2 {float:left;height:100%;width:25%;}
+		#processAuthoring_loading{position:absolute; width:99%; height:99%; z-index:1000; background-color:#FFFFFF;}
+		#processAuthoring_loading_message{position:relative; top:45%; left:45%; width:150px;}
+	</style>
 	<link rel="stylesheet" type="text/css" href="<?=PROCESS_BASE_WWW?>css/process_authoring_tool.css" />
+	
+	<div id="processAuthoring_loading">
+		<div id="processAuthoring_loading_message">
+			<img src="<?=ROOT_URL?>/tao/views/img/ajax-loader.gif" alt="loading" />
+		</div>
+	</div>
 	
 	<script type="text/javascript">
 		//constants:
@@ -105,7 +118,6 @@
 	}
 	
 	$(function(){
-		
 		$("#accordion1").accordion({
 			fillSpace: true,
 			autoHeight: false,
@@ -167,6 +179,8 @@
 				ModeController.setMode('ModeInitial');
 			}
 		});
+		
+		
 		
 	});
 	

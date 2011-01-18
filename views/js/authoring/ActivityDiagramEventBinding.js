@@ -150,6 +150,11 @@ if(EventMgr && ActivityDiagramClass && ArrowClass){
 		ActivityDiagramClass.reloadDiagram();
 	});
 
-	
+	EventMgr.bind('diagramLoaded', function(event, response){
+		setTimeout(function(){
+			$('#processAuthoring_loading').hide();
+			$('#authoring-container').show();
+		}, 1000);
+	});
 	
 }

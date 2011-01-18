@@ -7,17 +7,7 @@
 	position: relative;
 	top:0%;
 	left:0%;}
-#accordion_container_1 {
-	float:left;
-	height:100%;
-	width:15%;
-	padding:0px;
-}
-#accordion_container_2 {
-	float:left;
-	height:100%;
-	width:25%;
-}
+
 #process_center_panel{
 	float:left;
 	height:100%;
