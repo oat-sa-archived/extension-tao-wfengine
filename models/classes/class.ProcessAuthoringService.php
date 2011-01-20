@@ -536,7 +536,7 @@ class wfEngine_models_classes_ProcessAuthoringService
 			$found = false;
 			foreach($connectorCollection->getIterator() as $connector){
 				if($connector instanceof core_kernel_classes_Resource){
-					if($connector->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTOR_TYPEOFCONNECTOR))->uriResource == INSTANCE_TYPEOFCONNECTORS_JOIN){
+					if($connector->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_TYPEOFCONNECTOR))->uriResource == INSTANCE_TYPEOFCONNECTORS_JOIN){
 						//join connector found (there could be only a single one): connect the previous activity to that one:
 						
 						if(!is_null($previousActivity)){
@@ -758,7 +758,7 @@ class wfEngine_models_classes_ProcessAuthoringService
 
         // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004DC3 begin
 		
-		$this->setConnectorType($connector, new core_kernel_classes_Resource(INSTANCE_TYPEOFCONNECTORS_SPLIT));
+		$this->setConnectorType($connector, new core_kernel_classes_Resource(INSTANCE_TYPEOFCONNECTORS_CONDITIONAL));
 		
 		//remove property PROPERTY_CONNECTORS_NEXTACTIVITIES values on connector before:
 		if(is_null($followingActivity)){
@@ -862,7 +862,7 @@ class wfEngine_models_classes_ProcessAuthoringService
 			/*
 			//cleaner method to delete all the reference but much slower
 			//get the type of connector is "split", delete the reference in the transition rule: either PROPERTY_TRANSITIONRULES_THEN or ELSE
-			if($prevConnector->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_TYPE))->uriResource == INSTANCE_TYPEOFCONNECTORS_SPLIT){
+			if($prevConnector->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_TYPE))->uriResource == INSTANCE_TYPEOFCONNECTORS_CONDITIONAL){
 				
 				//get the transition rule:
 				$transitonRule = $prevConnector->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_TRANSITIONRULE));
@@ -1097,7 +1097,7 @@ class wfEngine_models_classes_ProcessAuthoringService
 		//get the type of connector:
 		$connectorType = $connector->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_TYPE));
 		if(!is_null($connectorType) && $connectorType instanceof core_kernel_classes_Resource){
-			if($connectorType->uriResource == INSTANCE_TYPEOFCONNECTORS_SPLIT){
+			if($connectorType->uriResource == INSTANCE_TYPEOFCONNECTORS_CONDITIONAL){
 				//delete the related rule:
 				$relatedRule = $connector->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_TRANSITIONRULE));
 				if(!is_null($relatedRule)){

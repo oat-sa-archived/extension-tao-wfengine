@@ -145,7 +145,7 @@ class wfEngine_models_classes_NotificationService
         	$connectorUserNotifiedProp			= new core_kernel_classes_Property(PROPERTY_CONNECTOR_USER_NOTIFIED);
         	$connectorRoleNotifiedProp 			= new core_kernel_classes_Property(PROPERTY_CONNECTOR_ROLE_NOTIFIED);
         	$connectorPreviousActivitiesProp 	= new core_kernel_classes_Property(PROPERTY_CONNECTORS_PRECACTIVITIES);
-        	$connectorNextActivitiesProp 		= new core_kernel_classes_Property(PROPERTY_CONENCTORS_NEXTACTIVITIES);
+        	$connectorNextActivitiesProp 		= new core_kernel_classes_Property(PROPERTY_CONNECTORS_NEXTACTIVITIES);
         	$activityExecutionUserProp 			= new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_CURRENT_USER);
         	$activityAclModeProp 				= new core_kernel_classes_Property(PROPERTY_ACTIVITIES_ACL_MODE);
         	$activityAclUserProp				= new core_kernel_classes_Property(PROPERTY_ACTIVITIES_RESTRICTED_USER);
@@ -296,7 +296,7 @@ class wfEngine_models_classes_NotificationService
         	
         	$connectorNotificationMessageProp 	= new core_kernel_classes_Property(PROPERTY_CONNECTOR_NOTIFICATION_MESSAGE);
         	$userMailProp 						= new core_kernel_classes_Property(PROPERTY_USER_MAIL);
-        	$processExecutionOfProp 			= new core_kernel_classes_Property(EXECUTION_OF);
+        	$processExecutionOfProp 			= new core_kernel_classes_Property(PROPERTY_PINSTANCES_EXECUTIONOF);
         	
         	//create messages from the notifications resources
         	$messages = array();

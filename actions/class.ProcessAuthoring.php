@@ -1062,7 +1062,7 @@ class wfEngine_actions_ProcessAuthoring extends tao_actions_TaoModule {
 				$this->service->deleteConnectorNextActivity($connectorInstance, 'next');
 			}
 			
-		}elseif($data[PROPERTY_CONNECTORS_TYPE] == INSTANCE_TYPEOFCONNECTORS_SPLIT){
+		}elseif($data[PROPERTY_CONNECTORS_TYPE] == INSTANCE_TYPEOFCONNECTORS_CONDITIONAL){
 			
 			//clean old value of property (use bind property with empty input?)
 			$connectorInstance->removePropertyValues(new core_kernel_classes_Property(PROPERTY_CONNECTORS_NEXTACTIVITIES));
@@ -1514,7 +1514,7 @@ class wfEngine_actions_ProcessAuthoring extends tao_actions_TaoModule {
 								break;
 							}
 							case 'conditional':{
-								$typeOfConnectorUri = INSTANCE_TYPEOFCONNECTORS_SPLIT;
+								$typeOfConnectorUri = INSTANCE_TYPEOFCONNECTORS_CONDITIONAL;
 								$typeOfConnector = 'conditional';
 								break;
 							}

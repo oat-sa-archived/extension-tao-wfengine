@@ -338,7 +338,7 @@ ActivityDiagramClass.saveConnector = function(connectorId){
 			postData += '&'+PROPERTY_CONNECTORS_TYPE+'=' + INSTANCE_TYPEOFCONNECTORS_SEQUENCE;
 			break;
 		}
-		case INSTANCE_TYPEOFCONNECTORS_SPLIT:{
+		case INSTANCE_TYPEOFCONNECTORS_CONDITIONAL:{
 			
 			for(var i=0; i<connectorDescription.portNumber; i++){
 				var prefix = connectorDescription.portNames[i].toLowerCase();
@@ -371,7 +371,7 @@ ActivityDiagramClass.saveConnector = function(connectorId){
 				}
 			}
 			
-			postData += '&'+PROPERTY_CONNECTORS_TYPE+'=' + INSTANCE_TYPEOFCONNECTORS_SPLIT;
+			postData += '&'+PROPERTY_CONNECTORS_TYPE+'=' + INSTANCE_TYPEOFCONNECTORS_CONDITIONAL;
 			break;
 		}
 		case INSTANCE_TYPEOFCONNECTORS_PARALLEL:{
@@ -411,7 +411,7 @@ ActivityDiagramClass.saveConnector = function(connectorId){
 				}
 			}
 			
-			postData += '&'+PROPERTY_CONNECTORS_TYPE+'=' + INSTANCE_TYPEOFCONNECTORS_SPLIT;
+			postData += '&'+PROPERTY_CONNECTORS_TYPE+'=' + INSTANCE_TYPEOFCONNECTORS_CONDITIONAL;
 			
 			break;
 		}

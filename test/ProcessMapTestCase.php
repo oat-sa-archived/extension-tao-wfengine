@@ -72,13 +72,13 @@ class ProcessMapTestCase extends UnitTestCase {
 		//create a connector to the first activity and set the type as "sequential"
 		$connector1  = null; 
 		$connector1 = $authoringService->createConnector($activity1);
-		$authoringService->setConnectorType($connector1, new core_kernel_classes_Resource(CONNECTOR_SEQ));
+		$authoringService->setConnectorType($connector1, new core_kernel_classes_Resource(INSTANCE_TYPEOFCONNECTORS_SEQUENCE));
 		$this->assertNotNull($connector1);
 		
 		//same for the 2nd activity:
 		$activity2 = $authoringService->createSequenceActivity($connector1, null, 'activity2');
 		$connector2 = $authoringService->createConnector($activity2);
-		$authoringService->setConnectorType($connector2, new core_kernel_classes_Resource(CONNECTOR_SEQ));
+		$authoringService->setConnectorType($connector2, new core_kernel_classes_Resource(INSTANCE_TYPEOFCONNECTORS_SEQUENCE));
 		$activityDefinitions[] = $activity2;
 		
 		//then the last:

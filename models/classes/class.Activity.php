@@ -182,9 +182,7 @@ class wfEngine_models_classes_Activity
 
         // section 10-13-1-85-16731180:11be4127421:-8000:0000000000000A03 begin
 
-		//if (defined('PIAAC_ENABLED') && $this->label == PIAAC_FIRST_ACTIVITY)
-		//	return true;
-		$isInitialProp = new core_kernel_classes_Property(ACTIVITIES_IS_INITIAL);
+		$isInitialProp = new core_kernel_classes_Property(PROPERTY_ACTIVITIES_ISINITIAL);
 		$isInitial = $this->resource->getPropertyValues($isInitialProp);
 		
 
@@ -214,7 +212,7 @@ class wfEngine_models_classes_Activity
 
         // section 10-13-1-85-16731180:11be4127421:-8000:0000000000000A07 begin
 
-		$nextActivitiesCollection = core_kernel_impl_ApiModelOO::singleton()->getSubject(PREC_ACTIVITIES,$this->uri);
+		$nextActivitiesCollection = core_kernel_impl_ApiModelOO::singleton()->getSubject(PROPERTY_CONNECTORS_PRECACTIVITIES,$this->uri);
 		
 		$returnValue = $nextActivitiesCollection=== null;
         // section 10-13-1-85-16731180:11be4127421:-8000:0000000000000A07 end

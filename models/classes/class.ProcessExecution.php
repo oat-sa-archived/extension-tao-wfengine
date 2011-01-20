@@ -338,7 +338,7 @@ extends wfEngine_models_classes_WfResource
 		
 		
 		switch ($connType->uriResource) {
-			case CONNECTOR_SPLIT : {
+			case INSTANCE_TYPEOFCONNECTORS_CONDITIONAL : {
 				$newActivities = $this->getSplitConnectorNewActivity($arrayOfProcessVars,$nextConnectorUri);
 				break;
 			}
@@ -518,7 +518,7 @@ extends wfEngine_models_classes_WfResource
 		parent::__construct($uri);
 		$this->resource = new core_kernel_classes_Resource($uri,__METHOD__);
 		//getexecutionOf field
-		$executionOfProp = new core_kernel_classes_Property(EXECUTION_OF);
+		$executionOfProp = new core_kernel_classes_Property(PROPERTY_PINSTANCES_EXECUTIONOF);
 		$values = $this->resource->getPropertyValues($executionOfProp);
 		
 		foreach ($values as $a => $b)
@@ -592,7 +592,7 @@ extends wfEngine_models_classes_WfResource
 		
 		$returnValue = '';
 		
-		$connectorsCollection = core_kernel_impl_ApiModelOO::singleton()->getSubject(PREC_ACTIVITIES, $activityUri);
+		$connectorsCollection = core_kernel_impl_ApiModelOO::singleton()->getSubject(PROPERTY_CONNECTORS_PRECACTIVITIES, $activityUri);
 		
 		if($connectorsCollection->count()>1){
 			//there might be a join connector among them or an issue
@@ -634,7 +634,7 @@ extends wfEngine_models_classes_WfResource
 		$returnValue = array();
 
 		// section 10-13-1-85--3c82cee5:11bb0c5945c:-8000:00000000000009AB begin
-		$nextConnectorsCollection = core_kernel_impl_ApiModelOO::singleton()->getSubject(PREC_ACTIVITIES,$this->currentActivity[0]->uri);
+		$nextConnectorsCollection = core_kernel_impl_ApiModelOO::singleton()->getSubject(PROPERTY_CONNECTORS_PRECACTIVITIES, $this->currentActivity[0]->uri);
 
 		$connectors = array();
 

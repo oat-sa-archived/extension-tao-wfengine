@@ -567,7 +567,7 @@ class wfEngine_helpers_ProcessFormFactory extends tao_helpers_form_GenerisFormFa
 			foreach($range->getInstances(true) as $rangeInstance){
 				//for now, only authorize sequential and conditionnal connector type
 				//TODO: parallel+join connectors need to be tested more thoroughly
-				if($rangeInstance->uriResource == INSTANCE_TYPEOFCONNECTORS_SEQUENCE || $rangeInstance->uriResource == INSTANCE_TYPEOFCONNECTORS_SPLIT){
+				if($rangeInstance->uriResource == INSTANCE_TYPEOFCONNECTORS_SEQUENCE || $rangeInstance->uriResource == INSTANCE_TYPEOFCONNECTORS_CONDITIONAL){
 					$options[ tao_helpers_Uri::encode($rangeInstance->uriResource) ] = $rangeInstance->getLabel();
 				}
 			}
@@ -610,7 +610,7 @@ class wfEngine_helpers_ProcessFormFactory extends tao_helpers_form_GenerisFormFa
 			
 			$elementInputs = self::nextActivityElements($connector, 'next');
 			
-		}else if($connectorType->uriResource == INSTANCE_TYPEOFCONNECTORS_SPLIT){
+		}else if($connectorType->uriResource == INSTANCE_TYPEOFCONNECTORS_CONDITIONAL){
 				
 			$transitionRule = $connector->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_TRANSITIONRULE));
 			$elementInputs[] = self::getConditionElement($transitionRule);

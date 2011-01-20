@@ -103,7 +103,7 @@ class wfEngine_models_classes_Connector
 		if ($recursivityLevel != "") {
 			$recursivityLevel--;
 		}
-		$geNextActivitiesProp = new core_kernel_classes_Property(PROPERTY_CONENCTORS_NEXTACTIVITIES);
+		$geNextActivitiesProp = new core_kernel_classes_Property(PROPERTY_CONNECTORS_NEXTACTIVITIES);
 		$geNextActivities = $this->resource->getPropertyValuesCollection($geNextActivitiesProp);
 
 
@@ -187,7 +187,7 @@ class wfEngine_models_classes_Connector
     	$returnValue = null;
     	
     	$resource = new core_kernel_classes_Resource($this->uri,__METHOD__);
-    	$connTypeProp = new core_kernel_classes_Property(PROPERTY_CONNECTOR_TYPEOFCONNECTOR,__METHOD__);
+    	$connTypeProp = new core_kernel_classes_Property(PROPERTY_CONNECTORS_TYPEOFCONNECTOR,__METHOD__);
 		try {
     		
 			$returnValue = $resource->getUniquePropertyValue($connTypeProp);
@@ -207,7 +207,7 @@ class wfEngine_models_classes_Connector
      */
     public function getPreviousActivities() {
     	if(empty($this->prevActivities)) {
-	    	$precActivitiesProp = new core_kernel_classes_Property(PREC_ACTIVITIES,__METHOD__);
+	    	$precActivitiesProp = new core_kernel_classes_Property(PROPERTY_CONNECTORS_PRECACTIVITIES,__METHOD__);
 			$resource = new core_kernel_classes_Resource($this->uri,__METHOD__);
 			$this->prevActivities = $resource->getPropertyValuesCollection($precActivitiesProp);
     	}
@@ -224,7 +224,7 @@ class wfEngine_models_classes_Connector
      */
     public function getNextActivities() {
     	if(empty($this->nextActivities)){
-	    	$nextActivitiesProp = new core_kernel_classes_Property(PROPERTY_CONENCTORS_NEXTACTIVITIES,__METHOD__);
+	    	$nextActivitiesProp = new core_kernel_classes_Property(PROPERTY_CONNECTORS_NEXTACTIVITIES,__METHOD__);
 			$resource = new core_kernel_classes_Resource($this->uri,__METHOD__);
 			$this->nextActivities = $resource->getPropertyValuesCollection($nextActivitiesProp);
     	}
@@ -246,7 +246,7 @@ class wfEngine_models_classes_Connector
 
 		parent::__construct($uri);
 		
-		$typeOfConnectorProp = new core_kernel_classes_Property(PROPERTY_CONENCTORS_TYPEOF);
+		$typeOfConnectorProp = new core_kernel_classes_Property(PROPERTY_CONNECTORS_TYPEOFCONNECTOR);
 		$this->logger->debug('Next Connector  Name: ' . $this->resource->getLabel(),__FILE__,__LINE__);
 		$this->logger->debug('Next Connector  Uri: ' . $this->resource->uriResource,__FILE__,__LINE__);
 		try{

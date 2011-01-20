@@ -125,7 +125,7 @@ class TokenServiceTestCase extends UnitTestCase {
 			
 			$connector1 = null;
 			$connector1 = $authoringService->createConnector($activity1);
-			$authoringService->setConnectorType($connector1, new core_kernel_classes_Resource(CONNECTOR_SEQ));
+			$authoringService->setConnectorType($connector1, new core_kernel_classes_Resource(INSTANCE_TYPEOFCONNECTORS_SEQUENCE));
 			$this->assertNotNull($connector1);
 			
 			$activity2 = $authoringService->createSequenceActivity($connector1, null, 'activity2');
@@ -133,7 +133,7 @@ class TokenServiceTestCase extends UnitTestCase {
 			
 			$connector2  = null; 
 			$connector2 = $authoringService->createConnector($activity2);
-			$authoringService->setConnectorType($connector2, new core_kernel_classes_Resource(CONNECTOR_SEQ));
+			$authoringService->setConnectorType($connector2, new core_kernel_classes_Resource(INSTANCE_TYPEOFCONNECTORS_SEQUENCE));
 			$this->assertNotNull($connector2);
 			
 			$activity3 = $authoringService->createSequenceActivity($connector2, null, 'activity3');
@@ -141,7 +141,7 @@ class TokenServiceTestCase extends UnitTestCase {
 			
 			$connector3  = null; 
 			$connector3 = $authoringService->createConnector($activity3);
-			$authoringService->setConnectorType($connector3, new core_kernel_classes_Resource(CONNECTOR_SEQ));
+			$authoringService->setConnectorType($connector3, new core_kernel_classes_Resource(INSTANCE_TYPEOFCONNECTORS_SEQUENCE));
 			$this->assertNotNull($connector3);
 			
 			$activity4 = $authoringService->createSequenceActivity($connector3, null, 'activity4');
@@ -149,7 +149,7 @@ class TokenServiceTestCase extends UnitTestCase {
 			
 			$connector4  = null; 
 			$connector4 = $authoringService->createConnector($activity4);
-			$authoringService->setConnectorType($connector4, new core_kernel_classes_Resource(CONNECTOR_SEQ));
+			$authoringService->setConnectorType($connector4, new core_kernel_classes_Resource(INSTANCE_TYPEOFCONNECTORS_SEQUENCE));
 			$this->assertNotNull($connector4);
 		
 			$activity5 = $authoringService->createSequenceActivity($connector4, null, 'activity5');

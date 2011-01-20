@@ -386,7 +386,7 @@ class wfEngine_models_classes_ProcessTreeService
 		}
 		
 		//if it is a split type
-		if( $connectorType->uriResource == INSTANCE_TYPEOFCONNECTORS_SPLIT){
+		if( $connectorType->uriResource == INSTANCE_TYPEOFCONNECTORS_CONDITIONAL){
 			//get the rule
 			$connectorRule = $connector->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_TRANSITIONRULE), false);
 			if(!is_null($connectorRule)){

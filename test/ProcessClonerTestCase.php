@@ -153,7 +153,7 @@ class ProcessClonerTestCase extends UnitTestCase {
 		$else1 = $this->authoringService->createSplitActivity($connector1, 'else', null, '', true);//create another connector
 		// $else1 = $this->authoringService->createSplitActivity($connector1, 'else');
 		
-		$this->assertEqual($connector1->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_TYPE))->uriResource, INSTANCE_TYPEOFCONNECTORS_SPLIT);
+		$this->assertEqual($connector1->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_TYPE))->uriResource, INSTANCE_TYPEOFCONNECTORS_CONDITIONAL);
 		$this->assertTrue(wfEngine_helpers_ProcessUtil::isActivity($then1));
 		$this->assertTrue(wfEngine_helpers_ProcessUtil::isConnector($else1));
 		
@@ -205,7 +205,7 @@ class ProcessClonerTestCase extends UnitTestCase {
 		$else1 = $this->authoringService->createSplitActivity($connector1, 'else', null, '', true);//create another connector
 		// $else1 = $this->authoringService->createSplitActivity($connector1, 'else');
 		
-		$this->assertEqual($connector1->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_TYPE))->uriResource, INSTANCE_TYPEOFCONNECTORS_SPLIT);
+		$this->assertEqual($connector1->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_TYPE))->uriResource, INSTANCE_TYPEOFCONNECTORS_CONDITIONAL);
 		$this->assertTrue(wfEngine_helpers_ProcessUtil::isActivity($then1));
 		$this->assertTrue(wfEngine_helpers_ProcessUtil::isConnector($else1));
 		

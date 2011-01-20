@@ -692,7 +692,7 @@ extends tao_models_classes_GenerisService
 
                 /// SEQUENCE & SPLIT ///
                 case INSTANCE_TYPEOFCONNECTORS_SEQUENCE:
-                case INSTANCE_TYPEOFCONNECTORS_SPLIT:
+                case INSTANCE_TYPEOFCONNECTORS_CONDITIONAL:
                      
                     if(count($nextActivities) == 0){
                         throw new Exception("No next activity defined");

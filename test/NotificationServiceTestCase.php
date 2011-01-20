@@ -137,7 +137,7 @@ class NotificationServiceTestCase extends UnitTestCase {
 			
 			$connector1 = null;
 			$connector1 = $authoringService->createConnector($activity1);
-			$authoringService->setConnectorType($connector1, new core_kernel_classes_Resource(CONNECTOR_SEQ));
+			$authoringService->setConnectorType($connector1, new core_kernel_classes_Resource(INSTANCE_TYPEOFCONNECTORS_SEQUENCE));
 			$this->assertNotNull($connector1);
 			
 			
@@ -156,7 +156,7 @@ class NotificationServiceTestCase extends UnitTestCase {
 			
 			$connector2  = null;
 			$connector2 = $authoringService->createConnector($activity2);
-			$authoringService->setConnectorType($connector2, new core_kernel_classes_Resource(CONNECTOR_SEQ));
+			$authoringService->setConnectorType($connector2, new core_kernel_classes_Resource(INSTANCE_TYPEOFCONNECTORS_SEQUENCE));
 			$this->assertNotNull($connector2);
 			
 			$this->service->bindProperties($connector2, array(
@@ -170,7 +170,7 @@ class NotificationServiceTestCase extends UnitTestCase {
 			
 			$connector3  = null;
 			$connector3 = $authoringService->createConnector($activity3);
-			$authoringService->setConnectorType($connector3, new core_kernel_classes_Resource(CONNECTOR_SEQ));
+			$authoringService->setConnectorType($connector3, new core_kernel_classes_Resource(INSTANCE_TYPEOFCONNECTORS_SEQUENCE));
 			$this->assertNotNull($connector3);
 			
 			$this->service->bindProperties($connector3, array(
@@ -187,7 +187,7 @@ class NotificationServiceTestCase extends UnitTestCase {
 		
 			$connector4  = null;
 			$connector4 = $authoringService->createConnector($activity4);
-			$authoringService->setConnectorType($connector4, new core_kernel_classes_Resource(CONNECTOR_SEQ));
+			$authoringService->setConnectorType($connector4, new core_kernel_classes_Resource(INSTANCE_TYPEOFCONNECTORS_SEQUENCE));
 			$this->assertNotNull($connector4);
 			
 			$this->service->bindProperties($connector4, array(

@@ -313,7 +313,7 @@ class wfEngine_models_classes_ProcessCloner
 			$connectorType = $connector->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_TYPE));
 			if(!is_null($connectorType)){
 				switch($connectorType->uriResource){
-					case INSTANCE_TYPEOFCONNECTORS_SPLIT:{
+					case INSTANCE_TYPEOFCONNECTORS_CONDITIONAL:{
 					
 						$transitionRule = $connector->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_TRANSITIONRULE));
 						

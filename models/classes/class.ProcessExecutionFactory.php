@@ -20,7 +20,7 @@ class wfEngine_models_classes_ProcessExecutionFactory {
 			trigger_error('Problem creating Process Execution, missiong parameter',E_USER_ERROR);
 		}
 
-		$processExecutionClass = new core_kernel_classes_Class(CLASS_PROCESS_EXECUTIONS, __METHOD__);
+		$processExecutionClass = new core_kernel_classes_Class(CLASS_PROCESSINSTANCE, __METHOD__);
 		$subjectResource = core_kernel_classes_ResourceFactory::create($processExecutionClass,$this->name,$this->comment);
 	
 		
