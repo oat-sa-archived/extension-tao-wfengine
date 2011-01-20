@@ -496,7 +496,7 @@ class wfEngine_models_classes_ActivityExecutionService
      * @param  Resource currentUser
      * @return array
      */
-    public function getProcessActivities( Process $process,  core_kernel_classes_Resource $currentUser)
+    public function getProcessActivities( wfEngine_models_classes_Process $process,  core_kernel_classes_Resource $currentUser)
     {
         $returnValue = array();
 
@@ -505,7 +505,7 @@ class wfEngine_models_classes_ActivityExecutionService
         if(!is_null($process) && !is_null($currentUser)){
         	
         	//loop on all the activities of a process
-        	foreach($process->activities as $activity){
+        	foreach($process->getAllActivities() as $activity){
         		
         		//check if the current user is allowed to access the activity
         		if($this->checkAcl($activity, $currentUser)){

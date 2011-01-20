@@ -10,13 +10,27 @@
 	line-height:28px;
 	text-align:center;
 }
-
-/* Login form. */
-#login_form
-{
+#login-box{
 	width: 380px;
-	margin: 200px auto 0px auto;
-	padding: 0px 0px 0px 0px;
+	margin: auto;
+}
+.error-message{
+	padding:5px;
+	font-weight:bold;	
+}
+/* Login form. */
+#login-form
+{
+	margin:  0px;
+	padding: 5px 0px 0px 5px;
+}
+#login-title
+{
+	margin:  0px;
+	padding: 5px 0px 0px 5px;
+	height: 20px;
+	font-weight:bold;
+	font-size: 14px;
 }
 
 /* Labels relevant to input fields of the login form. */

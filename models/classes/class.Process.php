@@ -175,16 +175,17 @@ extends wfEngine_models_classes_WfResource
 		$returnValue = array();
 
 		// section 10-13-1-85-16731180:11be4127421:-8000:0000000000000A0B begin
-		$activities = array();
+			
 		$actsProp = new core_kernel_classes_Property(PROCESS_ACTIVITIES);
 		$acts = $this->resource->getPropertyValuesCollection($actsProp);
-
-		foreach ($acts->getIterator() as $activityResource)
-		{
-			$activities[] = new wfEngine_models_classes_Activity($activityResource->uriResource);
+			
+		if(count($this->activities) == 0 || $acts->count() != $acts->getIterator()){
+			foreach ($acts->getIterator() as $activityResource){
+				$this->activities[] = new wfEngine_models_classes_Activity($activityResource->uriResource);
+			}
 		}
-
-		$returnValue = $activities;
+		
+		$returnValue = $this->activities;
 		// section 10-13-1-85-16731180:11be4127421:-8000:0000000000000A0B end
 
 		return (array) $returnValue;

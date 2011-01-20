@@ -53,7 +53,7 @@ class wfEngine_actions_RecoveryContext extends tao_actions_Api {
 						$saved = $recoveryService->saveContext($activityExecution, $context);						
 					}
 				}
-				else if (is_null($context)){
+				else if (is_null($context) || $context == 'null'){
 					//if the data sent are null [set context to null], we remove it  
 					$saved = $recoveryService->removeContext($activityExecution);
 				}

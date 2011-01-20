@@ -20,5 +20,18 @@ switch($_POST['action']){
 		$saved = $saved && (isset($_POST['context']['myContext']['obj']['arr']));
 		echo json_encode(array('saved' => $saved));
 		break;
+	case 'remove':
+		(isset($_POST['token'])) ? ($_POST['token'] == '7114e56cb3b9423314a425500afb41fc56183000') ? $removed = true : $removed = false : $removed = false;
+		
+		if($removed){
+			$removed  = false;
+			if(isset($_POST['context']['myContext'])){
+				if($_POST['context']['myContext'] == 'null'){
+					$removed = true;
+				}
+			}
+		}
+		echo json_encode(array('saved' => $removed));
+		break;
 }
 ?>

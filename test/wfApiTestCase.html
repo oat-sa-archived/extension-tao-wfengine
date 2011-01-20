@@ -48,7 +48,32 @@
 			ok(myNewContext !== false, 'test if the context is found');
 			ok(myNewContext.obj.arr, 'test the context structure');
 			equals(myNewContext.obj.arr[0], 1, 'test the context values');
-		 	
+
+			recoveryCtx.registry = null;
+
+			initRecoveryContext({
+				type: 'sync',
+				url : 'wfApiServer.php',
+				params: {
+					token: '7114e56cb3b9423314a425500afb41fc56183000', 
+					action: 'get'
+				}
+			},{
+				type: 'sync',
+				url : 'wfApiServer.php',
+				params: {
+					token: '7114e56cb3b9423314a425500afb41fc56183000', 
+					action: 'remove'
+				},
+				flush : true
+			});
+			
+			setRecoveryContext('myContext', null);
+
+			var myNewContext = getRecoveryContext('myContext');
+			ok($.isPlainObject(myNewContext), 'test if the context is retrieved');
+			ok(myNewContext['obj'] == undefined, 'test if the context is deleted');
+			
 		});
 
 		module("state");
