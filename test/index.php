@@ -1,6 +1,5 @@
 <?php
 set_time_limit(0);
-
 require_once dirname(__FILE__) . '/../../tao/test/TestRunner.php';
 
 //get the test into each extensions
@@ -9,7 +8,7 @@ $tests = TestRunner::getTests(array('wfEngine'));
 //create the test sutie
 $testSuite = new TestSuite('workflow engine unit tests');
 foreach($tests as $testCase){
-	$testSuite->addTestFile($testCase);
+	$testSuite->addFile($testCase);
 }    
 
 //add the reporter regarding the context

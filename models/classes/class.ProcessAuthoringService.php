@@ -105,10 +105,10 @@ class wfEngine_models_classes_ProcessAuthoringService
 		$returnValue = null;
 		if (!empty($question)){ // something to parse
 			// str_replace taken from the MsReader class
-			$question = str_replace("’", "'", $question); // utf8...
-			$question = str_replace("‘", "'", $question); // utf8...
-			$question = str_replace("“", "\"", $question);
-			$question = str_replace("”", "\"", $question);
+			$question = str_replace("ï¿½", "'", $question); // utf8...
+			$question = str_replace("ï¿½", "'", $question); // utf8...
+			$question = str_replace("ï¿½", "\"", $question);
+			$question = str_replace("ï¿½", "\"", $question);
 			if($isCondition){
 				$question = "if ".$question;
 			}	
@@ -1811,7 +1811,7 @@ class wfEngine_models_classes_ProcessAuthoringService
      * @param  string actualParameterType
      * @return boolean
      */
-    public function setActualParameter( core_kernel_classes_Resource $callOfService,  core_kernel_classes_Resource $formalParam, $value, $parameterInOrOut = PROPERTY_CALLOFSERVICES_ACTUALPARAMETERIN, $actualParameterType = PROPERTY_ACTUALPARAM_CONSTANTVALUE)
+    public function setActualParameter( core_kernel_classes_Resource $callOfService,  core_kernel_classes_Resource $formalParam, $value, $parameterInOrOut = PROPERTY_CALLOFSERVICES_ACTUALPARAMETERIN, $actualParameterType = PROPERTY_ACTUALPARAMETER_CONSTANTVALUE)
     {
         $returnValue = (bool) false;
 
@@ -1826,7 +1826,7 @@ class wfEngine_models_classes_ProcessAuthoringService
 			$newActualParameter = $actualParameterClass->createInstance($formalParam->getLabel(), "actual parameter created by Process Authoring Service");
 			$newActualParameter->setPropertyValue(new core_kernel_classes_Property(PROPERTY_ACTUALPARAMETER_FORMALPARAMETER), $formalParam->uriResource);
 			$newActualParameter->setPropertyValue(new core_kernel_classes_Property($actualParameterType), $value);
-
+			print_r($newActualParameter);
 			$returnValue = $callOfService->setPropertyValue(new core_kernel_classes_Property($parameterInOrOut), $newActualParameter->uriResource);
 	
 		}else{
