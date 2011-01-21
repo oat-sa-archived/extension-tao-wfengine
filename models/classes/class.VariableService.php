@@ -75,7 +75,7 @@ class wfEngine_models_classes_VariableService
 			
 			$newVar = unserialize($token->getOnePropertyValue($tokenVarProp));
 			foreach($variable as $k => $v) {
-				$collection = core_kernel_impl_ApiModelOO::singleton()->getSubject(PROPERTY_CODE,$k);
+				$collection = core_kernel_impl_ApiModelOO::singleton()->getSubject(PROPERTY_PROCESSVARIABLES_CODE,$k);
 				if(!$collection->isEmpty()){
 						if($collection->count() == 1) {
 							$property = new core_kernel_classes_Property($collection->get(0)->uriResource);
@@ -128,7 +128,7 @@ class wfEngine_models_classes_VariableService
 			if(is_array($params)){
 				foreach($params as $param) {
 					if(in_array($param,$oldVar)){
-						$collection = core_kernel_impl_ApiModelOO::singleton()->getSubject(PROPERTY_CODE, $param);
+						$collection = core_kernel_impl_ApiModelOO::singleton()->getSubject(PROPERTY_PROCESSVARIABLES_CODE, $param);
 						if(!$collection->isEmpty()){
 							if($collection->count() == 1) {
 								$property = new core_kernel_classes_Property($collection->get(0)->uriResource);
@@ -172,7 +172,7 @@ class wfEngine_models_classes_VariableService
 			$tokenVarProp = new core_kernel_classes_Property(PROPERTY_TOKEN_VARIABLE);
 			$vars = unserialize($token->getOnePropertyValue($tokenVarProp));
 			if(in_array($key,$vars)){
-				$collection = core_kernel_impl_ApiModelOO::singleton()->getSubject(PROPERTY_CODE,$key);
+				$collection = core_kernel_impl_ApiModelOO::singleton()->getSubject(PROPERTY_PROCESSVARIABLES_CODE,$key);
 				if(!$collection->isEmpty()){
 					if($collection->count() == 1) {
 						$property = new core_kernel_classes_Property($collection->get(0)->uriResource);
@@ -216,7 +216,7 @@ class wfEngine_models_classes_VariableService
 			$vars = unserialize($token->getOnePropertyValue($tokenVarProp));
 			
 			foreach($vars as $code){
-				$collection = core_kernel_impl_ApiModelOO::singleton()->getSubject(PROPERTY_CODE,$code);
+				$collection = core_kernel_impl_ApiModelOO::singleton()->getSubject(PROPERTY_PROCESSVARIABLES_CODE,$code);
 				if(!$collection->isEmpty()){
 					if($collection->count() == 1) {
 						$property = new core_kernel_classes_Property($collection->get(0)->uriResource);
@@ -264,7 +264,7 @@ class wfEngine_models_classes_VariableService
 			
 			$newVar = unserialize($token->getOnePropertyValue($tokenVarProp));
 		
-			$collection = core_kernel_impl_ApiModelOO::singleton()->getSubject(PROPERTY_CODE,$key);
+			$collection = core_kernel_impl_ApiModelOO::singleton()->getSubject(PROPERTY_PROCESSVARIABLES_CODE,$key);
 				
 			if(!$collection->isEmpty()){
 				if($collection->count() == 1) {

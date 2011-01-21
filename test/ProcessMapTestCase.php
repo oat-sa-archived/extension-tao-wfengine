@@ -123,9 +123,9 @@ class ProcessMapTestCase extends UnitTestCase {
 			$service = $authoringService->createInteractiveService($activity);
 			$service->setPropertyValue(new core_kernel_classes_Property(PROPERTY_CALLOFSERVICES_SERVICEDEFINITION), $serviceDefinition->uriResource);
 			
-			$authoringService->setActualParameter($service, $paramMap, $var_map->uriResource, PROPERTY_CALLOFSERVICES_ACTUALPARAMIN, PROPERTY_ACTUALPARAM_PROCESSVARIABLE);
-			$authoringService->setActualParameter($service, $param1, $var_param1->uriResource, PROPERTY_CALLOFSERVICES_ACTUALPARAMIN, PROPERTY_ACTUALPARAM_PROCESSVARIABLE);
-			$authoringService->setActualParameter($service, $param2, $var_param2->uriResource, PROPERTY_CALLOFSERVICES_ACTUALPARAMIN, PROPERTY_ACTUALPARAM_PROCESSVARIABLE);
+			$authoringService->setActualParameter($service, $paramMap, $var_map->uriResource, PROPERTY_CALLOFSERVICES_ACTUALPARAMETERIN, PROPERTY_ACTUALPARAMETER_PROCESSVARIABLE);
+			$authoringService->setActualParameter($service, $param1, $var_param1->uriResource, PROPERTY_CALLOFSERVICES_ACTUALPARAMETERIN, PROPERTY_ACTUALPARAMETER_PROCESSVARIABLE);
+			$authoringService->setActualParameter($service, $param2, $var_param2->uriResource, PROPERTY_CALLOFSERVICES_ACTUALPARAMETERIN, PROPERTY_ACTUALPARAMETER_PROCESSVARIABLE);
 			
 			$this->assertNotNull($service);
 			
@@ -163,7 +163,7 @@ class ProcessMapTestCase extends UnitTestCase {
 			$activityList[$i] = $currentActivity;
 			
 			//get its connector (check the type is "sequential) if ok, get the next activity
-			$connectorCollection = core_kernel_impl_ApiModelOO::getSubject(PROPERTY_CONNECTORS_PRECACTIVITIES, $currentActivity->uriResource);
+			$connectorCollection = core_kernel_impl_ApiModelOO::getSubject(PROPERTY_CONNECTORS_PREVIOUSACTIVITIES, $currentActivity->uriResource);
 			$nextActivity = null;
 			foreach($connectorCollection->getIterator() as $connector){
 				$connectorType = $connector->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_TYPE));

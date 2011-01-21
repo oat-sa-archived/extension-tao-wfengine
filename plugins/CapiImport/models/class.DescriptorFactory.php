@@ -19,7 +19,7 @@ if (0 > version_compare(PHP_VERSION, '5')) {
 }
 
 require_once('class.ConditionDescriptor.php');
-require_once('class.AssignDescriptor.php');
+
 /**
  * Short description of class QuestionnaireDescriptor
  *

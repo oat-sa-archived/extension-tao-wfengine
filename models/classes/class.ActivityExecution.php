@@ -84,7 +84,7 @@ class wfEngine_models_classes_ActivityExecution
     public function isExecutable()
     {
         // section 10-13-1--31-740bb989:119ebfa9b28:-8000:000000000000087D begin
-		$tokensProp = new core_kernel_classes_Property(PROPERTY_PINSTANCES_TOKEN);
+		$tokensProp = new core_kernel_classes_Property(PROPERTY_PROCESSINSTANCES_TOKEN);
 		$tokens = $this->processExecution->resource->getPropertyValues($tokensProp);
 		
 		

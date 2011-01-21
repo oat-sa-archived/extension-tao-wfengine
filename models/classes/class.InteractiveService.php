@@ -102,7 +102,7 @@ class wfEngine_models_classes_InteractiveService
 
 		// Get service url for call
 		$serviceUrl = '';
-		$serviceDefinitionUrl = $serviceDefinition->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_SERVICEDEFINITIONS_URL));
+		$serviceDefinitionUrl = $serviceDefinition->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_SUPPORTSERVICES_URL));
 		if($serviceDefinitionUrl instanceof core_kernel_classes_Literal){
 			$serviceUrl = $serviceDefinitionUrl->literal;
 		}else if($serviceDefinitionUrl instanceof core_kernel_classes_Resource){

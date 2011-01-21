@@ -94,13 +94,18 @@ class wfEngine_helpers_ProcessUtil
 	public static function checkType(core_kernel_classes_Resource $resource, core_kernel_classes_Class $clazz){
 		$returnValue = false;
 		
-		$type = core_kernel_impl_ApiModelOO::singleton()->getObject($resource->uriResource, RDF_TYPE);
-		if($type->count()>0){
-			if($type->get(0) instanceof core_kernel_classes_Resource){
-				if( $type->get(0)->uriResource == $clazz->uriResource){
-					$returnValue = true;
+		if(!is_null($resource) && !is_null($clazz)){
+		
+			$typeCollection = core_kernel_impl_ApiModelOO::singleton()->getObject($resource->uriResource, RDF_TYPE);
+			foreach($typeCollection->getIterator() as $type){
+				if($type instanceof core_kernel_classes_Resource){
+					if( $type->uriResource == $clazz->uriResource){
+						$returnValue = true;
+						break;
+					}
 				}
 			}
+			
 		}
 		
 		return $returnValue;

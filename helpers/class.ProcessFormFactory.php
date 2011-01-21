@@ -162,7 +162,7 @@ class wfEngine_helpers_ProcessFormFactory extends tao_helpers_form_GenerisFormFa
 						$value = $rangeInstance->getLabel();
 						if($displayCode){
 							//get the code of the process variable:
-							$code = $rangeInstance->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_CODE));
+							$code = $rangeInstance->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_PROCESSVARIABLES_CODE));
 							if(!empty($code) && $code instanceof core_kernel_classes_Literal){
 								$value .= " (code:{$code->literal})";
 							}
@@ -336,14 +336,14 @@ class wfEngine_helpers_ProcessFormFactory extends tao_helpers_form_GenerisFormFa
 		if(strtolower($paramType) == "formalparameterin"){
 		
 			$formalParameterType = PROPERTY_SERVICESDEFINITION_FORMALPARAMIN;
-			$actualParameterInOutType = PROPERTY_CALLOFSERVICES_ACTUALPARAMIN;
+			$actualParameterInOutType = PROPERTY_CALLOFSERVICES_ACTUALPARAMETERIN;
 			$formalParameterName = __('Formal Parameter IN'); 
 			$formalParameterSuffix = '_IN';
 			
 		}elseif(strtolower($paramType) == "formalparameterout"){
 		
 			$formalParameterType = PROPERTY_SERVICESDEFINITION_FORMALPARAMOUT;
-			$actualParameterInOutType = PROPERTY_CALLOFSERVICES_ACTUALPARAMOUT;
+			$actualParameterInOutType = PROPERTY_CALLOFSERVICES_ACTUALPARAMETEROUT;
 			$formalParameterName = __('Formal Parameter OUT');
 			$formalParameterSuffix = '_OUT';
 			
@@ -373,10 +373,10 @@ class wfEngine_helpers_ProcessFormFactory extends tao_helpers_form_GenerisFormFa
 				//get current value:
 				//find actual param first!
 				$actualParamValue='';
-				$actualParamFromFormalParam = core_kernel_impl_ApiModelOO::singleton()->getSubject(PROPERTY_ACTUALPARAM_FORMALPARAM, $formalParam->uriResource);
+				$actualParamFromFormalParam = core_kernel_impl_ApiModelOO::singleton()->getSubject(PROPERTY_ACTUALPARAMETER_FORMALPARAMETER, $formalParam->uriResource);
 				$actualParamFromCallOfServices = $callOfService->getPropertyValuesCollection(new core_kernel_classes_Property($actualParameterInOutType)); 
 				
-				//make an intersect with $collection = $callOfService->getPropertyValuesCollection(new core_kernel_classes_Property(PROPERTY_CALLOFSERVICES_ACTUALPARAMOUT));
+				//make an intersect with $collection = $callOfService->getPropertyValuesCollection(new core_kernel_classes_Property(PROPERTY_CALLOFSERVICES_ACTUALPARAMETEROUT));
 				$actualParamCollection = $actualParamFromFormalParam->intersect($actualParamFromCallOfServices);
 				
 				if(!$actualParamCollection->isEmpty()){
@@ -385,8 +385,8 @@ class wfEngine_helpers_ProcessFormFactory extends tao_helpers_form_GenerisFormFa
 							//the actual param associated to the formal parameter of THE call of services has been found!
 						
 							//check the type of actual parameter:
-							$inParameterProcessVariable = $actualParam->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_ACTUALPARAM_PROCESSVARIABLE));//a resource
-							$inParameterConstant = $actualParam->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_ACTUALPARAM_CONSTANTVALUE));
+							$inParameterProcessVariable = $actualParam->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_ACTUALPARAMETER_PROCESSVARIABLE));//a resource
+							$inParameterConstant = $actualParam->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_ACTUALPARAMETER_CONSTANTVALUE));
 							// var_dump($actualParam, $inParameterProcessVariable, $inParameterConstant);
 							
 							if(!is_null($inParameterProcessVariable)){
@@ -412,7 +412,7 @@ class wfEngine_helpers_ProcessFormFactory extends tao_helpers_form_GenerisFormFa
 								
 							}
 			
-							// $actualParameterType = PROPERTY_ACTUALPARAM_CONSTANTVALUE; //PROPERTY_ACTUALPARAM_CONSTANTVALUE;//PROPERTY_ACTUALPARAM_PROCESSVARIABLE //PROPERTY_ACTUALPARAM_QUALITYMETRIC
+							// $actualParameterType = PROPERTY_ACTUALPARAMETER_PROCESSVARIABLE; //PROPERTY_ACTUALPARAMETER_PROCESSVARIABLE;//PROPERTY_ACTUALPARAMETER_PROCESSVARIABLE//PROPERTY_ACTUALPARAM_QUALITYMETRIC
 							
 							// $actualParamValueCollection = $actualParam->getPropertyValuesCollection(new core_kernel_classes_Property($actualParameterType));
 							// if(!$actualParamValueCollection->isEmpty()){
@@ -433,7 +433,7 @@ class wfEngine_helpers_ProcessFormFactory extends tao_helpers_form_GenerisFormFa
 				/*
 				if(empty($inputUri)){//place ce bloc dans la creation de call of service: cad retrouver systematiquement l'actual parameter associ� � chaque fois, � partir du formal parameter et call of service, lors de la sauvegarde
 					// if no actual parameter has been found above (since $inputUri==0) create an instance of actual parameter and associate it to the call of service:
-					$property_actualParam_formalParam = new core_kernel_classes_Property(PROPERTY_ACTUALPARAM_FORMALPARAM);
+					$property_actualParam_formalParam = new core_kernel_classes_Property(PROPERTY_ACTUALPARAMETER_FORMALPARAMETER);
 					$class_actualParam = new core_kernel_classes_Class(CLASS_ACTUALPARAM);
 					$newActualParameter = $class_actualParam->createInstance($formalParam->getLabel(), "created by ProcessFormFactory");
 					$newActualParameter->setPropertyValue($property_actualParam_formalParam, $formalParam->uriResource);
@@ -637,25 +637,25 @@ class wfEngine_helpers_ProcessFormFactory extends tao_helpers_form_GenerisFormFa
 		//notification system
 		$myForm->addElement(tao_helpers_form_FormFactory::getElement('notify_set', 'Hidden'));
 		
-		$notifyMsgProperty = new core_kernel_classes_Property(PROPERTY_CONNECTOR_NOTIFICATION_MESSAGE);
+		$notifyMsgProperty = new core_kernel_classes_Property(PROPERTY_CONNECTORS_NOTIFICATION_MESSAGE);
 		$notifyMsgElt = tao_helpers_form_GenerisFormFactory::elementMap($notifyMsgProperty);
 		
 		$notifyMsgElt->setValue((string)$connector->getOnePropertyValue($notifyMsgProperty));
 		$myForm->addElement($notifyMsgElt);
 		
-		$notifyProperty = new core_kernel_classes_Property(PROPERTY_CONNECTOR_NOTIFY);
+		$notifyProperty = new core_kernel_classes_Property(PROPERTY_CONNECTORS_NOTIFY);
 		$notifyElt = tao_helpers_form_GenerisFormFactory::elementMap($notifyProperty);
 		$notifyElt->addAttribute('class', 'notify-element');
 		$notifyElt->setValues(tao_helpers_Uri::encodeArray($connector->getPropertyValues($notifyProperty)));
 		$myForm->addElement($notifyElt);
 		
-		$notifyUserProperty = new core_kernel_classes_Property(PROPERTY_CONNECTOR_USER_NOTIFIED);
+		$notifyUserProperty = new core_kernel_classes_Property(PROPERTY_CONNECTORS_USER_NOTIFIED);
 		$notifyUserElt = tao_helpers_form_GenerisFormFactory::elementMap($notifyUserProperty);
 		$notifyUserElt->addAttribute('class', 'notify-user');
 		$notifyUserElt->setValues(tao_helpers_Uri::encodeArray($connector->getPropertyValues($notifyUserProperty)));
 		$myForm->addElement($notifyUserElt);
 		
-		$notifyGroupProperty = new core_kernel_classes_Property(PROPERTY_CONNECTOR_ROLE_NOTIFIED);
+		$notifyGroupProperty = new core_kernel_classes_Property(PROPERTY_CONNECTORS_ROLE_NOTIFIED);
 		$notifyGroupElt = tao_helpers_form_GenerisFormFactory::elementMap($notifyGroupProperty);
 		$notifyGroupElt->addAttribute('class', 'notify-group');
 		$notifyGroupElt->setValues(tao_helpers_Uri::encodeArray($connector->getPropertyValues($notifyGroupProperty)));
@@ -663,152 +663,7 @@ class wfEngine_helpers_ProcessFormFactory extends tao_helpers_form_GenerisFormFa
 		
         return $myForm;
 	}
-	
-	public function inferenceRuleEditor(core_kernel_classes_Resource $inferenceRule, $formName='inferenceRuleForm'){
 		
-		$myForm = null;
-		$myForm = tao_helpers_form_FormFactory::getForm($formName, array());
-		$myForm->setActions(array(), 'bottom');//delete the default 'save' and 'revert' buttons
-		
-		//add a hidden input to post the uri of the call of service that is being edited
-		$elementInferenceRuleUri = tao_helpers_form_FormFactory::getElement('inferenceRuleUri', 'Hidden');
-		$elementInferenceRuleUri->setValue(tao_helpers_Uri::encode($inferenceRule->uriResource));
-		$myForm->addElement($elementInferenceRuleUri);
-		
-		//add label input: authorize elementInferenceRule label editing or not?
-		// $elementLabel = tao_helpers_form_FormFactory::getElement('label', 'Textbox');
-		// $elementLabel->setDescription(__('Label'));
-		// $elementLabel->setValue($callOfService->getLabel());
-		// $myForm->addElement($elementLabel);
-		
-		//the if condition:
-		$myForm->addElement(self::getConditionElement($inferenceRule));
-		
-		//THEN: assignment:
-		//create the description element
-		$elementDescription = tao_helpers_form_FormFactory::getElement('then_description', 'Free');
-		$elementDescription->setValue(__("THEN").': ');
-		$myForm->addElement($elementDescription);
-		
-		$elementThen = tao_helpers_form_FormFactory::getElement("then_assignment", 'Textarea');
-		$elementThen->setDescription(__('Assignment').': ');
-		$then = $inferenceRule->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_INFERENCERULES_THEN));
-		if(!is_null($then)){
-			if($then instanceof core_kernel_classes_Resource){
-				$elementThen->setValue($then->getLabel());
-			}
-		}
-		$myForm->addElement($elementThen);
-		
-		//ELSE: (optional)
-		$elementDescription = tao_helpers_form_FormFactory::getElement('else_description', 'Free');
-		$elementDescription->setValue(__("ELSE").': ');
-		$myForm->addElement($elementDescription);
-		
-		//type: inference rule or assignment:
-		$elementChoice = tao_helpers_form_FormFactory::getElement('else_choice', 'Radiobox');
-		$elementChoice->setDescription(' ');
-		$options = array(
-			"assignment" => __("Assignment"),
-			"inference" => __("Another Inference Rule"),
-			"none" => __("No thanks")
-		);
-		$elementChoice->setOptions($options);
-		
-		$elementElse = tao_helpers_form_FormFactory::getElement("else_assignment", 'Textarea');
-		$elementElse->setDescription(__('Assignment').': ');
-		$else = $inferenceRule->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_INFERENCERULES_ELSE));
-		
-		if(!is_null($else) && $else instanceof core_kernel_classes_Resource){
-			//is it an assignment or another inferenceRule?
-			$classUri = $else->getUniquePropertyValue(new core_kernel_classes_Property(RDF_TYPE))->uriResource;
-			
-			if($classUri == CLASS_ASSIGNMENT){
-				$elementElse->setValue($else->getLabel());
-				$elementChoice->setValue("assignment");
-			}elseif($classUri == CLASS_INFERENCERULES){
-				$elementChoice->setValue("inference");
-			}else{
-				throw new Exception("wrong type in the else of the inference rule");
-			}
-		}else{
-			$elementChoice->setValue("none");
-		}
-		$myForm->addElement($elementChoice);
-		$myForm->addElement($elementElse);
-		
-        return $myForm;
-	}
-	
-	public function consistencyRuleEditor(core_kernel_classes_Resource $consistencyRule, $formName='consistencyRuleForm'){
-		
-		$myForm = null;
-		$myForm = tao_helpers_form_FormFactory::getForm($formName, array());
-		$myForm->setActions(array(), 'bottom');//delete the default 'save' and 'revert' buttons
-		
-		//add a hidden input to post the uri of the call of service that is being edited
-		$elementConsistencyRuleUri = tao_helpers_form_FormFactory::getElement('consistencyRuleUri', 'Hidden');
-		$elementConsistencyRuleUri->setValue(tao_helpers_Uri::encode($consistencyRule->uriResource));
-		$myForm->addElement($elementConsistencyRuleUri);
-		
-		//add label input: authorize elementInferenceRule label editing or not?
-		// $elementLabel = tao_helpers_form_FormFactory::getElement('label', 'Textbox');
-		// $elementLabel->setDescription(__('Label'));
-		// $elementLabel->setValue($callOfService->getLabel());
-		// $myForm->addElement($elementLabel);
-		
-		//the if condition:
-		$myForm->addElement(self::getConditionElement($consistencyRule));
-		
-		//involved activity: checkbox, range:current activity
-		$activities = array(); //array of resource
-		//get activity:
-		$activityCollection = core_kernel_impl_ApiModelOO::singleton()->getSubject(PROPERTY_ACTIVITIES_CONSISTENCYRULE , $consistencyRule->uriResource);
-		$currentActivity = null;
-		if(!$activityCollection->isEmpty()){
-			$currentActivity = $activityCollection->get(0);
-			//get process:
-			$processCollection = core_kernel_impl_ApiModelOO::singleton()->getSubject(PROPERTY_PROCESS_ACTIVITIES , $currentActivity->uriResource);
-			if(!$processCollection->isEmpty()){
-				$currentProcess = $processCollection->get(0);
-				
-				//get all activities of the process:
-				$authoringService = new wfEngine_models_classes_ProcessAuthoringService();
-				$activities = $authoringService->getActivitiesByProcess($currentProcess);
-			}
-		}
-		
-		$activityOptions = array();
-		foreach($activities as $rangeInstance){
-			$activityOptions[ tao_helpers_Uri::encode($rangeInstance->uriResource) ] = $rangeInstance->getLabel();
-		}
-		$elementActivities = self::getChoiceElement($consistencyRule, new core_kernel_classes_Property(PROPERTY_CONSISTENCYRULES_INVOLVEDACTIVITIES), $activityOptions, 'Checkbox');
-		$myForm->addElement($elementActivities);
-		
-		//suppressable : boolean
-		$booleanOptions = array();
-		$booleanClass = new core_kernel_classes_Class(GENERIS_BOOLEAN);
-		foreach($booleanClass->getInstances(true) as $rangeInstance){
-			$booleanOptions[ tao_helpers_Uri::encode($rangeInstance->uriResource) ] = $rangeInstance->getLabel();
-		}
-		$elementSuppressable = self::getChoiceElement($consistencyRule, new core_kernel_classes_Property(PROPERTY_CONSISTENCYRULES_SUPPRESSABLE), $booleanOptions, 'Radiobox');
-		$myForm->addElement($elementSuppressable);
-		
-		//notification: textarea
-		$notificationProp = new core_kernel_classes_Property(PROPERTY_CONSISTENCYRULES_NOTIFICATION);
-		$elementNotification = tao_helpers_form_FormFactory::getElement(tao_helpers_Uri::encode(PROPERTY_CONSISTENCYRULES_NOTIFICATION), 'Textarea');
-		$elementNotification->setDescription($notificationProp->getLabel());
-		$notification = $consistencyRule->getOnePropertyValue($notificationProp);
-		if(!is_null($notification)){
-			if($notification instanceof core_kernel_classes_Literal){
-				$elementNotification->setValue($notification->literal);
-			}
-		}
-		$myForm->addElement($elementNotification);
-			
-        return $myForm;
-	}
-	
 	public static function getChoiceElement(core_kernel_classes_Resource $instance, core_kernel_classes_Property $property, $options, $widget='Radiobox'){
 		
 		$elementChoice = null;

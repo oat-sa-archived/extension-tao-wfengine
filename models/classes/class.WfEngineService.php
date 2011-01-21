@@ -50,7 +50,7 @@ class wfEngine_models_classes_WfEngineService
     	$class = new core_kernel_classes_Class(CLASS_PROCESS);
 		$processes = $class->getInstances();
 		foreach ($processes as $uri => $process){
-        	$executionCollection = $apiModel->getSubject(PROPERTY_PINSTANCES_EXECUTIONOF, $uri);
+        	$executionCollection = $apiModel->getSubject(PROPERTY_PROCESSINSTANCES_EXECUTIONOF, $uri);
         	foreach($executionCollection->getIterator() as $execution){
         		$processInstance = new wfEngine_models_classes_ProcessExecution($execution->uriResource);
         		$returnValue[]=$processInstance;

@@ -253,7 +253,7 @@ class ConditionDescriptor
 
 		$subjectProperty = new core_kernel_classes_Property(PROPERTY_TERM_SPX_SUBJET,__METHOD__);
 		$predicateProperty = new core_kernel_classes_Property(PROPERTY_TERM_SPX_PREDICATE,__METHOD__);
-		$codeProperty = new core_kernel_classes_Property(PROPERTY_CODE,__METHOD__);
+		$codeProperty = new core_kernel_classes_Property(PROPERTY_PROCESSVARIABLES_CODE,__METHOD__);
 
 		//get the resource with the code "$variable"
 		$processInstancePropertyCollection = $this->generisApi->getSubject($codeProperty->uriResource, $variable);

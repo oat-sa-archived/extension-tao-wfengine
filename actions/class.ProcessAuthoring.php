@@ -345,15 +345,8 @@ class wfEngine_actions_ProcessAuthoring extends tao_actions_TaoModule {
 		$activity = $this->getCurrentActivity();
 		$excludedProperty = array(
 			PROPERTY_ACTIVITIES_INTERACTIVESERVICES,
-			PROPERTY_ACTIVITIES_ONAFTERINFERENCERULE,
-			PROPERTY_ACTIVITIES_ONBEFOREINFERENCERULE,
-			PROPERTY_ACTIVITIES_CONSISTENCYRULE,
-			PROPERTY_ACTIVITIES_DISPLAYCALENDAR,
-			PROPERTY_ACTIVITIES_HYPERCLASSES,
-			PROPERTY_ACTIVITIES_STATEMENTASSIGNATION,
 			PROPERTY_ACTIVITIES_ISINITIAL,
-			PROPERTY_ACTIVITIES_ALLOWFREEVALUEOF,
-			'http://www.tao.lu/middleware/Interview.rdf#i122354397139712'
+			PROPERTY_ACTIVITIES_ALLOWFREEVALUEOF
 		);
 		
 		$this->setData('newLabel', '');
@@ -449,10 +442,10 @@ class wfEngine_actions_ProcessAuthoring extends tao_actions_TaoModule {
 		}
 		
 		//save Activity controls
-		$activityControlProperty = new core_kernel_classes_Property(PROPERTY_ACTIVITY_CONTROL);
+		$activityControlProperty = new core_kernel_classes_Property(PROPERTY_ACTIVITIES_CONTROLS);
 		$activity->removePropertyValues($activityControlProperty);
 		foreach($properties as $key => $value){
-			if(preg_match("/^".preg_quote(PROPERTY_ACTIVITY_CONTROL, '/')."_[0-9]*$/", $key)){
+			if(preg_match("/^".preg_quote(PROPERTY_ACTIVITIES_CONTROLS, '/')."_[0-9]*$/", $key)){
 				$activity->setPropertyValue($activityControlProperty, $value);
 			}
 		}
@@ -483,7 +476,7 @@ class wfEngine_actions_ProcessAuthoring extends tao_actions_TaoModule {
 		
 		$activityModeProp	= new core_kernel_classes_Property(PROPERTY_ACTIVITIES_ACL_MODE);
         $restrictedRoleProp	= new core_kernel_classes_Property(PROPERTY_ACTIVITIES_RESTRICTED_ROLE);
-        $actsProp 			= new core_kernel_classes_Property(PROCESS_ACTIVITIES);
+        $actsProp 			= new core_kernel_classes_Property(PROPERTY_PROCESS_ACTIVITIES);
 		
 		$apiModel  	= core_kernel_impl_ApiModelOO::singleton();
         $subjects 	= $apiModel->getSubject(PROPERTY_PROCESS_ACTIVITIES, $activity->uriResource);
@@ -817,9 +810,9 @@ class wfEngine_actions_ProcessAuthoring extends tao_actions_TaoModule {
 			/*
 			$formalParameterType = core_kernel_impl_ApiModelOO::getPredicate($serviceDefinition->uriResource, $formalParam->uriResource);
 			if(strcasecmp($formalParameterType->uriResource, PROPERTY_SERVICESDEFINITION_FORMALPARAMIN)==0){
-				$parameterInOrOut = PROPERTY_CALLOFSERVICES_ACTUALPARAMIN;
+				$parameterInOrOut = PROPERTY_CALLOFSERVICES_ACTUALPARAMETERIN;
 			}elseif(strcasecmp($formalParameterType->uriResource, PROPERTY_SERVICESDEFINITION_FORMALPARAMOUT)==0){
-				$parameterInOrOut = PROPERTY_CALLOFSERVICES_ACTUALPARAMOUT;
+				$parameterInOrOut = PROPERTY_CALLOFSERVICES_ACTUALPARAMETEROUT;
 			}else{
 				//unknown actual parameter type to be bind to the current call of service
 				continue;
@@ -832,11 +825,11 @@ class wfEngine_actions_ProcessAuthoring extends tao_actions_TaoModule {
 			if($index = strpos($key,'_IN_choice')){
 				
 				$formalParamUri = substr($key,0,$index);
-				$parameterInOrOut = PROPERTY_CALLOFSERVICES_ACTUALPARAMIN;
+				$parameterInOrOut = PROPERTY_CALLOFSERVICES_ACTUALPARAMETERIN;
 				$suffix = '_IN';
 			}elseif($index = strpos($key,'_OUT_choice')){
 				$formalParamUri = substr($key,0,$index);
-				$parameterInOrOut = PROPERTY_CALLOFSERVICES_ACTUALPARAMOUT;
+				$parameterInOrOut = PROPERTY_CALLOFSERVICES_ACTUALPARAMETEROUT;
 				$suffix = '_OUT';
 			}else{
 				continue;
@@ -846,17 +839,17 @@ class wfEngine_actions_ProcessAuthoring extends tao_actions_TaoModule {
 			$actualParameterType = '';
 			$paramValue = '';
 			if($value == 'constant'){
-				$actualParameterType = PROPERTY_ACTUALPARAM_CONSTANTVALUE;
+				$actualParameterType = PROPERTY_ACTUALPARAMETER_CONSTANTVALUE;
 				$paramValue = $data[$formalParamUri.$suffix.'_constant'];
 				unset($data[$formalParamUri.$suffix.'_constant']);
 			}elseif($value == 'processvariable'){
-				$actualParameterType = PROPERTY_ACTUALPARAM_PROCESSVARIABLE;
+				$actualParameterType = PROPERTY_ACTUALPARAMETER_PROCESSVARIABLE;
 				$paramValue = $data[$formalParamUri.$suffix.'_var'];
 				unset($data[$formalParamUri.$suffix.'_var']);
 			}else{
 				throw new Exception('wrong actual parameter type posted');
 			}
-			// $actualParameterType = PROPERTY_ACTUALPARAM_CONSTANTVALUE; //PROPERTY_ACTUALPARAM_CONSTANTVALUE;//PROPERTY_ACTUALPARAM_PROCESSVARIABLE //PROPERTY_ACTUALPARAM_QUALITYMETRIC
+			// $actualParameterType = PROPERTY_ACTUALPARAMETER_CONSTANTVALUE; //PROPERTY_ACTUALPARAMETER_PROCESSVARIABLE;//PROPERTY_ACTUALPARAMETER_PROCESSVARIABLE//PROPERTY_ACTUALPARAM_QUALITYMETRIC
 		
 			$formalParam = new core_kernel_classes_Resource($formalParamUri);
 			$saved = $this->service->setActualParameter($callOfService, $formalParam, $paramValue, $parameterInOrOut, $actualParameterType);
@@ -969,7 +962,7 @@ class wfEngine_actions_ProcessAuthoring extends tao_actions_TaoModule {
 							
 							
 							//check if another activities is joined with the same connector:
-							$previousActivityCollection = $connectorInstance->getPropertyValuesCollection(new core_kernel_classes_Property(PROPERTY_CONNECTORS_PRECACTIVITIES)); //old: apimodel->getSubject(PROPERTY_CONNECTORS_PRECACTIVTIES, $oldNextActivity->uriResource);
+							$previousActivityCollection = $connectorInstance->getPropertyValuesCollection(new core_kernel_classes_Property(PROPERTY_CONNECTORS_PREVIOUSACTIVITIES)); //old: apimodel->getSubject(PROPERTY_CONNECTORS_PRECACTIVTIES, $oldNextActivity->uriResource);
 							$anotherPreviousActivity = null;
 							foreach($previousActivityCollection->getIterator() as $previousActivity){
 								if($previousActivity instanceof core_kernel_classes_Resource){
@@ -984,7 +977,7 @@ class wfEngine_actions_ProcessAuthoring extends tao_actions_TaoModule {
 								// echo ' creating new connector for it ';
 								//there is another activity, so:
 								//remove reference of that activity from previous connector, and update its activity reference to the one of the other previous activity, update the 'old' join connector
-								$this->service->deleteReference(new core_kernel_classes_Property(PROPERTY_CONNECTORS_PRECACTIVITIES), $activity);
+								$this->service->deleteReference(new core_kernel_classes_Property(PROPERTY_CONNECTORS_PREVIOUSACTIVITIES), $activity);
 								$connectorInstance->editPropertyValues(new core_kernel_classes_Property(PROPERTY_CONNECTORS_ACTIVITYREFERENCE), $anotherPreviousActivity->uriResource);
 							
 								//since it used to share the connector with other previous activities, now that it needs a new connector of its own, create one here:
@@ -998,7 +991,7 @@ class wfEngine_actions_ProcessAuthoring extends tao_actions_TaoModule {
 								
 								//and edit prec activity number to 1:
 								$connectorInstance->setLabel($activity->getLabel().'_c');
-								$connectorInstance->editPropertyValues(new core_kernel_classes_Property(PROPERTY_CONNECTORS_PRECACTIVITIES), $activity->uriResource);
+								$connectorInstance->editPropertyValues(new core_kernel_classes_Property(PROPERTY_CONNECTORS_PREVIOUSACTIVITIES), $activity->uriResource);
 							}
 							
 						}
@@ -1203,46 +1196,46 @@ class wfEngine_actions_ProcessAuthoring extends tao_actions_TaoModule {
 		if(isset($data['notify_set'])){
 			
 			//save //save messsage messsage
-			if(trim($data[PROPERTY_CONNECTOR_NOTIFICATION_MESSAGE]) == ''){
-				$connectorInstance->removePropertyValues(new core_kernel_classes_Property(PROPERTY_CONNECTOR_NOTIFICATION_MESSAGE));
+			if(trim($data[PROPERTY_CONNECTORS_NOTIFICATION_MESSAGE]) == ''){
+				$connectorInstance->removePropertyValues(new core_kernel_classes_Property(PROPERTY_CONNECTORS_NOTIFICATION_MESSAGE));
 			}
 			else{
-				$connectorInstance->editPropertyValues(new core_kernel_classes_Property(PROPERTY_CONNECTOR_NOTIFICATION_MESSAGE), $data[PROPERTY_CONNECTOR_NOTIFICATION_MESSAGE]);
+				$connectorInstance->editPropertyValues(new core_kernel_classes_Property(PROPERTY_CONNECTORS_NOTIFICATION_MESSAGE), $data[PROPERTY_CONNECTORS_NOTIFICATION_MESSAGE]);
 			}
 			//notification modes
 			$modes = array();
-			$expression = "/^".preg_quote(PROPERTY_CONNECTOR_NOTIFY, '/')."/";
+			$expression = "/^".preg_quote(PROPERTY_CONNECTORS_NOTIFY, '/')."/";
 			foreach($data as $key => $value){
 				if(preg_match($expression, $key)){
 					$modes[] = $value;
 				}
 			}
-			$connectorInstance->editPropertyValues(new core_kernel_classes_Property(PROPERTY_CONNECTOR_NOTIFY), $modes);
+			$connectorInstance->editPropertyValues(new core_kernel_classes_Property(PROPERTY_CONNECTORS_NOTIFY), $modes);
 			
 			
 			//save notified users if user mode selected
 			if(in_array(INSTANCE_NOTIFY_USER, $modes)){
 				
 				$users = array();
-				$expression = "/^".preg_quote(PROPERTY_CONNECTOR_USER_NOTIFIED, '/')."/";
+				$expression = "/^".preg_quote(PROPERTY_CONNECTORS_USER_NOTIFIED, '/')."/";
 				foreach($data as $key => $value){
 					if(preg_match($expression, $key)){
 						$users[] = $value;
 					}
 				}
-				$connectorInstance->editPropertyValues(new core_kernel_classes_Property(PROPERTY_CONNECTOR_USER_NOTIFIED), $users);
+				$connectorInstance->editPropertyValues(new core_kernel_classes_Property(PROPERTY_CONNECTORS_USER_NOTIFIED), $users);
 			}
 			
 			//save notified roles if role mode selected
 			if(in_array(INSTANCE_NOTIFY_ROLE, $modes)){
 				$roles = array();
-				$expression = "/^".preg_quote(PROPERTY_CONNECTOR_ROLE_NOTIFIED, '/')."/";
+				$expression = "/^".preg_quote(PROPERTY_CONNECTORS_ROLE_NOTIFIED, '/')."/";
 				foreach($data as $key => $value){
 					if(preg_match($expression, $key)){
 						$roles[] = $value;
 					}
 				}
-				$connectorInstance->editPropertyValues(new core_kernel_classes_Property(PROPERTY_CONNECTOR_ROLE_NOTIFIED), $roles);
+				$connectorInstance->editPropertyValues(new core_kernel_classes_Property(PROPERTY_CONNECTORS_ROLE_NOTIFIED), $roles);
 			}
 			
 		}
@@ -1257,128 +1250,8 @@ class wfEngine_actions_ProcessAuthoring extends tao_actions_TaoModule {
 		));
 			
 	}
-	
-	public function saveInferenceRule(){
-		
-		$returnValue = false;
-		
-		$inferenceRule = new core_kernel_classes_Resource(tao_helpers_Uri::decode($_POST['inferenceRuleUri']));
-		
-		//save the "if":
-		$conditionString = $_POST['if'];
-		if(!empty($conditionString)){
 			
-			$this->service->editCondition($inferenceRule, $conditionString);
-		}
-		
-		//save the "then":
-		// $inferenceThenProp = new core_kernel_classes_Property(PROPERTY_INFERENCERULES_THEN);
-		$then_assignment = $_POST['then_assignment'];
-		$thenDom = $this->service->analyseExpression($then_assignment);
-		// var_dump($thenDom->saveXML());
-		if(!is_null($thenDom)){
-			$newAssignment = $this->service->createAssignment($thenDom);
-			$returnValue = $this->service->setAssignment($inferenceRule, 'then', $newAssignment);
-		}
-		
-		//save the "else":
-		if(isset($_POST['else_choice'])){
 			
-			$returnValue = false;
-			$inferenceElseProp = new core_kernel_classes_Property(PROPERTY_INFERENCERULES_ELSE);
-			
-			if($_POST['else_choice'] == 'assignment'){
-			
-				$else_assignment = $_POST['else_assignment'];
-				$elseDom = $this->service->analyseExpression($else_assignment);
-				if(!is_null($elseDom)){
-					$newAssignment = $this->service->createAssignment($elseDom);
-					$returnValue = $this->service->setAssignment($inferenceRule, 'else', $newAssignment);
-				}
-				
-			}elseif($_POST['else_choice'] == 'inference'){
-				//check if the current "else" is already an inference rule:
-				$elseIsInferenceRule = false;
-				$else = $inferenceRule->getOnePropertyValue($inferenceElseProp);//assignment, inference rule or null
-				
-				if(!empty($else)){
-					if($else instanceof core_kernel_classes_Resource){
-						if($else->getUniquePropertyValue(new core_kernel_classes_Property(RDF_TYPE))->uriResource == CLASS_INFERENCERULES){
-							$elseIsInferenceRule = true;
-							$returnValue = true;//no need to do anything, since the inference rule already exists
-						}
-					}
-				}
-				if(!$elseIsInferenceRule){
-					//create a new inference rule
-					$newInferenceRule = null;
-					$newInferenceRule = $this->service->createInferenceRule($inferenceRule, 'inferenceRuleElse');
-					
-					if(!is_null($newInferenceRule)){
-						$returnValue = true;
-					}
-				}
-			}else{
-				//find what is in the "else" property of the current inference rule, and delete it:
-				
-				$else = $inferenceRule->getOnePropertyValue($inferenceElseProp);
-				
-				if(!is_null($else)){//delete it whatever it is (assignment or inference rule)
-					if($else instanceof core_kernel_classes_Resource){
-						$type = $else->getUniquePropertyValue(new core_kernel_classes_Property(RDF_TYPE));
-						if($type->uriResource == CLASS_ASSIGNMENT){
-							$this->service->deleteAssignment($else);
-						}elseif($type->uriResource == CLASS_INFERENCERULES){
-							$this->service->deleteInferenceRule($else);
-						}
-					}
-				}
-				
-				//remove property value:
-				$inferenceRule->removePropertyValues($inferenceElseProp);
-				$returnValue = true;
-			}
-		}
-		
-		echo json_encode(array('saved'=>$returnValue));
-	}
-	
-	public function saveConsistencyRule(){
-		
-		$returnValue = false;
-		
-		$consistencyRule = new core_kernel_classes_Resource(tao_helpers_Uri::decode($_POST['consistencyRuleUri']));
-		
-		//save the "if":
-		$conditionString = $_POST['if'];
-		if(!empty($conditionString)){
-			$this->service->editCondition($consistencyRule, $conditionString);
-		}
-		
-		//save activities:
-		$encodedActivitiesPropUri = tao_helpers_Uri::encode(PROPERTY_CONSISTENCYRULES_INVOLVEDACTIVITIES);
-		$activities = array();
-		foreach($_POST as $propUri => $propValue){
-			if(strpos($propUri, $encodedActivitiesPropUri) === 0){
-				
-				$activitiUri  = tao_helpers_Uri::decode($propValue);
-				$activities[$activitiUri] = new core_kernel_classes_Resource($activitiUri);
-			}
-		}
-		if(!empty($activities)){
-			$this->service->setConsistencyActivities($consistencyRule, $activities);
-		}
-		
-		//save suppressable:
-		$this->service->setConsistencySuppressable($consistencyRule, tao_helpers_Uri::decode($_POST[tao_helpers_Uri::encode(PROPERTY_CONSISTENCYRULES_SUPPRESSABLE)]));
-		
-		//save notfication:
-		$returnValue = $this->service->setConsistencyNotification($consistencyRule, $_POST[tao_helpers_Uri::encode(PROPERTY_CONSISTENCYRULES_NOTIFICATION)]);
-		
-		echo json_encode(array('saved'=>$returnValue));
-	}
-	
-	
 	public function checkCode(){
 	
 		$code = $_POST['code'];
@@ -1415,7 +1288,7 @@ class wfEngine_actions_ProcessAuthoring extends tao_actions_TaoModule {
 			$codes = $matches[1];
 		}
 		
-		$processVarProp = new core_kernel_classes_Property(PROPERTY_PROCESS_VARIABLE);
+		$processVarProp = new core_kernel_classes_Property(PROPERTY_PROCESS_VARIABLES);
 		foreach($codes as $code){
 			//get the variable resource: 
 			$processVar = $this->service->getProcessVariable($code);

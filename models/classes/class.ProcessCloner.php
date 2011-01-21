@@ -233,11 +233,7 @@ class wfEngine_models_classes_ProcessCloner
 				new core_kernel_classes_Class(CLASS_ACTIVITIES),
 				array(
 					PROPERTY_ACTIVITIES_INTERACTIVESERVICES,
-					PROPERTY_ACTIVITIES_ONAFTERINFERENCERULE,
-					PROPERTY_ACTIVITIES_ONBEFOREINFERENCERULE,
-					PROPERTY_ACTIVITIES_ISERVICES,
-					PROPERTY_ACTIVITIES_INFERENCERULE,
-					PROPERTY_ACTIVITIES_CONSISTENCYRULE
+					PROPERTY_ACTIVITIES_INTERACTIVESERVICES
 			));
 			
 			if(!is_null($activityClone)){
@@ -285,7 +281,7 @@ class wfEngine_models_classes_ProcessCloner
 					PROPERTY_CONNECTORS_TRANSITIONRULE,
 					PROPERTY_CONNECTORS_NEXTACTIVITIES,
 					PROPERTY_CONNECTORS_ACTIVITYREFERENCE,
-					PROPERTY_CONNECTORS_PRECACTIVITIES
+					PROPERTY_CONNECTORS_PREVIOUSACTIVITIES
 			));
 			
 			$this->updateWaitingConnector($connector, $connectorClone);
@@ -363,7 +359,7 @@ class wfEngine_models_classes_ProcessCloner
 					case INSTANCE_TYPEOFCONNECTORS_JOIN:{
 						
 						$connectorActivityProperties = array(
-							'prev' => new core_kernel_classes_Property(PROPERTY_CONNECTORS_PRECACTIVITIES),
+							'prev' => new core_kernel_classes_Property(PROPERTY_CONNECTORS_PREVIOUSACTIVITIES),
 							'next' => new core_kernel_classes_Property(PROPERTY_CONNECTORS_NEXTACTIVITIES)
 						);
 						
@@ -1060,7 +1056,7 @@ class wfEngine_models_classes_ProcessCloner
 		//check if it is in the waiting expectedConnector list:
 		$activityPropertiesMap = array(
 			'next' => new core_kernel_classes_Property(PROPERTY_CONNECTORS_NEXTACTIVITIES),
-			'prev' => new core_kernel_classes_Property(PROPERTY_CONNECTORS_PRECACTIVITIES),
+			'prev' => new core_kernel_classes_Property(PROPERTY_CONNECTORS_PREVIOUSACTIVITIES),
 			'then' => new core_kernel_classes_Property(PROPERTY_TRANSITIONRULES_THEN),
 			'else' => new core_kernel_classes_Property(PROPERTY_TRANSITIONRULES_ELSE)
 		);

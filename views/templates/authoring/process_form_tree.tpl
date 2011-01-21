@@ -27,7 +27,7 @@ $(function(){
 <script type="text/javascript">
 $(function(){	
 	//bloc to check if an identical code already exists
-	var processVarCodeInput = "input[id=<?=tao_helpers_Uri::encode(PROPERTY_CODE)?>]";
+	var processVarCodeInput = "input[id=<?=tao_helpers_Uri::encode(PROPERTY_PROCESSVARIABLES_CODE)?>]";
 	if($(processVarCodeInput).length){
 		$("#submit-<?=$sectionName?>").attr('disabled','disabled');
 		$(processVarCodeInput).parent("div").append('<a id="codeCheckTrigger" href="#">'+__('check code')+'</a><br/>');

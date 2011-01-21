@@ -84,7 +84,7 @@ class ProcessAuthoringServiceTestCase extends UnitTestCase {
 		
 		$activity1 = $this->authoringService->createActivity($this->proc, 'myActivity');
 		$connector1 = $this->authoringService->createConnector($activity1);
-		$this->assertEqual($connector1->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_PRECACTIVITIES))->uriResource, $activity1->uriResource);
+		$this->assertEqual($connector1->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_PREVIOUSACTIVITIES))->uriResource, $activity1->uriResource);
 		$this->assertEqual($connector1->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_ACTIVITYREFERENCE))->uriResource, $activity1->uriResource);
 		
 		//create a connector of a connector:
@@ -215,7 +215,7 @@ class ProcessAuthoringServiceTestCase extends UnitTestCase {
 		$connectorA = $this->authoringService->createConnector($activityA);
 		
 		$activityB = $this->authoringService->createSequenceActivity($connectorA, null, 'B');
-		// $connectorB = $this->apiModel->getSubject(PROPERTY_CONNECTORS_PRECACTIVITIES, $activityB->uriResource)->get(0);
+		// $connectorB = $this->apiModel->getSubject(PROPERTY_CONNECTORS_PREVIOUSACTIVITIES, $activityB->uriResource)->get(0);
 		$connectorB = $this->authoringService->createConnector($activityB);
 		
 		//create the parallel branch 'C' acivities and connectors
@@ -223,11 +223,11 @@ class ProcessAuthoringServiceTestCase extends UnitTestCase {
 		$connectorC = $this->authoringService->createConnector($activityC);
 				
 		$activityC1 = $this->authoringService->createSequenceActivity($connectorC, null, 'C1');
-		// $connectorC1 = $this->apiModel->getSubject(PROPERTY_CONNECTORS_PRECACTIVITIES, $activityC1->uriResource)->get(0);
+		// $connectorC1 = $this->apiModel->getSubject(PROPERTY_CONNECTORS_PREVIOUSACTIVITIES, $activityC1->uriResource)->get(0);
 		$connectorC1 = $this->authoringService->createConnector($activityC1);
 		
 		$activityC2 = $this->authoringService->createSequenceActivity($connectorC1, null, 'C2');
-		// $connectorC2 = $this->apiModel->getSubject(PROPERTY_CONNECTORS_PRECACTIVITIES, $activityC2->uriResource)->get(0);
+		// $connectorC2 = $this->apiModel->getSubject(PROPERTY_CONNECTORS_PREVIOUSACTIVITIES, $activityC2->uriResource)->get(0);
 		$connectorC2 = $this->authoringService->createConnector($activityC2);
 		
 		//create the parallel branch 'D' activities and connectors
@@ -247,7 +247,7 @@ class ProcessAuthoringServiceTestCase extends UnitTestCase {
 		
 		//merge all activity D instance to F:
 		$this->authoringService->createJoinActivity($connectorD, $activityF, '', $activityD);
-		$previousActivitiesCollection = $connectorD->getPropertyValuesCollection(new core_kernel_classes_Property(PROPERTY_CONNECTORS_PRECACTIVITIES));
+		$previousActivitiesCollection = $connectorD->getPropertyValuesCollection(new core_kernel_classes_Property(PROPERTY_CONNECTORS_PREVIOUSACTIVITIES));
 
 		
 		$this->assertEqual($previousActivitiesCollection->count(), 3);

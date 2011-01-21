@@ -131,7 +131,7 @@ extends tao_models_classes_GenerisService
         $this->tokenActivityExecutionProp 	= new core_kernel_classes_Property(PROPERTY_TOKEN_ACTIVITYEXECUTION);
         $this->tokenCurrentUserProp 		= new core_kernel_classes_Property(PROPERTY_TOKEN_CURRENTUSER);
         $this->tokenVariableProp 			= new core_kernel_classes_Property(PROPERTY_TOKEN_VARIABLE);
-        $this->currentTokenProp				= new core_kernel_classes_Property(CURRENT_TOKEN);
+        $this->currentTokenProp				= new core_kernel_classes_Property(PROPERTY_PROCESSINSTANCES_CURRENTTOKEN);
          
         // section 127-0-1-1-24bd84b1:1291d596dba:-8000:0000000000001FB9 end
     }
@@ -370,7 +370,7 @@ extends tao_models_classes_GenerisService
             if($tokenVarKeys !== false){
                 if(is_array($tokenVarKeys)){
                     foreach($tokenVarKeys as $key){
-                        $collection = core_kernel_impl_ApiModelOO::singleton()->getSubject(PROPERTY_CODE, $key);
+                        $collection = core_kernel_impl_ApiModelOO::singleton()->getSubject(PROPERTY_PROCESSVARIABLES_CODE, $key);
                         if(!$collection->isEmpty()){
                             if($collection->count() == 1) {
                                 $property = new core_kernel_classes_Property($collection->get(0)->uriResource);
@@ -602,7 +602,7 @@ extends tao_models_classes_GenerisService
              
             $keys = array();
             foreach($mergedVars as $code => $values){
-                $collection = core_kernel_impl_ApiModelOO::singleton()->getSubject(PROPERTY_CODE, $code);
+                $collection = core_kernel_impl_ApiModelOO::singleton()->getSubject(PROPERTY_PROCESSVARIABLES_CODE, $code);
                 if(!$collection->isEmpty()){
                     if($collection->count() == 1) {
                         if(is_array($values)){
@@ -649,9 +649,9 @@ extends tao_models_classes_GenerisService
              
             //the token does not exist anymore, remove its reference to that token to allow the new token to be set:
             $apiModel = core_kernel_impl_ApiModelOO::singleton();
-            $processExecutionCollection = $apiModel->getSubject(PROPERTY_PINSTANCES_TOKEN, $token->uriResource);
+            $processExecutionCollection = $apiModel->getSubject(PROPERTY_PROCESSINSTANCES_CURRENTTOKEN, $token->uriResource);
             if(!$processExecutionCollection->isEmpty()){
-                $apiModel->removeStatement($processExecutionCollection->get(0)->uriResource, PROPERTY_PINSTANCES_TOKEN, $token->uriResource, '');//get(0) because there should be only one
+                $apiModel->removeStatement($processExecutionCollection->get(0)->uriResource, PROPERTY_PROCESSINSTANCES_CURRENTTOKEN, $token->uriResource, '');//get(0) because there should be only one
             }
 
             $returnValue = $token->delete();
@@ -684,7 +684,7 @@ extends tao_models_classes_GenerisService
             $activityExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityExecutionService');
              
             //get the activity around the connector
-            $previousActivities = $connector->getPropertyValuesCollection(new core_kernel_classes_Property(PROPERTY_CONNECTORS_PRECACTIVITIES));
+            $previousActivities = $connector->getPropertyValuesCollection(new core_kernel_classes_Property(PROPERTY_CONNECTORS_PREVIOUSACTIVITIES));
              
             $currentTokens = array();
             $type = $connector->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_TYPE));

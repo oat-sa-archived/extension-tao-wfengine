@@ -136,7 +136,7 @@ class wfEngine_models_classes_Connector
 		}
 		
 		// Previous activities feeding.
-		$gePrevActivitiesProp = new core_kernel_classes_Property(PROPERTY_CONNECTORS_PRECACTIVITIES);
+		$gePrevActivitiesProp = new core_kernel_classes_Property(PROPERTY_CONNECTORS_PREVIOUSACTIVITIES);
 		$gePrevActivities = $this->resource->getPropertyValuesCollection($gePrevActivitiesProp);
     	
 													  	
@@ -187,7 +187,7 @@ class wfEngine_models_classes_Connector
     	$returnValue = null;
     	
     	$resource = new core_kernel_classes_Resource($this->uri,__METHOD__);
-    	$connTypeProp = new core_kernel_classes_Property(PROPERTY_CONNECTORS_TYPEOFCONNECTOR,__METHOD__);
+    	$connTypeProp = new core_kernel_classes_Property(PROPERTY_CONNECTORS_TYPE,__METHOD__);
 		try {
     		
 			$returnValue = $resource->getUniquePropertyValue($connTypeProp);
@@ -207,7 +207,7 @@ class wfEngine_models_classes_Connector
      */
     public function getPreviousActivities() {
     	if(empty($this->prevActivities)) {
-	    	$precActivitiesProp = new core_kernel_classes_Property(PROPERTY_CONNECTORS_PRECACTIVITIES,__METHOD__);
+	    	$precActivitiesProp = new core_kernel_classes_Property(PROPERTY_CONNECTORS_PREVIOUSACTIVITIES,__METHOD__);
 			$resource = new core_kernel_classes_Resource($this->uri,__METHOD__);
 			$this->prevActivities = $resource->getPropertyValuesCollection($precActivitiesProp);
     	}
@@ -246,7 +246,7 @@ class wfEngine_models_classes_Connector
 
 		parent::__construct($uri);
 		
-		$typeOfConnectorProp = new core_kernel_classes_Property(PROPERTY_CONNECTORS_TYPEOFCONNECTOR);
+		$typeOfConnectorProp = new core_kernel_classes_Property(PROPERTY_CONNECTORS_TYPE);
 		$this->logger->debug('Next Connector  Name: ' . $this->resource->getLabel(),__FILE__,__LINE__);
 		$this->logger->debug('Next Connector  Uri: ' . $this->resource->uriResource,__FILE__,__LINE__);
 		try{
@@ -256,7 +256,7 @@ class wfEngine_models_classes_Connector
 			echo 'Exception when retreiving Connector type ' . $this->uri;
 		}
 		// We get the TransitionRule relevant to the connector.
-		$ruleProp = new core_kernel_classes_Property(PROPERTY_CONNECTOR_TRANSITIONRULE);
+		$ruleProp = new core_kernel_classes_Property(PROPERTY_CONNECTORS_TRANSITIONRULE);
 		$rule = $this->resource->getPropertyValues($ruleProp);
 
 

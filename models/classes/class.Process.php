@@ -116,7 +116,7 @@ extends wfEngine_models_classes_WfResource
 		$returnValue = array();
 
 		// section 10-13-1--31-740bb989:119ebfa9b28:-8000:000000000000085E begin
-		$processVariableprop = new core_kernel_classes_Property(PROPERTY_PROCESS_VARIABLE);
+		$processVariableprop = new core_kernel_classes_Property(PROPERTY_PROCESS_VARIABLES);
 		$variables = $this->resource->getPropertyValuesCollection($processVariableprop);
 			
 		$vars=array();
@@ -176,7 +176,7 @@ extends wfEngine_models_classes_WfResource
 
 		// section 10-13-1-85-16731180:11be4127421:-8000:0000000000000A0B begin
 			
-		$actsProp = new core_kernel_classes_Property(PROCESS_ACTIVITIES);
+		$actsProp = new core_kernel_classes_Property(PROPERTY_PROCESS_ACTIVITIES);
 		$acts = $this->resource->getPropertyValuesCollection($actsProp);
 			
 		if(count($this->activities) == 0 || $acts->count() != $acts->getIterator()){

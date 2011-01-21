@@ -87,9 +87,8 @@ class wfEngine_actions_Process extends tao_actions_TaoModule {
 		$process = $this->getCurrentInstance();
 		
 		$excludedProperties = array(
-			PROPERTY_PROCESS_VARIABLE,
-			PROPERTY_PROCESS_ACTIVITIES,
-			'http://www.tao.lu/middleware/Interview.rdf#i122354397139712'
+			PROPERTY_PROCESS_VARIABLES,
+			PROPERTY_PROCESS_ACTIVITIES
 		);
 		
 		// $myForm = wfEngine_helpers_ProcessFormFactory::instanceEditor($clazz, $process, $excludedProperties);

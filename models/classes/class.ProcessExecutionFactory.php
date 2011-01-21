@@ -20,14 +20,14 @@ class wfEngine_models_classes_ProcessExecutionFactory {
 			trigger_error('Problem creating Process Execution, missiong parameter',E_USER_ERROR);
 		}
 
-		$processExecutionClass = new core_kernel_classes_Class(CLASS_PROCESSINSTANCE, __METHOD__);
+		$processExecutionClass = new core_kernel_classes_Class(CLASS_PROCESSINSTANCES, __METHOD__);
 		$subjectResource = core_kernel_classes_ResourceFactory::create($processExecutionClass,$this->name,$this->comment);
 	
 		
-		$statusProp = new core_kernel_classes_Property(STATUS,__METHOD__);
-		$subjectResource->setPropertyValue($statusProp,PROPERTY_PINSTANCES_STATUS);
+		$statusProp = new core_kernel_classes_Property(PROPERTY_PROCESSINSTANCES_STATUS,__METHOD__);
+		$subjectResource->setPropertyValue($statusProp,PROPERTY_PROCESSINSTANCES_STATUS);
 
-		$processExecutionOfProp = new core_kernel_classes_Property(PROPERTY_PINSTANCES_EXECUTIONOF,__METHOD__);
+		$processExecutionOfProp = new core_kernel_classes_Property(PROPERTY_PROCESSINSTANCES_EXECUTIONOF,__METHOD__);
 		$subjectResource->setPropertyValue($processExecutionOfProp,$this->execution);
 
 		$returnValue = new wfEngine_models_classes_ProcessExecution($subjectResource->uriResource,false);
@@ -48,7 +48,7 @@ class wfEngine_models_classes_ProcessExecutionFactory {
 			
 		
 			// Add in path
-			$pInstanceProcessProp = new core_kernel_classes_Property(PROPERTY_PINSTANCES_PROCESSPATH,__METHOD__);
+			$pInstanceProcessProp = new core_kernel_classes_Property(PROPERTY_PROCESSINSTANCES_PROCESSPATH,__METHOD__);
 			$subjectResource->setPropertyValue($pInstanceProcessProp,$activity->uri);
 			
 			$token = $tokenService->create($activity->resource);

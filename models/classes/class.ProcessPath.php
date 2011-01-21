@@ -71,7 +71,7 @@ class wfEngine_models_classes_ProcessPath
 		// Full path handling.
 		$this->fullActivityStack[] = $activity->uri;
 		$processExecutionResource = new core_kernel_classes_Resource($this->processExecution->uri);
-		$processFullPathProperty = new core_kernel_classes_Property(PROPERTY_PINSTANCES_FULLPROCESSPATH);
+		$processFullPathProperty = new core_kernel_classes_Property(PROPERTY_PROCESSINSTANCES_FULLPROCESSPATH);
 		 
 		$processExecutionResource->removePropertyValues($processFullPathProperty);
 		$fullPathString = '';
@@ -104,7 +104,7 @@ class wfEngine_models_classes_ProcessPath
 			}
 
 			// We simply save the path string for the current process execution.
-			$pinstanceProp = new core_kernel_classes_Property(PROPERTY_PINSTANCES_PROCESSPATH);
+			$pinstanceProp = new core_kernel_classes_Property(PROPERTY_PROCESSINSTANCES_PROCESSPATH);
 			$this->processExecution->resource->editPropertyValues($pinstanceProp,$pathString);
 
 		}
@@ -157,7 +157,7 @@ class wfEngine_models_classes_ProcessPath
 
 			$pathString .= $this->activityStack[$i];
 		}
-		$pinstanceProp = new core_kernel_classes_Property(PROPERTY_PINSTANCES_PROCESSPATH);
+		$pinstanceProp = new core_kernel_classes_Property(PROPERTY_PROCESSINSTANCES_PROCESSPATH);
 		$this->processExecution->resource->editPropertyValues($pinstanceProp,$pathString);
 
 		// section 10-13-1-85--29df164:11c79d4c931:-8000:0000000000000A2F end
@@ -195,7 +195,7 @@ class wfEngine_models_classes_ProcessPath
 
 		$this->processExecution = $processExecution;
 		 
-		$processPathProp = new core_kernel_classes_Property(PROPERTY_PINSTANCES_PROCESSPATH);
+		$processPathProp = new core_kernel_classes_Property(PROPERTY_PROCESSINSTANCES_PROCESSPATH);
 		$path = $processExecution->resource->getPropertyValues($processPathProp);
 		//replace processExecution by token:
 			
@@ -209,7 +209,7 @@ class wfEngine_models_classes_ProcessPath
 			foreach ($pathItems as $pI)
 			array_push($this->activityStack, $pI);
 		}
-		$pinstanceFullProcessPath = new core_kernel_classes_Property(PROPERTY_PINSTANCES_FULLPROCESSPATH);
+		$pinstanceFullProcessPath = new core_kernel_classes_Property(PROPERTY_PROCESSINSTANCES_FULLPROCESSPATH);
 		$path = $processExecution->resource->getPropertyValues($pinstanceFullProcessPath);
 		 
 			
@@ -336,7 +336,7 @@ class wfEngine_models_classes_ProcessPath
 			$serializedPath = substr($serializedPath, 0, strlen($serializedPath) - 1);
 		}
 
-		$pInstanceProp = new core_kernel_classes_Property(PROPERTY_PINSTANCES_PROCESSPATH);
+		$pInstanceProp = new core_kernel_classes_Property(PROPERTY_PROCESSINSTANCES_PROCESSPATH);
 		$this->processExecution->resource->editPropertyValues($pInstanceProp,$serializedPath);
 
 		// section 10-13-1-85-7282d1cf:11cf4fd21dd:-8000:0000000000000A40 end

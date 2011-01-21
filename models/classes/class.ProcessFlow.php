@@ -111,7 +111,7 @@ class wfEngine_models_classes_ProcessFlow{
 		$this->checkedActivities[$activity->uriResource] = $activity;
 		
 		$apiModel = core_kernel_impl_ApiModelOO::singleton();
-		$nextConnectorsCollection = $apiModel->getSubject(PROPERTY_CONNECTORS_PRECACTIVITIES, $activity->uriResource);//note: count()>1 only 
+		$nextConnectorsCollection = $apiModel->getSubject(PROPERTY_CONNECTORS_PREVIOUSACTIVITIES, $activity->uriResource);//note: count()>1 only 
 		
 		if($nextConnectorsCollection->count()){//there could be only one next connector for an activity
 		

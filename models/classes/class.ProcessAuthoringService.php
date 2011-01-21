@@ -173,7 +173,7 @@ class wfEngine_models_classes_ProcessAuthoringService
 			$activity->editPropertyValues(new core_kernel_classes_Property(PROPERTY_ACTIVITIES_ISHIDDEN), GENERIS_FALSE);
 			
 			//by default we add the back and forward controls to the activity 		
-			$activity->editPropertyValues(new core_kernel_classes_Property(PROPERTY_ACTIVITY_CONTROL), array(INSTANCE_CONTROL_BACKWARD, INSTANCE_CONTROL_FORWARD));
+			$activity->editPropertyValues(new core_kernel_classes_Property(PROPERTY_ACTIVITIES_CONTROLS), array(INSTANCE_CONTROL_BACKWARD, INSTANCE_CONTROL_FORWARD));
 			
 			$returnValue = $activity;
 		}else{
@@ -227,19 +227,7 @@ class wfEngine_models_classes_ProcessAuthoringService
         $returnValue = null;
 
         // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004D6D begin
-		
-		//create the expression instance:
-		foreach ($xmlDom->childNodes as $childNode) {
-			foreach ($childNode->childNodes as $childOfChildNode) {
-				if ($childOfChildNode->nodeName == "then"){
-					
-					$assignmentDescriptor = DescriptorFactory::getAssignDescriptor($childOfChildNode);
-					$returnValue = $assignmentDescriptor->import();//(3*(^var +  1) = 2 or ^var > 7) AND ^RRR
-					break 2;//stop at the first occurence of course
-				}
-			}
-		}
-		
+			
         // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004D6D end
 
         return $returnValue;
@@ -304,7 +292,7 @@ class wfEngine_models_classes_ProcessAuthoringService
 		
 		if(!empty($returnValue)){
 			//associate the connector to the activity
-			$returnValue->setPropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_PRECACTIVITIES), $activity->uriResource);
+			$returnValue->setPropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_PREVIOUSACTIVITIES), $activity->uriResource);
 			
 			//set the activity reference of the connector:
 			$activityRefProp = new core_kernel_classes_Property(PROPERTY_CONNECTORS_ACTIVITYREFERENCE);
@@ -415,52 +403,7 @@ class wfEngine_models_classes_ProcessAuthoringService
 
         // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004D89 begin
 		
-		//note: the resource in the parameter "activity" can be either an actual activity or a parent inferenceRule
 		
-		switch($type){
-			case 'onBefore':{
-				$inferenceRuleProp = new core_kernel_classes_Property(PROPERTY_ACTIVITIES_ONBEFOREINFERENCERULE);
-				break;
-			}
-			case 'onAfter': {
-				$inferenceRuleProp = new core_kernel_classes_Property(PROPERTY_ACTIVITIES_ONAFTERINFERENCERULE);
-				break;
-			}
-			case 'inferenceRuleElse': {
-				$inferenceRuleProp = new core_kernel_classes_Property(PROPERTY_INFERENCERULES_ELSE);
-				if(empty($label)){
-					$label = ' ';
-				}
-				break;
-			}
-			default:{
-				return $returnValue;
-			}
-		}
-		
-		$inferenceRuleLabel = "";
-		if(empty($label)){
-			// $activity->getPropertyValuesCollection($inferenceRuleProp);
-			$nb = $activity->getPropertyValuesCollection($inferenceRuleProp)->count()+1;
-			$inferenceRuleLabel = "$type Inference Rule $nb";
-		}else{
-			$inferenceRuleLabel = $label;
-		}
-		
-		$inferenceRuleClass = new core_kernel_classes_Class(CLASS_INFERENCERULES);
-		$returnValue = $inferenceRuleClass->createInstance($inferenceRuleLabel, "created by ProcessAuthoringService.Class");
-		
-		if(!empty($returnValue)){
-			//associate the inference rule to the activity or the parent inference rule
-			if($type == 'inferenceRuleElse'){
-				$activity->editPropertyValues($inferenceRuleProp, $returnValue->uriResource);//only one single inference rule is allowed 
-			}else{
-				//we add a new inference rule to an activity
-				$activity->setPropertyValue($inferenceRuleProp, $returnValue->uriResource);
-			}
-		}else{
-			throw new Exception("the inference rule cannot be created for the activity {$activity->getLabel()}: {$activity->uriResource}");
-		}
 		
         // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004D89 end
 
@@ -486,7 +429,7 @@ class wfEngine_models_classes_ProcessAuthoringService
 		//an interactive service of an activity is a call of service:
 		$callOfServiceClass = new core_kernel_classes_Class(CLASS_CALLOFSERVICES);
 		
-		//create new resource for the property value of the current call of service PROPERTY_CALLOFSERVICES_ACTUALPARAMIN or PROPERTY_CALLOFSERVICES_ACTUALPARAMOUT
+		//create new resource for the property value of the current call of service PROPERTY_CALLOFSERVICES_ACTUALPARAMETERIN or PROPERTY_CALLOFSERVICES_ACTUALPARAMETEROUT
 		$returnValue = $callOfServiceClass->createInstance($activity->getLabel()."_service_".$number, "created by ProcessAuthoringService.Class");
 		
 		if(!empty($returnValue)){
@@ -536,7 +479,7 @@ class wfEngine_models_classes_ProcessAuthoringService
 			$found = false;
 			foreach($connectorCollection->getIterator() as $connector){
 				if($connector instanceof core_kernel_classes_Resource){
-					if($connector->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_TYPEOFCONNECTOR))->uriResource == INSTANCE_TYPEOFCONNECTORS_JOIN){
+					if($connector->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_TYPE))->uriResource == INSTANCE_TYPEOFCONNECTORS_JOIN){
 						//join connector found (there could be only a single one): connect the previous activity to that one:
 						
 						if(!is_null($previousActivity)){
@@ -599,10 +542,10 @@ class wfEngine_models_classes_ProcessAuthoringService
 				//delete old connector, and associate the activity to that one:
 				// $this->deleteConnector($connectorInstance);
 				
-				core_kernel_impl_ApiModelOO::singleton()->removeStatement($connectorInstance->uriResource, PROPERTY_CONNECTORS_PRECACTIVITIES, $previousActivity->uriResource, '');
+				core_kernel_impl_ApiModelOO::singleton()->removeStatement($connectorInstance->uriResource, PROPERTY_CONNECTORS_PREVIOUSACTIVITIES, $previousActivity->uriResource, '');
 				
 				for($i=0;$i<$multiplicity;$i++){
-					$connectorInstance->setPropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_PRECACTIVITIES), $previousActivity->uriResource);
+					$connectorInstance->setPropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_PREVIOUSACTIVITIES), $previousActivity->uriResource);
 				}
 			}else{
 				throw new Exception('unexpected null multiplicity');
@@ -893,14 +836,6 @@ class wfEngine_models_classes_ProcessAuthoringService
 		$this->deleteReference(new core_kernel_classes_Property(PROPERTY_TRANSITIONRULES_THEN), $activity);
 		$this->deleteReference(new core_kernel_classes_Property(PROPERTY_TRANSITIONRULES_ELSE), $activity);
 		
-		//delete inference rules:
-		foreach($activity->getPropertyValuesCollection(new core_kernel_classes_Property(PROPERTY_ACTIVITIES_ONBEFOREINFERENCERULE))->getIterator() as $inferenceRule){
-			$this->deleteInferenceRule($inferenceRule);
-		}
-		foreach($activity->getPropertyValuesCollection(new core_kernel_classes_Property(PROPERTY_ACTIVITIES_ONAFTERINFERENCERULE))->getIterator() as $inferenceRule){
-			$this->deleteInferenceRule($inferenceRule);
-		}
-		
 		//delete call of service!!
 		$interactiveServices = $activity->getPropertyValuesCollection(new core_kernel_classes_Property(PROPERTY_ACTIVITIES_INTERACTIVESERVICES));
 		foreach($interactiveServices->getIterator() as $service){
@@ -937,8 +872,8 @@ class wfEngine_models_classes_ProcessAuthoringService
         // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004DE0 begin
 		
 		//remove the property values in the call of service instance
-		$callOfService->removePropertyValues(new core_kernel_classes_Property(PROPERTY_CALLOFSERVICES_ACTUALPARAMIN));
-		$callOfService->removePropertyValues(new core_kernel_classes_Property(PROPERTY_CALLOFSERVICES_ACTUALPARAMOUT));
+		$callOfService->removePropertyValues(new core_kernel_classes_Property(PROPERTY_CALLOFSERVICES_ACTUALPARAMETERIN));
+		$callOfService->removePropertyValues(new core_kernel_classes_Property(PROPERTY_CALLOFSERVICES_ACTUALPARAMETEROUT));
 		
 		//get all actual param of the current call of service
 		$actualParamCollection = $callOfService->getPropertyValuesCollection(new core_kernel_classes_Property(PROPERTY_SERVICESDEFINITION_FORMALPARAMIN));
@@ -978,32 +913,7 @@ class wfEngine_models_classes_ProcessAuthoringService
 
         // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004DED begin
 		
-		if(!is_null($assignment)){
-		
-			$assignmentVariable = $assignment->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_ASSIGNMENT_VARIABLE));
-			//should be an SPX:
-			if($assignmentVariable instanceof core_kernel_classes_Resource){
-				$assignmentVariable->delete();
-			}
-			
-			$assignmentValue = $assignment->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_ASSIGNMENT_VALUE));
-			if(!is_null($assignmentValue)){
-				//could be a term, an operation or a constant (even though its range is resource)
-				if($assignmentValue instanceof core_kernel_classes_Resource){
-					
-					$this->deleteTerm($assignmentValue);
-					
-				}
-			}
-			
-			if($fullDelete){
-				$returnValue = $assignment->delete();
-			}else{
-				$returnValue = true;
-			}
-			
-		}
-		
+				
         // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004DED end
 
         return (bool) $returnValue;
@@ -1025,8 +935,8 @@ class wfEngine_models_classes_ProcessAuthoringService
 		
 		//delete related actual param as well:
 			
-		$propActualParamIn = new core_kernel_classes_Property(PROPERTY_CALLOFSERVICES_ACTUALPARAMIN);
-		$propActualParamOut = new core_kernel_classes_Property(PROPERTY_CALLOFSERVICES_ACTUALPARAMOUT);
+		$propActualParamIn = new core_kernel_classes_Property(PROPERTY_CALLOFSERVICES_ACTUALPARAMETERIN);
+		$propActualParamOut = new core_kernel_classes_Property(PROPERTY_CALLOFSERVICES_ACTUALPARAMETEROUT);
 		
 		foreach($service->getPropertyValuesCollection($propActualParamIn)->getIterator() as $actualParam){
 			$actualParam->delete();
@@ -1108,7 +1018,7 @@ class wfEngine_models_classes_ProcessAuthoringService
 		
 		
 		//manage the connection to the previous activities: clean the reference to this connector:
-		$previousActivityCollection = $connector->getPropertyValuesCollection(new core_kernel_classes_Property(PROPERTY_CONNECTORS_PRECACTIVITIES));
+		$previousActivityCollection = $connector->getPropertyValuesCollection(new core_kernel_classes_Property(PROPERTY_CONNECTORS_PREVIOUSACTIVITIES));
 		foreach($previousActivityCollection->getIterator() as $previousActivity){
 			if(wfEngine_helpers_ProcessUtil::isConnector($previousActivity)){
 				core_kernel_impl_ApiModelOO::singleton()->removeStatement($previousActivity->uriResource, PROPERTY_CONNECTORS_NEXTACTIVITIES, $connector->uriResource, '');
@@ -1128,7 +1038,7 @@ class wfEngine_models_classes_ProcessAuthoringService
 		}
 		
 		//delete connector itself:
-		$returnValue = $this->deleteReference(new core_kernel_classes_Property(PROPERTY_CONNECTORS_PRECACTIVITIES), $connector);
+		$returnValue = $this->deleteReference(new core_kernel_classes_Property(PROPERTY_CONNECTORS_PREVIOUSACTIVITIES), $connector);
 		// $returnValue = $this->deleteReference(new core_kernel_classes_Property(PROPERTY_CONNECTORS_NEXTACTIVITIES), $connector);
 		$returnValue = $this->deleteInstance($connector);
 		
@@ -1192,7 +1102,7 @@ class wfEngine_models_classes_ProcessAuthoringService
 			$connector->removePropertyValues($nextActivitiesProp);
 		}elseif(($property->uriResource == PROPERTY_TRANSITIONRULES_THEN)||($property->uriResource == PROPERTY_TRANSITIONRULES_ELSE)){
 			//it is a split connector: get the transition rule, if exists
-			$transitionRule = $connector->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTOR_TRANSITIONRULE));
+			$transitionRule = $connector->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_TRANSITIONRULE));
 			if(!is_null($transitionRule)){
 				$nextActivity = $transitionRule->getOnePropertyValue($property);
 				if(!is_null($nextActivity)){
@@ -1283,33 +1193,7 @@ class wfEngine_models_classes_ProcessAuthoringService
         $returnValue = (bool) false;
 
         // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004E10 begin
-		
-		// $if = $inferenceRule->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_RULE_IF));//conditon or null
-		$then = $inferenceRule->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_INFERENCERULES_THEN));//assignment or null only
-		$else = $inferenceRule->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_INFERENCERULES_ELSE));//assignment, inference rule or null
-		
-		$this->deleteCondition($inferenceRule);
-		
-		if(!is_null($then) && ($then instanceof core_kernel_classes_Resource) ){
-			$this->deleteAssignment($then);
-		}
-		
-		if(!is_null($else) && ($then instanceof core_kernel_classes_Resource) ){
-			$classUri = $else->getUniquePropertyValue(new core_kernel_classes_Property(RDF_TYPE))->uriResource;
-			if($classUri == CLASS_ASSIGNMENT){
-				$this->deleteAssignment($else);
-			}elseif($classUri == CLASS_INFERENCERULES){
-				$this->deleteInferenceRule($else);
-			}
-		}
-		
-		//last: delete the reference to this inferenceRule in case of successive inference rule:
-		$this->deleteReference(new core_kernel_classes_Property(PROPERTY_INFERENCERULES_ELSE), $inferenceRule);
-		$this->deleteReference(new core_kernel_classes_Property(PROPERTY_ACTIVITIES_ONAFTERINFERENCERULE), $inferenceRule);
-		// $this->deleteReference(new core_kernel_classes_Property(PROPERTY_ACTIVITIES_ONBEFOREINFERENCERULE), $inferenceRule);
-		
-		$returnValue = $inferenceRule->delete();
-		
+				
         // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004E10 end
 
         return (bool) $returnValue;
@@ -1625,7 +1509,7 @@ class wfEngine_models_classes_ProcessAuthoringService
 		
 		if(in_array('next',$option)){
 		
-			$followingConnectorsCollection = core_kernel_impl_ApiModelOO::singleton()->getSubject(PROPERTY_CONNECTORS_PRECACTIVITIES, $activity->uriResource);
+			$followingConnectorsCollection = core_kernel_impl_ApiModelOO::singleton()->getSubject(PROPERTY_CONNECTORS_PREVIOUSACTIVITIES, $activity->uriResource);
 		
 			foreach ($followingConnectorsCollection->getIterator() as $connector){
 				if(!is_null($connector)){
@@ -1762,7 +1646,7 @@ class wfEngine_models_classes_ProcessAuthoringService
 
         // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004E63 begin
 		
-		$processVarCollection = core_kernel_impl_ApiModelOO::singleton()->getSubject(PROPERTY_CODE, $code);
+		$processVarCollection = core_kernel_impl_ApiModelOO::singleton()->getSubject(PROPERTY_PROCESSVARIABLES_CODE, $code);
 		if(!$processVarCollection->isEmpty()){
 			$returnValue = $processVarCollection->get(0);
 		}
@@ -1927,7 +1811,7 @@ class wfEngine_models_classes_ProcessAuthoringService
      * @param  string actualParameterType
      * @return boolean
      */
-    public function setActualParameter( core_kernel_classes_Resource $callOfService,  core_kernel_classes_Resource $formalParam, $value, $parameterInOrOut = PROPERTY_CALLOFSERVICES_ACTUALPARAMIN, $actualParameterType = PROPERTY_ACTUALPARAM_CONSTANTVALUE)
+    public function setActualParameter( core_kernel_classes_Resource $callOfService,  core_kernel_classes_Resource $formalParam, $value, $parameterInOrOut = PROPERTY_CALLOFSERVICES_ACTUALPARAMETERIN, $actualParameterType = PROPERTY_ACTUALPARAM_CONSTANTVALUE)
     {
         $returnValue = (bool) false;
 
@@ -1938,9 +1822,9 @@ class wfEngine_models_classes_ProcessAuthoringService
 		
 			$actualParameterClass = new core_kernel_classes_Class(CLASS_ACTUALPARAMETER);
 	
-			//create new resource for the property value of the current call of service PROPERTY_CALLOFSERVICES_ACTUALPARAMIN or PROPERTY_CALLOFSERVICES_ACTUALPARAMOUT
+			//create new resource for the property value of the current call of service PROPERTY_CALLOFSERVICES_ACTUALPARAMETERIN or PROPERTY_CALLOFSERVICES_ACTUALPARAMETEROUT
 			$newActualParameter = $actualParameterClass->createInstance($formalParam->getLabel(), "actual parameter created by Process Authoring Service");
-			$newActualParameter->setPropertyValue(new core_kernel_classes_Property(PROPERTY_ACTUALPARAM_FORMALPARAM), $formalParam->uriResource);
+			$newActualParameter->setPropertyValue(new core_kernel_classes_Property(PROPERTY_ACTUALPARAMETER_FORMALPARAMETER), $formalParam->uriResource);
 			$newActualParameter->setPropertyValue(new core_kernel_classes_Property($actualParameterType), $value);
 
 			$returnValue = $callOfService->setPropertyValue(new core_kernel_classes_Property($parameterInOrOut), $newActualParameter->uriResource);
@@ -1970,22 +1854,7 @@ class wfEngine_models_classes_ProcessAuthoringService
 
         // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004E83 begin
 		
-		if($connectionType == 'then'){
-			$property = new core_kernel_classes_Property(PROPERTY_INFERENCERULES_THEN);
-		}else if($connectionType == 'else'){
-			$property = new core_kernel_classes_Property(PROPERTY_INFERENCERULES_ELSE);
-		}else{
-			throw new Exception('unknown type of assignment');
-		}
-	
-		//delete old assignment resource:
-		$oldAssignment = $inferenceRule->getOnePropertyValue($property);
-		if(!is_null($oldAssignment)){
-			$this->deleteAssignment($oldAssignment);
-		}
 		
-		//save new one:
-		$returnValue = $inferenceRule->editPropertyValues($property, $assignment->uriResource);
 		
         // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004E83 end
 
@@ -2180,10 +2049,10 @@ class wfEngine_models_classes_ProcessAuthoringService
 				$joinConnector = $processFlow->findJoinFromActivityForward(new core_kernel_classes_Resource($activityUri));
 				if(!is_null($joinConnector)){
 					//removestatement fot that connector:
-					core_kernel_impl_ApiModelOO::singleton()->removeStatement($joinConnector->uriResource, PROPERTY_CONNECTORS_PRECACTIVITIES, $activityUri, '');
+					core_kernel_impl_ApiModelOO::singleton()->removeStatement($joinConnector->uriResource, PROPERTY_CONNECTORS_PREVIOUSACTIVITIES, $activityUri, '');
 					
 					for($i=0; $i<$newActivitiesArray[$activityUri]; $i++){
-						$joinConnector->setPropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_PRECACTIVITIES), $activityUri);
+						$joinConnector->setPropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_PREVIOUSACTIVITIES), $activityUri);
 					}
 				
 				}

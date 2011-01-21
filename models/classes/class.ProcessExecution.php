@@ -91,7 +91,7 @@ extends wfEngine_models_classes_WfResource
 
 		// section 10-13-1--31-740bb989:119ebfa9b28:-8000:00000000000008EF begin
 
-		$processVarsProp = new core_kernel_classes_Property(PROCESS_VARIABLES);
+		$processVarsProp = new core_kernel_classes_Property(PROPERTY_PROCESS_VARIABLES);
 		$processVars = $this->process->resource->getPropertyValues($processVarsProp);
 
 		
@@ -102,7 +102,7 @@ extends wfEngine_models_classes_WfResource
 			$values = $this->resource->getPropertyValues($var);
 			
 			$label = $var->getLabel();
-			$codeProp = new core_kernel_classes_Property(PROPERTY_CODE);
+			$codeProp = new core_kernel_classes_Property(PROPERTY_PROCESSVARIABLES_CODE);
 			$code = $var->getUniquePropertyValue($codeProp);
 			
 			$actualValue = '';			
@@ -518,7 +518,7 @@ extends wfEngine_models_classes_WfResource
 		parent::__construct($uri);
 		$this->resource = new core_kernel_classes_Resource($uri,__METHOD__);
 		//getexecutionOf field
-		$executionOfProp = new core_kernel_classes_Property(PROPERTY_PINSTANCES_EXECUTIONOF);
+		$executionOfProp = new core_kernel_classes_Property(PROPERTY_PROCESSINSTANCES_EXECUTIONOF);
 		$values = $this->resource->getPropertyValues($executionOfProp);
 		
 		foreach ($values as $a => $b)
@@ -549,8 +549,8 @@ extends wfEngine_models_classes_WfResource
 
 		// Status handling.
 
-		$statusProp = new core_kernel_classes_Property(STATUS);
-		$this->resource->editPropertyValues($statusProp,RESOURCE_PROCESSSTATUS_RESUMED);
+		$statusProp = new core_kernel_classes_Property(PROPERTY_PROCESSINSTANCES_STATUS);
+		$this->resource->editPropertyValues($statusProp,INSTANCE_PROCESSSTATUS_RESUMED);
 		$this->status = "Resumed";
 
 		// -- Exit code handling.
@@ -575,8 +575,8 @@ extends wfEngine_models_classes_WfResource
 		// section 10-13-1-85-746e873e:11bb0a6f076:-8000:00000000000009A5 begin
 
 		// -- Status handling.
-		$statusProp = new core_kernel_classes_Property(STATUS);
-		$this->resource->editPropertyValues($statusProp,RESOURCE_PROCESSSTATUS_PAUSED);
+		$statusProp = new core_kernel_classes_Property(PROPERTY_PROCESSINSTANCES_STATUS);
+		$this->resource->editPropertyValues($statusProp,INSTANCE_PROCESSSTATUS_PAUSED);
 		$this->status = 'Paused';
 
 		// section 10-13-1-85-746e873e:11bb0a6f076:-8000:00000000000009A5 end
@@ -592,7 +592,7 @@ extends wfEngine_models_classes_WfResource
 		
 		$returnValue = '';
 		
-		$connectorsCollection = core_kernel_impl_ApiModelOO::singleton()->getSubject(PROPERTY_CONNECTORS_PRECACTIVITIES, $activityUri);
+		$connectorsCollection = core_kernel_impl_ApiModelOO::singleton()->getSubject(PROPERTY_CONNECTORS_PREVIOUSACTIVITIES, $activityUri);
 		
 		if($connectorsCollection->count()>1){
 			//there might be a join connector among them or an issue
@@ -634,7 +634,7 @@ extends wfEngine_models_classes_WfResource
 		$returnValue = array();
 
 		// section 10-13-1-85--3c82cee5:11bb0c5945c:-8000:00000000000009AB begin
-		$nextConnectorsCollection = core_kernel_impl_ApiModelOO::singleton()->getSubject(PROPERTY_CONNECTORS_PRECACTIVITIES, $this->currentActivity[0]->uri);
+		$nextConnectorsCollection = core_kernel_impl_ApiModelOO::singleton()->getSubject(PROPERTY_CONNECTORS_PREVIOUSACTIVITIES, $this->currentActivity[0]->uri);
 
 		$connectors = array();
 
@@ -736,8 +736,8 @@ extends wfEngine_models_classes_WfResource
 	{
 		// section 10-13-1-85-19c5934a:11cae6d4e92:-8000:0000000000000A28 begin
 		// -- Status handling
-		$statusProp = new core_kernel_classes_Property(STATUS);
-		$this->resource->editPropertyValues($statusProp,STATUS_FINISHED);
+		$statusProp = new core_kernel_classes_Property(PROPERTY_PROCESSINSTANCES_STATUS);
+		$this->resource->editPropertyValues($statusProp, INSTANCE_PROCESSSTATUS_FINISHED);
 
 		$this->status = 'Finished';
 		
@@ -765,10 +765,8 @@ extends wfEngine_models_classes_WfResource
 		{
 			$this->currentActivity[] 	= new wfEngine_models_classes_Activity($activity->uriResource);
 		}
-
 		
-		
-		$statusProp = new core_kernel_classes_Property(STATUS);
+		$statusProp = new core_kernel_classes_Property(PROPERTY_PROCESSINSTANCES_STATUS);
 		$status = $this->resource->getPropertyValues($statusProp);
 
 		//add status information
@@ -776,10 +774,10 @@ extends wfEngine_models_classes_WfResource
 		{
 			switch ($status[0])
 			{
-				case RESOURCE_PROCESSSTATUS_RESUMED : 	{ $this->status = "Resumed"; break; }
-				case RESOURCE_PROCESSSTATUS_STARTED : 	{ $this->status = "Started"; break; }
-				case RESOURCE_PROCESSSTATUS_FINISHED : 	{ $this->status = "Finished"; break; }
-				case RESOURCE_PROCESSSTATUS_PAUSED :	{ $this->status = "Paused" ;break; }
+				case INSTANCE_PROCESSSTATUS_RESUMED : 	{ $this->status = "Resumed"; break; }
+				case INSTANCE_PROCESSSTATUS_STARTED : 	{ $this->status = "Started"; break; }
+				case INSTANCE_PROCESSSTATUS_FINISHED : 	{ $this->status = "Finished"; break; }
+				case INSTANCE_PROCESSSTATUS_PAUSED :	{ $this->status = "Paused" ;break; }
 			}
 		}
 

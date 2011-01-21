@@ -77,7 +77,7 @@ class wfEngine_models_classes_Activity
     {
         // section -64--88-1-64--7117f567:11a0527df60:-8000:00000000000008F4 begin
 		// We get the next connectors.
-		$nextConnectors = core_kernel_impl_ApiModelOO::singleton()->getSubject(PROPERTY_CONNECTORS_PRECACTIVITIES, $this->uri);
+		$nextConnectors = core_kernel_impl_ApiModelOO::singleton()->getSubject(PROPERTY_CONNECTORS_PREVIOUSACTIVITIES, $this->uri);
 		$connectors =array();
 		foreach ($nextConnectors->getIterator() as $resource)
 		{
@@ -110,7 +110,7 @@ class wfEngine_models_classes_Activity
         $returnValue = array();
 
         // section 10-13-1--31-2237f23b:11a39ee89a9:-8000:000000000000098F begin
-		$activitiesIserviceProp = new core_kernel_classes_Property(PROPERTY_ACTIVITIES_ISERVICES);
+		$activitiesIserviceProp = new core_kernel_classes_Property(PROPERTY_ACTIVITIES_INTERACTIVESERVICES);
 		$interactiveServices =  $this->resource->getPropertyValues($activitiesIserviceProp);
 		
 		$interactiveServicesDescription=array();
@@ -212,7 +212,7 @@ class wfEngine_models_classes_Activity
 
         // section 10-13-1-85-16731180:11be4127421:-8000:0000000000000A07 begin
 
-		$nextActivitiesCollection = core_kernel_impl_ApiModelOO::singleton()->getSubject(PROPERTY_CONNECTORS_PRECACTIVITIES,$this->uri);
+		$nextActivitiesCollection = core_kernel_impl_ApiModelOO::singleton()->getSubject(PROPERTY_CONNECTORS_PREVIOUSACTIVITIES,$this->uri);
 		
 		$returnValue = $nextActivitiesCollection=== null;
         // section 10-13-1-85-16731180:11be4127421:-8000:0000000000000A07 end
@@ -235,7 +235,7 @@ class wfEngine_models_classes_Activity
         
         if(!is_null( $this->resource)){
         	
-        	$returnValue = $this->resource->getPropertyValues(new core_kernel_classes_Property(PROPERTY_ACTIVITY_CONTROL));
+        	$returnValue = $this->resource->getPropertyValues(new core_kernel_classes_Property(PROPERTY_ACTIVITIES_CONTROLS));
         
        		if($this->isFirst() && isset($returnValue[INSTANCE_CONTROL_BACKWARD])){
         		unset($returnValue[INSTANCE_CONTROL_BACKWARD]);

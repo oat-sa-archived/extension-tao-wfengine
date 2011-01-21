@@ -142,9 +142,9 @@ class NotificationServiceTestCase extends UnitTestCase {
 			
 			
 			$this->service->bindProperties($connector1, array(
-				PROPERTY_CONNECTOR_NOTIFY => INSTANCE_NOTIFY_USER,
-				PROPERTY_CONNECTOR_USER_NOTIFIED => $this->currentUser->uriResource,
-				PROPERTY_CONNECTOR_NOTIFICATION_MESSAGE => 'Connector 1 notification to user '.$this->currentUser->getLabel()
+				PROPERTY_CONNECTORS_NOTIFY => INSTANCE_NOTIFY_USER,
+				PROPERTY_CONNECTORS_USER_NOTIFIED => $this->currentUser->uriResource,
+				PROPERTY_CONNECTORS_NOTIFICATION_MESSAGE => 'Connector 1 notification to user '.$this->currentUser->getLabel()
 			));
 			
 			
@@ -160,8 +160,8 @@ class NotificationServiceTestCase extends UnitTestCase {
 			$this->assertNotNull($connector2);
 			
 			$this->service->bindProperties($connector2, array(
-				PROPERTY_CONNECTOR_NOTIFY => INSTANCE_NOTIFY_PREVIOUS,
-				PROPERTY_CONNECTOR_NOTIFICATION_MESSAGE => 'Connector 2 notification to previous activity user '.$this->currentUser->getLabel()
+				PROPERTY_CONNECTORS_NOTIFY => INSTANCE_NOTIFY_PREVIOUS,
+				PROPERTY_CONNECTORS_NOTIFICATION_MESSAGE => 'Connector 2 notification to previous activity user '.$this->currentUser->getLabel()
 			));
 			
 			
@@ -174,8 +174,8 @@ class NotificationServiceTestCase extends UnitTestCase {
 			$this->assertNotNull($connector3);
 			
 			$this->service->bindProperties($connector3, array(
-				PROPERTY_CONNECTOR_NOTIFY => INSTANCE_NOTIFY_NEXT,
-				PROPERTY_CONNECTOR_NOTIFICATION_MESSAGE => 'Connector 3 notification to next activity user '.$this->currentUser->getLabel()
+				PROPERTY_CONNECTORS_NOTIFY => INSTANCE_NOTIFY_NEXT,
+				PROPERTY_CONNECTORS_NOTIFICATION_MESSAGE => 'Connector 3 notification to next activity user '.$this->currentUser->getLabel()
 			));
 			
 			$activity4 = $authoringService->createSequenceActivity($connector3, null, 'activity4');
@@ -191,9 +191,9 @@ class NotificationServiceTestCase extends UnitTestCase {
 			$this->assertNotNull($connector4);
 			
 			$this->service->bindProperties($connector4, array(
-				PROPERTY_CONNECTOR_NOTIFY => INSTANCE_NOTIFY_ROLE,
-				PROPERTY_CONNECTOR_ROLE_NOTIFIED => $role2->uriResource,
-				PROPERTY_CONNECTOR_NOTIFICATION_MESSAGE => 'Connector 4 notification to role user '.$role2->getLabel()
+				PROPERTY_CONNECTORS_NOTIFY => INSTANCE_NOTIFY_ROLE,
+				PROPERTY_CONNECTORS_ROLE_NOTIFIED => $role2->uriResource,
+				PROPERTY_CONNECTORS_NOTIFICATION_MESSAGE => 'Connector 4 notification to role user '.$role2->getLabel()
 			));
 		
 			$activity5 = $authoringService->createSequenceActivity($connector4, null, 'activity5');

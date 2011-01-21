@@ -143,11 +143,11 @@ class wfEngine_models_classes_ProcessTreeService
 						$connectorData[] = $this->conditionNode($connectorRule);
 												
 						//get the "PREC"
-						$prev = $connector->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_PRECACTIVITIES));
+						$prev = $connector->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_PREVIOUSACTIVITIES));
 						$connectorData[] = $this->activityNode($prev, 'prec', true);
 												
 					}elseif(strtolower($connectorType->getLabel()) == "sequence"){
-						$prev = $connector->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_PRECACTIVITIES));
+						$prev = $connector->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_PREVIOUSACTIVITIES));
 						if(!wfEngine_helpers_ProcessUtil::isActivity($prev)){
 							throw new Exception("the previous activity of a sequence connector {$connector->uriResource} must be an activity {$prev->uriResource}");
 						}
@@ -230,23 +230,6 @@ class wfEngine_models_classes_ProcessTreeService
 				}
 			}
 			
-			//get related inference rules
-			$onBeforeInferenceRuleCollection = $activity->getPropertyValuesCollection(new core_kernel_classes_Property(PROPERTY_ACTIVITIES_ONBEFOREINFERENCERULE));
-			foreach($onBeforeInferenceRuleCollection->getIterator() as $inferenceRule){
-				$activityData['children'][] = $this->inferenceRuleNode($inferenceRule, 'onBefore');
-			}
-			
-			$onAfterInferenceRuleCollection = $activity->getPropertyValuesCollection(new core_kernel_classes_Property(PROPERTY_ACTIVITIES_ONAFTERINFERENCERULE));
-			foreach($onAfterInferenceRuleCollection->getIterator() as $inferenceRule){
-				$activityData['children'][] = $this->inferenceRuleNode($inferenceRule, 'onAfter');
-			}
-			
-			//related consistency rules
-			$consistencyRuleCollection = $activity->getPropertyValuesCollection(new core_kernel_classes_Property(PROPERTY_ACTIVITIES_CONSISTENCYRULE));
-			foreach($consistencyRuleCollection->getIterator() as $consistencyRule){
-				$activityData['children'][] = $this->consistencyRuleNode($consistencyRule);
-			}
-			
 			//add children here
 			if($initial){
 				array_unshift($data["children"],$activityData);
@@ -258,109 +241,7 @@ class wfEngine_models_classes_ProcessTreeService
 		
 		return $data;
 	}
-	
-	protected function inferenceRuleNode(core_kernel_classes_Resource $inferenceRule, $class){
-	
-		if(!in_array($class, array('onBefore', 'onAfter')) || is_null($inferenceRule)){
-			return array();
-		}
 		
-		$nodeData = array(
-			'data' => $inferenceRule->getLabel(),
-			'attributes' => array(
-				'id' => tao_helpers_Uri::encode($inferenceRule->uriResource),
-				'class' => 'node-inferenceRule-'.$class
-			)
-		);
-		
-		// $if = $inferenceRule->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_RULE_IF));//conditon or null
-		$then = $inferenceRule->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_INFERENCERULES_THEN));//assignment or null only
-		$else = $inferenceRule->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_INFERENCERULES_ELSE));//assignment, inference rule or null
-		
-		//always show the if node:
-		$nodeData['children'][]	= $this->conditionNode($inferenceRule);
-		
-		if(!is_null($then)){
-			$thenNode = $this->assignmentNode($then);
-			if(!empty($thenNode)){
-				$nodeData['children'][]	= self::addNodePrefix($thenNode, 'then');
-			}
-		}
-		if(!is_null($else)){
-			$classUri = $else->getUniquePropertyValue(new core_kernel_classes_Property(RDF_TYPE))->uriResource;
-			if($classUri == CLASS_ASSIGNMENT){
-				$elseNode = $this->assignmentNode($else);
-				if(!empty($thenNode)){
-					$nodeData['children'][]	= self::addNodePrefix($elseNode, 'else');
-				}
-			}elseif($classUri == CLASS_INFERENCERULES){
-				$nodeData['children'][] = self::addNodePrefix($this->inferenceRuleNode($else, $class), 'else');
-			}
-		}
-		
-		return $nodeData;
-	}
-	
-	protected function consistencyRuleNode(core_kernel_classes_Resource $consistencyRule){
-	
-		if(is_null($consistencyRule)){
-			return array();
-		}
-		
-		$nodeData = array(
-			'data' => $consistencyRule->getLabel(),
-			'attributes' => array(
-				'id' => tao_helpers_Uri::encode($consistencyRule->uriResource),
-				'class' => 'node-consistencyRule'
-			)
-		);
-		
-		$notification = array();
-		$notification = $consistencyRule->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_CONSISTENCYRULES_NOTIFICATION));//literal
-		
-		//always show the if node:
-		$nodeData['children'][]	= $this->conditionNode($consistencyRule);
-		// var_dump($notification, new core_kernel_classes_Property(PROPERTY_CONSISTENCYRULES_NOTIFICATION));
-		if(!is_null($notification)){
-			$nodeData['children'][]	= $this->notificationNode($notification);
-		}
-		
-		return $nodeData;
-	}
-	
-	protected function assignmentNode(core_kernel_classes_Resource $assignment){
-		$returnValue = array();
-		
-		if(!is_null($assignment)){
-			if($assignment->getLabel() != ''){
-				$returnValue = array(
-					'data' => $assignment->getLabel(),
-					'attributes' => array(
-						'id' => tao_helpers_Uri::encode($assignment->uriResource),
-						'class' => 'node-assignment'
-					)
-				);
-			}
-		}
-		
-		return $returnValue;
-	}
-	
-	protected function notificationNode(core_kernel_classes_Literal $notification){
-		$returnValue = array();
-		
-		if(!is_null($notification)){
-			$returnValue = array(
-				'data' => tao_helpers_Display::textCutter($notification->literal),
-				'attributes' => array(
-					'class' => 'node-notification'
-				)
-			);
-		}
-		
-		return $returnValue;
-	}
-	
 	/**
      * The method creates the array representation a connector to fill the jsTree 
      *

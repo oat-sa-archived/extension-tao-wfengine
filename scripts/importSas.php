@@ -89,10 +89,10 @@ class SaSImporter extends SasManager{
 		
 		$this->rdfTypeProp					= new core_kernel_classes_Property(RDF_TYPE);
 		$this->rdfLiteralClass				= new core_kernel_classes_Class(RDFS_LITERAL);
-		$this->processInstanceClass			= new core_kernel_classes_Class(CLASS_PROCESSINSTANCE);
+		$this->processInstanceClass			= new core_kernel_classes_Class(CLASS_PROCESSINSTANCES);
 		
 		$this->serviceDefClass 				= new core_kernel_classes_Class(CLASS_SUPPORTSERVICES);
-		$this->serviceUrlProp 				= new core_kernel_classes_Property(PROPERTY_SERVICESDEFINITION_URL);
+		$this->serviceUrlProp 				= new core_kernel_classes_Property(PROPERTY_SUPPORTSERVICES_URL);
 		$this->serviceFormalParamInProp 	= new core_kernel_classes_Property(PROPERTY_SERVICESDEFINITION_FORMALPARAMIN);
 		
 		$this->processVarClass 				= new core_kernel_classes_Class(CLASS_PROCESSVARIABLES);

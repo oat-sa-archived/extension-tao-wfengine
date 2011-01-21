@@ -142,9 +142,9 @@ class wfEngine_models_classes_NotificationService
         if(!is_null($connector) && !is_null($processExecution)){
 	        
         	//initialize properties 
-        	$connectorUserNotifiedProp			= new core_kernel_classes_Property(PROPERTY_CONNECTOR_USER_NOTIFIED);
-        	$connectorRoleNotifiedProp 			= new core_kernel_classes_Property(PROPERTY_CONNECTOR_ROLE_NOTIFIED);
-        	$connectorPreviousActivitiesProp 	= new core_kernel_classes_Property(PROPERTY_CONNECTORS_PRECACTIVITIES);
+        	$connectorUserNotifiedProp			= new core_kernel_classes_Property(PROPERTY_CONNECTORS_USER_NOTIFIED);
+        	$connectorRoleNotifiedProp 			= new core_kernel_classes_Property(PROPERTY_CONNECTORS_ROLE_NOTIFIED);
+        	$connectorPreviousActivitiesProp 	= new core_kernel_classes_Property(PROPERTY_CONNECTORS_PREVIOUSACTIVITIES);
         	$connectorNextActivitiesProp 		= new core_kernel_classes_Property(PROPERTY_CONNECTORS_NEXTACTIVITIES);
         	$activityExecutionUserProp 			= new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_CURRENT_USER);
         	$activityAclModeProp 				= new core_kernel_classes_Property(PROPERTY_ACTIVITIES_ACL_MODE);
@@ -157,7 +157,7 @@ class wfEngine_models_classes_NotificationService
         	$users = array();
         	
         	//get the notifications mode defined for that connector
-        	$notifyModes = $connector->getPropertyValuesCollection(new core_kernel_classes_Property(PROPERTY_CONNECTOR_NOTIFY));
+        	$notifyModes = $connector->getPropertyValuesCollection(new core_kernel_classes_Property(PROPERTY_CONNECTORS_NOTIFY));
 	        foreach($notifyModes->getIterator() as $notify){
 	        	
 	        	//get the users regarding the notification mode
@@ -294,9 +294,9 @@ class wfEngine_models_classes_NotificationService
         	
         	//initialize properties used in the loop
         	
-        	$connectorNotificationMessageProp 	= new core_kernel_classes_Property(PROPERTY_CONNECTOR_NOTIFICATION_MESSAGE);
+        	$connectorNotificationMessageProp 	= new core_kernel_classes_Property(PROPERTY_CONNECTORS_NOTIFICATION_MESSAGE);
         	$userMailProp 						= new core_kernel_classes_Property(PROPERTY_USER_MAIL);
-        	$processExecutionOfProp 			= new core_kernel_classes_Property(PROPERTY_PINSTANCES_EXECUTIONOF);
+        	$processExecutionOfProp 			= new core_kernel_classes_Property(PROPERTY_PROCESSINSTANCES_EXECUTIONOF);
         	
         	//create messages from the notifications resources
         	$messages = array();
@@ -307,7 +307,7 @@ class wfEngine_models_classes_NotificationService
         		$content = '';
         		$connector = $notificationResource->getOnePropertyValue($this->notificationConnectorProp);
         		if(!is_null($connector)){
-        			foreach($connector->getPropertyValues(new core_kernel_classes_Property(PROPERTY_CONNECTOR_NOTIFICATION_MESSAGE)) as $content){
+        			foreach($connector->getPropertyValues(new core_kernel_classes_Property(PROPERTY_CONNECTORS_NOTIFICATION_MESSAGE)) as $content){
         				if(strlen(trim($content)) > 0){
         					break;
         				}
