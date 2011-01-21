@@ -1,5 +1,5 @@
 <?php
-define('NS_TAOQUAL', 'http://www.tao.lu/middleware/wfEngine.rdf');
+define('NS_TAOQUAL', 'http://www.tao.lu/middleware/taoqual.rdf');
 define('NS_RULES', 'http://www.tao.lu/middleware/Rules.rdf');
 
 define('PROCESS_VARIABLES',								NS_TAOQUAL . '#i118589204618246');
