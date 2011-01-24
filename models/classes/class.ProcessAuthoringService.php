@@ -105,10 +105,10 @@ class wfEngine_models_classes_ProcessAuthoringService
 		$returnValue = null;
 		if (!empty($question)){ // something to parse
 			// str_replace taken from the MsReader class
-			$question = str_replace("�", "'", $question); // utf8...
-			$question = str_replace("�", "'", $question); // utf8...
-			$question = str_replace("�", "\"", $question);
-			$question = str_replace("�", "\"", $question);
+			$question = str_replace("’", "'", $question); // utf8...
+			$question = str_replace("‘", "'", $question); // utf8...
+			$question = str_replace("“", "\"", $question);
+			$question = str_replace("”", "\"", $question);
 			if($isCondition){
 				$question = "if ".$question;
 			}	
@@ -1793,7 +1793,7 @@ class wfEngine_models_classes_ProcessAuthoringService
         $returnValue = (bool) false;
 
         // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004E74 begin
-		$returnValue = $activity->editPropertyValues(new core_kernel_classes_Property(PROPERTY_ACTIVITIES_ROLE), $role->uriResource);
+		// $returnValue = $activity->editPropertyValues(new core_kernel_classes_Property(PROPERTY_ACTIVITIES_ROLE), $role->uriResource);
         // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004E74 end
 
         return (bool) $returnValue;
@@ -1826,7 +1826,7 @@ class wfEngine_models_classes_ProcessAuthoringService
 			$newActualParameter = $actualParameterClass->createInstance($formalParam->getLabel(), "actual parameter created by Process Authoring Service");
 			$newActualParameter->setPropertyValue(new core_kernel_classes_Property(PROPERTY_ACTUALPARAMETER_FORMALPARAMETER), $formalParam->uriResource);
 			$newActualParameter->setPropertyValue(new core_kernel_classes_Property($actualParameterType), $value);
-			print_r($newActualParameter);
+			
 			$returnValue = $callOfService->setPropertyValue(new core_kernel_classes_Property($parameterInOrOut), $newActualParameter->uriResource);
 	
 		}else{
