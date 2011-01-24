@@ -232,7 +232,6 @@ class wfEngine_models_classes_ProcessCloner
 				$activity, 
 				new core_kernel_classes_Class(CLASS_ACTIVITIES),
 				array(
-					PROPERTY_ACTIVITIES_INTERACTIVESERVICES,
 					PROPERTY_ACTIVITIES_INTERACTIVESERVICES
 			));
 			

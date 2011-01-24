@@ -346,7 +346,7 @@ class wfEngine_actions_ProcessAuthoring extends tao_actions_TaoModule {
 		$excludedProperty = array(
 			PROPERTY_ACTIVITIES_INTERACTIVESERVICES,
 			PROPERTY_ACTIVITIES_ISINITIAL,
-			PROPERTY_ACTIVITIES_ALLOWFREEVALUEOF
+			PROPERTY_GENERIS_ALLOWFREEVALUEOF
 		);
 		
 		$this->setData('newLabel', '');
@@ -398,11 +398,6 @@ class wfEngine_actions_ProcessAuthoring extends tao_actions_TaoModule {
 		if(isset($properties[RDFS_LABEL])){
 			$activity->setLabel($properties[RDFS_LABEL]);
 			$ajaxReturn[tao_helpers_Uri::encode(RDFS_LABEL)] = $properties[RDFS_LABEL];
-		}
-		
-		//set role:
-		if(isset($properties[PROPERTY_ACTIVITIES_ROLE])){
-			$this->service->setActivityRole($activity, new core_kernel_classes_Resource($properties[PROPERTY_ACTIVITIES_ROLE]));
 		}
 		
 		//set ishidden:
@@ -689,7 +684,7 @@ class wfEngine_actions_ProcessAuthoring extends tao_actions_TaoModule {
 		
 		$callOfService = new core_kernel_classes_Resource($callOfServiceUri);
 		$formName=uniqid("callOfServiceEditor_");
-		$myForm = wfEngine_helpers_ProcessFormFactory::callOfServiceEditor($callOfService, null, $formName);//NS_TAOQUAL . '#i118595593412394'
+		$myForm = wfEngine_helpers_ProcessFormFactory::callOfServiceEditor($callOfService, null, $formName);
 		$servicesData = array(
 			'current' => array(
 				'label' => $callOfService->getLabel(),
