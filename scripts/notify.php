@@ -4,8 +4,7 @@
  * @license GPLv2  http://www.opensource.org/licenses/gpl-2.0.php
  * @package wfEngine
  */
-require_once dirname(__FILE__).'/../../generis/common/inc.extension.php';	
-require_once dirname(__FILE__).'/../includes/common.php';
+require_once dirname(__FILE__).'/../includes/raw_start.php';
 
 set_time_limit(0);
 
