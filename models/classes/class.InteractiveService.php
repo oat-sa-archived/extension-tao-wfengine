@@ -134,10 +134,6 @@ class wfEngine_models_classes_InteractiveService
 			$inParameterProcessVariable = $inParameter->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_ACTUALPARAMETER_PROCESSVARIABLE));//a resource
 			$inParameterConstant = $inParameter->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_ACTUALPARAMETER_CONSTANTVALUE));
 			
-			//quality metric no longer used:
-			// $inParametersQualityMetricProp = new core_kernel_classes_Property(PROPERTY_ACTUALPARAMETER_QUALITYMETRIC);
-			// $inParametersQualityMetric = $inParameter->getOnePropertyValue($inParametersQualityMetricProp);
-			
 			$formalParameter = $inParameter->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_ACTUALPARAMETER_FORMALPARAMETER));
 				
 			if (!(is_null($this->activityExecution))){

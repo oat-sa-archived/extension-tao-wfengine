@@ -6,11 +6,13 @@ define('NS_RULES', 'http://www.tao.lu/middleware/Rules.rdf');
 include_once ROOT_PATH . '/tao/includes/constants.php';
 
 $todefine = array(
-	'GENERIS_BOOLEAN' => 'http://www.tao.lu/Ontologies/generis.rdf#Boolean',
-	'VAR_PROCESS_INSTANCE' => NS_RULES . '#VAR_PROCESS_INSTANCE',
-	'ENABLE_HTTP_REDIRECT_PROCESS_BROWSER' => false,
-	'PROPERTY_USER_LABEL'							=> 'http://www.tao.lu/Ontologies/generis.rdf#login',
-	'PROPERTY_GENERIS_ALLOWFREEVALUEOF'	=> NS_WFENGINE . '#PropertyAllowFreeValueOf',
+	'ENABLE_HTTP_REDIRECT_PROCESS_BROWSER' 			=> false,
+	
+	'GENERIS_BOOLEAN' 								=> GENERIS_NS . '#Boolean',
+	'PROPERTY_USER_LABEL'							=> GENERIS_NS.'#login',
+	'VAR_PROCESS_INSTANCE' 							=> NS_RULES . '#VAR_PROCESS_INSTANCE',
+	
+	'PROPERTY_GENERIS_ALLOWFREEVALUEOF'				=> NS_WFENGINE . '#PropertyAllowFreeValueOf',
 	
 	'CLASS_PROCESS'									=> NS_WFENGINE . '#ClassProcessDefinitions',
 	'PROPERTY_PROCESS_VARIABLES'					=> NS_WFENGINE . '#PropertyProcessVariables',
@@ -109,7 +111,6 @@ $todefine = array(
 	
 	'CLASS_ACTUALPARAMETER'							=>  NS_WFENGINE . '#ClassActualParameters',
 	'PROPERTY_ACTUALPARAMETER_PROCESSVARIABLE'		=> NS_WFENGINE . '#PropertyActualParametersProcessVariable',
-	'PROPERTY_ACTUALPARAMETER_QUALITYMETRIC'		=> NS_WFENGINE . '#PropertyActualParametersQualityMetric',
 	'PROPERTY_ACTUALPARAMETER_CONSTANTVALUE'		=> NS_WFENGINE . '#PropertyActualParametersConstantValue',
 	'PROPERTY_ACTUALPARAMETER_FORMALPARAMETER'		=> NS_WFENGINE . '#PropertyActualParametersFormalParameter',
 	
@@ -132,8 +133,8 @@ $todefine = array(
 	'PROPERTY_TOKEN_ACTIVITYEXECUTION'				=> NS_WFENGINE  .'#PropertyTokensActivityExecution',
 	'PROPERTY_TOKEN_CURRENTUSER'					=> NS_WFENGINE  .'#PropertyTokensCurrentUser',
 	
-	'API_LOGIN' 	=> SYS_USER_LOGIN,
-	'API_PASSWORD' 	=> SYS_USER_PASS
+	'API_LOGIN' 									=> SYS_USER_LOGIN,
+	'API_PASSWORD' 									=> SYS_USER_PASS
 );
 
 foreach($todefine as $constName => $constValue){

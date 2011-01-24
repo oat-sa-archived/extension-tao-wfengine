@@ -433,6 +433,9 @@ class wfEngine_actions_ProcessAuthoring extends tao_actions_TaoModule {
 				if($activityExecutionService->setAcl($activity, new core_kernel_classes_Resource($mode), $target) instanceof core_kernel_classes_Resource){
 					$saved = true;
 				}
+			}else{
+				//remove acl:
+				
 			}
 		}
 		
