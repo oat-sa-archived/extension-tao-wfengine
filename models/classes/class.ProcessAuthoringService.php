@@ -9,7 +9,7 @@ error_reporting(E_ALL);
  *
  * This file is part of TAO.
  *
- * Automatically generated on 03.01.2011, 14:48:52 with ArgoUML PHP module 
+ * Automatically generated on 25.01.2011, 10:24:58 with ArgoUML PHP module 
  * (last revised $Date: 2008-04-19 08:22:08 +0200 (Sat, 19 Apr 2008) $)
  *
  * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
@@ -28,6 +28,13 @@ if (0 > version_compare(PHP_VERSION, '5')) {
  * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
  */
 require_once('tao/models/classes/class.GenerisService.php');
+
+/**
+ * include wfEngine_models_classes_ProcessCloner
+ *
+ * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+ */
+require_once('wfEngine/models/classes/class.ProcessCloner.php');
 
 /* user defined includes */
 // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004D52-includes begin
@@ -53,7 +60,7 @@ class wfEngine_models_classes_ProcessAuthoringService
     extends tao_models_classes_GenerisService
 {
     // --- ASSOCIATIONS ---
-
+    // generateAssociationEnd : 
 
     // --- ATTRIBUTES ---
 
@@ -108,7 +115,7 @@ class wfEngine_models_classes_ProcessAuthoringService
 			$question = str_replace("’", "'", $question); // utf8...
 			$question = str_replace("‘", "'", $question); // utf8...
 			$question = str_replace("“", "\"", $question);
-			$question = str_replace("”", "\"", $question);
+			$question = str_replace("�?", "\"", $question);
 			if($isCondition){
 				$question = "if ".$question;
 			}	
@@ -215,25 +222,6 @@ class wfEngine_models_classes_ProcessAuthoringService
     }
 
     /**
-     * Short description of method createAssignment
-     *
-     * @access public
-     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
-     * @param  DomDocument xmlDom
-     * @return core_kernel_classes_Resource
-     */
-    public function createAssignment( DomDocument $xmlDom)
-    {
-        $returnValue = null;
-
-        // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004D6D begin
-			
-        // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004D6D end
-
-        return $returnValue;
-    }
-
-    /**
      * Short description of method createCondition
      *
      * @access public
@@ -313,43 +301,6 @@ class wfEngine_models_classes_ProcessAuthoringService
     }
 
     /**
-     * Short description of method createConsistencyRule
-     *
-     * @access public
-     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
-     * @param  Resource activity
-     * @param  string label
-     * @return core_kernel_classes_Resource
-     */
-    public function createConsistencyRule( core_kernel_classes_Resource $activity, $label = '')
-    {
-        $returnValue = null;
-
-        // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004D79 begin
-		
-		$consistencyRuleLabel = "";
-		if(empty($label)){
-			$nb = $activity->getPropertyValuesCollection(new core_kernel_classes_Property(PROPERTY_ACTIVITIES_CONSISTENCYRULE))->count()+1;
-			$consistencyRuleLabel = "Consistency Rule $nb";
-		}else{
-			$consistencyRuleLabel = $label;
-		}
-		
-		$consistencyRuleClass = new core_kernel_classes_Class(CLASS_CONSISTENCYRULES);
-		$returnValue = $consistencyRuleClass->createInstance($consistencyRuleLabel, "created by ProcessAuthoringService.Class");
-		
-		if(!empty($returnValue)){
-			$activity->editPropertyValues(new core_kernel_classes_Property(PROPERTY_ACTIVITIES_CONSISTENCYRULE), $returnValue->uriResource);//only one single inference rule is allowed 
-		}else{
-			throw new Exception("the consistency rule cannot be created for the activity {$activity->getLabel()}: {$activity->uriResource}");
-		}
-		
-        // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004D79 end
-
-        return $returnValue;
-    }
-
-    /**
      * Short description of method createFormalParameter
      *
      * @access public
@@ -383,29 +334,6 @@ class wfEngine_models_classes_ProcessAuthoringService
 		$returnValue->setPropertyValue($defaultValueProp, $defaultValue);
 		
         // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004D80 end
-
-        return $returnValue;
-    }
-
-    /**
-     * Short description of method createInferenceRule
-     *
-     * @access public
-     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
-     * @param  Resource activity
-     * @param  string type
-     * @param  string label
-     * @return core_kernel_classes_Resource
-     */
-    public function createInferenceRule( core_kernel_classes_Resource $activity, $type, $label = '')
-    {
-        $returnValue = null;
-
-        // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004D89 begin
-		
-		
-		
-        // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004D89 end
 
         return $returnValue;
     }
@@ -899,27 +827,6 @@ class wfEngine_models_classes_ProcessAuthoringService
     }
 
     /**
-     * Short description of method deleteAssignment
-     *
-     * @access public
-     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
-     * @param  Resource assignment
-     * @param  boolean fullDelete
-     * @return boolean
-     */
-    public function deleteAssignment( core_kernel_classes_Resource $assignment, $fullDelete = true)
-    {
-        $returnValue = (bool) false;
-
-        // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004DED begin
-		
-				
-        // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004DED end
-
-        return (bool) $returnValue;
-    }
-
-    /**
      * Short description of method deleteCallOfService
      *
      * @access public
@@ -1123,29 +1030,6 @@ class wfEngine_models_classes_ProcessAuthoringService
     }
 
     /**
-     * Short description of method deleteConsistencyRule
-     *
-     * @access public
-     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
-     * @param  Resource consistencyRule
-     * @return boolean
-     */
-    public function deleteConsistencyRule( core_kernel_classes_Resource $consistencyRule)
-    {
-        $returnValue = (bool) false;
-
-        // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004E09 begin
-		
-		$this->deleteCondition($consistencyRule);
-		$this->deleteReference(new core_kernel_classes_Property(PROPERTY_ACTIVITIES_CONSISTENCYRULE), $consistencyRule);
-		$returnValue = $consistencyRule->delete();
-		
-        // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004E09 end
-
-        return (bool) $returnValue;
-    }
-
-    /**
      * Short description of method deleteExpression
      *
      * @access public
@@ -1176,25 +1060,6 @@ class wfEngine_models_classes_ProcessAuthoringService
 		$returnValue = $expression->delete();
 		
         // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004E0D end
-
-        return (bool) $returnValue;
-    }
-
-    /**
-     * Short description of method deleteInferenceRule
-     *
-     * @access public
-     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
-     * @param  Resource inferenceRule
-     * @return boolean
-     */
-    public function deleteInferenceRule( core_kernel_classes_Resource $inferenceRule)
-    {
-        $returnValue = (bool) false;
-
-        // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004E10 begin
-				
-        // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004E10 end
 
         return (bool) $returnValue;
     }
@@ -1337,7 +1202,7 @@ class wfEngine_models_classes_ProcessAuthoringService
 		if(!is_null($rule)){
 			$this->deleteCondition($rule);
 			
-			//delete reference:
+			//delete reference, according to the type of rule: currently only transition rule
 			$this->deleteReference(new core_kernel_classes_Property(PROPERTY_CONNECTORS_TRANSITIONRULE), $rule);
 			
 			//delete the resources
@@ -1657,41 +1522,6 @@ class wfEngine_models_classes_ProcessAuthoringService
     }
 
     /**
-     * Short description of method getProcessVariableForActivity
-     *
-     * @access public
-     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
-     * @param  Resource activity
-     * @return core_kernel_classes_Resource
-     */
-    public function getProcessVariableForActivity( core_kernel_classes_Resource $activity)
-    {
-        $returnValue = null;
-
-        // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004E67 begin
-		
-		//create code from the label
-		$label = $activity->getLabel();
-		$code = 'activity';
-		
-		if(stripos($activity->uriResource,".rdf#")>0){
-			$code .= '_'.substr($activity->uriResource, stripos($activity->uriResource,".rdf#")+5);
-		}else{
-			throw new Exception('from format of resource uri');
-		}
-		
-		//check if the code (i.e. the variable) does not exist yet:
-		$returnValue = $this->getProcessVariable($code);
-		if(is_null($returnValue)){
-			$returnValue = $this->createProcessVariable('isFinished: '.$label, $code);
-		}
-		
-        // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004E67 end
-
-        return $returnValue;
-    }
-
-    /**
      * Short description of method getServicesByActivity
      *
      * @access public
@@ -1780,26 +1610,6 @@ class wfEngine_models_classes_ProcessAuthoringService
     }
 
     /**
-     * Short description of method setActivityRole
-     *
-     * @access public
-     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
-     * @param  Resource activity
-     * @param  Resource role
-     * @return boolean
-     */
-    public function setActivityRole( core_kernel_classes_Resource $activity,  core_kernel_classes_Resource $role)
-    {
-        $returnValue = (bool) false;
-
-        // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004E74 begin
-		// $returnValue = $activity->editPropertyValues(new core_kernel_classes_Property(PROPERTY_ACTIVITIES_ROLE), $role->uriResource);
-        // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004E74 end
-
-        return (bool) $returnValue;
-    }
-
-    /**
      * Short description of method setActualParameter
      *
      * @access public
@@ -1834,29 +1644,6 @@ class wfEngine_models_classes_ProcessAuthoringService
 		}
 		
         // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004E79 end
-
-        return (bool) $returnValue;
-    }
-
-    /**
-     * Short description of method setAssignment
-     *
-     * @access public
-     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
-     * @param  Resource inferenceRule
-     * @param  string connectionType
-     * @param  Resource assignment
-     * @return boolean
-     */
-    public function setAssignment( core_kernel_classes_Resource $inferenceRule, $connectionType,  core_kernel_classes_Resource $assignment)
-    {
-        $returnValue = (bool) false;
-
-        // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004E83 begin
-		
-		
-		
-        // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004E83 end
 
         return (bool) $returnValue;
     }
@@ -1899,71 +1686,6 @@ class wfEngine_models_classes_ProcessAuthoringService
 		$returnValue = $connector->editPropertyValues(new core_kernel_classes_Property(PROPERTY_CONNECTORS_TYPE), $typeOfConnector->uriResource);
 	
         // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004E8D end
-
-        return (bool) $returnValue;
-    }
-
-    /**
-     * Short description of method setConsistencyActivities
-     *
-     * @access public
-     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
-     * @param  Resource consistencyRule
-     * @return boolean
-     */
-    public function setConsistencyActivities( core_kernel_classes_Resource $consistencyRule)
-    {
-        $returnValue = (bool) false;
-
-        // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004E92 begin
-		$involvedActivitiesProp = new core_kernel_classes_Property(PROPERTY_CONSISTENCYRULES_INVOLVEDACTIVITIES);
-		$consistencyRule->removePropertyValues($involvedActivitiesProp);
-		
-		foreach($activities as $activityUri => $activity){
-			$consistencyRule->setPropertyValue($involvedActivitiesProp, $activityUri);
-		}
-		$returnValue = true;
-        // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004E92 end
-
-        return (bool) $returnValue;
-    }
-
-    /**
-     * Short description of method setConsistencyNotification
-     *
-     * @access public
-     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
-     * @param  Resource consistencyRule
-     * @param  string notificationString
-     * @return boolean
-     */
-    public function setConsistencyNotification( core_kernel_classes_Resource $consistencyRule, $notificationString)
-    {
-        $returnValue = (bool) false;
-
-        // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004E95 begin
-		$returnValue = $consistencyRule->editPropertyValues(new core_kernel_classes_Property(PROPERTY_CONSISTENCYRULES_NOTIFICATION), $notificationString);
-        // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004E95 end
-
-        return (bool) $returnValue;
-    }
-
-    /**
-     * Short description of method setConsistencySuppressable
-     *
-     * @access public
-     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
-     * @param  Resource consistencyRule
-     * @param  string generisBoolean
-     * @return boolean
-     */
-    public function setConsistencySuppressable( core_kernel_classes_Resource $consistencyRule, $generisBoolean)
-    {
-        $returnValue = (bool) false;
-
-        // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004E99 begin
-		$returnValue = $consistencyRule->editPropertyValues(new core_kernel_classes_Property(PROPERTY_CONSISTENCYRULES_SUPPRESSABLE), $generisBoolean);
-        // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004E99 end
 
         return (bool) $returnValue;
     }

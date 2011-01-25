@@ -244,35 +244,7 @@ class wfEngine_actions_ProcessAuthoring extends tao_actions_TaoModule {
 				'uri' 	=> tao_helpers_Uri::encode($newService->uriResource)
 			));
 		}
-	}
-	
-	public function addInferenceRule(){
-		if(!tao_helpers_Request::isAjax()){
-			throw new Exception("wrong request mode");
-		}
-		$currentActivity = $this->getCurrentActivity();
-		$inferenceRule = $this->service->createInferenceRule($currentActivity, $_POST['type']);
-		if(!is_null($inferenceRule) && $inferenceRule instanceof core_kernel_classes_Resource){
-			echo json_encode(array(
-				'label'	=> $inferenceRule->getLabel(),
-				'uri' 	=> tao_helpers_Uri::encode($inferenceRule->uriResource)
-			));
-		}
-	}
-	
-	public function addConsistencyRule(){
-		if(!tao_helpers_Request::isAjax()){
-			throw new Exception("wrong request mode");
-		}
-		$currentActivity = $this->getCurrentActivity();
-		$consistencyRule = $this->service->createConsistencyRule($currentActivity);
-		if(!is_null($consistencyRule) && $consistencyRule instanceof core_kernel_classes_Resource){
-			echo json_encode(array(
-				'label'	=> $consistencyRule->getLabel(),
-				'uri' 	=> tao_helpers_Uri::encode($consistencyRule->uriResource)
-			));
-		}
-	}
+	}	
 	
 	public function getSectionTrees(){
 		$section = $_POST["section"];
@@ -623,27 +595,7 @@ class wfEngine_actions_ProcessAuthoring extends tao_actions_TaoModule {
 	
 		echo json_encode(array('deleted' => $deleted));
 	}
-	
-	public function deleteInferenceRule(){
-		if(!tao_helpers_Request::isAjax()){
-			throw new Exception("wrong request mode");
-		}
-		$deleted = $this->service->deleteInferenceRule(new core_kernel_classes_Resource(tao_helpers_Uri::decode($_POST["inferenceUri"])));
-	
-		echo json_encode(array('deleted' => $deleted));
-		
-	}
-	
-	public function deleteConsistencyRule(){
-		if(!tao_helpers_Request::isAjax()){
-			throw new Exception("wrong request mode");
-		}
-		$deleted = $this->service->deleteConsistencyRule(new core_kernel_classes_Resource(tao_helpers_Uri::decode($_POST["consistencyUri"])));
-	
-		echo json_encode(array('deleted' => $deleted));
-		
-	}
-	
+			
 	/**
 	 * Duplicate an instance
 	 * A bit more complicated here

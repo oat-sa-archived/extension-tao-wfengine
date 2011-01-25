@@ -337,14 +337,14 @@ class wfEngine_helpers_ProcessFormFactory extends tao_helpers_form_GenerisFormFa
 		
 			$formalParameterType = PROPERTY_SERVICESDEFINITION_FORMALPARAMIN;
 			$actualParameterInOutType = PROPERTY_CALLOFSERVICES_ACTUALPARAMETERIN;
-			$formalParameterName = __('Formal Parameter IN'); 
+			$formalParameterName = __('Input Parameters'); 
 			$formalParameterSuffix = '_IN';
 			
 		}elseif(strtolower($paramType) == "formalparameterout"){
 		
 			$formalParameterType = PROPERTY_SERVICESDEFINITION_FORMALPARAMOUT;
 			$actualParameterInOutType = PROPERTY_CALLOFSERVICES_ACTUALPARAMETEROUT;
-			$formalParameterName = __('Formal Parameter OUT');
+			$formalParameterName = __('Output Parameters');
 			$formalParameterSuffix = '_OUT';
 			
 		}else{
