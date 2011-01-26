@@ -1,33 +1,27 @@
 <?php
-	return array(
-		'name' => 'Workflow Engine ',
-		'description' => 'Workflow Engine  http://www.tao.lu',
-		'additional' => array(
-			'version' => '1.2',
-			'author' => 'CRP Henri Tudor',
-			'dependances' => array(),
-			'install' => array( 
-				'php' => dirname(__FILE__). '/install/install.php'
-			),
-			'model' => array(
-				'http://www.tao.lu/Ontologies/TAODelivery.rdf',
-				'http://www.tao.lu/Ontologies/TAOTest.rdf',
-				'http://www.tao.lu/middleware/hyperclass.rdf',
-				'http://www.tao.lu/middleware/taoqual.rdf',
-				'http://www.tao.lu/middleware/Rules.rdf',
-				'http://www.tao.lu/middleware/Interview.rdf',
-				'http://www.tao.lu/middleware/review.rdf',
-				'http://www.tao.lu/middleware/translation.rdf',
-				'http://www.tao.lu/middleware/coding.rdf'
-			),
-		
-			'classLoaderPackages' => array( 
-				dirname(__FILE__).'/actions/',
-				dirname(__FILE__).'/models/classes/',
-				dirname(__FILE__).'/helpers/'
+/*
+ * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
+ * @license GPLv2  http://www.opensource.org/licenses/gpl-2.0.php
+ * 
+ */
+return array(
+	'name' => 'wfEngine ',
+	'description' => 'Workflow Engine extension',
+	'additional' => array(
+		'version' => '2.0',
+		'author' => 'CRP Henri Tudor',
+		'dependances' => array('tao'),
+		'models' => 'http://www.tao.lu/middleware/wfEngine.rdf',
+		'install' => array( 
+			'php' => dirname(__FILE__). '/install/install.php',
+			'rdf' => dirname(__FILE__). '/models/ontology/wfengine.rdf'
+		),
+		'classLoaderPackages' => array( 
+			dirname(__FILE__).'/actions/',
+			dirname(__FILE__).'/models/classes/',
+			dirname(__FILE__).'/helpers/'
 
-			 )	
-			
-		)
-	);
+		 )	
+	)
+);
 ?>
