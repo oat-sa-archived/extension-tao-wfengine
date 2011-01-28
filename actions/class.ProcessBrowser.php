@@ -35,7 +35,7 @@ class wfEngine_actions_ProcessBrowser extends wfEngine_actions_WfModule
 			}
 			if(count($process->currentActivity) > 1) {
 				// echo 'paused in process browser';exit;
-				$this->redirect(_url('pause', 'processBrowser'));
+				$this->redirect(_url('pause', 'ProcessBrowser'));
 			}else{
 				//use the first one:
 				$currentActivity = $process->currentActivity[0];
@@ -167,7 +167,7 @@ class wfEngine_actions_ProcessBrowser extends wfEngine_actions_WfModule
 		}
 		else
 		{
-			$this->redirect(_url('index', get_class($this), null, array('processUri' => urlencode($processUri))));
+			$this->redirect(_url('index', 'ProcessBrowser', null, array('processUri' => urlencode($processUri))));
 		}
 	}
 
@@ -191,7 +191,7 @@ class wfEngine_actions_ProcessBrowser extends wfEngine_actions_WfModule
 			if(count($processExecution->currentActivity) == 1){
 				$nextActivityDefinitionUri = $processExecution->currentActivity[0]->resource->uriResource;
 			}
-			$this->redirect(_url('index', get_class($this), null, array('processUri' => urlencode($processUri), 'activityUri'=>urlencode($nextActivityDefinitionUri)) ));
+			$this->redirect(_url('index', 'ProcessBrowser', null, array('processUri' => urlencode($processUri), 'activityUri'=>urlencode($nextActivityDefinitionUri)) ));
 		}
 
 	}

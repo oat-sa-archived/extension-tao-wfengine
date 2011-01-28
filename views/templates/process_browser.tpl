@@ -29,13 +29,13 @@
 		       // Back and next function bindings for the ProcessBrowser.
 		       $("#back").click(function(){
 			       	$(this).attr('disabled', true);
-					goToPage('<?php echo BASE_URL;?>/processBrowser/back?processUri=<?php echo urlencode($processUri); ?>');
+					goToPage('<?php echo BASE_URL;?>/ProcessBrowser/back?processUri=<?php echo urlencode($processUri); ?>');
 		       });
 		       
 		       	
 			   $("#next").click(function(){
 					$(this).attr('disabled', true);
-			       	goToPage('<?php echo BASE_URL;?>/processBrowser/next?processUri=<?php echo urlencode($processUri); ?>&activityExecutionUri=<?php echo urlencode($browserViewData['activityExecutionUri']);?>');
+			       	goToPage('<?php echo BASE_URL;?>/ProcessBrowser/next?processUri=<?php echo urlencode($processUri); ?>&activityExecutionUri=<?php echo urlencode($browserViewData['activityExecutionUri']);?>');
 			   	});
 			   	
 			   <?if(get_data('debugWidget')):?>

@@ -1,10 +1,6 @@
 <?php
 define('NS_WFENGINE', 'http://www.tao.lu/middleware/wfEngine.rdf');
-// define('NS_WFENGINE', 'http://www.tao.lu/middleware/taoqual.rdf');
 define('NS_RULES', 'http://www.tao.lu/middleware/Rules.rdf');
-
-include_once ROOT_PATH . '/tao/includes/constants.php';
-
 $todefine = array(
 	'ENABLE_HTTP_REDIRECT_PROCESS_BROWSER' 			=> false,
 	
@@ -136,12 +132,4 @@ $todefine = array(
 	'API_LOGIN' 									=> SYS_USER_LOGIN,
 	'API_PASSWORD' 									=> SYS_USER_PASS
 );
-
-foreach($todefine as $constName => $constValue){
-	if(!defined($constName)){
-		define($constName, $constValue);
-	}
-}
-unset($todefine);
-
 ?>

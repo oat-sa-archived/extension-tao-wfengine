@@ -24,9 +24,6 @@ require_once('tao/models/classes/class.GenerisService.php');
 
 /* user defined includes */
 // section -87--2--3--76--7eb229c2:12916be1ece:-8000:0000000000003C05-includes begin
-
-include_once(dirname(__FILE__).'../../../includes/constants.php');
-
 // section -87--2--3--76--7eb229c2:12916be1ece:-8000:0000000000003C05-includes end
 
 /* user defined constants */
@@ -63,6 +60,9 @@ class wfEngine_models_classes_VariableService
     {
         // section -87--2--3--76--7eb229c2:12916be1ece:-8000:0000000000003C07 begin
 		if(Session::hasAttribute("activityExecutionUri")){
+			
+			Bootstrap::loadConstants('wfEngine');	//because it could be called anywhere
+			
 			$activityExecution = new core_kernel_classes_Resource(Session::getAttribute("activityExecutionUri"));
 			
 			$tokenService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_TokenService');
@@ -111,6 +111,9 @@ class wfEngine_models_classes_VariableService
 
         // section -87--2--3--76--7eb229c2:12916be1ece:-8000:0000000000003C0B begin
 		if(Session::hasAttribute("activityExecutionUri")){
+			
+			Bootstrap::loadConstants('wfEngine');	//because it could be called anywhere
+			
 			$activityExecution = new core_kernel_classes_Resource(Session::getAttribute("activityExecutionUri"));
 			
 			$tokenService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_TokenService');
