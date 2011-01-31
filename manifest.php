@@ -13,7 +13,6 @@ return array(
 		'dependances' => array('tao'),
 		'models' => 'http://www.tao.lu/middleware/wfEngine.rdf',
 		'install' => array( 
-			'php' => dirname(__FILE__). '/install/install.php',
 			'rdf' => dirname(__FILE__). '/models/ontology/wfengine.rdf'
 		),
 		'classLoaderPackages' => array( 
