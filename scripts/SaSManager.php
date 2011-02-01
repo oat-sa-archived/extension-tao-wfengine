@@ -52,7 +52,7 @@ class SaSManager{
 		$sasFiles = array();
 		$extensionsManager = common_ext_ExtensionsManager::singleton();
 		foreach($extensionsManager->getInstalledExtensions() as $extension){
-			$filePath = ROOT_PATH . '/'. $extension->id . '/actions/sas.xml';
+			$filePath = ROOT_PATH . '/'. $extension->id . '/models/services/sas.xml';
 			if(file_exists($filePath)){
 				$sasFiles[$extension->id] = $filePath;
 			}
@@ -65,10 +65,10 @@ class SaSManager{
 	 * Parse the sas xml file and populate the services and processVar attributes
 	 * @param string $file path
 	 */
-	protected function parseSasFile($file){
+	protected function parseSasFile($extensionName, $file){
 		
 		$xml = simplexml_load_file($file);
-		
+		$services = array();
 		if($xml instanceof SimpleXMLElement){
 			foreach($xml->service as $service){
 				
@@ -120,13 +120,14 @@ class SaSManager{
 						}
 					}
 				}
-				$this->services[] = array(
+				$services[] = array(
 					'name' 			=> (string)$service->name,
 					'description' 	=> (string)$service->description,
 					'url'			=>	$url,
 					'params'		=> $formalParamsIn
 				);
 			}
+			$this->services[$extensionName] = $services;
 		}
 	}
 	

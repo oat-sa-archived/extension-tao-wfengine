@@ -110,9 +110,8 @@ class SaSImporter extends SasManager{
 	public function import(){
 		
 		$this->log();
-		foreach($this->getSasFiles() as $sasFile){
-			log($sasFile." found");
-			$this->parseSasFile($sasFile);
+		foreach($this->getSasFiles() as $extension =>  $sasFile){
+			$this->parseSasFile($extension, $sasFile);
 		}
 	
 		//insert process vars
@@ -154,11 +153,14 @@ class SaSImporter extends SasManager{
 		//insert service definitions
 		$serviceNum = count($this->services);
 		$serviceInserted = 0;
-		foreach($this->services as $service){
-			if($this->addService($service['name'], $service['url'], $service['description'], $service['params'])){
-				$serviceInserted++;
-				if(!$this->outputModeWeb){
-					echo "\r$serviceInserted / $serviceNum  services definition inserted";
+		foreach($this->services as $extensionName => $services){
+			$extensionServiceClass = $this->serviceDefClass->createSubClass($extensionName, "$extensionName related services");
+			foreach($services as $service){
+				if($this->addService($extensionServiceClass, $service['name'], $service['url'], $service['description'], $service['params'])){
+					$serviceInserted++;
+					if(!$this->outputModeWeb){
+						echo "\r$serviceInserted / $serviceNum  services definition inserted";
+					}
 				}
 			}
 		}
@@ -181,9 +183,9 @@ class SaSImporter extends SasManager{
 	 * @param array $params
 	 * @return boolean
 	 */
-	private function addService($name, $url,  $description ='', $params = array()){
+	private function addService(core_kernel_classes_Class $class, $name, $url,  $description ='', $params = array()){
 		if(!$this->serviceExists($url)){
-			$service = $this->serviceDefClass->createInstance($name, trim($description));
+			$service = $class->createInstance($name, trim($description));
 			if(!is_null($service)){
 				if($service->setPropertyValue($this->serviceUrlProp, $url)){
 					foreach($params as $key => $value){
@@ -215,7 +217,7 @@ class SaSImporter extends SasManager{
 				if($url == $service->getUniquePropertyValue($this->serviceUrlProp)){
 					return true;
 				}
-			}	
+			}
 			catch(common_Exception $ce){}		
 		}
 		return false;

@@ -1,0 +1,942 @@
+<?xml version="1.0"?>
+<!-- 
+	Contains the wf services of the TAO Backend
+ -->
+<rdf:RDF 
+	xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" 
+	xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" 
+	xml:base="LOCAL_NAMESPACE#" 
+	xmlns:ns8="LOCAL_NAMESPACE" 
+	xmlns:generis="http://www.tao.lu/Ontologies/generis.rdf#" 
+	xmlns:wf="http://www.tao.lu/middleware/wfEngine.rdf#"
+>
+  <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572581005570300">
+    <rdf:type rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessVariables"/>
+    <rdfs:label><![CDATA[False]]></rdfs:label>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:domain rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassTokens"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
+    <wf:PropertyCode><![CDATA[false]]></wf:PropertyCode>
+  </rdf:Description>
+  <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572581012908200">
+    <rdf:type rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessVariables"/>
+    <rdfs:label><![CDATA[Group Class Uri]]></rdfs:label>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:domain rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassTokens"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
+    <wf:PropertyCode><![CDATA[groupClassUri]]></wf:PropertyCode>
+  </rdf:Description>
+  <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572581020936500">
+    <rdf:type rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessVariables"/>
+    <rdfs:label><![CDATA[True]]></rdfs:label>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:domain rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassTokens"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
+    <wf:PropertyCode><![CDATA[true]]></wf:PropertyCode>
+  </rdf:Description>
+  <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572581029888600">
+    <rdf:type rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessVariables"/>
+    <rdfs:label><![CDATA[Group Uri]]></rdfs:label>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:domain rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassTokens"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
+    <wf:PropertyCode><![CDATA[groupUri]]></wf:PropertyCode>
+  </rdf:Description>
+  <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572581039416500">
+    <rdf:type rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessVariables"/>
+    <rdfs:label><![CDATA[Group Target Lang]]></rdfs:label>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:domain rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassTokens"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
+    <wf:PropertyCode><![CDATA[groupTargetLang]]></wf:PropertyCode>
+  </rdf:Description>
+  <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572581048585700">
+    <rdf:type rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessVariables"/>
+    <rdfs:label><![CDATA[Subject Uris]]></rdfs:label>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:domain rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassTokens"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
+    <wf:PropertyCode><![CDATA[subjectUris]]></wf:PropertyCode>
+  </rdf:Description>
+  <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572581058611800">
+    <rdf:type rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessVariables"/>
+    <rdfs:label><![CDATA[Delivery Uris]]></rdfs:label>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:domain rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassTokens"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
+    <wf:PropertyCode><![CDATA[deliveryUris]]></wf:PropertyCode>
+  </rdf:Description>
+  <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572581068596000">
+    <rdf:type rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessVariables"/>
+    <rdfs:label><![CDATA[Group Uris]]></rdfs:label>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:domain rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassTokens"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
+    <wf:PropertyCode><![CDATA[groupUris]]></wf:PropertyCode>
+  </rdf:Description>
+  <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572581078999300">
+    <rdf:type rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessVariables"/>
+    <rdfs:label><![CDATA[Item Class Uri]]></rdfs:label>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:domain rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassTokens"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
+    <wf:PropertyCode><![CDATA[itemClassUri]]></wf:PropertyCode>
+  </rdf:Description>
+  <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572581090079200">
+    <rdf:type rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessVariables"/>
+    <rdfs:label><![CDATA[Item Uri]]></rdfs:label>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:domain rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassTokens"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
+    <wf:PropertyCode><![CDATA[itemUri]]></wf:PropertyCode>
+  </rdf:Description>
+  <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572582003777100">
+    <rdf:type rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessVariables"/>
+    <rdfs:label><![CDATA[Item Target Lang]]></rdfs:label>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:domain rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassTokens"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
+    <wf:PropertyCode><![CDATA[itemTargetLang]]></wf:PropertyCode>
+  </rdf:Description>
+  <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572582015726700">
+    <rdf:type rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessVariables"/>
+    <rdfs:label><![CDATA[Item Uris]]></rdfs:label>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:domain rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassTokens"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
+    <wf:PropertyCode><![CDATA[itemUris]]></wf:PropertyCode>
+  </rdf:Description>
+  <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572582028170700">
+    <rdf:type rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessVariables"/>
+    <rdfs:label><![CDATA[Result Uris]]></rdfs:label>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:domain rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassTokens"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
+    <wf:PropertyCode><![CDATA[resultUris]]></wf:PropertyCode>
+  </rdf:Description>
+  <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572582040839900">
+    <rdf:type rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessVariables"/>
+    <rdfs:label><![CDATA[Result Class Uri]]></rdfs:label>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:domain rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassTokens"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
+    <wf:PropertyCode><![CDATA[resultClassUri]]></wf:PropertyCode>
+  </rdf:Description>
+  <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572582055098200">
+    <rdf:type rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessVariables"/>
+    <rdfs:label><![CDATA[Subject Class Uri]]></rdfs:label>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:domain rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassTokens"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
+    <wf:PropertyCode><![CDATA[subjectClassUri]]></wf:PropertyCode>
+  </rdf:Description>
+  <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572582069621400">
+    <rdf:type rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessVariables"/>
+    <rdfs:label><![CDATA[Subject Uri]]></rdfs:label>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:domain rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassTokens"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
+    <wf:PropertyCode><![CDATA[subjectUri]]></wf:PropertyCode>
+  </rdf:Description>
+  <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572582084290800">
+    <rdf:type rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessVariables"/>
+    <rdfs:label><![CDATA[Subject Target Lang]]></rdfs:label>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:domain rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassTokens"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
+    <wf:PropertyCode><![CDATA[subjectTargetLang]]></wf:PropertyCode>
+  </rdf:Description>
+  <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572582098980300">
+    <rdf:type rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessVariables"/>
+    <rdfs:label><![CDATA[Test Class Uri]]></rdfs:label>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:domain rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassTokens"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
+    <wf:PropertyCode><![CDATA[testClassUri]]></wf:PropertyCode>
+  </rdf:Description>
+  <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572583014612500">
+    <rdf:type rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessVariables"/>
+    <rdfs:label><![CDATA[Test Uri]]></rdfs:label>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:domain rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassTokens"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
+    <wf:PropertyCode><![CDATA[testUri]]></wf:PropertyCode>
+  </rdf:Description>
+  <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572583030539200">
+    <rdf:type rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessVariables"/>
+    <rdfs:label><![CDATA[Test Target Lang]]></rdfs:label>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:domain rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassTokens"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
+    <wf:PropertyCode><![CDATA[testTargetLang]]></wf:PropertyCode>
+  </rdf:Description>
+  <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572583046907500">
+    <rdf:type rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessVariables"/>
+    <rdfs:label><![CDATA[Test Uris]]></rdfs:label>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:domain rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassTokens"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
+    <wf:PropertyCode><![CDATA[testUris]]></wf:PropertyCode>
+  </rdf:Description>
+  <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572583063868700">
+    <rdf:type rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessVariables"/>
+    <rdfs:label><![CDATA[Delivery Class Uri]]></rdfs:label>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:domain rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassTokens"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
+    <wf:PropertyCode><![CDATA[deliveryClassUri]]></wf:PropertyCode>
+  </rdf:Description>
+  <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572583082488700">
+    <rdf:type rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessVariables"/>
+    <rdfs:label><![CDATA[Delivery Uri]]></rdfs:label>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:domain rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassTokens"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
+    <wf:PropertyCode><![CDATA[deliveryUri]]></wf:PropertyCode>
+  </rdf:Description>
+  <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572583092216600">
+    <rdf:type rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessVariables"/>
+    <rdfs:label><![CDATA[Campaign Uris]]></rdfs:label>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:domain rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassTokens"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
+    <wf:PropertyCode><![CDATA[campaignUris]]></wf:PropertyCode>
+  </rdf:Description>
+  <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572584003629700">
+    <rdf:type rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessVariables"/>
+    <rdfs:label><![CDATA[Campaign Class Uri]]></rdfs:label>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:domain rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassTokens"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
+    <wf:PropertyCode><![CDATA[campaignClassUri]]></wf:PropertyCode>
+  </rdf:Description>
+  <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572584014098100">
+    <rdf:type rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessVariables"/>
+    <rdfs:label><![CDATA[Campaign Uri]]></rdfs:label>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:domain rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassTokens"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
+    <wf:PropertyCode><![CDATA[campaignUri]]></wf:PropertyCode>
+  </rdf:Description>
+  <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572584025114800">
+    <rdf:type rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessVariables"/>
+    <rdfs:label><![CDATA[Result Server Class Uri]]></rdfs:label>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:domain rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassTokens"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
+    <wf:PropertyCode><![CDATA[resultServerClassUri]]></wf:PropertyCode>
+  </rdf:Description>
+  <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572584036154400">
+    <rdf:type rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessVariables"/>
+    <rdfs:label><![CDATA[Result Server Uri]]></rdfs:label>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:domain rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassTokens"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
+    <wf:PropertyCode><![CDATA[resultServerUri]]></wf:PropertyCode>
+  </rdf:Description>
+  <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572584047457500">
+    <rdf:type rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessVariables"/>
+    <rdfs:label><![CDATA[Result Server Uris]]></rdfs:label>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:domain rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassTokens"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
+    <wf:PropertyCode><![CDATA[resultServerUris]]></wf:PropertyCode>
+  </rdf:Description>
+  <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572584050444900">
+    <rdf:type rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassFormalParameters"/>
+    <rdfs:label><![CDATA[Select Instance]]></rdfs:label>
+    <wf:PropertyFormalParametersName><![CDATA[selectInstance]]></wf:PropertyFormalParametersName>
+    <wf:PropertyFormalParametersDefaultConstantValue><![CDATA[false]]></wf:PropertyFormalParametersDefaultConstantValue>
+  </rdf:Description>
+  <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572584052192100">
+    <rdf:type rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassFormalParameters"/>
+    <rdfs:label><![CDATA[Select Instance]]></rdfs:label>
+    <wf:PropertyFormalParametersName><![CDATA[selectInstance]]></wf:PropertyFormalParametersName>
+    <wf:PropertyFormalParametersDefaultConstantValue><![CDATA[true]]></wf:PropertyFormalParametersDefaultConstantValue>
+  </rdf:Description>
+  <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572584054214300">
+    <rdf:type rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassFormalParameters"/>
+    <rdfs:label><![CDATA[Group Class Uri]]></rdfs:label>
+    <wf:PropertyFormalParametersName><![CDATA[classUri]]></wf:PropertyFormalParametersName>
+    <wf:PropertyFormalParametersDefaultProcessVariable rdf:resource="LOCAL_NAMESPACE#i1296572581012908200"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572584057699300">
+    <rdf:type rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassFormalParameters"/>
+    <rdfs:label><![CDATA[Group Uri]]></rdfs:label>
+    <wf:PropertyFormalParametersName><![CDATA[uri]]></wf:PropertyFormalParametersName>
+    <wf:PropertyFormalParametersDefaultProcessVariable rdf:resource="LOCAL_NAMESPACE#i1296572581029888600"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572584061895200">
+    <rdf:type rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassFormalParameters"/>
+    <rdfs:label><![CDATA[Group Target Lang]]></rdfs:label>
+    <wf:PropertyFormalParametersName><![CDATA[target_lang]]></wf:PropertyFormalParametersName>
+    <wf:PropertyFormalParametersDefaultProcessVariable rdf:resource="LOCAL_NAMESPACE#i1296572581039416500"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572584066326700">
+    <rdf:type rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassFormalParameters"/>
+    <rdfs:label><![CDATA[Item Class Uri]]></rdfs:label>
+    <wf:PropertyFormalParametersName><![CDATA[classUri]]></wf:PropertyFormalParametersName>
+    <wf:PropertyFormalParametersDefaultProcessVariable rdf:resource="LOCAL_NAMESPACE#i1296572581078999300"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572584071551600">
+    <rdf:type rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassFormalParameters"/>
+    <rdfs:label><![CDATA[Item Uri]]></rdfs:label>
+    <wf:PropertyFormalParametersName><![CDATA[uri]]></wf:PropertyFormalParametersName>
+    <wf:PropertyFormalParametersDefaultProcessVariable rdf:resource="LOCAL_NAMESPACE#i1296572581090079200"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572584077059800">
+    <rdf:type rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassFormalParameters"/>
+    <rdfs:label><![CDATA[Item Target Lang]]></rdfs:label>
+    <wf:PropertyFormalParametersName><![CDATA[target_lang]]></wf:PropertyFormalParametersName>
+    <wf:PropertyFormalParametersDefaultProcessVariable rdf:resource="LOCAL_NAMESPACE#i1296572582003777100"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572584082802700">
+    <rdf:type rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassFormalParameters"/>
+    <rdfs:label><![CDATA[Result Class Uri]]></rdfs:label>
+    <wf:PropertyFormalParametersName><![CDATA[classUri]]></wf:PropertyFormalParametersName>
+    <wf:PropertyFormalParametersDefaultProcessVariable rdf:resource="LOCAL_NAMESPACE#i1296572582040839900"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572584089326600">
+    <rdf:type rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassFormalParameters"/>
+    <rdfs:label><![CDATA[Subject Class Uri]]></rdfs:label>
+    <wf:PropertyFormalParametersName><![CDATA[classUri]]></wf:PropertyFormalParametersName>
+    <wf:PropertyFormalParametersDefaultProcessVariable rdf:resource="LOCAL_NAMESPACE#i1296572582055098200"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572584096030900">
+    <rdf:type rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassFormalParameters"/>
+    <rdfs:label><![CDATA[Subject Uri]]></rdfs:label>
+    <wf:PropertyFormalParametersName><![CDATA[uri]]></wf:PropertyFormalParametersName>
+    <wf:PropertyFormalParametersDefaultProcessVariable rdf:resource="LOCAL_NAMESPACE#i1296572582069621400"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572585003578100">
+    <rdf:type rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassFormalParameters"/>
+    <rdfs:label><![CDATA[Subject Target Lang]]></rdfs:label>
+    <wf:PropertyFormalParametersName><![CDATA[target_lang]]></wf:PropertyFormalParametersName>
+    <wf:PropertyFormalParametersDefaultProcessVariable rdf:resource="LOCAL_NAMESPACE#i1296572582084290800"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572585011772900">
+    <rdf:type rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassFormalParameters"/>
+    <rdfs:label><![CDATA[Test Class Uri]]></rdfs:label>
+    <wf:PropertyFormalParametersName><![CDATA[classUri]]></wf:PropertyFormalParametersName>
+    <wf:PropertyFormalParametersDefaultProcessVariable rdf:resource="LOCAL_NAMESPACE#i1296572582098980300"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572585019695300">
+    <rdf:type rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassFormalParameters"/>
+    <rdfs:label><![CDATA[Test Uri]]></rdfs:label>
+    <wf:PropertyFormalParametersName><![CDATA[uri]]></wf:PropertyFormalParametersName>
+    <wf:PropertyFormalParametersDefaultProcessVariable rdf:resource="LOCAL_NAMESPACE#i1296572583014612500"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572585027634900">
+    <rdf:type rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassFormalParameters"/>
+    <rdfs:label><![CDATA[Test Target Lang]]></rdfs:label>
+    <wf:PropertyFormalParametersName><![CDATA[target_lang]]></wf:PropertyFormalParametersName>
+    <wf:PropertyFormalParametersDefaultProcessVariable rdf:resource="LOCAL_NAMESPACE#i1296572583030539200"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572585035734500">
+    <rdf:type rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassFormalParameters"/>
+    <rdfs:label><![CDATA[Delivery Class Uri]]></rdfs:label>
+    <wf:PropertyFormalParametersName><![CDATA[classUri]]></wf:PropertyFormalParametersName>
+    <wf:PropertyFormalParametersDefaultProcessVariable rdf:resource="LOCAL_NAMESPACE#i1296572583063868700"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572585044983600">
+    <rdf:type rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassFormalParameters"/>
+    <rdfs:label><![CDATA[Delivery Uri]]></rdfs:label>
+    <wf:PropertyFormalParametersName><![CDATA[uri]]></wf:PropertyFormalParametersName>
+    <wf:PropertyFormalParametersDefaultProcessVariable rdf:resource="LOCAL_NAMESPACE#i1296572583082488700"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572585054541300">
+    <rdf:type rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassFormalParameters"/>
+    <rdfs:label><![CDATA[Campaign Class Uri]]></rdfs:label>
+    <wf:PropertyFormalParametersName><![CDATA[classUri]]></wf:PropertyFormalParametersName>
+    <wf:PropertyFormalParametersDefaultProcessVariable rdf:resource="LOCAL_NAMESPACE#i1296572584003629700"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572585063991900">
+    <rdf:type rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassFormalParameters"/>
+    <rdfs:label><![CDATA[Campaign Uri]]></rdfs:label>
+    <wf:PropertyFormalParametersName><![CDATA[uri]]></wf:PropertyFormalParametersName>
+    <wf:PropertyFormalParametersDefaultProcessVariable rdf:resource="LOCAL_NAMESPACE#i1296572584014098100"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572585073826000">
+    <rdf:type rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassFormalParameters"/>
+    <rdfs:label><![CDATA[Result Server Class Uri]]></rdfs:label>
+    <wf:PropertyFormalParametersName><![CDATA[classUri]]></wf:PropertyFormalParametersName>
+    <wf:PropertyFormalParametersDefaultProcessVariable rdf:resource="LOCAL_NAMESPACE#i1296572584025114800"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572585084020300">
+    <rdf:type rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassFormalParameters"/>
+    <rdfs:label><![CDATA[Result Server Uri]]></rdfs:label>
+    <wf:PropertyFormalParametersName><![CDATA[uri]]></wf:PropertyFormalParametersName>
+    <wf:PropertyFormalParametersDefaultProcessVariable rdf:resource="LOCAL_NAMESPACE#i1296572584036154400"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572585094440500">
+    <rdf:type rdf:resource="http://www.w3.org/2000/01/rdf-schema#Class"/>
+    <rdfs:label><![CDATA[taoGroups]]></rdfs:label>
+    <rdfs:comment><![CDATA[taoGroups related services]]></rdfs:comment>
+    <rdfs:subClassOf rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassSupportServices"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572585098941000">
+    <rdf:type rdf:resource="LOCAL_NAMESPACE#i1296572585094440500"/>
+    <rdfs:label><![CDATA[Group class selection]]></rdfs:label>
+    <rdfs:comment><![CDATA[Select a group (sub)class]]></rdfs:comment>
+    <wf:PropertySupportServicesUrl><![CDATA[/taoGroups/SaSGroups/sasSelect?selectInstance=false&]]></wf:PropertySupportServicesUrl>
+    <wf:PropertyServiceDefinitionsFormalParameterIn rdf:resource="LOCAL_NAMESPACE#i1296572584050444900"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572586008534100">
+    <rdf:type rdf:resource="LOCAL_NAMESPACE#i1296572585094440500"/>
+    <rdfs:label><![CDATA[Group selection]]></rdfs:label>
+    <rdfs:comment><![CDATA[Select a group]]></rdfs:comment>
+    <wf:PropertySupportServicesUrl><![CDATA[/taoGroups/SaSGroups/sasSelect?selectInstance=true&]]></wf:PropertySupportServicesUrl>
+    <wf:PropertyServiceDefinitionsFormalParameterIn rdf:resource="LOCAL_NAMESPACE#i1296572584052192100"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572586020592600">
+    <rdf:type rdf:resource="LOCAL_NAMESPACE#i1296572585094440500"/>
+    <rdfs:label><![CDATA[Group add]]></rdfs:label>
+    <rdfs:comment><![CDATA[Add a new group and redirect to the edit form]]></rdfs:comment>
+    <wf:PropertySupportServicesUrl><![CDATA[/taoGroups/SaSGroups/sasAddInstance?classUri=^groupClassUri&]]></wf:PropertySupportServicesUrl>
+    <wf:PropertyServiceDefinitionsFormalParameterIn rdf:resource="LOCAL_NAMESPACE#i1296572584054214300"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572586030874400">
+    <rdf:type rdf:resource="LOCAL_NAMESPACE#i1296572585094440500"/>
+    <rdfs:label><![CDATA[Group editor]]></rdfs:label>
+    <rdfs:comment><![CDATA[Edit group properties]]></rdfs:comment>
+    <wf:PropertySupportServicesUrl><![CDATA[/taoGroups/SaSGroups/sasEditInstance?uri=^groupUri&classUri=^groupClassUri&]]></wf:PropertySupportServicesUrl>
+    <wf:PropertyServiceDefinitionsFormalParameterIn rdf:resource="LOCAL_NAMESPACE#i1296572584057699300"/>
+    <wf:PropertyServiceDefinitionsFormalParameterIn rdf:resource="LOCAL_NAMESPACE#i1296572584054214300"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572586047770000">
+    <rdf:type rdf:resource="LOCAL_NAMESPACE#i1296572585094440500"/>
+    <rdfs:label><![CDATA[Group full editor]]></rdfs:label>
+    <rdfs:comment><![CDATA[Full edit form: edit group properties, select group subjects and deliveries]]></rdfs:comment>
+    <wf:PropertySupportServicesUrl><![CDATA[/taoGroups/SaSGroups/editGroup?uri=^groupUri&classUri=^groupClassUri&]]></wf:PropertySupportServicesUrl>
+    <wf:PropertyServiceDefinitionsFormalParameterIn rdf:resource="LOCAL_NAMESPACE#i1296572584057699300"/>
+    <wf:PropertyServiceDefinitionsFormalParameterIn rdf:resource="LOCAL_NAMESPACE#i1296572584054214300"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572586064234000">
+    <rdf:type rdf:resource="LOCAL_NAMESPACE#i1296572585094440500"/>
+    <rdfs:label><![CDATA[Group class editor]]></rdfs:label>
+    <rdfs:comment><![CDATA[Edit a Group (sub)class: add/edit/delete class properties]]></rdfs:comment>
+    <wf:PropertySupportServicesUrl><![CDATA[/taoGroups/SaSGroups/editGroupClass?classUri=^groupClassUri&]]></wf:PropertySupportServicesUrl>
+    <wf:PropertyServiceDefinitionsFormalParameterIn rdf:resource="LOCAL_NAMESPACE#i1296572584054214300"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572586074868900">
+    <rdf:type rdf:resource="LOCAL_NAMESPACE#i1296572585094440500"/>
+    <rdfs:label><![CDATA[Group translation]]></rdfs:label>
+    <rdfs:comment><![CDATA[Translate the value of the group properties]]></rdfs:comment>
+    <wf:PropertySupportServicesUrl><![CDATA[/taoGroups/SaSGroups/translateInstance?uri=^groupUri&classUri=^groupClassUri&target_lang=^groupTargetLang&]]></wf:PropertySupportServicesUrl>
+    <wf:PropertyServiceDefinitionsFormalParameterIn rdf:resource="LOCAL_NAMESPACE#i1296572584057699300"/>
+    <wf:PropertyServiceDefinitionsFormalParameterIn rdf:resource="LOCAL_NAMESPACE#i1296572584054214300"/>
+    <wf:PropertyServiceDefinitionsFormalParameterIn rdf:resource="LOCAL_NAMESPACE#i1296572584061895200"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572586099325700">
+    <rdf:type rdf:resource="LOCAL_NAMESPACE#i1296572585094440500"/>
+    <rdfs:label><![CDATA[Group related subjects]]></rdfs:label>
+    <rdfs:comment><![CDATA[Select the subjects linked to the group]]></rdfs:comment>
+    <wf:PropertySupportServicesUrl><![CDATA[/taoGroups/SaSGroups/selectSubjects?uri=^groupUri&classUri=^groupClassUri&]]></wf:PropertySupportServicesUrl>
+    <wf:PropertyServiceDefinitionsFormalParameterIn rdf:resource="LOCAL_NAMESPACE#i1296572584057699300"/>
+    <wf:PropertyServiceDefinitionsFormalParameterIn rdf:resource="LOCAL_NAMESPACE#i1296572584054214300"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572587015852100">
+    <rdf:type rdf:resource="LOCAL_NAMESPACE#i1296572585094440500"/>
+    <rdfs:label><![CDATA[Group related deliveries]]></rdfs:label>
+    <rdfs:comment><![CDATA[Select the deliveries linked to the group]]></rdfs:comment>
+    <wf:PropertySupportServicesUrl><![CDATA[/taoGroups/SaSGroups/selecDeliveries?uri=^groupUri&classUri=^groupClassUri&]]></wf:PropertySupportServicesUrl>
+    <wf:PropertyServiceDefinitionsFormalParameterIn rdf:resource="LOCAL_NAMESPACE#i1296572584057699300"/>
+    <wf:PropertyServiceDefinitionsFormalParameterIn rdf:resource="LOCAL_NAMESPACE#i1296572584054214300"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572587032581300">
+    <rdf:type rdf:resource="LOCAL_NAMESPACE#i1296572585094440500"/>
+    <rdfs:label><![CDATA[Groups searching]]></rdfs:label>
+    <rdfs:comment><![CDATA[Search groups instances]]></rdfs:comment>
+    <wf:PropertySupportServicesUrl><![CDATA[/taoGroups/SaSGroups/search]]></wf:PropertySupportServicesUrl>
+  </rdf:Description>
+  <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572587037718000">
+    <rdf:type rdf:resource="LOCAL_NAMESPACE#i1296572585094440500"/>
+    <rdfs:label><![CDATA[Group removing]]></rdfs:label>
+    <rdfs:comment><![CDATA[Delete a group instance]]></rdfs:comment>
+    <wf:PropertySupportServicesUrl><![CDATA[/taoGroups/SaSGroups/sasDeleteInstance?uri=^groupUri&classUri=^groupClassUri&]]></wf:PropertySupportServicesUrl>
+    <wf:PropertyServiceDefinitionsFormalParameterIn rdf:resource="LOCAL_NAMESPACE#i1296572584057699300"/>
+    <wf:PropertyServiceDefinitionsFormalParameterIn rdf:resource="LOCAL_NAMESPACE#i1296572584054214300"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572587052594200">
+    <rdf:type rdf:resource="http://www.w3.org/2000/01/rdf-schema#Class"/>
+    <rdfs:label><![CDATA[taoItems]]></rdfs:label>
+    <rdfs:comment><![CDATA[taoItems related services]]></rdfs:comment>
+    <rdfs:subClassOf rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassSupportServices"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572587057293600">
+    <rdf:type rdf:resource="LOCAL_NAMESPACE#i1296572587052594200"/>
+    <rdfs:label><![CDATA[Item class selection]]></rdfs:label>
+    <rdfs:comment><![CDATA[Select an item (sub)class]]></rdfs:comment>
+    <wf:PropertySupportServicesUrl><![CDATA[/taoItems/SaSItems/sasSelect?selectInstance=false&]]></wf:PropertySupportServicesUrl>
+    <wf:PropertyServiceDefinitionsFormalParameterIn rdf:resource="LOCAL_NAMESPACE#i1296572584050444900"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572587067101900">
+    <rdf:type rdf:resource="LOCAL_NAMESPACE#i1296572587052594200"/>
+    <rdfs:label><![CDATA[Item selection]]></rdfs:label>
+    <rdfs:comment><![CDATA[Select an item]]></rdfs:comment>
+    <wf:PropertySupportServicesUrl><![CDATA[/taoItems/SaSItems/sasSelect?selectInstance=true&]]></wf:PropertySupportServicesUrl>
+    <wf:PropertyServiceDefinitionsFormalParameterIn rdf:resource="LOCAL_NAMESPACE#i1296572584052192100"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572587078553500">
+    <rdf:type rdf:resource="LOCAL_NAMESPACE#i1296572587052594200"/>
+    <rdfs:label><![CDATA[Item add]]></rdfs:label>
+    <rdfs:comment><![CDATA[Add a new item and redirect to the edit form]]></rdfs:comment>
+    <wf:PropertySupportServicesUrl><![CDATA[/taoItems/SaSItems/sasAddInstance?classUri=^itemClassUri&]]></wf:PropertySupportServicesUrl>
+    <wf:PropertyServiceDefinitionsFormalParameterIn rdf:resource="LOCAL_NAMESPACE#i1296572584066326700"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572587092457200">
+    <rdf:type rdf:resource="LOCAL_NAMESPACE#i1296572587052594200"/>
+    <rdfs:label><![CDATA[Item editor]]></rdfs:label>
+    <rdfs:comment><![CDATA[edit item properties]]></rdfs:comment>
+    <wf:PropertySupportServicesUrl><![CDATA[/taoItems/SaSItems/sasEditInstance?uri=^itemUri&classUri=^itemClassUri&]]></wf:PropertySupportServicesUrl>
+    <wf:PropertyServiceDefinitionsFormalParameterIn rdf:resource="LOCAL_NAMESPACE#i1296572584071551600"/>
+    <wf:PropertyServiceDefinitionsFormalParameterIn rdf:resource="LOCAL_NAMESPACE#i1296572584066326700"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572588018048500">
+    <rdf:type rdf:resource="LOCAL_NAMESPACE#i1296572587052594200"/>
+    <rdfs:label><![CDATA[Item class editor]]></rdfs:label>
+    <rdfs:comment><![CDATA[Edit a Item (sub)class: add/edit/delete class properties]]></rdfs:comment>
+    <wf:PropertySupportServicesUrl><![CDATA[/taoItems/SaSItems/editItemClass?classUri=^itemClassUri&]]></wf:PropertySupportServicesUrl>
+    <wf:PropertyServiceDefinitionsFormalParameterIn rdf:resource="LOCAL_NAMESPACE#i1296572584066326700"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572588032127400">
+    <rdf:type rdf:resource="LOCAL_NAMESPACE#i1296572587052594200"/>
+    <rdfs:label><![CDATA[Item preview]]></rdfs:label>
+    <rdfs:comment><![CDATA[Preview an item]]></rdfs:comment>
+    <wf:PropertySupportServicesUrl><![CDATA[/taoItems/SaSItems/preview?uri=^itemUri&classUri=^itemClassUri&]]></wf:PropertySupportServicesUrl>
+    <wf:PropertyServiceDefinitionsFormalParameterIn rdf:resource="LOCAL_NAMESPACE#i1296572584071551600"/>
+    <wf:PropertyServiceDefinitionsFormalParameterIn rdf:resource="LOCAL_NAMESPACE#i1296572584066326700"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572588057010600">
+    <rdf:type rdf:resource="LOCAL_NAMESPACE#i1296572587052594200"/>
+    <rdfs:label><![CDATA[Item authoring]]></rdfs:label>
+    <rdfs:comment><![CDATA[Open the authoring tool of the selected item]]></rdfs:comment>
+    <wf:PropertySupportServicesUrl><![CDATA[/taoItems/SaSItems/authoring?uri=^itemUri&classUri=^itemClassUri&]]></wf:PropertySupportServicesUrl>
+    <wf:PropertyServiceDefinitionsFormalParameterIn rdf:resource="LOCAL_NAMESPACE#i1296572584071551600"/>
+    <wf:PropertyServiceDefinitionsFormalParameterIn rdf:resource="LOCAL_NAMESPACE#i1296572584066326700"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572588081645200">
+    <rdf:type rdf:resource="LOCAL_NAMESPACE#i1296572587052594200"/>
+    <rdfs:label><![CDATA[Item translation]]></rdfs:label>
+    <rdfs:comment><![CDATA[Translate the value of the item properties]]></rdfs:comment>
+    <wf:PropertySupportServicesUrl><![CDATA[/taoItems/SaSItems/translateInstance?uri=^itemUri&classUri=^itemClassUri&target_lang=^itemTargetLang&]]></wf:PropertySupportServicesUrl>
+    <wf:PropertyServiceDefinitionsFormalParameterIn rdf:resource="LOCAL_NAMESPACE#i1296572584071551600"/>
+    <wf:PropertyServiceDefinitionsFormalParameterIn rdf:resource="LOCAL_NAMESPACE#i1296572584066326700"/>
+    <wf:PropertyServiceDefinitionsFormalParameterIn rdf:resource="LOCAL_NAMESPACE#i1296572584077059800"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572589016191100">
+    <rdf:type rdf:resource="LOCAL_NAMESPACE#i1296572587052594200"/>
+    <rdfs:label><![CDATA[Items searching]]></rdfs:label>
+    <rdfs:comment><![CDATA[Search items instances]]></rdfs:comment>
+    <wf:PropertySupportServicesUrl><![CDATA[/taoItems/SaSItems/search]]></wf:PropertySupportServicesUrl>
+  </rdf:Description>
+  <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572589021811500">
+    <rdf:type rdf:resource="LOCAL_NAMESPACE#i1296572587052594200"/>
+    <rdfs:label><![CDATA[Item removing]]></rdfs:label>
+    <rdfs:comment><![CDATA[Delete an item instance]]></rdfs:comment>
+    <wf:PropertySupportServicesUrl><![CDATA[/taoItems/SaSItems/sasDeleteInstance?uri=^itemUri&classUri=^itemClassUri&]]></wf:PropertySupportServicesUrl>
+    <wf:PropertyServiceDefinitionsFormalParameterIn rdf:resource="LOCAL_NAMESPACE#i1296572584071551600"/>
+    <wf:PropertyServiceDefinitionsFormalParameterIn rdf:resource="LOCAL_NAMESPACE#i1296572584066326700"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572589043518100">
+    <rdf:type rdf:resource="http://www.w3.org/2000/01/rdf-schema#Class"/>
+    <rdfs:label><![CDATA[taoResults]]></rdfs:label>
+    <rdfs:comment><![CDATA[taoResults related services]]></rdfs:comment>
+    <rdfs:subClassOf rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassSupportServices"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572589048462300">
+    <rdf:type rdf:resource="LOCAL_NAMESPACE#i1296572589043518100"/>
+    <rdfs:label><![CDATA[Results searching]]></rdfs:label>
+    <rdfs:comment><![CDATA[Search results instance form]]></rdfs:comment>
+    <wf:PropertySupportServicesUrl><![CDATA[/taoResults/SaSResults/search]]></wf:PropertySupportServicesUrl>
+  </rdf:Description>
+  <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572589053143600">
+    <rdf:type rdf:resource="LOCAL_NAMESPACE#i1296572589043518100"/>
+    <rdfs:label><![CDATA[Result Table]]></rdfs:label>
+    <rdfs:comment><![CDATA[Open the UTR table on the results]]></rdfs:comment>
+    <wf:PropertySupportServicesUrl><![CDATA[/taoResults/SaSResults/createTable?classUri=^resultClassUri&]]></wf:PropertySupportServicesUrl>
+    <wf:PropertyServiceDefinitionsFormalParameterIn rdf:resource="LOCAL_NAMESPACE#i1296572584082802700"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572589069054200">
+    <rdf:type rdf:resource="http://www.w3.org/2000/01/rdf-schema#Class"/>
+    <rdfs:label><![CDATA[taoSubjects]]></rdfs:label>
+    <rdfs:comment><![CDATA[taoSubjects related services]]></rdfs:comment>
+    <rdfs:subClassOf rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassSupportServices"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572589074071000">
+    <rdf:type rdf:resource="LOCAL_NAMESPACE#i1296572589069054200"/>
+    <rdfs:label><![CDATA[Subject class selection]]></rdfs:label>
+    <rdfs:comment><![CDATA[Select a subject (sub)class]]></rdfs:comment>
+    <wf:PropertySupportServicesUrl><![CDATA[/taoSubjects/SaSSubjects/sasSelect?selectInstance=false&]]></wf:PropertySupportServicesUrl>
+    <wf:PropertyServiceDefinitionsFormalParameterIn rdf:resource="LOCAL_NAMESPACE#i1296572584050444900"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572589084721700">
+    <rdf:type rdf:resource="LOCAL_NAMESPACE#i1296572589069054200"/>
+    <rdfs:label><![CDATA[Subject selection]]></rdfs:label>
+    <rdfs:comment><![CDATA[Select a subject]]></rdfs:comment>
+    <wf:PropertySupportServicesUrl><![CDATA[/taoSubjects/SaSSubjects/sasSelect?selectInstance=true&]]></wf:PropertySupportServicesUrl>
+    <wf:PropertyServiceDefinitionsFormalParameterIn rdf:resource="LOCAL_NAMESPACE#i1296572584052192100"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572589097047400">
+    <rdf:type rdf:resource="LOCAL_NAMESPACE#i1296572589069054200"/>
+    <rdfs:label><![CDATA[Subject add]]></rdfs:label>
+    <rdfs:comment><![CDATA[Add a new subject and redirect to the edit form]]></rdfs:comment>
+    <wf:PropertySupportServicesUrl><![CDATA[/taoSubjects/SaSSubjects/sasAddInstance?classUri=^subjectClassUri&]]></wf:PropertySupportServicesUrl>
+    <wf:PropertyServiceDefinitionsFormalParameterIn rdf:resource="LOCAL_NAMESPACE#i1296572584089326600"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572590017630600">
+    <rdf:type rdf:resource="LOCAL_NAMESPACE#i1296572589069054200"/>
+    <rdfs:label><![CDATA[Subject editor]]></rdfs:label>
+    <rdfs:comment><![CDATA[Edit subject properties]]></rdfs:comment>
+    <wf:PropertySupportServicesUrl><![CDATA[/taoSubjects/SaSSubjects/sasEditInstance?uri=^subjectUri&classUri=^subjectClassUri&]]></wf:PropertySupportServicesUrl>
+    <wf:PropertyServiceDefinitionsFormalParameterIn rdf:resource="LOCAL_NAMESPACE#i1296572584096030900"/>
+    <wf:PropertyServiceDefinitionsFormalParameterIn rdf:resource="LOCAL_NAMESPACE#i1296572584089326600"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572590055233700">
+    <rdf:type rdf:resource="LOCAL_NAMESPACE#i1296572589069054200"/>
+    <rdfs:label><![CDATA[Subject full editor]]></rdfs:label>
+    <rdfs:comment><![CDATA[Full edit form: edit subject properties, select subject's group]]></rdfs:comment>
+    <wf:PropertySupportServicesUrl><![CDATA[/taoSubjects/SaSSubjects/editSubject?uri=^subjectUri&classUri=^subjectClassUri&]]></wf:PropertySupportServicesUrl>
+    <wf:PropertyServiceDefinitionsFormalParameterIn rdf:resource="LOCAL_NAMESPACE#i1296572584096030900"/>
+    <wf:PropertyServiceDefinitionsFormalParameterIn rdf:resource="LOCAL_NAMESPACE#i1296572584089326600"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572590093628600">
+    <rdf:type rdf:resource="LOCAL_NAMESPACE#i1296572589069054200"/>
+    <rdfs:label><![CDATA[Subject class editor]]></rdfs:label>
+    <rdfs:comment><![CDATA[Edit a Subject (sub)class: add/edit/delete class properties]]></rdfs:comment>
+    <wf:PropertySupportServicesUrl><![CDATA[/taoSubjects/SaSSubjects/editSubjectClass?classUri=^subjectClassUri&]]></wf:PropertySupportServicesUrl>
+    <wf:PropertyServiceDefinitionsFormalParameterIn rdf:resource="LOCAL_NAMESPACE#i1296572584089326600"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572591028874200">
+    <rdf:type rdf:resource="LOCAL_NAMESPACE#i1296572589069054200"/>
+    <rdfs:label><![CDATA[Subject translation]]></rdfs:label>
+    <rdfs:comment><![CDATA[Translate the value of the subject properties]]></rdfs:comment>
+    <wf:PropertySupportServicesUrl><![CDATA[/taoSubjects/SaSSubjects/translateInstance?uri=^subjectUri&classUri=^subjectClassUri&target_lang=^subjectTargetLang&]]></wf:PropertySupportServicesUrl>
+    <wf:PropertyServiceDefinitionsFormalParameterIn rdf:resource="LOCAL_NAMESPACE#i1296572584096030900"/>
+    <wf:PropertyServiceDefinitionsFormalParameterIn rdf:resource="LOCAL_NAMESPACE#i1296572584089326600"/>
+    <wf:PropertyServiceDefinitionsFormalParameterIn rdf:resource="LOCAL_NAMESPACE#i1296572585003578100"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572591085607700">
+    <rdf:type rdf:resource="LOCAL_NAMESPACE#i1296572589069054200"/>
+    <rdfs:label><![CDATA[Subject's group selection]]></rdfs:label>
+    <rdfs:comment><![CDATA[Select the subject's group]]></rdfs:comment>
+    <wf:PropertySupportServicesUrl><![CDATA[/taoSubjects/SaSSubjects/addToGroup?uri=^subjectUri&classUri=^subjectClassUri&]]></wf:PropertySupportServicesUrl>
+    <wf:PropertyServiceDefinitionsFormalParameterIn rdf:resource="LOCAL_NAMESPACE#i1296572584096030900"/>
+    <wf:PropertyServiceDefinitionsFormalParameterIn rdf:resource="LOCAL_NAMESPACE#i1296572584089326600"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572592026563400">
+    <rdf:type rdf:resource="LOCAL_NAMESPACE#i1296572589069054200"/>
+    <rdfs:label><![CDATA[Subjects searching]]></rdfs:label>
+    <rdfs:comment><![CDATA[Search subject instances]]></rdfs:comment>
+    <wf:PropertySupportServicesUrl><![CDATA[/taoSubjects/SaSSubjects/search]]></wf:PropertySupportServicesUrl>
+  </rdf:Description>
+  <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572592033601400">
+    <rdf:type rdf:resource="LOCAL_NAMESPACE#i1296572589069054200"/>
+    <rdfs:label><![CDATA[Subject removing]]></rdfs:label>
+    <rdfs:comment><![CDATA[Delete a subject]]></rdfs:comment>
+    <wf:PropertySupportServicesUrl><![CDATA[/taoSubjects/SaSSubjects/sasDeleteInstance?uri=^subjectUri&classUri=^subjectClassUri&]]></wf:PropertySupportServicesUrl>
+    <wf:PropertyServiceDefinitionsFormalParameterIn rdf:resource="LOCAL_NAMESPACE#i1296572584096030900"/>
+    <wf:PropertyServiceDefinitionsFormalParameterIn rdf:resource="LOCAL_NAMESPACE#i1296572584089326600"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572592072249300">
+    <rdf:type rdf:resource="http://www.w3.org/2000/01/rdf-schema#Class"/>
+    <rdfs:label><![CDATA[taoTests]]></rdfs:label>
+    <rdfs:comment><![CDATA[taoTests related services]]></rdfs:comment>
+    <rdfs:subClassOf rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassSupportServices"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572592077504100">
+    <rdf:type rdf:resource="LOCAL_NAMESPACE#i1296572592072249300"/>
+    <rdfs:label><![CDATA[Test class selection]]></rdfs:label>
+    <rdfs:comment><![CDATA[Select a test (sub)class]]></rdfs:comment>
+    <wf:PropertySupportServicesUrl><![CDATA[/taoTests/SaSTests/sasSelect?selectInstance=false&]]></wf:PropertySupportServicesUrl>
+    <wf:PropertyServiceDefinitionsFormalParameterIn rdf:resource="LOCAL_NAMESPACE#i1296572584050444900"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572593005901900">
+    <rdf:type rdf:resource="LOCAL_NAMESPACE#i1296572592072249300"/>
+    <rdfs:label><![CDATA[Test selection]]></rdfs:label>
+    <rdfs:comment><![CDATA[Select a test]]></rdfs:comment>
+    <wf:PropertySupportServicesUrl><![CDATA[/taoTests/SaSTests/sasSelect?selectInstance=true&]]></wf:PropertySupportServicesUrl>
+    <wf:PropertyServiceDefinitionsFormalParameterIn rdf:resource="LOCAL_NAMESPACE#i1296572584052192100"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572593037950200">
+    <rdf:type rdf:resource="LOCAL_NAMESPACE#i1296572592072249300"/>
+    <rdfs:label><![CDATA[Test add]]></rdfs:label>
+    <rdfs:comment><![CDATA[Add a new test and redirect to the edit form]]></rdfs:comment>
+    <wf:PropertySupportServicesUrl><![CDATA[/taoTests/SaSTests/sasAddInstance?classUri=^testClassUri&]]></wf:PropertySupportServicesUrl>
+    <wf:PropertyServiceDefinitionsFormalParameterIn rdf:resource="LOCAL_NAMESPACE#i1296572585011772900"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572593069529700">
+    <rdf:type rdf:resource="LOCAL_NAMESPACE#i1296572592072249300"/>
+    <rdfs:label><![CDATA[Test editor]]></rdfs:label>
+    <rdfs:comment><![CDATA[Edit subject properties]]></rdfs:comment>
+    <wf:PropertySupportServicesUrl><![CDATA[/taoTests/SaSTests/sasEditInstance?uri=^testUri&classUri=^testClassUri&]]></wf:PropertySupportServicesUrl>
+    <wf:PropertyServiceDefinitionsFormalParameterIn rdf:resource="LOCAL_NAMESPACE#i1296572585019695300"/>
+    <wf:PropertyServiceDefinitionsFormalParameterIn rdf:resource="LOCAL_NAMESPACE#i1296572585011772900"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572594034752100">
+    <rdf:type rdf:resource="LOCAL_NAMESPACE#i1296572592072249300"/>
+    <rdfs:label><![CDATA[Test full editor]]></rdfs:label>
+    <rdfs:comment><![CDATA[Full edit form: edit test properties, select and sort test's items]]></rdfs:comment>
+    <wf:PropertySupportServicesUrl><![CDATA[/taoTests/SaSTests/editTest?uri=^testUri&classUri=^testClassUri&]]></wf:PropertySupportServicesUrl>
+    <wf:PropertyServiceDefinitionsFormalParameterIn rdf:resource="LOCAL_NAMESPACE#i1296572585019695300"/>
+    <wf:PropertyServiceDefinitionsFormalParameterIn rdf:resource="LOCAL_NAMESPACE#i1296572585011772900"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572595008478600">
+    <rdf:type rdf:resource="LOCAL_NAMESPACE#i1296572592072249300"/>
+    <rdfs:label><![CDATA[Test class editor]]></rdfs:label>
+    <rdfs:comment><![CDATA[Edit a Test (sub)class: add/edit/delete class properties]]></rdfs:comment>
+    <wf:PropertySupportServicesUrl><![CDATA[/taoTests/SaSTests/editTestClass?classUri=^testClassUri&]]></wf:PropertySupportServicesUrl>
+    <wf:PropertyServiceDefinitionsFormalParameterIn rdf:resource="LOCAL_NAMESPACE#i1296572585011772900"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572595060856500">
+    <rdf:type rdf:resource="LOCAL_NAMESPACE#i1296572592072249300"/>
+    <rdfs:label><![CDATA[Test translation]]></rdfs:label>
+    <rdfs:comment><![CDATA[Translate the value of the test properties]]></rdfs:comment>
+    <wf:PropertySupportServicesUrl><![CDATA[/taoTests/SaSTests/translateInstance?uri=^testUri&classUri=^testClassUri&target_lang=^testTargetLang&]]></wf:PropertySupportServicesUrl>
+    <wf:PropertyServiceDefinitionsFormalParameterIn rdf:resource="LOCAL_NAMESPACE#i1296572585019695300"/>
+    <wf:PropertyServiceDefinitionsFormalParameterIn rdf:resource="LOCAL_NAMESPACE#i1296572585011772900"/>
+    <wf:PropertyServiceDefinitionsFormalParameterIn rdf:resource="LOCAL_NAMESPACE#i1296572585027634900"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572596027139500">
+    <rdf:type rdf:resource="LOCAL_NAMESPACE#i1296572592072249300"/>
+    <rdfs:label><![CDATA[Test related items]]></rdfs:label>
+    <rdfs:comment><![CDATA[Select and sort the test related items]]></rdfs:comment>
+    <wf:PropertySupportServicesUrl><![CDATA[/taoTests/SaSTests/selectItems?uri=^testUri&classUri=^testClassUri&]]></wf:PropertySupportServicesUrl>
+    <wf:PropertyServiceDefinitionsFormalParameterIn rdf:resource="LOCAL_NAMESPACE#i1296572585019695300"/>
+    <wf:PropertyServiceDefinitionsFormalParameterIn rdf:resource="LOCAL_NAMESPACE#i1296572585011772900"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572596071951600">
+    <rdf:type rdf:resource="LOCAL_NAMESPACE#i1296572592072249300"/>
+    <rdfs:label><![CDATA[Tests searching]]></rdfs:label>
+    <rdfs:comment><![CDATA[Search test instances]]></rdfs:comment>
+    <wf:PropertySupportServicesUrl><![CDATA[/taoTests/SaSTests/search]]></wf:PropertySupportServicesUrl>
+  </rdf:Description>
+  <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572596077675200">
+    <rdf:type rdf:resource="LOCAL_NAMESPACE#i1296572592072249300"/>
+    <rdfs:label><![CDATA[Test removing]]></rdfs:label>
+    <rdfs:comment><![CDATA[Delete a test instance]]></rdfs:comment>
+    <wf:PropertySupportServicesUrl><![CDATA[/taoTests/SaSTests/sasDeleteInstance?uri=^testUri&classUri=^testClassUri&]]></wf:PropertySupportServicesUrl>
+    <wf:PropertyServiceDefinitionsFormalParameterIn rdf:resource="LOCAL_NAMESPACE#i1296572585019695300"/>
+    <wf:PropertyServiceDefinitionsFormalParameterIn rdf:resource="LOCAL_NAMESPACE#i1296572585011772900"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572597019323800">
+    <rdf:type rdf:resource="http://www.w3.org/2000/01/rdf-schema#Class"/>
+    <rdfs:label><![CDATA[taoDelivery]]></rdfs:label>
+    <rdfs:comment><![CDATA[taoDelivery related services]]></rdfs:comment>
+    <rdfs:subClassOf rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassSupportServices"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572597025261400">
+    <rdf:type rdf:resource="LOCAL_NAMESPACE#i1296572597019323800"/>
+    <rdfs:label><![CDATA[Delivery class selection]]></rdfs:label>
+    <rdfs:comment><![CDATA[Select a delivery (sub)class]]></rdfs:comment>
+    <wf:PropertySupportServicesUrl><![CDATA[/taoDelivery/SaSDelivery/sasSelect?selectInstance=false&]]></wf:PropertySupportServicesUrl>
+    <wf:PropertyServiceDefinitionsFormalParameterIn rdf:resource="LOCAL_NAMESPACE#i1296572584050444900"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572597036326400">
+    <rdf:type rdf:resource="LOCAL_NAMESPACE#i1296572597019323800"/>
+    <rdfs:label><![CDATA[Delivery selection]]></rdfs:label>
+    <rdfs:comment><![CDATA[Select a delivery]]></rdfs:comment>
+    <wf:PropertySupportServicesUrl><![CDATA[/taoDelivery/SaSDelivery/sasSelect?selectInstance=true&]]></wf:PropertySupportServicesUrl>
+    <wf:PropertyServiceDefinitionsFormalParameterIn rdf:resource="LOCAL_NAMESPACE#i1296572584052192100"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572597050153100">
+    <rdf:type rdf:resource="LOCAL_NAMESPACE#i1296572597019323800"/>
+    <rdfs:label><![CDATA[Deliveries searching]]></rdfs:label>
+    <rdfs:comment><![CDATA[Search deliveries instances]]></rdfs:comment>
+    <wf:PropertySupportServicesUrl><![CDATA[/taoDelivery/SaSDelivery/search]]></wf:PropertySupportServicesUrl>
+  </rdf:Description>
+  <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572597056043800">
+    <rdf:type rdf:resource="LOCAL_NAMESPACE#i1296572597019323800"/>
+    <rdfs:label><![CDATA[Delivery add]]></rdfs:label>
+    <rdfs:comment><![CDATA[Add a new delivery and redirect to the edit form]]></rdfs:comment>
+    <wf:PropertySupportServicesUrl><![CDATA[/taoDelivery/SaSDelivery/sasAddInstance?classUri=^deliveryClassUri&]]></wf:PropertySupportServicesUrl>
+    <wf:PropertyServiceDefinitionsFormalParameterIn rdf:resource="LOCAL_NAMESPACE#i1296572585035734500"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572597083382400">
+    <rdf:type rdf:resource="LOCAL_NAMESPACE#i1296572597019323800"/>
+    <rdfs:label><![CDATA[Delivery editor]]></rdfs:label>
+    <rdfs:comment><![CDATA[Edit delivery properties]]></rdfs:comment>
+    <wf:PropertySupportServicesUrl><![CDATA[/taoDelivery/SaSDelivery/sasEditInstance?uri=^deliveryUri&classUri=^deliveryClassUri&]]></wf:PropertySupportServicesUrl>
+    <wf:PropertyServiceDefinitionsFormalParameterIn rdf:resource="LOCAL_NAMESPACE#i1296572585044983600"/>
+    <wf:PropertyServiceDefinitionsFormalParameterIn rdf:resource="LOCAL_NAMESPACE#i1296572585035734500"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572598047801700">
+    <rdf:type rdf:resource="LOCAL_NAMESPACE#i1296572597019323800"/>
+    <rdfs:label><![CDATA[Delivery full editor]]></rdfs:label>
+    <rdfs:comment><![CDATA[Full edit form: edit delivery properties, exclude test takers and select campaigns]]></rdfs:comment>
+    <wf:PropertySupportServicesUrl><![CDATA[/taoDelivery/SaSDelivery/editDelivery?uri=^deliveryUri&classUri=^deliveryClassUri&]]></wf:PropertySupportServicesUrl>
+    <wf:PropertyServiceDefinitionsFormalParameterIn rdf:resource="LOCAL_NAMESPACE#i1296572585044983600"/>
+    <wf:PropertyServiceDefinitionsFormalParameterIn rdf:resource="LOCAL_NAMESPACE#i1296572585035734500"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572599031318300">
+    <rdf:type rdf:resource="LOCAL_NAMESPACE#i1296572597019323800"/>
+    <rdfs:label><![CDATA[Devlivery class editor]]></rdfs:label>
+    <rdfs:comment><![CDATA[Edit a Delivery (sub)class: add/edit/delete class properties]]></rdfs:comment>
+    <wf:PropertySupportServicesUrl><![CDATA[/taoDelivery/SaSDelivery/editDeliveryClass?classUri=^deliveryClassUri&]]></wf:PropertySupportServicesUrl>
+    <wf:PropertyServiceDefinitionsFormalParameterIn rdf:resource="LOCAL_NAMESPACE#i1296572585035734500"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572599072389600">
+    <rdf:type rdf:resource="LOCAL_NAMESPACE#i1296572597019323800"/>
+    <rdfs:label><![CDATA[Delivery exclude subject]]></rdfs:label>
+    <rdfs:comment><![CDATA[Select subject to exclude of the delivery]]></rdfs:comment>
+    <wf:PropertySupportServicesUrl><![CDATA[/taoDelivery/SaSDelivery/excludeSubjects?uri=^deliveryUri&classUri=^deliveryClassUri&]]></wf:PropertySupportServicesUrl>
+    <wf:PropertyServiceDefinitionsFormalParameterIn rdf:resource="LOCAL_NAMESPACE#i1296572585044983600"/>
+    <wf:PropertyServiceDefinitionsFormalParameterIn rdf:resource="LOCAL_NAMESPACE#i1296572585035734500"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572600035131100">
+    <rdf:type rdf:resource="LOCAL_NAMESPACE#i1296572597019323800"/>
+    <rdfs:label><![CDATA[Delivery related campaigns]]></rdfs:label>
+    <rdfs:comment><![CDATA[Select delivery campaigns]]></rdfs:comment>
+    <wf:PropertySupportServicesUrl><![CDATA[/taoDelivery/SaSDelivery/selectCampaign?uri=^deliveryUri&classUri=^deliveryClassUri&]]></wf:PropertySupportServicesUrl>
+    <wf:PropertyServiceDefinitionsFormalParameterIn rdf:resource="LOCAL_NAMESPACE#i1296572585044983600"/>
+    <wf:PropertyServiceDefinitionsFormalParameterIn rdf:resource="LOCAL_NAMESPACE#i1296572585035734500"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572601009328300">
+    <rdf:type rdf:resource="LOCAL_NAMESPACE#i1296572597019323800"/>
+    <rdfs:label><![CDATA[Delivery removing]]></rdfs:label>
+    <rdfs:comment><![CDATA[Delete a delivery instance]]></rdfs:comment>
+    <wf:PropertySupportServicesUrl><![CDATA[/taoDelivery/SaSDelivery/sasDeleteInstance?uri=^deliveryUri&classUri=^deliveryClassUri&]]></wf:PropertySupportServicesUrl>
+    <wf:PropertyServiceDefinitionsFormalParameterIn rdf:resource="LOCAL_NAMESPACE#i1296572585044983600"/>
+    <wf:PropertyServiceDefinitionsFormalParameterIn rdf:resource="LOCAL_NAMESPACE#i1296572585035734500"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572601059239000">
+    <rdf:type rdf:resource="LOCAL_NAMESPACE#i1296572597019323800"/>
+    <rdfs:label><![CDATA[Delivery compilation]]></rdfs:label>
+    <rdfs:comment><![CDATA[Compile all the tests composing the delivery]]></rdfs:comment>
+    <wf:PropertySupportServicesUrl><![CDATA[/taoDelivery/SaSDelivery/compileView?uri=^deliveryUri&classUri=^deliveryClassUri&]]></wf:PropertySupportServicesUrl>
+    <wf:PropertyServiceDefinitionsFormalParameterIn rdf:resource="LOCAL_NAMESPACE#i1296572585044983600"/>
+    <wf:PropertyServiceDefinitionsFormalParameterIn rdf:resource="LOCAL_NAMESPACE#i1296572585035734500"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572602029648500">
+    <rdf:type rdf:resource="LOCAL_NAMESPACE#i1296572597019323800"/>
+    <rdfs:label><![CDATA[Campaign class selection]]></rdfs:label>
+    <rdfs:comment><![CDATA[Select a campaign (sub)class]]></rdfs:comment>
+    <wf:PropertySupportServicesUrl><![CDATA[/taoDelivery/SaSCampaign/sasSelect?selectInstance=false&]]></wf:PropertySupportServicesUrl>
+    <wf:PropertyServiceDefinitionsFormalParameterIn rdf:resource="LOCAL_NAMESPACE#i1296572584050444900"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572602040641400">
+    <rdf:type rdf:resource="LOCAL_NAMESPACE#i1296572597019323800"/>
+    <rdfs:label><![CDATA[Campaign selection]]></rdfs:label>
+    <rdfs:comment><![CDATA[Select a campaign]]></rdfs:comment>
+    <wf:PropertySupportServicesUrl><![CDATA[/taoDelivery/SaSCampaign/sasSelect?selectInstance=true&]]></wf:PropertySupportServicesUrl>
+    <wf:PropertyServiceDefinitionsFormalParameterIn rdf:resource="LOCAL_NAMESPACE#i1296572584052192100"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572602060694700">
+    <rdf:type rdf:resource="LOCAL_NAMESPACE#i1296572597019323800"/>
+    <rdfs:label><![CDATA[Campaigns searching]]></rdfs:label>
+    <rdfs:comment><![CDATA[Search campaigns instances]]></rdfs:comment>
+    <wf:PropertySupportServicesUrl><![CDATA[/taoDelivery/SaSCampaign/search]]></wf:PropertySupportServicesUrl>
+  </rdf:Description>
+  <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572602074340500">
+    <rdf:type rdf:resource="LOCAL_NAMESPACE#i1296572597019323800"/>
+    <rdfs:label><![CDATA[Campaign add]]></rdfs:label>
+    <rdfs:comment><![CDATA[Add a new campaign and redirect to the edit form]]></rdfs:comment>
+    <wf:PropertySupportServicesUrl><![CDATA[/taoDelivery/SaSCampaign/sasAddInstance?classUri=^campaignClassUri&]]></wf:PropertySupportServicesUrl>
+    <wf:PropertyServiceDefinitionsFormalParameterIn rdf:resource="LOCAL_NAMESPACE#i1296572585054541300"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572603010431400">
+    <rdf:type rdf:resource="LOCAL_NAMESPACE#i1296572597019323800"/>
+    <rdfs:label><![CDATA[Campaign editor]]></rdfs:label>
+    <rdfs:comment><![CDATA[Edit campaign properties]]></rdfs:comment>
+    <wf:PropertySupportServicesUrl><![CDATA[/taoDelivery/SaSCampaign/sasEditInstance?uri=^campaignUri&classUri=^campaignClassUri&]]></wf:PropertySupportServicesUrl>
+    <wf:PropertyServiceDefinitionsFormalParameterIn rdf:resource="LOCAL_NAMESPACE#i1296572585063991900"/>
+    <wf:PropertyServiceDefinitionsFormalParameterIn rdf:resource="LOCAL_NAMESPACE#i1296572585054541300"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572603069804900">
+    <rdf:type rdf:resource="LOCAL_NAMESPACE#i1296572597019323800"/>
+    <rdfs:label><![CDATA[Campaign full editor]]></rdfs:label>
+    <rdfs:comment><![CDATA[Full edit form: edit campaign properties and select related deliveries]]></rdfs:comment>
+    <wf:PropertySupportServicesUrl><![CDATA[/taoDelivery/SaSCampaign/editCampaign?uri=^campaignUri&classUri=^campaignClassUri&]]></wf:PropertySupportServicesUrl>
+    <wf:PropertyServiceDefinitionsFormalParameterIn rdf:resource="LOCAL_NAMESPACE#i1296572585063991900"/>
+    <wf:PropertyServiceDefinitionsFormalParameterIn rdf:resource="LOCAL_NAMESPACE#i1296572585054541300"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572604027433200">
+    <rdf:type rdf:resource="LOCAL_NAMESPACE#i1296572597019323800"/>
+    <rdfs:label><![CDATA[Campaign class editor]]></rdfs:label>
+    <rdfs:comment><![CDATA[Edit a campaign (sub)class: add/edit/delete class properties]]></rdfs:comment>
+    <wf:PropertySupportServicesUrl><![CDATA[/taoDelivery/SaSCampaign/editCampaignClass?classUri=^campaignClassUri&]]></wf:PropertySupportServicesUrl>
+    <wf:PropertyServiceDefinitionsFormalParameterIn rdf:resource="LOCAL_NAMESPACE#i1296572585054541300"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572604061300400">
+    <rdf:type rdf:resource="LOCAL_NAMESPACE#i1296572597019323800"/>
+    <rdfs:label><![CDATA[Campaign related delivery]]></rdfs:label>
+    <rdfs:comment><![CDATA[Select campaign deliveries]]></rdfs:comment>
+    <wf:PropertySupportServicesUrl><![CDATA[/taoDelivery/SaSCampaign/selectDeliveries?uri=^campaignUri&classUri=^campaignClassUri&]]></wf:PropertySupportServicesUrl>
+    <wf:PropertyServiceDefinitionsFormalParameterIn rdf:resource="LOCAL_NAMESPACE#i1296572585063991900"/>
+    <wf:PropertyServiceDefinitionsFormalParameterIn rdf:resource="LOCAL_NAMESPACE#i1296572585054541300"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572605028678600">
+    <rdf:type rdf:resource="LOCAL_NAMESPACE#i1296572597019323800"/>
+    <rdfs:label><![CDATA[Campaign removing]]></rdfs:label>
+    <rdfs:comment><![CDATA[Delete a campaign instance]]></rdfs:comment>
+    <wf:PropertySupportServicesUrl><![CDATA[/taoDelivery/SaSCampaign/sasDeleteInstance?uri=^campaignUri&classUri=^campaignClassUri&]]></wf:PropertySupportServicesUrl>
+    <wf:PropertyServiceDefinitionsFormalParameterIn rdf:resource="LOCAL_NAMESPACE#i1296572585063991900"/>
+    <wf:PropertyServiceDefinitionsFormalParameterIn rdf:resource="LOCAL_NAMESPACE#i1296572585054541300"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572606003696400">
+    <rdf:type rdf:resource="LOCAL_NAMESPACE#i1296572597019323800"/>
+    <rdfs:label><![CDATA[ResultServer class selection]]></rdfs:label>
+    <rdfs:comment><![CDATA[Select a ResultServer (sub)class]]></rdfs:comment>
+    <wf:PropertySupportServicesUrl><![CDATA[/taoDelivery/SaSResultServer/sasSelect?selectInstance=false&]]></wf:PropertySupportServicesUrl>
+    <wf:PropertyServiceDefinitionsFormalParameterIn rdf:resource="LOCAL_NAMESPACE#i1296572584050444900"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572606026032700">
+    <rdf:type rdf:resource="LOCAL_NAMESPACE#i1296572597019323800"/>
+    <rdfs:label><![CDATA[ResultServer selection]]></rdfs:label>
+    <rdfs:comment><![CDATA[Select a result server]]></rdfs:comment>
+    <wf:PropertySupportServicesUrl><![CDATA[/taoDelivery/SaSResultServer/sasSelect?selectInstance=true&]]></wf:PropertySupportServicesUrl>
+    <wf:PropertyServiceDefinitionsFormalParameterIn rdf:resource="LOCAL_NAMESPACE#i1296572584052192100"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572606039130300">
+    <rdf:type rdf:resource="LOCAL_NAMESPACE#i1296572597019323800"/>
+    <rdfs:label><![CDATA[ResultServers searching]]></rdfs:label>
+    <rdfs:comment><![CDATA[Search ResultServers instances]]></rdfs:comment>
+    <wf:PropertySupportServicesUrl><![CDATA[/taoDelivery/SaSResultServer/search]]></wf:PropertySupportServicesUrl>
+  </rdf:Description>
+  <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572606045303400">
+    <rdf:type rdf:resource="LOCAL_NAMESPACE#i1296572597019323800"/>
+    <rdfs:label><![CDATA[ResultServer add]]></rdfs:label>
+    <rdfs:comment><![CDATA[Add a new ResultServer and redirect to the edit form]]></rdfs:comment>
+    <wf:PropertySupportServicesUrl><![CDATA[/taoDelivery/SaSResultServer/sasAddInstance?classUri=^resultServerClassUri&]]></wf:PropertySupportServicesUrl>
+    <wf:PropertyServiceDefinitionsFormalParameterIn rdf:resource="LOCAL_NAMESPACE#i1296572585073826000"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572606084415900">
+    <rdf:type rdf:resource="LOCAL_NAMESPACE#i1296572597019323800"/>
+    <rdfs:label><![CDATA[ResultServer editor]]></rdfs:label>
+    <rdfs:comment><![CDATA[Edit result server properties]]></rdfs:comment>
+    <wf:PropertySupportServicesUrl><![CDATA[/taoDelivery/SaSResultServer/sasEditInstance?uri=^resultServerUri&classUri=^resultServerClassUri&]]></wf:PropertySupportServicesUrl>
+    <wf:PropertyServiceDefinitionsFormalParameterIn rdf:resource="LOCAL_NAMESPACE#i1296572585084020300"/>
+    <wf:PropertyServiceDefinitionsFormalParameterIn rdf:resource="LOCAL_NAMESPACE#i1296572585073826000"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572607065064500">
+    <rdf:type rdf:resource="LOCAL_NAMESPACE#i1296572597019323800"/>
+    <rdfs:label><![CDATA[ResultServer full editor]]></rdfs:label>
+    <rdfs:comment><![CDATA[Full edit form: edit campaign properties and select related deliveries]]></rdfs:comment>
+    <wf:PropertySupportServicesUrl><![CDATA[/taoDelivery/SaSResultServer/editResultServer?uri=^resultServerUri&classUri=^resultServerClassUri&]]></wf:PropertySupportServicesUrl>
+    <wf:PropertyServiceDefinitionsFormalParameterIn rdf:resource="LOCAL_NAMESPACE#i1296572585084020300"/>
+    <wf:PropertyServiceDefinitionsFormalParameterIn rdf:resource="LOCAL_NAMESPACE#i1296572585073826000"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572608051346400">
+    <rdf:type rdf:resource="LOCAL_NAMESPACE#i1296572597019323800"/>
+    <rdfs:label><![CDATA[ResultServer class editor]]></rdfs:label>
+    <rdfs:comment><![CDATA[Edit a ResultServer (sub)class: add/edit/delete class properties]]></rdfs:comment>
+    <wf:PropertySupportServicesUrl><![CDATA[/taoDelivery/SaSResultServer/editResultServerClass?classUri=^resultServerClassUri&]]></wf:PropertySupportServicesUrl>
+    <wf:PropertyServiceDefinitionsFormalParameterIn rdf:resource="LOCAL_NAMESPACE#i1296572585073826000"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572608092327000">
+    <rdf:type rdf:resource="LOCAL_NAMESPACE#i1296572597019323800"/>
+    <rdfs:label><![CDATA[ResultServer related delivery]]></rdfs:label>
+    <rdfs:comment><![CDATA[Select result server deliveries]]></rdfs:comment>
+    <wf:PropertySupportServicesUrl><![CDATA[/taoDelivery/SaSResultServer/selectDeliveries?uri=^resultServerUri&classUri=^resultServerClassUri&]]></wf:PropertySupportServicesUrl>
+    <wf:PropertyServiceDefinitionsFormalParameterIn rdf:resource="LOCAL_NAMESPACE#i1296572585084020300"/>
+    <wf:PropertyServiceDefinitionsFormalParameterIn rdf:resource="LOCAL_NAMESPACE#i1296572585073826000"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572609061964300">
+    <rdf:type rdf:resource="LOCAL_NAMESPACE#i1296572597019323800"/>
+    <rdfs:label><![CDATA[ResultServer removing]]></rdfs:label>
+    <rdfs:comment><![CDATA[Delete a ResultServer instance]]></rdfs:comment>
+    <wf:PropertySupportServicesUrl><![CDATA[/taoDelievry/SaSResultServer/sasDeleteInstance?uri=^resultServerUri&classUri=^resultServerClassUri&]]></wf:PropertySupportServicesUrl>
+    <wf:PropertyServiceDefinitionsFormalParameterIn rdf:resource="LOCAL_NAMESPACE#i1296572585084020300"/>
+    <wf:PropertyServiceDefinitionsFormalParameterIn rdf:resource="LOCAL_NAMESPACE#i1296572585073826000"/>
+  </rdf:Description>
+</rdf:RDF>
