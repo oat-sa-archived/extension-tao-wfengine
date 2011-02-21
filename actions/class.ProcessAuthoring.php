@@ -1028,7 +1028,7 @@ class wfEngine_actions_ProcessAuthoring extends tao_actions_TaoModule {
 				$condition = $data['if'];
 				
 				if(!empty($condition)){
-					if(is_null($this->service->createRule($connectorInstance, $condition))){
+					if(is_null($this->service->createTransitionRule($connectorInstance, $condition))){
 						throw new Exception("the condition \"{$condition}\" cannot be created");
 					}
 				}

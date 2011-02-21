@@ -317,7 +317,7 @@ class wfEngine_models_classes_ProcessCloner
 							//required to recreate the rule:
 							$if = $transitionRule->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_RULE_IF));
 							if(!is_null($if)){
-								$transitionRuleClone = $this->authoringService->createRule($connectorClone, $if->getLabel());
+								$transitionRuleClone = $this->authoringService->createTransitionRule($connectorClone, $if->getLabel());
 							}
 						}
 						if(is_null($transitionRuleClone)){

@@ -35,12 +35,11 @@ class ProcessAuthoringServiceTestCase extends UnitTestCase {
 
 		$this->authoringService = $authoringService;
 	}
-	
-	
-	public function testDeleteProcess(){
+		
+	public function testCreateDeleteProcess(){
 		
 		$processDefinitionClass = new core_kernel_classes_Class(CLASS_PROCESS);
-		$processDefinition = $processDefinitionClass->createInstance('myProcess','created for the unit test of process authoring service');
+		$processDefinition = $this->authoringService->createProcess('myProcess','created for the unit test of process authoring service');
 		if($processDefinition instanceof core_kernel_classes_Resource){
 			$this->assertTrue($this->authoringService->deleteProcess($processDefinition));
 			$this->assertTrue($this->apiModel->getSubject(RDFS_LABEL, 'myProcess')->isEmpty());
@@ -152,7 +151,7 @@ class ProcessAuthoringServiceTestCase extends UnitTestCase {
 		$followingConnector1->delete();
 	}
 	
-	public function testCreateSplitActivity(){
+	public function testCreateConditionalActivity(){
 		$activity1 = $this->authoringService->createActivity($this->proc, 'myActivity');
 		$connector1 = $this->authoringService->createConnector($activity1);
 		
@@ -253,6 +252,67 @@ class ProcessAuthoringServiceTestCase extends UnitTestCase {
 		$this->assertEqual($previousActivitiesCollection->count(), 3);
 	}
 	
+	public function testCreateServiceDefinition(){
+	
+		$myProcessVar1 = null;
+		$myProcessVar1 = $this->authoringService->getProcessVariable('myProcessVarCode1');
+		if(is_null($myProcessVar1)){
+			$myProcessVar1 = $this->authoringService->createProcessVariable('myProcessVar1', 'myProcessVarCode1');
+		}
+		
+		$inputParameters = array(
+			'param1' => $myProcessVar1,
+			'param2' => '^myProcessVarCode2',
+			'param3' => 'myConstantValue',
+			'param4' => null
+		);
+		
+		$serviceUrl = 'http://www.myWebSite.com/myServiceScript.php';
+		$serviceDefinition = $this->authoringService->createServiceDefinition('myServiceDefinition', $serviceUrl, $inputParameters);
+		$this->assertIsA($serviceDefinition, 'core_kernel_classes_Resource');
+		
+		//check its formal param value:
+		$propServiceParam = new core_kernel_classes_Property(PROPERTY_SERVICESDEFINITION_FORMALPARAMIN);
+		$propParameterName = new core_kernel_classes_Property(PROPERTY_FORMALPARAMETER_NAME);
+		$propParameterConstantVal = new core_kernel_classes_Property(PROPERTY_FORMALPARAMETER_DEFAULTCONSTANTVALUE);
+		$propParameterProcessVar = new core_kernel_classes_Property(PROPERTY_FORMALPARAMETER_DEFAULTPROCESSVARIABLE);
+		$propCode = new core_kernel_classes_Property(PROPERTY_PROCESSVARIABLES_CODE);
+		
+		$createdFormalParamCollection = $serviceDefinition->getPropertyValuesCollection($propServiceParam);
+		$this->assertEqual($createdFormalParamCollection->count(), 4);
+		foreach($createdFormalParamCollection->getIterator() as $formalParam){
+			$propName = (string)$formalParam->getUniquePropertyValue($propParameterName);
+			if(in_array($propName, array('param1', 'param2', 'param3'))){
+				switch($propName){
+					case 'param1':{
+						$procVar = $formalParam->getUniquePropertyValue($propParameterProcessVar);
+						$this->assertNotNull($procVar);
+						$this->assertEqual($procVar->getUniquePropertyValue($propCode), 'myProcessVarCode1');
+						break;
+					}
+					case 'param2':{
+						$procVar = $formalParam->getUniquePropertyValue($propParameterProcessVar);
+						$this->assertNotNull($procVar);
+						$this->assertEqual($procVar->getUniquePropertyValue($propCode), 'myProcessVarCode2');
+						break;
+					}
+					case 'param3':{
+						$procVar = $formalParam->getUniquePropertyValue($propParameterConstantVal);
+						$this->assertNotNull($procVar);
+						$this->assertEqual((string) $procVar, 'myConstantValue');
+						break;
+					}
+					case 'param4':{
+						break;
+					}
+				}
+			}
+		}
+		
+		$this->assertTrue($this->authoringService->deleteServiceDefinition($serviceUrl));
+		$this->assertTrue($this->authoringService->deleteProcessVariable('myProcessVarCode1'));
+		$this->assertTrue($this->authoringService->deleteProcessVariable('myProcessVarCode2'));
+	}
 	
 	public function tearDown() {
         $this->proc->delete();

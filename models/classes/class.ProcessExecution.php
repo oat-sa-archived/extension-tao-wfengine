@@ -331,7 +331,6 @@ extends wfEngine_models_classes_WfResource
 		
 		$connType = $connector->getType();
 		if(!($connType instanceof core_kernel_classes_Resource)){
-			var_dump($nextConnectorUri, $connector, $connType);
 			throw new common_Exception('Connector type must be a Resource');
 		}
 		$this->logger->debug('Next Connector Type : ' . $connType->getLabel(),__FILE__,__LINE__);

@@ -9,8 +9,8 @@ error_reporting(E_ALL);
  *
  * This file is part of TAO.
  *
- * Automatically generated on 25.01.2011, 10:24:58 with ArgoUML PHP module 
- * (last revised $Date: 2008-04-19 08:22:08 +0200 (Sat, 19 Apr 2008) $)
+ * Automatically generated on 21.02.2011, 18:10:54 with ArgoUML PHP module 
+ * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
  *
  * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
  * @package wfEngine
@@ -112,10 +112,10 @@ class wfEngine_models_classes_ProcessAuthoringService
 		$returnValue = null;
 		if (!empty($question)){ // something to parse
 			// str_replace taken from the MsReader class
-			$question = str_replace("â€™", "'", $question); // utf8...
-			$question = str_replace("â€˜", "'", $question); // utf8...
-			$question = str_replace("â€œ", "\"", $question);
-			$question = str_replace("â€?", "\"", $question);
+			$question = str_replace("’", "'", $question); // utf8...
+			$question = str_replace("‘", "'", $question); // utf8...
+			$question = str_replace("“", "\"", $question);
+			$question = str_replace("”", "\"", $question);
 			if($isCondition){
 				$question = "if ".$question;
 			}	
@@ -521,9 +521,9 @@ class wfEngine_models_classes_ProcessAuthoringService
 		//set the new instance of process variable as a property of the class process instance:
 		$ok = $returnValue->setPropertyValue(new core_kernel_classes_Property(RDF_TYPE), RDF_PROPERTY);
 		if($ok){
-			$newProcessInstanceProperty = new core_kernel_classes_Property($returnValue->uriResource);
-			$newProcessInstanceProperty->setDomain(new core_kernel_classes_Class(CLASS_TOKEN));
-			$newProcessInstanceProperty->setRange(new core_kernel_classes_Class(RDFS_LITERAL));//literal only??
+			$newTokenProperty = new core_kernel_classes_Property($returnValue->uriResource);
+			$newTokenProperty->setDomain(new core_kernel_classes_Class(CLASS_TOKEN));
+			$newTokenProperty->setRange(new core_kernel_classes_Class(RDFS_LITERAL));//literal only??
 		}else{
 			throw new Exception("the newly created process variable {$label} ({$returnValue->uriResource}) cannot be set as a property of the class process instance");
 		}
@@ -534,7 +534,7 @@ class wfEngine_models_classes_ProcessAuthoringService
     }
 
     /**
-     * Short description of method createRule
+     * Short description of method createTransitionRule
      *
      * @access public
      * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
@@ -542,37 +542,35 @@ class wfEngine_models_classes_ProcessAuthoringService
      * @param  string question
      * @return core_kernel_classes_Resource
      */
-    public function createRule( core_kernel_classes_Resource $connector, $question = '')
+    public function createTransitionRule( core_kernel_classes_Resource $connector, $question = '')
     {
         $returnValue = null;
 
         // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004DB0 begin
 		
-		//TODO: rename the function to createTrasitionRule
-			
-		// $xmlDom = $this->analyseExpression($condition);
+		//associate the newly create expression with the transition rule of the connector
+		$transitionRule = $connector->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_TRANSITIONRULE));
+
+		if(empty($transitionRule) || $transitionRule == null){
+			//create an instance of transition rule:
+
+			$transitionRuleClass = new core_kernel_classes_Class(CLASS_TRANSITIONRULES);
+			$transitionRule = $transitionRuleClass->createInstance('TransitionRule : '  . $question);
+			//Associate the newly created transition rule to the connector:
+			$connector->editPropertyValues(new core_kernel_classes_Property(PROPERTY_CONNECTORS_TRANSITIONRULE), $transitionRule->uriResource);
+		}
+		
 		$condition = $this->createCondition( $this->analyseExpression($question, true) );
-
 		if($condition instanceof core_kernel_classes_Resource){
-			//associate the newly create expression with the transition rule of the connector
-			$transitionRule = $connector->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_TRANSITIONRULE));
-
-			if(empty($transitionRule) || $transitionRule == null){
-				//create an instance of transition rule:
-
-				$transitionRuleClass = new core_kernel_classes_Class(CLASS_TRANSITIONRULES);
-				$transitionRule = $transitionRuleClass->createInstance('TransitionRule : '  . $question);
-				//Associate the newly created transition rule to the connector:
-				$connector->editPropertyValues(new core_kernel_classes_Property(PROPERTY_CONNECTORS_TRANSITIONRULE), $transitionRule->uriResource);
-			}
 			//delete old condition:
 			$oldCondition = $transitionRule->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_RULE_IF));
 			if(!is_null($oldCondition)){
 				$this->deleteCondition($oldCondition);
 			}
 			$transitionRule->editPropertyValues(new core_kernel_classes_Property(PROPERTY_RULE_IF), $condition->uriResource);
-			$returnValue = $transitionRule;
 		}
+		
+		$returnValue = $transitionRule;
 		
         // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004DB0 end
 
@@ -672,33 +670,6 @@ class wfEngine_models_classes_ProcessAuthoringService
 		}
 		
         // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004DC3 end
-
-        return $returnValue;
-    }
-
-    /**
-     * Short description of method createTransitionRule
-     *
-     * @access public
-     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
-     * @param  Resource connector
-     * @return core_kernel_classes_Resource
-     */
-    public function createTransitionRule( core_kernel_classes_Resource $connector)
-    {
-        $returnValue = null;
-
-        // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004DD8 begin
-		
-		if(!is_null($connector)){
-			//create an instance of transition rule:
-			$transitionRuleClass = new core_kernel_classes_Class(CLASS_TRANSITIONRULES);
-			$returnValue = $transitionRuleClass->createInstance("ruleOf ".$connector->getLabel(),"generated by ProcessAuthoringService");
-			//associate it to the connector:
-			$connector->editPropertyValues(new core_kernel_classes_Property(PROPERTY_CONNECTORS_TRANSITIONRULE), $returnValue->uriResource);
-		}
-		
-        // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004DD8 end
 
         return $returnValue;
     }
@@ -1414,7 +1385,7 @@ class wfEngine_models_classes_ProcessAuthoringService
 		
 		
 		foreach($classFormalParam->getInstances(true) as $formalParam){
-			$nameResource = $formalParam->getOnePropertyvalue(new core_kernel_classes_Property(PROPERTY_FORMALPARAMETER_NAME));
+			$nameResource = $formalParam->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_FORMALPARAMETER_NAME));
 			$nameValue = null;
 			if(!is_null($nameResource)){
 			
@@ -1790,6 +1761,180 @@ class wfEngine_models_classes_ProcessAuthoringService
 		}
 		
         // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004EA1 end
+
+        return (bool) $returnValue;
+    }
+
+    /**
+     * Short description of method createProcess
+     *
+     * @access public
+     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+     * @param  string label
+     * @param  string comment
+     * @return core_kernel_classes_Resource
+     */
+    public function createProcess($label = '', $comment = '')
+    {
+        $returnValue = null;
+
+        // section 10-13-1-39--6cc6036b:12e4807fb4f:-8000:0000000000002BD3 begin
+		$processDefinitionClass = new core_kernel_classes_Class(CLASS_PROCESS);
+		if(empty($comment)) $comment = 'create by the process authoring service on '.date(DATE_ISO8601);
+		if(empty($label)){
+			$label = $this->createUniqueLabel($processDefinitionClass);
+		}
+		$returnValue = $processDefinitionClass->createInstance($label, 'created for the unit test of process execution');
+			
+        // section 10-13-1-39--6cc6036b:12e4807fb4f:-8000:0000000000002BD3 end
+
+        return $returnValue;
+    }
+
+    /**
+     * Short description of method createServiceDefinition
+     *
+     * @access public
+     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+     * @param  string label
+     * @param  string serviceUrl
+     * @param  array inputParameters
+     * @return core_kernel_classes_Resource
+     */
+    public function createServiceDefinition($label = '', $serviceUrl = '', $inputParameters = array())
+    {
+        $returnValue = null;
+
+        // section 10-13-1-39--6cc6036b:12e4807fb4f:-8000:0000000000002BE0 begin
+		if(!empty($serviceUrl)){
+			$supportServiceClass = new core_kernel_classes_Class(CLASS_SUPPORTSERVICES);
+			if(empty($label)){
+				$label = $this->createUniqueLabel($supportServiceClass);
+			}
+			$returnValue = $supportServiceClass->createInstance($label, 'service definition created for the unit test of process execution');
+			$returnValue->setPropertyValue(new core_kernel_classes_Property(PROPERTY_SUPPORTSERVICES_URL), $serviceUrl);//add management of wsdl service
+			
+			$propFormalParam = new core_kernel_classes_Property(PROPERTY_SERVICESDEFINITION_FORMALPARAMIN);
+			$classFormalParam = new core_kernel_classes_Class(CLASS_FORMALPARAMETER);
+			$classProcessVariables = new core_kernel_classes_Class(CLASS_PROCESSVARIABLES);
+			
+			foreach($inputParameters as $paramName => $value){
+			
+				$formalParam = null;
+				$formalParam = $this->getFormalParameter($paramName, $value);
+				
+				if(is_null($formalParam)){
+				
+					//create one:
+					$defaultValue = '';
+					$defaultValueType = 'constant';
+					
+					if(is_string($value)){
+						$value = trim($value);
+						if(!empty($value)){
+							if(substr($value, 0, 1) == '^'){
+								//is a process var, so get related process var resource:
+								$code = substr($value, 1);
+								$processVar = $this->getProcessVariable($code);
+								if(is_null($processVar)){
+									$processVar = $this->createProcessVariable($code, $code);
+								}
+								if(!is_null($processVar)){
+									$defaultValue = $processVar->uriResource;
+									$defaultValueType = 'processvariable';
+								}else{
+									throw new Exception('cannot create process variable with the code '.$code);
+								}
+							}else{
+								//it is a constant
+								$defaultValue = $value;
+							}
+						}
+					}else if($value instanceof core_kernel_classes_Resource){
+						//check if it is a process variable:
+						if(wfEngine_helpers_ProcessUtil::checkType($value, $classProcessVariables)){
+							$defaultValue = $value->uriResource;
+							$defaultValueType = 'processvariable';
+						}
+					}
+					
+					$formalParam = $this->createFormalParameter($paramName, $defaultValueType, $defaultValue, $paramName);
+				}
+				
+				
+				if(!is_null($formalParam)) $returnValue->setPropertyValue($propFormalParam, $formalParam->uriResource);
+			}
+		}
+        // section 10-13-1-39--6cc6036b:12e4807fb4f:-8000:0000000000002BE0 end
+
+        return $returnValue;
+    }
+
+    /**
+     * Find and destroy the service with the given serviceUrl
+     *
+     * @access public
+     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+     * @param  string serviceUrl
+     * @return boolean
+     */
+    public function deleteServiceDefinition($serviceUrl)
+    {
+        $returnValue = (bool) false;
+
+        // section 10-13-1-39--6cc6036b:12e4807fb4f:-8000:0000000000002BF9 begin
+		$urlProperties = array(PROPERTY_SUPPORTSERVICES_URL);//could add the wsdl url here when wsdl service implemented
+		$propServiceDefinition = new core_kernel_classes_Property(PROPERTY_CALLOFSERVICES_SERVICEDEFINITION);
+		
+		foreach($urlProperties as $urlProperty){
+			$serviceCollection = core_kernel_impl_ApiModelOO::getSubject($urlProperty, $serviceUrl);
+			foreach($serviceCollection->getIterator() as $service){
+			
+				//delete call of service that are using this service definition?
+				$this->deleteReference($propServiceDefinition, $service, true);
+				
+				$returnValue = $service->delete();
+			}
+		}
+		
+        // section 10-13-1-39--6cc6036b:12e4807fb4f:-8000:0000000000002BF9 end
+
+        return (bool) $returnValue;
+    }
+
+    /**
+     * Short description of method deleteProcessVariable
+     *
+     * @access public
+     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+     * @param  string code
+     * @return boolean
+     */
+    public function deleteProcessVariable($code)
+    {
+        $returnValue = (bool) false;
+
+        // section 10-13-1-39--6cc6036b:12e4807fb4f:-8000:0000000000002BFD begin
+		if(!is_null($code)){
+		
+			$processVariableToDelete = null;
+			$processVariableToDelete = $this->getProcessVariable($code);
+			if(!is_null($processVariableToDelete)){
+			
+				$referenceProperties = array(
+					PROPERTY_ACTUALPARAMETER_PROCESSVARIABLE,
+					PROPERTY_FORMALPARAMETER_DEFAULTPROCESSVARIABLE,
+					PROPERTY_PROCESS_VARIABLES
+				);
+				foreach($referenceProperties as $prop){
+					$this->deleteReference(new core_kernel_classes_Property($prop), $processVariableToDelete, true);
+				}
+				
+				$returnValue = $processVariableToDelete->delete();
+			}
+			
+		}
+        // section 10-13-1-39--6cc6036b:12e4807fb4f:-8000:0000000000002BFD end
 
         return (bool) $returnValue;
     }

@@ -111,8 +111,7 @@ class ProcessExecutionTestCase extends UnitTestCase{
 			$activityExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityExecutionService');
 			
 			//create a new process def
-			$processDefinitionClass = new core_kernel_classes_Class(CLASS_PROCESS);
-			$processDefinition = $processDefinitionClass->createInstance('ProcessForUnitTest', 'Unit test');
+			$processDefinition = $authoringService->createProcess('ProcessForUnitTest', 'Unit test');
 			$this->assertIsA($processDefinition, 'core_kernel_classes_Resource');
 			
 			//define activities and connectors
