@@ -9,7 +9,7 @@ error_reporting(E_ALL);
  *
  * This file is part of TAO.
  *
- * Automatically generated on 21.02.2011, 18:10:54 with ArgoUML PHP module 
+ * Automatically generated on 22.02.2011, 10:17:20 with ArgoUML PHP module 
  * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
  *
  * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
@@ -525,7 +525,7 @@ class wfEngine_models_classes_ProcessAuthoringService
 			$newTokenProperty->setDomain(new core_kernel_classes_Class(CLASS_TOKEN));
 			$newTokenProperty->setRange(new core_kernel_classes_Class(RDFS_LITERAL));//literal only??
 		}else{
-			throw new Exception("the newly created process variable {$label} ({$returnValue->uriResource}) cannot be set as a property of the class process instance");
+			throw new Exception("the newly created process variable {$label} ({$returnValue->uriResource}) cannot be set as a property of the class Token");
 		}
 		
         // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004DAC end
@@ -1474,9 +1474,10 @@ class wfEngine_models_classes_ProcessAuthoringService
      * @access public
      * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
      * @param  string code
+     * @param  boolean forceCreation
      * @return core_kernel_classes_Resource
      */
-    public function getProcessVariable($code)
+    public function getProcessVariable($code, $forceCreation = false)
     {
         $returnValue = null;
 
@@ -1485,6 +1486,11 @@ class wfEngine_models_classes_ProcessAuthoringService
 		$processVarCollection = core_kernel_impl_ApiModelOO::singleton()->getSubject(PROPERTY_PROCESSVARIABLES_CODE, $code);
 		if(!$processVarCollection->isEmpty()){
 			$returnValue = $processVarCollection->get(0);
+		}else if($forceCreation){
+			$returnValue = $this->createProcessVariable($code, $code);
+			if(is_null($returnValue)){
+				throw new Exception("the process variable ({$code}) cannot be created.");
+			}
 		}
 		
         // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004E63 end

@@ -161,10 +161,20 @@ class ProcessAuthoringServiceTestCase extends UnitTestCase {
 		$this->assertTrue(wfEngine_helpers_ProcessUtil::isActivity($then));
 		$this->assertTrue(wfEngine_helpers_ProcessUtil::isConnector($else));
 		
+		$activity3 = $this->authoringService->createSequenceActivity($else, null, 'Act3');
+		$this->assertEqual($activity3->getLabel(), 'Act3');
+		
 		$transitionRule = $connector1->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_TRANSITIONRULE));
 		$this->assertEqual($then->uriResource, $transitionRule->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_TRANSITIONRULES_THEN))->uriResource);
 		$this->assertEqual($else->uriResource, $transitionRule->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_TRANSITIONRULES_ELSE))->uriResource);
 		
+		$myProcessVar1 = null;
+		$myProcessVar1 = $this->authoringService->getProcessVariable('myProcessVarCode1', true);
+		$transitionRuleBis = $this->authoringService->createTransitionRule($connector1, '^myProcessVarCode1 == 1');
+		$this->assertEqual($transitionRule->uriResource, $transitionRuleBis->uriResource);
+		
+		
+		$this->assertTrue($this->authoringService->deleteProcessVariable('myProcessVarCode1'));
 		$activity1->delete();
 		$connector1->delete();
 		$transitionRule->delete();
@@ -255,11 +265,8 @@ class ProcessAuthoringServiceTestCase extends UnitTestCase {
 	public function testCreateServiceDefinition(){
 	
 		$myProcessVar1 = null;
-		$myProcessVar1 = $this->authoringService->getProcessVariable('myProcessVarCode1');
-		if(is_null($myProcessVar1)){
-			$myProcessVar1 = $this->authoringService->createProcessVariable('myProcessVar1', 'myProcessVarCode1');
-		}
-		
+		$myProcessVar1 = $this->authoringService->getProcessVariable('myProcessVarCode1', true);
+				
 		$inputParameters = array(
 			'param1' => $myProcessVar1,
 			'param2' => '^myProcessVarCode2',
