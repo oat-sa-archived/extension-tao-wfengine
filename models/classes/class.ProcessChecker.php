@@ -3,12 +3,18 @@
 error_reporting(E_ALL);
 
 /**
+ * TAO - wfEngine\models\classes\class.ProcessChecker.php
  *
+ * $Id$
  *
- * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
+ * This file is part of TAO.
+ *
+ * Automatically generated on 22.02.2011, 15:59:30 with ArgoUML PHP module 
+ * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
+ *
+ * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
  * @package wfEngine
  * @subpackage models_classes
- * @license GPLv2  http://www.opensource.org/licenses/gpl-2.0.php
  */
 
 if (0 > version_compare(PHP_VERSION, '5')) {
@@ -17,71 +23,117 @@ if (0 > version_compare(PHP_VERSION, '5')) {
 
 /**
  * The Service class is an abstraction of each service instance. 
- * Used to centralize the behavior related to every service instances.
+ * Used to centralize the behavior related to every servcie instances.
  *
- * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
+ * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
  */
-require_once('tao/models/classes/class.Service.php');
+require_once('tao/models/classes/class.GenerisService.php');
+
+/* user defined includes */
+// section 10-13-1-39--7378788e:12e4d9bbe63:-8000:0000000000004F8F-includes begin
+// section 10-13-1-39--7378788e:12e4d9bbe63:-8000:0000000000004F8F-includes end
+
+/* user defined constants */
+// section 10-13-1-39--7378788e:12e4d9bbe63:-8000:0000000000004F8F-constants begin
+// section 10-13-1-39--7378788e:12e4d9bbe63:-8000:0000000000004F8F-constants end
 
 /**
- * The wfEngine_models_classes_ProcessAuthoringService class provides methods to access and edit the process ontology
+ * Short description of class wfEngine_models_classes_ProcessChecker
  *
  * @access public
- * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
+ * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
  * @package wfEngine
  * @subpackage models_classes
- * @license GPLv2  http://www.opensource.org/licenses/gpl-2.0.php
  */
 class wfEngine_models_classes_ProcessChecker
     extends tao_models_classes_GenerisService
 {
     // --- ASSOCIATIONS ---
-	
-	protected $process = null;
-	protected $authoringService = null;
-	protected $initialActivities = array();
-	protected $isolatedActivities = array();
-	protected $isolatedConnectors = array();
-	
+
+
+    // --- ATTRIBUTES ---
+
+    /**
+     * Short description of attribute process
+     *
+     * @access protected
+     * @var Resource
+     */
+    protected $process = null;
+
+    /**
+     * Short description of attribute authoringService
+     *
+     * @access protected
+     * @var Resource
+     */
+    protected $authoringService = null;
+
+    /**
+     * Short description of attribute initialActivities
+     *
+     * @access protected
+     * @var array
+     */
+    protected $initialActivities = array();
+
+    /**
+     * Short description of attribute isolatedActivities
+     *
+     * @access protected
+     * @var array
+     */
+    protected $isolatedActivities = array();
+
+    /**
+     * Short description of attribute isolatedConnectors
+     *
+     * @access protected
+     * @var array
+     */
+    protected $isolatedConnectors = array();
+
     // --- OPERATIONS ---
 
-	/**
-     * The method __construct intiates the DeliveryService class and loads the required ontologies from the other extensions 
+    /**
+     * Short description of method __construct
      *
      * @access public
-     * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
+     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+     * @param  Resource process
      * @return mixed
-     */	
-    public function __construct($process)
+     */
+    public function __construct( core_kernel_classes_Resource $process)
     {
+        // section 10-13-1-39--7378788e:12e4d9bbe63:-8000:0000000000004F9F begin
 		$this->process = $process;
 		$this->authoringService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessAuthoringService');
 		
 		parent::__construct();
-		
+        // section 10-13-1-39--7378788e:12e4d9bbe63:-8000:0000000000004F9F end
     }
-	
-	public function getInitialActivities(){
-		return $this->initialActivities;
-	}
-	
-	public function getIsolatedActivities(){
-		return $this->isolatedActivities;
-	}
-	
-	public function getIsolatedConnectors(){
-		return $this->isolatedConnectors;
-	}
-	
-	public function checkProcess($checkList = array()){
-	
-		$returnValue = false;
+
+    /**
+     * Short description of method check
+     *
+     * @access public
+     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+     * @param  array checkList
+     * @return boolean
+     */
+    public function check($checkList = array())
+    {
+        $returnValue = (bool) false;
+
+        // section 10-13-1-39--7378788e:12e4d9bbe63:-8000:0000000000004FA2 begin
+		$classMethods = get_class_methods(__CLASS__);
+		$checkFunctions = array();
+		foreach($classMethods as $functionName){
+			if(preg_match('/^check(.)+/', $functionName)){
+				$checkFunctions[] = $functionName;
+			}
+		}
 		
-		$checkFunctions = array(
-			'hasInitialActivity',
-			'hasNoIsolatedActivity', 
-			'hasNoIsolatedConnector'
-		);
 		if(!empty($checkList)){
 			$checkFunctions = array_intersect($checkFunctions, $checkList);
 		}
@@ -92,14 +144,24 @@ class wfEngine_models_classes_ProcessChecker
 				if(!$returnValue) break;
 			}
 		}
-		
-		return $returnValue;
-	}
-	
-	public function hasInitialActivity($number = 0){
-			
-		$returnValue = false;
-		
+        // section 10-13-1-39--7378788e:12e4d9bbe63:-8000:0000000000004FA2 end
+
+        return (bool) $returnValue;
+    }
+
+    /**
+     * Short description of method checkInitialActivity
+     *
+     * @access public
+     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+     * @param  int number
+     * @return boolean
+     */
+    public function checkInitialActivity($number = 0)
+    {
+        $returnValue = (bool) false;
+
+        // section 10-13-1-39--7378788e:12e4d9bbe63:-8000:0000000000004FAF begin
 		$number = intval($number);
 		$this->initialActivities = array();
 		
@@ -124,13 +186,24 @@ class wfEngine_models_classes_ProcessChecker
 			//number == 0 means at least one
 			$returnValue = ($count>0)?true:false;
 		}
-		
-		return $returnValue;
-	}
-	
-	public function hasNoIsolatedActivity(){
-		
-		$returnValue = true;
+        // section 10-13-1-39--7378788e:12e4d9bbe63:-8000:0000000000004FAF end
+
+        return (bool) $returnValue;
+    }
+
+    /**
+     * Short description of method checkNoIsolatedActivity
+     *
+     * @access public
+     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+     * @return boolean
+     */
+    public function checkNoIsolatedActivity()
+    {
+        $returnValue = (bool) false;
+
+        // section 10-13-1-39--7378788e:12e4d9bbe63:-8000:0000000000004FB3 begin
+		$returnValue = true;//need to be initiated as true
 		
 		$this->isolatedActivities = array();
 		
@@ -146,13 +219,24 @@ class wfEngine_models_classes_ProcessChecker
 				}
 			}
 		}
-		
-		return $returnValue;
-	}
-	
-	public function hasNoIsolatedConnector(){
-		
-		$returnValue = true;
+        // section 10-13-1-39--7378788e:12e4d9bbe63:-8000:0000000000004FB3 end
+
+        return (bool) $returnValue;
+    }
+
+    /**
+     * Short description of method checkNoIsolatedConnector
+     *
+     * @access public
+     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+     * @return boolean
+     */
+    public function checkNoIsolatedConnector()
+    {
+        $returnValue = (bool) false;
+
+        // section 10-13-1-39--7378788e:12e4d9bbe63:-8000:0000000000004FB5 begin
+		$returnValue = true;//need to be initiated as true
 		
 		$this->isolatedConnectors = array();
 		
@@ -168,13 +252,79 @@ class wfEngine_models_classes_ProcessChecker
 				
 			}
 		}
-		
-		return $returnValue;
-	}
-	
-	private function isIsolatedConnector($connector){
-		
-		$returnValue = true;
+        // section 10-13-1-39--7378788e:12e4d9bbe63:-8000:0000000000004FB5 end
+
+        return (bool) $returnValue;
+    }
+
+    /**
+     * Short description of method getInitialActivities
+     *
+     * @access public
+     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+     * @return array
+     */
+    public function getInitialActivities()
+    {
+        $returnValue = array();
+
+        // section 10-13-1-39--7378788e:12e4d9bbe63:-8000:0000000000004FB7 begin
+		$returnValue = $this->initialActivities;
+        // section 10-13-1-39--7378788e:12e4d9bbe63:-8000:0000000000004FB7 end
+
+        return (array) $returnValue;
+    }
+
+    /**
+     * Short description of method getIsolatedActivities
+     *
+     * @access public
+     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+     * @return array
+     */
+    public function getIsolatedActivities()
+    {
+        $returnValue = array();
+
+        // section 10-13-1-39--7378788e:12e4d9bbe63:-8000:0000000000004FB9 begin
+		$returnValue = $this->isolatedActivities;
+        // section 10-13-1-39--7378788e:12e4d9bbe63:-8000:0000000000004FB9 end
+
+        return (array) $returnValue;
+    }
+
+    /**
+     * Short description of method getIsolatedConnectors
+     *
+     * @access public
+     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+     * @return array
+     */
+    public function getIsolatedConnectors()
+    {
+        $returnValue = array();
+
+        // section 10-13-1-39--7378788e:12e4d9bbe63:-8000:0000000000004FBB begin
+		$returnValue = $this->isolatedConnectors;
+        // section 10-13-1-39--7378788e:12e4d9bbe63:-8000:0000000000004FBB end
+
+        return (array) $returnValue;
+    }
+
+    /**
+     * Short description of method isIsolatedConnector
+     *
+     * @access public
+     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+     * @param  Resource connector
+     * @return boolean
+     */
+    public function isIsolatedConnector( core_kernel_classes_Resource $connector)
+    {
+        $returnValue = (bool) false;
+
+        // section 10-13-1-39--7378788e:12e4d9bbe63:-8000:0000000000004FBD begin
+		$returnValue = true;//need to be initiated as true
 		
 		$propNextActivities = new core_kernel_classes_Property(PROPERTY_CONNECTORS_NEXTACTIVITIES);
 		foreach($connector->getPropertyValuesCollection($propNextActivities)->getIterator() as $nextActivityOrConnector){
@@ -193,10 +343,11 @@ class wfEngine_models_classes_ProcessChecker
 		if($returnValue){
 			$this->isolatedConnectors[$connector->uriResource] = $connector; 
 		}
-		
-		return $returnValue;
-	}
-	
-} /* end of class wfEngine_models_classes_ProcessAuthoringService */
+        // section 10-13-1-39--7378788e:12e4d9bbe63:-8000:0000000000004FBD end
+
+        return (bool) $returnValue;
+    }
+
+} /* end of class wfEngine_models_classes_ProcessChecker */
 
 ?>

@@ -27,10 +27,10 @@ class ProcessCheckerTestCase extends UnitTestCase {
 		$activity1 = $this->authoringService->createActivity($this->proc);
 		
 		$processChecker = new wfEngine_models_classes_ProcessChecker($this->proc);
-		$this->assertTrue($processChecker->hasInitialActivity());
+		$this->assertTrue($processChecker->checkInitialActivity());
 		
 		$activity1->editPropertyValues(new core_kernel_classes_Property(PROPERTY_ACTIVITIES_ISINITIAL), GENERIS_FALSE);
-		$this->assertFalse($processChecker->hasInitialActivity());
+		$this->assertFalse($processChecker->checkInitialActivity());
 		
 	}
 	
@@ -39,13 +39,13 @@ class ProcessCheckerTestCase extends UnitTestCase {
 		$processChecker = new wfEngine_models_classes_ProcessChecker($this->proc);
 		
 		$activity1 = $this->authoringService->createActivity($this->proc);
-		$this->assertTrue($processChecker->hasNoIsolatedConnector());
+		$this->assertTrue($processChecker->checkNoIsolatedConnector());
 		
 		$connector1 = $this->authoringService->createConnector($activity1);
-		$this->assertFalse($processChecker->hasNoIsolatedConnector());
+		$this->assertFalse($processChecker->checkNoIsolatedConnector());
 		
 		$activity2 = $this->authoringService->createSequenceActivity($connector1);
-		$this->assertTrue($processChecker->hasNoIsolatedConnector());
+		$this->assertTrue($processChecker->checkNoIsolatedConnector());
 	}
 	
 	public function testIsolatedActivity(){
@@ -55,10 +55,10 @@ class ProcessCheckerTestCase extends UnitTestCase {
 		$activity1 = $this->authoringService->createActivity($this->proc);
 		$connector1 = $this->authoringService->createConnector($activity1);
 		$activity2 = $this->authoringService->createSequenceActivity($connector1);
-		$this->assertTrue($processChecker->hasNoIsolatedActivity());
+		$this->assertTrue($processChecker->checkNoIsolatedActivity());
 		
 		$this->authoringService->deleteConnector($connector1);
-		$this->assertFalse($processChecker->hasNoIsolatedActivity());
+		$this->assertFalse($processChecker->checkNoIsolatedActivity());
 	}
 	
 	public function testCheckProcess(){
@@ -90,7 +90,7 @@ class ProcessCheckerTestCase extends UnitTestCase {
 		$this->assertEqual($then2->uriResource, $connector2->uriResource);
 		$this->assertEqual($else2->uriResource, $lastActivity->uriResource);
 		
-		$this->assertTrue($processChecker->checkProcess());
+		$this->assertTrue($processChecker->check());
 	}
 		
 	public function tearDown() {
