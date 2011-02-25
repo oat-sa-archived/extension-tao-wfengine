@@ -126,7 +126,7 @@ class wfEngine_models_classes_ProcessChecker
         $returnValue = (bool) false;
 
         // section 10-13-1-39--7378788e:12e4d9bbe63:-8000:0000000000004FA2 begin
-		$classMethods = get_class_methods(__CLASS__);
+		$classMethods = get_class_methods(get_class($this));
 		$checkFunctions = array();
 		foreach($classMethods as $functionName){
 			if(preg_match('/^check(.)+/', $functionName)){
