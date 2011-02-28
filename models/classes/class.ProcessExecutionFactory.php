@@ -21,16 +21,16 @@ class wfEngine_models_classes_ProcessExecutionFactory {
 		}
 
 		$processExecutionClass = new core_kernel_classes_Class(CLASS_PROCESSINSTANCES, __METHOD__);
-		$subjectResource = core_kernel_classes_ResourceFactory::create($processExecutionClass,$this->name,$this->comment);
+		$processInstanceResource = core_kernel_classes_ResourceFactory::create($processExecutionClass,$this->name,$this->comment);
 	
 		
 		$statusProp = new core_kernel_classes_Property(PROPERTY_PROCESSINSTANCES_STATUS,__METHOD__);
-		$subjectResource->setPropertyValue($statusProp,PROPERTY_PROCESSINSTANCES_STATUS);
+		$processInstanceResource->setPropertyValue($statusProp,INSTANCE_PROCESSSTATUS_STARTED);
 
 		$processExecutionOfProp = new core_kernel_classes_Property(PROPERTY_PROCESSINSTANCES_EXECUTIONOF,__METHOD__);
-		$subjectResource->setPropertyValue($processExecutionOfProp,$this->execution);
+		$processInstanceResource->setPropertyValue($processExecutionOfProp,$this->execution);
 
-		$returnValue = new wfEngine_models_classes_ProcessExecution($subjectResource->uriResource,false);
+		$returnValue = new wfEngine_models_classes_ProcessExecution($processInstanceResource->uriResource,false);
 		
 		$processVars = $returnValue->getVariables();
 
@@ -43,13 +43,10 @@ class wfEngine_models_classes_ProcessExecutionFactory {
 		$tokenService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_TokenService');
 		
 		$tokens = array();
-		foreach ($initialActivities as $activity)
-		{
-			
-		
+		foreach ($initialActivities as $activity){
 			// Add in path
 			$pInstanceProcessProp = new core_kernel_classes_Property(PROPERTY_PROCESSINSTANCES_PROCESSPATH,__METHOD__);
-			$subjectResource->setPropertyValue($pInstanceProcessProp,$activity->uri);
+			$processInstanceResource->setPropertyValue($pInstanceProcessProp,$activity->uri);
 			
 			$token = $tokenService->create($activity->resource);
 			$tokens[] = $token;
