@@ -154,26 +154,27 @@ extends tao_models_classes_GenerisService
 
         if(!is_null($activityExecution)){
              
-            $activityUser = $activityExecution->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_CURRENT_USER));
-             
-            if(!is_null($activityUser)){
-
-                $apiModel  	= core_kernel_impl_ApiModelOO::singleton();
-                $tokenCollection = $apiModel->getSubject(PROPERTY_TOKEN_ACTIVITYEXECUTION, $activityExecution->uriResource);
-                foreach($tokenCollection->getIterator() as $token){
-                    $tokenUser = $token->getOnePropertyValue($this->tokenCurrentUserProp);
-                    if(!is_null($tokenUser)){
-                        if($checkUser){
-                            if($tokenUser->uriResource == $activityUser->uriResource){
-                                $returnValue[$token->uriResource] = $token;
-                            }
-                        }
-                        else{
-                            $returnValue[$token->uriResource] = $token;
-                        }
-                    }
-                }
-            }
+        	$apiSearch = new core_kernel_impl_ApiSearchI();
+        	$options = array('checkSubclasses'	=> false);
+			
+        	$filters = array(PROPERTY_TOKEN_ACTIVITYEXECUTION => $activityExecution->uriResource);
+        	if($checkUser){
+        		$activityUser = $activityExecution->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_CURRENT_USER));
+        		if(!is_null($activityUser)){
+        			$filters[$this->tokenCurrentUserProp->uriResource] = $activityUser->uriResource;
+        		}
+	        	foreach($apiSearch->searchInstances($filters, $this->tokenClass, $options) as $token){
+					 $returnValue[$token->uriResource] = $token;
+				}
+        	}
+        	else{
+        		foreach($apiSearch->searchInstances($filters, $this->tokenClass, $options) as $token){
+					 $tokenUser = $token->getOnePropertyValue($this->tokenCurrentUserProp);
+					 if(!is_null($tokenUser)){
+        				$returnValue[$token->uriResource] = $token;
+					 }
+				}
+        	}
         }
 
         // section 127-0-1-1-bf84135:12912b487a0:-8000:0000000000001F9A end
@@ -270,12 +271,14 @@ extends tao_models_classes_GenerisService
                     	}
                     	
                     	//check if the activity execution exec belongs to the current user:
-                        $user = $activityExecution->getUniquePropertyValue($activityExecUserProp);
-                        if($user->uriResource == $currentUser->uriResource){
-                            //the execution belongs to the current user:
-                            //return it, supposing that getExecution should be able to return the activity execution of the user
-                            $returnValue[] = $activityDefinition;
-                            $checkedActivityDefinitions[] = $activityDefinition->uriResource;
+                        $user = $activityExecution->getOnePropertyValue($activityExecUserProp);
+                        if(!is_null($user)){
+	                        if($user->uriResource == $currentUser->uriResource){
+	                            //the execution belongs to the current user:
+	                            //return it, supposing that getExecution should be able to return the activity execution of the user
+	                            $returnValue[] = $activityDefinition;
+	                            $checkedActivityDefinitions[] = $activityDefinition->uriResource;
+	                        }
                         }
                     }
                     else{
@@ -405,7 +408,7 @@ extends tao_models_classes_GenerisService
 
         // section 127-0-1-1-2013ff6:1292105c669:-8000:0000000000001FCD begin
 
-        $returnValue = $this->createInstance($this->tokenClass, 'Token '.count($this->tokenClass->getInstances()) + 1);
+        $returnValue = $this->createInstance($this->tokenClass, 'Token of '.$activity->getLabel().' '.time());
         $returnValue->setPropertyValue($this->tokenActivityProp, $activity->uriResource);
 
         //echo "Create token ".$returnValue->getLabel()." for activity".$activity->getLabel()."<br>";
@@ -511,20 +514,7 @@ extends tao_models_classes_GenerisService
         // section 127-0-1-1-bf84135:12912b487a0:-8000:0000000000001FA2 begin
 
         if(!is_null($token)){
-
-            $newToken = $this->createInstance($this->tokenClass);
-            $variables = $this->getVariables($token);
-            if(count($variables) > 0){
-                $keys = array();
-                foreach($variables as $variable){
-                    foreach($variable['value'] as $value){
-                        $newToken->setPropertyValue(new core_kernel_classes_Property($variable['propertyUri']), $value);
-                    }
-                    $keys[] = $variable['code'];
-                }
-                $newToken->setPropertyValue($this->tokenVariableProp, serialize($keys));
-            }
-            $returnValue = $newToken;
+			$returnValue = $token->duplicate(array(PROPERTY_TOKEN_ACTIVITY, PROPERTY_TOKEN_ACTIVITYEXECUTION, PROPERTY_TOKEN_CURRENTUSER));
         }
 
         // section 127-0-1-1-bf84135:12912b487a0:-8000:0000000000001FA2 end
@@ -597,7 +587,7 @@ extends tao_models_classes_GenerisService
         }
 
         //create the merged token
-        $newToken = $this->createInstance($this->tokenClass);
+        $newToken = $this->createInstance($this->tokenClass,  'Merge Token '.time());
         if(count($mergedVars) > 0){
              
             $keys = array();
@@ -642,19 +632,8 @@ extends tao_models_classes_GenerisService
         // section 127-0-1-1-bf84135:12912b487a0:-8000:0000000000001FA8 begin
 
         if(!is_null($token)){
-            $token->removePropertyValues($this->tokenActivityProp);
-            $token->removePropertyValues($this->tokenActivityExecutionProp);
-            $token->removePropertyValues($this->tokenCurrentUserProp);
-            $token->removePropertyValues($this->tokenVariableProp);
-             
-            //the token does not exist anymore, remove its reference to that token to allow the new token to be set:
-            $apiModel = core_kernel_impl_ApiModelOO::singleton();
-            $processExecutionCollection = $apiModel->getSubject(PROPERTY_PROCESSINSTANCES_CURRENTTOKEN, $token->uriResource);
-            if(!$processExecutionCollection->isEmpty()){
-                $apiModel->removeStatement($processExecutionCollection->get(0)->uriResource, PROPERTY_PROCESSINSTANCES_CURRENTTOKEN, $token->uriResource, '');//get(0) because there should be only one
-            }
-
-            $returnValue = $token->delete();
+			//delete token and references
+            $returnValue = $token->delete(true);
         }
 
         // section 127-0-1-1-bf84135:12912b487a0:-8000:0000000000001FA8 end
@@ -726,7 +705,7 @@ extends tao_models_classes_GenerisService
                         $currentTokens[] = $newToken;
                          
                         //delete the previous
-                        $this->delete($token);
+                       	$this->delete($token);
                     }
                      
                     break;

@@ -213,26 +213,20 @@ class wfEngine_models_classes_ActivityExecutionService
         
         if(!is_null($activity) && !is_null($currentUser) && !is_null($processExecution)){
         	
-        	//retrieve the process containing the activity
-        	$apiModel  	= core_kernel_impl_ApiModelOO::singleton();
-        	$activityExecutionCollection 	= $apiModel->getSubject(PROPERTY_ACTIVITY_EXECUTION_ACTIVITY, $activity->uriResource);
-        	foreach($activityExecutionCollection->getIterator() as $activityExecution){
-        		
-        		$activityExecutionUserCollection 	= $activityExecution->getPropertyValuesCollection($this->currentUserProperty);
-        		$activityExecutionProcessExecution 	= $activityExecution->getOnePropertyValue($this->processExecutionProperty);
-        		
-        		foreach ($activityExecutionUserCollection->getIterator() as $activityExecutionUser) {
-    				if(!is_null($activityExecutionUser) && !is_null($activityExecutionProcessExecution)){
-    				    if($currentUser->uriResource == $activityExecutionUser->uriResource && $processExecution->uriResource == $activityExecutionProcessExecution->uriResource){
-    	        			$returnValue = $activityExecution;
-    	        			break;
-    				    }
-    				}
-        		}
-        		if(!is_null($returnValue)){
-        			break;
-        		}
-        	}
+        	$apiSearch = new core_kernel_impl_ApiSearchI();
+		
+        	$filters = array(
+        		PROPERTY_ACTIVITY_EXECUTION_ACTIVITY 			=> $activity->uriResource,
+        		$this->currentUserProperty->uriResource			=> $currentUser->uriResource,
+        		$this->processExecutionProperty->uriResource	=> $processExecution->uriResource
+        	);
+        	$clazz = new core_kernel_classes_Class(CLASS_ACTIVITY_EXECUTION);
+        	$options = array('checkSubclasses'	=> false);
+			
+			foreach($apiSearch->searchInstances($filters, $clazz, $options) as $activityExecution){
+				$returnValue = $activityExecution;
+				break;
+			}
         }
         // section 127-0-1-1--11ec324e:128d9678eea:-8000:0000000000001F80 end
 
@@ -254,20 +248,20 @@ class wfEngine_models_classes_ActivityExecutionService
 
         // section 127-0-1-1-6c2b28ea:1291bc8511a:-8000:0000000000001FB3 begin
         
-          if(!is_null($activity) &&  !is_null($processExecution)){
+		if(!is_null($activity) &&  !is_null($processExecution)){
           	
-          	$apiModel  	= core_kernel_impl_ApiModelOO::singleton();
-        	$activityExecutionCollection = $apiModel->getSubject(PROPERTY_ACTIVITY_EXECUTION_ACTIVITY, $activity->uriResource);
-        	foreach($activityExecutionCollection->getIterator() as $activityExecution){
-				$activityExecutionProcessExecution = $activityExecution->getOnePropertyValue($this->processExecutionProperty);
-        		
-				if(!is_null($activityExecutionProcessExecution)){
-	        		if($processExecution->uriResource == $activityExecutionProcessExecution->uriResource){
-	        			$returnValue[$activityExecution->uriResource] = $activityExecution;
-	        		}
-        		}
-        	}
-          }
+			$apiSearch = new core_kernel_impl_ApiSearchI();
+        	$filters = array(
+        		PROPERTY_ACTIVITY_EXECUTION_ACTIVITY 			=> $activity->uriResource,
+        		$this->processExecutionProperty->uriResource	=> $processExecution->uriResource
+        	);
+        	$clazz = new core_kernel_classes_Class(CLASS_ACTIVITY_EXECUTION);
+        	$options = array('checkSubclasses'	=> false);
+			
+			foreach($apiSearch->searchInstances($filters, $clazz, $options) as $activityExecution){
+				$returnValue[$activityExecution->uriResource] = $activityExecution;
+			}
+        }
         
         // section 127-0-1-1-6c2b28ea:1291bc8511a:-8000:0000000000001FB3 end
 

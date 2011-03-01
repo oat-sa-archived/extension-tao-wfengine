@@ -112,10 +112,10 @@ class wfEngine_models_classes_ProcessAuthoringService
 		$returnValue = null;
 		if (!empty($question)){ // something to parse
 			// str_replace taken from the MsReader class
-			$question = str_replace("’", "'", $question); // utf8...
-			$question = str_replace("‘", "'", $question); // utf8...
-			$question = str_replace("“", "\"", $question);
-			$question = str_replace("”", "\"", $question);
+			$question = str_replace("ï¿½", "'", $question); // utf8...
+			$question = str_replace("ï¿½", "'", $question); // utf8...
+			$question = str_replace("ï¿½", "\"", $question);
+			$question = str_replace("ï¿½", "\"", $question);
 			if($isCondition){
 				$question = "if ".$question;
 			}	
@@ -507,12 +507,13 @@ class wfEngine_models_classes_ProcessAuthoringService
 		}
 		
 		$classCode = new core_kernel_classes_Class(CLASS_PROCESSVARIABLES);
-		$returnValue = $this->createInstance($classCode);
-		
-		if(!empty($label)){
-			$returnValue->setLabel($label);
+		if(empty($label)){
+			$label = "Process variable";
+            if(!empty($code)){
+				$label .= " ".$code;
+			}
 		}
-		
+		$returnValue = $this->createInstance($classCode, $label);
 		
 		if(!empty($code)){
 			$returnValue->setPropertyValue(new core_kernel_classes_Property(PROPERTY_PROCESSVARIABLES_CODE), $code);

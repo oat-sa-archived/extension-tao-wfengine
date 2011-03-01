@@ -134,8 +134,6 @@ extends wfEngine_models_classes_WfResource
 	 */
 	public function performTransition($activityExecutionUri){
 	
-		
-			
 		// section 10-13-1--31--4660acca:119ecd38e96:-8000:0000000000000866 begin
 		$this->logger->debug('Start Perform Transition ',__FILE__,__LINE__);
 
@@ -231,7 +229,7 @@ extends wfEngine_models_classes_WfResource
 			if($connectorType->uriResource != INSTANCE_TYPEOFCONNECTORS_PARALLEL){
 				
 				if(count($newActivities)==1){
-					//TODO: could do a double check here: if($newActivities[0] is one of the actiivty found in the current tokens):
+					//TODO: could do a double check here: if($newActivities[0] is one of the activty found in the current tokens):
 					
 					if($activityExecutionService->checkAcl($newActivities[0]->resource, $currentUser, $this->resource)){
 						
