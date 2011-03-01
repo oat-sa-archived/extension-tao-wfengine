@@ -560,14 +560,16 @@ class wfEngine_models_classes_ProcessAuthoringService
 			$connector->editPropertyValues(new core_kernel_classes_Property(PROPERTY_CONNECTORS_TRANSITIONRULE), $transitionRule->uriResource);
 		}
 		
-		$condition = $this->createCondition( $this->analyseExpression($question, true) );
-		if($condition instanceof core_kernel_classes_Resource){
-			//delete old condition:
-			$oldCondition = $transitionRule->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_RULE_IF));
-			if(!is_null($oldCondition)){
-				$this->deleteCondition($oldCondition);
+		if(!empty($question)){
+			$condition = $this->createCondition( $this->analyseExpression($question, true) );
+			if($condition instanceof core_kernel_classes_Resource){
+				//delete old condition:
+				$oldCondition = $transitionRule->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_RULE_IF));
+				if(!is_null($oldCondition)){
+					$this->deleteCondition($oldCondition);
+				}
+				$transitionRule->editPropertyValues(new core_kernel_classes_Property(PROPERTY_RULE_IF), $condition->uriResource);
 			}
-			$transitionRule->editPropertyValues(new core_kernel_classes_Property(PROPERTY_RULE_IF), $condition->uriResource);
 		}
 		
 		$returnValue = $transitionRule;
@@ -653,6 +655,7 @@ class wfEngine_models_classes_ProcessAuthoringService
 			$connector->setPropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_NEXTACTIVITIES), $followingActivity->uriResource);//use this function and not editPropertyValue!
 			$transitionRule = $connector->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_TRANSITIONRULE));
 			if(empty($transitionRule)){
+				echo __LINE__.'*';
 				$transitionRule = $this->createTransitionRule($connector);
 				if(is_null($transitionRule)){
 					throw new Exception("the transition rule of the connector split cannot be created");
