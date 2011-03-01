@@ -655,7 +655,6 @@ class wfEngine_models_classes_ProcessAuthoringService
 			$connector->setPropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_NEXTACTIVITIES), $followingActivity->uriResource);//use this function and not editPropertyValue!
 			$transitionRule = $connector->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_TRANSITIONRULE));
 			if(empty($transitionRule)){
-				echo __LINE__.'*';
 				$transitionRule = $this->createTransitionRule($connector);
 				if(is_null($transitionRule)){
 					throw new Exception("the transition rule of the connector split cannot be created");
