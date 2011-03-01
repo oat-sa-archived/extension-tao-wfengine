@@ -1203,7 +1203,7 @@ ActivityDiagramClass.getConnectorTypeDescription = function(connector){
 					className = 'connector_conditional';
 					portNames[0] = 'Then';
 					portNames[1] = 'Else';
-					typeUri = INSTANCE_TYPEOFCONNECTORS_SPLIT;
+					typeUri = INSTANCE_TYPEOFCONNECTORS_CONDITIONAL;
 					break;
 				}
 				case 'parallel':{
