@@ -24,17 +24,20 @@ function RecoveryContext (){
 	
 	/**
 	 * The registry store the contexts 
+	 * @fieldOf RecoveryContext
 	 * @type {Object}
 	 */
 	this.registry = null;
 	
 	/**
+	 * @fieldOf RecoveryContext
 	 * @type {bool}
 	 */
 	this.enabled = true;
 	
 	/**
 	 * The parameters defining how and where to retrieve a context
+	 * @fieldOf RecoveryContext
 	 * @type {Object}
 	 */
 	this.sourceService = {
@@ -48,6 +51,7 @@ function RecoveryContext (){
 	
 	/**
 	 * The parameters defining how and where to send a context
+	 * @fieldOf RecoveryContext
 	 * @type {Object}
 	 */
 	this.destinationService = {
@@ -62,7 +66,7 @@ function RecoveryContext (){
 	/**
 	 * Initialize the service interface for the source service: 
 	 * how and where we retrieve a context
-	 *  
+	 * @methodOf RecoveryContext
 	 * @param {Object} environment
 	 */
 	this.initSourceService = function(environment){
@@ -106,6 +110,7 @@ function RecoveryContext (){
 	
 	/**
 	 * Retrieve a context and populate the registry
+	 * @methodOf RecoveryContext
 	 */
 	this.retrieveContext = function(){
 			
@@ -131,7 +136,7 @@ function RecoveryContext (){
 	/**
 	 * Initialize the service interface forthe destination service: 
 	 * how and where we send the contexts
-	 *  
+	 * @methodOf RecoveryContext
 	 * @param {Object} environment
 	 */
 	this.initDestinationService = function(environment){
@@ -169,6 +174,7 @@ function RecoveryContext (){
 	
 	/**
 	 * Save the contexts by sending them to the destination service 
+	 * @methodOf RecoveryContext
 	 */
 	this.saveContext = function(){
 		
@@ -197,7 +203,7 @@ function RecoveryContext (){
 	/**
 	 * Get a context defined by the key. 
 	 * If not loaded, we retrieve it⋅
-	 * 
+	 * @methodOf RecoveryContext
 	 * @param {String} key
 	 * @returns {Object} the context
 	 */
@@ -215,7 +221,7 @@ function RecoveryContext (){
 	
 	/**
 	 * Create/edit a context
-	 * 
+	 * @methodOf RecoveryContext
 	 * @param {String} key
 	 * @param {Object} value
 	 */

@@ -3,6 +3,7 @@
  * @license GPLv2  http://www.opensource.org/licenses/gpl-2.0.php
  * @package wfEngine
  * @subpackage views
+ * @namespace wfApi
  * 
  * This file provide functions to drive the workflow engine from a service
  * 
@@ -15,6 +16,8 @@
  // WF Controls    //
 ////////////////////
 
+
+/** @namespace */
 var wfApi = { 
 	context : window.top.document || window.document
 };
@@ -26,8 +29,8 @@ var root_url = root_url || '';
  * Trigger the forward control:
  * go to the next activity
  * 
- * @function
- * @namespace wfApi
+ * @function forward
+ * 
  */
 function forward(){
 	var next = wfApi.context.getElementById('next');
@@ -40,8 +43,7 @@ function forward(){
  * Trigger the backward control:
  * load to the previous activity
  * 
- * @function
- * @namespace wfApi
+ * @function backward
  */
 function backward(){
 	var back = wfApi.context.getElementById('back');
@@ -54,8 +56,7 @@ function backward(){
  * Trigger the pause control:
  * suspend the current activity and go back to the process control panel
  * 
- * @function
- * @namespace wfApi
+ * @function pause
  */
 function pause(){
 	var pause = wfApi.context.getElementById('pause');
@@ -75,8 +76,7 @@ if(typeof(finish) != 'function'){
 	 * Define the item's state as finished.
 	 * This state can have some consequences.
 	 * 
-	 * @function
-	 * @namespace wfApi
+	 * @function finish
 	 */
 	function finish(){
 		$(window).trigger(wf_STATE.ITEM.PRE_FINISHED);
@@ -88,7 +88,6 @@ if(typeof(finish) != 'function'){
 	 * Add a callback that will be executed on finish state.
 	 * 
 	 * @function
-	 * @namespace wfApi
 	 * @param {function} callback
 	 */
 	function onFinish(callback){
@@ -99,7 +98,6 @@ if(typeof(finish) != 'function'){
 	 * Add a callback that will be executed on finish but before the other callbacks  
 	 * 
 	 * @function
-	 * @namespace wfApi
 	 * @param {function} callback
 	 */
 	function beforeFinish(callback){
@@ -110,7 +108,6 @@ if(typeof(finish) != 'function'){
 	 * Add a callback that will be executed on finish but after the other callbacks  
 	 * 
 	 * @function
-	 * @namespace wfApi
 	 * @param {function} callback
 	 */
 	function afterFinish(callback){
@@ -133,7 +130,6 @@ afterFinish(forward);
  * instantiate the RecoveryContext
  * 
  * @function
- * @namespace wfApi
  * @type RecoveryContext
  */
 var recoveryCtx = new RecoveryContext();
@@ -144,7 +140,7 @@ var recoveryCtx = new RecoveryContext();
  * The destination service defines where and how we send/save the contexts.
  * 
  * @function
- * @namespace wfApi
+ * 
  * 
  * @param {Object} source 
  * @param {String} [source.type = "sync"] the type of source <b>(sync|async|manual)</b>
@@ -170,7 +166,6 @@ function initRecoveryContext(source, destination){
  * Retrieve the context identified by the key 
  * 
  * @function
- * @namespace wfApi
  * 
  * @param {String} key
  * @return {Object}
@@ -183,7 +178,6 @@ function getRecoveryContext(key){
  * Set, send and save a context that could be recovered 
  * 
  * @function
- * @namespace wfApi
  * 
  * @param {String} key
  * @param {Object} data
@@ -197,7 +191,6 @@ function setRecoveryContext(key, data){
  * Remove a context (once you don't need you to recover it anymore) 
  * 
  * @function
- * @namespace wfApi
  * 
  * @param {String} key
  */
