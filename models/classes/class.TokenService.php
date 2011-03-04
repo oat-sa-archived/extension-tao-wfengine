@@ -155,7 +155,7 @@ extends tao_models_classes_GenerisService
         if(!is_null($activityExecution)){
              
         	$apiSearch = new core_kernel_impl_ApiSearchI();
-        	$options = array('checkSubclasses'	=> false);
+        	$options = array('checkSubclasses'	=> false, 'like' => false);
 			
         	$filters = array(PROPERTY_TOKEN_ACTIVITYEXECUTION => $activityExecution->uriResource);
         	if($checkUser){
