@@ -146,24 +146,8 @@ class wfEngine_actions_Process extends tao_actions_TaoModule {
 	}
 	
 	public function editProcessClass(){
-		set_time_limit(900);
-		ini_set('max_execution_time', 900);
-
-		$clazz = $this->getCurrentClass();
-		//display it but do not allow it to be saved
-		$myForm = $this->editClass($clazz, $this->service->getProcessClass(), array('topClazz' => CLASS_PROCESS));
-		if($myForm->isSubmited()){
-			if($myForm->isValid()){
-				if($clazz instanceof core_kernel_classes_Resource){
-					$this->setSessionAttribute("showNodeUri", tao_helpers_Uri::encode($clazz->uriResource));
-				}
-				$this->setData('message', __('Process Class saved'));
-				$this->setData('reload', true);
-			}
-		}
-		$this->setData('formTitle', __('Process class'));
-		$this->setData('myForm', $myForm->render());
-		$this->setView('form_process.tpl');
+		$this->removeSessionAttribute('uri');
+		parent::index();
 	}
 	
 	
