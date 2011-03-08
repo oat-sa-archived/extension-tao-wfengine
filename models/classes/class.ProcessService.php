@@ -3,10 +3,17 @@
 error_reporting(E_ALL);
 
 /**
- * Service methods to manage the Groups business models using the RDF API.
+ * TAO - wfEngine\models\classes\class.ProcessService.php
  *
- * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
- * @package taoGroups
+ * $Id$
+ *
+ * This file is part of TAO.
+ *
+ * Automatically generated on 08.03.2011, 17:57:10 with ArgoUML PHP module 
+ * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
+ *
+ * @author Somsack Sipasseuth, <s.sipasseuth@tudor.lu>
+ * @package wfEngine
  * @subpackage models_classes
  */
 
@@ -18,21 +25,28 @@ if (0 > version_compare(PHP_VERSION, '5')) {
  * The Service class is an abstraction of each service instance. 
  * Used to centralize the behavior related to every servcie instances.
  *
- * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+ * @author Somsack Sipasseuth, <s.sipasseuth@tudor.lu>
  */
-require_once('tao/models/classes/class.Service.php');
+require_once('tao/models/classes/class.GenerisService.php');
 
+/* user defined includes */
+// section 10-13-1-39-1f91722d:12e9641f6ad:-8000:0000000000002C56-includes begin
+// section 10-13-1-39-1f91722d:12e9641f6ad:-8000:0000000000002C56-includes end
+
+/* user defined constants */
+// section 10-13-1-39-1f91722d:12e9641f6ad:-8000:0000000000002C56-constants begin
+// section 10-13-1-39-1f91722d:12e9641f6ad:-8000:0000000000002C56-constants end
 
 /**
- * Service methods to manage the Groups business models using the RDF API.
+ * Short description of class wfEngine_models_classes_ProcessService
  *
  * @access public
- * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
- * @package taoGroups
+ * @author Somsack Sipasseuth, <s.sipasseuth@tudor.lu>
+ * @package wfEngine
  * @subpackage models_classes
  */
 class wfEngine_models_classes_ProcessService
-    extends wfEngine_models_classes_ProcessAuthoringService
+    extends tao_models_classes_GenerisService
 {
     // --- ASSOCIATIONS ---
 
@@ -40,13 +54,12 @@ class wfEngine_models_classes_ProcessService
     // --- ATTRIBUTES ---
 
     /**
-     * The RDFS top level group class
+     * Short description of attribute processClass
      *
      * @access protected
-     * @var Class
+     * @var Resource
      */
     protected $processClass = null;
-
 
     // --- OPERATIONS ---
 
@@ -54,52 +67,23 @@ class wfEngine_models_classes_ProcessService
      * Short description of method __construct
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Somsack Sipasseuth, <s.sipasseuth@tudor.lu>
      * @return mixed
      */
     public function __construct()
     {
-        // section 127-0-1-1-506607cb:1249f78eef0:-8000:0000000000001AEB begin
-		
+        // section 10-13-1-39-1f91722d:12e9641f6ad:-8000:0000000000002C5A begin
 		parent::__construct();
 		$this->processClass = new core_kernel_classes_Class(CLASS_PROCESS);
-		
-        // section 127-0-1-1-506607cb:1249f78eef0:-8000:0000000000001AEB end
+        // section 10-13-1-39-1f91722d:12e9641f6ad:-8000:0000000000002C5A end
     }
 
     /**
-     * get a group subclass by uri. 
-     * If the uri is not set, it returns the group class (the top level class.
-     * If the uri don't reference a group subclass, it returns null
+     * Short description of method getProcess
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
-     * @param  string uri
-     * @return core_kernel_classes_Class
-     */
-    public function getProcessClass($uri = '')
-    {
-        $returnValue = null;
-		
-		if(empty($uri) && !is_null($this->processClass)){
-			$returnValue = $this->processClass;
-		}
-		else{
-			$clazz = new core_kernel_classes_Class($uri);
-			if($this->isProcessClass($clazz)){
-				$returnValue = $clazz;
-			}
-		}
-
-        return $returnValue;
-    }
-
-    /**
-     * Short description of method getGroup
-     *
-     * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
-     * @param  string identifier usually the test label or the ressource URI
+     * @author Somsack Sipasseuth, <s.sipasseuth@tudor.lu>
+     * @param  string identifier
      * @param  string mode
      * @param  Class clazz
      * @return core_kernel_classes_Resource
@@ -108,7 +92,7 @@ class wfEngine_models_classes_ProcessService
     {
         $returnValue = null;
 
-		
+        // section 10-13-1-39-1f91722d:12e9641f6ad:-8000:0000000000002C5C begin
 		if(is_null($clazz) && $mode == 'uri'){
 			try{
 				$resource = new core_kernel_classes_Resource($identifier);
@@ -123,34 +107,43 @@ class wfEngine_models_classes_ProcessService
 		if($this->isProcessClass($clazz)){
 			$returnValue = $this->getOneInstanceBy( $clazz, $identifier, $mode);
 		}
-		
+        // section 10-13-1-39-1f91722d:12e9641f6ad:-8000:0000000000002C5C end
 
         return $returnValue;
     }
 
     /**
-     * Short description of method createGroup
+     * Short description of method getProcessClass
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
-     * @param  string label
-     * @param  ContainerCollection members
-     * @param  ContainerCollection tests
-     * @return core_kernel_classes_Resource
+     * @author Somsack Sipasseuth, <s.sipasseuth@tudor.lu>
+     * @param  string uri
+     * @return core_kernel_classes_Class
      */
-    public function createProcess($label,  core_kernel_classes_ContainerCollection $members,  core_kernel_classes_ContainerCollection $tests)
+    public function getProcessClass($uri = '')
     {
         $returnValue = null;
 
+        // section 10-13-1-39-1f91722d:12e9641f6ad:-8000:0000000000002C6B begin
+		if(empty($uri) && !is_null($this->processClass)){
+			$returnValue = $this->processClass;
+		}
+		else{
+			$clazz = new core_kernel_classes_Class($uri);
+			if($this->isProcessClass($clazz)){
+				$returnValue = $clazz;
+			}
+		}
+        // section 10-13-1-39-1f91722d:12e9641f6ad:-8000:0000000000002C6B end
 
         return $returnValue;
     }
 
     /**
-     * Short description of method isGroupClass
+     * Short description of method isProcessClass
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Somsack Sipasseuth, <s.sipasseuth@tudor.lu>
      * @param  Class clazz
      * @return boolean
      */
@@ -158,8 +151,7 @@ class wfEngine_models_classes_ProcessService
     {
         $returnValue = (bool) false;
 
-        // section 127-0-1-1--5cd530d7:1249feedb80:-8000:0000000000001AEA begin
-		
+        // section 10-13-1-39-1f91722d:12e9641f6ad:-8000:0000000000002C70 begin
 		if($clazz->uriResource == $this->processClass->uriResource){
 			$returnValue = true;	
 		}
@@ -171,13 +163,34 @@ class wfEngine_models_classes_ProcessService
 				}
 			}
 		}
-		
-        // section 127-0-1-1--5cd530d7:1249feedb80:-8000:0000000000001AEA end
+        // section 10-13-1-39-1f91722d:12e9641f6ad:-8000:0000000000002C70 end
 
         return (bool) $returnValue;
     }
- 
 
-} /* end of class taoGroups_models_classes_GroupsService */
+    /**
+     * Short description of method cloneProcess
+     *
+     * @access public
+     * @author Somsack Sipasseuth, <s.sipasseuth@tudor.lu>
+     * @param  Resource instance
+     * @param  Class clazz
+     * @return core_kernel_classes_Resource
+     */
+    public function cloneProcess( core_kernel_classes_Resource $instance,  core_kernel_classes_Class $clazz)
+    {
+        $returnValue = null;
+
+        // section 10-13-1-39-1f91722d:12e9641f6ad:-8000:0000000000002C73 begin
+		if(!is_null($instance) && !is_null($clazz)){
+			$processCloner = new wfEngine_models_classes_ProcessCloner();
+			$returnValue = $processCloner->cloneProcess($instance);
+		}				
+        // section 10-13-1-39-1f91722d:12e9641f6ad:-8000:0000000000002C73 end
+
+        return $returnValue;
+    }
+
+} /* end of class wfEngine_models_classes_ProcessService */
 
 ?>

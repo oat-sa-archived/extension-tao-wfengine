@@ -150,6 +150,26 @@ class wfEngine_actions_Process extends tao_actions_TaoModule {
 		parent::index();
 	}
 	
+	/**
+	 * Duplicate a process instance
+	 *
+	 * @access public
+     * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
+	 * @return void
+	 */
+	public function cloneProcess(){
+		if(!tao_helpers_Request::isAjax()){
+			throw new Exception("wrong request mode");
+		}
+		
+		$clone = $this->service->cloneProcess($this->getCurrentInstance(), $this->getCurrentClass());
+		if(!is_null($clone)){
+			echo json_encode(array(
+				'label'	=> $clone->getLabel(),
+				'uri' 	=> tao_helpers_Uri::encode($clone->uriResource)
+			));
+		}
+	}
 	
 }
 ?>

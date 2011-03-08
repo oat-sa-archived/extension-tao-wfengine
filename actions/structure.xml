@@ -11,6 +11,7 @@
 					addInstanceUrl="/wfEngine/Process/addInstance"
 					deleteUrl="/wfEngine/Process/delete"
 					editClassUrl="/wfEngine/Process/editProcessClass"
+					duplicateUrl="/wfEngine/Process/cloneInstance"
 				/>
 			</trees>
 			<actions>
