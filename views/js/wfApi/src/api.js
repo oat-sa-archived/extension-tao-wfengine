@@ -17,7 +17,9 @@
 ////////////////////
 
 
-/** @namespace */
+/**  
+ * @namespace wfApi
+ */
 var wfApi = { 
 	context : window.top.document || window.document
 };

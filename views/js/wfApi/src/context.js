@@ -14,7 +14,6 @@
  *  send and retrieve a data structure (a context).
  *  It can be used to recover a context in case of crash.
  *  
- * @namespace wfApi
  * @class RecoveryContext
  */
 function RecoveryContext (){

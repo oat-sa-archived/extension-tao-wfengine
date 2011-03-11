@@ -1,949 +1,983 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 	<head>
-		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
-		<meta name="generator" content="JsDoc Toolkit" />
-		
-		<title>JsDoc Reference - _global_</title>
+		<meta charset="utf-8"></meta>
+		<meta name="generator" content="JsDoc Toolkit"></meta>
+		<title>_global_ | JsDoc Reference</title>
 
-		<style type="text/css">
-			/* default.css */
-body
-{
-	font: 12px "Lucida Grande", Tahoma, Arial, Helvetica, sans-serif;
-	width: 800px;
-}
+		<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0;"></meta>
+		<meta name="mobileoptimized" content="0"></meta>
+	
+		<link rel="stylesheet" href="../css/all.css" media="all"></link>
+		<link rel="stylesheet" href="../css/handheld.css" media="only screen and (max-width: 660px)"></link>
+		<link rel="stylesheet" href="../css/handheld.css" media="handheld"></link>
+		<link rel="stylesheet" href="../css/screen.css" media="screen and (min-width: 661px)"></link>
+        <link rel="stylesheet" href="../css/jstree.css" media="screen and (min-width: 661px)"></link>
 
-.header
-{
-	clear: both;
-	background-color: #ccc;
-	padding: 8px;
-}
+		<script src="../javascript/all.js"></script>
+		<script src="../javascript/jquery-1.5.min.js"></script>
+		<script src="../javascript/jquery.jstree.js"></script>
+        <script type="application/javascript">
+        $(function(){
+            // Get the menu reference in the url
+            var ref = null;
+            var regexS = "ref=(.*)[#&]*";
+            var regex = new RegExp( regexS );
+            var results = regex.exec( window.location.href );
+            if (results!=null){
+                ref = results[1];
+            }
 
-h1
-{
-	font-size: 150%;
-	font-weight: bold;
-	padding: 0;
-	margin: 1em 0 0 .3em;
-}
-
-hr
-{
-	border: none 0;
-	border-top: 1px solid #7F8FB1;
-	height: 1px;
-}
-
-pre.code
-{
-	display: block;
-	padding: 8px;
-	border: 1px dashed #ccc;
-}
-
-#index
-{
-	margin-top: 24px;
-	float: left;
-	width: 160px;
-	position: absolute;
-	left: 8px;
-	background-color: #F3F3F3;
-	padding: 8px;
-}
-
-#content
-{
-	margin-left: 190px;
-	width: 600px;
-}
-
-.classList
-{
-	list-style-type: none;
-	padding: 0;
-	margin: 0 0 0 8px;
-	font-family: arial, sans-serif;
-	font-size: 1em;
-	overflow: auto;
-}
-
-.classList li
-{
-	padding: 0;
-	margin: 0 0 8px 0;
-}
-
-.summaryTable { width: 100%; }
-
-h1.classTitle
-{
-	font-size:170%;
-	line-height:130%;
-}
-
-h2 { font-size: 110%; }
-caption, div.sectionTitle
-{
-	background-color: #7F8FB1;
-	color: #fff;
-	font-size:130%;
-	text-align: left;
-	padding: 2px 6px 2px 6px;
-	border: 1px #7F8FB1 solid;
-}
-
-div.sectionTitle { margin-bottom: 8px; }
-.summaryTable thead { display: none; }
-
-.summaryTable td
-{
-	vertical-align: top;
-	padding: 4px;
-	border-bottom: 1px #7F8FB1 solid;
-	border-right: 1px #7F8FB1 solid;
-}
-
-/*col#summaryAttributes {}*/
-.summaryTable td.attributes
-{
-	border-left: 1px #7F8FB1 solid;
-	width: 140px;
-	text-align: right;
-}
-
-td.attributes, .fixedFont
-{
-	line-height: 15px;
-	color: #002EBE;
-	font-family: "Courier New",Courier,monospace;
-	font-size: 13px;
-}
-
-.summaryTable td.nameDescription
-{
-	text-align: left;
-	font-size: 13px;
-	line-height: 15px;
-}
-
-.summaryTable td.nameDescription, .description
-{
-	line-height: 15px;
-	padding: 4px;
-	padding-left: 4px;
-}
-
-.summaryTable { margin-bottom: 8px; }
-
-ul.inheritsList
-{
-	list-style: square;
-	margin-left: 20px;
-	padding-left: 0;
-}
-
-.detailList {
-	margin-left: 20px; 
-	line-height: 15px;
-}
-.detailList dt { margin-left: 20px; }
-
-.detailList .heading
-{
-	font-weight: bold;
-	padding-bottom: 6px;
-	margin-left: 0;
-}
-
-.light, td.attributes, .light a:link, .light a:visited
-{
-	color: #777;
-	font-style: italic;
-}
-
-.fineprint
-{
-	text-align: right;
-	font-size: 10px;
-}
-		</style>
+            
+            // Load the jstree menu
+            $('#ClassMenu').jstree({
+        		"plugins" : [ "themes", "html_data", "ui" ] 
+			    , "themes" : {
+				    "theme" : "default",
+				    "dots" : true,
+				    "icons" : false
+			    }
+            })
+            // When an element is selected
+            .bind("select_node.jstree", function (e, ui) {
+                // same ref, ref null
+                if (($(ui.args[0]).parent())[0].id == ref 
+                    || ($(ui.args[0]).parent())[0].id == ''){ 
+                    return; 
+                }
+                // Redirect
+                window.location.href = $(ui.args[0])
+                    .attr('href')+"?ref="
+                    +($(ui.args[0]).parent())[0].id;
+            })
+            // When the jstree is loaded
+            .bind("loaded.jstree", function (event, data) {
+                // If a reference has been found in the url, select it on the jstree
+                if (ref!=null){
+                    $.jstree._reference($('#ClassMenu'))
+                        .select_node ($('#'+ref)[0]);
+                }
+            });
+    	});
+        </script>
+		<!--[if lt IE 9]>
+			<script src="../javascript/html5.js"></script>
+		<![endif]-->
 	</head>
 
 	<body>
-<!-- ============================== header ================================= -->	
-		<!-- begin static/header.html -->
-		<div id="header">
-</div>
-		<!-- end static/header.html -->
 
-<!-- ============================== classes index ============================ -->
-		<div id="index">
-			<!-- begin publish.classesIndex -->
-			<div align="center"><a href="../index.html">Class Index</a>
-| <a href="../files.html">File Index</a></div>
-<hr />
-<h2>Classes</h2>
-<ul class="classList">
-	
-	<li><i><a href="../symbols/_global_.html">_global_</a></i></li>
-	
-	<li><a href="../symbols/RecoveryContext.html">RecoveryContext</a></li>
-	
-	<li><a href="../symbols/wfApi.html">wfApi</a></li>
-	
-</ul>
-<hr />
-			<!-- end publish.classesIndex -->
+
+
+<div class="index">
+	<div class="menu">
+        
+        <div style="width:100px; height:69px; background-image:url('../css/taoLogo.png');">&nbsp;</div>
+		<div class="indexLinks">
+			<a href="../index.html">Classes</a>
+			<a href="../files.html">Files</a>
 		</div>
+	
+		<h2 class="heading1">Classes</h2>
 		
-		<div id="content">
-<!-- ============================== class title ============================ -->
-			<h1 class="classTitle">
-				
-				Built-In Namespace _global_
-			</h1>
+		<input type="text" name="classFilter" class="classFilter" id="ClassFilter" placeholder="Filter"></input>
+		
+		<nav id="ClassMenu" style="width:100%; overflow-x:auto;">
+			<ul class="classList" id="ClassList">
+                <li>
+                    <a href="#">main</a>
+                    <ul>
+				        
+					        <li id="menuRef0"><a href="../symbols/_global_.html">_global_</a>
+                                <ul>
+                                    
+                                        
+                                    
+                                </ul>
+                            </li>
+				        
+					        <li id="menuRef1"><a href="../symbols/wfApi.html">wfApi</a>
+                                <ul>
+                                    
+                                        
+                                    
+                                </ul>
+                            </li>
+				        
+                        
+                            <li id=menuRef2><a href="../symbols/RecoveryContext.html">RecoveryContext</a></li>
+                        
+                    </ul>
+                </li>
+			</ul>
+		</nav>
+	</div>
+	<div class="fineprint" style="clear:both">
+		
+		Documentation generator: <a href="http://code.google.com/p/jsdoc-toolkit/" target="_blank">JsDoc Toolkit</a> 2.3.2<br />
+		Template: <a href="http://www.thebrightlines.com/2010/05/06/new-template-for-jsdoctoolkit-codeview/" target="_blank">Codeview</a> 1.2<br />
+		Generated on: 2011-2-11 17:14
+	</div>
+</div>
 
-<!-- ============================== class summary ========================== -->			
-			<p class="description">
-				
-				
+<div class="index indexStatic"></div>
+
+<div class="content">
+	<div class="innerContent">
+		<h1 class="classTitle">
 			
-				
-				
+			Built-In Namespace <span>_global_</span>
+		</h1>
+		
+		<div class="intro">
+			<p class="description summary">
 				
 			</p>
-
-<!-- ============================== constructor summary ==================== -->			
-			
-
-<!-- ============================== properties summary ===================== -->
-			
-				
-				
-				<table class="summaryTable" cellspacing="0" summary="A summary of the fields documented in the class _global_.">
-					<caption>Field Summary</caption>
-					<thead>
-						<tr>
-							<th scope="col">Field Attributes</th>
-							<th scope="col">Field Name and Description</th>
-						</tr>
-					</thead>
-					<tbody>
-					
-						<tr>
-							<td class="attributes">&lt;constant&gt; &nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont">
-								<b><a href="../symbols/_global_.html#wf_STATE">wf_STATE</a></b>
-								</div>
-								<div class="description">This object is used for a convenience translation of the differents states</div>
-							</td>
-						</tr>
-					
-					</tbody>
-				</table>
-				
-				
 				
 			
-
-<!-- ============================== methods summary ======================== -->
+		</div>
+		
+		
+		
+		
 			
+			
+				<div class="props">
+					<table class="summaryTable" cellspacing="0" summary="A summary of the fields documented in the class _global_.">
+						<caption class="sectionTitle">Field Summary</caption>
+						
+						<thead>
+							<tr>
+								<th scope="col">Field Attributes</th>
+								<th scope="col">Field Name and Description</th>
+							</tr>
+						</thead>
+						
+						<tbody>
+							
+								<tr>
+									<td class="attributes">&lt;constant&gt; &nbsp;</td>
+									<td class="nameDescription">
+										<div class="fixedFont">
+										<b><a href="../symbols/_global_.html#wf_STATE">wf_STATE</a></b>
+										</div>
+										<div class="description">This object is used for a convenience translation of the differents states</div>
+									</td>
+								</tr>
+							
+						</tbody>
+					</table>
+				</div>
+			
+			
+			
+		
+<!--
+#### METHODS SUMMARY
+-->
+		
+			
+			
+			<div class="props">
+				<h2 class="sectionTitle">Method Summary</h2>
 				
 				
-				<table class="summaryTable" cellspacing="0" summary="A summary of the methods documented in the class _global_.">
-					<caption>Method Summary</caption>
-					<thead>
-						<tr>
-							<th scope="col">Method Attributes</th>
-							<th scope="col">Method Name and Description</th>
-						</tr>
-					</thead>
-					<tbody>
-					
-						<tr>
-							<td class="attributes">&nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/_global_.html#afterFinish">afterFinish</a></b>(callback)
-								</div>
-								<div class="description">Add a callback that will be executed on finish but after the other callbacks</div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/_global_.html#backward">backward</a></b>()
-								</div>
-								<div class="description">Trigger the backward control:
+					<table class="summaryTable" id="MethodsList" cellspacing="0" summary="A summary of the methods documented in the class _global_.">
+						<thead>
+							<tr>
+								<th scope="col">Method Attributes</th>
+								<th scope="col">Method Name and Description</th>
+							</tr>
+						</thead>
+						
+						<tbody>
+							
+							
+								<tr
+									 class='item0'
+								>
+									<td class="attributes">&nbsp;</td>
+									<td class="nameDescription">
+										<div class="fixedFont"><b><a href="../symbols/_global_.html#afterFinish">afterFinish</a></b>(callback)
+										</div>
+										<div class="description">Add a callback that will be executed on finish but after the other callbacks</div>
+									</td>
+								</tr>
+							
+								<tr
+									 class='item1'
+								>
+									<td class="attributes">&nbsp;</td>
+									<td class="nameDescription">
+										<div class="fixedFont"><b><a href="../symbols/_global_.html#backward">backward</a></b>()
+										</div>
+										<div class="description">Trigger the backward control:
 load to the previous activity</div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/_global_.html#beforeFinish">beforeFinish</a></b>(callback)
-								</div>
-								<div class="description">Add a callback that will be executed on finish but before the other callbacks</div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/_global_.html#deleteRecoveryContext">deleteRecoveryContext</a></b>(key)
-								</div>
-								<div class="description">Remove a context (once you don't need you to recover it anymore)</div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/_global_.html#finish">finish</a></b>()
-								</div>
-								<div class="description">Define the item's state as finished.</div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/_global_.html#forward">forward</a></b>()
-								</div>
-								<div class="description">Trigger the forward control:
+									</td>
+								</tr>
+							
+								<tr
+									 class='item2'
+								>
+									<td class="attributes">&nbsp;</td>
+									<td class="nameDescription">
+										<div class="fixedFont"><b><a href="../symbols/_global_.html#beforeFinish">beforeFinish</a></b>(callback)
+										</div>
+										<div class="description">Add a callback that will be executed on finish but before the other callbacks</div>
+									</td>
+								</tr>
+							
+								<tr
+									 class='item3'
+								>
+									<td class="attributes">&nbsp;</td>
+									<td class="nameDescription">
+										<div class="fixedFont"><b><a href="../symbols/_global_.html#deleteRecoveryContext">deleteRecoveryContext</a></b>(key)
+										</div>
+										<div class="description">Remove a context (once you don't need you to recover it anymore)</div>
+									</td>
+								</tr>
+							
+								<tr
+									 class='item4'
+								>
+									<td class="attributes">&nbsp;</td>
+									<td class="nameDescription">
+										<div class="fixedFont"><b><a href="../symbols/_global_.html#finish">finish</a></b>()
+										</div>
+										<div class="description">Define the item's state as finished.</div>
+									</td>
+								</tr>
+							
+								<tr
+									 class='item5'
+								>
+									<td class="attributes">&nbsp;</td>
+									<td class="nameDescription">
+										<div class="fixedFont"><b><a href="../symbols/_global_.html#forward">forward</a></b>()
+										</div>
+										<div class="description">Trigger the forward control:
 go to the next activity</div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/_global_.html#getRecoveryContext">getRecoveryContext</a></b>(key)
-								</div>
-								<div class="description">Retrieve the context identified by the key</div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/_global_.html#initRecoveryContext">initRecoveryContext</a></b>(source, destination)
-								</div>
-								<div class="description">Initialize the interfaces communication for the context recovery.</div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/_global_.html#onFinish">onFinish</a></b>(callback)
-								</div>
-								<div class="description">Add a callback that will be executed on finish state.</div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/_global_.html#pause">pause</a></b>()
-								</div>
-								<div class="description">Trigger the pause control:
+									</td>
+								</tr>
+							
+								<tr
+									 class='item6'
+								>
+									<td class="attributes">&nbsp;</td>
+									<td class="nameDescription">
+										<div class="fixedFont"><b><a href="../symbols/_global_.html#getRecoveryContext">getRecoveryContext</a></b>(key)
+										</div>
+										<div class="description">Retrieve the context identified by the key</div>
+									</td>
+								</tr>
+							
+								<tr
+									 class='item7'
+								>
+									<td class="attributes">&nbsp;</td>
+									<td class="nameDescription">
+										<div class="fixedFont"><b><a href="../symbols/_global_.html#initRecoveryContext">initRecoveryContext</a></b>(source, destination)
+										</div>
+										<div class="description">Initialize the interfaces communication for the context recovery.</div>
+									</td>
+								</tr>
+							
+								<tr
+									 class='item8'
+								>
+									<td class="attributes">&nbsp;</td>
+									<td class="nameDescription">
+										<div class="fixedFont"><b><a href="../symbols/_global_.html#onFinish">onFinish</a></b>(callback)
+										</div>
+										<div class="description">Add a callback that will be executed on finish state.</div>
+									</td>
+								</tr>
+							
+								<tr
+									 class='item9'
+								>
+									<td class="attributes">&nbsp;</td>
+									<td class="nameDescription">
+										<div class="fixedFont"><b><a href="../symbols/_global_.html#pause">pause</a></b>()
+										</div>
+										<div class="description">Trigger the pause control:
 suspend the current activity and go back to the process control panel</div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/_global_.html#recoveryCtx">recoveryCtx</a></b>()
-								</div>
-								<div class="description">instantiate the RecoveryContext</div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/_global_.html#setRecoveryContext">setRecoveryContext</a></b>(key, data)
-								</div>
-								<div class="description">Set, send and save a context that could be recovered</div>
-							</td>
-						</tr>
-					
-					</tbody>
-				</table>
-				
-				
-				
-			
-<!-- ============================== events summary ======================== -->
-			
-
-<!-- ============================== constructor details ==================== -->		
-			
-
-<!-- ============================== field details ========================== -->		
-			
-				<div class="sectionTitle">
-					Field Detail
-				</div>
-				
-					<a name="wf_STATE"> </a>
-					<div class="fixedFont">&lt;constant&gt; 
-					
-					
-					<b>wf_STATE</b>
-					
-					</div>
-					<div class="description">
-						This object is used for a convenience translation of the differents states
-						
-							<br />
-							<i>Defined in: </i> <a href="../symbols/src/_home_crp_workspace_transferAll_wfEngine_views_js_wfApi_src_constants.js.html">constants.js</a>.
-						
-						
-					</div>
-					
-					
-
-						
-						
-						
-						
-
-					
-				
-			
-
-<!-- ============================== method details ========================= -->		
-			
-				<div class="sectionTitle">
-					Method Detail
-				</div>
-				
-					<a name="afterFinish"> </a>
-					<div class="fixedFont">
-					
-					
-					<b>afterFinish</b>(callback)
-					
-					</div>
-					<div class="description">
-						Add a callback that will be executed on finish but after the other callbacks
-						
-							<br />
-							<i>Defined in: </i> <a href="../symbols/src/_home_crp_workspace_transferAll_wfEngine_views_js_wfApi_src_api.js.html">api.js</a>.
-						
-						
-					</div>
-					
-					
-					
-						
-							<dl class="detailList">
-							<dt class="heading">Parameters:</dt>
+									</td>
+								</tr>
 							
-								<dt>
-									<span class="light fixedFont">{function}</span> <b>callback</b>
+								<tr
+									 class='item10'
+								>
+									<td class="attributes">&nbsp;</td>
+									<td class="nameDescription">
+										<div class="fixedFont"><b><a href="../symbols/_global_.html#recoveryCtx">recoveryCtx</a></b>()
+										</div>
+										<div class="description">instantiate the RecoveryContext</div>
+									</td>
+								</tr>
+							
+								<tr
+									 class='item11'
+								>
+									<td class="attributes">&nbsp;</td>
+									<td class="nameDescription">
+										<div class="fixedFont"><b><a href="../symbols/_global_.html#setRecoveryContext">setRecoveryContext</a></b>(key, data)
+										</div>
+										<div class="description">Set, send and save a context that could be recovered</div>
+									</td>
+								</tr>
+							
+						</tbody>
+					</table>
+				
+			
+				
+			</div>
+		
+		
+<!--
+#### EVENTS SUMMARY
+-->
+		
+<!--
+#### CONSTRUCTOR DETAILS
+-->
+		
+<!--
+#### FIELD DETAILS
+-->
+		
+			<div class="details props">
+				<div class="innerProps">
+					<h2 class="sectionTitle">
+						Field Detail
+					</h2>
+					
+					
+						<div class="fixedFont heading" id="wf_STATE">
+							<span class='lighter'>
+							&lt;constant&gt; 
+							</span>
+							
+							
+							
+							<b>wf_STATE</b>							
+						</div>
+						
+						<div class="description">
+							This object is used for a convenience translation of the differents states
+							
+								<br />
+								<i>Defined in: </i> <a href="../symbols/src/_home_crp_workspace_transferAll_wfEngine_views_js_wfApi_src_constants.js.html">constants.js</a>.
+							
+							
+							
+						</div>
+						
+						
+							
+						
+						
+					
+				</div>
+			</div>
+		
+<!--
+#### METHOD DETAILS
+-->		
+		
+			<div class="details props">
+				<div class="innerProps">
+					<h2 class="sectionTitle">
+						Method Detail
+					</h2>
+					
+					<ul class="methodDetail" id="MethodDetail">
+						
+						
+							<li 
+								 class='item0'
+							>
+								<div class="fixedFont heading" id="afterFinish">
+									<span class='lighter'>
 									
-								</dt>
-								<dd></dd>
-							
-							</dl>
+									</span>
+									
+									
+									
+									<b>afterFinish</b>(callback)
+								</div>
+								
+								<div class="description">
+									Add a callback that will be executed on finish but after the other callbacks
+									
+									
+										<br />
+										<i>Defined in: </i> <a href="../symbols/src/_home_crp_workspace_transferAll_wfEngine_views_js_wfApi_src_api.js.html">api.js</a>.
+									
+									
+									
+								</div>
+								
+								
+								
+								
+									<dl class="detailList params">
+										<dt class="heading">Parameters:</dt>
+										
+											<dt>
+												<span class="light fixedFont">{function}</span> <b>callback</b>
+												
+											</dt>
+											<dd></dd>
+										
+									</dl>
+								
+								
+								
+								<div class="hr"></div>
+							</li>
 						
-						
-						
-						
-						
-						
-						
-
-					<hr />
-				
-					<a name="backward"> </a>
-					<div class="fixedFont">
-					
-					
-					<b>backward</b>()
-					
-					</div>
-					<div class="description">
-						Trigger the backward control:
+							<li 
+								 class='item1'
+							>
+								<div class="fixedFont heading" id="backward">
+									<span class='lighter'>
+									
+									</span>
+									
+									
+									
+									<b>backward</b>()
+								</div>
+								
+								<div class="description">
+									Trigger the backward control:
 load to the previous activity
-						
-							<br />
-							<i>Defined in: </i> <a href="../symbols/src/_home_crp_workspace_transferAll_wfEngine_views_js_wfApi_src_api.js.html">api.js</a>.
-						
-						
-					</div>
-					
-					
-					
-						
-						
-						
-						
-						
-						
-						
-
-					<hr />
-				
-					<a name="beforeFinish"> </a>
-					<div class="fixedFont">
-					
-					
-					<b>beforeFinish</b>(callback)
-					
-					</div>
-					<div class="description">
-						Add a callback that will be executed on finish but before the other callbacks
-						
-							<br />
-							<i>Defined in: </i> <a href="../symbols/src/_home_crp_workspace_transferAll_wfEngine_views_js_wfApi_src_api.js.html">api.js</a>.
-						
-						
-					</div>
-					
-					
-					
-						
-							<dl class="detailList">
-							<dt class="heading">Parameters:</dt>
-							
-								<dt>
-									<span class="light fixedFont">{function}</span> <b>callback</b>
 									
-								</dt>
-								<dd></dd>
-							
-							</dl>
-						
-						
-						
-						
-						
-						
-						
-
-					<hr />
-				
-					<a name="deleteRecoveryContext"> </a>
-					<div class="fixedFont">
-					
-					
-					<b>deleteRecoveryContext</b>(key)
-					
-					</div>
-					<div class="description">
-						Remove a context (once you don't need you to recover it anymore)
-						
-							<br />
-							<i>Defined in: </i> <a href="../symbols/src/_home_crp_workspace_transferAll_wfEngine_views_js_wfApi_src_api.js.html">api.js</a>.
-						
-						
-					</div>
-					
-					
-					
-						
-							<dl class="detailList">
-							<dt class="heading">Parameters:</dt>
-							
-								<dt>
-									<span class="light fixedFont">{String}</span> <b>key</b>
 									
-								</dt>
-								<dd></dd>
-							
-							</dl>
+										<br />
+										<i>Defined in: </i> <a href="../symbols/src/_home_crp_workspace_transferAll_wfEngine_views_js_wfApi_src_api.js.html">api.js</a>.
+									
+									
+									
+								</div>
+								
+								
+								
+								
+								
+								
+								<div class="hr"></div>
+							</li>
 						
+							<li 
+								 class='item2'
+							>
+								<div class="fixedFont heading" id="beforeFinish">
+									<span class='lighter'>
+									
+									</span>
+									
+									
+									
+									<b>beforeFinish</b>(callback)
+								</div>
+								
+								<div class="description">
+									Add a callback that will be executed on finish but before the other callbacks
+									
+									
+										<br />
+										<i>Defined in: </i> <a href="../symbols/src/_home_crp_workspace_transferAll_wfEngine_views_js_wfApi_src_api.js.html">api.js</a>.
+									
+									
+									
+								</div>
+								
+								
+								
+								
+									<dl class="detailList params">
+										<dt class="heading">Parameters:</dt>
+										
+											<dt>
+												<span class="light fixedFont">{function}</span> <b>callback</b>
+												
+											</dt>
+											<dd></dd>
+										
+									</dl>
+								
+								
+								
+								<div class="hr"></div>
+							</li>
 						
+							<li 
+								 class='item3'
+							>
+								<div class="fixedFont heading" id="deleteRecoveryContext">
+									<span class='lighter'>
+									
+									</span>
+									
+									
+									
+									<b>deleteRecoveryContext</b>(key)
+								</div>
+								
+								<div class="description">
+									Remove a context (once you don't need you to recover it anymore)
+									
+									
+										<br />
+										<i>Defined in: </i> <a href="../symbols/src/_home_crp_workspace_transferAll_wfEngine_views_js_wfApi_src_api.js.html">api.js</a>.
+									
+									
+									
+								</div>
+								
+								
+								
+								
+									<dl class="detailList params">
+										<dt class="heading">Parameters:</dt>
+										
+											<dt>
+												<span class="light fixedFont">{String}</span> <b>key</b>
+												
+											</dt>
+											<dd></dd>
+										
+									</dl>
+								
+								
+								
+								<div class="hr"></div>
+							</li>
 						
-						
-						
-						
-						
-
-					<hr />
-				
-					<a name="finish"> </a>
-					<div class="fixedFont">
-					
-					
-					<b>finish</b>()
-					
-					</div>
-					<div class="description">
-						Define the item's state as finished.
+							<li 
+								 class='item4'
+							>
+								<div class="fixedFont heading" id="finish">
+									<span class='lighter'>
+									
+									</span>
+									
+									
+									
+									<b>finish</b>()
+								</div>
+								
+								<div class="description">
+									Define the item's state as finished.
 This state can have some consequences.
-						
-							<br />
-							<i>Defined in: </i> <a href="../symbols/src/_home_crp_workspace_transferAll_wfEngine_views_js_wfApi_src_api.js.html">api.js</a>.
-						
-						
-					</div>
-					
-					
-					
-						
-						
-						
-						
-						
-						
-						
-
-					<hr />
-				
-					<a name="forward"> </a>
-					<div class="fixedFont">
-					
-					
-					<b>forward</b>()
-					
-					</div>
-					<div class="description">
-						Trigger the forward control:
-go to the next activity
-						
-							<br />
-							<i>Defined in: </i> <a href="../symbols/src/_home_crp_workspace_transferAll_wfEngine_views_js_wfApi_src_api.js.html">api.js</a>.
-						
-						
-					</div>
-					
-					
-					
-						
-						
-						
-						
-						
-						
-						
-
-					<hr />
-				
-					<a name="getRecoveryContext"> </a>
-					<div class="fixedFont">
-					
-					<span class="light">{Object}</span>
-					<b>getRecoveryContext</b>(key)
-					
-					</div>
-					<div class="description">
-						Retrieve the context identified by the key
-						
-							<br />
-							<i>Defined in: </i> <a href="../symbols/src/_home_crp_workspace_transferAll_wfEngine_views_js_wfApi_src_api.js.html">api.js</a>.
-						
-						
-					</div>
-					
-					
-					
-						
-							<dl class="detailList">
-							<dt class="heading">Parameters:</dt>
-							
-								<dt>
-									<span class="light fixedFont">{String}</span> <b>key</b>
 									
-								</dt>
-								<dd></dd>
-							
-							</dl>
+									
+										<br />
+										<i>Defined in: </i> <a href="../symbols/src/_home_crp_workspace_transferAll_wfEngine_views_js_wfApi_src_api.js.html">api.js</a>.
+									
+									
+									
+								</div>
+								
+								
+								
+								
+								
+								
+								<div class="hr"></div>
+							</li>
 						
+							<li 
+								 class='item5'
+							>
+								<div class="fixedFont heading" id="forward">
+									<span class='lighter'>
+									
+									</span>
+									
+									
+									
+									<b>forward</b>()
+								</div>
+								
+								<div class="description">
+									Trigger the forward control:
+go to the next activity
+									
+									
+										<br />
+										<i>Defined in: </i> <a href="../symbols/src/_home_crp_workspace_transferAll_wfEngine_views_js_wfApi_src_api.js.html">api.js</a>.
+									
+									
+									
+								</div>
+								
+								
+								
+								
+								
+								
+								<div class="hr"></div>
+							</li>
 						
+							<li 
+								 class='item6'
+							>
+								<div class="fixedFont heading" id="getRecoveryContext">
+									<span class='lighter'>
+									
+									</span>
+									
+									<span class="light">{Object}</span>
+									
+									<b>getRecoveryContext</b>(key)
+								</div>
+								
+								<div class="description">
+									Retrieve the context identified by the key
+									
+									
+										<br />
+										<i>Defined in: </i> <a href="../symbols/src/_home_crp_workspace_transferAll_wfEngine_views_js_wfApi_src_api.js.html">api.js</a>.
+									
+									
+									
+								</div>
+								
+								
+								
+								
+									<dl class="detailList params">
+										<dt class="heading">Parameters:</dt>
+										
+											<dt>
+												<span class="light fixedFont">{String}</span> <b>key</b>
+												
+											</dt>
+											<dd></dd>
+										
+									</dl>
+								
+								
+								
+									<dl class="detailList nomargin">
+									
+										
+										
+										
+										
+										
+										
+										
+											<dt class="heading">Returns:</dt>
+											
+												<dd><span class="light fixedFont">{Object}</span> </dd>
+											
+										
+										
+										
+										
+										
+									
+									</dl>
+								
+								<div class="hr"></div>
+							</li>
 						
-						
-						
-							<dl class="detailList">
-							<dt class="heading">Returns:</dt>
-							
-								<dd><span class="light fixedFont">{Object}</span> </dd>
-							
-							</dl>
-						
-						
-						
-
-					<hr />
-				
-					<a name="initRecoveryContext"> </a>
-					<div class="fixedFont">
-					
-					
-					<b>initRecoveryContext</b>(source, destination)
-					
-					</div>
-					<div class="description">
-						Initialize the interfaces communication for the context recovery.
+							<li 
+								 class='item7'
+							>
+								<div class="fixedFont heading" id="initRecoveryContext">
+									<span class='lighter'>
+									
+									</span>
+									
+									
+									
+									<b>initRecoveryContext</b>(source, destination)
+								</div>
+								
+								<div class="description">
+									Initialize the interfaces communication for the context recovery.
 The source service defines where and how we retrieve contexts.
 The destination service defines where and how we send/save the contexts.
-						
-							<br />
-							<i>Defined in: </i> <a href="../symbols/src/_home_crp_workspace_transferAll_wfEngine_views_js_wfApi_src_api.js.html">api.js</a>.
-						
-						
-					</div>
-					
-					
-					
-						
-							<dl class="detailList">
-							<dt class="heading">Parameters:</dt>
-							
-								<dt>
-									<span class="light fixedFont">{Object}</span> <b>source</b>
 									
-								</dt>
-								<dd></dd>
-							
-								<dt>
-									<span class="light fixedFont">{String}</span> <b>source.type</b>
-									<i>Optional, Default:  "sync"</i>
-								</dt>
-								<dd>the type of source <b>(sync|async|manual)</b></dd>
-							
-								<dt>
-									<span class="light fixedFont">{Object}</span> <b>source.data</b>
-									<i>Optional</i>
-								</dt>
-								<dd>For the <i>manual</i> source type, set direclty the context data structure</dd>
-							
-								<dt>
-									<span class="light fixedFont">{String}</span> <b>source.url</b>
-									<i>Optional, Default:  "/wfEngine/RecoveryContext/retrieve"</i>
-								</dt>
-								<dd>For the <i>sync</i> and <i>async</i> source type, the URL of the remote service</dd>
-							
-								<dt>
-									<span class="light fixedFont">{Object}</span> <b>source.params</b>
-									<i>Optional</i>
-								</dt>
-								<dd>the parameters to send to the remote service</dd>
-							
-								<dt>
-									<span class="light fixedFont">{String}</span> <b>source.format</b>
-									<i>Optional, Default:  "json"</i>
-								</dt>
-								<dd>the data format. <i>Only json is supported in the current version</i></dd>
-							
-								<dt>
-									<span class="light fixedFont">{String}</span> <b>source.method</b>
-									<i>Optional, Default:  "post"</i>
-								</dt>
-								<dd>HTTP method of the sync service <b>(get|post)</b></dd>
-							
-								<dt>
-									<span class="light fixedFont">{Object}</span> <b>destination</b>
 									
-								</dt>
-								<dd></dd>
-							
-								<dt>
-									<span class="light fixedFont">{String}</span> <b>destination.type</b>
-									<i>Optional, Default:  "async"</i>
-								</dt>
-								<dd>the type of source <b>(sync|async)</b></dd>
-							
-								<dt>
-									<span class="light fixedFont">{String}</span> <b>destination.url</b>
-									<i>Optional, Default:  "/wfEngine/RecoveryContext/save"</i>
-								</dt>
-								<dd>the URL of the remote service</dd>
-							
-								<dt>
-									<span class="light fixedFont">{Object}</span> <b>destination.params</b>
-									<i>Optional</i>
-								</dt>
-								<dd>the common parameters to send to the service</dd>
-							
-								<dt>
-									<span class="light fixedFont">{String}</span> <b>destination.format</b>
-									<i>Optional, Default:  "json"</i>
-								</dt>
-								<dd>the data format. <i>Only json is supported in the current version</i></dd>
-							
-								<dt>
-									<span class="light fixedFont">{String}</span> <b>destination.method</b>
-									<i>Optional, Default:  "post"</i>
-								</dt>
-								<dd>HTTP method of the service <b>(get|post)</b></dd>
-							
-							</dl>
-						
-						
-						
-						
-						
-						
-						
-
-					<hr />
-				
-					<a name="onFinish"> </a>
-					<div class="fixedFont">
-					
-					
-					<b>onFinish</b>(callback)
-					
-					</div>
-					<div class="description">
-						Add a callback that will be executed on finish state.
-						
-							<br />
-							<i>Defined in: </i> <a href="../symbols/src/_home_crp_workspace_transferAll_wfEngine_views_js_wfApi_src_api.js.html">api.js</a>.
-						
-						
-					</div>
-					
-					
-					
-						
-							<dl class="detailList">
-							<dt class="heading">Parameters:</dt>
-							
-								<dt>
-									<span class="light fixedFont">{function}</span> <b>callback</b>
+										<br />
+										<i>Defined in: </i> <a href="../symbols/src/_home_crp_workspace_transferAll_wfEngine_views_js_wfApi_src_api.js.html">api.js</a>.
 									
-								</dt>
-								<dd></dd>
-							
-							</dl>
+									
+									
+								</div>
+								
+								
+								
+								
+									<dl class="detailList params">
+										<dt class="heading">Parameters:</dt>
+										
+											<dt>
+												<span class="light fixedFont">{Object}</span> <b>source</b>
+												
+											</dt>
+											<dd></dd>
+										
+											<dt>
+												<span class="light fixedFont">{String}</span> <b>source.type</b>
+												<i>Optional, Default:  "sync"</i>
+											</dt>
+											<dd>the type of source <b>(sync|async|manual)</b></dd>
+										
+											<dt>
+												<span class="light fixedFont">{Object}</span> <b>source.data</b>
+												<i>Optional</i>
+											</dt>
+											<dd>For the <i>manual</i> source type, set direclty the context data structure</dd>
+										
+											<dt>
+												<span class="light fixedFont">{String}</span> <b>source.url</b>
+												<i>Optional, Default:  "/wfEngine/RecoveryContext/retrieve"</i>
+											</dt>
+											<dd>For the <i>sync</i> and <i>async</i> source type, the URL of the remote service</dd>
+										
+											<dt>
+												<span class="light fixedFont">{Object}</span> <b>source.params</b>
+												<i>Optional</i>
+											</dt>
+											<dd>the parameters to send to the remote service</dd>
+										
+											<dt>
+												<span class="light fixedFont">{String}</span> <b>source.format</b>
+												<i>Optional, Default:  "json"</i>
+											</dt>
+											<dd>the data format. <i>Only json is supported in the current version</i></dd>
+										
+											<dt>
+												<span class="light fixedFont">{String}</span> <b>source.method</b>
+												<i>Optional, Default:  "post"</i>
+											</dt>
+											<dd>HTTP method of the sync service <b>(get|post)</b></dd>
+										
+											<dt>
+												<span class="light fixedFont">{Object}</span> <b>destination</b>
+												
+											</dt>
+											<dd></dd>
+										
+											<dt>
+												<span class="light fixedFont">{String}</span> <b>destination.type</b>
+												<i>Optional, Default:  "async"</i>
+											</dt>
+											<dd>the type of source <b>(sync|async)</b></dd>
+										
+											<dt>
+												<span class="light fixedFont">{String}</span> <b>destination.url</b>
+												<i>Optional, Default:  "/wfEngine/RecoveryContext/save"</i>
+											</dt>
+											<dd>the URL of the remote service</dd>
+										
+											<dt>
+												<span class="light fixedFont">{Object}</span> <b>destination.params</b>
+												<i>Optional</i>
+											</dt>
+											<dd>the common parameters to send to the service</dd>
+										
+											<dt>
+												<span class="light fixedFont">{String}</span> <b>destination.format</b>
+												<i>Optional, Default:  "json"</i>
+											</dt>
+											<dd>the data format. <i>Only json is supported in the current version</i></dd>
+										
+											<dt>
+												<span class="light fixedFont">{String}</span> <b>destination.method</b>
+												<i>Optional, Default:  "post"</i>
+											</dt>
+											<dd>HTTP method of the service <b>(get|post)</b></dd>
+										
+									</dl>
+								
+								
+								
+								<div class="hr"></div>
+							</li>
 						
+							<li 
+								 class='item8'
+							>
+								<div class="fixedFont heading" id="onFinish">
+									<span class='lighter'>
+									
+									</span>
+									
+									
+									
+									<b>onFinish</b>(callback)
+								</div>
+								
+								<div class="description">
+									Add a callback that will be executed on finish state.
+									
+									
+										<br />
+										<i>Defined in: </i> <a href="../symbols/src/_home_crp_workspace_transferAll_wfEngine_views_js_wfApi_src_api.js.html">api.js</a>.
+									
+									
+									
+								</div>
+								
+								
+								
+								
+									<dl class="detailList params">
+										<dt class="heading">Parameters:</dt>
+										
+											<dt>
+												<span class="light fixedFont">{function}</span> <b>callback</b>
+												
+											</dt>
+											<dd></dd>
+										
+									</dl>
+								
+								
+								
+								<div class="hr"></div>
+							</li>
 						
-						
-						
-						
-						
-						
-
-					<hr />
-				
-					<a name="pause"> </a>
-					<div class="fixedFont">
-					
-					
-					<b>pause</b>()
-					
-					</div>
-					<div class="description">
-						Trigger the pause control:
+							<li 
+								 class='item9'
+							>
+								<div class="fixedFont heading" id="pause">
+									<span class='lighter'>
+									
+									</span>
+									
+									
+									
+									<b>pause</b>()
+								</div>
+								
+								<div class="description">
+									Trigger the pause control:
 suspend the current activity and go back to the process control panel
-						
-							<br />
-							<i>Defined in: </i> <a href="../symbols/src/_home_crp_workspace_transferAll_wfEngine_views_js_wfApi_src_api.js.html">api.js</a>.
-						
-						
-					</div>
-					
-					
-					
-						
-						
-						
-						
-						
-						
-						
-
-					<hr />
-				
-					<a name="recoveryCtx"> </a>
-					<div class="fixedFont">
-					
-					<span class="light">{<a href="../symbols/RecoveryContext.html">RecoveryContext</a>}</span>
-					<b>recoveryCtx</b>()
-					
-					</div>
-					<div class="description">
-						instantiate the RecoveryContext
-						
-							<br />
-							<i>Defined in: </i> <a href="../symbols/src/_home_crp_workspace_transferAll_wfEngine_views_js_wfApi_src_api.js.html">api.js</a>.
-						
-						
-					</div>
-					
-					
-					
-						
-						
-						
-						
-						
-						
-						
-
-					<hr />
-				
-					<a name="setRecoveryContext"> </a>
-					<div class="fixedFont">
-					
-					
-					<b>setRecoveryContext</b>(key, data)
-					
-					</div>
-					<div class="description">
-						Set, send and save a context that could be recovered
-						
-							<br />
-							<i>Defined in: </i> <a href="../symbols/src/_home_crp_workspace_transferAll_wfEngine_views_js_wfApi_src_api.js.html">api.js</a>.
-						
-						
-					</div>
-					
-					
-					
-						
-							<dl class="detailList">
-							<dt class="heading">Parameters:</dt>
-							
-								<dt>
-									<span class="light fixedFont">{String}</span> <b>key</b>
 									
-								</dt>
-								<dd></dd>
-							
-								<dt>
-									<span class="light fixedFont">{Object}</span> <b>data</b>
 									
-								</dt>
-								<dd></dd>
-							
-							</dl>
+										<br />
+										<i>Defined in: </i> <a href="../symbols/src/_home_crp_workspace_transferAll_wfEngine_views_js_wfApi_src_api.js.html">api.js</a>.
+									
+									
+									
+								</div>
+								
+								
+								
+								
+								
+								
+								<div class="hr"></div>
+							</li>
 						
+							<li 
+								 class='item10'
+							>
+								<div class="fixedFont heading" id="recoveryCtx">
+									<span class='lighter'>
+									
+									</span>
+									
+									<span class="light">{<a href="../symbols/RecoveryContext.html">RecoveryContext</a>}</span>
+									
+									<b>recoveryCtx</b>()
+								</div>
+								
+								<div class="description">
+									instantiate the RecoveryContext
+									
+									
+										<br />
+										<i>Defined in: </i> <a href="../symbols/src/_home_crp_workspace_transferAll_wfEngine_views_js_wfApi_src_api.js.html">api.js</a>.
+									
+									
+									
+								</div>
+								
+								
+								
+								
+								
+								
+								<div class="hr"></div>
+							</li>
 						
+							<li 
+								 class='item11'
+							>
+								<div class="fixedFont heading" id="setRecoveryContext">
+									<span class='lighter'>
+									
+									</span>
+									
+									
+									
+									<b>setRecoveryContext</b>(key, data)
+								</div>
+								
+								<div class="description">
+									Set, send and save a context that could be recovered
+									
+									
+										<br />
+										<i>Defined in: </i> <a href="../symbols/src/_home_crp_workspace_transferAll_wfEngine_views_js_wfApi_src_api.js.html">api.js</a>.
+									
+									
+									
+								</div>
+								
+								
+								
+								
+									<dl class="detailList params">
+										<dt class="heading">Parameters:</dt>
+										
+											<dt>
+												<span class="light fixedFont">{String}</span> <b>key</b>
+												
+											</dt>
+											<dd></dd>
+										
+											<dt>
+												<span class="light fixedFont">{Object}</span> <b>data</b>
+												
+											</dt>
+											<dd></dd>
+										
+									</dl>
+								
+								
+								
+								
+							</li>
 						
-						
-						
-						
-						
-
-					
-				
-			
-			
-<!-- ============================== event details ========================= -->		
-			
-			
-			<hr />
-		</div>
-
+					</ul>
+				</div>
+			</div>
 		
-<!-- ============================== footer ================================= -->
-		<div class="fineprint" style="clear:both">
-			
-			Documentation generated by <a href="http://code.google.com/p/jsdoc-toolkit/" target="_blank">JsDoc Toolkit</a> 2.3.2 on Thu Mar 03 2011 10:48:59 GMT+0100 (CET)
-		</div>
+		
+<!--
+#### EVENT DETAILS
+-->		
+		
+	</div>
+</div>
+		<script type="text/javascript">
+			wbos.CssTools.MediaQueryFallBack.LoadCss('../css/screen.css', '../css/handheld.css', 660)
+			codeview.classFilter.Init()
+		</script>
 	</body>
 </html>
+
