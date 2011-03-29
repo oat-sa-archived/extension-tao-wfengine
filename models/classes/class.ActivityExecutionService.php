@@ -382,7 +382,7 @@ class wfEngine_models_classes_ActivityExecutionService
 
         // section 127-0-1-1--10e47d9e:128d54bbb0d:-8000:0000000000001F62 begin
         
-        if(!is_null($activity)){
+        if(!is_null($activity) && !is_null($currentUser)){
         	
         	$rdfsTypeProp		= new core_kernel_classes_Property(RDF_TYPE);
         	
@@ -445,37 +445,64 @@ class wfEngine_models_classes_ActivityExecutionService
         				
         			//check if the current user has the restricted role and is the restricted user based on the previous activity with the given role
         			case INSTANCE_ACL_ROLE_RESTRICTED_USER_INHERITED:
+        				$activityRole 	= $activity->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_ACTIVITIES_RESTRICTED_ROLE));
+        				$userRoles 		= $currentUser->getPropertyValues($rdfsTypeProp);
         				
-        					
-        					if(wfEngine_helpers_ProcessUtil::isActivityInitial($activity)){
-        						$activityRole 	= $activity->getUniquePropertyValue($this->restrictedRoleProperty);
-        						$userRoles 		= $currentUser->getPropertyValues($rdfsTypeProp);
-        						if(!is_null($activityRole) && is_array($userRoles)){
-	        						if(in_array($activityRole->uriResource, $userRoles)){
-										return true;
-									}
-        						}
-								return false;
-        					}
-        					else{
-        						
-        						$process = $processExecution->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_PROCESSINSTANCES_EXECUTIONOF));
-        						if(!is_null($process)){
-        							
-        							$actsProp 			= new core_kernel_classes_Property(PROPERTY_PROCESS_ACTIVITIES);
-	        						//get  activities
-									foreach ($process->getPropertyValues($actsProp) as $pactivityUri){
-										$pactivity = new core_kernel_classes_Resource($pactivityUri);
-										if(wfEngine_helpers_ProcessUtil::isActivityInitial($pactivity)){
-											if(!is_null($this->getExecution($pactivity, $currentUser, $processExecution))){
-												return true;
-											}
-											break;
+        				if(!is_null($activityRole) && is_array($userRoles)){
+        				
+	        				$actsProp 			= new core_kernel_classes_Property(PROPERTY_PROCESS_ACTIVITIES);
+			
+	        				//retrieve the process containing the activity
+							$apiModel  	= core_kernel_impl_ApiModelOO::singleton();
+	        				$subjects 	= $apiModel->getSubject(PROPERTY_PROCESS_ACTIVITIES, $activity->uriResource);
+					        foreach($subjects->getIterator() as $process){
+					        	
+					        	//get  activities
+								foreach ($process->getPropertyValues($actsProp) as $pactivityUri){
+									
+									$pactivity = new core_kernel_classes_Resource($pactivityUri);
+									
+					        		//with the same mode
+					        		$mode = $pactivity->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_ACTIVITIES_ACL_MODE));
+					        		if($mode->uriResource == INSTANCE_ACL_ROLE_RESTRICTED_USER){
+					        			$returnValue = $this->checkAcl($pactivity, $currentUser, $processExecution);
+					        			break;
+					        		}
+						        }
+					        }
+        				}
+						break;
+					
+					//special case for deliveries
+					case INSTANCE_ACL_ROLE_RESTRICTED_USER_DELIVERY:
+						if(wfEngine_helpers_ProcessUtil::isActivityInitial($activity)){
+							$activityRole 	= $activity->getUniquePropertyValue($this->restrictedRoleProperty);
+							$userRoles 		= $currentUser->getPropertyValues($rdfsTypeProp);
+							if(!is_null($activityRole) && is_array($userRoles)){
+								if(in_array($activityRole->uriResource, $userRoles)){
+									return true;
+								}
+							}
+							return false;
+						}
+						else{
+							$process = $processExecution->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_PROCESSINSTANCES_EXECUTIONOF));
+							if(!is_null($process)){
+								
+								$actsProp 			= new core_kernel_classes_Property(PROPERTY_PROCESS_ACTIVITIES);
+								//get  activities
+								foreach ($process->getPropertyValues($actsProp) as $pactivityUri){
+									$pactivity = new core_kernel_classes_Resource($pactivityUri);
+									if(wfEngine_helpers_ProcessUtil::isActivityInitial($pactivity)){
+										if(!is_null($this->getExecution($pactivity, $currentUser, $processExecution))){
+											return true;
 										}
-							        }
-        						}
-        					}
-        				break;
+										break;
+									}
+								}
+							}
+						}
+					break;
         		}
         	}
         }

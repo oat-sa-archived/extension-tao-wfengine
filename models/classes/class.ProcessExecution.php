@@ -342,7 +342,7 @@ extends wfEngine_models_classes_WfResource
 			case INSTANCE_TYPEOFCONNECTORS_PARALLEL : {
 
 				$nextActivitesCollection = $connector->getNextActivities();
-				// var_dump($nextActivitesCollection);
+				
 				foreach ($nextActivitesCollection->getIterator() as $activityResource){
 					$newActivities[] = 	new wfEngine_models_classes_Activity($activityResource->uriResource);
 				}
@@ -600,6 +600,10 @@ extends wfEngine_models_classes_WfResource
 				//(a join connector is considered only when it is only one found, i.e. the "else" case below)
 				if($connectorType->uriResource != INSTANCE_TYPEOFCONNECTORS_JOIN){
 					$connectorsUri[] = $connector->uriResource;
+				}else{
+					//warning: join connector:
+					$connectorsUri = array($connector->uriResource);
+					break;
 				}
 			}
 			

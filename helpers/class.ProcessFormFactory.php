@@ -567,9 +567,9 @@ class wfEngine_helpers_ProcessFormFactory extends tao_helpers_form_GenerisFormFa
 			foreach($range->getInstances(true) as $rangeInstance){
 				//for now, only authorize sequential and conditionnal connector type
 				//TODO: parallel+join connectors need to be tested more thoroughly
-				if($rangeInstance->uriResource == INSTANCE_TYPEOFCONNECTORS_SEQUENCE || $rangeInstance->uriResource == INSTANCE_TYPEOFCONNECTORS_CONDITIONAL){
+				// if($rangeInstance->uriResource == INSTANCE_TYPEOFCONNECTORS_SEQUENCE || $rangeInstance->uriResource == INSTANCE_TYPEOFCONNECTORS_CONDITIONAL){
 					$options[ tao_helpers_Uri::encode($rangeInstance->uriResource) ] = $rangeInstance->getLabel();
-				}
+				// }
 			}
 			$elementConnectorType->setOptions($options);
 		}

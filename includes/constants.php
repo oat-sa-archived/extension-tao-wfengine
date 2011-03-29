@@ -122,7 +122,8 @@ $todefine = array(
 	'INSTANCE_ACL_ROLE_RESTRICTED_USER'				=> NS_WFENGINE . '#PropertyAccessControlModesRoleRestrictedUser',
 	'INSTANCE_ACL_USER'								=> NS_WFENGINE . '#PropertyAccessControlModesUser',
 	'INSTANCE_ACL_ROLE_RESTRICTED_USER_INHERITED'	=> NS_WFENGINE . '#PropertyAccessControlModesRoleRestrictedUserInherited',
-
+	'INSTANCE_ACL_ROLE_RESTRICTED_USER_DELIVERY'    => NS_WFENGINE . '#PropertyAccessControlModesRoleRestrictedUserInheritedDelivery',
+	
 	'CLASS_TOKEN'									=> NS_WFENGINE  .'#ClassTokens',
 	'PROPERTY_TOKEN_VARIABLE'						=> NS_WFENGINE  .'#PropertyTokensVariable',
 	'PROPERTY_TOKEN_ACTIVITY'						=> NS_WFENGINE  .'#PropertyTokensActivity',
