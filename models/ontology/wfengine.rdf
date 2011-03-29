@@ -974,4 +974,12 @@
     <rdfs:domain rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassActivities"/>
     <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
   </rdf:Description>
+    <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#ProcessVarPrevEndosment">
+    <rdf:type xml:lang="EN" rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessVariables"/>
+    <rdfs:label><![CDATA[PREV_ENDORSMENT]]></rdfs:label>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:domain rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassTokens"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
+    <wf:PropertyCode><![CDATA[PREV_ENDORSMENT]]></wf:PropertyCode>
+  </rdf:Description>
 </rdf:RDF>
