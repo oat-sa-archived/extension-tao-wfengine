@@ -22,7 +22,7 @@ class wfEngine_actions_ProcessAuthoring extends tao_actions_TaoModule {
 		parent::__construct();
 		
 		//the service is initialized by default
-		$this->service = new wfEngine_models_classes_ProcessAuthoringService();
+		$this->service = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessAuthoringService');
 		$this->defaultData();
 		
 		//add the tree service

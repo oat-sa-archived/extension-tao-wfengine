@@ -720,6 +720,11 @@
     <rdfs:seeAlso xml:lang="EN"/>
     <rdfs:isDefinedBy xml:lang="EN"/>
   </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyAccessControlModesRoleRestrictedUserInheritedDelivery">
+    <rdf:type rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassAccessControlModes"/>
+    <rdfs:comment xml:lang="EN"><![CDATA[Useful for deliveries]]></rdfs:comment>
+    <rdfs:label xml:lang="EN"><![CDATA[Role Restricted User Inherited Delivery]]></rdfs:label>
+  </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivitiesAccessControlMode">
     <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
     <rdfs:domain rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassActivities"/>
