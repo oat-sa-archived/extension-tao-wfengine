@@ -393,6 +393,7 @@ class wfEngine_actions_ProcessAuthoring extends tao_actions_TaoModule {
 					case INSTANCE_ACL_ROLE:
 					case INSTANCE_ACL_ROLE_RESTRICTED_USER:
 					case INSTANCE_ACL_ROLE_RESTRICTED_USER_INHERITED:
+					case INSTANCE_ACL_ROLE_RESTRICTED_USER_DELIVERY:
 						if(!empty($properties[PROPERTY_ACTIVITIES_RESTRICTED_ROLE])){
 							$target = new core_kernel_classes_Resource($properties[PROPERTY_ACTIVITIES_RESTRICTED_ROLE]);
 						}
