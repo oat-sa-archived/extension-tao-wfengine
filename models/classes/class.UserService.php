@@ -131,6 +131,64 @@ class wfEngine_models_classes_UserService
            	}
         }
         
+		$keyProp = null;
+       	if(isset($options['order'])){
+        	switch($options['order']){
+        		case 'login'		: $prop = PROPERTY_USER_LOGIN; break;
+        		case 'password'		: $prop = PROPERTY_USER_PASSWORD; break;
+        		case 'uilg'			: $prop = PROPERTY_USER_UILG; break;
+        		case 'deflg'		: $prop = PROPERTY_USER_DEFLG; break;
+        		case 'mail'			: $prop = PROPERTY_USER_MAIL; break;
+        		case 'firstname'	: $prop = PROPERTY_USER_FIRTNAME; break;
+        		case 'lastname'		: $prop = PROPERTY_USER_LASTNAME; break;
+        		case 'name'			: $prop = PROPERTY_USER_FIRTNAME; break;
+        	}
+        	$keyProp = new core_kernel_classes_Property($prop);
+        }
+       
+        $index = 0;
+        foreach($users as $user){
+        	$key = $index;
+        	if(!is_null($keyProp)){
+        		try{
+        			$key = $user->getUniquePropertyValue($keyProp);
+        			if(!is_null($key)){
+        				if($key instanceof core_kernel_classes_Literal){
+        					$returnValue[(string)$key] = $user;
+        				}
+        				if($key instanceof core_kernel_classes_Resource){
+        					$returnValue[$key->getLabel()] = $user;
+        				}
+        				continue;
+        			}
+        		}
+        		catch(common_Exception $ce){}
+        	}
+        	$returnValue[$key] = $user;
+        	$index++;
+        }
+      	
+    	if(isset($options['orderDir'])){
+    		if(isset($options['order'])){
+    			if(strtolower($options['orderDir']) == 'asc'){
+   					ksort($returnValue, SORT_STRING);
+    			}
+    			else{
+    				krsort($returnValue, SORT_STRING);
+    			}
+   			}
+   			else{
+   				if(strtolower($options['orderDir']) == 'asc'){
+	   				sort($returnValue);
+	   			}   
+	   			else{
+	   				rsort($returnValue);
+	   			}  
+   			}
+        }
+        (isset($options['start'])) 	? $start = $options['start'] 	: $start = 0;
+        (isset($options['end']))	? $end	= $options['end']		: $end	= count($returnValue);
+		
         // section 127-0-1-1-718243b3:12912642ee4:-8000:0000000000001F88 end
 
         return (array) $returnValue;
