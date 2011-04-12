@@ -159,7 +159,7 @@ class wfEngine_models_classes_ProcessExecutionService
     {
         $returnValue = (bool) false;
 
-        // section 10-50-1-116--3b74011a:12f48ec6928:-8000:0000000000002D43 begin
+        // section 10-50-1-116-185ba8ba:12f4978614f:-8000:0000000000002D5F begin
 		if(wfEngine_helpers_ProcessUtil::checkType($processExecution, new core_kernel_classes_Class(CLASS_PROCESSINSTANCES))){
 		
 			if($finishedOnly){
@@ -192,7 +192,7 @@ class wfEngine_models_classes_ProcessExecutionService
 			
 			$returnValue = $processExecution->delete();
 		}
-        // section 10-50-1-116--3b74011a:12f48ec6928:-8000:0000000000002D43 end
+        // section 10-50-1-116-185ba8ba:12f4978614f:-8000:0000000000002D5F end
 
         return (bool) $returnValue;
     }
@@ -210,7 +210,7 @@ class wfEngine_models_classes_ProcessExecutionService
     {
         $returnValue = (bool) false;
 
-        // section 10-50-1-116--3b74011a:12f48ec6928:-8000:0000000000002D46 begin
+        // section 10-50-1-116-185ba8ba:12f4978614f:-8000:0000000000002D68 begin
 		if(is_array($processExecutions)){
 			if(empty($processExecutions)){
 				//get all instances!
@@ -226,7 +226,7 @@ class wfEngine_models_classes_ProcessExecutionService
 				}
 			}
 		}
-        // section 10-50-1-116--3b74011a:12f48ec6928:-8000:0000000000002D46 end
+        // section 10-50-1-116-185ba8ba:12f4978614f:-8000:0000000000002D68 end
 
         return (bool) $returnValue;
     }
@@ -243,14 +243,14 @@ class wfEngine_models_classes_ProcessExecutionService
     {
         $returnValue = (bool) false;
 
-        // section 10-50-1-116-6c777b61:12f48f7d0a6:-8000:0000000000002D55 begin
+        // section 10-50-1-116-185ba8ba:12f4978614f:-8000:0000000000002D78 begin
 		$status = $processExecution->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_PROCESSINSTANCES_STATUS));
 		if($status instanceof core_kernel_classes_Resource){
 			if($status->uriResource == INSTANCE_PROCESSSTATUS_FINISHED){
 				$returnValue = true;
 			}
 		}
-        // section 10-50-1-116-6c777b61:12f48f7d0a6:-8000:0000000000002D55 end
+        // section 10-50-1-116-185ba8ba:12f4978614f:-8000:0000000000002D78 end
 
         return (bool) $returnValue;
     }
