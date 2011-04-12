@@ -109,6 +109,7 @@ class ProcessExecutionTestCase extends UnitTestCase{
 			
 			$authoringService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessAuthoringService');
 			$activityExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityExecutionService');
+			$processExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessExecutionService');
 			
 			//create a new process def
 			$processDefinition = $authoringService->createProcess('ProcessForUnitTest', 'Unit test');
@@ -164,6 +165,11 @@ class ProcessExecutionTestCase extends UnitTestCase{
 			
 			$i = 1;
 			while($i <= 5 ){
+				if($i<5){
+					//try deleting a process that is not finished
+					$this->assertFalse($processExecutionService->deleteProcessExecution($proc->resource, true));
+				}
+				
 				$activity = $proc->currentActivity[0];
 				
 				$this->out("<strong>".$activity->label."</strong>", true);
@@ -196,7 +202,11 @@ class ProcessExecutionTestCase extends UnitTestCase{
 			$connector3->delete();
 			$connector4->delete();
 			
-			$proc->resource->delete();
+			//delete process execution:
+			$this->assertTrue(wfEngine_helpers_ProcessUtil::checkType($proc->resource, new core_kernel_classes_Class(CLASS_PROCESSINSTANCES)));
+			$this->assertTrue($processExecutionService->deleteProcessExecution($proc->resource));
+			$this->assertFalse(wfEngine_helpers_ProcessUtil::checkType($proc->resource, new core_kernel_classes_Class(CLASS_PROCESSINSTANCES)));
+			
 			$processDefinition->delete();
 			
 			if(!is_null($this->currentUser)){

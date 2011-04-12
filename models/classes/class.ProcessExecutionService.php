@@ -5,7 +5,7 @@ error_reporting(E_ALL);
 /**
  * Manage the particular executions of a process definition
  *
- * @author Lionel Lecaque, <lionel.lecaque@tudor.lu>
+ * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
  * @package wfEngine
  * @subpackage models_classes
  */
@@ -15,10 +15,10 @@ if (0 > version_compare(PHP_VERSION, '5')) {
 }
 
 /**
- * The Service class is an abstraction of each service instance.
+ * The Service class is an abstraction of each service instance. 
  * Used to centralize the behavior related to every servcie instances.
  *
- * @author Lionel Lecaque, <lionel.lecaque@tudor.lu>
+ * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
  */
 require_once('tao/models/classes/class.GenerisService.php');
 
@@ -34,12 +34,12 @@ require_once('tao/models/classes/class.GenerisService.php');
  * Manage the particular executions of a process definition
  *
  * @access public
- * @author Lionel Lecaque, <lionel.lecaque@tudor.lu>
+ * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
  * @package wfEngine
  * @subpackage models_classes
  */
 class wfEngine_models_classes_ProcessExecutionService
-extends tao_models_classes_GenerisService
+    extends tao_models_classes_GenerisService
 {
     // --- ASSOCIATIONS ---
 
@@ -52,7 +52,7 @@ extends tao_models_classes_GenerisService
      * Check the ACL of a user for the given process
      *
      * @access public
-     * @author Lionel Lecaque, <lionel.lecaque@tudor.lu>
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @param  Resource process
      * @param  Resource currentUser
      * @return boolean
@@ -115,7 +115,7 @@ extends tao_models_classes_GenerisService
      * Initialize the current process execution
      *
      * @access public
-     * @author Lionel Lecaque, <lionel.lecaque@tudor.lu>
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @param  Resource processExecution
      * @param  Resource activity
      * @param  Resource user
@@ -147,60 +147,110 @@ extends tao_models_classes_GenerisService
     }
 
     /**
-     * Short description of method initCurrentExecutionRole
+     * Short description of method deleteProcessExecution
      *
      * @access public
-     * @author Lionel Lecaque, <lionel.lecaque@tudor.lu>
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @param  Resource processExecution
-     * @param  Resource activity
-     * @param  Resource role
+     * @param  boolean finishedOnly
      * @return boolean
      */
-    public function initCurrentExecutionRole( core_kernel_classes_Resource $processExecution,  core_kernel_classes_Resource $activity,  core_kernel_classes_Resource $role)
+    public function deleteProcessExecution( core_kernel_classes_Resource $processExecution, $finishedOnly = false)
     {
         $returnValue = (bool) false;
 
-        // section 127-0-1-1-1e955b39:12c536a700c:-8000:0000000000002720 begin
+        // section 10-50-1-116--3b74011a:12f48ec6928:-8000:0000000000002D43 begin
+		if(wfEngine_helpers_ProcessUtil::checkType($processExecution, new core_kernel_classes_Class(CLASS_PROCESSINSTANCES))){
+		
+			if($finishedOnly){
+				if(!$this->isFinished($processExecution)){
+					return $returnValue;
+				}
+			}
+			
+			$apiModel  	= core_kernel_impl_ApiModelOO::singleton();
+			
+			//delete associated activity executions
+			$activityExecutionCollection = $apiModel->getSubject(PROPERTY_ACTIVITY_EXECUTION_PROCESSEXECUTION,  $processExecution->uriResource);
+			if($activityExecutionCollection->count() > 0){
+				foreach($activityExecutionCollection->getIterator() as $activityExecution){
+					if($activityExecution instanceof core_kernel_classes_Resource){
+						$activityExecution->delete();
+					}
+				}
+			}
+			
+			//delete current tokens:
+			$tokenCollection = $apiModel->getSubject(PROPERTY_PROCESSINSTANCES_CURRENTTOKEN,  $processExecution->uriResource);
+			if($tokenCollection->count() > 0){
+				foreach($tokenCollection->getIterator() as $token){
+					if($token instanceof core_kernel_classes_Resource){
+						$token->delete();
+					}
+				}
+			}
+			
+			$returnValue = $processExecution->delete();
+		}
+        // section 10-50-1-116--3b74011a:12f48ec6928:-8000:0000000000002D43 end
 
-        if(!is_null($processExecution) && !is_null($activity) && !is_null($role)){
-            $activityExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityExecutionService');
-            $tokenService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_TokenService');
-            $roleClass = new core_kernel_classes_Class($role->uriResource);
-            $currentUserProp = new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_CURRENT_USER);
-//             echo __FILE__.__LINE__;
-//             core_kernel_classes_DbWrapper::singleton()->dbConnector->debug = true;
-             $users = $roleClass->getInstances();
-//             core_kernel_classes_DbWrapper::singleton()->dbConnector->debug = false;
-//             var_dump($users, $roleClass->getLabel(),$roleClass);	
-            $count = 0;
-            $activityExecutionResourceTemp = null;
-            foreach ($users as $user){
-//                var_dump($user);
-                if($count<1) {
-                    
-                    $activityExecutionResourceTemp = $activityExecutionService->initExecution($activity, $user, $processExecution);
-//                    echo __FILE__.__LINE__;
-//                    var_dump($activityExecutionResourceTemp,$user->getLabel());	
-                    if(!is_null($activityExecutionResourceTemp)){
-                        //dispatch the tokens to the user and assign him
-                       
-                        $tokenService->dispatch($tokenService->getCurrents($processExecution), $activityExecutionResourceTemp);
+        return (bool) $returnValue;
+    }
 
-                    }
-                }
-                else{ 
-                    if(!is_null($activityExecutionResourceTemp)){
+    /**
+     * Short description of method deleteProcessExecutions
+     *
+     * @access public
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @param  array processExecutions
+     * @param  boolean finishedOnly
+     * @return boolean
+     */
+    public function deleteProcessExecutions($processExecutions = array(), $finishedOnly = false)
+    {
+        $returnValue = (bool) false;
 
-//                        var_dump($activityExecutionResourceTemp,$user->getLabel());	
-                        $activityExecutionResourceTemp->setPropertyValue($currentUserProp,$user->uriResource);
-                       
-                    }
-                }
+        // section 10-50-1-116--3b74011a:12f48ec6928:-8000:0000000000002D46 begin
+		if(is_array($processExecutions)){
+			if(empty($processExecutions)){
+				//get all instances!
+				$processInstanceClass =  new core_kernel_classes_Class(CLASS_PROCESSINSTANCES);
+				foreach($processInstanceClass->getInstances(true) as $processInstance){
+					$processExecutions[] = $processInstance;
+				}
+			}
+			
+			foreach($processExecutions as $processExecution){
+				if(!is_null($processExecution) && $processExecution instanceof core_kernel_classes_Resource){
+					$returnValue = $this->deleteProcessExecution($processExecution, $finishedOnly);
+				}
+			}
+		}
+        // section 10-50-1-116--3b74011a:12f48ec6928:-8000:0000000000002D46 end
 
-                $count ++;
-            }
-        }
-        // section 127-0-1-1-1e955b39:12c536a700c:-8000:0000000000002720 end
+        return (bool) $returnValue;
+    }
+
+    /**
+     * Short description of method isFinished
+     *
+     * @access public
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @param  Resource processExecution
+     * @return boolean
+     */
+    public function isFinished( core_kernel_classes_Resource $processExecution)
+    {
+        $returnValue = (bool) false;
+
+        // section 10-50-1-116-6c777b61:12f48f7d0a6:-8000:0000000000002D55 begin
+		$status = $processExecution->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_PROCESSINSTANCES_STATUS));
+		if($status instanceof core_kernel_classes_Resource){
+			if($status->uriResource == INSTANCE_PROCESSSTATUS_FINISHED){
+				$returnValue = true;
+			}
+		}
+        // section 10-50-1-116-6c777b61:12f48f7d0a6:-8000:0000000000002D55 end
 
         return (bool) $returnValue;
     }
