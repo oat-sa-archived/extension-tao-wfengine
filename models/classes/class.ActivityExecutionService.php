@@ -303,7 +303,7 @@ class wfEngine_models_classes_ActivityExecutionService
 	        	
 	        	//bind this execution of the activity with the current user and the current process execution
 	        	$this->bindExecution($execution, $currentUser, $processExecution);
-	       	
+	       		
 	        }
 	        else{
 	       		//execution is initialized back if it already exists
@@ -347,9 +347,10 @@ class wfEngine_models_classes_ActivityExecutionService
 	        	$activityExecution->setPropertyValue( $this->processExecutionProperty, $processExecution->uriResource);
 	        	
 	        	//in case of role and user restriction, set the current user as activty user
-	        	$activityUri	= $activityExecution->getUniquePropertyValue($this->activityProperty);
-	        	$activity		= new core_kernel_classes_Resource($activityUri);
-	        	$mode			= $activity->getOnePropertyValue($this->ACLModeProperty);
+	        	$activity		= $activityExecution->getUniquePropertyValue($this->activityProperty);
+	        	//$activity		= new core_kernel_classes_Resource($activityUri->uriResource);
+	        	$mode			= $activity->getOnePropertyValue($this->ACLModeProperty->uriResource);
+
 	        	if(!is_null($mode)){
 	        		if($mode->uriResource == INSTANCE_ACL_ROLE_RESTRICTED_USER){
 	        			if(is_null($activity->getOnePropertyValue($this->restrictedUserProperty))){
