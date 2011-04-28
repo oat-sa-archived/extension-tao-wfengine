@@ -108,8 +108,13 @@ class wfEngine_models_classes_InteractiveService
 		}else if($serviceDefinitionUrl instanceof core_kernel_classes_Resource){
 			$serviceUrl = $serviceDefinitionUrl->uriResource;
 		}
+		
 		$urlPart = explode('?',$serviceUrl);
 		$this->url = $urlPart[0];
+		if(preg_match('/^\//', $this->url)){
+			$this->url = ROOT_URL.$this->url;
+		}
+		
 		
 		$inParameterCollection = $this->resource->getPropertyValuesCollection(new core_kernel_classes_Property(PROPERTY_CALLOFSERVICES_ACTUALPARAMETERIN));
       	$token = $this->activityExecution->getToken();

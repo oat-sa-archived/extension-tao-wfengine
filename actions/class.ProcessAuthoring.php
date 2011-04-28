@@ -974,7 +974,7 @@ class wfEngine_actions_ProcessAuthoring extends tao_actions_TaoModule {
 			if($data["next_activityOrConnector"] == 'activity'){
 				if(isset($data["next_activityUri"])){
 					if($data["next_activityUri"]=="newActivity"){
-						$newActivity = $this->service->createSequenceActivity($connectorInstance, null, $data["next_activityLabel"]);
+						$newActivity = $this->service->createSequenceActivity($connectorInstance, null, isset($data["next_activityLabel"])?$data["next_activityLabel"]:'');
 						if($newActivity instanceof core_kernel_classes_Resource){
 							$newActivities[] = $this->newActivityTransferData($newActivity, 0);
 						}
