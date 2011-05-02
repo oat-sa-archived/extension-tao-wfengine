@@ -16,8 +16,10 @@ class wfEngine_actions_WfModule extends Module
 		}
 		
 		//initialize I18N
-		(Session::hasAttribute('ui_lang')) ? $uiLang = Session::getAttribute('ui_lang') : $uiLang = $GLOBALS['default_lang'];
-		tao_helpers_I18n::init($uiLang);
+		if(tao_helpers_I18n::getLangCode() == ''){
+			(Session::hasAttribute('ui_lang')) ? $uiLang = Session::getAttribute('ui_lang') : $uiLang = $GLOBALS['default_lang'];
+			tao_helpers_I18n::init($uiLang);
+		}
 	}
 	
 	/**
