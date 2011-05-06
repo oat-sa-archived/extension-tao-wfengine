@@ -112,9 +112,26 @@ class wfEngine_scripts_HardifyWfEngine
         
     	switch($this->mode){ 
     		case self::MODE_SMOOTH2HARD:
-    			$this->out("Compiling workflow triples to relational database", array('color' => 'light_blue'));
+    			$this->out("Compiling triples to relational database", array('color' => 'light_blue'));
     			
-    			$classes = array(
+
+    			
+    			$options = array(
+    				'recursive'				=> true,
+					'createForeigns'		=> true,
+					'referencesAllTypes'	=> true,
+					'rmSources'				=> false
+    			);
+    			
+    			$switcher = new core_kernel_persistence_Switcher();
+    			
+    			/*
+    			 * Compiled wfEngine data
+    			 */
+    			$this->out("\nCompiling wfEngine classes", array('color' => 'light_blue'));
+    			
+    			//class used by the wfEngine
+    			$wfClasses = array(
     				"http://www.tao.lu/middleware/wfEngine.rdf#ClassTokens",
 					"http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessInstances",
 					"http://www.tao.lu/middleware/wfEngine.rdf#ClassActivityExecutions",
@@ -126,27 +143,50 @@ class wfEngine_scripts_HardifyWfEngine
 					"http://www.tao.lu/middleware/wfEngine.rdf#ClassServicesResources",
 					"http://www.tao.lu/middleware/wfEngine.rdf#ClassConnectors",
 					"http://www.tao.lu/middleware/wfEngine.rdf#ClassTransitionRules",
-					"http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessVariables",
+		//			"http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessVariables",
 					"http://www.tao.lu/middleware/wfEngine.rdf#ClassSupportServices",
 					"http://www.tao.lu/middleware/wfEngine.rdf#ClassCallOfServices",
 					"http://www.tao.lu/middleware/wfEngine.rdf#ClassActualParameters",
 					"http://www.tao.lu/middleware/wfEngine.rdf#ClassFormalParameters",
-					"http://www.tao.lu/middleware/wfEngine.rdf#ClassRole"
+		//			"http://www.tao.lu/middleware/wfEngine.rdf#ClassRole"
     			);
     			
-    			$options = array(
-    				'recursive'				=> true,
+    			foreach($wfClasses as $classUri){
+    				$class = new core_kernel_classes_Class($classUri);
+    				$this->out(" - Hardifying ".$class->getLabel(), array('color' => 'light_green'));
+    				$switcher->hardify($class, $options);
+    			}
+    			
+    			/*
+    			 * Compiled test takers
+    			 */
+    			$this->out("\nCompiling test takers", array('color' => 'light_blue'));
+    			
+    			$testTakerClass = new core_kernel_classes_Class('http://www.tao.lu/Ontologies/TAOSubject.rdf#Subject');
+				$userClass		= new core_kernel_classes_Class('http://www.tao.lu/Ontologies/generis.rdf#User');	
+				$switcher->hardify($testTakerClass, array(
+					'topClass'				=> $userClass,
+					'recursive'				=> true,
 					'createForeigns'		=> true,
 					'referencesAllTypes'	=> true,
 					'rmSources'				=> false
-    			);
+				));
     			
-    			$switcher = new core_kernel_persistence_Switcher();
-    			foreach($classes as $classUri){
-    				$class = new core_kernel_classes_Class($classUri);
-    				$this->out("Hardifying ".$class->getLabel(), array('color' => 'light_green'));
-    				$switcher->hardify($class, $options);
-    			}
+    			
+    			/*
+    			 * Compiled results
+    			 */
+    			$this->out("\nCompiling results", array('color' => 'light_blue'));
+    			
+    			$resultClass = new core_kernel_classes_Class('http://www.tao.lu/Ontologies/TAOResult.rdf#Result');
+				$switcher->hardify($testTakerClass, array(
+					'recursive'				=> true,
+					'createForeigns'		=> true,
+					'referencesAllTypes'	=> true,
+					'rmSources'				=> false
+				));
+				
+				
     			unset($switcher);
     			
     			$this->out("Finished", array('color' => 'light_blue'));
