@@ -110,14 +110,48 @@ class wfEngine_scripts_HardifyWfEngine
     {
         // section 127-0-1-1-22592813:12fbf8723a0:-8000:0000000000002FD4 begin
         
-    	
-    	
     	switch($this->mode){ 
     		case self::MODE_SMOOTH2HARD:
     			$this->out("Compiling workflow triples to relational database", array('color' => 'light_blue'));
-    			break;
     			
-    		
+    			$classes = array(
+    				"http://www.tao.lu/middleware/wfEngine.rdf#ClassTokens",
+					"http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessInstances",
+					"http://www.tao.lu/middleware/wfEngine.rdf#ClassActivityExecutions",
+					"http://www.tao.lu/middleware/wfEngine.rdf#ClassServiceDefinitions",
+					"http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessDefinitions",
+					"http://www.tao.lu/middleware/wfEngine.rdf#ClassActivities",
+					"http://www.tao.lu/middleware/wfEngine.rdf#ClassCallOfservicesResources",
+					"http://www.tao.lu/middleware/wfEngine.rdf#ClassServiceDefinitionResources",
+					"http://www.tao.lu/middleware/wfEngine.rdf#ClassServicesResources",
+					"http://www.tao.lu/middleware/wfEngine.rdf#ClassConnectors",
+					"http://www.tao.lu/middleware/wfEngine.rdf#ClassTransitionRules",
+					"http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessVariables",
+					"http://www.tao.lu/middleware/wfEngine.rdf#ClassSupportServices",
+					"http://www.tao.lu/middleware/wfEngine.rdf#ClassCallOfServices",
+					"http://www.tao.lu/middleware/wfEngine.rdf#ClassActualParameters",
+					"http://www.tao.lu/middleware/wfEngine.rdf#ClassFormalParameters",
+					"http://www.tao.lu/middleware/wfEngine.rdf#ClassRole"
+    			);
+    			
+    			$options = array(
+    				'recursive'				=> true,
+					'createForeigns'		=> true,
+					'referencesAllTypes'	=> true,
+					'rmSources'				=> false
+    			);
+    			
+    			$switcher = new core_kernel_persistence_Switcher();
+    			foreach($classes as $classUri){
+    				$class = new core_kernel_classes_Class($classUri);
+    				$this->out("Hardifying ".$class->getLabel(), array('color' => 'light_green'));
+    				$switcher->hardify($class, $options);
+    			}
+    			unset($switcher);
+    			
+    			$this->out("Finished", array('color' => 'light_blue'));
+    			
+    			break;
     		case self::MODE_HARD2SMOOTH:
     			$this->err('this mode is not yet implemented', true);
     			break;
