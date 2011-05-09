@@ -345,7 +345,7 @@
     <rdfs:label xml:lang="EN"><![CDATA[_processVariable]]></rdfs:label>
     <rdfs:comment xml:lang="EN"/>
     <rdf:value xml:lang="EN"/>
-    <rdfs:range rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#ClassProcessVariables"/>
+    <rdfs:range rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessVariables"/>
     <widget:widget rdf:resource="http://www.tao.lu/datatypes/WidgetDefinitions.rdf#ComboBox"/>
     <rdfs:domain rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassActualParameters"/>
     <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>

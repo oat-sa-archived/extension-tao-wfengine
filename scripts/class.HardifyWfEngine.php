@@ -172,7 +172,7 @@ class wfEngine_scripts_HardifyWfEngine
     			
     			/*
     			 * Compiled results
-    			 */
+    			
     			$this->out("\nCompiling results", array('color' => 'light_blue'));
     			
     			$resultClass = new core_kernel_classes_Class('http://www.tao.lu/Ontologies/TAOResult.rdf#Result');
@@ -180,7 +180,7 @@ class wfEngine_scripts_HardifyWfEngine
     			$this->out(" - Hardifying ".$resultClass->getLabel(), array('color' => 'light_green'));
     			
     			$switcher->hardify($resultClass, array_merge($options, array('createForeigns' => false)));
-				
+				 */
 				
     			unset($switcher);
     			
