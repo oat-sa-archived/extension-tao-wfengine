@@ -453,9 +453,9 @@ class wfEngine_models_classes_ActivityExecutionService
 	        				$actsProp 			= new core_kernel_classes_Property(PROPERTY_PROCESS_ACTIVITIES);
 			
 	        				//retrieve the process containing the activity
-							$apiModel  	= core_kernel_impl_ApiModelOO::singleton();
-	        				$subjects 	= $apiModel->getSubject(PROPERTY_PROCESS_ACTIVITIES, $activity->uriResource);
-					        foreach($subjects->getIterator() as $process){
+							$activityClass = new core_kernel_classes_Class(CLASS_PROCESS);
+							$processes = $activityClass->searchInstances(array($actsProp->uriResource => $activity->uriResource), array('like' => false));
+					        foreach($processes as $process){
 					        	
 					        	//get  activities
 								foreach ($process->getPropertyValues($actsProp) as $pactivityUri){
@@ -586,14 +586,12 @@ class wfEngine_models_classes_ActivityExecutionService
         // section 127-0-1-1--14d619a:12ce565682e:-8000:0000000000002981 begin
         
     	if(!is_null($processExecution)){
-          	
-          	$apiModel  	= core_kernel_impl_ApiModelOO::singleton();
-        	$activityExecutionCollection = $apiModel->getSubject(PROPERTY_ACTIVITY_EXECUTION_PROCESSEXECUTION, $processExecution->uriResource);
-        	foreach($activityExecutionCollection->getIterator() as $activityExecution){
+          	$activityExecClass = new core_kernel_classes_Class(CLASS_ACTIVITY_EXECUTION);
+			$activityExecutions = $activityExecClass->searchInstances(array(PROPERTY_ACTIVITY_EXECUTION_PROCESSEXECUTION => $processExecution->uriResource), array('like' => false));
+        	foreach($activityExecutions as $activityExecution){
 				$activityExecution->delete();
         	}
         }
-        
         
         // section 127-0-1-1--14d619a:12ce565682e:-8000:0000000000002981 end
 

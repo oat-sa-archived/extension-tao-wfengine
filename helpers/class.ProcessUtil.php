@@ -90,11 +90,11 @@ class wfEngine_helpers_ProcessUtil
         $returnValue = null;
 
         // section 10-13-1-39--284957ac:12e4ca5284a:-8000:0000000000002BF2 begin
-		
-		$serviceDefinitionCollection = core_kernel_impl_ApiModelOO::singleton()->getSubject(PROPERTY_SUPPORTSERVICES_URL, $url);
-		if(!$serviceDefinitionCollection->isEmpty()){
-			if($serviceDefinitionCollection->get(0) instanceof core_kernel_classes_Resource){
-				$returnValue = $serviceDefinitionCollection->get(0);
+		$serviceClass = new core_kernel_classes_Class(CLASS_SUPPORTSERVICES);
+		$services = $serviceClass->searchInstances(array(PROPERTY_SUPPORTSERVICES_URL => $url), array('like' => true));
+		if(!count($services)){
+			if($services[0] instanceof core_kernel_classes_Resource){
+				$returnValue = $services[0];
 			}
 		}	
         

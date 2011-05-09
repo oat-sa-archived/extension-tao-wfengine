@@ -208,10 +208,10 @@ class wfEngine_models_classes_ProcessAuthoringService
 		
 		//get the process associate to the connector to create a new instance of activity
 		$relatedActivity = $connector->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_ACTIVITYREFERENCE));
-		
-		$processCollection = core_kernel_impl_ApiModelOO::getSubject(PROPERTY_PROCESS_ACTIVITIES, $relatedActivity->uriResource);
-		if(!$processCollection->isEmpty()){
-			$returnValue = $this->createActivity($processCollection->get(0), $newActivityLabel);
+		$processClass =  new core_kernel_classes_Class(CLASS_PROCESS);
+		$processes = $processClass->searchInstances(array(PROPERTY_PROCESS_ACTIVITIES => $relatedActivity->uriResource), array('like' => false));
+		if(!empty($processes)){
+			$returnValue = $this->createActivity($processes[0], $newActivityLabel);
 		}else{
 			throw new Exception("no related process instance found to create an activity");
 		}
@@ -403,36 +403,36 @@ class wfEngine_models_classes_ProcessAuthoringService
 			$followingActivity = $this->createActivityFromConnector($connectorInstance, $newActivityLabel);
 		}else{
 			//find if a join connector already leads to the following activity:
-			$connectorCollection = core_kernel_impl_ApiModelOO::singleton()->getSubject(PROPERTY_CONNECTORS_NEXTACTIVITIES, $followingActivity->uriResource);
+			$connectorClass = new core_kernel_classes_Class(CLASS_CONNECTORS);
+			$connectors = $connectorClass->searchInstances(array(
+				PROPERTY_CONNECTORS_NEXTACTIVITIES => $followingActivity->uriResource,
+				PROPERTY_CONNECTORS_TYPE =>INSTANCE_TYPEOFCONNECTORS_JOIN
+				), array('like' => false));
+		
 			$found = false;
-			foreach($connectorCollection->getIterator() as $connector){
-				if($connector instanceof core_kernel_classes_Resource){
-					if($connector->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_TYPE))->uriResource == INSTANCE_TYPEOFCONNECTORS_JOIN){
-						//join connector found (there could be only a single one): connect the previous activity to that one:
+			foreach($connectors as $connector){
 						
-						if(!is_null($previousActivity)){
-							
-							//important: check that the connector found is NOT the same as the current one:
-							if($connectorInstance->uriResource != $connector->uriResource){
-								//delete old connector, 
-								$this->deleteConnector($connectorInstance);
-								//and associate the activity to that one the existing one via a set property value to the "previous activities" property
-								$connectorInstance = $connector;
-								$found = true;
-								
-								break;//one join connector allowed for a next activity
-							}else{
-								//nothing to do, since the connector is already 
-								//it would be the case when one re-save the join connector with the same followinf activity
-								return 'same activity';
-							}
-							
-						}else{
-							throw new Exception('no previous activity found to be connected to the next activity');
-						}
+				if(!is_null($previousActivity)){
+					
+					//important: check that the connector found is NOT the same as the current one:
+					if($connectorInstance->uriResource != $connector->uriResource){
+						//delete old connector, 
+						$this->deleteConnector($connectorInstance);
+						//and associate the activity to that one the existing one via a set property value to the "previous activities" property
+						$connectorInstance = $connector;
+						$found = true;
 						
+						break;//one join connector allowed for a next activity
+					}else{
+						//nothing to do, since the connector is already 
+						//it would be the case when one re-save the join connector with the same followinf activity
+						return 'same activity';
 					}
+					
+				}else{
+					throw new Exception('no previous activity found to be connected to the next activity');
 				}
+						
 			}
 			if($found){
 			
@@ -641,10 +641,10 @@ class wfEngine_models_classes_ProcessAuthoringService
 			}else{
 				//get the process associate to the connector to create a new instance of activity
 				$relatedActivity = $connector->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_ACTIVITYREFERENCE));
-				$processCollection = core_kernel_impl_ApiModelOO::getSubject(PROPERTY_PROCESS_ACTIVITIES, $relatedActivity->uriResource);
-				if(!$processCollection->isEmpty()){
-					$followingActivity = $this->createActivity($processCollection->get(0), $newActivityLabel);
-					// $newConnector = $this->createConnector($followingActivity);
+				$processClass = new core_kernel_classes_Class(CLASS_PROCESS);
+				$processes = $processClass->searchInstances(array(PROPERTY_PROCESS_ACTIVITIES => $relatedActivity->uriResource), array('like'=>false));
+				if(!empty($processes)){
+					$followingActivity = $this->createActivity($processes[0], $newActivityLabel);
 				}else{
 					throw new Exception("no related process instance found to create an activity");
 				}
@@ -693,51 +693,14 @@ class wfEngine_models_classes_ProcessAuthoringService
 		
 		$apiModel = core_kernel_impl_ApiModelOO::singleton();
 		
-		//delete related connector
-		$connectorCollection = $apiModel->getSubject(PROPERTY_CONNECTORS_ACTIVITYREFERENCE , $activity->uriResource);
-		foreach($connectorCollection->getIterator() as $connector){
+		$connectorClass = new core_kernel_classes_Class(CLASS_CONNECTORS);
+		$connectors = $connectorClass->searchInstances(array(PROPERTY_CONNECTORS_ACTIVITYREFERENCE => $activity->uriResource), array('like' => false));
+		foreach($connectors as $connector){
 			$this->deleteConnector($connector);
 		}
 		
-		//delete reference to this activity from previous ones, via connectors
-		$prevConnectorCollection = $apiModel->getSubject(PROPERTY_CONNECTORS_NEXTACTIVITIES , $activity->uriResource);
-		foreach($prevConnectorCollection->getIterator() as $prevConnector){
-			$apiModel->removeStatement($prevConnector->uriResource, PROPERTY_CONNECTORS_NEXTACTIVITIES, $activity->uriResource, '');
-			
-			/*
-			//cleaner method to delete all the reference but much slower
-			//get the type of connector is "split", delete the reference in the transition rule: either PROPERTY_TRANSITIONRULES_THEN or ELSE
-			if($prevConnector->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_TYPE))->uriResource == INSTANCE_TYPEOFCONNECTORS_CONDITIONAL){
+		//deleting resource "acitivty" with its references should be enough normally to remove all references... to be tested
 				
-				//get the transition rule:
-				$transitonRule = $prevConnector->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_TRANSITIONRULE));
-				if(!is_null($transitonRule) && $transitonRule instanceof core_kernel_classes_Resource){
-					
-					$then = $transitonRule->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_TRANSITIONRULES_THEN));
-					if(!is_null($then) && $then instanceof core_kernel_classes_Resource){
-						if($then->uriResource == $activity->uriResource){
-						
-						}
-					}
-				
-				}
-			
-			}
-			*/
-		}
-		
-		//clean reference in transition rule (faster method)
-		// $thenCollection = $apiModel->getSubject(PROPERTY_TRANSITIONRULES_THEN , $activity->uriResource);
-		// foreach($thenCollection->getIterator() as $transitionRule){
-			// $apiModel->removeStatement($transitionRule->uriResource, PROPERTY_TRANSITIONRULES_THEN, $activity->uriResource, '');
-		// }
-		// $elseCollection = $apiModel->getSubject(PROPERTY_TRANSITIONRULES_ELSE , $activity->uriResource);
-		// foreach($elseCollection->getIterator() as $transitionRule){
-			// $apiModel->removeStatement($transitionRule->uriResource, PROPERTY_TRANSITIONRULES_ELSE, $activity->uriResource, '');
-		// }
-		$this->deleteReference(new core_kernel_classes_Property(PROPERTY_TRANSITIONRULES_THEN), $activity);
-		$this->deleteReference(new core_kernel_classes_Property(PROPERTY_TRANSITIONRULES_ELSE), $activity);
-		
 		//delete call of service!!
 		$interactiveServices = $activity->getPropertyValuesCollection(new core_kernel_classes_Property(PROPERTY_ACTIVITIES_INTERACTIVESERVICES));
 		foreach($interactiveServices->getIterator() as $service){
@@ -746,13 +709,6 @@ class wfEngine_models_classes_ProcessAuthoringService
 		
 		//delete activity itself:
 		$returnValue = $this->deleteInstance($activity);
-		
-		//delete the activity reference in the process instance.
-		$processCollection = $apiModel->getSubject(PROPERTY_PROCESS_ACTIVITIES , $activity->uriResource);
-		if(!$processCollection->isEmpty()){
-			$apiModel->removeStatement($processCollection->get(0)->uriResource, PROPERTY_PROCESS_ACTIVITIES, $activity->uriResource, '');
-			$returnValue = true;
-		}
 		
         // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004DDC end
 
@@ -1052,7 +1008,7 @@ class wfEngine_models_classes_ProcessAuthoringService
 
         // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004E13 begin
 		if(!is_null($instance)){
-			$returnValue = $instance->delete();
+			$returnValue = $instance->delete(true);//delete references!
 		}
         // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004E13 end
 
@@ -1133,7 +1089,7 @@ class wfEngine_models_classes_ProcessAuthoringService
         $returnValue = (bool) false;
 
         // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004E1C begin
-		
+		//deprecated!
 		$apiModel = core_kernel_impl_ApiModelOO::singleton();
 		
 		$subjectCollection = $apiModel->getSubject($property->uriResource, $object->uriResource);
@@ -1333,11 +1289,11 @@ class wfEngine_models_classes_ProcessAuthoringService
 			$option = array_map('strtolower', $option);
 		}
 		
+		$connectorsClass = new core_kernel_classes_Class(CLASS_CONNECTORS);
+		
 		if(in_array('prev',$option)){
-		
-			$previousConnectorsCollection = core_kernel_impl_ApiModelOO::singleton()->getSubject(PROPERTY_CONNECTORS_NEXTACTIVITIES, $activity->uriResource);
-		
-			foreach ($previousConnectorsCollection->getIterator() as $connector){
+			$previousConnectors = $connectorsClass->searchInstances(array(PROPERTY_CONNECTORS_NEXTACTIVITIES => $activity->uriResource), array('like' => false));
+			foreach ($previousConnectors as $connector){
 				if(!is_null($connector)){
 					if($connector instanceof core_kernel_classes_Resource ){
 						$returnValue['prev'][$connector->uriResource] = $connector; 
@@ -1348,9 +1304,8 @@ class wfEngine_models_classes_ProcessAuthoringService
 		
 		if(in_array('next',$option)){
 		
-			$followingConnectorsCollection = core_kernel_impl_ApiModelOO::singleton()->getSubject(PROPERTY_CONNECTORS_PREVIOUSACTIVITIES, $activity->uriResource);
-		
-			foreach ($followingConnectorsCollection->getIterator() as $connector){
+			$previousConnectors = $connectorsClass->searchInstances(array(PROPERTY_CONNECTORS_PREVIOUSACTIVITIES => $activity->uriResource), array('like' => false));
+			foreach ($previousConnectors as $connector){
 				if(!is_null($connector)){
 					if($connector instanceof core_kernel_classes_Resource){
 						$returnValue['next'][$connector->uriResource] = $connector; 
@@ -1485,17 +1440,16 @@ class wfEngine_models_classes_ProcessAuthoringService
         $returnValue = null;
 
         // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004E63 begin
-		
-		$processVarCollection = core_kernel_impl_ApiModelOO::singleton()->getSubject(PROPERTY_PROCESSVARIABLES_CODE, $code);
-		if(!$processVarCollection->isEmpty()){
-			$returnValue = $processVarCollection->get(0);
+		$processVariableClass =  new core_kernel_classes_Class(PROPERTY_PROCESS_VARIABLES);
+		$variables = $processVariableClass->searchInstances(array(PROPERTY_PROCESSVARIABLES_CODE => $code), array('like' => false));
+		if(!empty($variables) && $variables[0] instanceof core_kernel_classes_Resource){
+			$returnValue = $variables[0];
 		}else if($forceCreation){
 			$returnValue = $this->createProcessVariable($code, $code);
 			if(is_null($returnValue)){
 				throw new Exception("the process variable ({$code}) cannot be created.");
 			}
 		}
-		
         // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004E63 end
 
         return $returnValue;
@@ -1896,13 +1850,10 @@ class wfEngine_models_classes_ProcessAuthoringService
 		$propServiceDefinition = new core_kernel_classes_Property(PROPERTY_CALLOFSERVICES_SERVICEDEFINITION);
 		
 		foreach($urlProperties as $urlProperty){
-			$serviceCollection = core_kernel_impl_ApiModelOO::getSubject($urlProperty, $serviceUrl);
-			foreach($serviceCollection->getIterator() as $service){
-			
-				//delete call of service that are using this service definition?
-				$this->deleteReference($propServiceDefinition, $service, true);
-				
-				$returnValue = $service->delete();
+			$serviceDefinitionsClass =  new core_kernel_classes_Class(CLASS_SUPPORTSERVICES);
+			$serviceDefinitions = $serviceDefinitionsClass->searchInstances(array($urlProperty => $serviceUrl), array('like' => false));
+			foreach($serviceDefinitions as $service){
+				$returnValue = $service->delete(true);
 			}
 		}
 		

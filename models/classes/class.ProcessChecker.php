@@ -207,13 +207,14 @@ class wfEngine_models_classes_ProcessChecker
 		
 		$this->isolatedActivities = array();
 		
+		$connectorsClass = new core_kernel_classes_Class(CLASS_CONNECTORS);
 		$process = $this->process;
 		$apiModel = core_kernel_impl_ApiModelOO::singleton();
 		foreach($this->authoringService->getActivitiesByProcess($process) as $activity){
 			if(!wfEngine_helpers_ProcessUtil::isActivityInitial($activity)){
 				//should have a previous activity:
-				$connectorsCollection = $apiModel->getSubject(PROPERTY_CONNECTORS_NEXTACTIVITIES, $activity->uriResource);
-				if($connectorsCollection->isEmpty()){
+				$connectors = $connectorsClass->searchInstances(array(PROPERTY_CONNECTORS_NEXTACTIVITIES => $activity->uriResource), array('like'=>false));
+				if(empty($connectors)){
 					$returnValue = false;
 					$this->isolatedActivities[$activity->uriResource] = $activity;
 				}

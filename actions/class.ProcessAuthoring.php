@@ -449,25 +449,26 @@ class wfEngine_actions_ProcessAuthoring extends tao_actions_TaoModule {
         $restrictedRoleProp	= new core_kernel_classes_Property(PROPERTY_ACTIVITIES_RESTRICTED_ROLE);
         $actsProp 			= new core_kernel_classes_Property(PROPERTY_PROCESS_ACTIVITIES);
 		
-		$apiModel  	= core_kernel_impl_ApiModelOO::singleton();
-        $subjects 	= $apiModel->getSubject(PROPERTY_PROCESS_ACTIVITIES, $activity->uriResource);
-        foreach($subjects->getIterator() as $process){
-        	
-			foreach ($process->getPropertyValues($actsProp) as $pactivityUri){
-				
-				$pactivity = new core_kernel_classes_Resource($pactivityUri);
-				
-        		//get an activity with the same mode
-        		$mode = $pactivity->getOnePropertyValue($activityModeProp);
-        		if($mode->uriResource == INSTANCE_ACL_ROLE_RESTRICTED_USER){
-        			$pRole = $pactivity->getUniquePropertyValue($restrictedRoleProp);
-        			if(!is_null($pRole)){
-        				if(!array_key_exists($pRole->uriResource, $availableRoles)){
-        					$availableRoles[$pRole->uriResource] = $pRole->getLabel();
-        				}
-        			}
-        		}
-	        }
+		$processClass = new core_kernel_classes_Class(CLASS_PROCESS);
+		$processes = $processClass->searchInstances(array(PROPERTY_PROCESS_ACTIVITIES => $activity->uriResource), array('like'=>false));
+        foreach($processes as $process){
+        	if($process instanceof core_kernel_classes_Resource){
+				foreach ($process->getPropertyValues($actsProp) as $pactivityUri){
+					
+					$pactivity = new core_kernel_classes_Resource($pactivityUri);
+					
+					//get an activity with the same mode
+					$mode = $pactivity->getOnePropertyValue($activityModeProp);
+					if($mode->uriResource == INSTANCE_ACL_ROLE_RESTRICTED_USER){
+						$pRole = $pactivity->getUniquePropertyValue($restrictedRoleProp);
+						if(!is_null($pRole)){
+							if(!array_key_exists($pRole->uriResource, $availableRoles)){
+								$availableRoles[$pRole->uriResource] = $pRole->getLabel();
+							}
+						}
+					}
+				}
+			}
         }
         $availableRoles = tao_helpers_Uri::encodeArray($availableRoles, tao_helpers_Uri::ENCODE_ARRAY_KEYS, true);
 		echo json_encode(array('roles' => $availableRoles));
@@ -649,49 +650,55 @@ class wfEngine_actions_ProcessAuthoring extends tao_actions_TaoModule {
 			'other' => array()
 		);
 		
-		$activity = core_kernel_impl_ApiModelOO::singleton()->getSubject(PROPERTY_ACTIVITIES_INTERACTIVESERVICES, $callOfServiceUri)->get(0);
-		if($activity instanceof core_kernel_classes_Resource){
+		$activityClass = new core_kernel_classes_Class(CLASS_ACTIVITIES);
+		$activities = $activityClass->searchInstances(array(PROPERTY_ACTIVITIES_INTERACTIVESERVICES => $callOfServiceUri), array('like'=>false));
+		
+		if(!empty($activities) && isset($activities[0])){
 			
-			$serviceCollection = $activity->getPropertyValuesCollection(new core_kernel_classes_Property(PROPERTY_ACTIVITIES_INTERACTIVESERVICES));
-			
-			
-			foreach($serviceCollection->getIterator() as $service){
-				if( $service->uriResource != $callOfServiceUri ){
+			if($activities[0] instanceof core_kernel_classes_Resource){
 				
-					$serviceStylingData = array();
-					$serviceStylingData['label'] = $service->getLabel();
-					$serviceStylingData['uri'] = tao_helpers_Uri::encode($service->uriResource);
+				$activity = $activities[0];
+				$serviceCollection = $activity->getPropertyValuesCollection(new core_kernel_classes_Property(PROPERTY_ACTIVITIES_INTERACTIVESERVICES));
+				
+				foreach($serviceCollection->getIterator() as $service){
+					if( $service->uriResource != $callOfServiceUri ){
 					
-					//get the position and size data (in %):
-					$width = $service->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_CALLOFSERVICES_WIDTH));
-					if($width != null && $width instanceof core_kernel_classes_Literal){
-						if(intval($width)){
-							//do not allow width="0"
-							$serviceStylingData['width'] = intval($width->literal);
+						$serviceStylingData = array();
+						$serviceStylingData['label'] = $service->getLabel();
+						$serviceStylingData['uri'] = tao_helpers_Uri::encode($service->uriResource);
+						
+						//get the position and size data (in %):
+						$width = $service->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_CALLOFSERVICES_WIDTH));
+						if($width != null && $width instanceof core_kernel_classes_Literal){
+							if(intval($width)){
+								//do not allow width="0"
+								$serviceStylingData['width'] = intval($width->literal);
+							}
 						}
-					}
-					
-					$height = $service->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_CALLOFSERVICES_HEIGHT));
-					if($height != null && $height instanceof core_kernel_classes_Literal){
-						if(intval($height->literal)){
-							//do not allow height="0"
-							$serviceStylingData['height'] = intval($height->literal);
+						
+						$height = $service->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_CALLOFSERVICES_HEIGHT));
+						if($height != null && $height instanceof core_kernel_classes_Literal){
+							if(intval($height->literal)){
+								//do not allow height="0"
+								$serviceStylingData['height'] = intval($height->literal);
+							}
 						}
+						
+						$top = $service->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_CALLOFSERVICES_TOP));
+						if($top != null && $top instanceof core_kernel_classes_Literal){
+							$serviceStylingData['top'] = intval($top->literal);
+						}
+						
+						$left = $service->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_CALLOFSERVICES_LEFT));
+						if($left != null && $left instanceof core_kernel_classes_Literal){
+							$serviceStylingData['left'] = intval($left->literal);
+						}
+						$servicesData['other'][taoDelivery_helpers_Compilator::getUniqueId($service->uriResource)] = $serviceStylingData;
 					}
-					
-					$top = $service->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_CALLOFSERVICES_TOP));
-					if($top != null && $top instanceof core_kernel_classes_Literal){
-						$serviceStylingData['top'] = intval($top->literal);
-					}
-					
-					$left = $service->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_CALLOFSERVICES_LEFT));
-					if($left != null && $left instanceof core_kernel_classes_Literal){
-						$serviceStylingData['left'] = intval($left->literal);
-					}
-					$servicesData['other'][taoDelivery_helpers_Compilator::getUniqueId($service->uriResource)] = $serviceStylingData;
 				}
 			}
 		}
+		
 		
 		$this->setData('formId', $formName);
 		$this->setData('formInteractionService', $myForm->render());
@@ -910,10 +917,8 @@ class wfEngine_actions_ProcessAuthoring extends tao_actions_TaoModule {
 						//if the current type is still 'join' && target activity has changed || type of connector has changed:
 						if( $oldNextActivity->uriResource != $data["join_activityUri"] || $data[PROPERTY_CONNECTORS_TYPE]!= INSTANCE_TYPEOFCONNECTORS_JOIN){
 							
-							
-							
 							//check if another activities is joined with the same connector:
-							$previousActivityCollection = $connectorInstance->getPropertyValuesCollection(new core_kernel_classes_Property(PROPERTY_CONNECTORS_PREVIOUSACTIVITIES)); //old: apimodel->getSubject(PROPERTY_CONNECTORS_PRECACTIVTIES, $oldNextActivity->uriResource);
+							$previousActivityCollection = $connectorInstance->getPropertyValuesCollection(new core_kernel_classes_Property(PROPERTY_CONNECTORS_PREVIOUSACTIVITIES)); 
 							$anotherPreviousActivity = null;
 							foreach($previousActivityCollection->getIterator() as $previousActivity){
 								if($previousActivity instanceof core_kernel_classes_Resource){
@@ -1239,6 +1244,7 @@ class wfEngine_actions_ProcessAuthoring extends tao_actions_TaoModule {
 			$codes = $matches[1];
 		}
 		
+		$processClass = new core_kernel_classes_Class(CLASS_PROCESS);
 		$processVarProp = new core_kernel_classes_Property(PROPERTY_PROCESS_VARIABLES);
 		foreach($codes as $code){
 			//get the variable resource: 
@@ -1247,9 +1253,10 @@ class wfEngine_actions_ProcessAuthoring extends tao_actions_TaoModule {
 				$returnValue['doesNotExist'][] = $code;
 			}else{
 				//check if the variable is set as a process variable of the current process
-				$processCollection = core_kernel_impl_ApiModelOO::singleton()->getSubject($processVarProp, $processVar);
+				
+				$processes = $processClass->searchInstances(array($processVarProp->uriResource => $processVar->uriResource), array('like'=>false));
 				$ok = false;
-				foreach($processCollection->getIterator() as $processTemp){
+				foreach($processes as $processTemp){
 					if($processTemp->uriResource == $process->uriResource){
 						$ok = true;
 						break;
@@ -1263,22 +1270,8 @@ class wfEngine_actions_ProcessAuthoring extends tao_actions_TaoModule {
 		}
 		echo json_encode($returnValue);
 	}
-	
-	public function getOneSubject(core_kernel_classes_Property $property, core_kernel_classes_Resource $resource, $last=false){
-		$subject = null;
-		$subjectCollection = core_kernel_impl_ApiModelOO::singleton()->getSubject($property->uriResource , $resource->uriResource);
-		if(!$subjectCollection->isEmpty()){
-			if($last){
-				$subject = $subjectCollection->get($subjectCollection->count()-1);
-			}else{
-				$subject = $subjectCollection->get(0);
-			}
-		}
-		return $subject;
-	}
-	
+		
 	/**
-	 *
 	 *
 	 * @access public
      * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}

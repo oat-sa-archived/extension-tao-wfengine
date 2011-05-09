@@ -361,6 +361,7 @@ class wfEngine_helpers_ProcessFormFactory extends tao_helpers_form_GenerisFormFa
 			$returnValue[$paramType]=$descriptionElement;
 		}
 		
+		$actualParamClass = new core_kernel_classes_Class(CLASS_ACTUALPARAMETER);
 		foreach ($collection->getIterator() as $formalParam){
 			if($formalParam instanceof core_kernel_classes_Resource){
 			
@@ -373,7 +374,11 @@ class wfEngine_helpers_ProcessFormFactory extends tao_helpers_form_GenerisFormFa
 				//get current value:
 				//find actual param first!
 				$actualParamValue='';
-				$actualParamFromFormalParam = core_kernel_impl_ApiModelOO::singleton()->getSubject(PROPERTY_ACTUALPARAMETER_FORMALPARAMETER, $formalParam->uriResource);
+				$actualParamFromFormalParam = new core_kernel_classes_ContainerCollection(new common_Object(__METHOD__));
+				$actualParamFromFormalParamArray = $actualParamClass->searchInstances(array(PROPERTY_ACTUALPARAMETER_FORMALPARAMETER => $formalParam->uriResource), array('like'=>false));
+				foreach($actualParamFromFormalParamArray as $actualParam){
+					$actualParamFromFormalParam->add($actualParam);
+				}
 				$actualParamFromCallOfServices = $callOfService->getPropertyValuesCollection(new core_kernel_classes_Property($actualParameterInOutType)); 
 				
 				//make an intersect with $collection = $callOfService->getPropertyValuesCollection(new core_kernel_classes_Property(PROPERTY_CALLOFSERVICES_ACTUALPARAMETEROUT));
@@ -411,37 +416,12 @@ class wfEngine_helpers_ProcessFormFactory extends tao_helpers_form_GenerisFormFa
 								//the type is not specified yet:
 								
 							}
-			
-							// $actualParameterType = PROPERTY_ACTUALPARAMETER_PROCESSVARIABLE; //PROPERTY_ACTUALPARAMETER_PROCESSVARIABLE;//PROPERTY_ACTUALPARAMETER_PROCESSVARIABLE//PROPERTY_ACTUALPARAM_QUALITYMETRIC
-							
-							// $actualParamValueCollection = $actualParam->getPropertyValuesCollection(new core_kernel_classes_Property($actualParameterType));
-							// if(!$actualParamValueCollection->isEmpty()){
-								// if($actualParamValueCollection->get(0) instanceof core_kernel_classes_Resource){
-									// $actualParamValue = $actualParamValueCollection->get(0)->uriResource;
-								// }elseif($actualParamValueCollection->get(0) instanceof core_kernel_classes_Literal){
-									// $actualParamValue = $actualParamValueCollection->get(0)->literal;
-								// }
-								// $inputValue = $actualParamValue;
-							// }
 						
 							break; //stop as one iteration: there normally should be only one actual parameter set for a given formal parameter 
 						}
 					}
 				}
 					
-				
-				/*
-				if(empty($inputUri)){//place ce bloc dans la creation de call of service: cad retrouver systematiquement l'actual parameter associ� � chaque fois, � partir du formal parameter et call of service, lors de la sauvegarde
-					// if no actual parameter has been found above (since $inputUri==0) create an instance of actual parameter and associate it to the call of service:
-					$property_actualParam_formalParam = new core_kernel_classes_Property(PROPERTY_ACTUALPARAMETER_FORMALPARAMETER);
-					$class_actualParam = new core_kernel_classes_Class(CLASS_ACTUALPARAM);
-					$newActualParameter = $class_actualParam->createInstance($formalParam->getLabel(), "created by ProcessFormFactory");
-					$newActualParameter->setPropertyValue($property_actualParam_formalParam, $formalParam->uriResource);
-					
-					// $inputUri = $newActualParameter->uriResource;//we add an "empty" value in 
-				}
-				*/
-				
 				if(empty($inputValue)){
 					//if no value set yet, try finding the default value (literal only! or url that are considered as a literal)
 					
@@ -456,8 +436,6 @@ class wfEngine_helpers_ProcessFormFactory extends tao_helpers_form_GenerisFormFa
 						}else{
 							throw new Exception('the process variable must be a resource');
 						}
-						// echo 'skjdsk';
-						// var_dump($defaultValue);
 						if(!empty($defaultValue)){
 							//the input value has been set as the default one:
 							$paramType = 'processvariable';
