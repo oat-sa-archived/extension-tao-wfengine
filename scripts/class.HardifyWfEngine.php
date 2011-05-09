@@ -118,6 +118,7 @@ class wfEngine_scripts_HardifyWfEngine
     			
     			$options = array(
     				'recursive'				=> true,
+    				'append'				=> true,
 					'createForeigns'		=> true,
 					'referencesAllTypes'	=> true,
 					'rmSources'				=> false
@@ -163,15 +164,11 @@ class wfEngine_scripts_HardifyWfEngine
     			$this->out("\nCompiling test takers", array('color' => 'light_blue'));
     			
     			$testTakerClass = new core_kernel_classes_Class('http://www.tao.lu/Ontologies/TAOSubject.rdf#Subject');
-				$userClass		= new core_kernel_classes_Class('http://www.tao.lu/Ontologies/generis.rdf#User');	
-				$switcher->hardify($testTakerClass, array(
-					'topClass'				=> $userClass,
-					'recursive'				=> true,
-					'createForeigns'		=> true,
-					'referencesAllTypes'	=> true,
-					'rmSources'				=> false
-				));
-    			
+				$userClass		= new core_kernel_classes_Class('http://www.tao.lu/Ontologies/generis.rdf#User');
+				
+				$this->out(" - Hardifying ".$testTakerClass->getLabel(), array('color' => 'light_green'));
+				
+				$switcher->hardify($testTakerClass, array_merge($options, array('topClass' => $userClass)));	
     			
     			/*
     			 * Compiled results
@@ -179,12 +176,10 @@ class wfEngine_scripts_HardifyWfEngine
     			$this->out("\nCompiling results", array('color' => 'light_blue'));
     			
     			$resultClass = new core_kernel_classes_Class('http://www.tao.lu/Ontologies/TAOResult.rdf#Result');
-				$switcher->hardify($testTakerClass, array(
-					'recursive'				=> true,
-					'createForeigns'		=> true,
-					'referencesAllTypes'	=> true,
-					'rmSources'				=> false
-				));
+				
+    			$this->out(" - Hardifying ".$resultClass->getLabel(), array('color' => 'light_green'));
+    			
+    			$switcher->hardify($resultClass, array_merge($options, array('createForeigns' => false)));
 				
 				
     			unset($switcher);
