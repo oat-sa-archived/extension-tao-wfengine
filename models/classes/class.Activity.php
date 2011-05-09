@@ -81,17 +81,12 @@ class wfEngine_models_classes_Activity
 		$connectors =array();
 		foreach ($nextConnectors->getIterator() as $resource)
 		{
-			$typeProp = new core_kernel_classes_Property(RDF_TYPE);
-			$isAConnector = $resource->getPropertyValuesCollection($typeProp);
-			
-			if ($isAConnector->get(0)->uriResource == CLASS_CONNECTORS)
-			{
-						
-				$connector	= new wfEngine_models_classes_Connector($resource->uriResource);
-				$this->nextConnectors[] = $connector;		
-
+			foreach($resource->getType() as $isAConnector){
+				if ($isAConnector->uriResource == CLASS_CONNECTORS){
+					$connector	= new wfEngine_models_classes_Connector($resource->uriResource);
+					$this->nextConnectors[] = $connector;		
+				}
 			}
-				
 		}
 
         // section -64--88-1-64--7117f567:11a0527df60:-8000:00000000000008F4 end

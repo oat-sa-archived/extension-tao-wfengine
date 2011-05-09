@@ -95,8 +95,10 @@ class wfEngine_models_classes_ProcessService
 		if(is_null($clazz) && $mode == 'uri'){
 			try{
 				$resource = new core_kernel_classes_Resource($identifier);
-				$type = $resource->getUniquePropertyValue(new core_kernel_classes_Property( RDF_TYPE ));
-				$clazz = new core_kernel_classes_Class($type->uriResource);
+				foreach($resource->getType() as $type){
+					$clazz = $type;
+					break;
+				}
 			}
 			catch(Exception $e){}
 		}

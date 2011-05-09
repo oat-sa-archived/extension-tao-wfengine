@@ -68,8 +68,7 @@ class wfEngine_models_classes_ProcessExecutionService
             $processModeProp	= new core_kernel_classes_Property(PROPERTY_PROCESS_INIT_ACL_MODE);
             $restrictedUserProp	= new core_kernel_classes_Property(PROPERTY_PROCESS_INIT_RESTRICTED_USER);
             $restrictedRoleProp	= new core_kernel_classes_Property(PROPERTY_PROCESS_INIT_RESTRICTED_ROLE);
-            $rdfsTypeProp		= new core_kernel_classes_Property(RDF_TYPE);
-             
+
             //process and current must be set to the activty execution otherwise a common Exception is thrown
              
             $modeUri 		= $process->getOnePropertyValue($processModeProp);
@@ -92,11 +91,13 @@ class wfEngine_models_classes_ProcessExecutionService
                         //check if the current user has the restricted role
                     case INSTANCE_ACL_ROLE:
                         $processRole 	= $process->getOnePropertyValue($restrictedRoleProp);
-                        $userRoles 		= $currentUser->getPropertyValues($rdfsTypeProp);
+                        $userRoles 		= $currentUser->getType();
                         if(!is_null($processRole) && is_array($userRoles)){
-                            if(in_array($processRole->uriResource, $userRoles)){
-                                return true;
-                            }
+                        	foreach($userRoles as $userRole){
+                        		if($processRole->uriResource == $userRole->uriResource){
+                        			return true;
+                        		}
+                        	}
                         }
                         break;
                     default:

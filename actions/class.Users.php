@@ -110,18 +110,14 @@ class wfEngine_actions_Users extends tao_actions_CommonModule {
 			//add role:
 			$cellData[5]	= '';
 			$roleCollection = null;
-			$roleCollection = $user->getPropertyValuesCollection(new core_kernel_classes_Property(RDF_TYPE));
-			// var_dump($user->getLabel(), $roleCollection, $user->getPropertyValues(new core_kernel_classes_Property(RDF_TYPE)) );
-			foreach($roleCollection->getIterator() as $role){
+			foreach($roles as $role){
 				if($role instanceof core_kernel_classes_Resource){
 					$cellData[5] .= $role->getLabel().', ';
 				}
-				
 			}
 			if(strlen($cellData[5])>2){
 				$cellData[5] = substr($cellData[5],0,-2);
 			}
-			
 			
 			$cellData[6]	= '';
 			

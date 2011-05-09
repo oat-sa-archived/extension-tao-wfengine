@@ -86,7 +86,6 @@ class SaSImporter extends SasManager{
 
 		//initialize ref to API classes and properties
 		
-		$this->rdfTypeProp					= new core_kernel_classes_Property(RDF_TYPE);
 		$this->rdfLiteralClass				= new core_kernel_classes_Class(RDFS_LITERAL);
 		$this->processInstanceClass			= new core_kernel_classes_Class(CLASS_PROCESSINSTANCES);
 		
@@ -235,7 +234,7 @@ class SaSImporter extends SasManager{
 			$processVar = $this->processVarClass->createInstance(self::unCamelize($code));
 			if(!is_null($processVar)){
 				//set the new instance of process variable as a property of the class process instance:
-				if($processVar->setPropertyValue($this->rdfTypeProp, RDF_PROPERTY)){
+				if($processVar->setType(new core_kernel_classes_Class(RDF_PROPERTY))){
 					$newProcessInstanceProperty = new core_kernel_classes_Property($processVar->uriResource);
 					$newProcessInstanceProperty->setDomain(new core_kernel_classes_Class(CLASS_TOKEN));
 					$newProcessInstanceProperty->setRange($this->rdfLiteralClass);

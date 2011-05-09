@@ -37,31 +37,31 @@ class TransitionRule extends core_kernel_rules_Rule
 			}
 
 			// Is that an activity or a transition rule ?
-			$thenType = $thenPropertyValue->getUniquePropertyValue(new core_kernel_classes_Property(RDF_TYPE));
-			
-			if ($hasElse)
-				$elseType = $elsePropertyValue->getUniquePropertyValue(new core_kernel_classes_Property(RDF_TYPE));
-			
-			if ($thenType->uriResource == CLASS_CONNECTORS)
-			{
+			$thenTypes = $thenPropertyValue->getType();
+			$isConnector = false;
+			foreach($thenTypes as $thenType){
+				if($thenType->uriResource == CLASS_CONNECTORS){
 					$this->thenActivity = new wfEngine_models_classes_Connector($thenPropertyValue->uriResource);
-					//$this->thenActivity->feedFlow(1);
+					$isConnector = true;
+					break;
+				}
 			}
-			else
+			if(!$isConnector){
 				$this->thenActivity = new wfEngine_models_classes_Activity($thenPropertyValue->uriResource);
-
+			}
+			
 			if ($hasElse)
 			{
-
-				if ($elseType->uriResource == CLASS_CONNECTORS)
-				{
-		
+				$elseTypes = $elsePropertyValue->getType();
+				$isConnector = false;
+				foreach($elseTypes as $elseType){
+					if ($elseType->uriResource == CLASS_CONNECTORS){
 						$this->elseActivity = new wfEngine_models_classes_Connector($elsePropertyValue->uriResource);
-						//$this->elseActivity->feedFlow(1);
+						$isConnector = true;
+						break;
+					}
 				}
-				else
-				{
-
+				if(!$isConnector){
 					$this->elseActivity = new wfEngine_models_classes_Activity($elsePropertyValue->uriResource);
 				}
 			}

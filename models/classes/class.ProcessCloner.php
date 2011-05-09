@@ -377,24 +377,6 @@ class wfEngine_models_classes_ProcessCloner
 									*/
 									$newPropActivity = $this->getNewActivityFromOldActivity($activity, $oldReferenceActivity, $activityType, $connectorClone);
 									
-									// if(!is_null($newPropActivity)){
-									
-										// if(is_array($newPropActivity)){
-											// foreach($newPropActivity as $activityResource){
-												// if($activityResource instanceof core_kernel_classes_Resource){
-													// $newPropActivitiesUris[] = $activityResource->uriResource;
-													// if($activityType == 'next')
-														// $activityResource->editPropertyValues(new core_kernel_classes_Property(PROPERTY_ACTIVITIES_ISINITIAL), GENERIS_FALSE);
-												// }
-											// }
-										// }else if($newPropActivity instanceof core_kernel_classes_Resource){
-											// $newPropActivitiesUris[] = $newPropActivity->uriResource;
-											// if($activityType == 'next') 
-												// $newPropActivity->editPropertyValues(new core_kernel_classes_Property(PROPERTY_ACTIVITIES_ISINITIAL), GENERIS_FALSE);
-										// }
-										
-									// }
-									
 									if(!is_null($newPropActivity)){
 										if($activityType == 'next'){
 											if($newPropActivity instanceof core_kernel_classes_Resource){
@@ -731,8 +713,6 @@ class wfEngine_models_classes_ProcessCloner
 					$activity = new core_kernel_classes_Resource($newActivityIO[$interface]);
 					if(wfEngine_helpers_ProcessUtil::isActivity($activity)){
 						$returnValue[$activity->uriResource] = $activity;
-					}else{
-						// var_dump($activity->getPropertyValues(new core_kernel_classes_Property(RDF_TYPE)));
 					}
 				}
 			}else if(is_string($newActivityIO)){

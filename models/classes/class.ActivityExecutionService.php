@@ -385,10 +385,7 @@ class wfEngine_models_classes_ActivityExecutionService
         
         if(!is_null($activity) && !is_null($currentUser)){
         	
-        	$rdfsTypeProp		= new core_kernel_classes_Property(RDF_TYPE);
-        	
         	//activity and current must be set to the activty execution otherwise a common Exception is thrown
-        	
         	$modeUri 		= $activity->getOnePropertyValue($this->ACLModeProperty);
         	
         	if(is_null($modeUri)){
@@ -410,10 +407,12 @@ class wfEngine_models_classes_ActivityExecutionService
         			//check if the current user has the restricted role
         			case INSTANCE_ACL_ROLE:
         				$activityRole 	= $activity->getOnePropertyValue($this->restrictedRoleProperty);
-        				$userRoles 		= $currentUser->getPropertyValues($rdfsTypeProp);
+        				$userRoles 		= $currentUser->getType();
 						if(!is_null($activityRole) && is_array($userRoles)){
-	        				if(in_array($activityRole->uriResource, $userRoles)){
-								return true;
+							foreach($userRoles as $userRole){
+								if($activityRole->uriResource == $userRole->uriResource){
+									return true;
+								}
 							}
 						}
         				break;	
@@ -427,7 +426,7 @@ class wfEngine_models_classes_ActivityExecutionService
 						//from the process definition get the number of allowed activity executions for this activity definition (normally only 1 but can be more, for a parallel connector)
 						
         				$activityRole 	= $activity->getOnePropertyValue($this->restrictedRoleProperty);
-						$userRoles 		= $currentUser->getPropertyValues($rdfsTypeProp);
+						$userRoles 		= $currentUser->getType();
         				if(!is_null($activityRole) && is_array($userRoles)){
 	        				if(in_array($activityRole->uriResource, $userRoles)){
 	        					
@@ -447,7 +446,7 @@ class wfEngine_models_classes_ActivityExecutionService
         			//check if the current user has the restricted role and is the restricted user based on the previous activity with the given role
         			case INSTANCE_ACL_ROLE_RESTRICTED_USER_INHERITED:
         				$activityRole 	= $activity->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_ACTIVITIES_RESTRICTED_ROLE));
-        				$userRoles 		= $currentUser->getPropertyValues($rdfsTypeProp);
+        				$userRoles 		= $currentUser->getType();
         				
         				if(!is_null($activityRole) && is_array($userRoles)){
         				
@@ -478,7 +477,7 @@ class wfEngine_models_classes_ActivityExecutionService
 					case INSTANCE_ACL_ROLE_RESTRICTED_USER_DELIVERY:
 						if(wfEngine_helpers_ProcessUtil::isActivityInitial($activity)){
 							$activityRole 	= $activity->getUniquePropertyValue($this->restrictedRoleProperty);
-							$userRoles 		= $currentUser->getPropertyValues($rdfsTypeProp);
+							$userRoles 		= $currentUser->getType();
 							if(!is_null($activityRole) && is_array($userRoles)){
 								if(in_array($activityRole->uriResource, $userRoles)){
 									return true;

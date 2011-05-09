@@ -111,28 +111,25 @@ class wfEngine_models_classes_Connector
 		$this->precActivities = Array();
 		foreach ($geNextActivities->getIterator() as $val)
 		{
-			$typeProp = new core_kernel_classes_Property(RDF_TYPE);
-
-			$isAConnector = $val->getUniquePropertyValue($typeProp);
-			
-			if ($isAConnector->uriResource == CLASS_ACTIVITIES)
-			{
-				
-				if (isset($_SESSION["activities"][$val->uriResource])) 
+			foreach($val->getType() as $isAConnector){
+				if ($isAConnector->uriResource == CLASS_ACTIVITIES)
 				{
 					
-					$this->nextActivities[] =$_SESSION["activities"][$val->uriResource];
-				} 
-				else
-				{
-					
-					$activity = new wfEngine_models_classes_Activity($val->uriResource);
-					$_SESSION["activities"][$val->uriResource] = $activity;
-
-					$this->nextActivities[] = $activity;						
+					if (isset($_SESSION["activities"][$val->uriResource])) 
+					{
+						
+						$this->nextActivities[] =$_SESSION["activities"][$val->uriResource];
+					} 
+					else
+					{
+						
+						$activity = new wfEngine_models_classes_Activity($val->uriResource);
+						$_SESSION["activities"][$val->uriResource] = $activity;
+	
+						$this->nextActivities[] = $activity;						
+					}
 				}
 			}
-			
 		}
 		
 		// Previous activities feeding.
@@ -143,33 +140,27 @@ class wfEngine_models_classes_Connector
 		//if (sizeOf($gePrevActivities)>1) echo $this->label; 
 		foreach ($gePrevActivities->getIterator() as $val)
 		{
-			$typeProp = new core_kernel_classes_Property(RDF_TYPE);
-
-			$isAConnector = $val->getUniquePropertyValues($typeProp);
-			
-			if ($isAConnector->uriResource == CLASS_ACTIVITIES)
-			{
+			foreach($val->getType() as $isAConnector){
+				if ($isAConnector->uriResource == CLASS_ACTIVITIES)
+				{
 				
-			
-				if (isset($_SESSION["activities"][$val->uriResource])) 
-				{
-					$this->prevActivities[] = $_SESSION["activities"][$val->uriResource];
-				} 
-				else
-				{
-					
-					//we should detect loops, todo
-					
-					
-					$activity = new wfEngine_models_classes_Activity($val->uriResource);
-					$_SESSION["activities"][$val->uriResource] = $activity;
+					if (isset($_SESSION["activities"][$val->uriResource])) 
+					{
+						$this->prevActivities[] = $_SESSION["activities"][$val->uriResource];
+					} 
+					else
+					{
 						
-					$this->prevActivities[] = $activity;	
-					
-					
+						//we should detect loops, todo
+						
+						
+						$activity = new wfEngine_models_classes_Activity($val->uriResource);
+						$_SESSION["activities"][$val->uriResource] = $activity;
+							
+						$this->prevActivities[] = $activity;	
+					}
 				}
 			}
-			
 		}
 		
         // section -64--88-1-64--7117f567:11a0527df60:-8000:0000000000000914 end

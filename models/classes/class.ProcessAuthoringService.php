@@ -520,7 +520,7 @@ class wfEngine_models_classes_ProcessAuthoringService
 		}
 		
 		//set the new instance of process variable as a property of the class process instance:
-		$ok = $returnValue->setPropertyValue(new core_kernel_classes_Property(RDF_TYPE), RDF_PROPERTY);
+		$ok = $returnValue->setType(new core_kernel_classes_Class(RDF_PROPERTY));
 		if($ok){
 			$newTokenProperty = new core_kernel_classes_Property($returnValue->uriResource);
 			$newTokenProperty->setDomain(new core_kernel_classes_Class(CLASS_TOKEN));
@@ -1214,22 +1214,22 @@ class wfEngine_models_classes_ProcessAuthoringService
 		
 		if(!is_null($term)){
 			//determine the class:
-			$classUri = $term->getUniquePropertyValue(new core_kernel_classes_Property(RDF_TYPE))->uriResource;
 			
-			if($classUri == CLASS_OPERATION){
+			foreach($term->getType() as $class){
+				if($class->uriResource == CLASS_OPERATION){
+					
+					$this->deleteOperation($term);//an operation is a term
+					
+				}elseif(in_array($class->uriResource,$termClasses)){
 				
-				$this->deleteOperation($term);//an operation is a term
-				
-			}elseif(in_array($classUri,$termClasses)){
-			
-				if(!in_array($term->uriResource, $termConstants)){//delete all instances but the one that are preset
-					$term->delete();
+					if(!in_array($term->uriResource, $termConstants)){//delete all instances but the one that are preset
+						$term->delete();
+					}
+					
+				}else{
+					throw new Exception("trying to delete a term with an unknown term class");
 				}
-				
-			}else{
-				throw new Exception("trying to delete a term with an unknown term class");
 			}
-			
 			$returnValue = true;
 		}
 		
