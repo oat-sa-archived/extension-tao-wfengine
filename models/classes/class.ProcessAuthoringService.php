@@ -211,7 +211,7 @@ class wfEngine_models_classes_ProcessAuthoringService
 		$processClass =  new core_kernel_classes_Class(CLASS_PROCESS);
 		$processes = $processClass->searchInstances(array(PROPERTY_PROCESS_ACTIVITIES => $relatedActivity->uriResource), array('like' => false, 'recursive' => true));
 		if(!empty($processes)){
-			$returnValue = $this->createActivity($processes[0], $newActivityLabel);
+			$returnValue = $this->createActivity(array_shift($processes), $newActivityLabel);
 		}else{
 			throw new Exception("no related process instance found to create an activity");
 		}
@@ -524,7 +524,8 @@ class wfEngine_models_classes_ProcessAuthoringService
 		if($ok){
 			$newTokenProperty = new core_kernel_classes_Property($returnValue->uriResource);
 			$newTokenProperty->setDomain(new core_kernel_classes_Class(CLASS_TOKEN));
-			$newTokenProperty->setRange(new core_kernel_classes_Class(RDFS_LITERAL));//literal only??
+			$newTokenProperty->setRange(new core_kernel_classes_Class(RDFS_LITERAL));//literal only!
+			$newTokenProperty->setPropertyValue(new core_kernel_classes_Property(PROPERTY_MULTIPLE), GENERIS_TRUE);
 		}else{
 			throw new Exception("the newly created process variable {$label} ({$returnValue->uriResource}) cannot be set as a property of the class Token");
 		}
@@ -644,7 +645,7 @@ class wfEngine_models_classes_ProcessAuthoringService
 				$processClass = new core_kernel_classes_Class(CLASS_PROCESS);
 				$processes = $processClass->searchInstances(array(PROPERTY_PROCESS_ACTIVITIES => $relatedActivity->uriResource), array('like'=>false, 'recursive' => false));
 				if(!empty($processes)){
-					$followingActivity = $this->createActivity($processes[0], $newActivityLabel);
+					$followingActivity = $this->createActivity(array_shift($processes), $newActivityLabel);
 				}else{
 					throw new Exception("no related process instance found to create an activity");
 				}
@@ -742,7 +743,7 @@ class wfEngine_models_classes_ProcessAuthoringService
 		foreach($actualParamCollection->getIterator() as $actualParam){
 		
 			if($actualParam instanceof core_kernel_classes_Resource){
-				$returnValue=$actualParam->delete();
+				$returnValue = $actualParam->delete(true);
 				if(!$returnValue) {
 					break;
 				}
@@ -774,13 +775,13 @@ class wfEngine_models_classes_ProcessAuthoringService
 		$propActualParamOut = new core_kernel_classes_Property(PROPERTY_CALLOFSERVICES_ACTUALPARAMETEROUT);
 		
 		foreach($service->getPropertyValuesCollection($propActualParamIn)->getIterator() as $actualParam){
-			$actualParam->delete();
+			$actualParam->delete(true);
 		}
 		foreach($service->getPropertyValuesCollection($propActualParamOut)->getIterator() as $actualParam){
-			$actualParam->delete();
+			$actualParam->delete(true);
 		}
 		
-		$returnValue = $service->delete();
+		$returnValue = $service->delete(true);
 		
         // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004DF5 end
 
@@ -873,8 +874,6 @@ class wfEngine_models_classes_ProcessAuthoringService
 		}
 		
 		//delete connector itself:
-		$returnValue = $this->deleteReference(new core_kernel_classes_Property(PROPERTY_CONNECTORS_PREVIOUSACTIVITIES), $connector);
-		// $returnValue = $this->deleteReference(new core_kernel_classes_Property(PROPERTY_CONNECTORS_NEXTACTIVITIES), $connector);
 		$returnValue = $this->deleteInstance($connector);
 		
         // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004DFC end
@@ -942,14 +941,11 @@ class wfEngine_models_classes_ProcessAuthoringService
 				$nextActivity = $transitionRule->getOnePropertyValue($property);
 				if(!is_null($nextActivity)){
 					if(wfEngine_helpers_ProcessUtil::isConnector($nextActivity)){
-						
 						$nextActivityRef = $nextActivity->getUniquePropertyValue($activityRefProp)->uriResource;
 						if($nextActivityRef == $activityRef){
 							$this->deleteConnector($nextActivity);//delete following connectors only if they have the same activity reference
 						}
 					}
-					$this->deleteReference($nextActivitiesProp, $nextActivity);
-					$this->deleteReference($property, $nextActivity);
 				}
 			}
 		}
@@ -985,7 +981,7 @@ class wfEngine_models_classes_ProcessAuthoringService
 		}
 		
 		//delete the expression itself:
-		$returnValue = $expression->delete();
+		$returnValue = $expression->delete(true);
 		
         // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004E0D end
 
@@ -1036,7 +1032,7 @@ class wfEngine_models_classes_ProcessAuthoringService
 			$this->deleteTerm($secondOperand);
 		}
 		
-		$returnValue = $operation->delete();
+		$returnValue = $operation->delete(true);
         // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004E16 end
 
         return (bool) $returnValue;
@@ -1064,7 +1060,7 @@ class wfEngine_models_classes_ProcessAuthoringService
 				}
 			}
 			
-			$returnValue = $process->delete();
+			$returnValue = $process->delete(true);
 		}
 		
         // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004E19 end
@@ -1130,9 +1126,6 @@ class wfEngine_models_classes_ProcessAuthoringService
 		if(!is_null($rule)){
 			$this->deleteCondition($rule);
 			
-			//delete reference, according to the type of rule: currently only transition rule
-			$this->deleteReference(new core_kernel_classes_Property(PROPERTY_CONNECTORS_TRANSITIONRULE), $rule);
-			
 			//delete the resources
 			$returnValue = $rule->delete($rule);
 		}
@@ -1177,7 +1170,7 @@ class wfEngine_models_classes_ProcessAuthoringService
 				}elseif(in_array($class->uriResource,$termClasses)){
 				
 					if(!in_array($term->uriResource, $termConstants)){//delete all instances but the one that are preset
-						$term->delete();
+						$term->delete(true);
 					}
 					
 				}else{
@@ -1438,10 +1431,10 @@ class wfEngine_models_classes_ProcessAuthoringService
         $returnValue = null;
 
         // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004E63 begin
-		$processVariableClass =  new core_kernel_classes_Class(PROPERTY_PROCESS_VARIABLES);
+		$processVariableClass =  new core_kernel_classes_Class(CLASS_PROCESSVARIABLES);
 		$variables = $processVariableClass->searchInstances(array(PROPERTY_PROCESSVARIABLES_CODE => $code), array('like' => false, 'recursive' => false));
-		if(!empty($variables) && $variables[0] instanceof core_kernel_classes_Resource){
-			$returnValue = $variables[0];
+		if(!empty($variables)){
+			$returnValue = array_shift($variables);
 		}else if($forceCreation){
 			$returnValue = $this->createProcessVariable($code, $code);
 			if(is_null($returnValue)){
@@ -1878,17 +1871,7 @@ class wfEngine_models_classes_ProcessAuthoringService
 			$processVariableToDelete = null;
 			$processVariableToDelete = $this->getProcessVariable($code);
 			if(!is_null($processVariableToDelete)){
-			
-				$referenceProperties = array(
-					PROPERTY_ACTUALPARAMETER_PROCESSVARIABLE,
-					PROPERTY_FORMALPARAMETER_DEFAULTPROCESSVARIABLE,
-					PROPERTY_PROCESS_VARIABLES
-				);
-				foreach($referenceProperties as $prop){
-					$this->deleteReference(new core_kernel_classes_Property($prop), $processVariableToDelete, true);
-				}
-				
-				$returnValue = $processVariableToDelete->delete();
+				$returnValue = $processVariableToDelete->delete(true);
 			}
 			
 		}

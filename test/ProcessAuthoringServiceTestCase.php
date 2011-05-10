@@ -213,7 +213,7 @@ class ProcessAuthoringServiceTestCase extends UnitTestCase {
 		
 		$connectorClass = new core_kernel_classes_Class(CLASS_CONNECTORS);
 		$connectors = $connectorClass->searchInstances(array(RDFS_LABEL => '2ndActivityForUnitTest_c_c'), array('like' => false));
-		$this->assertTrue(empty($connectorClass));
+		$this->assertTrue(empty($connectors));
 		
 		$activity1->delete();
 		$connector1->delete();

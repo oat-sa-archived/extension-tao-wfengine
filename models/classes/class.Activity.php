@@ -79,16 +79,11 @@ class wfEngine_models_classes_Activity
 		// We get the next connectors.
 		$connectorsClass = new core_kernel_classes_Class(CLASS_CONNECTORS);
 		$nextConnectors = $connectorsClass->searchInstances(array(PROPERTY_CONNECTORS_PREVIOUSACTIVITIES => $this->uri), array('like' => true, 'recursive' => false));
-		
 		foreach ($nextConnectors as $nextConnector){
-			foreach($nextConnector->getType() as $isAConnector){
-				if ($isAConnector->uriResource == CLASS_CONNECTORS){
-					$connector	= new wfEngine_models_classes_Connector($nextConnector->uriResource);
-					$this->nextConnectors[] = $connector;		
-				}
+			if(wfEngine_helpers_ProcessUtil::isConnector($nextConnector)){
+				$this->nextConnectors[] = new wfEngine_models_classes_Connector($nextConnector->uriResource);
 			}
 		}
-
         // section -64--88-1-64--7117f567:11a0527df60:-8000:00000000000008F4 end
     }
 
