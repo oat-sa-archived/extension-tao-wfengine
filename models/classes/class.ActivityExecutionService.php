@@ -425,18 +425,23 @@ class wfEngine_models_classes_ActivityExecutionService
         				$activityRole 	= $activity->getOnePropertyValue($this->restrictedRoleProperty);
 						$userRoles 		= $currentUser->getType();
         				if(!is_null($activityRole) && is_array($userRoles)){
-	        				if(in_array($activityRole->uriResource, $userRoles)){
-	        					
-	        					$activityExecutions = $this->getExecutions($activity, $processExecution);
-	        					$estimatedActivityExecutions = $this->getEstimatedExecutionCount($activity);
-	        					
-	        					if(count($activityExecutions) < $estimatedActivityExecutions){
-									$returnValue = true;
-	        					}
-	        					elseif(!is_null($this->getExecution($activity, $currentUser, $processExecution))){
-	        						$returnValue = true;
-	        					}
-							}
+        					foreach($userRoles as $userRole){
+        						
+		        				if($activityRole->uriResource == $userRole->uriResource){
+		        					
+		        					$activityExecutions = $this->getExecutions($activity, $processExecution);
+		        					$estimatedActivityExecutions = $this->getEstimatedExecutionCount($activity);
+		        					
+		        					if(count($activityExecutions) < $estimatedActivityExecutions){
+										$returnValue = true;
+		        					}
+		        					elseif(!is_null($this->getExecution($activity, $currentUser, $processExecution))){
+		        						$returnValue = true;
+		        					}
+		        					
+		        					break;
+								}
+        					}
 						}
         				break;	
         				
@@ -476,8 +481,10 @@ class wfEngine_models_classes_ActivityExecutionService
 							$activityRole 	= $activity->getUniquePropertyValue($this->restrictedRoleProperty);
 							$userRoles 		= $currentUser->getType();
 							if(!is_null($activityRole) && is_array($userRoles)){
-								if(in_array($activityRole->uriResource, $userRoles)){
-									return true;
+								foreach($userRoles as $userRole){
+									if($activityRole->uriResource == $userRole->uriResource){
+										return true;
+									}
 								}
 							}
 							return false;

@@ -691,8 +691,6 @@ class wfEngine_models_classes_ProcessAuthoringService
 
         // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004DDC begin
 		
-		$apiModel = core_kernel_impl_ApiModelOO::singleton();
-		
 		$connectorClass = new core_kernel_classes_Class(CLASS_CONNECTORS);
 		$connectors = $connectorClass->searchInstances(array(PROPERTY_CONNECTORS_ACTIVITYREFERENCE => $activity->uriResource), array('like' => false, 'recursive' => false));
 		foreach($connectors as $connector){

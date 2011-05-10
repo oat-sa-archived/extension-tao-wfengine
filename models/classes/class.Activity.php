@@ -81,8 +81,12 @@ class wfEngine_models_classes_Activity
 		$nextConnectors = $connectorsClass->searchInstances(array(PROPERTY_CONNECTORS_PREVIOUSACTIVITIES => $this->uri), array('like' => true, 'recursive' => false));
 		
 		foreach ($nextConnectors as $nextConnector){
-			$connector	= new wfEngine_models_classes_Connector($nextConnector->uriResource);
-			$this->nextConnectors[] = $connector;	
+			foreach($nextConnector->getType() as $isAConnector){
+				if ($isAConnector->uriResource == CLASS_CONNECTORS){
+					$connector	= new wfEngine_models_classes_Connector($nextConnector->uriResource);
+					$this->nextConnectors[] = $connector;		
+				}
+			}
 		}
 
         // section -64--88-1-64--7117f567:11a0527df60:-8000:00000000000008F4 end
