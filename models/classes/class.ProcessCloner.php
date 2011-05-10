@@ -710,9 +710,19 @@ class wfEngine_models_classes_ProcessCloner
 		foreach($this->clonedActivities as $newActivityIO){
 			if(is_array($newActivityIO)){
 				foreach(array('in', 'out') as $interface){
-					$activity = new core_kernel_classes_Resource($newActivityIO[$interface]);
-					if(wfEngine_helpers_ProcessUtil::isActivity($activity)){
-						$returnValue[$activity->uriResource] = $activity;
+					if(is_array($newActivityIO[$interface])){
+						foreach($newActivityIO[$interface] as $activityUri){
+							$activity = new core_kernel_classes_Resource($activityUri);
+							if(wfEngine_helpers_ProcessUtil::isActivity($activity)){
+								$returnValue[$activity->uriResource] = $activity;
+							}
+						}
+					}
+					else{
+						$activity = new core_kernel_classes_Resource($newActivityIO[$interface]);
+						if(wfEngine_helpers_ProcessUtil::isActivity($activity)){
+							$returnValue[$activity->uriResource] = $activity;
+						}
 					}
 				}
 			}else if(is_string($newActivityIO)){

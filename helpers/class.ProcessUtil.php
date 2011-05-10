@@ -61,9 +61,8 @@ class wfEngine_helpers_ProcessUtil
 
         // section 10-13-1-39--284957ac:12e4ca5284a:-8000:0000000000002BEB begin
 		if(!is_null($resource) && !is_null($clazz)){
-		
 			foreach($resource->getType() as $type){
-				if($type instanceof core_kernel_classes_Resource){
+				if($type instanceof core_kernel_classes_Class){
 					if( $type->uriResource == $clazz->uriResource){
 						$returnValue = true;
 						break;
