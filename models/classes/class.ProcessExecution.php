@@ -367,17 +367,21 @@ extends wfEngine_models_classes_WfResource
 				}
 				
 				$debug = array();
-				
+				$tokenClass = new core_kernel_classes_Class(CLASS_TOKEN);
+				$propActivityExecIsFinished = new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_IS_FINISHED);
+				$propActivityExecProcessExec = new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_PROCESSEXECUTION);
+				$activityExecutionClass = new core_kernel_classes_Class(CLASS_ACTIVITY_EXECUTION);				
 				foreach($activityResourceArray as $activityDefinition=>$count){
 					//get all activity execution for the current activity definition and for the current process execution indepedently from the user (which is not known at the authoring time)
 					
 					//get the collection of the activity executions performed for the given actiivty definition:
-					$activityExecutionCollection = core_kernel_impl_ApiModelOO::singleton()->getSubject(PROPERTY_ACTIVITY_EXECUTION_ACTIVITY, $activityDefinition);
+					
+					$activityExecutions = $activityExecutionClass->searchInstances(array(PROPERTY_ACTIVITY_EXECUTION_ACTIVITY => $activityDefinition), array('like'=>false));
 					
 					$activityExecutionArray = array();
 					$debug[$activityDefinition] = array();
-					foreach($activityExecutionCollection->getIterator() as $activityExecutionResource){
-						$processExecutionResource = $activityExecutionResource->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_PROCESSEXECUTION));
+					foreach($activityExecutions as $activityExecutionResource){
+						$processExecutionResource = $activityExecutionResource->getOnePropertyValue($propActivityExecProcessExec);
 						
 						$debug[$activityDefinition][$activityExecutionResource->getLabel()] = $processExecutionResource->getLabel().':'.$processExecutionResource->uriResource;
 						// $debug[$activityDefinition]['$this->resource->uri'] = $this->resource->uri;
@@ -386,10 +390,10 @@ extends wfEngine_models_classes_WfResource
 							if($processExecutionResource->uriResource == $this->resource->uriResource){
 								//check if the activity execution is associated to a token: 
 								//take the activity exec into account only if it is the case:
-								$tokenCollection = core_kernel_impl_ApiModelOO::singleton()->getSubject(PROPERTY_TOKEN_ACTIVITYEXECUTION, $activityExecutionResource->uriResource);
-								if($tokenCollection->count()>0){
+								$tokens = $tokenClass->searchInstances(array(PROPERTY_TOKEN_ACTIVITYEXECUTION => $activityExecutionResource->uriResource), array('like' => false));
+								if(count($tokens)){
 									//found one: check if it is finished:
-									$isFinished = $activityExecutionResource->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_IS_FINISHED));
+									$isFinished = $activityExecutionResource->getOnePropertyValue($propActivityExecIsFinished);
 									if(!$isFinished instanceof core_kernel_classes_Resource || $isFinished->uriResource == GENERIS_FALSE){
 										$completed = false;
 										break(2); //leave the $completed value as false, no neet to continue
@@ -589,12 +593,14 @@ extends wfEngine_models_classes_WfResource
 		
 		$returnValue = '';
 		
-		$connectorsCollection = core_kernel_impl_ApiModelOO::singleton()->getSubject(PROPERTY_CONNECTORS_PREVIOUSACTIVITIES, $activityUri);
-		
-		if($connectorsCollection->count()>1){
+		$connectorClass = new core_kernel_classes_Class(CLASS_CONNECTORS);
+		$connectors = $connectorClass->searchInstances(array(PROPERTY_CONNECTORS_PREVIOUSACTIVITIES => $activityUri)), array('like' => false));
+			
+		$countConnectors = count($connectors);
+		if($countConnectors > 1){
 			//there might be a join connector among them or an issue
 			$connectorsUri = array();
-			foreach ($connectorsCollection->getIterator() as $connector){
+			foreach ($connectors as $connector){
 				$connectorType = $connector->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_TYPE));
 				//drop the connector join for now 
 				//(a join connector is considered only when it is only one found, i.e. the "else" case below)
@@ -611,10 +617,9 @@ extends wfEngine_models_classes_WfResource
 				//ok, the unique next connector has been found
 				$returnValue = $connectorsUri[0];
 			}
-		}else if($connectorsCollection->count() == 1){
-			$returnValue = $connectorsCollection->get(0)->uriResource;
+		}else if($countConnectors == 1){
+			$returnValue = array_shift($connectors)->uriResource;
 		}else{
-			// $connectorsCollection->count() == 0:
 			//it is the final activity
 		}
 		
@@ -635,15 +640,13 @@ extends wfEngine_models_classes_WfResource
 		$returnValue = array();
 
 		// section 10-13-1-85--3c82cee5:11bb0c5945c:-8000:00000000000009AB begin
-		$nextConnectorsCollection = core_kernel_impl_ApiModelOO::singleton()->getSubject(PROPERTY_CONNECTORS_PREVIOUSACTIVITIES, $this->currentActivity[0]->uri);
+		$connectorClass = new core_kernel_classes_Class(CLASS_CONNECTORS);
+		$nextConnectors = $connectorClass->searchInstances(array(PROPERTY_CONNECTORS_PREVIOUSACTIVITIES => $this->currentActivity[0]->uri), array('like' => false));
 
 		$connectors = array();
-
-		foreach ($nextConnectorsCollection->getIterator() as $statement)
-		{
-			$newConn = new wfEngine_models_classes_Connector($statement->uriResource);
+		foreach ($nextConnectors as $connector){
+			$newConn = new wfEngine_models_classes_Connector($connector->uriResource);
 			$newConn->feedFlow(1);
-
 			$connectors[] = $newConn;
 		}
 

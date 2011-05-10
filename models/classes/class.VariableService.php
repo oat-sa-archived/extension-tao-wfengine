@@ -73,21 +73,22 @@ class wfEngine_models_classes_VariableService
 					throw new Exception('Activity Token should never be null');
 			}
 			
+			$processVariablesClass = new core_kernel_classes_Class(CLASS_PROCESSVARIABLES);
 			$newVar = unserialize($token->getOnePropertyValue($tokenVarProp));
 			foreach($variable as $k => $v) {
-				$collection = core_kernel_impl_ApiModelOO::singleton()->getSubject(PROPERTY_PROCESSVARIABLES_CODE,$k);
-				if(!$collection->isEmpty()){
-						if($collection->count() == 1) {
-							$property = new core_kernel_classes_Property($collection->get(0)->uriResource);
+				$processVariables = $processVariablesClass->searchInstances(array(PROPERTY_PROCESSVARIABLES_CODE => $k), array('like' => false));
+				if(!empty($processVariables)){
+					if(count($processVariables) == 1) {
+						$property = new core_kernel_classes_Property(array_shift($processVariables)->uriResource);
 
-							$returnValue &= $token->editPropertyValues($property,$v);
-							if(is_array($newVar)){
-								$newVar = array_merge($newVar, array($k)); 
-							}
-							else{
-								$newVar = array($k);
-							}
+						$returnValue &= $token->editPropertyValues($property,$v);
+						if(is_array($newVar)){
+							$newVar = array_merge($newVar, array($k)); 
 						}
+						else{
+							$newVar = array($k);
+						}
+					}
 				}
 				
 			}
@@ -129,12 +130,13 @@ class wfEngine_models_classes_VariableService
 			}
 			
 			if(is_array($params)){
+				$processVariablesClass = new core_kernel_classes_Class(CLASS_PROCESSVARIABLES);
 				foreach($params as $param) {
 					if(in_array($param,$oldVar)){
-						$collection = core_kernel_impl_ApiModelOO::singleton()->getSubject(PROPERTY_PROCESSVARIABLES_CODE, $param);
-						if(!$collection->isEmpty()){
-							if($collection->count() == 1) {
-								$property = new core_kernel_classes_Property($collection->get(0)->uriResource);
+						$processVariables = $processVariablesClass->searchInstances(array(PROPERTY_PROCESSVARIABLES_CODE => $param), array('like' => false));
+						if(!empty($processVariables)){
+							if(count($processVariables) == 1) {
+								$property = new core_kernel_classes_Property(array_shift($processVariables)->uriResource);
 								
 								$returnValue &= $token->removePropertyValues($property);
 								$oldVar = array_diff($oldVar,array($param));
@@ -175,10 +177,11 @@ class wfEngine_models_classes_VariableService
 			$tokenVarProp = new core_kernel_classes_Property(PROPERTY_TOKEN_VARIABLE);
 			$vars = unserialize($token->getOnePropertyValue($tokenVarProp));
 			if(in_array($key,$vars)){
-				$collection = core_kernel_impl_ApiModelOO::singleton()->getSubject(PROPERTY_PROCESSVARIABLES_CODE,$key);
-				if(!$collection->isEmpty()){
-					if($collection->count() == 1) {
-						$property = new core_kernel_classes_Property($collection->get(0)->uriResource);
+				$processVariablesClass = new core_kernel_classes_Class(CLASS_PROCESSVARIABLES);
+				$processVariables = $processVariablesClass->searchInstances(array(PROPERTY_PROCESSVARIABLES_CODE => $key), array('like' => false));
+				if(!empty($processVariables)){
+					if(count($processVariables) == 1) {
+						$property = new core_kernel_classes_Property(array_shift($processVariables)->uriResource);
 						$values = $token->getPropertyValuesCollection($property);
 						if($values->count() == 1){
 							$returnValue = $values->get(0);
@@ -218,11 +221,14 @@ class wfEngine_models_classes_VariableService
 			$tokenVarProp = new core_kernel_classes_Property(PROPERTY_TOKEN_VARIABLE);
 			$vars = unserialize($token->getOnePropertyValue($tokenVarProp));
 			
+			$processVariablesClass = new core_kernel_classes_Class(CLASS_PROCESSVARIABLES);
+				$processVariables = $processVariablesClass->searchInstances(array(PROPERTY_PROCESSVARIABLES_CODE => $code), array('like' => false));
+               
 			foreach($vars as $code){
-				$collection = core_kernel_impl_ApiModelOO::singleton()->getSubject(PROPERTY_PROCESSVARIABLES_CODE,$code);
-				if(!$collection->isEmpty()){
-					if($collection->count() == 1) {
-						$property = new core_kernel_classes_Property($collection->get(0)->uriResource);
+				$processVariables = $processVariablesClass->searchInstances(array(PROPERTY_PROCESSVARIABLES_CODE => $code), array('like' => false));
+				if(!empty($processVariables)){
+					if(count($processVariables) == 1) {
+						$property = new core_kernel_classes_Property(array_shift($processVariables)->uriResource);
 						$values = $token->getPropertyValuesCollection($property);
 						if($values->count() == 1){
 							$returnValue[$code] = $values->get(0);
@@ -266,12 +272,12 @@ class wfEngine_models_classes_VariableService
 			}
 			
 			$newVar = unserialize($token->getOnePropertyValue($tokenVarProp));
-		
-			$collection = core_kernel_impl_ApiModelOO::singleton()->getSubject(PROPERTY_PROCESSVARIABLES_CODE,$key);
-				
-			if(!$collection->isEmpty()){
-				if($collection->count() == 1) {
-					$property = new core_kernel_classes_Property($collection->get(0)->uriResource);
+			
+			$processVariablesClass = new core_kernel_classes_Class(CLASS_PROCESSVARIABLES);
+			$processVariables = $processVariablesClass->searchInstances(array(PROPERTY_PROCESSVARIABLES_CODE => $key), array('like' => false));
+			if(!empty($processVariables)){
+				if(count($processVariables) == 1) {
+					$property = new core_kernel_classes_Property(array_shift($processVariables)->uriResource);
 					
 					$returnValue &= $token->setPropertyValue($property, $value);
 					if(is_array($newVar)){

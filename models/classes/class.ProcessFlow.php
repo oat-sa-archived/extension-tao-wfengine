@@ -48,9 +48,9 @@ class wfEngine_models_classes_ProcessFlow{
 		//put the activity being searched in an array to prevent searching from it again in case of back connection
 		$this->checkedActivities[$activity->uriResource] = $activity;
 		
-		$apiModel = core_kernel_impl_ApiModelOO::singleton();
-		$previousConnectorsCollection = $apiModel->getSubject(PROPERTY_CONNECTORS_NEXTACTIVITIES, $activity->uriResource);//note: count()>1 only 
-		foreach($previousConnectorsCollection->getIterator() as $connector){
+		$connectorClass = new core_kernel_classes_Class(CLASS_CONNECTORS);
+		$previousConnectors = $connectorClass->searchInstances(array(PROPERTY_CONNECTORS_NEXTACTIVITIES => $activity->uriResource), array('like' => false));//note: count()>1 only 
+		foreach($previousConnectors as $connector){
 		
 			if(in_array($connector->uriResource, array_keys($this->checkedConnectors))){
 				continue;
@@ -110,13 +110,11 @@ class wfEngine_models_classes_ProcessFlow{
 		//put the activity being searched in an array to prevent searching from it again in case of back connection
 		$this->checkedActivities[$activity->uriResource] = $activity;
 		
-		$apiModel = core_kernel_impl_ApiModelOO::singleton();
-		$nextConnectorsCollection = $apiModel->getSubject(PROPERTY_CONNECTORS_PREVIOUSACTIVITIES, $activity->uriResource);//note: count()>1 only 
-		
-		if($nextConnectorsCollection->count()){//there could be only one next connector for an activity
+		$connectorClass = new core_kernel_classes_Class(CLASS_CONNECTORS);
+		$nextConnectors = $connectorClass->searchInstances(array(PROPERTY_CONNECTORS_PREVIOUSACTIVITIES => $activity->uriResource), array('like' => false));//note: count()>1 only 
+		if(count(nextConnectors)){//there could be only one next connector for an activity
 		
 			$connector = $nextConnectorsCollection->get(0);
-			// echo 'jkjl';
 			if(in_array($connector->uriResource, array_keys($this->checkedConnectors))){
 				continue;
 			}else{

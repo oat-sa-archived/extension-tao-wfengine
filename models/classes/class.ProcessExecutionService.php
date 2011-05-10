@@ -169,24 +169,23 @@ class wfEngine_models_classes_ProcessExecutionService
 				}
 			}
 			
-			$apiModel  	= core_kernel_impl_ApiModelOO::singleton();
-			
 			//delete associated activity executions
-			$activityExecutionCollection = $apiModel->getSubject(PROPERTY_ACTIVITY_EXECUTION_PROCESSEXECUTION,  $processExecution->uriResource);
-			if($activityExecutionCollection->count() > 0){
-				foreach($activityExecutionCollection->getIterator() as $activityExecution){
+			$activityExecClass = new core_kernel_classes_Class(CLASS_ACTIVITY_EXECUTION);
+			$activityExecutions = $activityExecClass->searchInstances(array(PROPERTY_ACTIVITY_EXECUTION_PROCESSEXECUTION => $processExecution->uriResource), array('like' => false));
+			if(count($activityExecutions) > 0){
+				foreach($activityExecutions as $activityExecution){
 					if($activityExecution instanceof core_kernel_classes_Resource){
-						$activityExecution->delete();
+						$activityExecution->delete(true);
 					}
 				}
 			}
 			
 			//delete current tokens:
-			$tokenCollection = $apiModel->getSubject(PROPERTY_PROCESSINSTANCES_CURRENTTOKEN,  $processExecution->uriResource);
+			$tokenCollection = $processExecution->getPropertyValuesCollection(new core_kernel_classes_Property(PROPERTY_PROCESSINSTANCES_CURRENTTOKEN));
 			if($tokenCollection->count() > 0){
 				foreach($tokenCollection->getIterator() as $token){
 					if($token instanceof core_kernel_classes_Resource){
-						$token->delete();
+						$token->delete(true);
 					}
 				}
 			}

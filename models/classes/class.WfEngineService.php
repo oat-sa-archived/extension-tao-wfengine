@@ -46,14 +46,15 @@ class wfEngine_models_classes_WfEngineService
 
         // section 10-13-1--31-740bb989:119ebfa9b28:-8000:00000000000008E7 begin
         
-        $apiModel  	= core_kernel_impl_ApiModelOO::singleton();
-    	$class = new core_kernel_classes_Class(CLASS_PROCESS);
-		$processes = $class->getInstances();
+    	$processDefClass = new core_kernel_classes_Class(CLASS_PROCESS);
+		$processExecClass = new core_kernel_classes_Class(CLASS_PROCESSINSTANCES);
+		       
+		$processes = $processDefClass->getInstances();
 		foreach ($processes as $uri => $process){
-        	$executionCollection = $apiModel->getSubject(PROPERTY_PROCESSINSTANCES_EXECUTIONOF, $uri);
-        	foreach($executionCollection->getIterator() as $execution){
+			$processExecutions = $processExecClass->searchInstances(array(PROPERTY_PROCESSINSTANCES_EXECUTIONOF => $uri), array('like' => false));
+        	foreach($processExecutions as $execution){
         		$processInstance = new wfEngine_models_classes_ProcessExecution($execution->uriResource);
-        		$returnValue[]=$processInstance;
+        		$returnValue[] = $processInstance;
         	}
 		}
 

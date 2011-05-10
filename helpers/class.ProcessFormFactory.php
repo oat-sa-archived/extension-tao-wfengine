@@ -793,15 +793,16 @@ class wfEngine_helpers_ProcessFormFactory extends tao_helpers_form_GenerisFormFa
 		$parallelActivityCount = array();//used only in case of a parallel connector
 		$referencedActivity = $connector->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_ACTIVITYREFERENCE));//mandatory property value, initiated at the connector creation
 		if($referencedActivity instanceof core_kernel_classes_Resource){
-			$processCollection = core_kernel_impl_ApiModelOO::getSubject(PROPERTY_PROCESS_ACTIVITIES, $referencedActivity->uriResource);
-			if($processCollection->count()>0){
-				$process = $processCollection->get(0);
+			$processDefClass = new core_kernel_classes_Class(CLASS_PROCESS);
+			$processes = $processDefClass->searchInstances(array(PROPERTY_PROCESS_ACTIVITIES => $referencedActivity->uriResource), array('like'=>false));
+			if(count($processes)>0){
+				$process = array_shift($processes);
 				if(!empty($process)){
 					//get list of activities and connectors for the current process:
 					
+					$connectorClass = new core_kernel_classes_Class(CLASS_CONNECTORS);
 					$processAuthoringService = new wfEngine_models_classes_ProcessAuthoringService();
 					$activities = $processAuthoringService->getActivitiesByProcess($process);
-					
 					foreach($activities as $activityTemp){
 						
 						//include activities options:
@@ -810,9 +811,10 @@ class wfEngine_helpers_ProcessFormFactory extends tao_helpers_form_GenerisFormFa
 						
 						//include connectors options:
 						if($includeConnectors){
-							$connectorCollection = core_kernel_impl_ApiModelOO::getSubject(PROPERTY_CONNECTORS_ACTIVITYREFERENCE, $activityTemp->uriResource);
-							foreach($connectorCollection->getIterator() as $connectorTemp){
-								if( $connector->uriResource!=$connectorTemp->uriResource){
+							
+							$connectors = $connectorClass->searchInstances(array(PROPERTY_CONNECTORS_ACTIVITYREFERENCE => $activityTemp->uriResource), array('like'=>false));
+							foreach($connectors as $connectorTemp){
+								if( $connector->uriResource != $connectorTemp->uriResource){
 									$connectorOptions[ tao_helpers_Uri::encode($connectorTemp->uriResource) ] = $connectorTemp->getLabel();
 								}
 							}

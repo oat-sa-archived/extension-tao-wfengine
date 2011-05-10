@@ -372,18 +372,18 @@ extends tao_models_classes_GenerisService
             $tokenVarKeys = @unserialize($token->getOnePropertyValue($this->tokenVariableProp));
             if($tokenVarKeys !== false){
                 if(is_array($tokenVarKeys)){
+					$processVariablesClass = new core_kernel_classes_Class(CLASS_PROCESSVARIABLES);
+					
                     foreach($tokenVarKeys as $key){
-                        $collection = core_kernel_impl_ApiModelOO::singleton()->getSubject(PROPERTY_PROCESSVARIABLES_CODE, $key);
-                        if(!$collection->isEmpty()){
-                            if($collection->count() == 1) {
-                                $property = new core_kernel_classes_Property($collection->get(0)->uriResource);
-                                $returnValue[] =array(
-									'code'			=> $key,
-									'propertyUri'	=> $property->uriResource,
-									'value'			=> $token->getPropertyValues($property)
-                                );
-                            }
-                        }
+						$processVariables = $processVariablesClass->searchInstances(array(PROPERTY_PROCESSVARIABLES_CODE => $key), array('like' => false));
+						if(count($processVariables) == 1) {
+							$property = new core_kernel_classes_Property(array_shift($processVariables)->uriResource);
+							$returnValue[] =array(
+								'code'			=> $key,
+								'propertyUri'	=> $property->uriResource,
+								'value'			=> $token->getPropertyValues($property)
+							);
+						}
                     }
                 }
             }
@@ -592,16 +592,17 @@ extends tao_models_classes_GenerisService
              
             $keys = array();
             foreach($mergedVars as $code => $values){
-                $collection = core_kernel_impl_ApiModelOO::singleton()->getSubject(PROPERTY_PROCESSVARIABLES_CODE, $code);
-                if(!$collection->isEmpty()){
-                    if($collection->count() == 1) {
+				$processVariablesClass = new core_kernel_classes_Class(CLASS_PROCESSVARIABLES);
+				$processVariables = $processVariablesClass->searchInstances(array(PROPERTY_PROCESSVARIABLES_CODE => $code), array('like' => false));
+                if(!empty($processVariables){
+                    if(count($processVariables) == 1) {
                         if(is_array($values)){
                             foreach($values as $value){
-                                $newToken->setPropertyValue(new core_kernel_classes_Property($collection->get(0)->uriResource),$value);
+                                $newToken->setPropertyValue(new core_kernel_classes_Property(array_shift($processVariables)->uriResource),$value);
                             }
                         }
                         else{
-                            $newToken->setPropertyValue(new core_kernel_classes_Property($collection->get(0)->uriResource),$values);
+                            $newToken->setPropertyValue(new core_kernel_classes_Property(array_shift($processVariables)->uriResource),$values);
                         }
                     }
                 }

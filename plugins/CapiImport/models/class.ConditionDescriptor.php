@@ -253,16 +253,14 @@ class ConditionDescriptor
 
 		$subjectProperty = new core_kernel_classes_Property(PROPERTY_TERM_SPX_SUBJET,__METHOD__);
 		$predicateProperty = new core_kernel_classes_Property(PROPERTY_TERM_SPX_PREDICATE,__METHOD__);
-		$codeProperty = new core_kernel_classes_Property(PROPERTY_PROCESSVARIABLES_CODE,__METHOD__);
 
 		//get the resource with the code "$variable"
-		$processInstancePropertyCollection = $this->generisApi->getSubject($codeProperty->uriResource, $variable);
-		if(!$processInstancePropertyCollection->isEmpty()){
-		
-			$processInstanceProperty = $processInstancePropertyCollection->get(0);
-			
+		$processVariablesClass = new core_kernel_classes_Class(CLASS_PROCESSVARIABLES);
+		$processVariables = $processVariablesClass->searchInstances(array(PROPERTY_PROCESSVARIABLES_CODE => $variable), array('like' => false));
+		if(!empty($processVariables)){
+			$tokenProperty = array_shift($processVariables);
 			$termInstance->setPropertyValue($subjectProperty , VAR_PROCESS_INSTANCE);
-			$termInstance->setPropertyValue($predicateProperty , $processInstanceProperty->uriResource);
+			$termInstance->setPropertyValue($predicateProperty , $tokenProperty->uriResource);
 		}
 		else{
 			throw new common_Exception("the variable $variable doesn't exist, please create it before");//perform a check 

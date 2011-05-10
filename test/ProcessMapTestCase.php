@@ -100,15 +100,14 @@ class ProcessMapTestCase extends UnitTestCase {
 			
 			//try to find if a service definiton has already been created for the unit:
 			$serviceDefinition = null;
-			$serviceDefinitionCollection = core_kernel_impl_ApiModelOO::singleton()->getSubject(PROPERTY_SUPPORTSERVICES_URL,$url_unit);
-			if(!$serviceDefinitionCollection->isEmpty()){
-				if($serviceDefinitionCollection->get(0) instanceof core_kernel_classes_Resource){
-					$serviceDefinition = $serviceDefinitionCollection->get(0);
-				}
+			
+			$serviceDefinitionClass = new core_kernel_classes_Class(CLASS_SUPPORTSERVICES);
+			$serviceDefinitions = $serviceDefinitionClass->searchInstances(array(PROPERTY_SUPPORTSERVICES_URL => $url_unit), array('like' => false));
+			if(!empty($serviceDefinitions)){
+				$serviceDefinition = array_shift($serviceDefinitions);
 			}
 			if(is_null($serviceDefinition)){
 				//if no corresponding service def found, create a service definition:
-				$serviceDefinitionClass = new core_kernel_classes_Class(CLASS_SUPPORTSERVICES);
 				$serviceDefinition = $serviceDefinitionClass->createInstance($label_unit, 'created by process map testcase');
 				
 				//set service definition (the unit) and parameters:
@@ -163,11 +162,12 @@ class ProcessMapTestCase extends UnitTestCase {
 			$activityList[$i] = $currentActivity;
 			
 			//get its connector (check the type is "sequential) if ok, get the next activity
-			$connectorCollection = core_kernel_impl_ApiModelOO::getSubject(PROPERTY_CONNECTORS_PREVIOUSACTIVITIES, $currentActivity->uriResource);
+			$connectorClass = new core_kernel_classes_Class(CLASS_CONNECTORS);
+			$connectors = $connectorClass->searchInstances(array(PROPERTY_CONNECTORS_PREVIOUSACTIVITIES =>$currentActivity->uriResource), array('like'=>false));
 			$nextActivity = null;
-			foreach($connectorCollection->getIterator() as $connector){
+			foreach($connectors as $connector){
 				$connectorType = $connector->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_TYPE));
-				if($connectorType->uriResource = INSTANCE_TYPEOFCONNECTORS_SEQUENCE){
+				if($connectorType->uriResource == INSTANCE_TYPEOFCONNECTORS_SEQUENCE){
 					$nextActivity = $connector->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_NEXTACTIVITIES));
 					break;
 				}
