@@ -213,17 +213,15 @@ class wfEngine_models_classes_ActivityExecutionService
         
         if(!is_null($activity) && !is_null($currentUser) && !is_null($processExecution)){
         	
-        	$apiSearch = new core_kernel_impl_ApiSearchI();
-		
         	$filters = array(
         		PROPERTY_ACTIVITY_EXECUTION_ACTIVITY 			=> $activity->uriResource,
         		$this->currentUserProperty->uriResource			=> $currentUser->uriResource,
         		$this->processExecutionProperty->uriResource	=> $processExecution->uriResource
         	);
         	$clazz = new core_kernel_classes_Class(CLASS_ACTIVITY_EXECUTION);
-        	$options = array('checkSubclasses'	=> false, 'like' => false);
+        	$options = array('recursive'	=> false, 'like' => false);
 			
-			foreach($apiSearch->searchInstances($filters, $clazz, $options) as $activityExecution){
+			foreach($clazz->searchInstances($filters, $options) as $activityExecution){
 				$returnValue = $activityExecution;
 				break;
 			}
@@ -250,15 +248,14 @@ class wfEngine_models_classes_ActivityExecutionService
         
 		if(!is_null($activity) &&  !is_null($processExecution)){
           	
-			$apiSearch = new core_kernel_impl_ApiSearchI();
         	$filters = array(
         		PROPERTY_ACTIVITY_EXECUTION_ACTIVITY 			=> $activity->uriResource,
         		$this->processExecutionProperty->uriResource	=> $processExecution->uriResource
         	);
         	$clazz = new core_kernel_classes_Class(CLASS_ACTIVITY_EXECUTION);
-        	$options = array('checkSubclasses'	=> false, 'like' => false);
+        	$options = array('recursive'	=> false, 'like' => false);
 			
-			foreach($apiSearch->searchInstances($filters, $clazz, $options) as $activityExecution){
+			foreach($clazz->searchInstances($filters, $options) as $activityExecution){
 				$returnValue[$activityExecution->uriResource] = $activityExecution;
 			}
         }
@@ -454,7 +451,7 @@ class wfEngine_models_classes_ActivityExecutionService
 			
 	        				//retrieve the process containing the activity
 							$activityClass = new core_kernel_classes_Class(CLASS_PROCESS);
-							$processes = $activityClass->searchInstances(array($actsProp->uriResource => $activity->uriResource), array('like' => false));
+							$processes = $activityClass->searchInstances(array($actsProp->uriResource => $activity->uriResource), array('like' => false, 'recursive' => true));
 					        foreach($processes as $process){
 					        	
 					        	//get  activities
@@ -587,7 +584,7 @@ class wfEngine_models_classes_ActivityExecutionService
         
     	if(!is_null($processExecution)){
           	$activityExecClass = new core_kernel_classes_Class(CLASS_ACTIVITY_EXECUTION);
-			$activityExecutions = $activityExecClass->searchInstances(array(PROPERTY_ACTIVITY_EXECUTION_PROCESSEXECUTION => $processExecution->uriResource), array('like' => false));
+			$activityExecutions = $activityExecClass->searchInstances(array(PROPERTY_ACTIVITY_EXECUTION_PROCESSEXECUTION => $processExecution->uriResource), array('like' => false, 'recursive' => false));
         	foreach($activityExecutions as $activityExecution){
 				$activityExecution->delete();
         	}

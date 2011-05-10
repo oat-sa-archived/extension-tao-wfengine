@@ -154,8 +154,7 @@ extends tao_models_classes_GenerisService
 
         if(!is_null($activityExecution)){
              
-        	$apiSearch = new core_kernel_impl_ApiSearchI();
-        	$options = array('checkSubclasses'	=> false, 'like' => false);
+        	$options = array('recursive'	=> false, 'like' => false);
 			
         	$filters = array(PROPERTY_TOKEN_ACTIVITYEXECUTION => $activityExecution->uriResource);
         	if($checkUser){
@@ -163,12 +162,12 @@ extends tao_models_classes_GenerisService
         		if(!is_null($activityUser)){
         			$filters[$this->tokenCurrentUserProp->uriResource] = $activityUser->uriResource;
         		}
-	        	foreach($apiSearch->searchInstances($filters, $this->tokenClass, $options) as $token){
+	        	foreach($this->tokenClass->searchInstances($filters, $options) as $token){
 					 $returnValue[$token->uriResource] = $token;
 				}
         	}
         	else{
-        		foreach($apiSearch->searchInstances($filters, $this->tokenClass, $options) as $token){
+        		foreach($this->tokenClass->searchInstances($filters, $options) as $token){
 					 $tokenUser = $token->getOnePropertyValue($this->tokenCurrentUserProp);
 					 if(!is_null($tokenUser)){
         				$returnValue[$token->uriResource] = $token;
@@ -593,8 +592,8 @@ extends tao_models_classes_GenerisService
             $keys = array();
             foreach($mergedVars as $code => $values){
 				$processVariablesClass = new core_kernel_classes_Class(CLASS_PROCESSVARIABLES);
-				$processVariables = $processVariablesClass->searchInstances(array(PROPERTY_PROCESSVARIABLES_CODE => $code), array('like' => false));
-                if(!empty($processVariables){
+				$processVariables = $processVariablesClass->searchInstances(array(PROPERTY_PROCESSVARIABLES_CODE => $code), array('like' => false, 'recursive' => false));
+                if(!empty($processVariables)){
                     if(count($processVariables) == 1) {
                         if(is_array($values)){
                             foreach($values as $value){

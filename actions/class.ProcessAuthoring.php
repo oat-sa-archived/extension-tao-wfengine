@@ -450,7 +450,7 @@ class wfEngine_actions_ProcessAuthoring extends tao_actions_TaoModule {
         $actsProp 			= new core_kernel_classes_Property(PROPERTY_PROCESS_ACTIVITIES);
 		
 		$processClass = new core_kernel_classes_Class(CLASS_PROCESS);
-		$processes = $processClass->searchInstances(array(PROPERTY_PROCESS_ACTIVITIES => $activity->uriResource), array('like'=>false));
+		$processes = $processClass->searchInstances(array(PROPERTY_PROCESS_ACTIVITIES => $activity->uriResource), array('like'=>false, 'recursive' => true));
         foreach($processes as $process){
         	if($process instanceof core_kernel_classes_Resource){
 				foreach ($process->getPropertyValues($actsProp) as $pactivityUri){
@@ -651,7 +651,7 @@ class wfEngine_actions_ProcessAuthoring extends tao_actions_TaoModule {
 		);
 		
 		$activityClass = new core_kernel_classes_Class(CLASS_ACTIVITIES);
-		$activities = $activityClass->searchInstances(array(PROPERTY_ACTIVITIES_INTERACTIVESERVICES => $callOfServiceUri), array('like'=>false));
+		$activities = $activityClass->searchInstances(array(PROPERTY_ACTIVITIES_INTERACTIVESERVICES => $callOfServiceUri), array('like'=>false, 'recursive' => false));
 		
 		if(!empty($activities) && isset($activities[0])){
 			
@@ -1254,7 +1254,7 @@ class wfEngine_actions_ProcessAuthoring extends tao_actions_TaoModule {
 			}else{
 				//check if the variable is set as a process variable of the current process
 				
-				$processes = $processClass->searchInstances(array($processVarProp->uriResource => $processVar->uriResource), array('like'=>false));
+				$processes = $processClass->searchInstances(array($processVarProp->uriResource => $processVar->uriResource), array('like'=>false, 'recursive' => true));
 				$ok = false;
 				foreach($processes as $processTemp){
 					if($processTemp->uriResource == $process->uriResource){

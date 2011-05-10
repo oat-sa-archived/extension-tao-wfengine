@@ -9,10 +9,10 @@ error_reporting(E_ALL);
  *
  * This file is part of TAO.
  *
- * Automatically generated on 10.05.2011, 12:13:55 with ArgoUML PHP module 
+ * Automatically generated on 22.02.2011, 10:59:47 with ArgoUML PHP module 
  * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
  *
- * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+ * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
  * @package wfEngine
  * @subpackage helpers
  */
@@ -33,7 +33,7 @@ if (0 > version_compare(PHP_VERSION, '5')) {
  * Short description of class wfEngine_helpers_ProcessUtil
  *
  * @access public
- * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+ * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
  * @package wfEngine
  * @subpackage helpers
  */
@@ -50,7 +50,7 @@ class wfEngine_helpers_ProcessUtil
      * Short description of method checkType
      *
      * @access public
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
      * @param  Resource resource
      * @param  Class clazz
      * @return boolean
@@ -80,7 +80,7 @@ class wfEngine_helpers_ProcessUtil
      * Short description of method getServiceDefinition
      *
      * @access public
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
      * @param  string url
      * @return core_kernel_classes_Resource
      */
@@ -90,14 +90,14 @@ class wfEngine_helpers_ProcessUtil
 
         // section 10-13-1-39--284957ac:12e4ca5284a:-8000:0000000000002BF2 begin
 		$serviceClass = new core_kernel_classes_Class(CLASS_SUPPORTSERVICES);
-		$services = $serviceClass->searchInstances(array(PROPERTY_SUPPORTSERVICES_URL => $url), array('like' => true));
+		$services = $serviceClass->searchInstances(array(PROPERTY_SUPPORTSERVICES_URL => $url), array('like' => true, 'recursive' => true));
 		if(!count($services)){
 			if($services[0] instanceof core_kernel_classes_Resource){
 				$returnValue = $services[0];
 			}
 		}	
         
-        // section 10-13-1-39--284957ac:12e4ca5284a:-8000:0000000000002BF2 end
+		// section 10-13-1-39--284957ac:12e4ca5284a:-8000:0000000000002BF2 end
 
         return $returnValue;
     }
@@ -106,7 +106,7 @@ class wfEngine_helpers_ProcessUtil
      * Short description of method isActivity
      *
      * @access public
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
      * @param  Resource resource
      * @return boolean
      */
@@ -127,7 +127,7 @@ class wfEngine_helpers_ProcessUtil
      * Short description of method isActivityFinal
      *
      * @access public
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
      * @param  Resource activity
      * @return boolean
      */
@@ -150,7 +150,7 @@ class wfEngine_helpers_ProcessUtil
      * Short description of method isActivityInitial
      *
      * @access public
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
      * @param  Resource activity
      * @return boolean
      */
@@ -174,7 +174,7 @@ class wfEngine_helpers_ProcessUtil
      * Short description of method isConnector
      *
      * @access public
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
      * @param  Resource resource
      * @return boolean
      */
@@ -190,8 +190,8 @@ class wfEngine_helpers_ProcessUtil
 
         return (bool) $returnValue;
     }
-
-    /**
+    
+	/**
      * Short description of method getConnectorNextActivities
      *
      * @access public

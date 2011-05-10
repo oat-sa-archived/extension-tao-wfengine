@@ -594,7 +594,7 @@ extends wfEngine_models_classes_WfResource
 		$returnValue = '';
 		
 		$connectorClass = new core_kernel_classes_Class(CLASS_CONNECTORS);
-		$connectors = $connectorClass->searchInstances(array(PROPERTY_CONNECTORS_PREVIOUSACTIVITIES => $activityUri)), array('like' => false));
+		$connectors = $connectorClass->searchInstances(array(PROPERTY_CONNECTORS_PREVIOUSACTIVITIES => $activityUri), array('like' => false, 'recursive' => false));
 			
 		$countConnectors = count($connectors);
 		if($countConnectors > 1){
