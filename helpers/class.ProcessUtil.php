@@ -60,7 +60,7 @@ class wfEngine_helpers_ProcessUtil
         $returnValue = (bool) false;
 
         // section 10-13-1-39--284957ac:12e4ca5284a:-8000:0000000000002BEB begin
-		if(!is_null($resource) && !is_null($clazz)){
+		if(!is_null($resource) && !is_null($clazz)){	
 			foreach($resource->getType() as $type){
 				if($type instanceof core_kernel_classes_Class){
 					if( $type->uriResource == $clazz->uriResource){
@@ -91,9 +91,10 @@ class wfEngine_helpers_ProcessUtil
         // section 10-13-1-39--284957ac:12e4ca5284a:-8000:0000000000002BF2 begin
 		$serviceClass = new core_kernel_classes_Class(CLASS_SUPPORTSERVICES);
 		$services = $serviceClass->searchInstances(array(PROPERTY_SUPPORTSERVICES_URL => $url), array('like' => true, 'recursive' => true));
-		if(!count($services)){
-			if($services[0] instanceof core_kernel_classes_Resource){
-				$returnValue = $services[0];
+		if(count($services)){
+			$service = array_pop($services);
+			if($service instanceof core_kernel_classes_Resource){
+				$returnValue = $service;
 			}
 		}	
         
