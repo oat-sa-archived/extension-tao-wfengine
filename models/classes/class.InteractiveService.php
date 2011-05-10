@@ -210,7 +210,7 @@ class wfEngine_models_classes_InteractiveService
 		//get the style information (size and position)
 		$width = $this->resource->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_CALLOFSERVICES_WIDTH));
 		if($width != null && $width instanceof core_kernel_classes_Literal){
-			if(intval($width)){
+			if(intval($width->literal)){
 				//do not allow width="0"
 				$this->styleWidth = intval($width->literal).'%';
 			}

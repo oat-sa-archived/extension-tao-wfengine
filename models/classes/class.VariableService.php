@@ -59,6 +59,8 @@ class wfEngine_models_classes_VariableService
     public function save($variable)
     {
         // section -87--2--3--76--7eb229c2:12916be1ece:-8000:0000000000003C07 begin
+        $returnValue = null;
+    	
 		if(Session::hasAttribute("activityExecutionUri")){
 			
 			Bootstrap::loadConstants('wfEngine');	//because it could be called anywhere
@@ -222,7 +224,6 @@ class wfEngine_models_classes_VariableService
 			$vars = unserialize($token->getOnePropertyValue($tokenVarProp));
 			
 			$processVariablesClass = new core_kernel_classes_Class(CLASS_PROCESSVARIABLES);
-				$processVariables = $processVariablesClass->searchInstances(array(PROPERTY_PROCESSVARIABLES_CODE => $code), array('like' => false));
                
 			foreach($vars as $code){
 				$processVariables = $processVariablesClass->searchInstances(array(PROPERTY_PROCESSVARIABLES_CODE => $code), array('like' => false));

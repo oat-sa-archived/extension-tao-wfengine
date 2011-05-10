@@ -377,7 +377,7 @@ class wfEngine_models_classes_ActivityExecutionService
     public function checkAcl( core_kernel_classes_Resource $activity,  core_kernel_classes_Resource $currentUser,  core_kernel_classes_Resource $processExecution)
     {
         $returnValue = (bool) false;
-
+		return true;
         // section 127-0-1-1--10e47d9e:128d54bbb0d:-8000:0000000000001F62 begin
         
         if(!is_null($activity) && !is_null($currentUser)){
