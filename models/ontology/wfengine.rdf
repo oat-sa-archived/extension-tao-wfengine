@@ -999,6 +999,7 @@
     <rdfs:label xml:lang="EN"><![CDATA[Activity controls]]></rdfs:label>
     <rdfs:domain rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassActivities"/>
     <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+	<generis:Multiple rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#True" />
   </rdf:Description>
     <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#ProcessVarPrevEndosment">
     <rdf:type xml:lang="EN" rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessVariables"/>

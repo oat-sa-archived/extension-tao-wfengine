@@ -554,9 +554,9 @@ extends wfEngine_models_classes_WfResource
 		$this->resource->editPropertyValues($statusProp,INSTANCE_PROCESSSTATUS_RESUMED);
 		$this->status = "Resumed";
 
-		// -- Exit code handling.
-		$exitCodeProp = new core_kernel_classes_Property(PROPERTY_PROCESSINSTANCE_EXITCODE);
-		$this->resource->removePropertyValues($exitCodeProp);
+		// -- Exit code handling: what is it for?
+		// $exitCodeProp = new core_kernel_classes_Property(PROPERTY_PROCESSINSTANCE_EXITCODE);
+		// $this->resource->removePropertyValues($exitCodeProp);
 
 
 
