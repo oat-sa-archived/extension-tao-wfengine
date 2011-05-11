@@ -76,10 +76,8 @@ class wfEngine_models_classes_WfResource
     {
         // section 10-13-1--31-740bb989:119ebfa9b28:-8000:00000000000008B2 begin
 		$this->uri =$uri;
-		$this->logger = new common_Logger('WfEngine', Logger::debug_level);
+		$this->logger = new common_Logger('WfEngine', (DEBUG_MODE)? Logger::debug_level : Logger::error_level);
 		$this->resource = new core_kernel_classes_Resource($uri,__METHOD__);
-		$this->setLabel($this->resource->getLabel());
-		$this->setComment($this->resource->getComment());
 			
         // section 10-13-1--31-740bb989:119ebfa9b28:-8000:00000000000008B2 end
     }

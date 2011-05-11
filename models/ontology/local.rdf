@@ -17,6 +17,7 @@
     <rdfs:domain rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassTokens"/>
     <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
     <wf:PropertyCode><![CDATA[false]]></wf:PropertyCode>
+    <generis:Multiple rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#True" />
   </rdf:Description>
   <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572581012908200">
     <rdf:type rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessVariables"/>
@@ -25,6 +26,7 @@
     <rdfs:domain rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassTokens"/>
     <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
     <wf:PropertyCode><![CDATA[groupClassUri]]></wf:PropertyCode>
+    <generis:Multiple rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#True" />
   </rdf:Description>
   <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572581020936500">
     <rdf:type rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessVariables"/>
@@ -33,6 +35,7 @@
     <rdfs:domain rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassTokens"/>
     <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
     <wf:PropertyCode><![CDATA[true]]></wf:PropertyCode>
+    <generis:Multiple rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#True" />
   </rdf:Description>
   <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572581029888600">
     <rdf:type rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessVariables"/>
@@ -41,6 +44,7 @@
     <rdfs:domain rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassTokens"/>
     <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
     <wf:PropertyCode><![CDATA[groupUri]]></wf:PropertyCode>
+    <generis:Multiple rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#True" />
   </rdf:Description>
   <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572581039416500">
     <rdf:type rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessVariables"/>
@@ -49,6 +53,7 @@
     <rdfs:domain rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassTokens"/>
     <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
     <wf:PropertyCode><![CDATA[groupTargetLang]]></wf:PropertyCode>
+    <generis:Multiple rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#True" />
   </rdf:Description>
   <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572581048585700">
     <rdf:type rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessVariables"/>
@@ -57,6 +62,7 @@
     <rdfs:domain rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassTokens"/>
     <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
     <wf:PropertyCode><![CDATA[subjectUris]]></wf:PropertyCode>
+    <generis:Multiple rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#True" />
   </rdf:Description>
   <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572581058611800">
     <rdf:type rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessVariables"/>
@@ -65,6 +71,7 @@
     <rdfs:domain rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassTokens"/>
     <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
     <wf:PropertyCode><![CDATA[deliveryUris]]></wf:PropertyCode>
+    <generis:Multiple rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#True" />
   </rdf:Description>
   <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572581068596000">
     <rdf:type rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessVariables"/>
@@ -73,6 +80,7 @@
     <rdfs:domain rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassTokens"/>
     <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
     <wf:PropertyCode><![CDATA[groupUris]]></wf:PropertyCode>
+    <generis:Multiple rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#True" />
   </rdf:Description>
   <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572581078999300">
     <rdf:type rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessVariables"/>
@@ -81,6 +89,7 @@
     <rdfs:domain rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassTokens"/>
     <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
     <wf:PropertyCode><![CDATA[itemClassUri]]></wf:PropertyCode>
+    <generis:Multiple rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#True" />
   </rdf:Description>
   <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572581090079200">
     <rdf:type rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessVariables"/>
@@ -89,6 +98,7 @@
     <rdfs:domain rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassTokens"/>
     <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
     <wf:PropertyCode><![CDATA[itemUri]]></wf:PropertyCode>
+    <generis:Multiple rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#True" />
   </rdf:Description>
   <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572582003777100">
     <rdf:type rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessVariables"/>
@@ -97,6 +107,7 @@
     <rdfs:domain rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassTokens"/>
     <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
     <wf:PropertyCode><![CDATA[itemTargetLang]]></wf:PropertyCode>
+    <generis:Multiple rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#True" />
   </rdf:Description>
   <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572582015726700">
     <rdf:type rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessVariables"/>
@@ -105,6 +116,7 @@
     <rdfs:domain rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassTokens"/>
     <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
     <wf:PropertyCode><![CDATA[itemUris]]></wf:PropertyCode>
+    <generis:Multiple rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#True" />
   </rdf:Description>
   <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572582028170700">
     <rdf:type rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessVariables"/>
@@ -113,6 +125,7 @@
     <rdfs:domain rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassTokens"/>
     <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
     <wf:PropertyCode><![CDATA[resultUris]]></wf:PropertyCode>
+    <generis:Multiple rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#True" />
   </rdf:Description>
   <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572582040839900">
     <rdf:type rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessVariables"/>
@@ -121,6 +134,7 @@
     <rdfs:domain rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassTokens"/>
     <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
     <wf:PropertyCode><![CDATA[resultClassUri]]></wf:PropertyCode>
+    <generis:Multiple rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#True" />
   </rdf:Description>
   <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572582055098200">
     <rdf:type rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessVariables"/>
@@ -129,6 +143,7 @@
     <rdfs:domain rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassTokens"/>
     <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
     <wf:PropertyCode><![CDATA[subjectClassUri]]></wf:PropertyCode>
+    <generis:Multiple rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#True" />
   </rdf:Description>
   <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572582069621400">
     <rdf:type rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessVariables"/>
@@ -137,6 +152,7 @@
     <rdfs:domain rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassTokens"/>
     <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
     <wf:PropertyCode><![CDATA[subjectUri]]></wf:PropertyCode>
+    <generis:Multiple rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#True" />
   </rdf:Description>
   <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572582084290800">
     <rdf:type rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessVariables"/>
@@ -145,6 +161,7 @@
     <rdfs:domain rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassTokens"/>
     <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
     <wf:PropertyCode><![CDATA[subjectTargetLang]]></wf:PropertyCode>
+    <generis:Multiple rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#True" />
   </rdf:Description>
   <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572582098980300">
     <rdf:type rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessVariables"/>
@@ -153,6 +170,7 @@
     <rdfs:domain rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassTokens"/>
     <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
     <wf:PropertyCode><![CDATA[testClassUri]]></wf:PropertyCode>
+    <generis:Multiple rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#True" />
   </rdf:Description>
   <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572583014612500">
     <rdf:type rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessVariables"/>
@@ -161,6 +179,7 @@
     <rdfs:domain rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassTokens"/>
     <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
     <wf:PropertyCode><![CDATA[testUri]]></wf:PropertyCode>
+    <generis:Multiple rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#True" />
   </rdf:Description>
   <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572583030539200">
     <rdf:type rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessVariables"/>
@@ -169,6 +188,7 @@
     <rdfs:domain rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassTokens"/>
     <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
     <wf:PropertyCode><![CDATA[testTargetLang]]></wf:PropertyCode>
+    <generis:Multiple rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#True" />
   </rdf:Description>
   <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572583046907500">
     <rdf:type rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessVariables"/>
@@ -177,6 +197,7 @@
     <rdfs:domain rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassTokens"/>
     <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
     <wf:PropertyCode><![CDATA[testUris]]></wf:PropertyCode>
+    <generis:Multiple rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#True" />
   </rdf:Description>
   <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572583063868700">
     <rdf:type rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessVariables"/>
@@ -185,6 +206,7 @@
     <rdfs:domain rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassTokens"/>
     <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
     <wf:PropertyCode><![CDATA[deliveryClassUri]]></wf:PropertyCode>
+    <generis:Multiple rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#True" />
   </rdf:Description>
   <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572583082488700">
     <rdf:type rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessVariables"/>
@@ -193,6 +215,7 @@
     <rdfs:domain rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassTokens"/>
     <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
     <wf:PropertyCode><![CDATA[deliveryUri]]></wf:PropertyCode>
+    <generis:Multiple rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#True" />
   </rdf:Description>
   <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572583092216600">
     <rdf:type rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessVariables"/>
@@ -201,6 +224,7 @@
     <rdfs:domain rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassTokens"/>
     <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
     <wf:PropertyCode><![CDATA[campaignUris]]></wf:PropertyCode>
+    <generis:Multiple rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#True" />
   </rdf:Description>
   <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572584003629700">
     <rdf:type rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessVariables"/>
@@ -209,6 +233,7 @@
     <rdfs:domain rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassTokens"/>
     <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
     <wf:PropertyCode><![CDATA[campaignClassUri]]></wf:PropertyCode>
+    <generis:Multiple rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#True" />
   </rdf:Description>
   <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572584014098100">
     <rdf:type rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessVariables"/>
@@ -217,6 +242,7 @@
     <rdfs:domain rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassTokens"/>
     <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
     <wf:PropertyCode><![CDATA[campaignUri]]></wf:PropertyCode>
+    <generis:Multiple rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#True" />
   </rdf:Description>
   <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572584025114800">
     <rdf:type rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessVariables"/>
@@ -225,6 +251,7 @@
     <rdfs:domain rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassTokens"/>
     <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
     <wf:PropertyCode><![CDATA[resultServerClassUri]]></wf:PropertyCode>
+    <generis:Multiple rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#True" />
   </rdf:Description>
   <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572584036154400">
     <rdf:type rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessVariables"/>
@@ -233,6 +260,7 @@
     <rdfs:domain rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassTokens"/>
     <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
     <wf:PropertyCode><![CDATA[resultServerUri]]></wf:PropertyCode>
+    <generis:Multiple rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#True" />
   </rdf:Description>
   <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572584047457500">
     <rdf:type rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessVariables"/>
@@ -241,6 +269,7 @@
     <rdfs:domain rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassTokens"/>
     <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
     <wf:PropertyCode><![CDATA[resultServerUris]]></wf:PropertyCode>
+    <generis:Multiple rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#True" />
   </rdf:Description>
   <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572584050444900">
     <rdf:type rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassFormalParameters"/>
