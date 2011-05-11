@@ -213,8 +213,8 @@ class NotificationServiceTestCase extends UnitTestCase {
 				
 				$activity = $proc->currentActivity[0];
 				
-				$this->out("Activity: ".$activity->label, true);
-				$this->assertTrue($activity->label == 'activity'.$i);
+				$this->out("Activity: ".$activity->resource->getLabel(), true);
+				$this->assertEqual($activity->resource->getLabel(), 'activity'.$i);
 				
 				//init execution
 				$processExecutionService->initCurrentExecution($proc->resource, $activity->resource, $this->currentUser);
