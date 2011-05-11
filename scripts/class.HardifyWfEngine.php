@@ -124,7 +124,7 @@ class wfEngine_scripts_HardifyWfEngine
 					'rmSources'				=> false
     			);
     			
-    			$switcher = new core_kernel_persistence_Switcher();
+    			$switcher = new core_kernel_persistence_Switcher(array(CLASS_PROCESSVARIABLES));
     			
     			/*
     			 * Compiled wfEngine data
@@ -133,12 +133,6 @@ class wfEngine_scripts_HardifyWfEngine
     			
     			//class used by the wfEngine
     			$wfClasses = array(
-    				"http://www.tao.lu/middleware/wfEngine.rdf#ClassTokens",
-					"http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessInstances",
-					"http://www.tao.lu/middleware/wfEngine.rdf#ClassActivityExecutions",
-					"http://www.tao.lu/middleware/wfEngine.rdf#ClassServiceDefinitions",
-					"http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessDefinitions",
-					"http://www.tao.lu/middleware/wfEngine.rdf#ClassActivities",
 					"http://www.tao.lu/middleware/wfEngine.rdf#ClassCallOfservicesResources",
 					"http://www.tao.lu/middleware/wfEngine.rdf#ClassServiceDefinitionResources",
 					"http://www.tao.lu/middleware/wfEngine.rdf#ClassServicesResources",
@@ -150,6 +144,12 @@ class wfEngine_scripts_HardifyWfEngine
 					"http://www.tao.lu/middleware/wfEngine.rdf#ClassActualParameters",
 					"http://www.tao.lu/middleware/wfEngine.rdf#ClassFormalParameters",
 		//			"http://www.tao.lu/middleware/wfEngine.rdf#ClassRole"
+    				"http://www.tao.lu/middleware/wfEngine.rdf#ClassTokens",
+					"http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessInstances",
+					"http://www.tao.lu/middleware/wfEngine.rdf#ClassActivityExecutions",
+					"http://www.tao.lu/middleware/wfEngine.rdf#ClassServiceDefinitions",
+					"http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessDefinitions",
+					"http://www.tao.lu/middleware/wfEngine.rdf#ClassActivities",
     			);
     			
     			foreach($wfClasses as $classUri){
