@@ -55,8 +55,8 @@ class wfEngine_actions_Main extends wfEngine_actions_WfModule
 		$processViewData 	= array();
 		foreach ($processes as $proc){
 	
-			$type 	= $proc->process->label;
-			$label 	= $proc->label;
+			$type 	= $proc->process->resource->getLabel();
+			$label 	= $proc->resource->getLabel();
 			$uri 	= $proc->uri;
 			$status = $proc->status;
 			$persid	= "-";
@@ -79,7 +79,7 @@ class wfEngine_actions_Main extends wfEngine_actions_WfModule
 				}
 
 				$currentActivities[] = array(
-					'label'				=> $currentActivity->label,
+					'label'				=> $currentActivity->resource->getLabel(),
 					'uri' 				=> $currentActivity->uri,
 					'may_participate'	=> (!$proc->isFinished() && $isAllowed),
 					'finished'			=> $proc->isFinished(),

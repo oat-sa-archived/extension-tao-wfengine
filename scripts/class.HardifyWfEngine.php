@@ -180,11 +180,11 @@ class wfEngine_scripts_HardifyWfEngine
     			$this->out(" - Hardifying ".$resultClass->getLabel(), array('color' => 'light_green'));
     			
     			$switcher->hardify($resultClass, array_merge($options, array('createForeigns' => false)));
-				 */
+				  */
 				
     			unset($switcher);
     			
-    			$this->out("Finished", array('color' => 'light_blue'));
+    			
     			
     			break;
     		case self::MODE_HARD2SMOOTH:
@@ -208,6 +208,31 @@ class wfEngine_scripts_HardifyWfEngine
     protected function postRun()
     {
         // section 127-0-1-1-22592813:12fbf8723a0:-8000:0000000000002FD8 begin
+        
+    	$this->out("\nRebuild table indexes, it can take a while...");
+    	
+    	//Need to OPTIMIZE / FLUSH the tables
+    	$dbWrapper = core_kernel_classes_DbWrapper::singleton();
+    	$tables = $dbWrapper->dbConnector->MetaTables('TABLES');
+    	
+    	$size = count($tables);
+    	$i = 0;
+    	while($i < $size){
+    		
+    		$percent = round(($i / $size) * 100);
+    		if($percent < 10){
+    			$percent = '0'.$percent;
+    		}
+    		$this->out(" $percent %", array('color' => 'light_green', 'inline' => true, 'prefix' => "\r"));
+    		
+    		$dbWrapper->execSql("OPTIMIZE TABLE `{$tables[$i]}`");
+    		$dbWrapper->execSql("FLUSH TABLE `{$tables[$i]}`");
+    		
+    		$i++;
+    	}
+    	
+    	$this->out("\nFinished !\n", array('color' => 'light_blue'));
+    	
         // section 127-0-1-1-22592813:12fbf8723a0:-8000:0000000000002FD8 end
     }
 
