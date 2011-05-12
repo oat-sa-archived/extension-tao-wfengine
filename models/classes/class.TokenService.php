@@ -341,7 +341,7 @@ extends tao_models_classes_GenerisService
             $execution = $activityExecutionService->getExecution($activity, $user, $processExecution);
             if(!is_null($execution)){
                 foreach($this->getTokens($execution) as $token){
-                    if(!arra_key_exists($token->uriResource, $tokens)){
+                    if(!array_key_exists($token->uriResource, $tokens)){
                         $tokens[$token->uriResource] = $token;
                     }
                 }

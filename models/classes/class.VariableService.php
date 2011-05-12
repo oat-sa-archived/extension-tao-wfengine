@@ -224,23 +224,23 @@ class wfEngine_models_classes_VariableService
 			$vars = unserialize($token->getOnePropertyValue($tokenVarProp));
 			
 			$processVariablesClass = new core_kernel_classes_Class(CLASS_PROCESSVARIABLES);
-               
-			foreach($vars as $code){
-				$processVariables = $processVariablesClass->searchInstances(array(PROPERTY_PROCESSVARIABLES_CODE => $code), array('like' => false));
-				if(!empty($processVariables)){
-					if(count($processVariables) == 1) {
-						$property = new core_kernel_classes_Property(array_shift($processVariables)->uriResource);
-						$values = $token->getPropertyValuesCollection($property);
-						if($values->count() == 1){
-							$returnValue[$code] = $values->get(0);
-						}
-						if($values->count() > 1){
-							$returnValue[$code] = (array)$values->getIterator();
+            if(is_array($vars)){
+				foreach($vars as $code){
+					$processVariables = $processVariablesClass->searchInstances(array(PROPERTY_PROCESSVARIABLES_CODE => $code), array('like' => false));
+					if(!empty($processVariables)){
+						if(count($processVariables) == 1) {
+							$property = new core_kernel_classes_Property(array_shift($processVariables)->uriResource);
+							$values = $token->getPropertyValuesCollection($property);
+							if($values->count() == 1){
+								$returnValue[$code] = $values->get(0);
+							}
+							if($values->count() > 1){
+								$returnValue[$code] = (array)$values->getIterator();
+							}
 						}
 					}
 				}
-			}
-
+            }
 		}
 		
         // section -87--2--3--76--7eb229c2:12916be1ece:-8000:0000000000003C11 end
