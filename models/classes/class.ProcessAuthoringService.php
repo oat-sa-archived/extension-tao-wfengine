@@ -946,8 +946,8 @@ class wfEngine_models_classes_ProcessAuthoringService
 							$this->deleteConnector($nextActivity);//delete following connectors only if they have the same activity reference
 						}
 					}
-					$this->deleteReference($nextActivitiesProp, $nextActivity);
-					$this->deleteReference($property, $nextActivity);
+					$connector->removePropertyValues($nextActivitiesProp, array('pattern' => $nextActivity->uriResource));
+					$transitionRule->removePropertyValues($property, array('pattern' => $nextActivity->uriResource));
 				}
 			}
 		}

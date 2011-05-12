@@ -513,7 +513,7 @@ extends tao_models_classes_GenerisService
         // section 127-0-1-1-bf84135:12912b487a0:-8000:0000000000001FA2 begin
 
         if(!is_null($token)){
-			$returnValue = $token->duplicate(array(PROPERTY_TOKEN_ACTIVITY, PROPERTY_TOKEN_ACTIVITYEXECUTION, PROPERTY_TOKEN_CURRENTUSER));
+			$returnValue = $token->duplicate(array(RDFS_LABEL, PROPERTY_TOKEN_ACTIVITY, PROPERTY_TOKEN_ACTIVITYEXECUTION, PROPERTY_TOKEN_CURRENTUSER));
         }
 
         // section 127-0-1-1-bf84135:12912b487a0:-8000:0000000000001FA2 end
