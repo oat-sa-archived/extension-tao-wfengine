@@ -21,6 +21,12 @@ new wfEngine_scripts_HardifyWfEngine(array(
 			'shortcut'		=> 'd',
 			'required'		=> true,
 			'description'	=> 'Get the data from the workflow relational database to the triple store (if previously compiled)'
+		),
+		array(
+			'name'			=> 'indexes',
+			'type' 			=> 'boolean',
+			'shortcut'		=> 'i',
+			'description'	=> 'Create extra indexes on compiled tables and rebuild exisiting indexes databases'
 		)
 	)
 ));

@@ -112,9 +112,8 @@ class wfEngine_scripts_HardifyWfEngine
         
     	switch($this->mode){ 
     		case self::MODE_SMOOTH2HARD:
-    			$this->out("Compiling triples to relational database", array('color' => 'light_blue'));
     			
-
+    			self::out("Compiling triples to relational database", array('color' => 'light_blue'));
     			
     			$options = array(
     				'recursive'				=> true,
@@ -129,7 +128,7 @@ class wfEngine_scripts_HardifyWfEngine
     			/*
     			 * Compiled wfEngine data
     			 */
-    			$this->out("\nCompiling wfEngine classes", array('color' => 'light_blue'));
+    			self::out("\nCompiling wfEngine classes", array('color' => 'light_blue'));
     			
     			//class used by the wfEngine
     			$wfClasses = array(
@@ -161,26 +160,26 @@ class wfEngine_scripts_HardifyWfEngine
     			/*
     			 * Compiled test takers
     			 */
-    			$this->out("\nCompiling test takers", array('color' => 'light_blue'));
+    			self::out("\nCompiling test takers", array('color' => 'light_blue'));
     			
     			$testTakerClass = new core_kernel_classes_Class('http://www.tao.lu/Ontologies/TAOSubject.rdf#Subject');
 				$userClass		= new core_kernel_classes_Class('http://www.tao.lu/Ontologies/generis.rdf#User');
 				
-				$this->out(" - Hardifying ".$testTakerClass->getLabel(), array('color' => 'light_green'));
+				self::out(" - Hardifying ".$testTakerClass->getLabel(), array('color' => 'light_green'));
 				
 				$switcher->hardify($testTakerClass, array_merge($options, array('topClass' => $userClass)));	
     			
     			/*
     			 * Compiled results
-    			
-    			$this->out("\nCompiling results", array('color' => 'light_blue'));
+    			 */
+    			self::out("\nCompiling results", array('color' => 'light_blue'));
     			
     			$resultClass = new core_kernel_classes_Class('http://www.tao.lu/Ontologies/TAOResult.rdf#Result');
 				
-    			$this->out(" - Hardifying ".$resultClass->getLabel(), array('color' => 'light_green'));
+    			self::out(" - Hardifying ".$resultClass->getLabel(), array('color' => 'light_green'));
     			
     			$switcher->hardify($resultClass, array_merge($options, array('createForeigns' => false)));
-				  */
+				 
 				
     			unset($switcher);
     			
@@ -188,11 +187,11 @@ class wfEngine_scripts_HardifyWfEngine
     			
     			break;
     		case self::MODE_HARD2SMOOTH:
-    			$this->err('this mode is not yet implemented', true);
+    			self::err('this mode is not yet implemented', true);
     			break;
     		
     		default:
-    			$this->err('Unknow mode', true);
+    			self::err('Unknow mode', true);
     	}
     	
         // section 127-0-1-1-22592813:12fbf8723a0:-8000:0000000000002FD4 end
@@ -209,29 +208,74 @@ class wfEngine_scripts_HardifyWfEngine
     {
         // section 127-0-1-1-22592813:12fbf8723a0:-8000:0000000000002FD8 begin
         
-    	$this->out("\nRebuild table indexes, it can take a while...");
+    	$referencer = core_kernel_persistence_hardapi_ResourceReferencer::singleton();
+    	$referencer->resetCache();
     	
-    	//Need to OPTIMIZE / FLUSH the tables
-    	$dbWrapper = core_kernel_classes_DbWrapper::singleton();
-    	$tables = $dbWrapper->dbConnector->MetaTables('TABLES');
-    	
-    	$size = count($tables);
-    	$i = 0;
-    	while($i < $size){
+    	if(isset($this->parameters['indexes']) && $this->parameters['indexes'] == true){
+
+    		$dbWrapper = core_kernel_classes_DbWrapper::singleton();
     		
-    		$percent = round(($i / $size) * 100);
-    		if($percent < 10){
-    			$percent = '0'.$percent;
-    		}
-    		$this->out(" $percent %", array('color' => 'light_green', 'inline' => true, 'prefix' => "\r"));
-    		
-    		$dbWrapper->execSql("OPTIMIZE TABLE `{$tables[$i]}`");
-    		$dbWrapper->execSql("FLUSH TABLE `{$tables[$i]}`");
-    		
-    		$i++;
+    		//Create indexes on discrimining columns
+	    	self::out("\nCreate extra indexes, it can take a while...");
+	    	
+	    	//uris of the indexes to add to single columns
+	    	$indexProperties = array(
+	    		'http://www.tao.lu/middleware/wfEngine.rdf#PropertyActualParametersFormalParameter',
+	    		'http://www.tao.lu/middleware/wfEngine.rdf#PropertySupportServicesUrl',
+	    		'http://www.tao.lu/middleware/wfEngine.rdf#PropertyConnectorsType',
+		    	'http://www.tao.lu/middleware/wfEngine.rdf#PropertyConnectorsActivityReference',
+		    	'http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessInstancesStatus',
+		    	'http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessInstancesExecutionOf',
+		    	'http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsFinished',
+		    	'http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsExecutionOf',
+		    	'http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsCurrentUser',
+	    		'http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsProcessExecution',
+	    		'http://www.tao.lu/middleware/wfEngine.rdf#PropertyTokensActivityExecution',
+		    	'http://www.tao.lu/middleware/wfEngine.rdf#PropertyTokensActivity',
+		    	'http://www.tao.lu/middleware/wfEngine.rdf#PropertyTokensCurrentUser',
+		    	'http://www.tao.lu/Ontologies/generis.rdf#login',
+		    	'http://www.tao.lu/Ontologies/generis.rdf#password',
+		    	'http://www.tao.lu/Ontologies/TAOResult.rdf#TAO_PROCESS_EXEC_ID',
+	    		'http://www.tao.lu/Ontologies/TAOResult.rdf#AO_DELIVERY_ID',
+	    		'http://www.tao.lu/Ontologies/TAOResult.rdf#TAO_TEST_ID',
+	    		'http://www.tao.lu/Ontologies/TAOResult.rdf#TAO_ITEM_ID',
+	    		'http://www.tao.lu/Ontologies/TAOResult.rdf#TAO_SUBJECT_ID'
+	    	);
+	    	
+	    	foreach($indexProperties as $indexProperty){
+	    		$property = new core_kernel_classes_Property($indexProperty);
+	    		$propertyAlias = core_kernel_persistence_hardapi_Utils::getShortName($property);
+	    		foreach($referencer->propertyLocation($property) as $table){
+	    			if(!preg_match("/Props$/", $table) && preg_match("/^_[0-9]{2,}/", $table)){
+	    				$dbWrapper->execSql("ALTER TABLE `{$table}` ADD INDEX `idx_{$propertyAlias}` (`{$propertyAlias}`( 255 ))");
+	    			}
+	    		}
+	    	}
+	    	
+	    	self::out("\nRebuild table indexes, it can take a while...");
+
+	    	
+	    	//Need to OPTIMIZE / FLUSH the tables in order to rebuild the indexes
+	    	$tables = $dbWrapper->dbConnector->MetaTables('TABLES');
+	    	
+	    	$size = count($tables);
+	    	$i = 0;
+	    	while($i < $size){
+	    		
+	    		$percent = round(($i / $size) * 100);
+	    		if($percent < 10){
+	    			$percent = '0'.$percent;
+	    		}
+	    		self::out(" $percent %", array('color' => 'light_green', 'inline' => true, 'prefix' => "\r"));
+	    		
+	    		$dbWrapper->execSql("OPTIMIZE TABLE `{$tables[$i]}`");
+	    		$dbWrapper->execSql("FLUSH TABLE `{$tables[$i]}`");
+	    		
+	    		$i++;
+	    	}
     	}
     	
-    	$this->out("\nFinished !\n", array('color' => 'light_blue'));
+    	self::out("\nFinished !\n", array('color' => 'light_blue'));
     	
         // section 127-0-1-1-22592813:12fbf8723a0:-8000:0000000000002FD8 end
     }
