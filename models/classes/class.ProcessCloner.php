@@ -681,16 +681,15 @@ class wfEngine_models_classes_ProcessCloner
         $returnValue = null;
 
         // section 10-13-1-39--56440278:12d4c05ae3c:-8000:0000000000005004 begin
-		$cloneLabel = empty($newLabel)? $instance->getLabel().$this->cloneLabel:$newLabel;
-		$returnValue = $this->createInstance($clazz, $cloneLabel);
+		
+		$returnValue = $instance->duplicate($forbiddenProperties);
+	   
 		if(!is_null($returnValue)){
-			foreach($clazz->getProperties(true) as $property){
-				if(!in_array($property->uriResource, $forbiddenProperties)){
-					$returnValue->editPropertyValues($property, $instance->getPropertyValues($property));
-				}
-			}
+			$cloneLabel = empty($newLabel)? $instance->getLabel().$this->cloneLabel:$newLabel;
+			$returnValue->setLabel($cloneLabel);
 		}
-        // section 10-13-1-39--56440278:12d4c05ae3c:-8000:0000000000005004 end
+		
+		 // section 10-13-1-39--56440278:12d4c05ae3c:-8000:0000000000005004 end
 
         return $returnValue;
     }
