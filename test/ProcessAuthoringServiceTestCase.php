@@ -19,6 +19,8 @@ class ProcessAuthoringServiceTestCase extends UnitTestCase {
 		$processDefinition = $processDefinitionClass->createInstance('processForUnitTest','created for the unit test of process authoring service');
 		if($processDefinition instanceof core_kernel_classes_Resource){
 			$this->proc = $processDefinition;
+		}else{
+			$this->fail('fail to create a process definition resource');
 		}
 		$this->apiModel = core_kernel_impl_ApiModelOO::singleton();
 	}
@@ -35,7 +37,7 @@ class ProcessAuthoringServiceTestCase extends UnitTestCase {
 
 		$this->authoringService = $authoringService;
 	}
-		
+	
 	public function testCreateDeleteProcess(){
 		
 		$processDefinitionClass = new core_kernel_classes_Class(CLASS_PROCESS);
@@ -58,27 +60,17 @@ class ProcessAuthoringServiceTestCase extends UnitTestCase {
 		
 		$activity2 = $this->authoringService->createActivity($this->proc, 'myActivity');
 		$this->assertEqual($activity2->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_ACTIVITIES_ISINITIAL))->uriResource, GENERIS_FALSE);
-		
-		$activity1->delete();
-		$activity2->delete();
-		
 	}
 	
 	public function testIsActivity(){
 		$activity1 = $this->authoringService->createActivity($this->proc);
-		
 		$this->assertTrue(wfEngine_helpers_ProcessUtil::isActivity($activity1));
-		
-		$activity1->delete();
 	}
 	
 	public function testIsConnector(){
 		$activity1 = $this->authoringService->createActivity($this->proc, 'myActivity');
 		$connector1 = $this->authoringService->createConnector($activity1);
 		$this->assertTrue(wfEngine_helpers_ProcessUtil::isConnector($connector1));
-		
-		$activity1->delete();
-		$connector1->delete();
 	}
 	
 	public function testCreateConnector(){
@@ -91,10 +83,6 @@ class ProcessAuthoringServiceTestCase extends UnitTestCase {
 		//create a connector of a connector:
 		$connector2 = $this->authoringService->createConnector($connector1);
 		$this->assertEqual($connector2->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_ACTIVITYREFERENCE))->uriResource, $activity1->uriResource);
-		
-		$activity1->delete();
-		$connector1->delete();
-		$connector2->delete();
 	}
 	
 	public function testAnalyseExpression(){
@@ -146,11 +134,6 @@ class ProcessAuthoringServiceTestCase extends UnitTestCase {
 		$shouldBeActivity1 = null;
 		$shouldBeActivity1 = $followingConnector1->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_NEXTACTIVITIES));
 		$this->assertEqual($activity1->uriResource,$shouldBeActivity1->uriResource);
-		
-		$activity1->delete();
-		$connector1->delete();
-		$followingActivity1->delete();
-		$followingConnector1->delete();
 	}
 	
 	public function testCreateConditionalActivity(){
@@ -175,13 +158,7 @@ class ProcessAuthoringServiceTestCase extends UnitTestCase {
 		$transitionRuleBis = $this->authoringService->createTransitionRule($connector1, '^myProcessVarCode1 == 1');
 		$this->assertEqual($transitionRule->uriResource, $transitionRuleBis->uriResource);
 		
-		
 		$this->assertTrue($this->authoringService->deleteProcessVariable('myProcessVarCode1'));
-		$activity1->delete();
-		$connector1->delete();
-		$transitionRule->delete();
-		$then->delete();
-		$else->delete();
 	}
 	
 	
@@ -214,14 +191,6 @@ class ProcessAuthoringServiceTestCase extends UnitTestCase {
 		$connectorClass = new core_kernel_classes_Class(CLASS_CONNECTORS);
 		$connectors = $connectorClass->searchInstances(array(RDFS_LABEL => '2ndActivityForUnitTest_c_c'), array('like' => false));
 		$this->assertTrue(empty($connectors));
-		
-		$activity1->delete();
-		$connector1->delete();
-		$activity2->delete();
-		$connector2->delete();
-		$transitionRule->delete();
-		$then->delete();
-		$else->delete();
 	}
 	
 	public function testParallelJoinActivities(){
@@ -259,7 +228,6 @@ class ProcessAuthoringServiceTestCase extends UnitTestCase {
 		//merge all activity D instance to F:
 		$this->authoringService->createJoinActivity($connectorD, $activityF, '', $activityD);
 		$previousActivitiesCollection = $connectorD->getPropertyValuesCollection(new core_kernel_classes_Property(PROPERTY_CONNECTORS_PREVIOUSACTIVITIES));
-
 		
 		$this->assertEqual($previousActivitiesCollection->count(), 3);
 	}
@@ -324,7 +292,7 @@ class ProcessAuthoringServiceTestCase extends UnitTestCase {
 	}
 	
 	public function tearDown() {
-        $this->proc->delete();
+		$this->assertTrue($this->authoringService->deleteProcess($this->proc));
     }
 
 }

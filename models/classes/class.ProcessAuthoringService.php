@@ -9,10 +9,10 @@ error_reporting(E_ALL);
  *
  * This file is part of TAO.
  *
- * Automatically generated on 22.02.2011, 10:17:20 with ArgoUML PHP module 
+ * Automatically generated on 17.05.2011, 16:22:33 with ArgoUML PHP module 
  * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
  *
- * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+ * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
  * @package wfEngine
  * @subpackage models_classes
  */
@@ -25,14 +25,14 @@ if (0 > version_compare(PHP_VERSION, '5')) {
  * The Service class is an abstraction of each service instance. 
  * Used to centralize the behavior related to every servcie instances.
  *
- * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+ * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
  */
 require_once('tao/models/classes/class.GenerisService.php');
 
 /**
  * include wfEngine_models_classes_ProcessCloner
  *
- * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+ * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
  */
 require_once('wfEngine/models/classes/class.ProcessCloner.php');
 
@@ -52,7 +52,7 @@ require_once('wfEngine/plugins/CapiImport/models/class.DescriptorFactory.php');
  * Short description of class wfEngine_models_classes_ProcessAuthoringService
  *
  * @access public
- * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+ * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
  * @package wfEngine
  * @subpackage models_classes
  */
@@ -70,7 +70,7 @@ class wfEngine_models_classes_ProcessAuthoringService
      * Short description of method __construct
      *
      * @access public
-     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @return mixed
      */
     public function __construct()
@@ -86,7 +86,7 @@ class wfEngine_models_classes_ProcessAuthoringService
      * Short description of method analyseExpression
      *
      * @access public
-     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @param  string expressionInput
      * @param  boolean isCondition
      * @return DomDocument
@@ -141,7 +141,7 @@ class wfEngine_models_classes_ProcessAuthoringService
      * Short description of method createActivity
      *
      * @access public
-     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @param  Resource process
      * @param  string label
      * @return core_kernel_classes_Resource
@@ -195,7 +195,7 @@ class wfEngine_models_classes_ProcessAuthoringService
      * Short description of method createActivityFromConnector
      *
      * @access public
-     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @param  Resource connector
      * @param  string newActivityLabel
      * @return core_kernel_classes_Resource
@@ -225,7 +225,7 @@ class wfEngine_models_classes_ProcessAuthoringService
      * Short description of method createCondition
      *
      * @access public
-     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @param  DomDocument xmlDom
      * @return core_kernel_classes_Resource
      */
@@ -257,7 +257,7 @@ class wfEngine_models_classes_ProcessAuthoringService
      * Short description of method createConnector
      *
      * @access public
-     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @param  Resource activity
      * @param  string label
      * @return core_kernel_classes_Resource
@@ -304,7 +304,7 @@ class wfEngine_models_classes_ProcessAuthoringService
      * Short description of method createFormalParameter
      *
      * @access public
-     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @param  string name
      * @param  string type
      * @param  string defaultValue
@@ -342,7 +342,7 @@ class wfEngine_models_classes_ProcessAuthoringService
      * Short description of method createInteractiveService
      *
      * @access public
-     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @param  Resource activity
      * @return core_kernel_classes_Resource
      */
@@ -381,7 +381,7 @@ class wfEngine_models_classes_ProcessAuthoringService
      * Short description of method createJoinActivity
      *
      * @access public
-     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @param  Resource connectorInstance
      * @param  Resource followingActivity
      * @param  string newActivityLabel
@@ -469,11 +469,11 @@ class wfEngine_models_classes_ProcessAuthoringService
 			if($multiplicity){
 				//delete old connector, and associate the activity to that one:
 				// $this->deleteConnector($connectorInstance);
-				
-				core_kernel_impl_ApiModelOO::singleton()->removeStatement($connectorInstance->uriResource, PROPERTY_CONNECTORS_PREVIOUSACTIVITIES, $previousActivity->uriResource, '');
+				$propConnectorsPreviousActivities = new core_kernel_classes_Property(PROPERTY_CONNECTORS_PREVIOUSACTIVITIES);
+				$connectorInstance->removePropertyValues($propConnectorsPreviousActivities, array('pattern' => $previousActivity->uriResource));
 				
 				for($i=0;$i<$multiplicity;$i++){
-					$connectorInstance->setPropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_PREVIOUSACTIVITIES), $previousActivity->uriResource);
+					$connectorInstance->setPropertyValue($propConnectorsPreviousActivities, $previousActivity->uriResource);
 				}
 			}else{
 				throw new Exception('unexpected null multiplicity');
@@ -491,7 +491,7 @@ class wfEngine_models_classes_ProcessAuthoringService
      * Short description of method createProcessVariable
      *
      * @access public
-     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @param  string label
      * @param  string code
      * @return core_kernel_classes_Resource
@@ -539,7 +539,7 @@ class wfEngine_models_classes_ProcessAuthoringService
      * Short description of method createTransitionRule
      *
      * @access public
-     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @param  Resource connector
      * @param  string question
      * @return core_kernel_classes_Resource
@@ -585,7 +585,7 @@ class wfEngine_models_classes_ProcessAuthoringService
      * Short description of method createSequenceActivity
      *
      * @access public
-     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @param  Resource connector
      * @param  Resource followingActivity
      * @param  string newActivityLabel
@@ -617,7 +617,7 @@ class wfEngine_models_classes_ProcessAuthoringService
      * Short description of method createSplitActivity
      *
      * @access public
-     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @param  Resource connector
      * @param  string connectionType
      * @param  Resource followingActivity
@@ -682,7 +682,7 @@ class wfEngine_models_classes_ProcessAuthoringService
      * Short description of method deleteActivity
      *
      * @access public
-     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @param  Resource activity
      * @return boolean
      */
@@ -718,7 +718,7 @@ class wfEngine_models_classes_ProcessAuthoringService
      * Short description of method deleteActualParameters
      *
      * @access public
-     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @param  Resource callOfService
      * @return boolean
      */
@@ -759,7 +759,7 @@ class wfEngine_models_classes_ProcessAuthoringService
      * Short description of method deleteCallOfService
      *
      * @access public
-     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @param  Resource service
      * @return boolean
      */
@@ -792,7 +792,7 @@ class wfEngine_models_classes_ProcessAuthoringService
      * Short description of method deleteCondition
      *
      * @access public
-     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @param  Resource rule
      * @return boolean
      */
@@ -825,7 +825,7 @@ class wfEngine_models_classes_ProcessAuthoringService
      * Short description of method deleteConnector
      *
      * @access public
-     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @param  Resource connector
      * @return boolean
      */
@@ -851,16 +851,7 @@ class wfEngine_models_classes_ProcessAuthoringService
 				}
 			}
 		}
-		
-		
-		//manage the connection to the previous activities: clean the reference to this connector:
-		$previousActivityCollection = $connector->getPropertyValuesCollection(new core_kernel_classes_Property(PROPERTY_CONNECTORS_PREVIOUSACTIVITIES));
-		foreach($previousActivityCollection->getIterator() as $previousActivity){
-			if(wfEngine_helpers_ProcessUtil::isConnector($previousActivity)){
-				core_kernel_impl_ApiModelOO::singleton()->removeStatement($previousActivity->uriResource, PROPERTY_CONNECTORS_NEXTACTIVITIES, $connector->uriResource, '');
-			}
-		}
-		
+				
 		//manage the connection to the following activities
 		$activityRef = $connector->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_ACTIVITYREFERENCE))->uriResource;
 		$nextActivityCollection = $connector->getPropertyValuesCollection(new core_kernel_classes_Property(PROPERTY_CONNECTORS_NEXTACTIVITIES));
@@ -885,7 +876,7 @@ class wfEngine_models_classes_ProcessAuthoringService
      * Short description of method deleteConnectorNextActivity
      *
      * @access public
-     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @param  Resource connector
      * @param  string connectionType
      * @return mixed
@@ -959,7 +950,7 @@ class wfEngine_models_classes_ProcessAuthoringService
      * Short description of method deleteExpression
      *
      * @access public
-     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @param  Resource expression
      * @return boolean
      */
@@ -970,14 +961,14 @@ class wfEngine_models_classes_ProcessAuthoringService
         // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004E0D begin
 		
 		//delete related expressions
-		$firstExpressionCollection = $expression->getPropertyValuesCollection(new core_kernel_classes_Property(PROPERTY_EXPRESSION_FIRSTEXPRESSION));
-		$secondExpressionCollection = $expression->getPropertyValuesCollection(new core_kernel_classes_Property(PROPERTY_EXPRESSION_SECONDEXPRESSION));
+		$firstExpressionCollection = $expression->getPropertyValuesCollection(new core_kernel_classes_Property(PROPERTY_FIRST_EXPRESSION));
+		$secondExpressionCollection = $expression->getPropertyValuesCollection(new core_kernel_classes_Property(PROPERTY_SECOND_EXPRESSION));
 		$expressionCollection = $firstExpressionCollection->union($secondExpressionCollection);
 		foreach($expressionCollection->getIterator() as $exp){
 			$this->deleteExpression($exp);
 		}
 		
-		$terminalExpression = $expression->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_EXPRESSION_TERMINALEXPRESSION));
+		$terminalExpression = $expression->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_TERMINAL_EXPRESSION));
 		if(!empty($terminalExpression) && $terminalExpression instanceof core_kernel_classes_Resource){
 			$this->deleteTerm($terminalExpression);
 		}
@@ -994,7 +985,7 @@ class wfEngine_models_classes_ProcessAuthoringService
      * Short description of method deleteInstance
      *
      * @access public
-     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @param  Resource instance
      * @return boolean
      */
@@ -1015,7 +1006,7 @@ class wfEngine_models_classes_ProcessAuthoringService
      * Short description of method deleteOperation
      *
      * @access public
-     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @param  Resource operation
      * @return boolean
      */
@@ -1044,7 +1035,7 @@ class wfEngine_models_classes_ProcessAuthoringService
      * Short description of method deleteProcess
      *
      * @access public
-     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @param  Resource process
      * @return boolean
      */
@@ -1071,50 +1062,10 @@ class wfEngine_models_classes_ProcessAuthoringService
     }
 
     /**
-     * Short description of method deleteReference
-     *
-     * @access public
-     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
-     * @param  Property property
-     * @param  Resource object
-     * @param  boolean multiple
-     * @return boolean
-     */
-    public function deleteReference( core_kernel_classes_Property $property,  core_kernel_classes_Resource $object, $multiple = false)
-    {
-        $returnValue = (bool) false;
-
-        // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004E1C begin
-		//deprecated!
-		$apiModel = core_kernel_impl_ApiModelOO::singleton();
-		
-		$subjectCollection = $apiModel->getSubject($property->uriResource, $object->uriResource);
-		if(!$subjectCollection->isEmpty()){
-			if($multiple){
-				$returnValue = true;
-				foreach($subjectCollection->getIterator() as $subject){
-					if( !$apiModel->removeStatement($subjectCollection->get(0)->uriResource, $property->uriResource, $object->uriResource, '') ){
-						$returnValue = false;
-						break;
-					}
-				}
-			}else{
-				$returnValue = $apiModel->removeStatement($subjectCollection->get(0)->uriResource, $property->uriResource, $object->uriResource, '');
-			}
-		}else{
-			$returnValue = true;
-		}
-		
-        // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004E1C end
-
-        return (bool) $returnValue;
-    }
-
-    /**
      * Short description of method deleteRule
      *
      * @access public
-     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @param  Resource rule
      * @return boolean
      */
@@ -1141,7 +1092,7 @@ class wfEngine_models_classes_ProcessAuthoringService
      * Short description of method deleteTerm
      *
      * @access public
-     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @param  Resource term
      * @return boolean
      */
@@ -1153,7 +1104,8 @@ class wfEngine_models_classes_ProcessAuthoringService
 		
 		$termClasses = array(
 			CLASS_TERM_SUJET_PREDICATE_X,
-			CLASS_TERM_CONST
+			CLASS_TERM_CONST,
+			CLASS_TERM
 		);
 		
 		//list of terms instance that must not be deleted!
@@ -1191,7 +1143,7 @@ class wfEngine_models_classes_ProcessAuthoringService
      * Short description of method editCondition
      *
      * @access public
-     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @param  Resource rule
      * @param  string conditionString
      * @return boolean
@@ -1225,7 +1177,7 @@ class wfEngine_models_classes_ProcessAuthoringService
      * Short description of method getActivitiesByProcess
      *
      * @access public
-     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @param  Resource process
      * @return array
      */
@@ -1256,7 +1208,7 @@ class wfEngine_models_classes_ProcessAuthoringService
      * Short description of method getConnectorsByActivity
      *
      * @access public
-     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @param  Resource activity
      * @param  array option
      * @param  boolean isConnector
@@ -1321,7 +1273,7 @@ class wfEngine_models_classes_ProcessAuthoringService
      * Short description of method getFormalParameter
      *
      * @access public
-     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @param  string name
      * @param  string defaultValue
      * @return core_kernel_classes_Resource
@@ -1397,7 +1349,7 @@ class wfEngine_models_classes_ProcessAuthoringService
      * Short description of method getInstance
      *
      * @access public
-     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @param  string identifier
      * @param  string mode
      * @param  Class clazz
@@ -1423,7 +1375,7 @@ class wfEngine_models_classes_ProcessAuthoringService
      * Short description of method getProcessVariable
      *
      * @access public
-     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @param  string code
      * @param  boolean forceCreation
      * @return core_kernel_classes_Resource
@@ -1452,7 +1404,7 @@ class wfEngine_models_classes_ProcessAuthoringService
      * Short description of method getServicesByActivity
      *
      * @access public
-     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @param  Resource activity
      * @return array
      */
@@ -1478,7 +1430,7 @@ class wfEngine_models_classes_ProcessAuthoringService
      * Short description of method isAuthorizedClass
      *
      * @access public
-     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @param  Class clazz
      * @return boolean
      */
@@ -1513,7 +1465,7 @@ class wfEngine_models_classes_ProcessAuthoringService
      * Short description of method setActivityHidden
      *
      * @access public
-     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @param  Resource activity
      * @param  boolean hidden
      * @return boolean
@@ -1540,7 +1492,7 @@ class wfEngine_models_classes_ProcessAuthoringService
      * Short description of method setActualParameter
      *
      * @access public
-     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @param  Resource callOfService
      * @param  Resource formalParam
      * @param  string value
@@ -1579,7 +1531,7 @@ class wfEngine_models_classes_ProcessAuthoringService
      * Short description of method setCallOfServiceDefinition
      *
      * @access public
-     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @param  Resource callOfService
      * @param  Resource serviceDefinition
      * @return boolean
@@ -1599,7 +1551,7 @@ class wfEngine_models_classes_ProcessAuthoringService
      * Short description of method setConnectorType
      *
      * @access public
-     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @param  Resource connector
      * @param  Resource typeOfConnector
      * @return boolean
@@ -1621,7 +1573,7 @@ class wfEngine_models_classes_ProcessAuthoringService
      * Short description of method setFirstActivity
      *
      * @access public
-     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @param  Resource process
      * @param  Resource activity
      * @return boolean
@@ -1649,7 +1601,7 @@ class wfEngine_models_classes_ProcessAuthoringService
      * Short description of method setParallelActivities
      *
      * @access public
-     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @param  Resource connectorInstance
      * @param  array newActivitiesArray
      * @return boolean
@@ -1679,6 +1631,7 @@ class wfEngine_models_classes_ProcessAuthoringService
 		$connectorInstance->removePropertyValues($propNextActivities);
 			
 		//check if the number has changed in the new posted data, otherwise, need to update the related join connector:
+		$propConnectorsPreviousActivities = new core_kernel_classes_Resource(PROPERTY_CONNECTORS_PREVIOUSACTIVITIES);
 		foreach($oldActivitiesArray as $activityUri=>$count){
 			
 			//need for update:
@@ -1697,11 +1650,9 @@ class wfEngine_models_classes_ProcessAuthoringService
 				
 				$joinConnector = $processFlow->findJoinFromActivityForward(new core_kernel_classes_Resource($activityUri));
 				if(!is_null($joinConnector)){
-					//removestatement fot that connector:
-					core_kernel_impl_ApiModelOO::singleton()->removeStatement($joinConnector->uriResource, PROPERTY_CONNECTORS_PREVIOUSACTIVITIES, $activityUri, '');
-					
+					$joinConnector->removePropertyValues($propConnectorsPreviousActivities, array('pattern' => $activityUri));
 					for($i=0; $i<$newActivitiesArray[$activityUri]; $i++){
-						$joinConnector->setPropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_PREVIOUSACTIVITIES), $activityUri);
+						$joinConnector->setPropertyValue($propConnectorsPreviousActivities, $activityUri);
 					}
 				
 				}
@@ -1725,7 +1676,7 @@ class wfEngine_models_classes_ProcessAuthoringService
      * Short description of method createProcess
      *
      * @access public
-     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @param  string label
      * @param  string comment
      * @return core_kernel_classes_Resource
@@ -1751,7 +1702,7 @@ class wfEngine_models_classes_ProcessAuthoringService
      * Short description of method createServiceDefinition
      *
      * @access public
-     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @param  string label
      * @param  string serviceUrl
      * @param  array inputParameters
@@ -1830,7 +1781,7 @@ class wfEngine_models_classes_ProcessAuthoringService
      * Find and destroy the service with the given serviceUrl
      *
      * @access public
-     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @param  string serviceUrl
      * @return boolean
      */
@@ -1859,7 +1810,7 @@ class wfEngine_models_classes_ProcessAuthoringService
      * Short description of method deleteProcessVariable
      *
      * @access public
-     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @param  string code
      * @return boolean
      */
