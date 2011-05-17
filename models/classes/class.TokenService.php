@@ -823,6 +823,7 @@ extends tao_models_classes_GenerisService
                 throw new Exception("No token found for that user");
             }
             //only one token here because, on go back from only one activity
+			$newTokens = array();
             foreach($currentTokens as $token){
                 //create the token for next activity
                 $newToken = $this->duplicate($token);
@@ -831,12 +832,14 @@ extends tao_models_classes_GenerisService
                 $newToken->setPropertyValue($this->tokenActivityProp, $previousActivity->uriResource);
                  
                 //set as current
-                $currentTokens[] = $newToken;
+                $newTokens[] = $newToken;
                  
                 //delete the previous
                 $this->delete($token);
+				
             }
-            $this->setCurrents($processExecution, $currentTokens);
+			
+            $this->setCurrents($processExecution, $newTokens);
         }
 
         // section 127-0-1-1--34815f2e:12c3b891c1e:-8000:0000000000002713 end

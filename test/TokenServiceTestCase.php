@@ -229,20 +229,12 @@ class TokenServiceTestCase extends UnitTestCase {
 				$deleted = $this->service->delete($currentToken);
 				$this->assertTrue($deleted);
 			}
+		
+			//delete process exec:
+			$this->assertTrue($processExecutionService->deleteProcessExecution($proc->resource));
 			
-			$activity1->delete();
-			$activity2->delete();
-			$activity3->delete();
-			$activity4->delete();
-			$activity5->delete();
-			
-			$connector1->delete();
-			$connector2->delete();
-			$connector3->delete();
-			$connector4->delete();
-			
-			$proc->resource->delete();
-			$processDefinition->delete();
+			//delete processdef:
+			$this->assertTrue($authoringService->deleteProcess($processDefinition));
 			
 			if(!is_null($this->currentUser)){
 				core_kernel_users_Service::logout();
@@ -414,22 +406,11 @@ class TokenServiceTestCase extends UnitTestCase {
 				$this->assertTrue($this->service->delete($currentToken));
 			}
 				
+			//delete process exec:
+			$this->assertTrue($processExecutionService->deleteProcessExecution($proc->resource));
 			
-			$activity0->delete();
-			$connector0->delete();
-			
-			$parallelActivity1->delete();
-			$connector1->delete();
-			
-			$parallelActivity2->delete();
-			$connector2->delete();
-			
-			$joinActivity->delete();
-			
-			$proc->resource->delete();
-				
 			//delete processdef:
-			$authoringService->deleteProcess($processDefinition);
+			$this->assertTrue($authoringService->deleteProcess($processDefinition));
 			
 			if(!is_null($this->currentUser)){
 				core_kernel_users_Service::logout();
