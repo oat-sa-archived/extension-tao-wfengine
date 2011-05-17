@@ -47,21 +47,29 @@ class TokenServiceTestCase extends UnitTestCase {
 		
 		$login = 'wfTester';
 		$pass = 'test123';
+		$md5pass = md5($pass);
 		$userData = array(
 			PROPERTY_USER_LOGIN		=> 	$login,
-			PROPERTY_USER_PASSWORD	=>	md5($pass),
+			PROPERTY_USER_PASSWORD	=>	$md5pass,
 			PROPERTY_USER_DEFLG		=>	'EN'
 		);
 		
 		$this->currentUser = $this->userService->getOneUser($login);
 		if(is_null($this->currentUser)){
-			$this->userService->saveUser($this->currentUser, $userData, new core_kernel_classes_Resource(CLASS_ROLE_WORKFLOWUSERROLE));
+			
+			$newUser = $this->userService->saveUser($this->currentUser, $userData, new core_kernel_classes_Resource(CLASS_ROLE_WORKFLOWUSERROLE));
+			if(empty($newUser)){
+				$this->fail("cannot create the user {$login}/{$pass} ({$md5pass})");
+			}
 		}
 		
 		core_kernel_users_Service::logout();
 		if($this->userService->loginUser($login, md5($pass))){
 			$this->userService->connectCurrentUser();
 			$this->currentUser = $this->userService->getCurrentUser();
+			// var_dump('current user', $this->currentUser);
+		}else{
+			$this->fail("cannot login the user {$login}/{$pass} ({$md5pass})");
 		}
 	}
 	
@@ -170,8 +178,8 @@ class TokenServiceTestCase extends UnitTestCase {
 			while($i <= 5 ){
 				$activity = $proc->currentActivity[0];
 				
-				$this->out("<strong>".$activity->label."</strong>", true);
-				$this->assertTrue($activity->label == 'activity'.$i);
+				$this->out("<strong>".$activity->resource->getLabel()."</strong>", true);
+				$this->assertEqual($activity->resource->getLabel(),'activity'.$i);
 				
 				
 				$currentTokens = $this->service->getCurrents($proc->resource);
@@ -218,7 +226,8 @@ class TokenServiceTestCase extends UnitTestCase {
 			
 			$currentTokens = $this->service->getCurrents($proc->resource);
 			foreach($currentTokens as $currentToken){
-				$this->assertTrue($this->service->delete($currentToken));
+				$deleted = $this->service->delete($currentToken);
+				$this->assertTrue($deleted);
 			}
 			
 			$activity1->delete();

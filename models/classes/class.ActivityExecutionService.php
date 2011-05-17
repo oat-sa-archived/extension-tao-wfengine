@@ -452,7 +452,7 @@ class wfEngine_models_classes_ActivityExecutionService
         				
         				if(!is_null($activityRole) && is_array($userRoles)){
         				
-	        				$actsProp 			= new core_kernel_classes_Property(PROPERTY_PROCESS_ACTIVITIES);
+	        				$actsProp = new core_kernel_classes_Property(PROPERTY_PROCESS_ACTIVITIES);
 			
 	        				//retrieve the process containing the activity
 							$activityClass = new core_kernel_classes_Class(CLASS_PROCESS);

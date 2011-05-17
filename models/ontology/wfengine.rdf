@@ -101,7 +101,7 @@
     <rdf:value xml:lang="EN"/>
     <rdf:type rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessInstanceStatus"/>
   </rdf:Description>
-  <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessInstancesCurrentToken">
+  <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#ClassTokens">
     <rdfs:isDefinedBy xml:lang="EN"/>
     <rdfs:seeAlso xml:lang="EN"/>
     <rdfs:label xml:lang="EN"><![CDATA[current_Token]]></rdfs:label>

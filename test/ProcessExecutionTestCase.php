@@ -173,7 +173,7 @@ class ProcessExecutionTestCase extends UnitTestCase{
 				$activity = $proc->currentActivity[0];
 				
 				$this->out("<strong>".$activity->label."</strong>", true);
-				$this->assertTrue($activity->label == 'activity'.$i);
+				$this->assertTrue($activity->resource->getLabel() == 'activity'.$i);
 				
 				//init execution
 				$this->assertTrue($this->service->initCurrentExecution($proc->resource, $activity->resource, $this->currentUser));
