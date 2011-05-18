@@ -109,8 +109,7 @@ class wfEngine_actions_Users extends tao_actions_CommonModule {
 			
 			//add role:
 			$cellData[5]	= '';
-			$roleCollection = null;
-			foreach($roles as $role){
+			foreach($user->getType() as $role){
 				if($role instanceof core_kernel_classes_Resource){
 					$cellData[5] .= $role->getLabel().', ';
 				}

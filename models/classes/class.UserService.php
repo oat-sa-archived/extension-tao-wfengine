@@ -125,9 +125,10 @@ class wfEngine_models_classes_UserService
     	$roleService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_RoleService');
     	
         $userClass = new core_kernel_classes_Class(CLASS_GENERIS_USER);
+		$users = array();
         foreach($userClass->getInstances(true) as $user){
            	if($roleService->checkUserRole($user, new core_kernel_classes_Class(CLASS_ROLE_BACKOFFICE))){
-           		$returnValue[$user->uriResource] = $user;
+           		$users[$user->uriResource] = $user;
            	}
         }
         
