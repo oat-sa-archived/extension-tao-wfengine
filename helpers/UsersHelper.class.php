@@ -48,7 +48,8 @@ class UsersHelper
 	
 		// user roles.
 		$data['roles']		= array();
-		foreach ($roleService->getUserRoles($currentUser) as $role){
+		$roles = $roleService->getUserRoles($currentUser);
+		foreach($roles as $role){	
 			$data['roles'][] = array(
 				'uri' 	 => $role->uriResource,
 				'label' => $role->getLabel()
