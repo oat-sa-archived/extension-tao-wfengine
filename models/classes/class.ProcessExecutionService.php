@@ -47,7 +47,16 @@ class wfEngine_models_classes_ProcessExecutionService
     // --- ATTRIBUTES ---
 
     // --- OPERATIONS ---
-
+	
+	public function __construct(){
+		parent::__construct();
+		$this->classProcessInstances = new core_kernel_classes_Class(CLASS_PROCESSINSTANCES);
+		$this->propProcessInstacesStatus = new core_kernel_classes_Property(PROPERTY_PROCESSINSTANCES_STATUS);
+		$this->propProcessInstacesCurrentTokens = new core_kernel_classes_Property(PROPERTY_PROCESSINSTANCES_CURRENTTOKEN);
+		$this->propActivityExecutionsProcessExecution = new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_PROCESSEXECUTION);
+		$this->instanceProcessFinished = new core_kernel_classes_Resource(INSTANCE_PROCESSSTATUS_FINISHED);
+		$tis->classActivityExecutions = new core_kernel_classes_Class(CLASS_ACTIVITY_EXECUTION);
+	}
     /**
      * Check the ACL of a user for the given process
      *
@@ -161,7 +170,7 @@ class wfEngine_models_classes_ProcessExecutionService
         $returnValue = (bool) false;
 
         // section 10-50-1-116-185ba8ba:12f4978614f:-8000:0000000000002D5F begin
-		if(wfEngine_helpers_ProcessUtil::checkType($processExecution, new core_kernel_classes_Class(CLASS_PROCESSINSTANCES))){
+		if(wfEngine_helpers_ProcessUtil::checkType($processExecution, $this->classProcessInstances)){
 		
 			if($finishedOnly){
 				if(!$this->isFinished($processExecution)){
@@ -170,8 +179,8 @@ class wfEngine_models_classes_ProcessExecutionService
 			}
 			
 			//delete associated activity executions
-			$activityExecClass = new core_kernel_classes_Class(CLASS_ACTIVITY_EXECUTION);
-			$activityExecutions = $activityExecClass->searchInstances(array(PROPERTY_ACTIVITY_EXECUTION_PROCESSEXECUTION => $processExecution->uriResource), array('like' => false));
+			$activityExecClass = $this->classActivityExecutions;
+			$activityExecutions = $activityExecClass->searchInstances(array($this->propActivityExecutionsProcessExecution->uriResource => $processExecution->uriResource), array('like' => false));
 			if(count($activityExecutions) > 0){
 				foreach($activityExecutions as $activityExecution){
 					if($activityExecution instanceof core_kernel_classes_Resource){
@@ -181,7 +190,7 @@ class wfEngine_models_classes_ProcessExecutionService
 			}
 			
 			//delete current tokens:
-			$tokenCollection = $processExecution->getPropertyValuesCollection(new core_kernel_classes_Property(PROPERTY_PROCESSINSTANCES_CURRENTTOKEN));
+			$tokenCollection = $processExecution->getPropertyValuesCollection($this->propProcessInstacesCurrentTokens);
 			if($tokenCollection->count() > 0){
 				foreach($tokenCollection->getIterator() as $token){
 					if($token instanceof core_kernel_classes_Resource){
@@ -214,10 +223,50 @@ class wfEngine_models_classes_ProcessExecutionService
 		if(is_array($processExecutions)){
 			if(empty($processExecutions)){
 				//get all instances!
-				$processInstanceClass =  new core_kernel_classes_Class(CLASS_PROCESSINSTANCES);
-				foreach($processInstanceClass->getInstances(true) as $processInstance){
+				foreach($this->classProcessInstances->getInstances(false) as $processInstance){
+					if($finishedOnly){
+						if(!$this->isFinished($processInstance)) continue;
+					}
 					$processExecutions[] = $processInstance;
 				}
+				
+				$deleteTokens = true;
+				if($deleteTokens){
+					foreach($processExecutions as $processExecution){
+						//delete current tokens:
+						$tokenCollection = $processExecution->getPropertyValuesCollection($this->propProcessInstacesCurrentTokens);
+						if($tokenCollection->count() > 0){
+							foreach($tokenCollection->getIterator() as $token){
+								if($token instanceof core_kernel_classes_Resource){
+									$token->delete();//do not delete ref right now, since it should be done later
+								}
+							}
+						}
+					}
+				}
+				
+				$dbWrapper = core_kernel_classes_DbWrapper::singleton();
+				$apiModel  	= core_kernel_impl_ApiModelOO::singleton();
+				foreach($processExecutions as $processExecution){ 
+					$activityExecutionSubject = array();
+
+					$activityExecutionCollection = $apiModel->getSubject($this->propActivityExecutionsProcessExecution->uriResource,  $processExecution->uriResource);
+					if($activityExecutionCollection->count() > 0){
+						foreach($activityExecutionCollection->getIterator() as $activityExecution){
+							$activityExecutionSubject[] = $activityExecution->uriResource;
+						}
+							
+						$queryRemove =  "DELETE FROM statements WHERE subject IN ( ";
+						$queryRemove  .= "'".$processExecution->uriResource."',";
+						foreach($activityExecutionSubject as $subject){
+							$queryRemove  .= "'".$subject."',";
+						}
+						$queryRemove = substr($queryRemove, 0, strlen($queryRemove) - 1).")";
+						
+						$dbWrapper->execSql($queryRemove);
+					}
+				}
+
 			}
 			
 			foreach($processExecutions as $processExecution){
@@ -244,9 +293,9 @@ class wfEngine_models_classes_ProcessExecutionService
         $returnValue = (bool) false;
 
         // section 10-50-1-116-185ba8ba:12f4978614f:-8000:0000000000002D78 begin
-		$status = $processExecution->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_PROCESSINSTANCES_STATUS));
+		$status = $processExecution->getOnePropertyValue($this->propProcessInstacesStatus);
 		if($status instanceof core_kernel_classes_Resource){
-			if($status->uriResource == INSTANCE_PROCESSSTATUS_FINISHED){
+			if($status->uriResource == $this->instanceProcessFinished->uriResource){
 				$returnValue = true;
 			}
 		}
