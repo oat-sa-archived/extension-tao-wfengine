@@ -316,7 +316,7 @@ class wfEngine_models_classes_ProcessAuthoringService
         $returnValue = null;
 
         // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004D80 begin
-		
+		$defaultValueProp = null;
 		if(strtolower($type) == 'constant'){
 			$defaultValueProp = new core_kernel_classes_Property(PROPERTY_FORMALPARAMETER_DEFAULTCONSTANTVALUE);
 		}elseif(strtolower($type) == 'processvariable'){

@@ -55,7 +55,7 @@ class wfEngine_models_classes_ProcessExecutionService
 		$this->propProcessInstacesCurrentTokens = new core_kernel_classes_Property(PROPERTY_PROCESSINSTANCES_CURRENTTOKEN);
 		$this->propActivityExecutionsProcessExecution = new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_PROCESSEXECUTION);
 		$this->instanceProcessFinished = new core_kernel_classes_Resource(INSTANCE_PROCESSSTATUS_FINISHED);
-		$tis->classActivityExecutions = new core_kernel_classes_Class(CLASS_ACTIVITY_EXECUTION);
+		$this->classActivityExecutions = new core_kernel_classes_Class(CLASS_ACTIVITY_EXECUTION);
 	}
     /**
      * Check the ACL of a user for the given process
