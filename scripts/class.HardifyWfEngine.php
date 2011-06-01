@@ -169,6 +169,17 @@ class wfEngine_scripts_HardifyWfEngine
 				
 				$switcher->hardify($testTakerClass, array_merge($options, array('topClass' => $userClass)));	
     			
+				/*
+				 * Compiled groups
+				 */
+    			self::out("\nCompiling groups", array('color' => 'light_blue'));
+    			
+    			$groupClass = new core_kernel_classes_Class('http://www.tao.lu/Ontologies/TAOGroup.rdf#Group');
+				
+				self::out(" - Hardifying ".$groupClass->getLabel(), array('color' => 'light_green'));
+				
+				$switcher->hardify($groupClass, $options);
+				
     			/*
     			 * Compiled results
     			 */
