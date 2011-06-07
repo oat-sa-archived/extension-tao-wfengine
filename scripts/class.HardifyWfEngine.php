@@ -143,7 +143,7 @@ class wfEngine_scripts_HardifyWfEngine
 					"http://www.tao.lu/middleware/wfEngine.rdf#ClassActualParameters",
 					"http://www.tao.lu/middleware/wfEngine.rdf#ClassFormalParameters",
 		//			"http://www.tao.lu/middleware/wfEngine.rdf#ClassRole"
-    				"http://www.tao.lu/middleware/wfEngine.rdf#ClassTokens",
+                                        "http://www.tao.lu/middleware/wfEngine.rdf#ClassTokens",
 					"http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessInstances",
 					"http://www.tao.lu/middleware/wfEngine.rdf#ClassActivityExecutions",
 					"http://www.tao.lu/middleware/wfEngine.rdf#ClassServiceDefinitions",
@@ -169,17 +169,28 @@ class wfEngine_scripts_HardifyWfEngine
 				
 				$switcher->hardify($testTakerClass, array_merge($options, array('topClass' => $userClass)));	
     			
-				/*
-				 * Compiled groups
-				 */
+                        /*
+                         * Compiled groups
+                         */
     			self::out("\nCompiling groups", array('color' => 'light_blue'));
     			
     			$groupClass = new core_kernel_classes_Class('http://www.tao.lu/Ontologies/TAOGroup.rdf#Group');
 				
-				self::out(" - Hardifying ".$groupClass->getLabel(), array('color' => 'light_green'));
+                        self::out(" - Hardifying ".$groupClass->getLabel(), array('color' => 'light_green'));
+
+                        $switcher->hardify($groupClass, $options);
+			
+                        /*
+                         * Compiled delivery history
+                         */
+    			self::out("\nCompiling delivery history", array('color' => 'light_blue'));
+    			
+    			$deliveryHistoryClass = new core_kernel_classes_Class('http://www.tao.lu/Ontologies/TAODelivery.rdf#History');
 				
-				$switcher->hardify($groupClass, $options);
-				
+                        self::out(" - Hardifying ".$deliveryHistoryClass->getLabel(), array('color' => 'light_green'));
+
+                        $switcher->hardify($deliveryHistoryClass, array_merge($options, array('createForeigns' => false)));
+                        
     			/*
     			 * Compiled results
     			 */
