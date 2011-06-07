@@ -31,7 +31,7 @@ if(isset($_GET['finishedOnly'])){
 $deleteDeliveryHistory = false;
 if(isset($_GET['deliveryHistory'])){
 	if($_GET['deliveryHistory'] != 'false'){
-		$finishedOnly = (bool) $_GET['deliveryHistory'];
+		$deleteDeliveryHistory = (bool) $_GET['deliveryHistory'];
 	}
 }
 
