@@ -28,11 +28,26 @@ if(isset($_GET['finishedOnly'])){
 	}
 }
 
+$deleteDeliveryHistory = false;
+if(isset($_GET['deliveryHistory'])){
+	if($_GET['deliveryHistory'] != 'false'){
+		$finishedOnly = (bool) $_GET['deliveryHistory'];
+	}
+}
+
 $processExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessExecutionService');
 $result = false;
 if(!empty($processExecutionUri)){
 	if($processExecutionUri=='all' || $processExecutionUri='*'){
 		$result = $processExecutionService->deleteProcessExecutions(array(), $finishedOnly);
+                
+                if($deleteDeliveryHistory){
+                        //delete all delivery history:
+                        $deliveryHistoryClass = new core_kernel_classes_Class('http://www.tao.lu/Ontologies/TAODelivery.rdf#History');
+                        foreach($deliveryHistoryClass->getInstances() as $history){
+                                $history->delete();
+                        }
+                }
 	}else{
 		$processExecution = new core_kernel_classes_Resource($processExecutionUri);
 		$result = $processExecutionService->deleteProcessExecution($processExecution, $finishedOnly);
