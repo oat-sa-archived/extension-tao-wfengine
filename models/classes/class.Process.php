@@ -69,12 +69,20 @@ extends wfEngine_models_classes_WfResource
 		// section 10-13-1--31-740bb989:119ebfa9b28:-8000:0000000000000852 begin
 		$processActivitiesProp = new core_kernel_classes_Property(PROPERTY_PROCESS_ACTIVITIES);
 		$activities = $this->resource->getPropertyValuesCollection($processActivitiesProp);
-	// var_dump(PROPERTY_PROCESS_ACTIVITIES, $activities);
+
+		
+		// This seems to be an code that depends on the quantity of activities of
+		// the process. Moreover the $activityIsInitialProp is instantiated at
+		// every single iteration. This part of the code might consume a lot
+		// of resources for large processes.
+		//
+		// Unfortunately at this time we have no other possibility than iterate on the
+		// activities because the association between PROCESSES (1) and ACTIVITIES (2) is directed
+		// from (1) to (2).
+		$activityIsInitialProp = new core_kernel_classes_Property(PROPERTY_ACTIVITIES_ISINITIAL);
+		
 		foreach ($activities->getIterator() as $activity)
 		{
-			$activityIsInitialProp = new core_kernel_classes_Property(PROPERTY_ACTIVITIES_ISINITIAL);
-
-
 			$isInitialCollection= $activity->getOnePropertyValue($activityIsInitialProp);
 		
 			if ($isInitialCollection!= null && $isInitialCollection->uriResource == GENERIS_TRUE)
