@@ -43,9 +43,10 @@ class wfEngine_models_classes_ProcessExecutionFactory {
 		$tokenService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_TokenService');
 		
 		$tokens = array();
+		$pInstanceProcessProp = new core_kernel_classes_Property(PROPERTY_PROCESSINSTANCES_PROCESSPATH,__METHOD__);
+		
 		foreach ($initialActivities as $activity){
 			// Add in path
-			$pInstanceProcessProp = new core_kernel_classes_Property(PROPERTY_PROCESSINSTANCES_PROCESSPATH,__METHOD__);
 			$processInstanceResource->setPropertyValue($pInstanceProcessProp,$activity->uri);
 			
 			$token = $tokenService->create($activity->resource);
