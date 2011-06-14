@@ -98,7 +98,7 @@ class wfEngine_scripts_HardifyWfEngine
     	
         // section 127-0-1-1-22592813:12fbf8723a0:-8000:0000000000002FD6 end
     }
-
+    
     /**
      * Short description of method run
      *
@@ -110,6 +110,8 @@ class wfEngine_scripts_HardifyWfEngine
     {
         // section 127-0-1-1-22592813:12fbf8723a0:-8000:0000000000002FD4 begin
         
+    	define ('DEBUG_PERSISTENCE', false);
+    	
     	switch($this->mode){ 
     		case self::MODE_SMOOTH2HARD:
     			
@@ -120,35 +122,34 @@ class wfEngine_scripts_HardifyWfEngine
     				'append'				=> true,
 					'createForeigns'		=> true,
 					'referencesAllTypes'	=> true,
-					'rmSources'				=> false
+					'rmSources'				=> true
     			);
     			
     			$switcher = new core_kernel_persistence_Switcher(array(CLASS_PROCESSVARIABLES));
     			
-    			/*
-    			 * Compiled wfEngine data
-    			 */
+    			// Compiled wfEngine data
     			self::out("\nCompiling wfEngine classes", array('color' => 'light_blue'));
     			
     			//class used by the wfEngine
     			$wfClasses = array(
+					"http://www.tao.lu/middleware/wfEngine.rdf#ClassSupportServices",
 					"http://www.tao.lu/middleware/wfEngine.rdf#ClassCallOfservicesResources",
 					"http://www.tao.lu/middleware/wfEngine.rdf#ClassServiceDefinitionResources",
 					"http://www.tao.lu/middleware/wfEngine.rdf#ClassServicesResources",
 					"http://www.tao.lu/middleware/wfEngine.rdf#ClassConnectors",
-					"http://www.tao.lu/middleware/wfEngine.rdf#ClassTransitionRules",
+		//			"http://www.tao.lu/middleware/wfEngine.rdf#ClassTransitionRules",
 		//			"http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessVariables",
-					"http://www.tao.lu/middleware/wfEngine.rdf#ClassSupportServices",
-					"http://www.tao.lu/middleware/wfEngine.rdf#ClassCallOfServices",
-					"http://www.tao.lu/middleware/wfEngine.rdf#ClassActualParameters",
-					"http://www.tao.lu/middleware/wfEngine.rdf#ClassFormalParameters",
+		//			"http://www.tao.lu/middleware/wfEngine.rdf#ClassSupportServices",
+		//			"http://www.tao.lu/middleware/wfEngine.rdf#ClassCallOfServices",
+		//			"http://www.tao.lu/middleware/wfEngine.rdf#ClassActualParameters",
+		//			"http://www.tao.lu/middleware/wfEngine.rdf#ClassFormalParameters",
 		//			"http://www.tao.lu/middleware/wfEngine.rdf#ClassRole"
-                                        "http://www.tao.lu/middleware/wfEngine.rdf#ClassTokens",
-					"http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessInstances",
-					"http://www.tao.lu/middleware/wfEngine.rdf#ClassActivityExecutions",
-					"http://www.tao.lu/middleware/wfEngine.rdf#ClassServiceDefinitions",
-					"http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessDefinitions",
-					"http://www.tao.lu/middleware/wfEngine.rdf#ClassActivities",
+    				"http://www.tao.lu/middleware/wfEngine.rdf#ClassTokens",
+		//			"http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessInstances",
+		//			"http://www.tao.lu/middleware/wfEngine.rdf#ClassActivityExecutions",
+		//			"http://www.tao.lu/middleware/wfEngine.rdf#ClassServiceDefinitions",
+		//			"http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessDefinitions",
+		//			"http://www.tao.lu/middleware/wfEngine.rdf#ClassActivities",
     			);
     			
     			foreach($wfClasses as $classUri){
@@ -157,9 +158,7 @@ class wfEngine_scripts_HardifyWfEngine
     				$switcher->hardify($class, $options);
     			}
     			
-    			/*
-    			 * Compiled test takers
-    			 */
+    			// Compiled test takers
     			self::out("\nCompiling test takers", array('color' => 'light_blue'));
     			
     			$testTakerClass = new core_kernel_classes_Class('http://www.tao.lu/Ontologies/TAOSubject.rdf#Subject');
@@ -168,32 +167,26 @@ class wfEngine_scripts_HardifyWfEngine
 				self::out(" - Hardifying ".$testTakerClass->getLabel(), array('color' => 'light_green'));
 				
 				$switcher->hardify($testTakerClass, array_merge($options, array('topClass' => $userClass)));	
-    			
-                        /*
-                         * Compiled groups
-                         */
+   			
+				// Compiled groups
     			self::out("\nCompiling groups", array('color' => 'light_blue'));
     			
     			$groupClass = new core_kernel_classes_Class('http://www.tao.lu/Ontologies/TAOGroup.rdf#Group');
 				
-                        self::out(" - Hardifying ".$groupClass->getLabel(), array('color' => 'light_green'));
+				self::out(" - Hardifying ".$groupClass->getLabel(), array('color' => 'light_green'));
+				
+				$switcher->hardify($groupClass, $options);
 
-                        $switcher->hardify($groupClass, $options);
-			
-                        /*
-                         * Compiled delivery history
-                         */
+                // Compiled delivery history
     			self::out("\nCompiling delivery history", array('color' => 'light_blue'));
     			
     			$deliveryHistoryClass = new core_kernel_classes_Class('http://www.tao.lu/Ontologies/TAODelivery.rdf#History');
 				
-                        self::out(" - Hardifying ".$deliveryHistoryClass->getLabel(), array('color' => 'light_green'));
+                self::out(" - Hardifying ".$deliveryHistoryClass->getLabel(), array('color' => 'light_green'));
 
-                        $switcher->hardify($deliveryHistoryClass, array_merge($options, array('createForeigns' => false)));
-                        
-    			/*
-    			 * Compiled results
-    			 */
+                $switcher->hardify($deliveryHistoryClass, array_merge($options, array('createForeigns' => false)));
+                        				
+    			// Compiled results
     			self::out("\nCompiling results", array('color' => 'light_blue'));
     			
     			$resultClass = new core_kernel_classes_Class('http://www.tao.lu/Ontologies/TAOResult.rdf#Result');
@@ -201,15 +194,94 @@ class wfEngine_scripts_HardifyWfEngine
     			self::out(" - Hardifying ".$resultClass->getLabel(), array('color' => 'light_green'));
     			
     			$switcher->hardify($resultClass, array_merge($options, array('createForeigns' => false)));
-				 
+ 			
+    			unset($switcher);
+    			
+    			break;
+    		
+    			
+    			case self::MODE_HARD2SMOOTH:
+    			
+    			self::out("Decompiling triples to relational database", array('color' => 'light_blue'));
+    			
+    			$options = array(
+    				'recursive'				=> true,
+    				'removeForeigns'		=> true				
+    			);
+    			
+    			$switcher = new core_kernel_persistence_Switcher(array(CLASS_PROCESSVARIABLES));
+    			
+    			/*
+    			 * Compiled wfEngine data
+    			 */
+    			self::out("\nDecompiling wfEngine classes", array('color' => 'light_blue'));
+    			
+    			//class used by the wfEngine
+    			$wfClasses = array(
+					"http://www.tao.lu/middleware/wfEngine.rdf#ClassSupportServices",
+					"http://www.tao.lu/middleware/wfEngine.rdf#ClassCallOfservicesResources",
+					"http://www.tao.lu/middleware/wfEngine.rdf#ClassServiceDefinitionResources",
+					"http://www.tao.lu/middleware/wfEngine.rdf#ClassServicesResources",
+					"http://www.tao.lu/middleware/wfEngine.rdf#ClassConnectors",
+		//			"http://www.tao.lu/middleware/wfEngine.rdf#ClassTransitionRules",
+		//			"http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessVariables",
+		//			"http://www.tao.lu/middleware/wfEngine.rdf#ClassSupportServices",
+		//			"http://www.tao.lu/middleware/wfEngine.rdf#ClassCallOfServices",
+		//			"http://www.tao.lu/middleware/wfEngine.rdf#ClassActualParameters",
+		//			"http://www.tao.lu/middleware/wfEngine.rdf#ClassFormalParameters",
+		//			"http://www.tao.lu/middleware/wfEngine.rdf#ClassRole"
+    				"http://www.tao.lu/middleware/wfEngine.rdf#ClassTokens",
+		//			"http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessInstances",
+		//			"http://www.tao.lu/middleware/wfEngine.rdf#ClassActivityExecutions",
+		//			"http://www.tao.lu/middleware/wfEngine.rdf#ClassServiceDefinitions",
+		//			"http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessDefinitions",
+		//			"http://www.tao.lu/middleware/wfEngine.rdf#ClassActivities",
+    			);
+    			
+    			foreach($wfClasses as $classUri){
+    				$class = new core_kernel_classes_Class($classUri);
+    				$this->out(" - Unhardifying ".$class->getLabel(), array('color' => 'light_green'));
+    				$switcher->unhardify($class, $options);
+    			}
+    			
+    			// Compiled test takers
+    			self::out("\nDecompiling test takers", array('color' => 'light_blue'));
+    			
+    			$testTakerClass = new core_kernel_classes_Class('http://www.tao.lu/Ontologies/TAOSubject.rdf#Subject');
+				
+				self::out(" - Unhardifying ".$testTakerClass->getLabel(), array('color' => 'light_green'));
+				
+				$switcher->unhardify($testTakerClass, $options);	
+    			
+				// Compiled groups
+    			self::out("\nDecompiling groups", array('color' => 'light_blue'));
+    			
+    			$groupClass = new core_kernel_classes_Class('http://www.tao.lu/Ontologies/TAOGroup.rdf#Group');
+				
+				self::out(" - Unhardifying ".$groupClass->getLabel(), array('color' => 'light_green'));
+				
+				$switcher->unhardify($groupClass, $options);
+				
+				// Compiled delivery history
+    			self::out("\nDecompiling delivery history", array('color' => 'light_blue'));
+    			
+    			$deliveryHistoryClass = new core_kernel_classes_Class('http://www.tao.lu/Ontologies/TAODelivery.rdf#History');
+				
+                self::out(" - Unhardifying ".$deliveryHistoryClass->getLabel(), array('color' => 'light_green'));
+
+                $switcher->unhardify($deliveryHistoryClass, array_merge($options));
+				
+    			// Compiled results
+    			self::out("\nDecompiling results", array('color' => 'light_blue'));
+    			
+    			$resultClass = new core_kernel_classes_Class('http://www.tao.lu/Ontologies/TAOResult.rdf#Result');
+				
+    			self::out(" - Unhardifying ".$resultClass->getLabel(), array('color' => 'light_green'));
+    			
+    			$switcher->unhardify($resultClass, array_merge($options, array('removeForeigns' => false)));				 
 				
     			unset($switcher);
     			
-    			
-    			
-    			break;
-    		case self::MODE_HARD2SMOOTH:
-    			self::err('this mode is not yet implemented', true);
     			break;
     		
     		default:
