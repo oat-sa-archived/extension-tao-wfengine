@@ -47,16 +47,7 @@ class wfEngine_models_classes_ProcessExecutionService
     // --- ATTRIBUTES ---
 
     // --- OPERATIONS ---
-	
-	public function __construct(){
-		parent::__construct();
-		$this->classProcessInstances = new core_kernel_classes_Class(CLASS_PROCESSINSTANCES);
-		$this->propProcessInstacesStatus = new core_kernel_classes_Property(PROPERTY_PROCESSINSTANCES_STATUS);
-		$this->propProcessInstacesCurrentTokens = new core_kernel_classes_Property(PROPERTY_PROCESSINSTANCES_CURRENTTOKEN);
-		$this->propActivityExecutionsProcessExecution = new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_PROCESSEXECUTION);
-		$this->instanceProcessFinished = new core_kernel_classes_Resource(INSTANCE_PROCESSSTATUS_FINISHED);
-		$this->classActivityExecutions = new core_kernel_classes_Class(CLASS_ACTIVITY_EXECUTION);
-	}
+
     /**
      * Check the ACL of a user for the given process
      *
@@ -184,7 +175,7 @@ class wfEngine_models_classes_ProcessExecutionService
 			if(count($activityExecutions) > 0){
 				foreach($activityExecutions as $activityExecution){
 					if($activityExecution instanceof core_kernel_classes_Resource){
-						$activityExecution->delete(true);
+						$activityExecution->delete();//no need for the second param to "true" since all the related resources are going to be deleted in this method
 					}
 				}
 			}
@@ -194,7 +185,7 @@ class wfEngine_models_classes_ProcessExecutionService
 			if($tokenCollection->count() > 0){
 				foreach($tokenCollection->getIterator() as $token){
 					if($token instanceof core_kernel_classes_Resource){
-						$token->delete(true);
+						$token->delete();
 					}
 				}
 			}
@@ -302,6 +293,48 @@ class wfEngine_models_classes_ProcessExecutionService
         // section 10-50-1-116-185ba8ba:12f4978614f:-8000:0000000000002D78 end
 
         return (bool) $returnValue;
+    }
+
+    /**
+     * Short description of method getProcessExecutionsByDefinition
+     *
+     * @access public
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @param  Resource processDefinition
+     * @return array
+     */
+    public function getProcessExecutionsByDefinition( core_kernel_classes_Resource $processDefinition)
+    {
+        $returnValue = array();
+
+        // section 127-0-1-1-7c36bc99:13092a153cd:-8000:0000000000003B8C begin
+        if(!is_null($processDefinition)){
+                $processInstancesClass = new core_kernel_classes_Class(CLASS_PROCESSINSTANCES);
+                $returnValue = $processInstancesClass->searchInstances(array(PROPERTY_PROCESSINSTANCES_EXECUTIONOF => $processDefinition->uriResource));
+        }
+        // section 127-0-1-1-7c36bc99:13092a153cd:-8000:0000000000003B8C end
+
+        return (array) $returnValue;
+    }
+
+    /**
+     * Short description of method __construct
+     *
+     * @access public
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @return mixed
+     */
+    public function __construct()
+    {
+        // section 127-0-1-1-7c36bc99:13092a153cd:-8000:0000000000003B9A begin
+        parent::__construct();
+        $this->classProcessInstances = new core_kernel_classes_Class(CLASS_PROCESSINSTANCES);
+        $this->propProcessInstacesStatus = new core_kernel_classes_Property(PROPERTY_PROCESSINSTANCES_STATUS);
+        $this->propProcessInstacesCurrentTokens = new core_kernel_classes_Property(PROPERTY_PROCESSINSTANCES_CURRENTTOKEN);
+        $this->propActivityExecutionsProcessExecution = new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_PROCESSEXECUTION);
+        $this->instanceProcessFinished = new core_kernel_classes_Resource(INSTANCE_PROCESSSTATUS_FINISHED);
+        $this->classActivityExecutions = new core_kernel_classes_Class(CLASS_ACTIVITY_EXECUTION);
+        // section 127-0-1-1-7c36bc99:13092a153cd:-8000:0000000000003B9A end
     }
 
 } /* end of class wfEngine_models_classes_ProcessExecutionService */
