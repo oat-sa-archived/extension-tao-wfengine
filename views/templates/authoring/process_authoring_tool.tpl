@@ -1,4 +1,4 @@
-<?include(BASE_PATH.'/'.DIR_VIEWS.$GLOBALS['dir_theme'].'header.tpl')?>
+<?include(PROCESS_BASE_PATH.'/'.DIR_VIEWS.$GLOBALS['dir_theme'].'header.tpl')?>
 
 <?if(get_data('error')):?>
 

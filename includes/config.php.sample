@@ -63,6 +63,7 @@ define('BASE_WWW', BASE_URL . '/' . DIR_VIEWS);
 
 #PROCESS BASE WWW the web path of the process authoring tool
 define('PROCESS_BASE_WWW', BASE_WWW);
+define('PROCESS_BASE_PATH', ROOT_URL. '/wfEngine');
 define('PROCESS_SCRIPT_URL', PROCESS_BASE_WWW  . 'js/authoring/');
 
 #export resources path
