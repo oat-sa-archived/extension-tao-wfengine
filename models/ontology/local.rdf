@@ -399,7 +399,7 @@
   </rdf:Description>
   <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572585094440500">
     <rdf:type rdf:resource="http://www.w3.org/2000/01/rdf-schema#Class"/>
-    <rdfs:label><![CDATA[taoGroups]]></rdfs:label>
+    <rdfs:label><![CDATA[taoGroups services]]></rdfs:label>
     <rdfs:comment><![CDATA[taoGroups related services]]></rdfs:comment>
     <rdfs:subClassOf rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassSupportServices"/>
   </rdf:Description>
@@ -488,7 +488,7 @@
   </rdf:Description>
   <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572587052594200">
     <rdf:type rdf:resource="http://www.w3.org/2000/01/rdf-schema#Class"/>
-    <rdfs:label><![CDATA[taoItems]]></rdfs:label>
+    <rdfs:label><![CDATA[taoItems services]]></rdfs:label>
     <rdfs:comment><![CDATA[taoItems related services]]></rdfs:comment>
     <rdfs:subClassOf rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassSupportServices"/>
   </rdf:Description>
@@ -569,7 +569,7 @@
   </rdf:Description>
   <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572589043518100">
     <rdf:type rdf:resource="http://www.w3.org/2000/01/rdf-schema#Class"/>
-    <rdfs:label><![CDATA[taoResults]]></rdfs:label>
+    <rdfs:label><![CDATA[taoResults services]]></rdfs:label>
     <rdfs:comment><![CDATA[taoResults related services]]></rdfs:comment>
     <rdfs:subClassOf rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassSupportServices"/>
   </rdf:Description>
@@ -588,7 +588,7 @@
   </rdf:Description>
   <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572589069054200">
     <rdf:type rdf:resource="http://www.w3.org/2000/01/rdf-schema#Class"/>
-    <rdfs:label><![CDATA[taoSubjects]]></rdfs:label>
+    <rdfs:label><![CDATA[taoSubjects services]]></rdfs:label>
     <rdfs:comment><![CDATA[taoSubjects related services]]></rdfs:comment>
     <rdfs:subClassOf rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassSupportServices"/>
   </rdf:Description>
@@ -669,7 +669,7 @@
   </rdf:Description>
   <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572592072249300">
     <rdf:type rdf:resource="http://www.w3.org/2000/01/rdf-schema#Class"/>
-    <rdfs:label><![CDATA[taoTests]]></rdfs:label>
+    <rdfs:label><![CDATA[taoTests services]]></rdfs:label>
     <rdfs:comment><![CDATA[taoTests related services]]></rdfs:comment>
     <rdfs:subClassOf rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassSupportServices"/>
   </rdf:Description>
@@ -750,7 +750,7 @@
   </rdf:Description>
   <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572597019323800">
     <rdf:type rdf:resource="http://www.w3.org/2000/01/rdf-schema#Class"/>
-    <rdfs:label><![CDATA[taoDelivery]]></rdfs:label>
+    <rdfs:label><![CDATA[taoDelivery Services]]></rdfs:label>
     <rdfs:comment><![CDATA[taoDelivery related services]]></rdfs:comment>
     <rdfs:subClassOf rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassSupportServices"/>
   </rdf:Description>

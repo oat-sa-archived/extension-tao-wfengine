@@ -6,7 +6,7 @@
 	<input type="button" name="submit-<?=$sectionName?>" id="submit-<?=$sectionName?>" value="save" disabled="disabled"/>
 </div>
 
-<script type="text/javascript" src="<?=BASE_WWW?>js/processResourceSelector.js"></script>
+<script type="text/javascript" src="<?=PROCESS_SCRIPT_URL?>../processResourceSelector.js"></script>
 <script type="text/javascript">
 $(function(){
 	//bloc specific to delivery authoring tool:

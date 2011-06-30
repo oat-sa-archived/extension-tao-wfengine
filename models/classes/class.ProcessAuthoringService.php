@@ -1439,22 +1439,9 @@ class wfEngine_models_classes_ProcessAuthoringService
         $returnValue = (bool) false;
 
         // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004E6D begin
-		
-		$authorizedClassUri=array(
-			CLASS_ACTIVITIES,
-			CLASS_PROCESSVARIABLES,
-			CLASS_SERVICESDEFINITION,
-			CLASS_WEBSERVICES,
-			CLASS_SUPPORTSERVICES,
-			CLASS_FORMALPARAMETER,
-			// CLASS_ROLE_BACKOFFICE,
-			CLASS_ROLE_WORKFLOWUSER,
-			CLASS_PROCESS
-		);
-		
-		if( in_array($clazz->uriResource, $authorizedClassUri) ){
-			$returnValue = true;	
-		}
+	
+        //all classes are authorized
+	$returnValue = true;
 		
         // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004E6D end
 

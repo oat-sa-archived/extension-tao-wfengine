@@ -265,7 +265,10 @@ class wfEngine_actions_ProcessAuthoring extends tao_actions_TaoModule {
 			$formName = "formalParameter";
 		}elseif(strcasecmp($clazz->uriResource, CLASS_ROLE_WORKFLOWUSER) == 0){
 			$formName = "role";
-		}elseif( (strcasecmp($clazz->uriResource, CLASS_WEBSERVICES) == 0) || (strcasecmp($clazz->uriResource, CLASS_SUPPORTSERVICES) == 0) ){
+		}elseif( strcasecmp($clazz->uriResource, CLASS_WEBSERVICES) == 0
+                    || strcasecmp($clazz->uriResource, CLASS_SUPPORTSERVICES) == 0
+                    || $clazz->isSubClassOf(new core_kernel_classes_Class(CLASS_SUPPORTSERVICES))
+                    ){
 			//note: direct instanciating CLASS_SERVICEDEFINITION should be forbidden
 			$formName = "serviceDefinition";
 			
