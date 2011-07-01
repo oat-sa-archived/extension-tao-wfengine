@@ -133,6 +133,26 @@
 			icons: { 'header': 'ui-icon-circle-triangle-s', 'headerSelected': 'ui-icon-circle-triangle-e' }
 		});
 		
+                //resizeable containers:
+                var $centerPanel = $('#process_center_panel');
+                $("#accordion_container_1").resizable({
+                        'handles':'e',
+                        'helper': "ui-resizable-helper",
+                        'stop': function(event, ui){
+                                var sizeDiff = ui.size.width - ui.originalSize.width;
+                                $centerPanel.width($centerPanel.width() - sizeDiff);
+                        }
+                });
+                $("#accordion_container_2").resizable({
+                        'handles':'w',
+                        'helper': "ui-resizable-helper",
+                        'stop': function(event, ui){
+                                var sizeDiff = ui.size.width - ui.originalSize.width;
+                                $centerPanel.width($centerPanel.width() - sizeDiff);
+                                $(this).css('left',0);
+                        }
+                });
+                
 		//load activity tree:
 		loadActivityTree();
 		
