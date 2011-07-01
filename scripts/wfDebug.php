@@ -1,7 +1,6 @@
 <?php
 
-require_once dirname(__FILE__).'/../../generis/common/inc.extension.php';	
-require_once dirname(__FILE__).'/../includes/common.php';
+require_once dirname(__FILE__).'/../includes/raw_start.php';
 
 class wfDebugger{
         
@@ -113,7 +112,7 @@ class wfDebugger{
                         echo 'process instance:'.$this->br;
                         $this->data_dump($processInstance);
 
-                        $processInstances = $processInstance->getPropertyValuesCollection(new core_kernel_classes_Property(CURRENT_TOKEN));
+                        $processInstances = $processInstance->getPropertyValuesCollection(new core_kernel_classes_Property(PROPERTY_PROCESSINSTANCES_CURRENTTOKEN));
                         echo "tokens ({$processInstances->count()}):".$this->br;
                         $sortedProcessInstances = array();
                         foreach($processInstances->getIterator() as $token){
@@ -127,7 +126,7 @@ class wfDebugger{
                         $activityExecutions = $apiModel->getSubject(PROPERTY_ACTIVITY_EXECUTION_PROCESSEXECUTION, $processInstance->uriResource);
                         echo "activity executions ({$activityExecutions->count()}):".$this->br;
                         $sortedActivityExecutions = array();
-                        $timeSortingProperty = new core_kernel_classes_Property('http://www.tao.lu/middleware/taoqual.rdf#ContextRecovery');
+                        $timeSortingProperty = new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_CTX_RECOVERY);
                         
                         $i = 0;
                         foreach($activityExecutions->getIterator() as $activityExecution){
@@ -176,13 +175,12 @@ $activityExecution = $wfDebugger->getData('activityExecution');
 if(!is_null($processInstance)){
         $wfDebugger->debugProcessInstance($processInstance);
 }else{
-        $processInstances = new core_kernel_classes_Class(CLASS_PROCESSINSTANCE);
+        $processInstances = new core_kernel_classes_Class(CLASS_PROCESSINSTANCES);
         foreach($processInstances->getInstances() as $procExec){
                 $wfDebugger->debugProcessInstance($procExec);
         }
         
 }
-
 
 echo "Property labels:";
 var_dump($wfDebugger->getPropertyLabels());
