@@ -37,7 +37,7 @@
 				/>
 			</trees>
 			<actions>
-				<action name="search" url="/wfEngine/Process/search" context="*" />
+				<action name="search" url="/wfEngine/Role/search" context="*" />
 				<action name="new role" js="GenerisAction.instanciate" url="/wfEngine/Role/addInstance" context="class" />
 				<action name="delete" js="GenerisAction.removeNode" url="/wfEngine/Role/delete" context="resource" />
 				<action name="meta data" js="GenerisAction.loadMetaData" url="/wfEngine/Role/getMetaData"  context="instance" />
