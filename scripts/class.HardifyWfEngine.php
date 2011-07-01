@@ -110,7 +110,7 @@ class wfEngine_scripts_HardifyWfEngine
     {
         // section 127-0-1-1-22592813:12fbf8723a0:-8000:0000000000002FD4 begin
         
-    	define ('DEBUG_PERSISTENCE', false);
+	    define ('DEBUG_PERSISTENCE', false);
     	
     	switch($this->mode){ 
     		case self::MODE_SMOOTH2HARD:
@@ -211,9 +211,7 @@ class wfEngine_scripts_HardifyWfEngine
     			
     			$switcher = new core_kernel_persistence_Switcher(array(CLASS_PROCESSVARIABLES));
     			
-    			/*
-    			 * Compiled wfEngine data
-    			 */
+    			// Compiled wfEngine data
     			self::out("\nDecompiling wfEngine classes", array('color' => 'light_blue'));
     			
     			//class used by the wfEngine
@@ -243,7 +241,7 @@ class wfEngine_scripts_HardifyWfEngine
     				$this->out(" - Unhardifying ".$class->getLabel(), array('color' => 'light_green'));
     				$switcher->unhardify($class, $options);
     			}
-    			
+		
     			// Compiled test takers
     			self::out("\nDecompiling test takers", array('color' => 'light_blue'));
     			
