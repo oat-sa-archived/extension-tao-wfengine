@@ -182,26 +182,23 @@
 			ActivityDiagramClass.scrollTop = this.scrollTop;
 		});
 		
-		try{
-			ActivityDiagramClass.loadDiagram();
-		}
-		catch(err){
-			CL('feed&draw diagram exception', err);
-		}
-		
-		
 		//bind events to activity diagram:
-		
-		$.getScript('<?=PROCESS_SCRIPT_URL?>ActivityDiagramEventBinding.js');
-		
-		$(ActivityDiagramClass.canvas).click(function(evt){
-			if (evt.target == evt.currentTarget) {
-				ModeController.setMode('ModeInitial');
-			}
-		});
-		
-		
-		
+		$.getScript('<?=PROCESS_SCRIPT_URL?>ActivityDiagramEventBinding.js', function(){
+                        $(ActivityDiagramClass.canvas).click(function(evt){
+                                if (evt.target == evt.currentTarget) {
+                                        ModeController.setMode('ModeInitial');
+                                }
+                        });
+                        
+                        //load activity diagram:
+                        try{
+                                ActivityDiagramClass.loadDiagram();
+                        }
+                        catch(err){
+                                console.log('feed&draw diagram exception', err);
+                        }
+                });
+                
 	});
 	
 	</script>

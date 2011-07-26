@@ -211,6 +211,7 @@ ActivityDiagramClass.loadDiagram = function(){
 		data: {"processUri": processUri, "diagramData": true},
 		dataType: 'json',
 		success: function(processData){
+                        
 			try{
 				
 				var oldScrollLeft = ActivityDiagramClass.scrollLeft;
@@ -234,7 +235,7 @@ ActivityDiagramClass.loadDiagram = function(){
 				ModeController.setMode('ModeInitial');
 				
 				//trigger the loaded event:
-				EventMgr.trigger('diagramLoaded');
+				EventMgr.trigger('diagramLoaded', {});
 			}
 			catch(err){
 				CL('loading diagram exception : ', err);
