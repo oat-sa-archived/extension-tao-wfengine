@@ -93,10 +93,6 @@ msgid "Do you want to change the connector type?
 msgstr "Vill du ändra anslutartypen?
 De efterföljande anslutningarna kommer att raderas."
 
-msgid "Do you want to change the connector type? \n THe child connectors will be deleted."
-msgstr "Vill du ändra anslutartypen?
-De efterföljande anslutningarna kommer att raderas."
-
 msgid "ELSE"
 msgstr "ANNAN"
 
@@ -234,10 +230,6 @@ msgstr "Var vänlig och bekräfta raderande"
 
 msgid "Please confirm deletion.
  Warning: related resources might be affected."
-msgstr "Var vänlig och bekräfta raderande.
-Varning: besläktade resurser kan påverkas."
-
-msgid "Please confirm deletion.\n Warning: related resources might be affected."
 msgstr "Var vänlig och bekräfta raderande. Varning: besläktade resurser kan påverkas."
 
 msgid "Please confirm the deletion of the activity"
@@ -245,11 +237,7 @@ msgstr "Var vänlig och bekräfta raderande av aktiviteten."
 
 msgid "Please confirm the deletion of the connector: 
  child connectors will be delete at the same time"
-msgstr "Var vänlig bekräfta raderandet av anslutaren:
-de efterföljande anslutningarna kommer att raderas samtidigt."
-
-msgid "Please confirm the deletion of the connector: \n child connectors will be delete at the same time"
-msgstr "Var vänlig bekräfta raderandet av anslutaren: de efterföljande anslutningarna kommer att raderas samtidigt. "
+msgstr "Var vänlig bekräfta raderandet av anslutaren: de efterföljande anslutningarna kommer att raderas samtidigt."
 
 msgid "Please confirm user deletion"
 msgstr "Var vänlig bekräfta raderandet av användare"
@@ -334,10 +322,6 @@ msgstr "Servicedefinition"
 
 msgid "Set the activity as a final one will delete its following connector. 
  Are you sure?"
-msgstr "Att fastsälla aktiviteten som en slutgiltig aktivitet kommer att radera dess följande anslutare.
-Är du säker på att du vill fortsätta?"
-
-msgid "Set the activity as a final one will delete its following connector. \n Are you sure?"
 msgstr "Att fastsälla aktiviteten som en slutgiltig aktivitet kommer att radera dess följande anslutare. Är du säker på att du vill fortsätta"
 
 msgid "Start/Resume the case"
@@ -403,9 +387,6 @@ msgstr "Arbetsflödesanvändare"
 msgid "WorkflowEngine Process Browser"
 msgstr "Arbetsflödesverktyg processbläddrare"
 
-msgid "WorkflowEngine Process Browser "
-msgstr "Arbetsflödesverktyg processbläddrare"
-
 msgid "[TAO Notification System] Process"
 msgstr "TAO URapporteringssystem"
 
@@ -448,13 +429,7 @@ msgstr "laddar..."
 msgid "login:"
 msgstr "login:"
 
-msgid "login: "
-msgstr "login:"
-
 msgid "merge to"
-msgstr "slå ihop med"
-
-msgid "merge to "
 msgstr "slå ihop med"
 
 msgid "meta data"
@@ -498,4 +473,34 @@ msgstr "skriv??"
 
 msgid "undefined"
 msgstr "odefinierad"
+
+msgid "Do you want to change the connector type? \n THe child connectors will be deleted."
+msgstr ""
+
+msgid "Input Parameters"
+msgstr ""
+
+msgid "Output Parameters"
+msgstr ""
+
+msgid "Please confirm deletion.\n Warning: related resources might be affected."
+msgstr ""
+
+msgid "Please confirm the deletion of the connector: \n child connectors will be delete at the same time"
+msgstr ""
+
+msgid "Set the activity as a final one will delete its following connector. \n Are you sure?"
+msgstr ""
+
+msgid "WorkflowEngine Process Browser "
+msgstr ""
+
+msgid "login: "
+msgstr ""
+
+msgid "merge to "
+msgstr ""
+
+msgid "newly edited"
+msgstr ""
 

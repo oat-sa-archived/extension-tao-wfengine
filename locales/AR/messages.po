@@ -139,14 +139,11 @@ msgstr "الذهاب الى"
 msgid "Home"
 msgstr "الصفحة الرئيسية"
 
-msgid "IF"
-msgstr ""
-
 msgid "If"
 msgstr "Si"
 
 msgid "Import Interview"
-msgstr "استيراد المقابلة "
+msgstr "استيراد المقابلة"
 
 msgid "Initialize new Process"
 msgstr "بدء عملية جديدة"
@@ -179,7 +176,7 @@ msgid "Logout"
 msgstr "الخروج"
 
 msgid "Manage Roles and associate roles to workflow users"
-msgstr "إدارة الأدوار والأدوار المنتسبة لعمل المستخدمين "
+msgstr "إدارة الأدوار والأدوار المنتسبة لعمل المستخدمين"
 
 msgid "Manage processes"
 msgstr "إدارة العمليات"
@@ -344,7 +341,7 @@ msgid "Use the * character to replace any string"
 msgstr "استخدام الحرف * ليحل محل أي سلسلة"
 
 msgid "User Id."
-msgstr "معرف المستخدم "
+msgstr "معرف المستخدم"
 
 msgid "User added"
 msgstr "اضافة مستخدم"
@@ -372,6 +369,15 @@ msgid "Do you want to change the connector type?
 msgstr ""
 
 msgid "Do you want to change the connector type? \n THe child connectors will be deleted."
+msgstr ""
+
+msgid "IF"
+msgstr ""
+
+msgid "Input Parameters"
+msgstr ""
+
+msgid "Output Parameters"
 msgstr ""
 
 msgid "Please confirm deletion.
@@ -456,6 +462,9 @@ msgid "new process"
 msgstr ""
 
 msgid "new role"
+msgstr ""
+
+msgid "newly edited"
 msgstr ""
 
 msgid "ok"
