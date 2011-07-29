@@ -3,7 +3,7 @@
 		<span><?=get_data('message')?></span>
 	</div>
 <?endif?>
-	<div class="main-container"></div>
+<div class="main-container">
 	<table id="user-list"></table>
 	<div id="user-list-pager"></div> 
 	<br />
@@ -14,7 +14,7 @@
 	</span>
 	<br />
 	<br />
-
+</div>
 <script type="text/javascript">
 function editUser(uri){
 	index = getTabIndexByName('edit_user');
@@ -64,7 +64,7 @@ $(function(){
 		], 
 		rowNum:20, 
 		height:300, 
-		width:'',
+		width: (parseInt($("#user-list").width()) - 2),
 		pager: '#user-list-pager', 
 		sortname: 'login', 
 		viewrecords: false, 
@@ -72,6 +72,7 @@ $(function(){
 		caption: __("Workflow Users"),
 		gridComplete: function(){
 			$.each(myGrid.getDataIDs(), function(index, elt){
+				console.log('elt', elt)
 				if(myGrid.getRowData(elt).role != 'TaoManager'){
 					myGrid.setRowData(elt, {
 						actions: "<a id='user_editor_"+elt+"' href='#' class='user_editor nd' ><img class='icon' src='<?=BASE_WWW?>img/pencil.png' alt='<?=__('Edit user')?>' /><?=__('Edit')?></a>&nbsp;|&nbsp;" +
@@ -84,6 +85,10 @@ $(function(){
 			});
 			$(".user_deletor").click(function(){
 				removeUser(this.id.replace('user_deletor_', ''));
+			});
+			
+			$(window).unbind('resize').bind('resize', function(){
+				myGrid.jqGrid('setGridWidth', (parseInt($("#user-list").width()) - 2));
 			});
 		}
 	});

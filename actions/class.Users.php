@@ -209,17 +209,16 @@ class wfEngine_actions_Users extends tao_actions_CommonModule {
 		
 		$myFormContainer = new tao_actions_form_Users(new core_kernel_classes_Class(CLASS_ROLE_WORKFLOWUSERROLE), $user);
 		$myForm = $myFormContainer->getForm();
+		$myForm->removeElement('password0');
+		$myForm->removeElement('password1');
 		
 		if($myForm->isSubmited()){
 			if($myForm->isValid()){
 				$values = $myForm->getValues();
 				
-				if(!empty($values['password1']) && !empty($values['password2'])){
-					$values[PROPERTY_USER_PASSWORD] = md5($values['password2']);
+				if(!empty($values['password3'])){
+					$values[PROPERTY_USER_PASSWORD] = md5($values['password3']);
 				}
-				
-				unset($values['password0']);
-				unset($values['password1']);
 				unset($values['password2']);
 				unset($values['password3']);
 				
