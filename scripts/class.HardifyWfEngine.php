@@ -174,10 +174,26 @@ extends tao_scripts_Runner
 				 
 				$testTakerClass = new core_kernel_classes_Class('http://www.tao.lu/Ontologies/TAOSubject.rdf#Subject');
 				$userClass		= new core_kernel_classes_Class('http://www.tao.lu/Ontologies/generis.rdf#User');
-
+				$taoSubjectRoleClass =  new core_kernel_classes_Class('http://www.tao.lu/Ontologies/TAO.rdf#TaoSubjectRole');
+				
 				self::out(" - Hardifying ".$testTakerClass->getLabel(), array('color' => 'light_green'));
-
 				$switcher->hardify($testTakerClass, array_merge($options, array('topClass' => $userClass)));
+				
+				//force referencing:
+				$resourceReferencer = core_kernel_persistence_hardapi_ResourceReferencer::singleton();
+				if(!$resourceReferencer->isClassReferenced($taoSubjectRoleClass)){
+					
+					self::out(" No instance of class {} Force referencing the class ".$taoSubjectRoleClass->getLabel(), array('color' => 'light_green'));
+					
+					$resourceReferencer->referenceClass(
+							$taoSubjectRoleClass, 
+							array(
+								'table' => '_'.core_kernel_persistence_hardapi_Utils::getShortName($testTakerClass),
+								'topClass'=> $userClass
+								)
+						);
+				}
+				
 
 				// Compiled groups
 				self::out("\nCompiling groups", array('color' => 'light_blue'));
@@ -197,15 +213,7 @@ extends tao_scripts_Runner
 
 				$switcher->hardify($deliveryHistoryClass, array_merge($options, array('createForeigns' => false)));
 
-				// Compiled results
-				self::out("\nCompiling results", array('color' => 'light_blue'));
-				 
-				$resultClass = new core_kernel_classes_Class('http://www.tao.lu/Ontologies/TAOResult.rdf#Result');
-
-				self::out(" - Hardifying ".$resultClass->getLabel(), array('color' => 'light_green'));
-				 
-				$switcher->hardify($resultClass, array_merge($options, array('createForeigns' => false)));
-
+				
 				unset($switcher);
 				 
 				break;
