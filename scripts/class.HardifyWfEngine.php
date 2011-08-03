@@ -26,7 +26,7 @@ if (0 > version_compare(PHP_VERSION, '5')) {
  *
  * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
  */
-require_once('tao/scripts/class.Runner.php');
+require_once(dirname(__FILE__).'/../../tao/scripts/class.Runner.php');
 
 /* user defined includes */
 // section 127-0-1-1-22592813:12fbf8723a0:-8000:0000000000002FD1-includes begin
@@ -110,7 +110,8 @@ extends tao_scripts_Runner
 	{
 		// section 127-0-1-1-22592813:12fbf8723a0:-8000:0000000000002FD4 begin
 
-		define ('DEBUG_PERSISTENCE', false);
+		if (!defined('DEBUG_PERSISTENCE'))
+			define ('DEBUG_PERSISTENCE', false);
 		 
 		switch($this->mode){
 			case self::MODE_SMOOTH2HARD:
@@ -125,7 +126,7 @@ extends tao_scripts_Runner
 					'rmSources'				=> true
 				);
 				 
-				$switcher = new core_kernel_persistence_Switcher(array(CLASS_PROCESSVARIABLES));
+				$switcher = new core_kernel_persistence_Switcher(array('http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessVariables'));
 				 
 				self::out("\nCompiling Languages classes", array('color' => 'light_blue'));
 				
@@ -228,7 +229,7 @@ extends tao_scripts_Runner
     				'removeForeigns'		=> true				
 				);
 				 
-				$switcher = new core_kernel_persistence_Switcher(array(CLASS_PROCESSVARIABLES));
+				$switcher = new core_kernel_persistence_Switcher(array('http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessVariables'));
 				 
 				// Compiled wfEngine data
 				self::out("\nDecompiling wfEngine classes", array('color' => 'light_blue'));
@@ -287,15 +288,6 @@ extends tao_scripts_Runner
 				self::out(" - Unhardifying ".$deliveryHistoryClass->getLabel(), array('color' => 'light_green'));
 
 				$switcher->unhardify($deliveryHistoryClass, array_merge($options));
-
-				// Compiled results
-				self::out("\nDecompiling results", array('color' => 'light_blue'));
-				 
-				$resultClass = new core_kernel_classes_Class('http://www.tao.lu/Ontologies/TAOResult.rdf#Result');
-
-				self::out(" - Unhardifying ".$resultClass->getLabel(), array('color' => 'light_green'));
-				 
-				$switcher->unhardify($resultClass, array_merge($options, array('removeForeigns' => false)));
 
 				unset($switcher);
 				 
