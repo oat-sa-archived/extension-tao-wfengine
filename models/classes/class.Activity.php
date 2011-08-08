@@ -78,7 +78,7 @@ class wfEngine_models_classes_Activity
         // section -64--88-1-64--7117f567:11a0527df60:-8000:00000000000008F4 begin
 		// We get the next connectors.
 		$connectorsClass = new core_kernel_classes_Class(CLASS_CONNECTORS);
-		$nextConnectors = $connectorsClass->searchInstances(array(PROPERTY_CONNECTORS_PREVIOUSACTIVITIES => $this->uri), array('like' => true, 'recursive' => false));
+		$nextConnectors = $connectorsClass->searchInstances(array(PROPERTY_CONNECTORS_PREVIOUSACTIVITIES => $this->uri), array('like' => true, 'recursive' => 0));
 		foreach ($nextConnectors as $nextConnector){
 			if(wfEngine_helpers_ProcessUtil::isConnector($nextConnector)){
 				$this->nextConnectors[] = new wfEngine_models_classes_Connector($nextConnector->uriResource);
@@ -202,7 +202,7 @@ class wfEngine_models_classes_Activity
 
         // section 10-13-1-85-16731180:11be4127421:-8000:0000000000000A07 begin
 		$activityClass = new core_kernel_classes_Class(CLASS_ACTIVITIES);
-		$nextActivities = $activityClass->searchInstances(array(PROPERTY_CONNECTORS_PREVIOUSACTIVITIES => $this->uri), array('like' => true, 'recursive' => false));
+		$nextActivities = $activityClass->searchInstances(array(PROPERTY_CONNECTORS_PREVIOUSACTIVITIES => $this->uri), array('like' => true, 'recursive' => 0));
 		$returnValue = (bool) count($nextActivities);
         // section 10-13-1-85-16731180:11be4127421:-8000:0000000000000A07 end
 

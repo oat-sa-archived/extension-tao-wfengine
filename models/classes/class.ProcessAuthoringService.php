@@ -209,7 +209,7 @@ class wfEngine_models_classes_ProcessAuthoringService
 		//get the process associate to the connector to create a new instance of activity
 		$relatedActivity = $connector->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_ACTIVITYREFERENCE));
 		$processClass =  new core_kernel_classes_Class(CLASS_PROCESS);
-		$processes = $processClass->searchInstances(array(PROPERTY_PROCESS_ACTIVITIES => $relatedActivity->uriResource), array('like' => false, 'recursive' => true));
+		$processes = $processClass->searchInstances(array(PROPERTY_PROCESS_ACTIVITIES => $relatedActivity->uriResource), array('like' => false, 'recursive' => 0));
 		if(!empty($processes)){
 			$returnValue = $this->createActivity(array_shift($processes), $newActivityLabel);
 		}else{
@@ -407,7 +407,7 @@ class wfEngine_models_classes_ProcessAuthoringService
 			$connectors = $connectorClass->searchInstances(array(
 				PROPERTY_CONNECTORS_NEXTACTIVITIES => $followingActivity->uriResource,
 				PROPERTY_CONNECTORS_TYPE =>INSTANCE_TYPEOFCONNECTORS_JOIN
-				), array('like' => false, 'recursive' => false));
+				), array('like' => false, 'recursive' => 0));
 		
 			$found = false;
 			foreach($connectors as $connector){
@@ -643,7 +643,7 @@ class wfEngine_models_classes_ProcessAuthoringService
 				//get the process associate to the connector to create a new instance of activity
 				$relatedActivity = $connector->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_ACTIVITYREFERENCE));
 				$processClass = new core_kernel_classes_Class(CLASS_PROCESS);
-				$processes = $processClass->searchInstances(array(PROPERTY_PROCESS_ACTIVITIES => $relatedActivity->uriResource), array('like'=>false, 'recursive' => false));
+				$processes = $processClass->searchInstances(array(PROPERTY_PROCESS_ACTIVITIES => $relatedActivity->uriResource), array('like'=>false, 'recursive' => 0));
 				if(!empty($processes)){
 					$followingActivity = $this->createActivity(array_shift($processes), $newActivityLabel);
 				}else{
@@ -693,7 +693,7 @@ class wfEngine_models_classes_ProcessAuthoringService
         // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004DDC begin
 		
 		$connectorClass = new core_kernel_classes_Class(CLASS_CONNECTORS);
-		$connectors = $connectorClass->searchInstances(array(PROPERTY_CONNECTORS_ACTIVITYREFERENCE => $activity->uriResource), array('like' => false, 'recursive' => false));
+		$connectors = $connectorClass->searchInstances(array(PROPERTY_CONNECTORS_ACTIVITYREFERENCE => $activity->uriResource), array('like' => false, 'recursive' => 0));
 		foreach($connectors as $connector){
 			$this->deleteConnector($connector);
 		}
@@ -1237,7 +1237,7 @@ class wfEngine_models_classes_ProcessAuthoringService
 		$connectorsClass = new core_kernel_classes_Class(CLASS_CONNECTORS);
 		
 		if(in_array('prev',$option)){
-			$previousConnectors = $connectorsClass->searchInstances(array(PROPERTY_CONNECTORS_NEXTACTIVITIES => $activity->uriResource), array('like' => false, 'recursive' => false));
+			$previousConnectors = $connectorsClass->searchInstances(array(PROPERTY_CONNECTORS_NEXTACTIVITIES => $activity->uriResource), array('like' => false, 'recursive' => 0));
 			foreach ($previousConnectors as $connector){
 				if(!is_null($connector)){
 					if($connector instanceof core_kernel_classes_Resource ){
@@ -1386,7 +1386,7 @@ class wfEngine_models_classes_ProcessAuthoringService
 
         // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004E63 begin
 		$processVariableClass =  new core_kernel_classes_Class(CLASS_PROCESSVARIABLES);
-		$variables = $processVariableClass->searchInstances(array(PROPERTY_PROCESSVARIABLES_CODE => $code), array('like' => false, 'recursive' => false));
+		$variables = $processVariableClass->searchInstances(array(PROPERTY_PROCESSVARIABLES_CODE => $code), array('like' => false, 'recursive' => 0));
 		if(!empty($variables)){
 			$returnValue = array_shift($variables);
 		}else if($forceCreation){
@@ -1778,11 +1778,10 @@ class wfEngine_models_classes_ProcessAuthoringService
 
         // section 10-13-1-39--6cc6036b:12e4807fb4f:-8000:0000000000002BF9 begin
 		$urlProperties = array(PROPERTY_SUPPORTSERVICES_URL);//could add the wsdl url here when wsdl service implemented
-		$propServiceDefinition = new core_kernel_classes_Property(PROPERTY_CALLOFSERVICES_SERVICEDEFINITION);
 		
 		foreach($urlProperties as $urlProperty){
 			$serviceDefinitionsClass =  new core_kernel_classes_Class(CLASS_SUPPORTSERVICES);
-			$serviceDefinitions = $serviceDefinitionsClass->searchInstances(array($urlProperty => $serviceUrl), array('like' => false, 'recursive' => true));
+			$serviceDefinitions = $serviceDefinitionsClass->searchInstances(array($urlProperty => $serviceUrl), array('like' => false, 'recursive' => 1000));
 			foreach($serviceDefinitions as $service){
 				$returnValue = $service->delete(true);
 			}

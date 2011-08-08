@@ -375,7 +375,7 @@ class wfEngine_helpers_ProcessFormFactory extends tao_helpers_form_GenerisFormFa
 				//find actual param first!
 				$actualParamValue='';
 				$actualParamFromFormalParam = new core_kernel_classes_ContainerCollection(new common_Object(__METHOD__));
-				$actualParamFromFormalParamArray = $actualParamClass->searchInstances(array(PROPERTY_ACTUALPARAMETER_FORMALPARAMETER => $formalParam->uriResource), array('like'=>false, 'recursive' => false));
+				$actualParamFromFormalParamArray = $actualParamClass->searchInstances(array(PROPERTY_ACTUALPARAMETER_FORMALPARAMETER => $formalParam->uriResource), array('like'=>false, 'recursive' => 0));
 				foreach($actualParamFromFormalParamArray as $actualParam){
 					$actualParamFromFormalParam->add($actualParam);
 				}

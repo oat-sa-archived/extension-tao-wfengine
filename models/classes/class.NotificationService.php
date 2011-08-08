@@ -260,7 +260,7 @@ class wfEngine_models_classes_NotificationService
         // section 127-0-1-1-1609ec43:129caf00b07:-8000:0000000000002242 begin
         
         //get the notifications with the sent property to false
-		$notifications = $this->notificationClass->searchInstances(array($this->notificationSentProp->uriResource => GENERIS_FALSE), array('like' => false, 'recursive' => false));
+		$notifications = $this->notificationClass->searchInstances(array($this->notificationSentProp->uriResource => GENERIS_FALSE), array('like' => false, 'recursive' => 0));
 	    foreach($notifications as $notification){
 	    	//there a date prop by sending try. After 4 try, we stop to try (5 because the 4 try and the 1st date is the creation date) 
 	    	$dates = $notification->getPropertyValues($this->notificationDateProp);

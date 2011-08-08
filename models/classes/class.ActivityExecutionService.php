@@ -219,7 +219,7 @@ class wfEngine_models_classes_ActivityExecutionService
         		$this->processExecutionProperty->uriResource	=> $processExecution->uriResource
         	);
         	$clazz = new core_kernel_classes_Class(CLASS_ACTIVITY_EXECUTION);
-        	$options = array('recursive'	=> false, 'like' => false);
+        	$options = array('recursive'	=> 0, 'like' => false);
 			
 			foreach($clazz->searchInstances($filters, $options) as $activityExecution){
 				$returnValue = $activityExecution;
@@ -253,7 +253,7 @@ class wfEngine_models_classes_ActivityExecutionService
         		$this->processExecutionProperty->uriResource	=> $processExecution->uriResource
         	);
         	$clazz = new core_kernel_classes_Class(CLASS_ACTIVITY_EXECUTION);
-        	$options = array('recursive'	=> false, 'like' => false);
+        	$options = array('recursive'	=> 0, 'like' => false);
 			
 			foreach($clazz->searchInstances($filters, $options) as $activityExecution){
 				$returnValue[$activityExecution->uriResource] = $activityExecution;
@@ -456,7 +456,7 @@ class wfEngine_models_classes_ActivityExecutionService
 			
 	        				//retrieve the process containing the activity
 							$activityClass = new core_kernel_classes_Class(CLASS_PROCESS);
-							$processes = $activityClass->searchInstances(array($actsProp->uriResource => $activity->uriResource), array('like' => false, 'recursive' => true));
+							$processes = $activityClass->searchInstances(array($actsProp->uriResource => $activity->uriResource), array('like' => false, 'recursive' => 0));
 					        foreach($processes as $process){
 					        	
 					        	//get  activities
@@ -591,7 +591,7 @@ class wfEngine_models_classes_ActivityExecutionService
         
     	if(!is_null($processExecution)){
           	$activityExecClass = new core_kernel_classes_Class(CLASS_ACTIVITY_EXECUTION);
-			$activityExecutions = $activityExecClass->searchInstances(array(PROPERTY_ACTIVITY_EXECUTION_PROCESSEXECUTION => $processExecution->uriResource), array('like' => false, 'recursive' => false));
+			$activityExecutions = $activityExecClass->searchInstances(array(PROPERTY_ACTIVITY_EXECUTION_PROCESSEXECUTION => $processExecution->uriResource), array('like' => false, 'recursive' => 0));
         	foreach($activityExecutions as $activityExecution){
 				$activityExecution->delete();
         	}

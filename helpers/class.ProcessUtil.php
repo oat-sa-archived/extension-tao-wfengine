@@ -90,7 +90,7 @@ class wfEngine_helpers_ProcessUtil
 
         // section 10-13-1-39--284957ac:12e4ca5284a:-8000:0000000000002BF2 begin
 		$serviceClass = new core_kernel_classes_Class(CLASS_SUPPORTSERVICES);
-		$services = $serviceClass->searchInstances(array(PROPERTY_SUPPORTSERVICES_URL => $url), array('like' => true, 'recursive' => true));
+		$services = $serviceClass->searchInstances(array(PROPERTY_SUPPORTSERVICES_URL => $url), array('like' => true, 'recursive' => 1000));
 		if(count($services)){
 			$service = array_pop($services);
 			if($service instanceof core_kernel_classes_Resource){

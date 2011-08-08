@@ -51,7 +51,7 @@ class wfEngine_models_classes_WfEngineService
 		       
 		$processes = $processDefClass->getInstances();
 		foreach ($processes as $uri => $process){
-			$processExecutions = $processExecClass->searchInstances(array(PROPERTY_PROCESSINSTANCES_EXECUTIONOF => $uri), array('like' => false, 'recursive' => false));
+			$processExecutions = $processExecClass->searchInstances(array(PROPERTY_PROCESSINSTANCES_EXECUTIONOF => $uri), array('like' => false, 'recursive' => 0));
 			foreach($processExecutions as $execution){
         		$processInstance = new wfEngine_models_classes_ProcessExecution($execution->uriResource);
         		$returnValue[] = $processInstance;

@@ -213,7 +213,7 @@ class wfEngine_models_classes_ProcessChecker
 		foreach($this->authoringService->getActivitiesByProcess($process) as $activity){
 			if(!wfEngine_helpers_ProcessUtil::isActivityInitial($activity)){
 				//should have a previous activity:
-				$connectors = $connectorsClass->searchInstances(array(PROPERTY_CONNECTORS_NEXTACTIVITIES => $activity->uriResource), array('like'=>false, 'recursive' => false));
+				$connectors = $connectorsClass->searchInstances(array(PROPERTY_CONNECTORS_NEXTACTIVITIES => $activity->uriResource), array('like'=>false, 'recursive' => 0));
 				if(empty($connectors)){
 					$returnValue = false;
 					$this->isolatedActivities[$activity->uriResource] = $activity;

@@ -154,7 +154,7 @@ extends tao_models_classes_GenerisService
 
         if(!is_null($activityExecution)){
              
-        	$options = array('recursive'	=> false, 'like' => false);
+        	$options = array('recursive' => 0, 'like' => false);
 			
         	$filters = array(PROPERTY_TOKEN_ACTIVITYEXECUTION => $activityExecution->uriResource);
         	if($checkUser){
@@ -592,7 +592,7 @@ extends tao_models_classes_GenerisService
             $keys = array();
             foreach($mergedVars as $code => $values){
 				$processVariablesClass = new core_kernel_classes_Class(CLASS_PROCESSVARIABLES);
-				$processVariables = $processVariablesClass->searchInstances(array(PROPERTY_PROCESSVARIABLES_CODE => $code), array('like' => false, 'recursive' => false));
+				$processVariables = $processVariablesClass->searchInstances(array(PROPERTY_PROCESSVARIABLES_CODE => $code), array('like' => false, 'recursive' => 0));
                 if(!empty($processVariables)){
                     if(count($processVariables) == 1) {
                         if(is_array($values)){
