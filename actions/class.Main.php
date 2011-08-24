@@ -10,7 +10,7 @@ class wfEngine_actions_Main extends wfEngine_actions_WfModule
 	 * @param string $pwd
 	 * @return void
 	 */
-	public function index($caseId = null, $login = null, $pwd = null)
+	public function index($login = null, $pwd = null)
 	{
 
 		$wfEngineService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_WfEngineService');
@@ -25,32 +25,7 @@ class wfEngine_actions_Main extends wfEngine_actions_WfModule
 		$userService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_UserService');
 		$currentUser = $userService->getCurrentUser();
 		
-		//use of caseId?
-		if ($caseId != null){
-			foreach ($processes as $proc){
 
-				$procVariables = wfEngine_models_classes_Utils::processVarsToArray($proc->getVariables());
-				$intervieweeInst = new core_kernel_classes_Resource($procVariables[VAR_INTERVIEWEE_URI],__METHOD__);
-				$property = propertyExists(CASE_ID_CODE);
-				
-				if($property){
-					$caseIdProp = new core_kernel_classes_Property($property,__METHOD__);
-					$results = $intervieweeInst->getPropertyValuesCollection($caseIdProp);
-					if (!$results->isEmpty()){
-						foreach ($results->getIterator() as $result) {
-							if($result instanceof core_kernel_classes_Literal && $result->literal == $caseId) {
-								$processUri = urlencode($proc->uri);
-								
-								$activityUri = urlencode($proc->currentActivity[0]->activity->uri);//not even used??!
-								
-								$viewState = _url('index', 'ProcessBrowser', null, array('processUri' => $processUri));
-								$this->redirect($viewState);
-							}
-						}
-					}
-				}
-			}
-		}
 
 		$processViewData 	= array();
 		foreach ($processes as $proc){
