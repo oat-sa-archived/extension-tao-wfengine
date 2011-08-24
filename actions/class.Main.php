@@ -5,12 +5,13 @@ class wfEngine_actions_Main extends wfEngine_actions_WfModule
 
 	/**
 	 * 
-	 * @param string $caseId
-	 * @param string $login
-	 * @param string $pwd
+	 * Main page of wfEngine containning 2 sections : 
+	 *  - Processes Execution in progress or just started
+	 *  - Processes Definition user may instanciate
+	 * 
 	 * @return void
 	 */
-	public function index($login = null, $pwd = null)
+	public function index()
 	{
 
 		$wfEngineService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_WfEngineService');
