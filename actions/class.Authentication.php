@@ -1,6 +1,9 @@
 <?php
 class wfEngine_actions_Authentication extends Module
 {
+	/**
+	 * WfEngine Login controler
+	 */
 	public function index()
 	{
 

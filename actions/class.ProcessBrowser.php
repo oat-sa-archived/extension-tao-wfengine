@@ -1,4 +1,14 @@
 <?php
+
+/**
+ * ProcessBrowser Controller provide actions that navigate along a process
+ * 
+ * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
+ * @package wfEngine
+ * @subpackage actions
+ * @license GPLv2  http://www.opensource.org/licenses/gpl-2.0.php
+ */
+
 class wfEngine_actions_ProcessBrowser extends wfEngine_actions_WfModule
 {
 	public function index($processUri, $activityUri='')

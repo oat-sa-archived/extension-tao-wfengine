@@ -1,10 +1,10 @@
 <?php
 
 /**
- * Groups Controller provide actions performed from url resolution
+ *  Process Controler provide actions to edit a process
  * 
  * @author Bertrand Chevrier, <taosupport@tudor.lu>
- * @package taoGroups
+ * @package wfEngine
  * @subpackage actions
  * @license GPLv2  http://www.opensource.org/licenses/gpl-2.0.php
  */
