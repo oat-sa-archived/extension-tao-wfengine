@@ -9,7 +9,7 @@ error_reporting(E_ALL);
  *
  * This file is part of TAO.
  *
- * Automatically generated on 29.08.2011, 17:04:59 with ArgoUML PHP module 
+ * Automatically generated on 29.08.2011, 19:51:13 with ArgoUML PHP module 
  * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
  *
  * @author Lionel Lecaque, <lionel.lecaque@tudor.lu>
@@ -140,6 +140,14 @@ class wfEngine_models_classes_ProcessCloner
      */
     protected $activityService = null;
 
+    /**
+     * Short description of attribute connectorService
+     *
+     * @access protected
+     * @var ConnectorService
+     */
+    protected $connectorService = null;
+
     // --- OPERATIONS ---
 
     /**
@@ -155,6 +163,7 @@ class wfEngine_models_classes_ProcessCloner
 		$this->cloneLabel = $cloneLabel;
 		$this->authoringService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessAuthoringService');
 		$this->activityService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityService');
+		$this->connectorService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ConnectorService');		
 		$this->initCloningVariables();
 		parent::__construct();
         // section 10-13-1-39--56440278:12d4c05ae3c:-8000:0000000000004FB5 end
@@ -281,7 +290,7 @@ class wfEngine_models_classes_ProcessCloner
         $returnValue = null;
 
         // section 10-13-1-39--56440278:12d4c05ae3c:-8000:0000000000004FE6 begin
-		if(wfEngine_helpers_ProcessUtil::isConnector($connector)){
+		if($this->connectorService->isConnector($connector)){
 			$connectorClone = $this->cloneWfResource(
 				$connector, 
 				new core_kernel_classes_Class(CLASS_CONNECTORS),
@@ -819,7 +828,7 @@ class wfEngine_models_classes_ProcessCloner
         // section 10-13-1-39--56440278:12d4c05ae3c:-8000:0000000000005024 begin
 		foreach($this->clonedConnectors as $connectorUri){
 			$connector = new core_kernel_classes_Resource($connectorUri);
-			if(wfEngine_helpers_ProcessUtil::isConnector($connector)){
+			if($this->connectorService->isConnector($connector)){
 				$returnValue[$connector->uriResource] = $connector;
 			}
 		}
@@ -893,7 +902,7 @@ class wfEngine_models_classes_ProcessCloner
 					// print_r($this->clonedActivities);
 					throw new Exception("the previous activity has not been cloned! {$activity->getLabel()}({$activity->uriResource})");
 				}
-			}else if(wfEngine_helpers_ProcessUtil::isConnector($activity)){
+			}else if($this->connectorService->isConnector($activity)){
 				$newConnector = $this->getClonedConnector($activity);
 				if(!is_null($newConnector)){
 					//it is a reference to a connector with another activity reference and it has been cloned already

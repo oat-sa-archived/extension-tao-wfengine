@@ -84,7 +84,7 @@ class ProcessClonerTestCase extends UnitTestCase {
 		//clone it!
 		$connector1Clone = $this->processCloner->cloneConnector($connector1);
 		
-		$this->assertTrue(wfEngine_helpers_ProcessUtil::isConnector($connector1Clone));
+		$this->assertTrue($this->connectorService->isConnector($connector1Clone));
 		
 		$this->assertIsA($this->processCloner->getClonedConnector($connector1), 'core_kernel_classes_Resource');
 		$this->assertEqual($connector1Clone->uriResource, $this->processCloner->getClonedConnector($connector1)->uriResource);

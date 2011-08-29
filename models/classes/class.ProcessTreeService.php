@@ -256,7 +256,7 @@ class wfEngine_models_classes_ProcessTreeService
 		
 		$returnValue = array();
 		$connectorData = array();
-					
+		$connectorService = new wfEngine_models_classes_ConnectorService();			
 		//type of connector:
 		//if not null, get the information on the next activities. Otherwise, return an "empty" connector node, indicating that the node has just been created, i.e. at the same time as an activity
 		$connectorType = $connector->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_TYPE), false);
@@ -282,7 +282,7 @@ class wfEngine_models_classes_ProcessTreeService
 						'label' => 'then',
 						'multiplicity' => 1
 					);
-					if(wfEngine_helpers_ProcessUtil::isConnector($then)){
+					if($connectorService->isConnector($then)){
 						$connectorActivityReference = $then->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_ACTIVITYREFERENCE))->uriResource;
 						if( ($connectorActivityReference == $this->currentActivity->uriResource) && !in_array($then->uriResource, $this->addedConnectors) ){
 							if($recursive){
@@ -306,7 +306,7 @@ class wfEngine_models_classes_ProcessTreeService
 						'label' => 'else',
 						'multiplicity' => 1
 					);
-					if(wfEngine_helpers_ProcessUtil::isConnector($else)){
+					if($connectorService->isConnector($else)){
 						$connectorActivityReference = $else->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_ACTIVITYREFERENCE))->uriResource;
 						if( ($connectorActivityReference == $this->currentActivity->uriResource) && !in_array($else->uriResource, $this->addedConnectors) ){
 							if($recursive){

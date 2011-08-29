@@ -9,7 +9,7 @@ error_reporting(E_ALL);
  *
  * This file is part of TAO.
  *
- * Automatically generated on 29.08.2011, 17:04:59 with ArgoUML PHP module 
+ * Automatically generated on 29.08.2011, 19:51:13 with ArgoUML PHP module 
  * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
  *
  * @author Lionel Lecaque, <lionel.lecaque@tudor.lu>
@@ -100,6 +100,14 @@ class wfEngine_models_classes_ProcessChecker
      * @var ActivityService
      */
     protected $activityService = null;
+
+    /**
+     * Short description of attribute connectorService
+     *
+     * @access private
+     * @var ConnectorService
+     */
+    private $connectorService = null;
 
     // --- OPERATIONS ---
 

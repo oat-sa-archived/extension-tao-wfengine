@@ -268,6 +268,7 @@ class wfEngine_models_classes_ProcessAuthoringService
 
         // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004D73 begin
 		$activityService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityService');
+		$connectorService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ConnectorService');
 		
 		$connectorLabel = "";
 		if(empty($label)){
@@ -287,7 +288,7 @@ class wfEngine_models_classes_ProcessAuthoringService
 			$activityRefProp = new core_kernel_classes_Property(PROPERTY_CONNECTORS_ACTIVITYREFERENCE);
 			if($activityService->isActivity($activity)){
 				$returnValue->setPropertyValue($activityRefProp, $activity->uriResource);
-			}elseif(wfEngine_helpers_ProcessUtil::isConnector($activity)){
+			}elseif($connectorService->isConnector($activity)){
 				$returnValue->setPropertyValue($activityRefProp, $activity->getUniquePropertyValue($activityRefProp)->uriResource);
 			}else{
 				throw new Exception("invalid resource type for the activity parameter: {$activity->uriResource}");
@@ -835,8 +836,9 @@ class wfEngine_models_classes_ProcessAuthoringService
         $returnValue = (bool) false;
 
         // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004DFC begin
+		$connectorService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ConnectorService');
 		
-		if(!wfEngine_helpers_ProcessUtil::isConnector($connector)){
+		if(!$connectorService->isConnector($connector)){
 			// throw new Exception("the resource in the parameter is not a connector: {$connector->getLabel()} ({$connector->uriResource})");
 			return $returnValue;
 		}
@@ -857,7 +859,7 @@ class wfEngine_models_classes_ProcessAuthoringService
 		$activityRef = $connector->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_ACTIVITYREFERENCE))->uriResource;
 		$nextActivityCollection = $connector->getPropertyValuesCollection(new core_kernel_classes_Property(PROPERTY_CONNECTORS_NEXTACTIVITIES));
 		foreach($nextActivityCollection->getIterator() as $nextActivity){
-			if(wfEngine_helpers_ProcessUtil::isConnector($nextActivity)){
+			if($connectorService->isConnector($nextActivity)){
 				$nextActivityRef = $nextActivity->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_ACTIVITYREFERENCE))->uriResource;
 				if($nextActivityRef == $activityRef){
 					$this->deleteConnector($nextActivity);//delete following connectors only if they have the same activity reference
@@ -892,6 +894,7 @@ class wfEngine_models_classes_ProcessAuthoringService
 			// PROPERTY_TRANSITIONRULES_ELSE
 		// );
 		$nextActivitiesProp = new core_kernel_classes_Property(PROPERTY_CONNECTORS_NEXTACTIVITIES);
+		$connectorService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ConnectorService');
 		
 		switch($connectionType){
 			case 'next':{
@@ -918,7 +921,7 @@ class wfEngine_models_classes_ProcessAuthoringService
 			//manage the connection to the following activities
 			$nextActivityCollection = $connector->getPropertyValuesCollection($property);
 			foreach($nextActivityCollection->getIterator() as $nextActivity){
-				if(wfEngine_helpers_ProcessUtil::isConnector($nextActivity)){
+				if($connectorService->isConnector($nextActivity)){
 					$nextActivityRef = $nextActivity->getUniquePropertyValue($activityRefProp)->uriResource;
 					if($nextActivityRef == $activityRef){
 						$this->deleteConnector($nextActivity);//delete following connectors only if they have the same activity reference
@@ -932,7 +935,7 @@ class wfEngine_models_classes_ProcessAuthoringService
 			if(!is_null($transitionRule)){
 				$nextActivity = $transitionRule->getOnePropertyValue($property);
 				if(!is_null($nextActivity)){
-					if(wfEngine_helpers_ProcessUtil::isConnector($nextActivity)){
+					if($connectorService->isConnector($nextActivity)){
 						$nextActivityRef = $nextActivity->getUniquePropertyValue($activityRefProp)->uriResource;
 						if($nextActivityRef == $activityRef){
 							$this->deleteConnector($nextActivity);//delete following connectors only if they have the same activity reference

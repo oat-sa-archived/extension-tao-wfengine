@@ -72,7 +72,8 @@ class ProcessAuthoringServiceTestCase extends UnitTestCase {
 	public function testIsConnector(){
 		$activity1 = $this->authoringService->createActivity($this->proc, 'myActivity');
 		$connector1 = $this->authoringService->createConnector($activity1);
-		$this->assertTrue(wfEngine_helpers_ProcessUtil::isConnector($connector1));
+		$connectorService = new wfEngine_models_classes_ConnectorService();
+		$this->assertTrue($connectorService->isConnector($connector1));
 	}
 	
 	public function testCreateConnector(){
