@@ -866,7 +866,9 @@ class wfEngine_helpers_ProcessFormFactory extends tao_helpers_form_GenerisFormFa
 				
 				
 			}elseif($nextActivity instanceof core_kernel_classes_Resource){
-				if(wfEngine_helpers_ProcessUtil::isActivity($nextActivity)){
+				$aService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityService');
+			    
+			    if($aService->isActivity($nextActivity)){
 					if($includeConnectors) $elementChoice->setValue("activity");
 					$elementActivities->setValue($nextActivity->uriResource);//no need for tao_helpers_Uri::encode
 				}

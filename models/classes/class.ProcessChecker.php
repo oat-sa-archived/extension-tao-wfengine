@@ -339,7 +339,7 @@ class wfEngine_models_classes_ProcessChecker
 		$propNextActivities = new core_kernel_classes_Property(PROPERTY_CONNECTORS_NEXTACTIVITIES);
 		foreach($connector->getPropertyValuesCollection($propNextActivities)->getIterator() as $nextActivityOrConnector){
 			
-			if(wfEngine_helpers_ProcessUtil::isActivity($nextActivityOrConnector)){
+			if($this->activityService->isActivity($nextActivityOrConnector)){
 				$returnValue = false;
 			}else if(wfEngine_helpers_ProcessUtil::isConnector($nextActivityOrConnector)){
 				$isolated = $this->isIsolatedConnector($nextActivityOrConnector);

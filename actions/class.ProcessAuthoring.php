@@ -12,6 +12,7 @@
 class wfEngine_actions_ProcessAuthoring extends tao_actions_TaoModule {
 	
 	protected $processTreeService = null;
+	protected $activityService = null;
 	
 	/**
 	 * constructor: initialize the service and the default data
@@ -23,6 +24,7 @@ class wfEngine_actions_ProcessAuthoring extends tao_actions_TaoModule {
 		
 		//the service is initialized by default
 		$this->service = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessAuthoringService');
+		$this->activityService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityService');
 		$this->defaultData();
 		
 		//add the tree service
@@ -988,7 +990,7 @@ class wfEngine_actions_ProcessAuthoring extends tao_actions_TaoModule {
 						}
 					}else{
 						$followingActivity = new core_kernel_classes_Resource($data["next_activityUri"]);
-						if(wfEngine_helpers_ProcessUtil::isActivity($followingActivity)){
+						if($this->activityService->isActivity($followingActivity)){
 							$this->service->createSequenceActivity($connectorInstance, $followingActivity);
 						}else{
 							throw new Exception("the uri is not an activity's one");
@@ -1314,7 +1316,7 @@ class wfEngine_actions_ProcessAuthoring extends tao_actions_TaoModule {
 		$created = false;
 		if(!empty($activityOrConnectorUri)){
 			$activityOrConnector = new core_kernel_classes_Resource($activityOrConnectorUri);
-			if(!wfEngine_helpers_ProcessUtil::isActivity($activityOrConnector)
+			if(!$this->activityService->isActivity($activityOrConnector)
 			&& !wfEngine_helpers_ProcessUtil::isConnector($activityOrConnector)){
 				
 				throw new Exception('no activity nor connector uri found to create a connector');
@@ -1372,7 +1374,7 @@ class wfEngine_actions_ProcessAuthoring extends tao_actions_TaoModule {
 						'uri' 	=> tao_helpers_Uri::encode($connector->uriResource),
 						'type' => $typeOfConnector,
 						'previousActivityUri' => tao_helpers_Uri::encode($activityOrConnector->uriResource),
-						'previousIsActivity' => wfEngine_helpers_ProcessUtil::isActivity($activityOrConnector)
+						'previousIsActivity' => $this->activityService->isActivity($activityOrConnector)
 					));
 					return $created;
 				}

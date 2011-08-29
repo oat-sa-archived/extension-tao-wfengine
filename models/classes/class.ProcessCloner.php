@@ -236,7 +236,7 @@ class wfEngine_models_classes_ProcessCloner
         $returnValue = null;
 
         // section 10-13-1-39--56440278:12d4c05ae3c:-8000:0000000000004FE3 begin
-		if(wfEngine_helpers_ProcessUtil::isActivity($activity)){
+		if($this->activityService->isActivity($activity)){
 			$activityClone = $this->cloneWfResource(
 				$activity, 
 				new core_kernel_classes_Class(CLASS_ACTIVITIES),
@@ -721,21 +721,21 @@ class wfEngine_models_classes_ProcessCloner
 					if(is_array($newActivityIO[$interface])){
 						foreach($newActivityIO[$interface] as $activityUri){
 							$activity = new core_kernel_classes_Resource($activityUri);
-							if(wfEngine_helpers_ProcessUtil::isActivity($activity)){
+							if($this->activityService->isActivity($activity)){
 								$returnValue[$activity->uriResource] = $activity;
 							}
 						}
 					}
 					else{
 						$activity = new core_kernel_classes_Resource($newActivityIO[$interface]);
-						if(wfEngine_helpers_ProcessUtil::isActivity($activity)){
+						if($this->activityService->isActivity($activity)){
 							$returnValue[$activity->uriResource] = $activity;
 						}
 					}
 				}
 			}else if(is_string($newActivityIO)){
 				$activity = new core_kernel_classes_Resource($newActivityIO);
-				if(wfEngine_helpers_ProcessUtil::isActivity($activity)){
+				if($this->activityService->isActivity($activity)){
 					$returnValue[$activity->uriResource] = $activity;
 				}
 				
@@ -883,7 +883,7 @@ class wfEngine_models_classes_ProcessCloner
 		//note: most of the time, $this->clonedActivities[$activity->uriResource]['in'] = $this->clonedActivities[$activity->uriResource]['out']
 		
 		if(!is_null($activity) && !is_null($oldReferenceActivity)){
-			if(wfEngine_helpers_ProcessUtil::isActivity($activity)){
+			if($this->activityService->isActivity($activity)){
 				$newActivity = $this->getClonedActivity($activity, $activityIO);
 				if(!is_null($newActivity)){
 					$returnValue = $newActivity;

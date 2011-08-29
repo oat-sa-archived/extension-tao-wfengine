@@ -40,11 +40,11 @@ class ActivityServiceTestCase extends UnitTestCase {
      */
     public function testService(){
 
-        $aeService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityService');
-        $this->assertIsA($aeService, 'tao_models_classes_Service');
-        $this->assertIsA($aeService, 'wfEngine_models_classes_ActivityService');
+        $aService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityService');
+        $this->assertIsA($aService, 'tao_models_classes_Service');
+        $this->assertIsA($aService, 'wfEngine_models_classes_ActivityService');
 
-        $this->service = $aeService;
+        $this->service = $aService;
     }
 
     

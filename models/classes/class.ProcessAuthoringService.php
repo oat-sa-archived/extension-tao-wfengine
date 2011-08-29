@@ -267,6 +267,7 @@ class wfEngine_models_classes_ProcessAuthoringService
         $returnValue = null;
 
         // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004D73 begin
+		$activityService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityService');
 		
 		$connectorLabel = "";
 		if(empty($label)){
@@ -284,7 +285,7 @@ class wfEngine_models_classes_ProcessAuthoringService
 			
 			//set the activity reference of the connector:
 			$activityRefProp = new core_kernel_classes_Property(PROPERTY_CONNECTORS_ACTIVITYREFERENCE);
-			if(wfEngine_helpers_ProcessUtil::isActivity($activity)){
+			if($activityService->isActivity($activity)){
 				$returnValue->setPropertyValue($activityRefProp, $activity->uriResource);
 			}elseif(wfEngine_helpers_ProcessUtil::isConnector($activity)){
 				$returnValue->setPropertyValue($activityRefProp, $activity->getUniquePropertyValue($activityRefProp)->uriResource);
