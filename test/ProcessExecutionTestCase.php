@@ -203,9 +203,9 @@ class ProcessExecutionTestCase extends UnitTestCase{
 			$connector4->delete();
 			
 			//delete process execution:
-			$this->assertTrue(wfEngine_helpers_ProcessUtil::checkType($proc->resource, new core_kernel_classes_Class(CLASS_PROCESSINSTANCES)));
+			$this->assertTrue($proc->resource->hasType(new core_kernel_classes_Class(CLASS_PROCESSINSTANCES)));
 			$this->assertTrue($processExecutionService->deleteProcessExecution($proc->resource));
-			$this->assertFalse(wfEngine_helpers_ProcessUtil::checkType($proc->resource, new core_kernel_classes_Class(CLASS_PROCESSINSTANCES)));
+			$this->assertFalse($proc->resource->hasType(new core_kernel_classes_Class(CLASS_PROCESSINSTANCES)));
 			
 			$processDefinition->delete();
 			

@@ -661,7 +661,8 @@ extends tao_models_classes_GenerisService
         if(!is_null($connector) && !is_null($user) && !is_null($processExecution)){
              
             $activityExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityExecutionService');
-             
+            $activityService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityService');
+            
             //get the activity around the connector
             $previousActivities = $connector->getPropertyValuesCollection(new core_kernel_classes_Property(PROPERTY_CONNECTORS_PREVIOUSACTIVITIES));
              
@@ -751,7 +752,7 @@ extends tao_models_classes_GenerisService
                     $activityResourceArray = array();
                     $tokens = array();
                     foreach ($previousActivities->getIterator() as $activityResource){
-                        if(wfEngine_helpers_ProcessUtil::isActivity($activityResource)){
+                        if($activityService->isActivity($activityResource)){
                             if(!isset($activityResourceArray[$activityResource->uriResource])){
                                 $activityResourceArray[$activityResource->uriResource] = 1;
                             }else{

@@ -3,16 +3,16 @@
 error_reporting(E_ALL);
 
 /**
- * TAO - wfEngine\models\classes\class.ProcessChecker.php
+ * TAO - wfEngine/models/classes/class.ProcessChecker.php
  *
  * $Id$
  *
  * This file is part of TAO.
  *
- * Automatically generated on 22.02.2011, 15:59:30 with ArgoUML PHP module 
+ * Automatically generated on 29.08.2011, 17:04:59 with ArgoUML PHP module 
  * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
  *
- * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+ * @author Lionel Lecaque, <lionel.lecaque@tudor.lu>
  * @package wfEngine
  * @subpackage models_classes
  */
@@ -25,7 +25,7 @@ if (0 > version_compare(PHP_VERSION, '5')) {
  * The Service class is an abstraction of each service instance. 
  * Used to centralize the behavior related to every servcie instances.
  *
- * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+ * @author Lionel Lecaque, <lionel.lecaque@tudor.lu>
  */
 require_once('tao/models/classes/class.GenerisService.php');
 
@@ -41,7 +41,7 @@ require_once('tao/models/classes/class.GenerisService.php');
  * Short description of class wfEngine_models_classes_ProcessChecker
  *
  * @access public
- * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+ * @author Lionel Lecaque, <lionel.lecaque@tudor.lu>
  * @package wfEngine
  * @subpackage models_classes
  */
@@ -93,13 +93,21 @@ class wfEngine_models_classes_ProcessChecker
      */
     protected $isolatedConnectors = array();
 
+    /**
+     * Short description of attribute activityService
+     *
+     * @access protected
+     * @var ActivityService
+     */
+    protected $activityService = null;
+
     // --- OPERATIONS ---
 
     /**
      * Short description of method __construct
      *
      * @access public
-     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+     * @author Lionel Lecaque, <lionel.lecaque@tudor.lu>
      * @param  Resource process
      * @return mixed
      */
@@ -107,6 +115,7 @@ class wfEngine_models_classes_ProcessChecker
     {
         // section 10-13-1-39--7378788e:12e4d9bbe63:-8000:0000000000004F9F begin
 		$this->process = $process;
+		$this->activityService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityService');
 		$this->authoringService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessAuthoringService');
 		
 		parent::__construct();
@@ -117,7 +126,7 @@ class wfEngine_models_classes_ProcessChecker
      * Short description of method check
      *
      * @access public
-     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+     * @author Lionel Lecaque, <lionel.lecaque@tudor.lu>
      * @param  array checkList
      * @return boolean
      */
@@ -153,7 +162,7 @@ class wfEngine_models_classes_ProcessChecker
      * Short description of method checkInitialActivity
      *
      * @access public
-     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+     * @author Lionel Lecaque, <lionel.lecaque@tudor.lu>
      * @param  int number
      * @return boolean
      */
@@ -169,7 +178,7 @@ class wfEngine_models_classes_ProcessChecker
 		$count = 0;
 		foreach($this->authoringService->getActivitiesByProcess($process) as $activity){
 			
-			if(wfEngine_helpers_ProcessUtil::isActivityInitial($activity)){
+			if($this->activityService->isInitial($activity)){
 				$this->initialActivities[$activity->uriResource] = $activity;
 				$count++;
 				if($number && ($count>$number)){
@@ -195,7 +204,7 @@ class wfEngine_models_classes_ProcessChecker
      * Short description of method checkNoIsolatedActivity
      *
      * @access public
-     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+     * @author Lionel Lecaque, <lionel.lecaque@tudor.lu>
      * @return boolean
      */
     public function checkNoIsolatedActivity()
@@ -211,7 +220,7 @@ class wfEngine_models_classes_ProcessChecker
 		$process = $this->process;
 		$apiModel = core_kernel_impl_ApiModelOO::singleton();
 		foreach($this->authoringService->getActivitiesByProcess($process) as $activity){
-			if(!wfEngine_helpers_ProcessUtil::isActivityInitial($activity)){
+			if(!$this->activityService->isInitial($activity)){
 				//should have a previous activity:
 				$connectors = $connectorsClass->searchInstances(array(PROPERTY_CONNECTORS_NEXTACTIVITIES => $activity->uriResource), array('like'=>false, 'recursive' => 0));
 				if(empty($connectors)){
@@ -229,7 +238,7 @@ class wfEngine_models_classes_ProcessChecker
      * Short description of method checkNoIsolatedConnector
      *
      * @access public
-     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+     * @author Lionel Lecaque, <lionel.lecaque@tudor.lu>
      * @return boolean
      */
     public function checkNoIsolatedConnector()
@@ -262,7 +271,7 @@ class wfEngine_models_classes_ProcessChecker
      * Short description of method getInitialActivities
      *
      * @access public
-     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+     * @author Lionel Lecaque, <lionel.lecaque@tudor.lu>
      * @return array
      */
     public function getInitialActivities()
@@ -280,7 +289,7 @@ class wfEngine_models_classes_ProcessChecker
      * Short description of method getIsolatedActivities
      *
      * @access public
-     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+     * @author Lionel Lecaque, <lionel.lecaque@tudor.lu>
      * @return array
      */
     public function getIsolatedActivities()
@@ -298,7 +307,7 @@ class wfEngine_models_classes_ProcessChecker
      * Short description of method getIsolatedConnectors
      *
      * @access public
-     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+     * @author Lionel Lecaque, <lionel.lecaque@tudor.lu>
      * @return array
      */
     public function getIsolatedConnectors()
@@ -316,7 +325,7 @@ class wfEngine_models_classes_ProcessChecker
      * Short description of method isIsolatedConnector
      *
      * @access public
-     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+     * @author Lionel Lecaque, <lionel.lecaque@tudor.lu>
      * @param  Resource connector
      * @return boolean
      */

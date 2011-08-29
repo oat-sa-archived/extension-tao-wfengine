@@ -3,16 +3,16 @@
 error_reporting(E_ALL);
 
 /**
- * TAO - wfEngine\models\classes\class.ProcessCloner.php
+ * TAO - wfEngine/models/classes/class.ProcessCloner.php
  *
  * $Id$
  *
  * This file is part of TAO.
  *
- * Automatically generated on 04.01.2011, 11:16:39 with ArgoUML PHP module 
- * (last revised $Date: 2008-04-19 08:22:08 +0200 (Sat, 19 Apr 2008) $)
+ * Automatically generated on 29.08.2011, 17:04:59 with ArgoUML PHP module 
+ * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
  *
- * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+ * @author Lionel Lecaque, <lionel.lecaque@tudor.lu>
  * @package wfEngine
  * @subpackage models_classes
  */
@@ -25,14 +25,14 @@ if (0 > version_compare(PHP_VERSION, '5')) {
  * The Service class is an abstraction of each service instance. 
  * Used to centralize the behavior related to every servcie instances.
  *
- * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+ * @author Lionel Lecaque, <lionel.lecaque@tudor.lu>
  */
 require_once('tao/models/classes/class.GenerisService.php');
 
 /**
  * include wfEngine_models_classes_ProcessAuthoringService
  *
- * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+ * @author Lionel Lecaque, <lionel.lecaque@tudor.lu>
  */
 require_once('wfEngine/models/classes/class.ProcessAuthoringService.php');
 
@@ -48,7 +48,7 @@ require_once('wfEngine/models/classes/class.ProcessAuthoringService.php');
  * Short description of class wfEngine_models_classes_ProcessCloner
  *
  * @access public
- * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+ * @author Lionel Lecaque, <lionel.lecaque@tudor.lu>
  * @package wfEngine
  * @subpackage models_classes
  */
@@ -132,13 +132,21 @@ class wfEngine_models_classes_ProcessCloner
      */
     public $debugClonedConnectors = array();
 
+    /**
+     * Short description of attribute activityService
+     *
+     * @access protected
+     * @var ActivityService
+     */
+    protected $activityService = null;
+
     // --- OPERATIONS ---
 
     /**
      * Short description of method __construct
      *
      * @access public
-     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+     * @author Lionel Lecaque, <lionel.lecaque@tudor.lu>
      * @param  string cloneLabel
      */
     public function __construct($cloneLabel = '')
@@ -146,6 +154,7 @@ class wfEngine_models_classes_ProcessCloner
         // section 10-13-1-39--56440278:12d4c05ae3c:-8000:0000000000004FB5 begin
 		$this->cloneLabel = $cloneLabel;
 		$this->authoringService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessAuthoringService');
+		$this->activityService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityService');
 		$this->initCloningVariables();
 		parent::__construct();
         // section 10-13-1-39--56440278:12d4c05ae3c:-8000:0000000000004FB5 end
@@ -155,7 +164,7 @@ class wfEngine_models_classes_ProcessCloner
      * Short description of method addClonedActivity
      *
      * @access public
-     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+     * @author Lionel Lecaque, <lionel.lecaque@tudor.lu>
      * @param  Resource newActivityIn
      * @param  Resource oldActivity
      * @param  array newActivityOut
@@ -202,7 +211,7 @@ class wfEngine_models_classes_ProcessCloner
      * Short description of method addClonedConnector
      *
      * @access public
-     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+     * @author Lionel Lecaque, <lionel.lecaque@tudor.lu>
      * @param  Resource oldConnector
      * @param  Resource newConnector
      * @return mixed
@@ -218,7 +227,7 @@ class wfEngine_models_classes_ProcessCloner
      * Short description of method cloneActivity
      *
      * @access public
-     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+     * @author Lionel Lecaque, <lionel.lecaque@tudor.lu>
      * @param  Resource activity
      * @return core_kernel_classes_Resource
      */
@@ -263,7 +272,7 @@ class wfEngine_models_classes_ProcessCloner
      * Short description of method cloneConnector
      *
      * @access public
-     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+     * @author Lionel Lecaque, <lionel.lecaque@tudor.lu>
      * @param  Resource connector
      * @return core_kernel_classes_Resource
      */
@@ -433,7 +442,7 @@ class wfEngine_models_classes_ProcessCloner
      * Short description of method cloneInteractiveService
      *
      * @access public
-     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+     * @author Lionel Lecaque, <lionel.lecaque@tudor.lu>
      * @param  Resource service
      * @return core_kernel_classes_Resource
      */
@@ -471,7 +480,7 @@ class wfEngine_models_classes_ProcessCloner
      * Short description of method cloneProcess
      *
      * @access public
-     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+     * @author Lionel Lecaque, <lionel.lecaque@tudor.lu>
      * @param  Resource process
      * @return core_kernel_classes_Resource
      */
@@ -527,7 +536,7 @@ class wfEngine_models_classes_ProcessCloner
      * Short description of method cloneProcessSegment
      *
      * @access public
-     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+     * @author Lionel Lecaque, <lionel.lecaque@tudor.lu>
      * @param  Resource process
      * @param  boolean addTransitionalActivity
      * @param  Resource startActivity
@@ -552,7 +561,7 @@ class wfEngine_models_classes_ProcessCloner
 			$initialActivity = null;
 			//find the first activity:
 			foreach($activities as $activityUri => $activity){
-				if(wfEngine_helpers_ProcessUtil::isActivityInitial($activity)){
+				if($this->activityService->isInitial($activity)){
 					$initialActivity = $activity;
 					break;
 				}
@@ -669,7 +678,7 @@ class wfEngine_models_classes_ProcessCloner
      * Short description of method cloneWfResource
      *
      * @access public
-     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+     * @author Lionel Lecaque, <lionel.lecaque@tudor.lu>
      * @param  Resource instance
      * @param  Class clazz
      * @param  array forbiddenProperties
@@ -689,7 +698,7 @@ class wfEngine_models_classes_ProcessCloner
 			$returnValue->setLabel($cloneLabel);
 		}
 		
-		 // section 10-13-1-39--56440278:12d4c05ae3c:-8000:0000000000005004 end
+        // section 10-13-1-39--56440278:12d4c05ae3c:-8000:0000000000005004 end
 
         return $returnValue;
     }
@@ -698,7 +707,7 @@ class wfEngine_models_classes_ProcessCloner
      * Short description of method getClonedActivities
      *
      * @access public
-     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+     * @author Lionel Lecaque, <lionel.lecaque@tudor.lu>
      * @return array
      */
     public function getClonedActivities()
@@ -742,7 +751,7 @@ class wfEngine_models_classes_ProcessCloner
      * Short description of method getClonedActivity
      *
      * @access public
-     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+     * @author Lionel Lecaque, <lionel.lecaque@tudor.lu>
      * @param  Resource oldActivity
      * @param  string InOut
      * @return core_kernel_classes_Resource
@@ -779,7 +788,7 @@ class wfEngine_models_classes_ProcessCloner
      * Short description of method getClonedConnector
      *
      * @access public
-     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+     * @author Lionel Lecaque, <lionel.lecaque@tudor.lu>
      * @param  Resource oldConnector
      * @return core_kernel_classes_Resource
      */
@@ -800,7 +809,7 @@ class wfEngine_models_classes_ProcessCloner
      * Short description of method getClonedConnectors
      *
      * @access public
-     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+     * @author Lionel Lecaque, <lionel.lecaque@tudor.lu>
      * @return array
      */
     public function getClonedConnectors()
@@ -823,7 +832,7 @@ class wfEngine_models_classes_ProcessCloner
      * Short description of method getCloneLabel
      *
      * @access public
-     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+     * @author Lionel Lecaque, <lionel.lecaque@tudor.lu>
      * @return string
      */
     public function getCloneLabel()
@@ -841,7 +850,7 @@ class wfEngine_models_classes_ProcessCloner
      * Short description of method getNewActivityFromOldActivity
      *
      * @access protected
-     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+     * @author Lionel Lecaque, <lionel.lecaque@tudor.lu>
      * @param  Resource oldActivity
      * @param  Resource oldReferenceActivity
      * @param  string connectionType
@@ -926,7 +935,7 @@ class wfEngine_models_classes_ProcessCloner
      * Short description of method initCloningVariables
      *
      * @access public
-     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+     * @author Lionel Lecaque, <lionel.lecaque@tudor.lu>
      * @return mixed
      */
     public function initCloningVariables()
@@ -944,7 +953,7 @@ class wfEngine_models_classes_ProcessCloner
      * Short description of method revertCloning
      *
      * @access public
-     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+     * @author Lionel Lecaque, <lionel.lecaque@tudor.lu>
      * @return mixed
      */
     public function revertCloning()
@@ -966,7 +975,7 @@ class wfEngine_models_classes_ProcessCloner
      * Short description of method setCloneLabel
      *
      * @access public
-     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+     * @author Lionel Lecaque, <lionel.lecaque@tudor.lu>
      * @param  string cloneLabel
      */
     public function setCloneLabel($cloneLabel = '')
@@ -980,7 +989,7 @@ class wfEngine_models_classes_ProcessCloner
      * Short description of method setDebugClonedActivities
      *
      * @access public
-     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+     * @author Lionel Lecaque, <lionel.lecaque@tudor.lu>
      * @param  Resource activity
      * @return mixed
      */
@@ -996,7 +1005,7 @@ class wfEngine_models_classes_ProcessCloner
      * Short description of method setWaitingConnector
      *
      * @access protected
-     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+     * @author Lionel Lecaque, <lionel.lecaque@tudor.lu>
      * @param  Resource waitingOldConnectorToBeCloned
      * @param  string connectionType
      * @param  Resource clonedConnectorToUpdate
@@ -1026,7 +1035,7 @@ class wfEngine_models_classes_ProcessCloner
      * Short description of method updateWaitingConnector
      *
      * @access protected
-     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+     * @author Lionel Lecaque, <lionel.lecaque@tudor.lu>
      * @param  Resource expectedConnector
      * @param  Resource expectedConnectorClone
      * @return boolean

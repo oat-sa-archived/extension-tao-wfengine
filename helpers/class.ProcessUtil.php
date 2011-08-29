@@ -3,16 +3,16 @@
 error_reporting(E_ALL);
 
 /**
- * TAO - wfEngine\helpers\class.ProcessUtil.php
+ * TAO - wfEngine/helpers/class.ProcessUtil.php
  *
  * $Id$
  *
  * This file is part of TAO.
  *
- * Automatically generated on 22.02.2011, 10:59:47 with ArgoUML PHP module 
+ * Automatically generated on 29.08.2011, 14:59:16 with ArgoUML PHP module 
  * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
  *
- * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+ * @author Lionel Lecaque, <lionel.lecaque@tudor.lu>
  * @package wfEngine
  * @subpackage helpers
  */
@@ -33,7 +33,7 @@ if (0 > version_compare(PHP_VERSION, '5')) {
  * Short description of class wfEngine_helpers_ProcessUtil
  *
  * @access public
- * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+ * @author Lionel Lecaque, <lionel.lecaque@tudor.lu>
  * @package wfEngine
  * @subpackage helpers
  */
@@ -50,12 +50,12 @@ class wfEngine_helpers_ProcessUtil
      * Short description of method checkType
      *
      * @access public
-     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+     * @author Lionel Lecaque, <lionel.lecaque@tudor.lu>
      * @param  Resource resource
      * @param  Class clazz
      * @return boolean
      */
-    public function checkType( core_kernel_classes_Resource $resource,  core_kernel_classes_Class $clazz)
+    public static function checkType( core_kernel_classes_Resource $resource,  core_kernel_classes_Class $clazz)
     {
         $returnValue = (bool) false;
 
@@ -80,11 +80,11 @@ class wfEngine_helpers_ProcessUtil
      * Short description of method getServiceDefinition
      *
      * @access public
-     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+     * @author Lionel Lecaque, <lionel.lecaque@tudor.lu>
      * @param  string url
      * @return core_kernel_classes_Resource
      */
-    public function getServiceDefinition($url)
+    public static function getServiceDefinition($url)
     {
         $returnValue = null;
 
@@ -98,7 +98,7 @@ class wfEngine_helpers_ProcessUtil
 			}
 		}	
         
-		// section 10-13-1-39--284957ac:12e4ca5284a:-8000:0000000000002BF2 end
+        // section 10-13-1-39--284957ac:12e4ca5284a:-8000:0000000000002BF2 end
 
         return $returnValue;
     }
@@ -107,17 +107,17 @@ class wfEngine_helpers_ProcessUtil
      * Short description of method isActivity
      *
      * @access public
-     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+     * @author Lionel Lecaque, <lionel.lecaque@tudor.lu>
      * @param  Resource resource
      * @return boolean
      */
-    public function isActivity( core_kernel_classes_Resource $resource)
+    public static function isActivity( core_kernel_classes_Resource $resource)
     {
         $returnValue = (bool) false;
 
         // section 10-13-1-39--284957ac:12e4ca5284a:-8000:0000000000002BF5 begin
 		if(!is_null($resource)){
-			$returnValue = self::checkType($resource, new core_kernel_classes_Class(CLASS_ACTIVITIES));
+			$returnValue = $resource->hasType( new core_kernel_classes_Class(CLASS_ACTIVITIES));
 		}
         // section 10-13-1-39--284957ac:12e4ca5284a:-8000:0000000000002BF5 end
 
@@ -128,11 +128,11 @@ class wfEngine_helpers_ProcessUtil
      * Short description of method isActivityFinal
      *
      * @access public
-     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+     * @author Lionel Lecaque, <lionel.lecaque@tudor.lu>
      * @param  Resource activity
      * @return boolean
      */
-    public function isActivityFinal( core_kernel_classes_Resource $activity)
+    public static function isActivityFinal( core_kernel_classes_Resource $activity)
     {
         $returnValue = (bool) false;
 
@@ -151,21 +151,15 @@ class wfEngine_helpers_ProcessUtil
      * Short description of method isActivityInitial
      *
      * @access public
-     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+     * @author Lionel Lecaque, <lionel.lecaque@tudor.lu>
      * @param  Resource activity
      * @return boolean
      */
-    public function isActivityInitial( core_kernel_classes_Resource $activity)
+    public static function isActivityInitial( core_kernel_classes_Resource $activity)
     {
         $returnValue = (bool) false;
 
         // section 10-13-1-39--284957ac:12e4ca5284a:-8000:0000000000002BFB begin
-		$isIntial = $activity->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_ACTIVITIES_ISINITIAL));
-		if(!is_null($isIntial) && $isIntial instanceof core_kernel_classes_Resource){
-			if($isIntial->uriResource == GENERIS_TRUE){
-				$returnValue = true;
-			}
-		}
         // section 10-13-1-39--284957ac:12e4ca5284a:-8000:0000000000002BFB end
 
         return (bool) $returnValue;
@@ -175,37 +169,40 @@ class wfEngine_helpers_ProcessUtil
      * Short description of method isConnector
      *
      * @access public
-     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+     * @author Lionel Lecaque, <lionel.lecaque@tudor.lu>
      * @param  Resource resource
      * @return boolean
      */
-    public function isConnector( core_kernel_classes_Resource $resource)
+    public static function isConnector( core_kernel_classes_Resource $resource)
     {
         $returnValue = (bool) false;
 
         // section 10-13-1-39--284957ac:12e4ca5284a:-8000:0000000000002BFE begin
 		if(!is_null($resource)){
-			$returnValue = self::checkType($resource, new core_kernel_classes_Class(CLASS_CONNECTORS));
+			$returnValue = $resource->hasType( new core_kernel_classes_Class(CLASS_CONNECTORS));
 		}
         // section 10-13-1-39--284957ac:12e4ca5284a:-8000:0000000000002BFE end
 
         return (bool) $returnValue;
     }
-    
-	/**
-     * Short description of method getConnectorNextActivities
+
+    /**
+     * Organize Process Variable into an array
      *
      * @access public
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
-     * @param  Resource connector
+     * @author Lionel Lecaque, <lionel.lecaque@tudor.lu>
+     * @param  array variables
      * @return array
      */
-    public function getConnectorNextActivities( core_kernel_classes_Resource $connector)
+    public static function processVarsToArray($variables)
     {
         $returnValue = array();
 
-        // section 10-13-1--128--62984630:12fd95c837b:-8000:0000000000002E3E begin
-        // section 10-13-1--128--62984630:12fd95c837b:-8000:0000000000002E3E end
+        // section 127-0-1-1--7eb5a1dd:13214d5811e:-8000:0000000000002E9E begin
+        foreach ($variables as $var) {
+            $returnValue[$var->uri] = $var->value;
+        }
+        // section 127-0-1-1--7eb5a1dd:13214d5811e:-8000:0000000000002E9E end
 
         return (array) $returnValue;
     }

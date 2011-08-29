@@ -40,18 +40,6 @@ class wfEngine_models_classes_Utils
 
 	// --- OPERATIONS ---
 
-	/**
-	 * Short description of method sendMail
-	 *
-	 * @access public
-	 * @author firstname and lastname of author, <author@example.org>
-	 * @return void
-	 */
-	public function sendMail()
-	{
-		// section 10-13-1--31--4660acca:119ecd38e96:-8000:000000000000086E begin
-		// section 10-13-1--31--4660acca:119ecd38e96:-8000:000000000000086E end
-	}
 
 	/**
 	 * Short description of method isUri

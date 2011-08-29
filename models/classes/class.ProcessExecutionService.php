@@ -161,7 +161,7 @@ class wfEngine_models_classes_ProcessExecutionService
         $returnValue = (bool) false;
 
         // section 10-50-1-116-185ba8ba:12f4978614f:-8000:0000000000002D5F begin
-		if(wfEngine_helpers_ProcessUtil::checkType($processExecution, $this->classProcessInstances)){
+		if($processExecution->hasType($this->classProcessInstances)){
 		
 			if($finishedOnly){
 				if(!$this->isFinished($processExecution)){

@@ -525,10 +525,13 @@ class wfEngine_models_classes_ProcessTreeService
 		$nodeData = array();
 		$class = '';
 		$linkAttribute = 'id';
+		          
+		$activityService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityService');
+		$connectorService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ConnectorService');
 		
-		if(wfEngine_helpers_ProcessUtil::isActivity($activity)){
+		if($activityService->isActivity($activity)){
 			$class = 'node-activity';
-		}elseif(wfEngine_helpers_ProcessUtil::isConnector($activity)){
+		}elseif($connectorService->isConnector($activity)){
 			$class = 'node-connector';
 		}else{
 			return $nodeData;//unknown type

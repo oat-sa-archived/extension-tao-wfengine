@@ -7,6 +7,8 @@ class ProcessClonerTestCase extends UnitTestCase {
 	
 	protected $processCloner = null;
 	protected $authoringService = null;
+	protected $activityService = null;
+	protected $connectorService = null;	
 	protected $proc = null;
 	protected $apiModel = null;
 	
@@ -23,6 +25,8 @@ class ProcessClonerTestCase extends UnitTestCase {
 		}
 		$this->apiModel = core_kernel_impl_ApiModelOO::singleton();
 		$this->authoringService = new wfEngine_models_classes_ProcessAuthoringService();
+		$this->activityService = new wfEngine_models_classes_ActivityService();
+		$this->connectorService = new wfEngine_models_classes_ConnectorService();
 	}
 	
 	
@@ -106,7 +110,7 @@ class ProcessClonerTestCase extends UnitTestCase {
 		$activities = $this->authoringService->getActivitiesByProcess($processClone);
 		$this->assertEqual(count($activities), 3);
 		foreach($activities as $activity){
-			$this->assertTrue(wfEngine_helpers_ProcessUtil::isActivity($activity));
+			$this->assertTrue($this->activityService->isActivity($activity));
 		}
 		
 		$this->authoringService->deleteProcess($processClone);
@@ -154,8 +158,8 @@ class ProcessClonerTestCase extends UnitTestCase {
 		// $else1 = $this->authoringService->createSplitActivity($connector1, 'else');
 		
 		$this->assertEqual($connector1->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_TYPE))->uriResource, INSTANCE_TYPEOFCONNECTORS_CONDITIONAL);
-		$this->assertTrue(wfEngine_helpers_ProcessUtil::isActivity($then1));
-		$this->assertTrue(wfEngine_helpers_ProcessUtil::isConnector($else1));
+		$this->assertTrue($this->activityService->isActivity($then1));
+		$this->assertTrue($this->connectorService->isConnector($else1));
 		
 		$transitionRule = $connector1->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_TRANSITIONRULE));
 		$this->assertEqual($then1->uriResource, $transitionRule->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_TRANSITIONRULES_THEN))->uriResource);
@@ -184,7 +188,7 @@ class ProcessClonerTestCase extends UnitTestCase {
 		$activities = $this->authoringService->getActivitiesByProcess($processClone);
 		$this->assertEqual(count($activities), 3);
 		foreach($activities as $activity){
-			$this->assertTrue(wfEngine_helpers_ProcessUtil::isActivity($activity));
+			$this->assertTrue($this->activityService->isActivity($activity));
 		}
 		
 		$this->authoringService->deleteProcess($processClone);
@@ -206,8 +210,8 @@ class ProcessClonerTestCase extends UnitTestCase {
 		// $else1 = $this->authoringService->createSplitActivity($connector1, 'else');
 		
 		$this->assertEqual($connector1->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_TYPE))->uriResource, INSTANCE_TYPEOFCONNECTORS_CONDITIONAL);
-		$this->assertTrue(wfEngine_helpers_ProcessUtil::isActivity($then1));
-		$this->assertTrue(wfEngine_helpers_ProcessUtil::isConnector($else1));
+		$this->assertTrue($this->activityService->isActivity($then1));
+		$this->assertTrue($this->connectorService->isConnector($else1));
 		
 		$transitionRule = $connector1->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_TRANSITIONRULE));
 		$this->assertEqual($then1->uriResource, $transitionRule->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_TRANSITIONRULES_THEN))->uriResource);

@@ -60,6 +60,8 @@ extends wfEngine_models_classes_WfResource
 	 * @var Process
 	 */
 	public $process = null;
+	
+	protected $activityService = null;
 
 	/**
 	 * Short description of attribute variables
@@ -357,7 +359,7 @@ extends wfEngine_models_classes_WfResource
 				$activityResourceArray = array();
 				$prevActivitesCollection = $connector->getPreviousActivities();
 				foreach ($prevActivitesCollection->getIterator() as $activityResource){
-					if(wfEngine_helpers_ProcessUtil::isActivity($activityResource)){
+					if($this->activityService->isActivity($activityResource)){
 						if(!isset($activityResourceArray[$activityResource->uriResource])){
 							$activityResourceArray[$activityResource->uriResource] = 1;
 						}else{
@@ -437,7 +439,7 @@ extends wfEngine_models_classes_WfResource
 					$this->logger->debug('Next Activity  Name: ' . $val->getLabel(),__FILE__,__LINE__);
 					$this->logger->debug('Next Activity  Uri: ' . $val->uriResource,__FILE__,__LINE__);
 					
-					if(wfEngine_helpers_ProcessUtil::isActivity($val)){
+					if($this->activityService->isActivity($val)){
 						$activity = new wfEngine_models_classes_Activity($val->uriResource);
 						$newActivities[]= $activity;
 					}else if(wfEngine_helpers_ProcessUtil::isConnector($val)){
@@ -517,6 +519,7 @@ extends wfEngine_models_classes_WfResource
 	{
 		// section -64--88-1-64--7117f567:11a0527df60:-8000:00000000000008BD begin
 		parent::__construct($uri);
+		$this->activityService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityService');
 		$this->resource = new core_kernel_classes_Resource($uri,__METHOD__);
 		//getexecutionOf field
 		$executionOfProp = new core_kernel_classes_Property(PROPERTY_PROCESSINSTANCES_EXECUTIONOF);

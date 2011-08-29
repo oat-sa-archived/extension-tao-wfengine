@@ -36,6 +36,7 @@ class ProcessAuthoringServiceTestCase extends UnitTestCase {
 		$this->assertIsA($authoringService, 'wfEngine_models_classes_ProcessAuthoringService');
 
 		$this->authoringService = $authoringService;
+		
 	}
 	
 	public function testCreateDeleteProcess(){
@@ -64,7 +65,8 @@ class ProcessAuthoringServiceTestCase extends UnitTestCase {
 	
 	public function testIsActivity(){
 		$activity1 = $this->authoringService->createActivity($this->proc);
-		$this->assertTrue(wfEngine_helpers_ProcessUtil::isActivity($activity1));
+		$activityService = new wfEngine_models_classes_ActivityService();
+		$this->assertTrue($activityService->isActivity($activity1));
 	}
 	
 	public function testIsConnector(){
@@ -143,8 +145,10 @@ class ProcessAuthoringServiceTestCase extends UnitTestCase {
 		$then = $this->authoringService->createSplitActivity($connector1, 'then');//create "Activity_2"
 		$else = $this->authoringService->createSplitActivity($connector1, 'else', null, '', true);//create another connector
 		$this->assertEqual($connector1->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_TYPE))->uriResource, INSTANCE_TYPEOFCONNECTORS_CONDITIONAL);
-		$this->assertTrue(wfEngine_helpers_ProcessUtil::isActivity($then));
-		$this->assertTrue(wfEngine_helpers_ProcessUtil::isConnector($else));
+		$activityService = new wfEngine_models_classes_ActivityService();
+		$this->assertTrue($activityService->isActivity($then));
+		$connectorService =  new wfEngine_models_classes_ConnectorService();
+		$this->assertTrue($connectorService->isConnector($else));
 		
 		$activity3 = $this->authoringService->createSequenceActivity($else, null, 'Act3');
 		$this->assertEqual($activity3->getLabel(), 'Act3');

@@ -73,8 +73,10 @@ class ProcessCheckerTestCase extends UnitTestCase {
 		$else1 = $this->authoringService->createSplitActivity($connector1, 'else', null, '', true);//create another connector
 		
 		$this->assertEqual($connector1->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_TYPE))->uriResource, INSTANCE_TYPEOFCONNECTORS_CONDITIONAL);
-		$this->assertTrue(wfEngine_helpers_ProcessUtil::isActivity($then1));
-		$this->assertTrue(wfEngine_helpers_ProcessUtil::isConnector($else1));
+		$activityService = new wfEngine_models_classes_ActivityService();
+		$this->assertTrue($activityService->isActivity($then1));
+		$connectorService =  new wfEngine_models_classes_ConnectorService();
+		$this->assertTrue($connectorService->isConnector($else1));
 		
 		$transitionRule = $connector1->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_TRANSITIONRULE));
 		$this->assertEqual($then1->uriResource, $transitionRule->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_TRANSITIONRULES_THEN))->uriResource);

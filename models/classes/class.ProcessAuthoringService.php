@@ -1494,7 +1494,7 @@ class wfEngine_models_classes_ProcessAuthoringService
         // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004E79 begin
 		
 		//must exist:
-		if(wfEngine_helpers_ProcessUtil::checkType($formalParam, new core_kernel_classes_Class(CLASS_FORMALPARAMETER))){
+		if($formalParam->hasType(new core_kernel_classes_Class(CLASS_FORMALPARAMETER))){
 		
 			$actualParameterClass = new core_kernel_classes_Class(CLASS_ACTUALPARAMETER);
 	
@@ -1746,7 +1746,7 @@ class wfEngine_models_classes_ProcessAuthoringService
 						}
 					}else if($value instanceof core_kernel_classes_Resource){
 						//check if it is a process variable:
-						if(wfEngine_helpers_ProcessUtil::checkType($value, $classProcessVariables)){
+						if($value->hasType($classProcessVariables)){
 							$defaultValue = $value->uriResource;
 							$defaultValueType = 'processvariable';
 						}
