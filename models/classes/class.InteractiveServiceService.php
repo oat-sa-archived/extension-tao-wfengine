@@ -9,7 +9,7 @@ error_reporting(E_ALL);
  *
  * This file is part of TAO.
  *
- * Automatically generated on 29.08.2011, 14:56:08 with ArgoUML PHP module 
+ * Automatically generated on 30.08.2011, 18:24:16 with ArgoUML PHP module 
  * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
  *
  * @author Lionel Lecaque, <lionel.lecaque@tudor.lu>
@@ -102,6 +102,27 @@ class wfEngine_models_classes_InteractiveServiceService
         // section 127-0-1-1-4ecae359:132158f9a4c:-8000:0000000000002E9D end
 
         return (string) $returnValue;
+    }
+
+    /**
+     * Short description of method isInteractiveService
+     *
+     * @access public
+     * @author Lionel Lecaque, <lionel.lecaque@tudor.lu>
+     * @param  Resource service
+     * @return boolean
+     */
+    public function isInteractiveService( core_kernel_classes_Resource $service)
+    {
+        $returnValue = (bool) false;
+
+        // section 127-0-1-1-52a9110:13219ee179c:-8000:0000000000002EC1 begin
+        if(!is_null($service)){
+			$returnValue = $service->hasType( new core_kernel_classes_Class(CLASS_CALLOFSERVICES));
+		}
+        // section 127-0-1-1-52a9110:13219ee179c:-8000:0000000000002EC1 end
+
+        return (bool) $returnValue;
     }
 
 } /* end of class wfEngine_models_classes_InteractiveServiceService */

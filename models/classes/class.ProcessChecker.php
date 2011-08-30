@@ -9,7 +9,7 @@ error_reporting(E_ALL);
  *
  * This file is part of TAO.
  *
- * Automatically generated on 29.08.2011, 19:51:13 with ArgoUML PHP module 
+ * Automatically generated on 30.08.2011, 11:44:07 with ArgoUML PHP module 
  * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
  *
  * @author Lionel Lecaque, <lionel.lecaque@tudor.lu>
@@ -104,10 +104,10 @@ class wfEngine_models_classes_ProcessChecker
     /**
      * Short description of attribute connectorService
      *
-     * @access private
+     * @access protected
      * @var ConnectorService
      */
-    private $connectorService = null;
+    protected $connectorService = null;
 
     // --- OPERATIONS ---
 
@@ -124,8 +124,8 @@ class wfEngine_models_classes_ProcessChecker
         // section 10-13-1-39--7378788e:12e4d9bbe63:-8000:0000000000004F9F begin
 		$this->process = $process;
 		$this->activityService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityService');
+		$this->connectorService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ConnectorService');
 		$this->authoringService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessAuthoringService');
-		
 		parent::__construct();
         // section 10-13-1-39--7378788e:12e4d9bbe63:-8000:0000000000004F9F end
     }
@@ -349,7 +349,7 @@ class wfEngine_models_classes_ProcessChecker
 			
 			if($this->activityService->isActivity($nextActivityOrConnector)){
 				$returnValue = false;
-			}else if(wfEngine_helpers_ProcessUtil::isConnector($nextActivityOrConnector)){
+			}else if($this->connectorService->isConnector($nextActivityOrConnector)){
 				$isolated = $this->isIsolatedConnector($nextActivityOrConnector);
 				if($returnValue){
 					$returnValue = $isolated;

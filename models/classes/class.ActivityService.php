@@ -15,7 +15,7 @@ if (0 > version_compare(PHP_VERSION, '5')) {
 }
 
 /**
- * The Service class is an abstraction of each service instance. 
+ * The Service class is an abstraction of each service instance.
  * Used to centralize the behavior related to every servcie instances.
  *
  * @author Lionel Lecaque, <lionel.lecaque@tudor.lu>
@@ -39,7 +39,7 @@ require_once('tao/models/classes/class.GenerisService.php');
  * @subpackage models_classes
  */
 class wfEngine_models_classes_ActivityService
-    extends tao_models_classes_GenerisService
+extends tao_models_classes_GenerisService
 {
     // --- ASSOCIATIONS ---
 
@@ -61,7 +61,15 @@ class wfEngine_models_classes_ActivityService
         $returnValue = array();
 
         // section 127-0-1-1--7eb5a1dd:13214d5811e:-8000:0000000000002E84 begin
-        
+        if(!is_null($activity)){
+             
+            $returnValue = $activity->getPropertyValues(new core_kernel_classes_Property(PROPERTY_ACTIVITIES_CONTROLS));
+
+            if($this->isInitial($activity) && isset($returnValue[INSTANCE_CONTROL_BACKWARD])){
+                unset($returnValue[INSTANCE_CONTROL_BACKWARD]);
+            }
+             
+        }
         // section 127-0-1-1--7eb5a1dd:13214d5811e:-8000:0000000000002E84 end
 
         return (array) $returnValue;
@@ -84,12 +92,12 @@ class wfEngine_models_classes_ActivityService
         $interactiveServices = $activity->getPropertyValues($activitiesIserviceProp);
         if (sizeOf($interactiveServices)>0) {
             if ($interactiveServices[0]!="") {
-    			foreach ($interactiveServices as $interactiveService) {
-    					$returnValue[] =  $interactiveService;
-    			}
-			}
-		}
-        
+                foreach ($interactiveServices as $interactiveService) {
+                    $returnValue[$interactiveService] =  new core_kernel_classes_Resource($interactiveService);
+                }
+            }
+        }
+
         // section 127-0-1-1--7eb5a1dd:13214d5811e:-8000:0000000000002E92 end
 
         return (array) $returnValue;
@@ -132,9 +140,11 @@ class wfEngine_models_classes_ActivityService
         $returnValue = (bool) false;
 
         // section 127-0-1-1-4ecae359:132158f9a4c:-8000:0000000000002EA7 begin
-        $activityClass = new core_kernel_classes_Class(CLASS_ACTIVITIES);
-		$nextActivities = $activityClass->searchInstances(array(PROPERTY_CONNECTORS_PREVIOUSACTIVITIES => $activity->uri), array('like' => true, 'recursive' => 0));
-		$returnValue = (bool) count($nextActivities);
+        $connectorClass = new core_kernel_classes_Class(CLASS_CONNECTORS);
+        $nextActivities = $connectorClass->searchInstances(array(PROPERTY_CONNECTORS_PREVIOUSACTIVITIES => $activity->uriResource), array('like' => true, 'recursive' => 0));
+        if(count($nextActivities) == 0){
+            $returnValue = true;
+        }
         // section 127-0-1-1-4ecae359:132158f9a4c:-8000:0000000000002EA7 end
 
         return (bool) $returnValue;
@@ -154,12 +164,13 @@ class wfEngine_models_classes_ActivityService
 
         // section 127-0-1-1-4ecae359:132158f9a4c:-8000:0000000000002EAB begin
         $connectorsClass = new core_kernel_classes_Class(CLASS_CONNECTORS);
-		$nextConnectors = $connectorsClass->searchInstances(array(PROPERTY_CONNECTORS_PREVIOUSACTIVITIES => $this->uri), array('like' => true, 'recursive' => 0));
-		foreach ($nextConnectors as $nextConnector){
-			if(wfEngine_helpers_ProcessUtil::isConnector($nextConnector)){
-				$returnValue[$nextConnector->uriResource] = $nextConnector;
-			}
-		}
+        $nextConnectors = $connectorsClass->searchInstances(array(PROPERTY_CONNECTORS_PREVIOUSACTIVITIES => $activity->uriResource), array('like' => true, 'recursive' => 0));
+        $connectorService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ConnectorService');
+        foreach ($nextConnectors as $nextConnector){
+            if($connectorService->isConnector($nextConnector)){
+                $returnValue[$nextConnector->uriResource] = $nextConnector;
+            }
+        }
         // section 127-0-1-1-4ecae359:132158f9a4c:-8000:0000000000002EAB end
 
         return (array) $returnValue;
@@ -179,9 +190,34 @@ class wfEngine_models_classes_ActivityService
 
         // section 127-0-1-1-4ecae359:132158f9a4c:-8000:0000000000002EB8 begin
         if(!is_null($activity)){
-			$returnValue = $activity->hasType( new core_kernel_classes_Class(CLASS_ACTIVITIES));
-		}
+            $returnValue = $activity->hasType( new core_kernel_classes_Class(CLASS_ACTIVITIES));
+        }
         // section 127-0-1-1-4ecae359:132158f9a4c:-8000:0000000000002EB8 end
+
+        return (bool) $returnValue;
+    }
+
+    /**
+     * Short description of method isHidden
+     *
+     * @access public
+     * @author Lionel Lecaque, <lionel.lecaque@tudor.lu>
+     * @param  Resource activity
+     * @return boolean
+     */
+    public function isHidden( core_kernel_classes_Resource $activity)
+    {
+        $returnValue = (bool) false;
+
+        // section 127-0-1-1-52a9110:13219ee179c:-8000:0000000000002EBE begin
+        $propHidden = new core_kernel_classes_Property(PROPERTY_ACTIVITIES_ISHIDDEN);
+        $hidden = $activity->getOnePropertyValue($propHidden);
+        if(!is_null($hidden) && $hidden instanceof core_kernel_classes_Resource){
+            if($hidden->uriResource == GENERIS_TRUE){
+                $returnValue = true;
+            }
+        }
+        // section 127-0-1-1-52a9110:13219ee179c:-8000:0000000000002EBE end
 
         return (bool) $returnValue;
     }

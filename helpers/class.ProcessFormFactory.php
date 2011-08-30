@@ -872,7 +872,8 @@ class wfEngine_helpers_ProcessFormFactory extends tao_helpers_form_GenerisFormFa
 					if($includeConnectors) $elementChoice->setValue("activity");
 					$elementActivities->setValue($nextActivity->uriResource);//no need for tao_helpers_Uri::encode
 				}
-				if(wfEngine_helpers_ProcessUtil::isConnector($nextActivity) && $includeConnectors){
+				$conmectorService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ConnectorService');
+				if($conmectorService->isConnector($nextActivity) && $includeConnectors){
 					$elementChoice->setValue("connector");
 					$elementConnectors->setValue($nextActivity->uriResource);
 				}

@@ -13,6 +13,7 @@ class wfEngine_actions_ProcessAuthoring extends tao_actions_TaoModule {
 	
 	protected $processTreeService = null;
 	protected $activityService = null;
+	protected $connectorService = null;
 	
 	/**
 	 * constructor: initialize the service and the default data
@@ -25,6 +26,7 @@ class wfEngine_actions_ProcessAuthoring extends tao_actions_TaoModule {
 		//the service is initialized by default
 		$this->service = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessAuthoringService');
 		$this->activityService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityService');
+		$this->connectorService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ConnectorService');
 		$this->defaultData();
 		
 		//add the tree service
@@ -1317,7 +1319,7 @@ class wfEngine_actions_ProcessAuthoring extends tao_actions_TaoModule {
 		if(!empty($activityOrConnectorUri)){
 			$activityOrConnector = new core_kernel_classes_Resource($activityOrConnectorUri);
 			if(!$this->activityService->isActivity($activityOrConnector)
-			&& !wfEngine_helpers_ProcessUtil::isConnector($activityOrConnector)){
+			&& !$this->connectorService->isConnector($activityOrConnector)){
 				
 				throw new Exception('no activity nor connector uri found to create a connector');
 			
