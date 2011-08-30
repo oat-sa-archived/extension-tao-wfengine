@@ -77,7 +77,7 @@ function keyboardHandler(event)
 					logBusinessEvent('MOVE_LAST', getCurrentItemId(), 'Moved to last answered question');
 					
 					$('#xul_question').get(0).contentWindow.submitHyperView(function() {
-						window.location.href = '../../../taoqual/plugins/UserFrontend/index.php/processBrowser/jumpLast?processUri=' + window.processUri;
+						window.location.href = '../../../taoqual/plugins/UserFrontend/index.php/ProcessBrowser/jumpLast?processUri=' + window.processUri;
 					});
 				}
 			}
@@ -195,7 +195,7 @@ function openConsistencyDialog(processUri, activityUri, activities, message, sup
 		
 		consistencySelectedElement = 0;
 		consistencyInvolvedElements = activities.length;
-		suppressLocation = '../../index.php/processBrowser/next?processUri=' + processUri + '&ignoreConsistency=true';
+		suppressLocation = '../../index.php/ProcessBrowser/next?processUri=' + processUri + '&ignoreConsistency=true';
 		suppressableConsistencyDialog = suppressable;
 		
 		// We empty the consistency dialog (defensive).
@@ -215,7 +215,7 @@ function openConsistencyDialog(processUri, activityUri, activities, message, sup
 			
 			jumperLink.addClass('involved_activity');
 			jumperLink.text(activities[i].label);
-			jumperLink.attr('href', '../../index.php/processBrowser/jumpBack?processUri=' + activities[i].processUri + '&activityUri=' + activities[i].uri);
+			jumperLink.attr('href', '../../index.php/ProcessBrowser/jumpBack?processUri=' + activities[i].processUri + '&activityUri=' + activities[i].uri);
 			
 			jumperLink.click(function(e){
 				e.stopPropagation();
@@ -244,7 +244,7 @@ function openConsistencyDialog(processUri, activityUri, activities, message, sup
 			{
 				window.consistencyActionPerformed = true;
 				disableConsistencyButtons();
-				window.location.href = '../../index.php/processBrowser/jumpBack?processUri=' + activities[consistencySelectedElement].processUri + '&activityUri=' + activities[consistencySelectedElement].uri;	
+				window.location.href = '../../index.php/ProcessBrowser/jumpBack?processUri=' + activities[consistencySelectedElement].processUri + '&activityUri=' + activities[consistencySelectedElement].uri;	
 			}	
 		}
 		
@@ -449,7 +449,7 @@ function consistencyDialogKeyboardHandler(event, self)
 */
 function pauseProcess()
 {
-	window.location.href = '../../../taoqual/plugins/UserFrontend/index.php/processBrowser/pause?processUri=' + window.processUri;	
+	window.location.href = '../../../taoqual/plugins/UserFrontend/index.php/ProcessBrowser/pause?processUri=' + window.processUri;	
 }
 
 /**
@@ -459,7 +459,7 @@ function breakOff()
 {	
 	if (window.breakable)
 	{
-		window.location.href = '../../../taoqual/plugins/UserFrontend/index.php/processBrowser/breakOff?processUri=' + window.processUri;
+		window.location.href = '../../../taoqual/plugins/UserFrontend/index.php/ProcessBrowser/breakOff?processUri=' + window.processUri;
 	}
 }
 

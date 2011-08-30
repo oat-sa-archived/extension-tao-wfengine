@@ -17,10 +17,10 @@
         		<span id="connecteduser" class="icon"><?php echo __("User Id."); ?> <span id="username"><?php echo $userViewData['username']; ?></span> </span><span class="separator" />
         	</li>
          	<li>
-         		<a class="action icon" id="home" href="<?php echo BASE_URL;?>/main/index"><?php echo __("Home"); ?></a> <span class="separator" />
+         		<a class="action icon" id="home" href="<?php echo BASE_URL;?>/Main/index"><?php echo __("Home"); ?></a> <span class="separator" />
          	</li>
          	<li>
-         		<a class="action icon" id="logout" href="<?php echo BASE_URL;?>/authentication/logout"><?php echo __("Logout"); ?></a>
+         		<a class="action icon" id="logout" href="<?php echo BASE_URL;?>/Authentication/logout"><?php echo __("Logout"); ?></a>
          	</li>
 		</ul>
 		
@@ -29,7 +29,7 @@
 			
 			<div id="business">
 				<h2 id="authoring_subtitle"><?php echo $processAuthoringData['processLabel']; ?></h2>
-				<form id="authoring_form" action="<?php echo BASE_URL;?>/processes/add" method="post" >
+				<form id="authoring_form" action="<?php echo BASE_URL;?>/Processes/add" method="post" >
 				<input type="hidden" name="posted[executionOf]" value="<?php echo urlencode($processAuthoringData['processUri']); ?>"/>
 					<table id="authoring_table">
 						<tbody>

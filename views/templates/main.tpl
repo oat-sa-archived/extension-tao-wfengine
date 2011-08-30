@@ -24,7 +24,7 @@
         	
          	
          	<li>
-         		<a class="action icon" id="logout" href="<?php echo BASE_URL;?>/authentication/logout"><?php echo __("Logout"); ?></a>
+         		<a class="action icon" id="logout" href="<?php echo BASE_URL;?>/Authentication/logout"><?php echo __("Logout"); ?></a>
          	</li>
 		</ul>
 		
@@ -52,7 +52,7 @@
 								<?php if ($procData['status'] != 'Finished'): ?>
 									<?php foreach ($procData['activities'] as $activity): ?>
 										<?php if ($activity['may_participate']): ?>
-											<a href="<?php echo BASE_URL;?>/processBrowser/index?processUri=<?php echo urlencode($procData['uri']);?>&activityUri=<?php echo urlencode($activity['uri']);?>"><?php echo $activity['label']; ?></a>
+											<a href="<?php echo BASE_URL;?>/ProcessBrowser/index?processUri=<?php echo urlencode($procData['uri']);?>&activityUri=<?php echo urlencode($activity['uri']);?>"><?php echo $activity['label']; ?></a>
 										<?php elseif (!$activity['allowed'] || $activity['activityEnded']): ?>
 											<span class="activity-denied"><?php echo $activity['label']; ?></span>
 										<?php endif; ?>

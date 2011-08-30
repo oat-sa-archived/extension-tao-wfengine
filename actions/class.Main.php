@@ -13,7 +13,7 @@ class wfEngine_actions_Main extends wfEngine_actions_WfModule
 	 */
 	public function index()
 	{
-
+		
 		$wfEngineService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_WfEngineService');
 		
 		$userViewData = UsersHelper::buildCurrentUserForView();

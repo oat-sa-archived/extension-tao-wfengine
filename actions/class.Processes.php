@@ -66,7 +66,7 @@ class wfEngine_actions_Processes extends wfEngine_actions_WfModule
 			// 2. We begin the newly created process.
 			$viewState = '';
 			$processUri = urlencode($newProcessExecution->uri);
-			$viewState = _url('index', 'processBrowser', null, array('processUri' => $processUri));
+			$viewState = _url('index', 'ProcessBrowser', null, array('processUri' => $processUri));
 			$this->redirect($viewState);
 
 	}
