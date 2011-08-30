@@ -307,7 +307,7 @@ ActivityDiagramClass.saveConnector = function(connectorId){
 	var connectorUri = ActivityDiagramClass.getActivityUri(connectorId);
 	var prevActivityId = connector.activityRef;//real activityRef required
 	var prevActivityUri = ActivityDiagramClass.getActivityUri(prevActivityId);
-	var postData = '';
+	var postData = {};
 	
 	switch(connectorDescription.typeUri){
 		case INSTANCE_TYPEOFCONNECTORS_SEQUENCE:{
@@ -316,103 +316,101 @@ ActivityDiagramClass.saveConnector = function(connectorId){
 				if(connector.port[0].targetId){
 					var targetId = connector.port[0].targetId;
 					if(ActivityDiagramClass.isActivity(targetId)){
-						postData += '&next_activityOrConnector=activity';
-						postData += '&next_activityUri=' + ActivityDiagramClass.getActivityUri(targetId);
+						postData.next_activityOrConnector = 'activity';
+						postData.next_activityUri = ActivityDiagramClass.getActivityUri(targetId);
 					}else if(targetId == 'newActivity'){
-						postData += '&next_activityOrConnector=activity';
-						postData += '&next_activityUri=newActivity';
+						postData.next_activityOrConnector = 'activity';
+						postData.next_activityUri = 'newActivity';
 					}else if(ActivityDiagramClass.isConnector(targetId)){
-						postData += '&next_activityOrConnector=connector';
-						postData += '&next_connectorUri=' + ActivityDiagramClass.getActivityUri(targetId);
+						postData.next_activityOrConnector = 'connector';
+						postData.next_connectorUri = ActivityDiagramClass.getActivityUri(targetId);
 					}else if(targetId == 'newConnector'){
-						postData += '&next_activityOrConnector=connector';
-						postData += '&next_connectorUri=newConnector';
+						postData.next_activityOrConnector = 'connector';
+						postData.next_connectorUri = 'newConnector';
 					}
 				}
 			}
 			
 			//default: delete the link to the next activity:
-			if(postData==''){
-				postData += '&next_activityOrConnector=delete';
+			if(!postData.next_activityOrConnector){
+				postData.next_activityOrConnector = 'delete';
 			}
 			
-			postData += '&'+PROPERTY_CONNECTORS_TYPE+'=' + INSTANCE_TYPEOFCONNECTORS_SEQUENCE;
+			postData[PROPERTY_CONNECTORS_TYPE] = INSTANCE_TYPEOFCONNECTORS_SEQUENCE;
+			
 			break;
 		}
 		case INSTANCE_TYPEOFCONNECTORS_CONDITIONAL:{
 			
 			for(var i=0; i<connectorDescription.portNumber; i++){
 				var prefix = connectorDescription.portNames[i].toLowerCase();
-				var postDataTemp = '';
-				
+				var postDataTemp = {};
 				if(connector.port[i]){
 					if(connector.port[i].targetId){
 						var targetId = connector.port[i].targetId;
 						if(ActivityDiagramClass.isActivity(targetId)){
-							postDataTemp += '&'+prefix+'_activityOrConnector=activity';
-							postDataTemp += '&'+prefix+'_activityUri=' + ActivityDiagramClass.getActivityUri(targetId);
+							postDataTemp[prefix+'_activityOrConnector'] = 'activity';
+							postDataTemp[prefix+'_activityUri'] = ActivityDiagramClass.getActivityUri(targetId);
 						}else if(targetId == 'newActivity'){
-							postDataTemp += '&'+prefix+'_activityOrConnector=activity';
-							postDataTemp += '&'+prefix+'_activityUri=newActivity';
+							postDataTemp[prefix+'_activityOrConnector'] = 'activity';
+							postDataTemp[prefix+'_activityUri'] = 'newActivity';
 						}else if(ActivityDiagramClass.isConnector(targetId)){
-							postDataTemp += '&'+prefix+'_activityOrConnector=connector';
-							postDataTemp += '&'+prefix+'_connectorUri=' + ActivityDiagramClass.getActivityUri(targetId);
+							postDataTemp[prefix+'_activityOrConnector'] = 'connector';
+							postDataTemp[prefix+'_connectorUri'] = ActivityDiagramClass.getActivityUri(targetId);
 						}else if(targetId == 'newConnector'){
-							postDataTemp += '&'+prefix+'_activityOrConnector=connector';
-							postDataTemp += '&'+prefix+'_connectorUri=newConnector';
+							postDataTemp[prefix+'_activityOrConnector'] = 'connector';
+							postDataTemp[prefix+'_connectorUri'] = 'newConnector';
 						}
 					}
 				}
 				
 				//default: delete the link to the next activity:
-				if(postDataTemp==''){
-					postData += '&'+prefix+'_activityOrConnector=delete';
-				}else{
-					postData += postDataTemp;
+				if(!postDataTemp[prefix+'_activityOrConnector']){
+					postDataTemp[prefix+'_activityOrConnector'] = 'delete';
 				}
+				
+				postData = $.extend(postData, postDataTemp);
 			}
 			
-			postData += '&'+PROPERTY_CONNECTORS_TYPE+'=' + INSTANCE_TYPEOFCONNECTORS_CONDITIONAL;
+			postData[PROPERTY_CONNECTORS_TYPE] = INSTANCE_TYPEOFCONNECTORS_CONDITIONAL;
 			break;
 		}
 		case INSTANCE_TYPEOFCONNECTORS_PARALLEL:{
 			
-			// console.log('parallel connector not implemented yet');
 			throw 'parallel connector not implemented yet';
 			
 			for(var i=0; i<connectorDescription.portNumber; i++){
 				var prefix = connectorDescription.portNames[i].toLowerCase();
-				var postDataTemp = '';
+				var postDataTemp = {};
 				
 				if(connector.port[i]){
 					if(connector.port[i].targetId){
 						var targetId = connector.port[i].targetId;
-						// console.log()
 						if(ActivityDiagramClass.isActivity(targetId)){
-							postDataTemp += '&'+prefix+'_activityOrConnector=activity';
-							postDataTemp += '&'+prefix+'_activityUri=' + ActivityDiagramClass.getActivityUri(targetId);
+							postDataTemp[prefix+'_activityOrConnector'] = 'activity';
+							postDataTemp[prefix+'_activityUri'] = ActivityDiagramClass.getActivityUri(targetId);
 						}else if(targetId == 'newActivity'){
-							postDataTemp += '&'+prefix+'_activityOrConnector=activity';
-							postDataTemp += '&'+prefix+'_activityUri=newActivity';
+							postDataTemp[prefix+'_activityOrConnector'] = 'activity';
+							postDataTemp[prefix+'_activityUri'] = 'newActivity';
 						}else if(ActivityDiagramClass.isConnector(targetId)){
-							postDataTemp += '&'+prefix+'_activityOrConnector=connector';
-							postDataTemp += '&'+prefix+'_connectorUri=' + ActivityDiagramClass.getActivityUri(targetId);
+							postDataTemp[prefix+'_activityOrConnector'] = 'connector';
+							postDataTemp[prefix+'_connectorUri'] = ActivityDiagramClass.getActivityUri(targetId);
 						}else if(targetId == 'newConnector'){
-							postDataTemp += '&'+prefix+'_activityOrConnector=connector';
-							postDataTemp += '&'+prefix+'_connectorUri=newConnector';
+							postDataTemp[prefix+'_activityOrConnector'] = 'connector';
+							postDataTemp[prefix+'_connectorUri'] = 'newConnector';
 						}
 					}
 				}
 				
 				//default: delete the link to the next activity:
-				if(postDataTemp==''){
-					postData += '&'+prefix+'_activityOrConnector=delete';
-				}else{
-					postData += postDataTemp;
+				if(!postDataTemp[prefix+'_activityOrConnector']){
+					postDataTemp[prefix+'_activityOrConnector'] = 'delete';
 				}
+				
+				postData = $.extend(postData, postDataTemp);
 			}
 			
-			postData += '&'+PROPERTY_CONNECTORS_TYPE+'=' + INSTANCE_TYPEOFCONNECTORS_CONDITIONAL;
+			postData[PROPERTY_CONNECTORS_TYPE] = INSTANCE_TYPEOFCONNECTORS_PARALLEL;
 			
 			break;
 		}
@@ -420,29 +418,27 @@ ActivityDiagramClass.saveConnector = function(connectorId){
 			
 			for(var i=0; i<connectorDescription.portNumber; i++){
 				var prefix = connectorDescription.portNames[i].toLowerCase();
-				var postDataTemp = '';
+				var postDataTemp = {};
 				
 				if(connector.port[i]){
 					if(connector.port[i].targetId){
 						var targetId = connector.port[i].targetId;
-						// console.log()
 						if(ActivityDiagramClass.isActivity(targetId)){
-							postDataTemp += '&join_activityUri=' + ActivityDiagramClass.getActivityUri(targetId);
+							postData.join_activityUri = ActivityDiagramClass.getActivityUri(targetId);
 						}else if(targetId == 'newActivity'){
-							postDataTemp += '&join_activityUri=newActivity';
+							postData.join_activityUri = 'newActivity';
 						}
 					}
 				}
 				
 				//default: delete the link to the next activity:
-				if(postDataTemp==''){
-					postData += '&join_activityUri=delete';
-				}else{
-					postData += postDataTemp;
+				if(!postData.join_activityUri){
+					postData.join_activityUri = 'delete';
 				}
 			}
 			
-			postData += '&'+PROPERTY_CONNECTORS_TYPE+'=' + INSTANCE_TYPEOFCONNECTORS_JOIN;
+			postData[PROPERTY_CONNECTORS_TYPE] = INSTANCE_TYPEOFCONNECTORS_JOIN;
+			
 			break;
 		}
 	}

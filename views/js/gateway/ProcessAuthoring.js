@@ -8,7 +8,6 @@ GatewayProcessAuthoring.addActivity = function(url, processUri){
 		data: {processUri: processUri, type: 'activity'},
 		dataType: 'json',
 		success: function(response){
-			// CL(response);
 			if (response.uri) {
 				EventMgr.trigger('activityAdded', response);
 			}else{
@@ -35,7 +34,6 @@ GatewayProcessAuthoring.addInteractiveService = function(url, activityUri, servi
 		success: function(response){
 			if (response.uri) {
 				EventMgr.trigger('interactiveServiceAdded', response);
-				
 			}
 		}
 	});
@@ -52,27 +50,20 @@ GatewayProcessAuthoring.addConnector = function(url, prevActivityUri,typeOfConne
 		data: {"uri": prevActivityUri, "type":typeOfConnector},
 		dataType: 'json',
 		success: function(response){
-			// console.log(response);
 			if (response.uri) {
 				EventMgr.trigger('connectorAdded', response);
 			}else{
-				//console.log('error in adding a connector');
+				throw 'error in adding a connector';
 			}
 		}
 	});
 	
 }
 
-GatewayProcessAuthoring.saveActivityProperties = function(url, activityUri, serializedProperties){
+GatewayProcessAuthoring.saveActivityProperties = function(url, activityUri, propertiesValues){
 	
-	// prevActivityUri of either a connector or an activity
-	if(serializedProperties.substr(0,1) == '&'){
-		serializedProperties = serializedProperties.substr(1);
-	}
-	
-	var data = '';
-	data += 'activityUri='+activityUri;
-	data += '&' + serializedProperties;
+	var data = propertiesValues;
+	data.activityUri = activityUri;
 	
 	$.ajax({
 		url: url,
@@ -83,7 +74,6 @@ GatewayProcessAuthoring.saveActivityProperties = function(url, activityUri, seri
 			if (response.saved) {
 				EventMgr.trigger('activityPropertiesSaved', response);
 			}else{
-				// console.log(response);
 				throw 'error in saving activity properties';
 			}
 		}
@@ -102,7 +92,6 @@ GatewayProcessAuthoring.deleteActivity = function(url, activityUri){
 				if(response.deleted){
 					EventMgr.trigger('activityDeleted', response);
 				}else{
-					// console.log(response);
 					throw 'error in deleteing the activity';
 				}
 			}
@@ -120,7 +109,6 @@ GatewayProcessAuthoring.deleteConnector = function(url, connectorUri){
 		success: function(response){
 			if(response.deleted){
 				EventMgr.trigger('connectorDeleted', response);
-				
 			}else{
 				throw 'error in deleteing the connector';
 			}
@@ -129,15 +117,11 @@ GatewayProcessAuthoring.deleteConnector = function(url, connectorUri){
 	
 }
 
-GatewayProcessAuthoring.saveConnector = function(url, connectorUri, prevActivityUri, serializedProperties){
-	if(serializedProperties.substr(0,1) == '&'){
-		serializedProperties = serializedProperties.substr(1);
-	}
+GatewayProcessAuthoring.saveConnector = function(url, connectorUri, prevActivityUri, propertiesValues){
 	
-	var data = '';
-	data += 'connectorUri=' + connectorUri;
-	data += '&activityUri=' + prevActivityUri;
-	data += '&' + serializedProperties;
+	var data = propertiesValues;
+	data.connectorUri = connectorUri;
+	data.activityUri = prevActivityUri;
 	
 	$.ajax({
 		url: url,
@@ -145,10 +129,9 @@ GatewayProcessAuthoring.saveConnector = function(url, connectorUri, prevActivity
 		data: data,
 		dataType: 'json',
 		success: function(response){
-			if (response.saved) {
+			if (response.saved){
 				EventMgr.trigger('connectorSaved', response);
 			}else{
-				// console.log(response);
 				throw 'error in saving connector';
 			}
 		}

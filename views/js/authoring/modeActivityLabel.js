@@ -108,17 +108,11 @@ ModeActivityLabel.save = function(activityId){
 					ActivityDiagramClass.setActivityMenuHandler(activityId);
 					
 					var activityUri = ActivityDiagramClass.getActivityUri(activityId);
-					var serializedProperties = '';
-					var properties = [];
+					var properties = {};
 					properties[RDFS_LABEL] = currentLabel;
-					properties['ajaxReturn'] = true;
-					for(propertyUri in properties){
-						serializedProperties += propertyUri + '=' +properties[propertyUri] + '&';
-						
-					}
-					GatewayProcessAuthoring.saveActivityProperties(authoringControllerPath+"saveActivityProperty", activityUri, serializedProperties);
+					properties.ajaxReturn = true;
+					GatewayProcessAuthoring.saveActivityProperties(authoringControllerPath+"saveActivityProperty", activityUri, properties);
 					
-					//return:
 					returnValue = currentLabel;
 				}
 			}
