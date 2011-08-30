@@ -83,7 +83,8 @@ class wfEngine_actions_Main extends wfEngine_actions_WfModule
 		$processExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessExecutionService');
 		$authorizedProcessDefinitions = array();
 		foreach($availableProcessDefinitions as $processDefinition){
-			if($processExecutionService->checkAcl($processDefinition, $currentUser)){
+			$allowed = $processExecutionService->checkAcl($processDefinition, $currentUser);
+			if($allowed){
 				$authorizedProcessDefinitions[] = $processDefinition;
 			}
 		}

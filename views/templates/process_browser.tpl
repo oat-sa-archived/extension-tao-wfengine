@@ -3,8 +3,8 @@
 	<head>
 		<title><?php echo __("TAO - An Open and Versatile Computer-Based Assessment Platform"); ?></title>
 		
-		<script type="text/javascript" src="<?echo BASE_WWW; ?>js/jquery.js"></script>
-		<script type="text/javascript" src="<?echo BASE_WWW; ?>js/jquery.ui.js"></script>
+		<script type="text/javascript" src="<?echo BASE_WWW; ?>js/jquery-1.4.2.min.js"></script>
+		<script type="text/javascript" src="<?echo BASE_WWW; ?>js/jquery-ui-1.8.4.custom.min.js"></script>
 		<script type="text/javascript" src="<?echo BASE_WWW; ?>js/jquery.json.js"></script>	
 		<script type="text/javascript" src="<?echo BASE_WWW; ?>js/jquery.ui.taoqualDialog.js"></script>
 		<script type="text/javascript" src="<?echo BASE_WWW; ?>js/wfEngine.js"></script>

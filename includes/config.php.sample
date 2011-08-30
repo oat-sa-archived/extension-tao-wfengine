@@ -37,7 +37,7 @@ define('PROCESS_BROWSER_TITLE', 'Process BrowserEngine');
 										
 # Next/Previous button usable or not.
 define('USE_NEXT',			true);
-define('USE_PREVIOUS',		false);
+define('USE_PREVIOUS',		true);
 define('FORCE_NEXT',		true);
 
 # Keyboard enabled or not.

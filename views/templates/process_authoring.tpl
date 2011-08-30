@@ -7,7 +7,7 @@
 			@import url(<?echo BASE_WWW; ?>/css/process_authoring.css);
 		</style>
 		
-		<script type="text/javascript" src="<?echo BASE_WWW; ?>/js/jquery.js"></script>
+		<script type="text/javascript" src="<?echo BASE_WWW; ?>js/jquery-1.4.2.min.js"></script>
 		<script type="text/javascript" src="<?echo BASE_WWW; ?>/js/process_authoring.js"></script>
 		<script type="text/javascript" src="<?echo BASE_WWW; ?>/js/gateway/ProcessAuthoring.js"></script>
 	</head>
