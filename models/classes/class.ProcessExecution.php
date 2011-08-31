@@ -311,6 +311,8 @@ extends wfEngine_models_classes_WfResource
 		
 		if($setPause){
 			$this->pause();
+		}else{
+			$this->resume();
 		}
 		
 		// section 10-13-1--31--4660acca:119ecd38e96:-8000:0000000000000866 end

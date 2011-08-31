@@ -112,9 +112,9 @@ class wfEngine_models_classes_ProcessFlow{
 		
 		$connectorClass = new core_kernel_classes_Class(CLASS_CONNECTORS);
 		$nextConnectors = $connectorClass->searchInstances(array(PROPERTY_CONNECTORS_PREVIOUSACTIVITIES => $activity->uriResource), array('like' => false));//note: count()>1 only 
-		if(count(nextConnectors)){//there could be only one next connector for an activity
+		if(count($nextConnectors)){//there could be only one next connector for an activity
 		
-			$connector = $nextConnectorsCollection->get(0);
+			$connector = array_pop($nextConnectors);
 			if(in_array($connector->uriResource, array_keys($this->checkedConnectors))){
 				continue;
 			}else{

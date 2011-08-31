@@ -264,9 +264,15 @@ class ProcessExecutionTestCase extends UnitTestCase{
 			
 			$nextActivitiesProp = new core_kernel_classes_Property(PROPERTY_CONNECTORS_NEXTACTIVITIES);
 			
-			$connector0->setPropertyValue($nextActivitiesProp, $parallelActivity1->uriResource);
-			$connector0->setPropertyValue($nextActivitiesProp, $parallelActivity2->uriResource);
+			$parallelCount1 = 3;
+			$parallelCount2 = 2;
+			$newActivitiesArray = array(
+				$parallelActivity1->uriResource => $parallelCount1,
+				$parallelActivity2->uriResource => $parallelCount2
+			);
 			
+			$this->assertTrue($authoringService->setParallelActivities($connector0, $newActivitiesArray));
+		
 			$joinActivity = $authoringService->createActivity($processDefinition, 'activity3');
 			
 			//join parallel Activity 1 and 2 to "joinActivity"
@@ -282,16 +288,19 @@ class ProcessExecutionTestCase extends UnitTestCase{
 	
 			
 			$proc = $factory->create();
+			$this->out("process status: ".$proc->status);
 			
 			$this->out(__METHOD__, true);
 			
 			$i = 0;
+			$numberActivities = 2 + $parallelCount1 + $parallelCount2;
 			$current = 0;
-			while($i < 4){
+			$createdUsers = array();
+			while($i < $numberActivities){
+				
 				$activity = $proc->currentActivity[$current];
-				//$this->assertTrue($activity->label == 'activity'.$i);
 		
-				$this->out("<strong>".$activity->label."</strong>", true);
+				$this->out("<strong>".$activity->resource->label."</strong> (among ".count($proc->currentActivity).")", true);
 						
 				//init execution
 				$this->assertTrue($this->service->initCurrentExecution($proc->resource, $activity->resource, $this->currentUser));
@@ -299,29 +308,35 @@ class ProcessExecutionTestCase extends UnitTestCase{
 				$activityExecuction = $activityExecutionService->getExecution($activity->resource, $this->currentUser, $proc->resource);
 				$this->assertNotNull($activityExecuction);
 				
-				//transition to 2nd activity
+				//transition to next activity
+				$this->out("current user: ".$this->currentUser->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_USER_LOGIN)).' "'.$this->currentUser->uriResource.'"', true);
+				$this->out("performing transition", true);
+				
 				$proc->performTransition($activityExecuction->uriResource);
 				
+				$this->out("process status: ".$proc->status);
+				
 				if($proc->isPaused()){
-					/*
-					 * Login an other user 
-					 */
 					
+					//Login another user to execute parallel branch
 					core_kernel_users_Service::logout();
-					$this->assertTrue($this->userService->removeUser($this->currentUser));
+					$this->out("logout");
 					
-					$login = 'wfTester2';
-					$pass = 'test456';
+					$login = 'wfTester'.$i;
+					$pass = 'test123';
 					$userData = array(
 						PROPERTY_USER_LOGIN		=> 	$login,
 						PROPERTY_USER_PASSWORD	=>	md5($pass),
 						PROPERTY_USER_DEFLG		=>	'EN'
 					);
 		
-					$othertUser = $this->userService->getOneUser($login);
-					if(is_null($othertUser)){
-						$this->userService->saveUser($othertUser, $userData, new core_kernel_classes_Resource(CLASS_ROLE_WORKFLOWUSERROLE));
+					$otherUser = $this->userService->getOneUser($login);
+					if(is_null($otherUser)){
+						$this->assertTrue($this->userService->saveUser(null, $userData, new core_kernel_classes_Resource(CLASS_ROLE_WORKFLOWUSERROLE)));
+						$otherUser = $this->userService->getOneUser($login);
 					}
+					$createdUsers[$otherUser->uriResource] = $otherUser; 
+					
 					if($this->userService->loginUser($login, md5($pass))){
 						$this->userService->connectCurrentUser();
 						$this->currentUser = $this->userService->getCurrentUser();
@@ -331,33 +346,27 @@ class ProcessExecutionTestCase extends UnitTestCase{
 						else{
 							$current = 0;
 						}
-						$this->out("new user logged in: ".$this->currentUser->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_USER_LOGIN)), true);
-					}
-					else{
+						$this->out("new user logged in: ".$this->currentUser->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_USER_LOGIN)).' "'.$this->currentUser->uriResource.'"', true);
+					}else{
 						$this->fail("unable to login user $login<br>");
 					}
+				}else{
+					$current = 0;
 				}
 			
 				$i++;
 			}
 			
 			$this->assertTrue($proc->isFinished());
-			
-			$activity0->delete();
-			$connector0->delete();
-			
-			$parallelActivity1->delete();
-			$connector1->delete();
-			
-			$parallelActivity2->delete();
-			$connector2->delete();
-			
-			$joinActivity->delete();
-			
-			$proc->resource->delete();
-				
+							
 			//delete processdef:
 			$authoringService->deleteProcess($processDefinition);
+			
+			//delete created users:
+			foreach($createdUsers as $createdUser){
+				$this->out('deleting '.$createdUser->getLabel().' "'.$createdUser->uriResource.'"', true);
+				$this->assertTrue($this->userService->removeUser($createdUser));
+			}
 			
 			if(!is_null($this->currentUser)){
 				core_kernel_users_Service::logout();

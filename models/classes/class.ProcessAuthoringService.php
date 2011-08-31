@@ -1636,17 +1636,18 @@ class wfEngine_models_classes_ProcessAuthoringService
 			}
 			
 			if($updateRequired){
+				
 				$processFlow->resetCheckedResources();
 				$joinConnector = null;
-				
 				$joinConnector = $processFlow->findJoinFromActivityForward(new core_kernel_classes_Resource($activityUri));
 				if(!is_null($joinConnector)){
-					$joinConnector->removePropertyValues($propConnectorsPreviousActivities, array('pattern' => $activityUri));
+					$joinConnectorsPreviousActivity = array_pop($processFlow->getCheckedActivities());
+					$joinConnector->removePropertyValues($propConnectorsPreviousActivities, array('pattern' => $joinConnectorsPreviousActivity->uriResource));
 					for($i=0; $i<$newActivitiesArray[$activityUri]; $i++){
 						$joinConnector->setPropertyValue($propConnectorsPreviousActivities, $activityUri);
 					}
-				
 				}
+				
 			}
 		}
 		
@@ -1655,6 +1656,22 @@ class wfEngine_models_classes_ProcessAuthoringService
 			//set property value as much as required
 			for($i=0;$i<$count;$i++){
 				$returnValue = $connectorInstance->setPropertyValue($propNextActivities, $activityUri);
+			}
+			
+			//check if need for updating the related join connector:
+			if(!isset($oldActivitiesArray[$activityUri])){
+				
+				$processFlow->resetCheckedResources();
+				$joinConnector = null;
+				$joinConnector = $processFlow->findJoinFromActivityForward(new core_kernel_classes_Resource($activityUri));
+				if(!is_null($joinConnector)){
+					$joinConnectorsPreviousActivity = array_pop($processFlow->getCheckedActivities());
+					$joinConnector->removePropertyValues($propConnectorsPreviousActivities, array('pattern' => $joinConnectorsPreviousActivity->uriResource));
+					for($i=0; $i<$newActivitiesArray[$activityUri]; $i++){
+						$joinConnector->setPropertyValue($propConnectorsPreviousActivities, $activityUri);
+					}
+				}
+				
 			}
 		}
 		
