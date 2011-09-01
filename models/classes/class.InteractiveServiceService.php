@@ -9,7 +9,7 @@ error_reporting(E_ALL);
  *
  * This file is part of TAO.
  *
- * Automatically generated on 01.09.2011, 11:09:52 with ArgoUML PHP module 
+ * Automatically generated on 01.09.2011, 15:56:10 with ArgoUML PHP module 
  * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
  *
  * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
@@ -78,7 +78,7 @@ class wfEngine_models_classes_InteractiveServiceService
      * @param  array variables
      * @return string
      */
-    public function getCallUrl( core_kernel_classes_Resource $interactiveService,  core_kernel_classes_Resource $activityExecution, $variables = array())
+    public function getCallUrl( core_kernel_classes_Resource $interactiveService,  core_kernel_classes_Resource $activityExecution = null, $variables = array())
     {
         $returnValue = (string) '';
 
@@ -98,6 +98,7 @@ class wfEngine_models_classes_InteractiveServiceService
 		
 		$input 	= array();
 		$output	= array();//for later use
+		$inParameterCollection = $interactiveService->getPropertyValuesCollection(new core_kernel_classes_Property(PROPERTY_CALLOFSERVICES_ACTUALPARAMETERIN));
 		
 		//get the current and unique token to get the process variable value:
 		$token = null;
@@ -112,12 +113,9 @@ class wfEngine_models_classes_InteractiveServiceService
 			$inParameterConstant = $inParameter->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_ACTUALPARAMETER_CONSTANTVALUE));
 			
 			$formalParameter = $inParameter->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_ACTUALPARAMETER_FORMALPARAMETER));
+			$formalParameterName = $formalParameter->getUniquePropertyValue( new core_kernel_classes_Property(PROPERTY_FORMALPARAMETER_NAME));
 				
-			if (!(is_null($token))){
-				
-				$formalParameterName = $formalParameter->getUniquePropertyValue( new core_kernel_classes_Property(PROPERTY_FORMALPARAMETER_NAME));
-				
-				// var_dump($inParameter, $formalParameter, $inParameterProcessVariable, $inParameterConstant);
+			if (!is_null($token)){
 				
 				if(!is_null($inParameterProcessVariable)){
 					
@@ -211,6 +209,42 @@ class wfEngine_models_classes_InteractiveServiceService
         $returnValue = (string) '';
 
         // section 127-0-1-1-4ecae359:132158f9a4c:-8000:0000000000002E9D begin
+		
+		$styleData = array();
+		
+		//get the style information (size and position)
+		$width = $interactiveService->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_CALLOFSERVICES_WIDTH));
+		if($width != null && $width instanceof core_kernel_classes_Literal){
+			if(intval($width->literal)){
+				//do not allow width="0"
+				$styleData['width'] = intval($width->literal).'%';
+			}
+		}//in the future, allow percentage
+		
+		$height = $interactiveService->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_CALLOFSERVICES_HEIGHT));
+		if($height != null && $height instanceof core_kernel_classes_Literal){
+			if(intval($height->literal)){
+				//do not allow height="0"
+				$styleData['height'] = intval($height->literal).'%';
+			}
+		}
+		
+		$top = $interactiveService->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_CALLOFSERVICES_TOP));
+		if($top != null && $top instanceof core_kernel_classes_Literal){
+			$styleData['top'] = (0+intval($top->literal)).'%';//used to be +30px
+		}
+		
+		$left = $interactiveService->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_CALLOFSERVICES_LEFT));
+		if($left != null && $left instanceof core_kernel_classes_Literal){
+			$styleData['left'] = intval($left->literal).'%';
+		}
+		
+		$returnValue = "position:absolute;";
+		if(isset($styleData['left'])) $returnValue .= "left:".$styleData['left'].";";
+		if(isset($styleData['top'])) $returnValue .= "top:".$styleData['top'].";";
+		if(isset($styleData['width'])) $returnValue .= "width:".$styleData['width'].";";
+		if(isset($styleData['height'])) $returnValue .= "height:".$styleData['height'].";";
+		
         // section 127-0-1-1-4ecae359:132158f9a4c:-8000:0000000000002E9D end
 
         return (string) $returnValue;

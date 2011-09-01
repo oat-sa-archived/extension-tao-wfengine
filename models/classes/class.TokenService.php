@@ -159,7 +159,7 @@ extends tao_models_classes_GenerisService
         	$filters = array(PROPERTY_TOKEN_ACTIVITYEXECUTION => $activityExecution->uriResource);
         	if($checkUser){
         		$activityUser = $activityExecution->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_CURRENT_USER));
-        		if(!is_null($activityUser)){
+				if(!is_null($activityUser)){
         			$filters[$this->tokenCurrentUserProp->uriResource] = $activityUser->uriResource;
         		}
 	        	foreach($this->tokenClass->searchInstances($filters, $options) as $token){
