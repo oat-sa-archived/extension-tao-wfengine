@@ -92,7 +92,8 @@ class InteractiveServiceServiceTestCase extends UnitTestCase {
 		
 		//a no-orthodox way to create a valid token-activity execution pair:
 		$userService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_UserService');
-		$currentUser = $userService->getCurrentUser();
+		$currentUser = new core_kernel_classes_Resource(LOCAL_NAMESPACE.'#unitTestUser');
+		$this->assertNotNull($currentUser);
 		
 		$classActivityExecution = new core_kernel_classes_Class(CLASS_ACTIVITY_EXECUTION);
 		$activityExec1 = $classActivityExecution->createInstance('activity exec for interactive service test case');
