@@ -231,7 +231,8 @@ class ProcessExecutionTestCase extends UnitTestCase{
 			//init services
 			$authoringService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessAuthoringService');
 			$activityExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityExecutionService');
-				
+			$processExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessExecutionService');
+			
 			//process definition
 			$processDefinitionClass = new core_kernel_classes_Class(CLASS_PROCESS);
 			$processDefinition = $processDefinitionClass->createInstance('PJ processForUnitTest_' . date(DATE_ISO8601),'created for the unit test of process execution');
@@ -262,9 +263,7 @@ class ProcessExecutionTestCase extends UnitTestCase{
 			$connector2 = $authoringService->createConnector($parallelActivity2);
 			$this->assertNotNull($connector2);
 			
-			$nextActivitiesProp = new core_kernel_classes_Property(PROPERTY_CONNECTORS_NEXTACTIVITIES);
-			
-			$parallelCount1 = 3;
+			$parallelCount1 = 2;
 			$parallelCount2 = 2;
 			$newActivitiesArray = array(
 				$parallelActivity1->uriResource => $parallelCount1,
@@ -322,7 +321,7 @@ class ProcessExecutionTestCase extends UnitTestCase{
 					core_kernel_users_Service::logout();
 					$this->out("logout");
 					
-					$login = 'wfTester'.$i;
+					$login = 'tokenWfTester'.$i;
 					$pass = 'test123';
 					$userData = array(
 						PROPERTY_USER_LOGIN		=> 	$login,
@@ -358,7 +357,10 @@ class ProcessExecutionTestCase extends UnitTestCase{
 			}
 			
 			$this->assertTrue($proc->isFinished());
-							
+			
+			//delete process exec:
+			$this->assertTrue($processExecutionService->deleteProcessExecution($proc->resource));
+			
 			//delete processdef:
 			$authoringService->deleteProcess($processDefinition);
 			

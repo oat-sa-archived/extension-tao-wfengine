@@ -120,7 +120,6 @@ class TokenServiceTestCase extends UnitTestCase {
 			$processExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessExecutionService');
 			$activityExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityExecutionService');
 			
-			
 			//create a new process def
 			$processDefinitionClass = new core_kernel_classes_Class(CLASS_PROCESS);
 			$processDefinition = $processDefinitionClass->createInstance('ProcessForUnitTest', 'Unit test');
@@ -254,171 +253,180 @@ class TokenServiceTestCase extends UnitTestCase {
 		
 		error_reporting(E_ALL);
 		
-		try{
-			//init services
-			$authoringService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessAuthoringService');
-			$processExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessExecutionService');
-			$activityExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityExecutionService');
-				
-			//process definition
-			$processDefinitionClass = new core_kernel_classes_Class(CLASS_PROCESS);
-			$processDefinition = $processDefinitionClass->createInstance('PJ processForUnitTest_' . date(DATE_ISO8601),'created for the unit test of process execution');
-			$this->assertNotNull($processDefinition);
-			
-			//activities definitions
-			$activity0 = $authoringService->createActivity($processDefinition, 'activity0');
-			$this->assertNotNull($activity0);
-			
-			$connector0 = null;
-			$authoringService->setFirstActivity($processDefinition,$activity0);
-			$connector0 = $authoringService->createConnector($activity0);
-			$connectorParallele = new core_kernel_classes_Resource(INSTANCE_TYPEOFCONNECTORS_PARALLEL);
-			$authoringService->setConnectorType($connector0, $connectorParallele);
-			$this->assertNotNull($connector0);
-			
-			$parallelActivity1 = $authoringService->createActivity($processDefinition, 'activity1');
-			$this->assertNotNull($parallelActivity1);
-			
-			$connector1 = null;
-			$connector1 = $authoringService->createConnector($parallelActivity1);
-			$this->assertNotNull($connector1);
-			
-			$parallelActivity2 = $authoringService->createActivity($processDefinition, 'activity2');
-			$this->assertNotNull($parallelActivity2);
-			
-			$connector2 = null;
-			$connector2 = $authoringService->createConnector($parallelActivity2);
-			$this->assertNotNull($connector2);
-			
-			$nextActivitiesProp = new core_kernel_classes_Property(PROPERTY_CONNECTORS_NEXTACTIVITIES);
-			
-			$connector0->setPropertyValue($nextActivitiesProp, $parallelActivity1->uriResource);
-			$connector0->setPropertyValue($nextActivitiesProp, $parallelActivity2->uriResource);
-			
-			$joinActivity = $authoringService->createActivity($processDefinition, 'activity3');
-			
-			//join parallel Activity 1 and 2 to "joinActivity"
-			$authoringService->createJoinActivity($connector1, $joinActivity, '', $parallelActivity1);
-			$authoringService->createJoinActivity($connector2, $joinActivity, '', $parallelActivity2);
-			
-			
-			//run process
-			$factory = new wfEngine_models_classes_ProcessExecutionFactory();
-			$factory->name = 'Test Process Execution Parallel';
-			$factory->execution = $processDefinition->uriResource;
-			$factory->ownerUri = SYS_USER_LOGIN;
-	
-			
-			$proc = $factory->create();
-			
-			$this->out(__METHOD__, true);
-			
-			$i = 0;
-			$current = 0;
-			while($i < 4){
-				$activity = $proc->currentActivity[$current];
-				//$this->assertTrue($activity->label == 'activity'.$i);
-		
-				$this->out("<strong>".$activity->label."</strong>", true);
-				
-				
-				$currentTokens = $this->service->getCurrents($proc->resource);
-				$this->assertIsA($currentTokens, 'array');
-				foreach($currentTokens as $currentToken){
-					$this->out("Current : ". $currentToken->getLabel());
+		//init services
+		$authoringService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessAuthoringService');
+		$processExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessExecutionService');
+		$activityExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityExecutionService');
+
+		//process definition
+		$processDefinitionClass = new core_kernel_classes_Class(CLASS_PROCESS);
+		$processDefinition = $processDefinitionClass->createInstance('PJ processForUnitTest_' . date(DATE_ISO8601),'created for the unit test of process execution');
+		$this->assertNotNull($processDefinition);
+
+		//activities definitions
+		$activity0 = $authoringService->createActivity($processDefinition, 'activity0');
+		$this->assertNotNull($activity0);
+
+		$connector0 = null;
+		$authoringService->setFirstActivity($processDefinition,$activity0);
+		$connector0 = $authoringService->createConnector($activity0);
+		$connectorParallele = new core_kernel_classes_Resource(INSTANCE_TYPEOFCONNECTORS_PARALLEL);
+		$authoringService->setConnectorType($connector0, $connectorParallele);
+		$this->assertNotNull($connector0);
+
+		$parallelActivity1 = $authoringService->createActivity($processDefinition, 'activity1');
+		$this->assertNotNull($parallelActivity1);
+
+		$connector1 = null;
+		$connector1 = $authoringService->createConnector($parallelActivity1);
+		$this->assertNotNull($connector1);
+
+		$parallelActivity2 = $authoringService->createActivity($processDefinition, 'activity2');
+		$this->assertNotNull($parallelActivity2);
+
+		$connector2 = null;
+		$connector2 = $authoringService->createConnector($parallelActivity2);
+		$this->assertNotNull($connector2);
+
+		$parallelCount1 = 3;
+		$parallelCount2 = 3;
+		$newActivitiesArray = array(
+			$parallelActivity1->uriResource => $parallelCount1,
+			$parallelActivity2->uriResource => $parallelCount2
+		);
+
+		$this->assertTrue($authoringService->setParallelActivities($connector0, $newActivitiesArray));
+
+		$joinActivity = $authoringService->createActivity($processDefinition, 'activity3');
+
+		//join parallel Activity 1 and 2 to "joinActivity"
+		$authoringService->createJoinActivity($connector1, $joinActivity, '', $parallelActivity1);
+		$authoringService->createJoinActivity($connector2, $joinActivity, '', $parallelActivity2);
+
+
+		//run process
+		$factory = new wfEngine_models_classes_ProcessExecutionFactory();
+		$factory->name = 'Test Process Execution Parallel';
+		$factory->execution = $processDefinition->uriResource;
+		$factory->ownerUri = SYS_USER_LOGIN;
+
+
+		$proc = $factory->create();
+
+		$this->out(__METHOD__, true);
+
+		$i = 0;
+		$current = 0;
+		$numberActivities = 2 + $parallelCount1 + $parallelCount2;
+		$createdUsers = array();
+		while($i < $numberActivities){
+			$activity = $proc->currentActivity[$current];
+
+			$this->out("<strong>".$activity->resource->getLabel()."</strong>", true);
+
+
+			$currentTokens = $this->service->getCurrents($proc->resource);
+			$this->assertIsA($currentTokens, 'array');
+			foreach($currentTokens as $currentToken){
+//				$outputMessage = "Current token: ".$currentToken->getLabel().'"'.$currentToken->uriResource.'"';
+				$this->out("Current token: ".$currentToken->getLabel().'"'.$currentToken->uriResource.'"');
+			}
+
+			//init execution
+			$this->assertTrue($processExecutionService->initCurrentExecution($proc->resource, $activity->resource, $this->currentUser));
+
+			$activityExecuction = $activityExecutionService->getExecution($activity->resource, $this->currentUser, $proc->resource);
+
+			$this->assertNotNull($activityExecuction);
+			$this->out("Execution: ".$activityExecuction->getLabel());
+
+			$token = $this->service->getCurrent($activityExecuction);
+			$this->assertNotNull($token);
+			$this->out("Token: ".$token->getLabel()." ".$token->uriResource);
+
+			$tokenActivity = $token->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_TOKEN_ACTIVITY));
+			$this->assertNotNull($tokenActivity);
+			$this->out("Token Activity: ".$tokenActivity->getLabel());
+
+			$tokenActivityExe = $token->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_TOKEN_ACTIVITYEXECUTION));
+			$this->assertNotNull($tokenActivityExe);
+			$this->out("Token ActivityExecution: ".$tokenActivityExe->getLabel());
+
+			$tokenUser = $token->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_TOKEN_CURRENTUSER));
+			$this->assertNotNull($tokenUser);
+			$this->out("Token User: ".$tokenUser->getLabel());
+
+			//transition to 2nd activity
+			$proc->performTransition($activityExecuction->uriResource);
+
+			$currentTokens = $this->service->getCurrents($proc->resource);
+			$this->assertIsA($currentTokens, 'array');
+
+
+			if($proc->isPaused()){
+				//Login an other user 
+				core_kernel_users_Service::logout();
+				$this->out("logout");
+
+				$login = 'wfTester'.$i;
+				$pass = '123456';
+				$userData = array(
+					PROPERTY_USER_LOGIN		=> 	$login,
+					PROPERTY_USER_PASSWORD	=>	md5($pass),
+					PROPERTY_USER_DEFLG		=>	'EN'
+				);
+
+				$otherUser = $this->userService->getOneUser($login);
+				if(is_null($otherUser)){
+					$this->assertTrue($this->userService->saveUser(null, $userData, new core_kernel_classes_Resource(CLASS_ROLE_WORKFLOWUSERROLE)));
+					$otherUser = $this->userService->getOneUser($login);
 				}
-						
-				//init execution
-				$this->assertTrue($processExecutionService->initCurrentExecution($proc->resource, $activity->resource, $this->currentUser));
-				
-				$activityExecuction = $activityExecutionService->getExecution($activity->resource, $this->currentUser, $proc->resource);
-				
-				$this->assertNotNull($activityExecuction);
-				$this->out("Execution: ".$activityExecuction->getLabel());
-				
-				$token = $this->service->getCurrent($activityExecuction);
-				$this->assertNotNull($token);
-				$this->out("Token: ".$token->getLabel()." ".$token->uriResource);
-				
-				$tokenActivity = $token->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_TOKEN_ACTIVITY));
-				$this->assertNotNull($tokenActivity);
-				$this->out("Token Activity: ".$tokenActivity->getLabel());
-				
-				$tokenActivityExe = $token->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_TOKEN_ACTIVITYEXECUTION));
-				$this->assertNotNull($tokenActivityExe);
-				$this->out("Token ActivityExecution: ".$tokenActivityExe->getLabel());
-				
-				$tokenUser = $token->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_TOKEN_CURRENTUSER));
-				$this->assertNotNull($tokenUser);
-				$this->out("Token User: ".$tokenUser->getLabel());
-				
-				//transition to 2nd activity
-				$proc->performTransition($activityExecuction->uriResource);
-				
-				$currentTokens = $this->service->getCurrents($proc->resource);
-				$this->assertIsA($currentTokens, 'array');
-				
-				
-				if($proc->isPaused()){
-					/*
-					 * Login an other user 
-					 */
-					
-					core_kernel_users_Service::logout();
-					$this->assertTrue($this->userService->removeUser($this->currentUser));
-					
-					$login = 'wfTester2';
-					$pass = 'test456';
-					$userData = array(
-						PROPERTY_USER_LOGIN		=> 	$login,
-						PROPERTY_USER_PASSWORD	=>	md5($pass),
-						PROPERTY_USER_DEFLG		=>	'EN'
-					);
-		
-					$othertUser = $this->userService->getOneUser($login);
-					if(is_null($othertUser)){
-						$this->userService->saveUser($othertUser, $userData, new core_kernel_classes_Resource(CLASS_ROLE_WORKFLOWUSERROLE));
-					}
-					if($this->userService->loginUser($login, md5($pass))){
-						$this->userService->connectCurrentUser();
-						$this->currentUser = $this->userService->getCurrentUser();
-						if($current == 0){
-							$current = 1;
-						}
-						else{
-							$current = 0;
-						}
-						$this->out("new user logged in: ".$this->currentUser->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_USER_LOGIN)), true);
+				$createdUsers[$otherUser->uriResource] = $otherUser;
+
+				if($this->userService->loginUser($login, md5($pass))){
+					$this->userService->connectCurrentUser();
+					$this->currentUser = $this->userService->getCurrentUser();
+					if($current == 0){
+						$current = 1;
 					}
 					else{
-						$this->fail("unable to login user $login<br>");
+						$current = 0;
 					}
-	
+					$this->out("new user logged in: ".$this->currentUser->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_USER_LOGIN)), true);
 				}
-			
-				$i++;
+				else{
+					$this->fail("unable to login user $login<br>");
+				}
+
+			}else{
+				$current = 0;
 			}
-			
-			$this->assertTrue($proc->isFinished());
-			
-			$currentTokens = $this->service->getCurrents($proc->resource);
-			foreach($currentTokens as $currentToken){
-				$this->assertTrue($this->service->delete($currentToken));
-			}
-				
-			//delete process exec:
-			$this->assertTrue($processExecutionService->deleteProcessExecution($proc->resource));
-			
-			//delete processdef:
-			$this->assertTrue($authoringService->deleteProcess($processDefinition));
-			
-			if(!is_null($this->currentUser)){
-				core_kernel_users_Service::logout();
-				$this->userService->removeUser($this->currentUser);
-			}
+
+			$i++;
 		}
-		catch(common_Exception $ce){
-			$this->fail($ce);
+
+		$this->assertTrue($proc->isFinished());
+
+		$currentTokens = $this->service->getCurrents($proc->resource);
+		foreach($currentTokens as $currentToken){
+			$this->assertTrue($this->service->delete($currentToken));
+		}
+
+		//delete process exec:
+		$this->assertTrue($processExecutionService->deleteProcessExecution($proc->resource));
+
+		//delete processdef:
+		$this->assertTrue($authoringService->deleteProcess($processDefinition));
+
+		//delete created users:
+		foreach($createdUsers as $createdUser){
+			$this->out('deleting '.$createdUser->getLabel().' "'.$createdUser->uriResource.'"', true);
+			$this->assertTrue($this->userService->removeUser($createdUser));
+		}
+
+		if(!is_null($this->currentUser)){
+			core_kernel_users_Service::logout();
+			$this->userService->removeUser($this->currentUser);
 		}
 	}
 	
