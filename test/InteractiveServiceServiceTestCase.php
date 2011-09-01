@@ -60,14 +60,14 @@ class InteractiveServiceServiceTestCase extends UnitTestCase {
         $processDefinition = $processDefinitionClass->createInstance('ProcessForUnitTest', 'Unit test');
 
         $authoringService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessAuthoringService');
-        
-         //define activities and connectors
+
+        //define activities and connectors
         $activity1 = $authoringService->createActivity($processDefinition, 'activity1');
-        
-        
+
+
         $service1 = $authoringService->createInteractiveService($activity1);
         $this->assertTrue($this->service->isInteractiveService($service1));
-        
+
         $service1->delete(true);
         $activity1->delete(true);
         $processDefinition->delete(true);
