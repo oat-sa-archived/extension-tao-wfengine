@@ -222,6 +222,37 @@ class ActivityServiceTestCase extends UnitTestCase {
         $processDefinition->delete(true);
     }
     
+    public function testGetConstrols(){
+        $processAuthoringService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessAuthoringService');
+        $processDefinitionClass = new core_kernel_classes_Class(CLASS_PROCESS);
+        $processDefinition = $processDefinitionClass->createInstance('ProcessForUnitTest', 'Unit test');
+        $this->assertIsA($processDefinition, 'core_kernel_classes_Resource');
+        
+        $authoringService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessAuthoringService');
+        
+        //define activities and connectors
+        $activity1 = $authoringService->createActivity($processDefinition, 'activity1');
+        $authoringService->setFirstActivity($processDefinition, $activity1);
+    
+         $connector1 = $authoringService->createConnector($activity1);
+		$authoringService->setConnectorType($connector1, new core_kernel_classes_Resource(INSTANCE_TYPEOFCONNECTORS_SEQUENCE));
+        $activity2 = $authoringService->createSequenceActivity($connector1, null, 'activity2');
+		
+        $activity1Controls = $this->service->getControls($activity1);
+        $activity2Controls = $this->service->getControls($activity2);
+        
+        $this->assertFalse($activity1Controls[INSTANCE_CONTROL_BACKWARD]);
+        $this->assertTrue($activity2Controls[INSTANCE_CONTROL_BACKWARD]);
+        $this->assertTrue($activity1Controls[INSTANCE_CONTROL_FORWARD]);  
+        $this->assertTrue($activity2Controls[INSTANCE_CONTROL_FORWARD]);  
+                  
+        $activity1->delete(true);
+        $connector1->delete(true);
+        $activity2->delete(true);
+
+        $processDefinition->delete(true);
+    }
+    
     public function testVirtualProcess(){
         $processAuthoringService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessAuthoringService');
         $processDefinitionClass = new core_kernel_classes_Class(CLASS_PROCESS);
