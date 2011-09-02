@@ -82,6 +82,8 @@ class wfEngine_models_classes_ConnectorService
         $returnValue = array();
 
         // section 127-0-1-1-66b8afb4:1322473370c:-8000:0000000000002EC5 begin
+        $nextActivitiesProp = new core_kernel_classes_Property(PROPERTY_CONNECTORS_NEXTACTIVITIES);
+        $returnValue = $connector->getPropertyValuesCollection($nextActivitiesProp);
         // section 127-0-1-1-66b8afb4:1322473370c:-8000:0000000000002EC5 end
 
         return (array) $returnValue;
@@ -100,6 +102,8 @@ class wfEngine_models_classes_ConnectorService
         $returnValue = array();
 
         // section 127-0-1-1-66b8afb4:1322473370c:-8000:0000000000002ECB begin
+        $prevActivitiesProp = new core_kernel_classes_Property(PROPERTY_CONNECTORS_PREVIOUSACTIVITIES,__METHOD__);
+        $returnValue = $connector->getPropertyValuesCollection($precActivitiesProp);      
         // section 127-0-1-1-66b8afb4:1322473370c:-8000:0000000000002ECB end
 
         return (array) $returnValue;
@@ -120,7 +124,7 @@ class wfEngine_models_classes_ConnectorService
         // section 127-0-1-1-66b8afb4:1322473370c:-8000:0000000000002ECF begin
        	$connTypeProp = new core_kernel_classes_Property(PROPERTY_CONNECTORS_TYPE);
        	try {
-       	    $returnValue = $resource->getUniquePropertyValue($connTypeProp);
+       	    $returnValue = $connector->getUniquePropertyValue($connTypeProp);
        	}
        	catch (common_Exception $e) {
        	    echo 'Exception when retreiving Connector type ' . $connector->uriResource;
@@ -143,6 +147,8 @@ class wfEngine_models_classes_ConnectorService
         $returnValue = null;
 
         // section 127-0-1-1-66b8afb4:1322473370c:-8000:0000000000002ED3 begin
+        $ruleProp = new core_kernel_classes_Property(PROPERTY_CONNECTORS_TRANSITIONRULE);
+        $returnValue = $connector->getOnePropertyValue($ruleProp);
         // section 127-0-1-1-66b8afb4:1322473370c:-8000:0000000000002ED3 end
 
         return $returnValue;

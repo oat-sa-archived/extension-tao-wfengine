@@ -56,6 +56,8 @@ class InteractiveServiceServiceTestCase extends UnitTestCase {
 		
         $service1 = $this->authoringService->createInteractiveService($this->activity);
         $this->assertTrue($this->service->isInteractiveService($service1));
+        $this->assertFalse($this->service->isInteractiveService($this->processDefinition));	
+        $service1->delete(); 
 		
     }
 	

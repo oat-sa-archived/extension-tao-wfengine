@@ -161,7 +161,7 @@ class ActivityServiceTestCase extends UnitTestCase {
     }
     
     public function testIsActivity(){
-         $processAuthoringService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessAuthoringService');
+        $processAuthoringService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessAuthoringService');
         $processDefinitionClass = new core_kernel_classes_Class(CLASS_PROCESS);
         $processDefinition = $processDefinitionClass->createInstance('ProcessForUnitTest', 'Unit test');
         
