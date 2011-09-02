@@ -44,7 +44,7 @@ class ProcessClonerTestCase extends UnitTestCase {
 		$this->processCloner->initCloningVariables();
 		
 		$activity1 = $this->authoringService->createActivity($this->proc);
-		$this->authoringService->createInteractiveService($activity1);
+		$service1 = $this->authoringService->createInteractiveService($activity1);
 		$activity1Clone = $this->processCloner->cloneActivity($activity1);
 		
 		$propInitial = new core_kernel_classes_Property(PROPERTY_ACTIVITIES_ISINITIAL);
@@ -66,6 +66,8 @@ class ProcessClonerTestCase extends UnitTestCase {
 		
 		$this->authoringService->deleteActivity($activity1);
 		$this->authoringService->deleteActivity($activity1Clone);
+		$this->assertFalse($clonedService->exists());
+		$this->assertFalse($service1->exists());
 	}
 	
 	public function testCloneConnector(){

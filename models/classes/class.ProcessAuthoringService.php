@@ -1499,16 +1499,19 @@ class wfEngine_models_classes_ProcessAuthoringService
 		
 		//must exist:
 		if($formalParam->hasType(new core_kernel_classes_Class(CLASS_FORMALPARAMETER))){
-		
-			$actualParameterClass = new core_kernel_classes_Class(CLASS_ACTUALPARAMETER);
-	
-			//create new resource for the property value of the current call of service PROPERTY_CALLOFSERVICES_ACTUALPARAMETERIN or PROPERTY_CALLOFSERVICES_ACTUALPARAMETEROUT
-			$newActualParameter = $actualParameterClass->createInstance($formalParam->getLabel(), "actual parameter created by Process Authoring Service");
-			$newActualParameter->setPropertyValue(new core_kernel_classes_Property(PROPERTY_ACTUALPARAMETER_FORMALPARAMETER), $formalParam->uriResource);
-			$newActualParameter->setPropertyValue(new core_kernel_classes_Property($actualParameterType), $value);
 			
-			$returnValue = $callOfService->setPropertyValue(new core_kernel_classes_Property($parameterInOrOut), $newActualParameter->uriResource);
-	
+			if(in_array($parameterInOrOut, array(PROPERTY_CALLOFSERVICES_ACTUALPARAMETERIN, PROPERTY_CALLOFSERVICES_ACTUALPARAMETEROUT))
+				&& in_array($actualParameterType, array(PROPERTY_ACTUALPARAMETER_CONSTANTVALUE, PROPERTY_ACTUALPARAMETER_PROCESSVARIABLE))){
+				
+				//create new resource for the property value of the current call of service PROPERTY_CALLOFSERVICES_ACTUALPARAMETERIN or PROPERTY_CALLOFSERVICES_ACTUALPARAMETEROUT
+				$actualParameterClass = new core_kernel_classes_Class(CLASS_ACTUALPARAMETER);
+				$newActualParameter = $actualParameterClass->createInstance($formalParam->getLabel(), "actual parameter created by Process Authoring Service");
+				$newActualParameter->setPropertyValue(new core_kernel_classes_Property(PROPERTY_ACTUALPARAMETER_FORMALPARAMETER), $formalParam->uriResource);
+				$newActualParameter->setPropertyValue(new core_kernel_classes_Property($actualParameterType), $value);
+			
+				$returnValue = $callOfService->setPropertyValue(new core_kernel_classes_Property($parameterInOrOut), $newActualParameter->uriResource);
+			}
+			
 		}else{
 			throw new Exception('the formal parameter does not exist');
 		}

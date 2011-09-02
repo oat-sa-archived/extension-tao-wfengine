@@ -93,6 +93,7 @@ class ProcessMapTestCase extends UnitTestCase {
 		$services[3] = array('url' => 'url of unit3', 'label'=>'label of unit3');
 		
 		$i = 1;
+		$serviceDefinitions = array();
 		foreach($activityDefinitions as $activity){
 			
 			$url_unit = $services[$i]['url'];
@@ -115,6 +116,8 @@ class ProcessMapTestCase extends UnitTestCase {
 				$serviceDefinition->setPropertyValue(new core_kernel_classes_Property(PROPERTY_SERVICESDEFINITION_FORMALPARAMIN), $paramMap->uriResource);
 				$serviceDefinition->setPropertyValue(new core_kernel_classes_Property(PROPERTY_SERVICESDEFINITION_FORMALPARAMIN), $param1->uriResource);
 				$serviceDefinition->setPropertyValue(new core_kernel_classes_Property(PROPERTY_SERVICESDEFINITION_FORMALPARAMIN), $param2->uriResource);
+			
+				$serviceDefinitions[$serviceDefinition->uriResource] = $serviceDefinition;
 			}
 			$this->assertNotNull($serviceDefinition);
 			
@@ -131,8 +134,6 @@ class ProcessMapTestCase extends UnitTestCase {
 			$i++;
 		}
 		//end of process definition creation
-		
-		
 		
 		//get the ordered list of activity of the sequential process:
 		$activityList = array();
@@ -217,6 +218,16 @@ class ProcessMapTestCase extends UnitTestCase {
 		$this->assertTrue($proc->isFinished());
 		*/
 		
+		//delete all created resources:
+		$var_map->delete();
+		$var_param1->delete();
+		$var_param2->delete();
+		$paramMap->delete();
+		$param1->delete();
+		$param2->delete();
+		foreach($serviceDefinitions as $serviceDefinition){
+			$serviceDefinition->delete();
+		}
 	}
 	
 	public function tearDown(){
