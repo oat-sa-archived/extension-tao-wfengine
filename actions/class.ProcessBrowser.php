@@ -107,7 +107,7 @@ class wfEngine_actions_ProcessBrowser extends wfEngine_actions_WfModule
 
 
 		
-		// process variables data.
+		// process variables data, to be given to url: refactor with call of variableService::getVariablesValues
 		$variablesViewData = array();
 		$variables = $process->getVariables();
 

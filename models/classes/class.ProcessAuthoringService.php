@@ -597,6 +597,8 @@ class wfEngine_models_classes_ProcessAuthoringService
         $returnValue = null;
 
         // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004DB6 begin
+		//TODO: should be renamed to setSequenceActivity
+		//TODO: should add a check, see if a connector merge is attached to the connector, if so, do not allow it!! display a warning
 		$this->setConnectorType($connector, new core_kernel_classes_Resource(INSTANCE_TYPEOFCONNECTORS_SEQUENCE));
 		
 		if(is_null($followingActivity)){

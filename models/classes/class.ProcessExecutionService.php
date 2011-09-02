@@ -160,7 +160,7 @@ class wfEngine_models_classes_ProcessExecutionService
         $returnValue = (bool) false;
 
         // section 10-50-1-116-185ba8ba:12f4978614f:-8000:0000000000002D5F begin
-		if($processExecution->hasType($this->classProcessInstances)){
+		if($processExecution->hasType($this->processInstancesClass)){
 		
 			if($finishedOnly){
 				if(!$this->isFinished($processExecution)){
@@ -169,8 +169,8 @@ class wfEngine_models_classes_ProcessExecutionService
 			}
 			
 			//delete associated activity executions
-			$activityExecClass = $this->classActivityExecutions;
-			$activityExecutions = $activityExecClass->searchInstances(array($this->propActivityExecutionsProcessExecution->uriResource => $processExecution->uriResource), array('like' => false));
+			$activityExecClass = $this->activityExecutionsClass;
+			$activityExecutions = $activityExecClass->searchInstances(array($this->activityExecutionsProcessExecutionProp->uriResource => $processExecution->uriResource), array('like' => false));
 			if(count($activityExecutions) > 0){
 				foreach($activityExecutions as $activityExecution){
 					if($activityExecution instanceof core_kernel_classes_Resource){
@@ -180,7 +180,7 @@ class wfEngine_models_classes_ProcessExecutionService
 			}
 			
 			//delete current tokens:
-			$tokenCollection = $processExecution->getPropertyValuesCollection($this->propProcessInstacesCurrentTokens);
+			$tokenCollection = $processExecution->getPropertyValuesCollection($this->processInstacesCurrentTokensProp);
 			if($tokenCollection->count() > 0){
 				foreach($tokenCollection->getIterator() as $token){
 					if($token instanceof core_kernel_classes_Resource){
@@ -213,7 +213,7 @@ class wfEngine_models_classes_ProcessExecutionService
 		if(is_array($processExecutions)){
 			if(empty($processExecutions)){
 				//get all instances!
-				foreach($this->classProcessInstances->getInstances(false) as $processInstance){
+				foreach($this->processInstancesClass->getInstances(false) as $processInstance){
 					if($finishedOnly){
 						if(!$this->isFinished($processInstance)) continue;
 					}
@@ -224,7 +224,7 @@ class wfEngine_models_classes_ProcessExecutionService
 				if($deleteTokens){
 					foreach($processExecutions as $processExecution){
 						//delete current tokens:
-						$tokenCollection = $processExecution->getPropertyValuesCollection($this->propProcessInstacesCurrentTokens);
+						$tokenCollection = $processExecution->getPropertyValuesCollection($this->processInstacesCurrentTokensProp);
 						if($tokenCollection->count() > 0){
 							foreach($tokenCollection->getIterator() as $token){
 								if($token instanceof core_kernel_classes_Resource){
@@ -240,7 +240,7 @@ class wfEngine_models_classes_ProcessExecutionService
 				foreach($processExecutions as $processExecution){ 
 					$activityExecutionSubject = array();
 
-					$activityExecutionCollection = $apiModel->getSubject($this->propActivityExecutionsProcessExecution->uriResource,  $processExecution->uriResource);
+					$activityExecutionCollection = $apiModel->getSubject($this->activityExecutionsProcessExecutionProp->uriResource,  $processExecution->uriResource);
 					if($activityExecutionCollection->count() > 0){
 						foreach($activityExecutionCollection->getIterator() as $activityExecution){
 							$activityExecutionSubject[] = $activityExecution->uriResource;
@@ -283,7 +283,7 @@ class wfEngine_models_classes_ProcessExecutionService
         $returnValue = (bool) false;
 
         // section 10-50-1-116-185ba8ba:12f4978614f:-8000:0000000000002D78 begin
-		$status = $processExecution->getOnePropertyValue($this->propProcessInstacesStatus);
+		$status = $processExecution->getOnePropertyValue($this->processInstacesStatusProp);
 		if($status instanceof core_kernel_classes_Resource){
 			if($status->uriResource == $this->instanceProcessFinished->uriResource){
 				$returnValue = true;
@@ -326,14 +326,298 @@ class wfEngine_models_classes_ProcessExecutionService
     public function __construct()
     {
         // section 127-0-1-1-7c36bc99:13092a153cd:-8000:0000000000003B9A begin
+		
         parent::__construct();
-        $this->classProcessInstances = new core_kernel_classes_Class(CLASS_PROCESSINSTANCES);
-        $this->propProcessInstacesStatus = new core_kernel_classes_Property(PROPERTY_PROCESSINSTANCES_STATUS);
-        $this->propProcessInstacesCurrentTokens = new core_kernel_classes_Property(PROPERTY_PROCESSINSTANCES_CURRENTTOKEN);
-        $this->propActivityExecutionsProcessExecution = new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_PROCESSEXECUTION);
+        $this->processInstancesClass = new core_kernel_classes_Class(CLASS_PROCESSINSTANCES);
+        $this->processInstacesStatusProp = new core_kernel_classes_Property(PROPERTY_PROCESSINSTANCES_STATUS);
+        $this->processInstacesCurrentTokensProp = new core_kernel_classes_Property(PROPERTY_PROCESSINSTANCES_CURRENTTOKEN);
+        $this->activityExecutionsProcessExecutionProp = new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_PROCESSEXECUTION);
         $this->instanceProcessFinished = new core_kernel_classes_Resource(INSTANCE_PROCESSSTATUS_FINISHED);
-        $this->classActivityExecutions = new core_kernel_classes_Class(CLASS_ACTIVITY_EXECUTION);
+        $this->activityExecutionsClass = new core_kernel_classes_Class(CLASS_ACTIVITY_EXECUTION);
+		$this->processInstancesStatusProp = new core_kernel_classes_Property(PROPERTY_PROCESSINSTANCES_STATUS);
+		$this->processInstancesExecutionOfProp = new core_kernel_classes_Property(PROPERTY_PROCESSINSTANCES_EXECUTIONOF);
+		$this->processInstancesProcessPathProp = new core_kernel_classes_Property(PROPERTY_PROCESSINSTANCES_PROCESSPATH);
+		$this->processVariablesCodeProp = new core_kernel_classes_Property(PROPERTY_PROCESSVARIABLES_CODE);
+		
+		
         // section 127-0-1-1-7c36bc99:13092a153cd:-8000:0000000000003B9A end
+    }
+
+    /**
+     * Short description of method createProcessExecution
+     *
+     * @access public
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @param  Resource processDefinition
+     * @param  string name
+     * @param  string comment
+     * @param  array variablesValues
+     * @return core_kernel_classes_Resource
+     */
+    public function createProcessExecution( core_kernel_classes_Resource $processDefinition, $name, $comment = '', $variablesValues = array())
+    {
+        $returnValue = null;
+
+        // section 127-0-1-1-7a69d871:1322a76df3c:-8000:0000000000002F51 begin
+		
+		if(empty($comment)){
+			$comment = "create by processExecutionService on ".date("d-m-Y H:i:s");
+		}
+		$processInstance = $this->processInstancesClass->createInstance($name, $comment);
+		$processInstance->setPropertyValue($this->processInstancesStatusProp, INSTANCE_PROCESSSTATUS_STARTED);
+		$processInstance->setPropertyValue($this->processInstancesExecutionOfProp, $this->execution);
+		
+		$processDefinitionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessDefinitionService');
+		$initialActivities = $processDefinitionService->getRootActivities($processDefinition);
+		
+		$tokenService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_TokenService');
+		$tokens = array();
+		
+		foreach ($initialActivities as $activity){
+			// Add in path
+			$processInstance->setPropertyValue($this->processInstancesProcessPathProp, $activity->uriResource);
+			
+			$token = $tokenService->create($activity);
+			$tokens[] = $token;
+		}
+		
+		//foreach first tokens, assign the user input prop values:
+		$codes[] = array();
+		foreach($this->variables as $uri => $value) {
+			// have to skip name because doesnt work like other variables
+			if($uri != RDFS_LABEL) {
+				
+				$property = new core_kernel_classes_Property($uri);
+				
+				//assign property values to them:
+				foreach($tokens as $token){
+					$token->setPropertyValue($property, $value);
+				}
+				
+				//prepare the array of codes to be inserted as the "variables" property of the current token
+				$code = $property->getUniquePropertyValue($this->processVariablesCodeProp);
+				$codes[] = (string) $code;
+				
+			}
+		}
+		
+		//set serialized codes array into variable property:
+		$tokenVariableProp = new core_kernel_classes_Property(PROPERTY_TOKEN_VARIABLE);
+		foreach($tokens as $token){
+			$token->setPropertyValue($tokenVariableProp, serialize($codes)); 
+		}
+		
+		
+		$tokenService->setCurrents($returnValue->resource, $tokens);
+		
+		// Feed newly created process.
+//		$returnValue->feed();//deprecated
+		
+        // section 127-0-1-1-7a69d871:1322a76df3c:-8000:0000000000002F51 end
+
+        return $returnValue;
+    }
+
+    /**
+     * Short description of method isPaused
+     *
+     * @access public
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @param  Resource processExecution
+     * @return boolean
+     */
+    public function isPaused( core_kernel_classes_Resource $processExecution)
+    {
+        $returnValue = (bool) false;
+
+        // section 127-0-1-1-7a69d871:1322a76df3c:-8000:0000000000002F63 begin
+        // section 127-0-1-1-7a69d871:1322a76df3c:-8000:0000000000002F63 end
+
+        return (bool) $returnValue;
+    }
+
+    /**
+     * Short description of method isClosed
+     *
+     * @access public
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @param  Resource processExecution
+     * @return boolean
+     */
+    public function isClosed( core_kernel_classes_Resource $processExecution)
+    {
+        $returnValue = (bool) false;
+
+        // section 127-0-1-1-7a69d871:1322a76df3c:-8000:0000000000002F66 begin
+        // section 127-0-1-1-7a69d871:1322a76df3c:-8000:0000000000002F66 end
+
+        return (bool) $returnValue;
+    }
+
+    /**
+     * Short description of method pause
+     *
+     * @access public
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @param  Resource processExecution
+     * @return boolean
+     */
+    public function pause( core_kernel_classes_Resource $processExecution)
+    {
+        $returnValue = (bool) false;
+
+        // section 127-0-1-1-7a69d871:1322a76df3c:-8000:0000000000002F69 begin
+        // section 127-0-1-1-7a69d871:1322a76df3c:-8000:0000000000002F69 end
+
+        return (bool) $returnValue;
+    }
+
+    /**
+     * Short description of method resume
+     *
+     * @access public
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @param  Resource processExecution
+     * @return boolean
+     */
+    public function resume( core_kernel_classes_Resource $processExecution)
+    {
+        $returnValue = (bool) false;
+
+        // section 127-0-1-1-7a69d871:1322a76df3c:-8000:0000000000002F6C begin
+        // section 127-0-1-1-7a69d871:1322a76df3c:-8000:0000000000002F6C end
+
+        return (bool) $returnValue;
+    }
+
+    /**
+     * Short description of method finish
+     *
+     * @access public
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @param  Resource processExecution
+     * @return boolean
+     */
+    public function finish( core_kernel_classes_Resource $processExecution)
+    {
+        $returnValue = (bool) false;
+
+        // section 127-0-1-1-7a69d871:1322a76df3c:-8000:0000000000002F70 begin
+        // section 127-0-1-1-7a69d871:1322a76df3c:-8000:0000000000002F70 end
+
+        return (bool) $returnValue;
+    }
+
+    /**
+     * Short description of method close
+     *
+     * @access public
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @param  Resource processExecution
+     * @return boolean
+     */
+    public function close( core_kernel_classes_Resource $processExecution)
+    {
+        $returnValue = (bool) false;
+
+        // section 127-0-1-1-7a69d871:1322a76df3c:-8000:0000000000002F76 begin
+        // section 127-0-1-1-7a69d871:1322a76df3c:-8000:0000000000002F76 end
+
+        return (bool) $returnValue;
+    }
+
+    /**
+     * Short description of method setStatus
+     *
+     * @access public
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @param  Resource processExecution
+     * @param  string status
+     * @return boolean
+     */
+    public function setStatus( core_kernel_classes_Resource $processExecution, $status)
+    {
+        $returnValue = (bool) false;
+
+        // section 127-0-1-1-7a69d871:1322a76df3c:-8000:0000000000002F79 begin
+        // section 127-0-1-1-7a69d871:1322a76df3c:-8000:0000000000002F79 end
+
+        return (bool) $returnValue;
+    }
+
+    /**
+     * Short description of method getStatus
+     *
+     * @access public
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @param  Resource processExecution
+     * @return core_kernel_classes_Resource
+     */
+    public function getStatus( core_kernel_classes_Resource $processExecution)
+    {
+        $returnValue = null;
+
+        // section 127-0-1-1-7a69d871:1322a76df3c:-8000:0000000000002F7D begin
+        // section 127-0-1-1-7a69d871:1322a76df3c:-8000:0000000000002F7D end
+
+        return $returnValue;
+    }
+
+    /**
+     * Short description of method checkStatus
+     *
+     * @access public
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @param  Resource processExecution
+     * @param  string status
+     * @return boolean
+     */
+    public function checkStatus( core_kernel_classes_Resource $processExecution, $status)
+    {
+        $returnValue = (bool) false;
+
+        // section 127-0-1-1-7a69d871:1322a76df3c:-8000:0000000000002F80 begin
+        // section 127-0-1-1-7a69d871:1322a76df3c:-8000:0000000000002F80 end
+
+        return (bool) $returnValue;
+    }
+
+    /**
+     * Short description of method performTransition
+     *
+     * @access public
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @param  Resource processExecution
+     * @param  Resource activityExecution
+     * @return boolean
+     */
+    public function performTransition( core_kernel_classes_Resource $processExecution,  core_kernel_classes_Resource $activityExecution)
+    {
+        $returnValue = (bool) false;
+
+        // section 127-0-1-1-7a69d871:1322a76df3c:-8000:0000000000002F84 begin
+        // section 127-0-1-1-7a69d871:1322a76df3c:-8000:0000000000002F84 end
+
+        return (bool) $returnValue;
+    }
+
+    /**
+     * Short description of method performBackwardTransition
+     *
+     * @access public
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @param  Resource processExecution
+     * @param  Resource activityResource
+     * @return boolean
+     */
+    public function performBackwardTransition( core_kernel_classes_Resource $processExecution,  core_kernel_classes_Resource $activityResource)
+    {
+        $returnValue = (bool) false;
+
+        // section 127-0-1-1-7a69d871:1322a76df3c:-8000:0000000000002F88 begin
+        // section 127-0-1-1-7a69d871:1322a76df3c:-8000:0000000000002F88 end
+
+        return (bool) $returnValue;
     }
 
 } /* end of class wfEngine_models_classes_ProcessExecutionService */

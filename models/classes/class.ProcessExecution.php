@@ -149,8 +149,8 @@ extends wfEngine_models_classes_WfResource
 		//$value = common_Cache::getCache($this->currentActivity[0]->uri);
 
 		Session::setAttribute("activityExecutionUri", $activityExecutionUri);
-		$processVars 				= $this->getVariables();
-		$arrayOfProcessVars 		= wfEngine_helpers_ProcessUtil::processVarsToArray($processVars);
+		$processVars 				= $this->getVariables();//TBR
+		$arrayOfProcessVars 		= wfEngine_helpers_ProcessUtil::processVarsToArray($processVars);//used only for conditional connector rule evaluation
 		
 		//init the services
 		$activityExecutionService 	= tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityExecutionService');
@@ -472,7 +472,8 @@ extends wfEngine_models_classes_WfResource
 		$connector = new wfEngine_models_classes_Connector($connUri);
 	
 		$transitionRule 	= $connector->transitionRule;
-
+		
+		//remove the 1st arg "getSplitConnectorNewActivity", and call get ProvessVars directly here
 		$evaluationResult 	= $transitionRule->getExpression()->evaluate($arrayOfProcessVars);
 
 
@@ -641,6 +642,7 @@ extends wfEngine_models_classes_WfResource
 	* @access private
 	* @author firstname and lastname of author, <author@example.org>
 	* @return array
+	 * moved to activity service and never used
 	*/
 	private function getNextConnectors()
 	{

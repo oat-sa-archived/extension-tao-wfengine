@@ -33,8 +33,8 @@ class wfEngine_models_classes_ProcessExecutionFactory {
 
 		$returnValue = new wfEngine_models_classes_ProcessExecution($processInstanceResource->uriResource,false);
 		
+		//processVars not even used here!
 		$processVars = $returnValue->getVariables();
-
 		$processVars = wfEngine_helpers_ProcessUtil::processVarsToArray($processVars);
 
 		$initialActivities = $returnValue->process->getRootActivities();
