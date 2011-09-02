@@ -5,7 +5,7 @@ error_reporting(E_ALL);
 /**
  * Connector Services
  *
- * @author Lionel Lecaque, <lionel.lecaque@tudor.lu>
+ * @author Cédric Alfonsi, <cedric.alfonsi@tudor.lu>
  * @package wfEngine
  * @subpackage models_classes
  */
@@ -15,10 +15,10 @@ if (0 > version_compare(PHP_VERSION, '5')) {
 }
 
 /**
- * The Service class is an abstraction of each service instance.
+ * The Service class is an abstraction of each service instance. 
  * Used to centralize the behavior related to every servcie instances.
  *
- * @author Lionel Lecaque, <lionel.lecaque@tudor.lu>
+ * @author Cédric Alfonsi, <cedric.alfonsi@tudor.lu>
  */
 require_once('tao/models/classes/class.GenerisService.php');
 
@@ -34,12 +34,12 @@ require_once('tao/models/classes/class.GenerisService.php');
  * Connector Services
  *
  * @access public
- * @author Lionel Lecaque, <lionel.lecaque@tudor.lu>
+ * @author Cédric Alfonsi, <cedric.alfonsi@tudor.lu>
  * @package wfEngine
  * @subpackage models_classes
  */
 class wfEngine_models_classes_ConnectorService
-extends tao_models_classes_GenerisService
+    extends tao_models_classes_GenerisService
 {
     // --- ASSOCIATIONS ---
 
@@ -52,7 +52,7 @@ extends tao_models_classes_GenerisService
      * Check if the resource is a connector
      *
      * @access public
-     * @author Lionel Lecaque, <lionel.lecaque@tudor.lu>
+     * @author Cédric Alfonsi, <cedric.alfonsi@tudor.lu>
      * @param  Resource connector
      * @return boolean
      */
@@ -73,7 +73,7 @@ extends tao_models_classes_GenerisService
      * retrieve connector nexts activities
      *
      * @access public
-     * @author Lionel Lecaque, <lionel.lecaque@tudor.lu>
+     * @author Cédric Alfonsi, <cedric.alfonsi@tudor.lu>
      * @param  Resource connector
      * @return array
      */
@@ -91,7 +91,7 @@ extends tao_models_classes_GenerisService
      * retrieve connector previous activities
      *
      * @access public
-     * @author Lionel Lecaque, <lionel.lecaque@tudor.lu>
+     * @author Cédric Alfonsi, <cedric.alfonsi@tudor.lu>
      * @param  Resource connector
      * @return array
      */
@@ -109,7 +109,7 @@ extends tao_models_classes_GenerisService
      * retrive type of Connector Conditionnal, Sequestionnal Parallele...
      *
      * @access public
-     * @author Lionel Lecaque, <lionel.lecaque@tudor.lu>
+     * @author Cédric Alfonsi, <cedric.alfonsi@tudor.lu>
      * @param  Resource connector
      * @return core_kernel_classes_Resource
      */
@@ -131,14 +131,14 @@ extends tao_models_classes_GenerisService
     }
 
     /**
-     * Short description of method getTransitionnalRules
+     * Short description of method getTransitionnalRule
      *
      * @access public
-     * @author Lionel Lecaque, <lionel.lecaque@tudor.lu>
+     * @author Cédric Alfonsi, <cedric.alfonsi@tudor.lu>
      * @param  Resource connector
      * @return core_kernel_classes_Resource
      */
-    public function getTransitionnalRules( core_kernel_classes_Resource $connector)
+    public function getTransitionnalRule( core_kernel_classes_Resource $connector)
     {
         $returnValue = null;
 
