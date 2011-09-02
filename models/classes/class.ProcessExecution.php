@@ -150,7 +150,7 @@ extends wfEngine_models_classes_WfResource
 
 		Session::setAttribute("activityExecutionUri", $activityExecutionUri);
 		$processVars 				= $this->getVariables();
-		$arrayOfProcessVars 		= wfEngine_models_classes_Utils::processVarsToArray($processVars);
+		$arrayOfProcessVars 		= wfEngine_helpers_ProcessUtil::processVarsToArray($processVars);
 		
 		//init the services
 		$activityExecutionService 	= tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityExecutionService');

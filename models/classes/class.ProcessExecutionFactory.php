@@ -34,7 +34,7 @@ class wfEngine_models_classes_ProcessExecutionFactory {
 		
 		$processVars = $returnValue->getVariables();
 
-		$processVars = wfEngine_models_classes_Utils::processVarsToArray($processVars);
+		$processVars = wfEngine_helpers_ProcessUtil::processVarsToArray($processVars);
 
 		$initialActivities = $returnValue->process->getRootActivities();
 

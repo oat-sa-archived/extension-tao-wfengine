@@ -15,7 +15,7 @@ if (0 > version_compare(PHP_VERSION, '5')) {
 }
 
 /**
- * The Service class is an abstraction of each service instance. 
+ * The Service class is an abstraction of each service instance.
  * Used to centralize the behavior related to every servcie instances.
  *
  * @author Lionel Lecaque, <lionel.lecaque@tudor.lu>
@@ -39,7 +39,7 @@ require_once('tao/models/classes/class.GenerisService.php');
  * @subpackage models_classes
  */
 class wfEngine_models_classes_ConnectorService
-    extends tao_models_classes_GenerisService
+extends tao_models_classes_GenerisService
 {
     // --- ASSOCIATIONS ---
 
@@ -61,9 +61,9 @@ class wfEngine_models_classes_ConnectorService
         $returnValue = (bool) false;
 
         // section 127-0-1-1-4ecae359:132158f9a4c:-8000:0000000000002EBD begin
-    	if(!is_null($connector)){
-			$returnValue = $connector->hasType( new core_kernel_classes_Class(CLASS_CONNECTORS));
-		}
+        if(!is_null($connector)){
+            $returnValue = $connector->hasType( new core_kernel_classes_Class(CLASS_CONNECTORS));
+        }
         // section 127-0-1-1-4ecae359:132158f9a4c:-8000:0000000000002EBD end
 
         return (bool) $returnValue;
@@ -118,6 +118,13 @@ class wfEngine_models_classes_ConnectorService
         $returnValue = null;
 
         // section 127-0-1-1-66b8afb4:1322473370c:-8000:0000000000002ECF begin
+       	$connTypeProp = new core_kernel_classes_Property(PROPERTY_CONNECTORS_TYPE);
+       	try {
+       	    $returnValue = $resource->getUniquePropertyValue($connTypeProp);
+       	}
+       	catch (common_Exception $e) {
+       	    echo 'Exception when retreiving Connector type ' . $connector->uriResource;
+       	}
         // section 127-0-1-1-66b8afb4:1322473370c:-8000:0000000000002ECF end
 
         return $returnValue;
