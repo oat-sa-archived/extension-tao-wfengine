@@ -5,7 +5,7 @@ error_reporting(E_ALL);
 /**
  * Enable you to manage the process variables
  *
- * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+ * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
  * @package wfEngine
  * @subpackage models_classes
  */
@@ -18,7 +18,7 @@ if (0 > version_compare(PHP_VERSION, '5')) {
  * The Service class is an abstraction of each service instance. 
  * Used to centralize the behavior related to every servcie instances.
  *
- * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+ * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
  */
 require_once('tao/models/classes/class.GenerisService.php');
 
@@ -34,7 +34,7 @@ require_once('tao/models/classes/class.GenerisService.php');
  * Enable you to manage the process variables
  *
  * @access public
- * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+ * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
  * @package wfEngine
  * @subpackage models_classes
  */
@@ -52,7 +52,7 @@ class wfEngine_models_classes_VariableService
      * save a list of process variable by key/value pair
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @param  array variable
      * @return mixed
      */
@@ -104,7 +104,7 @@ class wfEngine_models_classes_VariableService
      * Remove the variables in parameter (list the keys)
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @param  mixed params
      * @return boolean
      */
@@ -159,7 +159,7 @@ class wfEngine_models_classes_VariableService
      * get the variable matching the key
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @param  string key
      * @return mixed
      */
@@ -204,7 +204,7 @@ class wfEngine_models_classes_VariableService
      * Get all the v ariables
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @return array
      */
     public function getAll()
@@ -252,7 +252,7 @@ class wfEngine_models_classes_VariableService
      * add a variable (different of save in case of multiple values)
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @param  string key
      * @param  string value
      * @return mixed
@@ -294,6 +294,37 @@ class wfEngine_models_classes_VariableService
 		}
     	
         // section 127-0-1-1--55065e1d:1294a729605:-8000:0000000000002006 end
+    }
+
+    /**
+     * Short description of method getProcessVariable
+     *
+     * @access public
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @param  string code
+     * @param  boolean forceCreation
+     * @return core_kernel_classes_Resource
+     */
+    public function getProcessVariable($code, $forceCreation = false)
+    {
+        $returnValue = null;
+
+        // section 127-0-1-1--6e15d8e:132297dc60d:-8000:0000000000002F0C begin
+		
+		$processVariableClass =  new core_kernel_classes_Class(CLASS_PROCESSVARIABLES);
+		$variables = $processVariableClass->searchInstances(array(PROPERTY_PROCESSVARIABLES_CODE => $code), array('like' => false, 'recursive' => 0));
+		if(!empty($variables)){
+			$returnValue = array_shift($variables);
+		}else if($forceCreation){
+			$returnValue = $this->createProcessVariable($code, $code);
+			if(is_null($returnValue)){
+				throw new Exception("the process variable ({$code}) cannot be created.");
+			}
+		}
+		
+        // section 127-0-1-1--6e15d8e:132297dc60d:-8000:0000000000002F0C end
+
+        return $returnValue;
     }
 
 } /* end of class wfEngine_models_classes_VariableService */

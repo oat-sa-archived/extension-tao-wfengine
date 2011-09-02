@@ -14,6 +14,7 @@ class wfEngine_models_classes_ProcessExecutionFactory {
 
 	/**
 	 * @return unknown_type
+	 * TODO: put in process execution service!
 	 */
 	public function create(){
 		if (!isset($this->name) || !isset($this->execution)  ){

@@ -3,13 +3,13 @@
 error_reporting(E_ALL);
 
 /**
- * TAO - wfEngine\models\classes\class.ProcessAuthoringService.php
+ * TAO - wfEngine/models/classes/class.ProcessAuthoringService.php
  *
  * $Id$
  *
  * This file is part of TAO.
  *
- * Automatically generated on 17.05.2011, 16:22:33 with ArgoUML PHP module 
+ * Automatically generated on 02.09.2011, 12:10:39 with ArgoUML PHP module 
  * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
  *
  * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
@@ -22,19 +22,18 @@ if (0 > version_compare(PHP_VERSION, '5')) {
 }
 
 /**
- * The Service class is an abstraction of each service instance. 
- * Used to centralize the behavior related to every servcie instances.
- *
- * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
- */
-require_once('tao/models/classes/class.GenerisService.php');
-
-/**
  * include wfEngine_models_classes_ProcessCloner
  *
  * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
  */
 require_once('wfEngine/models/classes/class.ProcessCloner.php');
+
+/**
+ * include wfEngine_models_classes_ProcessDefinitionService
+ *
+ * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+ */
+require_once('wfEngine/models/classes/class.ProcessDefinitionService.php');
 
 /* user defined includes */
 // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004D52-includes begin
@@ -57,7 +56,7 @@ require_once('wfEngine/plugins/CapiImport/models/class.DescriptorFactory.php');
  * @subpackage models_classes
  */
 class wfEngine_models_classes_ProcessAuthoringService
-    extends tao_models_classes_GenerisService
+    extends wfEngine_models_classes_ProcessDefinitionService
 {
     // --- ASSOCIATIONS ---
     // generateAssociationEnd : 
@@ -1190,19 +1189,8 @@ class wfEngine_models_classes_ProcessAuthoringService
         $returnValue = array();
 
         // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004E32 begin
-		
-		if(is_null($process)){
-			throw new Exception("the process cannot be null");
-			return $returnValue;
-		}
-		
-		
-		foreach ($process->getPropertyValuesCollection(new core_kernel_classes_Property(PROPERTY_PROCESS_ACTIVITIES))->getIterator() as $activity){
-			if($activity instanceof core_kernel_classes_Resource){
-				$returnValue[$activity->uriResource] = $activity;
-			}
-		}
-		
+		//connect ro new process def service:
+		$returnValue = $this->getAllActivities($process);
         // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004E32 end
 
         return (array) $returnValue;

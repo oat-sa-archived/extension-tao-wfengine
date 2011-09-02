@@ -20,18 +20,18 @@ class wfEngine_actions_Processes extends wfEngine_actions_WfModule
 			// Process variables retrieving.
 			$variables = $process->getProcessVars();
 
-			foreach ($variables as $key => $variable)
-			{
-				$name 			= $variable[0];
-				$propertyKey	= $key;
+			foreach ($variables as $key => $variable){
+				
+				$name 			= $variable['name'];
+				$propertyKey	= $key;//urlencode?
 
-
-				$processAuthoringData['variables'][] = array('name'		=> $name,															
-															'key' => 	$key
-														   	 );
+				$processAuthoringData['variables'][] = array(
+					'name'	=> $name,															
+					'key'	=> $propertyKey
+				);
 			}
 
-			$this->setData('processAuthoringData',$processAuthoringData);
+			$this->setData('processAuthoringData', $processAuthoringData);
 			$this->setView('process_authoring.tpl');
 	}
 

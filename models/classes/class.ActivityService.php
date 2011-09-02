@@ -92,15 +92,13 @@ extends tao_models_classes_GenerisService
         $returnValue = array();
 
         // section 127-0-1-1--7eb5a1dd:13214d5811e:-8000:0000000000002E92 begin
-        $activitiesIserviceProp = new core_kernel_classes_Property(PROPERTY_ACTIVITIES_INTERACTIVESERVICES);
-        $interactiveServices = $activity->getPropertyValues($activitiesIserviceProp);
-        if (sizeOf($interactiveServices)>0) {
-            if ($interactiveServices[0]!="") {
-                foreach ($interactiveServices as $interactiveService) {
-                    $returnValue[$interactiveService] =  new core_kernel_classes_Resource($interactiveService);
-                }
-            }
-        }
+        
+		$services = $activity->getPropertyValuesCollection(new core_kernel_classes_Property(PROPERTY_ACTIVITIES_INTERACTIVESERVICES));
+		foreach($services->getIterator() as $service){
+			if($service instanceof core_kernel_classes_Resource){
+				$returnValue[$service->uriResource] = $service;
+			}
+		}
 
         // section 127-0-1-1--7eb5a1dd:13214d5811e:-8000:0000000000002E92 end
 
