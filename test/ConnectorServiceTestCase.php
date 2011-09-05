@@ -206,7 +206,7 @@ class ConnectorServiceTestCase extends UnitTestCase {
 
        //  $this->assertIsA($this->service->getNextActivities($thenConnector),'core_kernel_classes_ContainerCollection');
         // $this->assertTrue($this->service->getNextActivities($thenConnector)->count() == 3 );
-        var_dump($this->service->getNextActivities($thenConnector));
+//        var_dump($this->service->getNextActivities($thenConnector));
         
         $this->assertIsA($this->service->getType($thenConnector),'core_kernel_classes_Resource');
         $this->assertIsA($this->service->getType($elseConnector),'core_kernel_classes_Resource');

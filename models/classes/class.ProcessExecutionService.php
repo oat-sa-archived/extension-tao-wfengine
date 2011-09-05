@@ -283,12 +283,7 @@ class wfEngine_models_classes_ProcessExecutionService
         $returnValue = (bool) false;
 
         // section 10-50-1-116-185ba8ba:12f4978614f:-8000:0000000000002D78 begin
-		$status = $processExecution->getOnePropertyValue($this->processInstacesStatusProp);
-		if($status instanceof core_kernel_classes_Resource){
-			if($status->uriResource == $this->instanceProcessFinished->uriResource){
-				$returnValue = true;
-			}
-		}
+		$returnValue = $this->checkStatus($processExecution, 'finished');
         // section 10-50-1-116-185ba8ba:12f4978614f:-8000:0000000000002D78 end
 
         return (bool) $returnValue;
@@ -328,17 +323,20 @@ class wfEngine_models_classes_ProcessExecutionService
         // section 127-0-1-1-7c36bc99:13092a153cd:-8000:0000000000003B9A begin
 		
         parent::__construct();
+		
+		$this->instanceProcessFinished = new core_kernel_classes_Resource(INSTANCE_PROCESSSTATUS_FINISHED);
+		
         $this->processInstancesClass = new core_kernel_classes_Class(CLASS_PROCESSINSTANCES);
         $this->processInstacesStatusProp = new core_kernel_classes_Property(PROPERTY_PROCESSINSTANCES_STATUS);
         $this->processInstacesCurrentTokensProp = new core_kernel_classes_Property(PROPERTY_PROCESSINSTANCES_CURRENTTOKEN);
-        $this->activityExecutionsProcessExecutionProp = new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_PROCESSEXECUTION);
-        $this->instanceProcessFinished = new core_kernel_classes_Resource(INSTANCE_PROCESSSTATUS_FINISHED);
-        $this->activityExecutionsClass = new core_kernel_classes_Class(CLASS_ACTIVITY_EXECUTION);
 		$this->processInstancesStatusProp = new core_kernel_classes_Property(PROPERTY_PROCESSINSTANCES_STATUS);
 		$this->processInstancesExecutionOfProp = new core_kernel_classes_Property(PROPERTY_PROCESSINSTANCES_EXECUTIONOF);
 		$this->processInstancesProcessPathProp = new core_kernel_classes_Property(PROPERTY_PROCESSINSTANCES_PROCESSPATH);
+		
 		$this->processVariablesCodeProp = new core_kernel_classes_Property(PROPERTY_PROCESSVARIABLES_CODE);
 		
+		$this->activityExecutionsClass = new core_kernel_classes_Class(CLASS_ACTIVITY_EXECUTION);
+		$this->activityExecutionsProcessExecutionProp = new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_PROCESSEXECUTION);
 		
         // section 127-0-1-1-7c36bc99:13092a153cd:-8000:0000000000003B9A end
     }
@@ -365,7 +363,7 @@ class wfEngine_models_classes_ProcessExecutionService
 		}
 		$processInstance = $this->processInstancesClass->createInstance($name, $comment);
 		$processInstance->setPropertyValue($this->processInstancesStatusProp, INSTANCE_PROCESSSTATUS_STARTED);
-		$processInstance->setPropertyValue($this->processInstancesExecutionOfProp, $this->execution);
+		$processInstance->setPropertyValue($this->processInstancesExecutionOfProp, $processDefinition->uriResource);
 		
 		$processDefinitionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessDefinitionService');
 		$initialActivities = $processDefinitionService->getRootActivities($processDefinition);
@@ -375,6 +373,7 @@ class wfEngine_models_classes_ProcessExecutionService
 		
 		foreach ($initialActivities as $activity){
 			// Add in path
+			//need to be modified to accept activity exec and multiple instance at once (for parallel back and forth 
 			$processInstance->setPropertyValue($this->processInstancesProcessPathProp, $activity->uriResource);
 			
 			$token = $tokenService->create($activity);
@@ -383,7 +382,7 @@ class wfEngine_models_classes_ProcessExecutionService
 		
 		//foreach first tokens, assign the user input prop values:
 		$codes[] = array();
-		foreach($this->variables as $uri => $value) {
+		foreach($variablesValues as $uri => $value) {
 			// have to skip name because doesnt work like other variables
 			if($uri != RDFS_LABEL) {
 				
@@ -408,10 +407,13 @@ class wfEngine_models_classes_ProcessExecutionService
 		}
 		
 		
-		$tokenService->setCurrents($returnValue->resource, $tokens);
-		
+		$tokenService->setCurrents($processInstance, $tokens);
+		$returnValue = $processInstance;
 		// Feed newly created process.
 //		$returnValue->feed();//deprecated
+		//get currentActivities
+		//get Status
+		//get path (activityStack + fullStack);
 		
         // section 127-0-1-1-7a69d871:1322a76df3c:-8000:0000000000002F51 end
 
@@ -431,6 +433,7 @@ class wfEngine_models_classes_ProcessExecutionService
         $returnValue = (bool) false;
 
         // section 127-0-1-1-7a69d871:1322a76df3c:-8000:0000000000002F63 begin
+		$returnValue = $this->checkStatus($processExecution, 'paused');
         // section 127-0-1-1-7a69d871:1322a76df3c:-8000:0000000000002F63 end
 
         return (bool) $returnValue;
@@ -449,6 +452,7 @@ class wfEngine_models_classes_ProcessExecutionService
         $returnValue = (bool) false;
 
         // section 127-0-1-1-7a69d871:1322a76df3c:-8000:0000000000002F66 begin
+		$returnValue = $this->checkStatus($processExecution, 'closed');
         // section 127-0-1-1-7a69d871:1322a76df3c:-8000:0000000000002F66 end
 
         return (bool) $returnValue;
@@ -467,6 +471,7 @@ class wfEngine_models_classes_ProcessExecutionService
         $returnValue = (bool) false;
 
         // section 127-0-1-1-7a69d871:1322a76df3c:-8000:0000000000002F69 begin
+		$returnValue = $this->setStatus($processExecution, 'paused');
         // section 127-0-1-1-7a69d871:1322a76df3c:-8000:0000000000002F69 end
 
         return (bool) $returnValue;
@@ -485,6 +490,7 @@ class wfEngine_models_classes_ProcessExecutionService
         $returnValue = (bool) false;
 
         // section 127-0-1-1-7a69d871:1322a76df3c:-8000:0000000000002F6C begin
+		$returnValue = $this->setStatus($processExecution, 'resumed');
         // section 127-0-1-1-7a69d871:1322a76df3c:-8000:0000000000002F6C end
 
         return (bool) $returnValue;
@@ -503,6 +509,13 @@ class wfEngine_models_classes_ProcessExecutionService
         $returnValue = (bool) false;
 
         // section 127-0-1-1-7a69d871:1322a76df3c:-8000:0000000000002F70 begin
+		
+		$returnValue = $this->setStatus($processExecution, 'finished');
+		
+		//remove the current tokens
+		$tokenService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_TokenService');
+		$tokenService->setCurrents($processExecution, array());
+		
         // section 127-0-1-1-7a69d871:1322a76df3c:-8000:0000000000002F70 end
 
         return (bool) $returnValue;
@@ -521,6 +534,12 @@ class wfEngine_models_classes_ProcessExecutionService
         $returnValue = (bool) false;
 
         // section 127-0-1-1-7a69d871:1322a76df3c:-8000:0000000000002F76 begin
+		
+		$returnValue = $this->setStatus($processExecution, 'closed');
+		
+		//delete process execution data: activity executions, tokens and remove all process execution properties but label, comment and status (+serialize the execution path?)
+		//implementation...
+		
         // section 127-0-1-1-7a69d871:1322a76df3c:-8000:0000000000002F76 end
 
         return (bool) $returnValue;
@@ -540,6 +559,31 @@ class wfEngine_models_classes_ProcessExecutionService
         $returnValue = (bool) false;
 
         // section 127-0-1-1-7a69d871:1322a76df3c:-8000:0000000000002F79 begin
+
+		//add status information
+		if (!empty($status)){
+			if($status instanceof core_kernel_classes_Resource){
+				switch($status->uriResource){
+					case INSTANCE_PROCESSSTATUS_RESUMED:
+					case INSTANCE_PROCESSSTATUS_STARTED:
+					case INSTANCE_PROCESSSTATUS_FINISHED:
+					case INSTANCE_PROCESSSTATUS_PAUSED:
+					case INSTANCE_PROCESSSTATUS_CLOSED:{
+						$returnValue = $processExecution->setPropertyValue($this->processInstacesStatusProp, $status->uriResource);
+						break;
+					}
+				}
+			}else if(is_string($status)){
+				switch($status){
+					case 'resumed':{$returnValue = $processExecution->setPropertyValue($this->processInstacesStatusProp, INSTANCE_PROCESSSTATUS_RESUMED);break;}
+					case 'started':{$returnValue = $processExecution->setPropertyValue($this->processInstacesStatusProp, INSTANCE_PROCESSSTATUS_STARTED);break;}
+					case 'finished':{$returnValue = $processExecution->setPropertyValue($this->processInstacesStatusProp, INSTANCE_PROCESSSTATUS_FINISHED);break;}
+					case 'paused':{$returnValue = $processExecution->setPropertyValue($this->processInstacesStatusProp, INSTANCE_PROCESSSTATUS_PAUSED);break;}
+					case 'closed':{$returnValue = $processExecution->setPropertyValue($this->processInstacesStatusProp, INSTANCE_PROCESSSTATUS_CLOSED);break;}
+				}
+			}
+			
+		}
         // section 127-0-1-1-7a69d871:1322a76df3c:-8000:0000000000002F79 end
 
         return (bool) $returnValue;
@@ -558,6 +602,22 @@ class wfEngine_models_classes_ProcessExecutionService
         $returnValue = null;
 
         // section 127-0-1-1-7a69d871:1322a76df3c:-8000:0000000000002F7D begin
+		
+		$status = $processExecution->getOnePropertyValue($this->processInstacesStatusProp);
+		if (!is_null($status)){
+			switch($status->uriResource){
+				case INSTANCE_PROCESSSTATUS_RESUMED:
+				case INSTANCE_PROCESSSTATUS_STARTED:
+				case INSTANCE_PROCESSSTATUS_FINISHED:
+				case INSTANCE_PROCESSSTATUS_PAUSED:
+				case INSTANCE_PROCESSSTATUS_CLOSED:{
+					$returnValue = $status;
+					break;
+				}
+			}
+			
+		}
+		
         // section 127-0-1-1-7a69d871:1322a76df3c:-8000:0000000000002F7D end
 
         return $returnValue;
@@ -577,6 +637,43 @@ class wfEngine_models_classes_ProcessExecutionService
         $returnValue = (bool) false;
 
         // section 127-0-1-1-7a69d871:1322a76df3c:-8000:0000000000002F80 begin
+		
+		$processStatus = $this->getStatus($processExecution);
+		
+		if(!is_null($processStatus)){
+			if ($status instanceof core_kernel_classes_Resource) {
+				if ($processStatus->uriResource == $status->uriResource) {
+					$returnValue = true;
+				}
+			} else if (is_string($status)) {
+				
+				
+				switch ($processStatus->uriResource) {
+					case INSTANCE_PROCESSSTATUS_RESUMED: {
+							$returnValue = (strtolower($status) == 'resumed');
+							break;
+						}
+					case INSTANCE_PROCESSSTATUS_STARTED: {
+						
+							$returnValue = (strtolower($status) == 'started');
+							break;
+						}
+					case INSTANCE_PROCESSSTATUS_FINISHED: {
+							$returnValue = (strtolower($status) == 'finished');
+							break;
+						}
+					case INSTANCE_PROCESSSTATUS_PAUSED: {
+							$returnValue = (strtolower($status) == 'paused');
+							break;
+						}
+					case INSTANCE_PROCESSSTATUS_CLOSED: {
+							$returnValue = (strtolower($status) == 'closed');
+							break;
+						}
+				}
+			}
+		}
+		
         // section 127-0-1-1-7a69d871:1322a76df3c:-8000:0000000000002F80 end
 
         return (bool) $returnValue;
@@ -618,6 +715,28 @@ class wfEngine_models_classes_ProcessExecutionService
         // section 127-0-1-1-7a69d871:1322a76df3c:-8000:0000000000002F88 end
 
         return (bool) $returnValue;
+    }
+
+    /**
+     * Short description of method getCurrentActivities
+     *
+     * @access public
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @param  Resource processExecution
+     * @return array
+     */
+    public function getCurrentActivities( core_kernel_classes_Resource $processExecution)
+    {
+        $returnValue = array();
+
+        // section 127-0-1-1--1cda705:13239584a17:-8000:0000000000002F81 begin
+		$tokenService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_TokenService');
+		foreach($tokenService->getCurrentActivities($processExecution) as $activity){
+			$returnValue[] = $activity;
+		}
+        // section 127-0-1-1--1cda705:13239584a17:-8000:0000000000002F81 end
+
+        return (array) $returnValue;
     }
 
 } /* end of class wfEngine_models_classes_ProcessExecutionService */

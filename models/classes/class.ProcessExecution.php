@@ -772,7 +772,7 @@ extends wfEngine_models_classes_WfResource
 	public function feed()
 	{
 		// section 10-13-1--31--7b61b039:11cdba08b1e:-8000:0000000000000A30 begin
-
+		
 		$tokenService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_TokenService');
 		foreach($tokenService->getCurrentActivities($this->resource) as $activity)
 		{

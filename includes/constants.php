@@ -31,9 +31,10 @@ $todefine = array(
 	'INSTANCE_PROCESSSTATUS_STARTED'				=> NS_WFENGINE . '#InstanceStatusStarted',
 	'INSTANCE_PROCESSSTATUS_FINISHED'				=> NS_WFENGINE . '#InstanceStatusFinished',
 	'INSTANCE_PROCESSSTATUS_PAUSED'					=> NS_WFENGINE . '#InstanceStatusPaused',
-
+	'INSTANCE_PROCESSSTATUS_CLOSED'					=> NS_WFENGINE . '#InstanceStatusClosed',
+	
 	'CLASS_PROCESSVARIABLES'						=> NS_WFENGINE . '#ClassProcessVariables',
-	'PROPERTY_PROCESSVARIABLES_CODE'				=>  NS_WFENGINE . '#PropertyCode',
+	'PROPERTY_PROCESSVARIABLES_CODE'				=> NS_WFENGINE . '#PropertyCode',
 	
 	'CLASS_ACTIVITIES'								=> NS_WFENGINE . '#ClassActivities',
 	'PROPERTY_ACTIVITIES_INTERACTIVESERVICES'		=> NS_WFENGINE . '#PropertyActivitiesInteractiveServices',

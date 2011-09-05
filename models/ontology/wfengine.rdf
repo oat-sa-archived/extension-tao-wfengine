@@ -87,6 +87,10 @@
     <rdfs:label xml:lang="EN"><![CDATA[Started]]></rdfs:label>
     <rdf:type rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessInstanceStatus"/>
   </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#InstanceStatusClosed">
+    <rdfs:label xml:lang="EN"><![CDATA[Closed]]></rdfs:label>
+    <rdf:type rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessInstanceStatus"/>
+  </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessInstanceStatus">
     <rdfs:label xml:lang="EN"><![CDATA[Process Instance Status]]></rdfs:label>
     <rdfs:subClassOf rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessExecutionResources"/>
