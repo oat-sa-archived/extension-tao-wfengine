@@ -5,7 +5,7 @@ error_reporting(E_ALL);
 /**
  * Service that retrieve information about Activty definition during runtime
  *
- * @author Lionel Lecaque, <lionel.lecaque@tudor.lu>
+ * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
  * @package wfEngine
  * @subpackage models_classes
  */
@@ -15,10 +15,10 @@ if (0 > version_compare(PHP_VERSION, '5')) {
 }
 
 /**
- * The Service class is an abstraction of each service instance.
+ * The Service class is an abstraction of each service instance. 
  * Used to centralize the behavior related to every servcie instances.
  *
- * @author Lionel Lecaque, <lionel.lecaque@tudor.lu>
+ * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
  */
 require_once('tao/models/classes/class.GenerisService.php');
 
@@ -34,12 +34,12 @@ require_once('tao/models/classes/class.GenerisService.php');
  * Service that retrieve information about Activty definition during runtime
  *
  * @access public
- * @author Lionel Lecaque, <lionel.lecaque@tudor.lu>
+ * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
  * @package wfEngine
  * @subpackage models_classes
  */
 class wfEngine_models_classes_ActivityService
-extends tao_models_classes_GenerisService
+    extends tao_models_classes_GenerisService
 {
     // --- ASSOCIATIONS ---
 
@@ -52,7 +52,7 @@ extends tao_models_classes_GenerisService
      * indicate if the activity need back and forth controls
      *
      * @access public
-     * @author Lionel Lecaque, <lionel.lecaque@tudor.lu>
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @param  Resource activity
      * @return array
      */
@@ -83,7 +83,7 @@ extends tao_models_classes_GenerisService
      * retrieve the Interactive service associate to the Activity
      *
      * @access public
-     * @author Lionel Lecaque, <lionel.lecaque@tudor.lu>
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @param  Resource activity
      * @return array
      */
@@ -109,7 +109,7 @@ extends tao_models_classes_GenerisService
      * Check if the activity is initial
      *
      * @access public
-     * @author Lionel Lecaque, <lionel.lecaque@tudor.lu>
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @param  Resource activity
      * @return boolean
      */
@@ -133,7 +133,7 @@ extends tao_models_classes_GenerisService
      * check if activity is final
      *
      * @access public
-     * @author Lionel Lecaque, <lionel.lecaque@tudor.lu>
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @param  Resource activity
      * @return boolean
      */
@@ -156,7 +156,7 @@ extends tao_models_classes_GenerisService
      * get activity's next connector
      *
      * @access public
-     * @author Lionel Lecaque, <lionel.lecaque@tudor.lu>
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @param  Resource activity
      * @return array
      */
@@ -166,12 +166,9 @@ extends tao_models_classes_GenerisService
 
         // section 127-0-1-1-4ecae359:132158f9a4c:-8000:0000000000002EAB begin
         $connectorsClass = new core_kernel_classes_Class(CLASS_CONNECTORS);
-        $nextConnectors = $connectorsClass->searchInstances(array(PROPERTY_CONNECTORS_PREVIOUSACTIVITIES => $activity->uriResource), array('like' => true, 'recursive' => 0));
-        $connectorService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ConnectorService');
+        $nextConnectors = $connectorsClass->searchInstances(array(PROPERTY_CONNECTORS_PREVIOUSACTIVITIES => $activity->uriResource), array('like' => false, 'recursive' => 0));
         foreach ($nextConnectors as $nextConnector){
-            if($connectorService->isConnector($nextConnector)){
-                $returnValue[$nextConnector->uriResource] = $nextConnector;
-            }
+			$returnValue[$nextConnector->uriResource] = $nextConnector;
         }
         // section 127-0-1-1-4ecae359:132158f9a4c:-8000:0000000000002EAB end
 
@@ -182,7 +179,7 @@ extends tao_models_classes_GenerisService
      * Short description of method isActivity
      *
      * @access public
-     * @author Lionel Lecaque, <lionel.lecaque@tudor.lu>
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @param  Resource activity
      * @return boolean
      */
@@ -203,7 +200,7 @@ extends tao_models_classes_GenerisService
      * Short description of method isHidden
      *
      * @access public
-     * @author Lionel Lecaque, <lionel.lecaque@tudor.lu>
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @param  Resource activity
      * @return boolean
      */
@@ -222,6 +219,54 @@ extends tao_models_classes_GenerisService
         // section 127-0-1-1-52a9110:13219ee179c:-8000:0000000000002EBE end
 
         return (bool) $returnValue;
+    }
+
+    /**
+     * Short description of method getUniqueNextConnector
+     *
+     * @access public
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @param  Resource activity
+     * @return core_kernel_classes_Resource
+     */
+    public function getUniqueNextConnector( core_kernel_classes_Resource $activity)
+    {
+        $returnValue = null;
+
+        // section 127-0-1-1--4b38ca35:1323a4c748d:-8000:0000000000002F84 begin
+		
+		$connectors = $this->getNextConnectors($activity);
+		$countConnectors = count($connectors);
+		
+		if($countConnectors > 1){
+			//there might be a join connector among them or an issue
+			$connectorsTmp = array();
+			foreach ($connectors as $connector){
+				$connectorType = $connector->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_TYPE));
+				//drop the connector join for now 
+				//(a join connector is considered only when it is only one found, i.e. the "else" case below)
+				if($connectorType->uriResource != INSTANCE_TYPEOFCONNECTORS_JOIN){
+					$connectorsTmp[] = $connector;
+				}else{
+					//warning: join connector:
+					$connectorsTmp = array($connector);
+					break;
+				}
+			}
+			
+			if(count($connectorsTmp) == 1){
+				//ok, the unique next connector has been found
+				$returnValue = $connectorsTmp[0];
+			}
+		}else if($countConnectors == 1){
+			$returnValue = array_shift($connectors);
+		}else{
+			//it is the final activity
+		}
+		
+        // section 127-0-1-1--4b38ca35:1323a4c748d:-8000:0000000000002F84 end
+
+        return $returnValue;
     }
 
 } /* end of class wfEngine_models_classes_ActivityService */

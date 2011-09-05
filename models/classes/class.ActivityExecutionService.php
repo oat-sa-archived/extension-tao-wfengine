@@ -5,7 +5,7 @@ error_reporting(E_ALL);
 /**
  * This service enables you to manage, control, restrict the process activities
  *
- * @author Lionel Lecaque, <lionel.lecaque@tudor.lu>
+ * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
  * @package wfEngine
  * @subpackage models_classes
  */
@@ -18,7 +18,7 @@ if (0 > version_compare(PHP_VERSION, '5')) {
  * The Service class is an abstraction of each service instance. 
  * Used to centralize the behavior related to every servcie instances.
  *
- * @author Lionel Lecaque, <lionel.lecaque@tudor.lu>
+ * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
  */
 require_once('tao/models/classes/class.GenerisService.php');
 
@@ -34,7 +34,7 @@ require_once('tao/models/classes/class.GenerisService.php');
  * This service enables you to manage, control, restrict the process activities
  *
  * @access public
- * @author Lionel Lecaque, <lionel.lecaque@tudor.lu>
+ * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
  * @package wfEngine
  * @subpackage models_classes
  */
@@ -108,7 +108,7 @@ class wfEngine_models_classes_ActivityExecutionService
      * Short description of method __construct
      *
      * @access public
-     * @author Lionel Lecaque, <lionel.lecaque@tudor.lu>
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @return mixed
      */
     public function __construct()
@@ -129,7 +129,7 @@ class wfEngine_models_classes_ActivityExecutionService
      * Get the list of available ACL modes
      *
      * @access public
-     * @author Lionel Lecaque, <lionel.lecaque@tudor.lu>
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @return array
      */
     public function getAclModes()
@@ -152,7 +152,7 @@ class wfEngine_models_classes_ActivityExecutionService
      * Define the ACL mode of an activity
      *
      * @access public
-     * @author Lionel Lecaque, <lionel.lecaque@tudor.lu>
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @param  Resource activity
      * @param  Resource mode
      * @param  Resource target
@@ -207,7 +207,7 @@ class wfEngine_models_classes_ActivityExecutionService
      * get the execution of this activity for the user
      *
      * @access public
-     * @author Lionel Lecaque, <lionel.lecaque@tudor.lu>
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @param  Resource activity
      * @param  Resource currentUser
      * @param  Resource processExecution
@@ -243,7 +243,7 @@ class wfEngine_models_classes_ActivityExecutionService
      * get the executions of this activity
      *
      * @access public
-     * @author Lionel Lecaque, <lionel.lecaque@tudor.lu>
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @param  Resource activity
      * @param  Resource processExecution
      * @return array
@@ -277,7 +277,7 @@ class wfEngine_models_classes_ActivityExecutionService
      * initialize the exectuion of that activity by the currentUser
      *
      * @access public
-     * @author Lionel Lecaque, <lionel.lecaque@tudor.lu>
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @param  Resource activity
      * @param  Resource currentUser
      * @param  Resource processExecution
@@ -328,7 +328,7 @@ class wfEngine_models_classes_ActivityExecutionService
      * the execution for that user or restrict it afterwhile)
      *
      * @access public
-     * @author Lionel Lecaque, <lionel.lecaque@tudor.lu>
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @param  Resource activityExecution
      * @param  Resource currentUser
      * @param  Resource processExecution
@@ -376,7 +376,7 @@ class wfEngine_models_classes_ActivityExecutionService
      * It returns false if the user cannot access the activity.
      *
      * @access public
-     * @author Lionel Lecaque, <lionel.lecaque@tudor.lu>
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @param  Resource activity
      * @param  Resource currentUser
      * @param  Resource processExecution
@@ -527,7 +527,7 @@ class wfEngine_models_classes_ActivityExecutionService
      * Get the list of available process execution for a user
      *
      * @access public
-     * @author Lionel Lecaque, <lionel.lecaque@tudor.lu>
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @param  Process process
      * @param  Resource currentUser
      * @return array
@@ -559,7 +559,7 @@ class wfEngine_models_classes_ActivityExecutionService
      * Get the estimated number of execution of this activity
      *
      * @access public
-     * @author Lionel Lecaque, <lionel.lecaque@tudor.lu>
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @param  Resource activity
      * @return core_kernel_classes_Session_int
      */
@@ -587,7 +587,7 @@ class wfEngine_models_classes_ActivityExecutionService
      * Short description of method remove
      *
      * @access public
-     * @author Lionel Lecaque, <lionel.lecaque@tudor.lu>
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @param  Resource processExecution
      * @return boolean
      */
@@ -608,6 +608,33 @@ class wfEngine_models_classes_ActivityExecutionService
         // section 127-0-1-1--14d619a:12ce565682e:-8000:0000000000002981 end
 
         return (bool) $returnValue;
+    }
+
+    /**
+     * Short description of method getVariables
+     *
+     * @access public
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @param  Resource activityExecution
+     * @return array
+     */
+    public function getVariables( core_kernel_classes_Resource $activityExecution)
+    {
+        $returnValue = array();
+
+        // section 127-0-1-1--4b38ca35:1323a4c748d:-8000:0000000000002F9B begin
+		
+		$tokenService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_TokenService');
+		
+		$token = $tokenService->getCurrent($activityExecution);
+		if(!is_null($token)){
+			$arrayOfProcessVars[VAR_PROCESS_INSTANCE] = $token->uriResource;
+			//TODO: get actual variables values from token instead of this key
+		}
+		
+        // section 127-0-1-1--4b38ca35:1323a4c748d:-8000:0000000000002F9B end
+
+        return (array) $returnValue;
     }
 
 } /* end of class wfEngine_models_classes_ActivityExecutionService */
