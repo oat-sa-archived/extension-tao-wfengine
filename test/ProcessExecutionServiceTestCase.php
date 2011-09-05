@@ -157,8 +157,6 @@ class ProcessExecutionTestCase extends UnitTestCase{
 			$processExecComment = 'created for processExecustionService test case by '.__METHOD__;
 			$processInstance = $this->service->createProcessExecution($processDefinition, $processExecName, $processExecComment);
 			
-			$proc = new wfEngine_models_classes_ProcessExecution($processInstance->uriResource);
-			
 			$this->assertTrue($this->service->checkStatus($processInstance, 'started'));
 			
 			$this->out(__METHOD__, true);
@@ -183,8 +181,8 @@ class ProcessExecutionTestCase extends UnitTestCase{
 				$activityExecution = $activityExecutionService->getExecution($activity, $this->currentUser, $processInstance);
 				$this->assertNotNull($activityExecution);
 				
-				//transition to 2nd activity
-				$proc->performTransition($activityExecution->uriResource);
+				//transition to next activity
+				$this->service->performTransition($processInstance, $activityExecution);
 				
 				$this->assertFalse($this->service->isPaused($processInstance));
 				
@@ -206,9 +204,9 @@ class ProcessExecutionTestCase extends UnitTestCase{
 			$processDefinition->delete();
 			
 			//delete process execution:
-			$this->assertTrue($proc->resource->hasType(new core_kernel_classes_Class(CLASS_PROCESSINSTANCES)));
+			$this->assertTrue($processInstance->hasType(new core_kernel_classes_Class(CLASS_PROCESSINSTANCES)));
 			$this->assertTrue($this->service->deleteProcessExecution($processInstance));
-			$this->assertFalse($proc->resource->hasType(new core_kernel_classes_Class(CLASS_PROCESSINSTANCES)));
+			$this->assertFalse($processInstance->hasType(new core_kernel_classes_Class(CLASS_PROCESSINSTANCES)));
 			
 			if(!is_null($this->currentUser)){
 				core_kernel_users_Service::logout();
@@ -278,7 +276,6 @@ class ProcessExecutionTestCase extends UnitTestCase{
 			//join parallel Activity 1 and 2 to "joinActivity"
 			$authoringService->createJoinActivity($connector1, $joinActivity, '', $parallelActivity1);
 			$authoringService->createJoinActivity($connector2, $joinActivity, '', $parallelActivity2);
-			
 			
 			//run process
 			$factory = new wfEngine_models_classes_ProcessExecutionFactory();

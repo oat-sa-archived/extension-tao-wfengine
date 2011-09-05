@@ -323,7 +323,7 @@ extends wfEngine_models_classes_WfResource
 	 * @param $nextConnectorUri
 	 * @return array of Activity or Boolean (false) 
 	 */
-	private function getNewActivities($arrayOfProcessVars, $nextConnectorUri)
+	public function getNewActivities($arrayOfProcessVars, $nextConnectorUri)
 	{
 		$newActivities = array();
 		if(empty($nextConnectorUri)){
@@ -597,7 +597,7 @@ extends wfEngine_models_classes_WfResource
 	 * @param $uri
 	 * @return unknown_type
 	 */
-	private function getNextConnectorsUri($activityUri){
+	public function getNextConnectorsUri($activityUri){
 		
 		$returnValue = '';
 		

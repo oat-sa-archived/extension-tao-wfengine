@@ -281,7 +281,7 @@ class wfEngine_models_classes_ProcessExecutionService
     public function isFinished( core_kernel_classes_Resource $processExecution)
     {
         $returnValue = (bool) false;
-
+		
         // section 10-50-1-116-185ba8ba:12f4978614f:-8000:0000000000002D78 begin
 		$returnValue = $this->checkStatus($processExecution, 'finished');
         // section 10-50-1-116-185ba8ba:12f4978614f:-8000:0000000000002D78 end
@@ -569,17 +569,17 @@ class wfEngine_models_classes_ProcessExecutionService
 					case INSTANCE_PROCESSSTATUS_FINISHED:
 					case INSTANCE_PROCESSSTATUS_PAUSED:
 					case INSTANCE_PROCESSSTATUS_CLOSED:{
-						$returnValue = $processExecution->setPropertyValue($this->processInstacesStatusProp, $status->uriResource);
+						$returnValue = $processExecution->editPropertyValues($this->processInstacesStatusProp, $status->uriResource);
 						break;
 					}
 				}
 			}else if(is_string($status)){
 				switch($status){
-					case 'resumed':{$returnValue = $processExecution->setPropertyValue($this->processInstacesStatusProp, INSTANCE_PROCESSSTATUS_RESUMED);break;}
-					case 'started':{$returnValue = $processExecution->setPropertyValue($this->processInstacesStatusProp, INSTANCE_PROCESSSTATUS_STARTED);break;}
-					case 'finished':{$returnValue = $processExecution->setPropertyValue($this->processInstacesStatusProp, INSTANCE_PROCESSSTATUS_FINISHED);break;}
-					case 'paused':{$returnValue = $processExecution->setPropertyValue($this->processInstacesStatusProp, INSTANCE_PROCESSSTATUS_PAUSED);break;}
-					case 'closed':{$returnValue = $processExecution->setPropertyValue($this->processInstacesStatusProp, INSTANCE_PROCESSSTATUS_CLOSED);break;}
+					case 'resumed':{$returnValue = $processExecution->editPropertyValues($this->processInstacesStatusProp, INSTANCE_PROCESSSTATUS_RESUMED);break;}
+					case 'started':{$returnValue = $processExecution->editPropertyValues($this->processInstacesStatusProp, INSTANCE_PROCESSSTATUS_STARTED);break;}
+					case 'finished':{$returnValue = $processExecution->editPropertyValues($this->processInstacesStatusProp, INSTANCE_PROCESSSTATUS_FINISHED);break;}
+					case 'paused':{$returnValue = $processExecution->editPropertyValues($this->processInstacesStatusProp, INSTANCE_PROCESSSTATUS_PAUSED);break;}
+					case 'closed':{$returnValue = $processExecution->editPropertyValues($this->processInstacesStatusProp, INSTANCE_PROCESSSTATUS_CLOSED);break;}
 				}
 			}
 			
@@ -693,6 +693,176 @@ class wfEngine_models_classes_ProcessExecutionService
         $returnValue = (bool) false;
 
         // section 127-0-1-1-7a69d871:1322a76df3c:-8000:0000000000002F84 begin
+		
+		Session::setAttribute("activityExecutionUri", $activityExecution->uriResource);
+//		$processVars 				= $this->getVariables();//TBR
+//		$arrayOfProcessVars 		= wfEngine_helpers_ProcessUtil::processVarsToArray($processVars);//used only for conditional connector rule evaluation
+		
+		//init the services
+		$activityDefinitionService	= tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityService');
+		$activityExecutionService 	= tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityExecutionService');
+		$userService 				= tao_models_classes_ServiceFactory::get('wfEngine_models_classes_UserService');
+		$tokenService 				= tao_models_classes_ServiceFactory::get('wfEngine_models_classes_TokenService');
+		$notificationService 		= tao_models_classes_ServiceFactory::get('wfEngine_models_classes_NotificationService');
+		
+		//get the current user
+		$currentUser = $userService->getCurrentUser();
+		
+		$activityExecution = new core_kernel_classes_Resource($activityExecution->uriResource);
+		$activityDefinition = $activityExecution->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_ACTIVITY));
+		$activityBeforeTransition = $activityDefinition;
+
+		//set the activity execution of the current user as finished:
+		if(!is_null($activityExecution)){
+			$activityExecution->editPropertyValues(new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_IS_FINISHED), GENERIS_TRUE);
+		}else{
+			throw new Exception("cannot find the activity execution of the current activity {$activityBeforeTransition->uriResource} in perform transition");
+		}
+		
+		$proc = new wfEngine_models_classes_ProcessExecution($processExecution->uriResource);
+		
+		$nextConnectorUri = $proc->getNextConnectorsUri($activityDefinition->uriResource);
+		
+		$token = $tokenService->getCurrent($activityExecution);
+		$arrayOfProcessVars[VAR_PROCESS_INSTANCE] = $token->uriResource;
+		
+		
+		$newActivities = $proc->getNewActivities($arrayOfProcessVars, $nextConnectorUri);//TODO
+		
+		if($newActivities === false){
+			//means that the process must be paused:
+			$this->pause($processExecution);
+			return;
+		}
+		
+		// The actual transition starts here:
+		
+		$connector = null;
+		if(!empty($nextConnectorUri)){
+			$connector = new core_kernel_classes_Resource($nextConnectorUri);
+		
+			$nextActivities = array();
+			foreach($newActivities as $newActivity){
+				$nextActivities[] = $newActivity->resource;
+			}
+			
+			//transition done here the tokens are "moved" to the next step: even when it is the last, i.e. newActivity empty
+			$tokenService->move($connector, $nextActivities, $currentUser, $processExecution);
+			
+			//trigger the notifications
+			$notificationService->trigger($connector, $processExecution);
+			
+		}
+		
+		//transition done: now get the following activities:
+		
+		
+		//get the current activities, whether the user has the right or not:
+		$currentActivities = array();
+		foreach($tokenService->getCurrentActivities($processExecution) as $currentActivity){
+			
+			$newActivity = new wfEngine_models_classes_Activity($currentActivity->uriResource);
+			
+			//manage path here:
+//			$activityBeforeTransitionObject = new wfEngine_models_classes_Activity($activityBeforeTransition->uriResource);
+//			$this->path->invalidate($activityBeforeTransitionObject, ($this->path->contains($newActivity) ? $newActivity : null));
+//			$this->path->insertActivity($newActivity);// We insert in the ontology the last activity in the path stack.
+			
+			$currentActivities[] = $newActivity;
+		}
+		
+		//if the connector is not a parallel one, let the user continue in his current branch and prevent the pause:
+		$uniqueNextActivity = null;
+		if(!is_null($connector)){
+			$connectorType = $connector->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_TYPE));
+			
+			if($connectorType->uriResource != INSTANCE_TYPEOFCONNECTORS_PARALLEL){
+				
+				if(count($newActivities)==1){
+					//TODO: could do a double check here: if($newActivities[0] is one of the activty found in the current tokens):
+					
+					if($activityExecutionService->checkAcl($newActivities[0]->resource, $currentUser, $processExecution)){
+						
+						$uniqueNextActivity = $newActivities[0];//the Activity Object
+					}
+				}
+			}
+		}
+		
+		
+		$setPause = true;
+		$authorizedActivityDefinitions = array();
+		
+		if (!count($newActivities) || $activityDefinitionService->isFinal($activityBeforeTransition)){
+			//there is no following activity so the process ends here:
+			$this->finish($processExecution);
+			return;
+		}elseif(!is_null($uniqueNextActivity)){
+			
+			//we are certain what the next activity would be for the user so return it:
+			$authorizedActivityDefinitions[] = $uniqueNextActivity;
+			$currentActivities = array();
+			$currentActivities[] = $uniqueNextActivity;
+			$setPause = false;
+		}else{
+			
+			foreach ($currentActivities as $activityAfterTransition){
+				//check if the current user is allowed to execute the activity
+				if($activityExecutionService->checkAcl($activityAfterTransition->resource, $currentUser, $processExecution)){
+					$authorizedActivityDefinitions[] = $activityAfterTransition;
+					$setPause = false;
+				}
+				else{
+					continue;
+				}
+			}
+			
+		}
+		
+		//finish actions on the authorized acitivty definitions
+		foreach($authorizedActivityDefinitions as $activityAfterTransition){
+			// The process is not finished.
+			// It means we have to run the onBeforeInference rule of the new current activity.
+			
+			$activityAfterTransition->feedFlow(1);
+
+
+			// Last but not least ... is the next activity a machine activity ?
+			// if yes, we perform the transition.
+			/*
+			 * @todo to be tested
+			 */
+			if ($activityAfterTransition->isHidden){
+				//required to create an activity execution here with:
+				
+				$currentUser = $userService->getCurrentUser();
+				if(is_null($currentUser)){
+					throw new Exception("No current user found!");
+				}
+				//security check if the user is allowed to access this activity
+				// if(!$activityExecutionService->checkAcl($activity->resource, $currentUser, $processExecution)){
+					// Session::removeAttribute("processUri");
+					// $this->redirect(_url('index', 'Main'));
+				// }//already performed above...
+				
+				$activityExecutionResource = $activityExecutionService->initExecution($activityAfterTransition->resource, $currentUser, $processExecution);
+				if(!is_null($activityExecutionResource)){
+					$this->performTransition($processExecution, $activityExecutionResource);
+				}else{
+					throw new wfEngine_models_classes_WfException('the activit execution cannot be create for the hidden activity');
+				}
+				
+				
+				//service not executed? use curl request?
+			}
+		}
+		
+		if($setPause){
+			$this->pause($processExecution);
+		}else{
+			$this->resume($processExecution);
+		}
+		
         // section 127-0-1-1-7a69d871:1322a76df3c:-8000:0000000000002F84 end
 
         return (bool) $returnValue;
