@@ -15,7 +15,7 @@ class ProcessExecutionTestCase extends UnitTestCase{
 	 * CHANGE IT MANNUALLY to see step by step the output
 	 * @var boolean
 	 */
-	const OUTPUT = true;
+	const OUTPUT = false;
 	
 	/**
 	 * @var wfEngine_models_classes_ActivityExecutionService the tested service
@@ -101,7 +101,7 @@ class ProcessExecutionTestCase extends UnitTestCase{
 	/**
 	 * Test the tokens into a sequancial process
 	 */
-	public function _testVirtualSequencialProcess(){
+	public function testVirtualSequencialProcess(){
 		
 		error_reporting(E_ALL);
 		
@@ -263,7 +263,7 @@ class ProcessExecutionTestCase extends UnitTestCase{
 			$this->assertNotNull($connector2);
 			
 			$parallelCount1 = 2;
-			$parallelCount2 = 2;
+			$parallelCount2 = 3;
 			$prallelActivitiesArray = array(
 				$parallelActivity1->uriResource => $parallelCount1,
 				$parallelActivity2->uriResource => $parallelCount2

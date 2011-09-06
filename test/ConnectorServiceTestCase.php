@@ -250,8 +250,12 @@ class ConnectorServiceTestCase extends UnitTestCase {
 
         $this->authoringService->setParallelActivities($connector2, $newActivitiesArray);
         $activity6 = $this->authoringService->createJoinActivity($connector3, null, '', $activity4);
-        $this->authoringService->createJoinActivity($connector4, null, '', $activity5);
+		$activity7 = $this->authoringService->createJoinActivity($connector4, $activity6, '', $activity5);
         
+		//check if the connector merging has been effective:
+		$this->assertFalse($connector4->exists());
+		$this->assertEqual($activity6->uriResource, $activity7->uriResource);
+		
         $activity3NextActi = $this->service->getNextActivities($connector2);
         $this->assertIsA($activity3NextActi,'array');
         $this->assertTrue(sizeof($activity3NextActi) == 5);
@@ -271,23 +275,11 @@ class ConnectorServiceTestCase extends UnitTestCase {
         $this->assertEqual($newActivitiesarrayCount, $newActivitiesArray);
         
         $activity4NextActi = $this->service->getNextActivities($connector3);
-
-        $activity5NextActi = $this->service->getNextActivities($connector4);
-        
         $this->assertTrue(sizeof($activity4NextActi) == 1);
          if(isset($activity4NextActi[0]) && $activity4NextActi[0] instanceof core_kernel_classes_Resource){
                         $activity4NextActi[0]->getLabel();
              $this->assertTrue($activity4NextActi[0]->uriResource == $activity6->uriResource);
         }
-        
-          $this->assertTrue(sizeof($activity5NextActi) == 1);
-         if(isset($activity5NextActi[0]) && $activity5NextActi[0] instanceof core_kernel_classes_Resource){
-            $activity5NextActi[0]->getLabel();
-             $this->assertTrue($activity5NextActi[0]->uriResource == $activity6->uriResource);
-            
-        }
-
-        var_dump($activity4NextActi,$activity5NextActi);
         
         $then->delete(true);
         $else->delete(true);
