@@ -299,5 +299,117 @@ class ConnectorServiceTestCase extends UnitTestCase {
         $connector4->delete(true);
 
     }
+    
+ public function testGetPreviousActivities(){
+
+
+        /*
+         *  activity > connector1(COND)
+         *  -> THEN  > thenConnector(SQ)
+         *  -> ELSE > elseConnector (SQ)
+         *  -> Act3 > connector2(PARA)
+         *  -> Act4 > connector3(JOIN)
+         *  -> Act5 > connector4(JOIN)
+         * 	-> Acto6
+         *
+         */
+        $connector1 = $this->authoringService->createConnector($this->activity);
+
+        $then = $this->authoringService->createSplitActivity($connector1, 'then');//create "Activity_2"
+        $thenConnector = $this->authoringService->createConnector($then, 'then Connector');//create "Activity_2"
+
+        $else = $this->authoringService->createSplitActivity($connector1, 'else', null, '', true);//create another connector
+        $elseConnector = $this->authoringService->createConnector($else, 'else Connector');//create "Activity_2"
+
+        $activity3 = $this->authoringService->createSequenceActivity($thenConnector, null, 'Act3');
+        $this->authoringService->createSequenceActivity($elseConnector, $activity3);
+
+    
+        $connector1PrevAct = $this->service->getPreviousActivities($connector1);
+        
+        $this->assertIsA($connector1PrevAct,'array');
+        $this->assertTrue(sizeof($connector1PrevAct) == 1);
+        if(isset($connector1PrevAct[0]) && $connector1PrevAct[0] instanceof core_kernel_classes_Resource){
+            $this->assertTrue($connector1PrevAct[0]->uriResource == $this->activity->uriResource);
+        }
+        
+        $elsePrevAct = $this->service->getPreviousActivities($elseConnector);
+       
+
+        $this->assertIsA($elsePrevAct,'array');
+        $this->assertTrue(sizeof($elsePrevAct) == 1);
+        if(isset($elsePrevAct[0]) && $elsePrevAct[0] instanceof core_kernel_classes_Resource){
+            $this->assertTrue($elsePrevAct[0]->uriResource == $else->uriResource);
+        }
+
+        $thenPrevAct = $this->service->getPreviousActivities($thenConnector);
+        $this->assertIsA($thenPrevAct,'array');
+        $this->assertTrue(sizeof($thenPrevAct) == 1);
+        if(isset($thenPrevAct[0]) && $thenPrevAct[0] instanceof core_kernel_classes_Resource){
+            $this->assertTrue($thenPrevAct[0]->uriResource == $then->uriResource);
+        }
+
+        
+        $myProcessVar1 = $this->authoringService->getProcessVariable('myProcessVarCode1', true);
+        $transitionRule = $this->authoringService->createTransitionRule($connector1, '^myProcessVarCode1 == 1');
+        
+
+        $connector2 = $this->authoringService->createConnector($activity3);
+        $activity4 = $this->authoringService->createActivity($this->processDefinition, 'activity4 for interactive service unit test');
+        $connector3 = $this->authoringService->createConnector($activity4);
+
+        $activity5 = $this->authoringService->createActivity($this->processDefinition, 'activity5 for interactive service unit test');
+        $connector4 = $this->authoringService->createConnector($activity5);
+
+        $newActivitiesArray = array(
+            $activity4->uriResource => 2,
+            $activity5->uriResource => 3
+        );
+
+        $this->authoringService->setParallelActivities($connector2, $newActivitiesArray);
+        $activity6 = $this->authoringService->createJoinActivity($connector3, null, '', $activity4);
+		$activity7 = $this->authoringService->createJoinActivity($connector4, $activity6, '', $activity5);
+        
+        $activity3PrevActi = $this->service->getPreviousActivities($connector2);
+
+         $this->assertIsA($activity3PrevActi,'array');
+        $this->assertTrue(sizeof($activity3PrevActi) == 1);
+        if(isset($activity3PrevActi[0]) && $activity3PrevActi[0] instanceof core_kernel_classes_Resource){
+            $this->assertTrue($activity3PrevActi[0]->uriResource == $activity3->uriResource);
+        }
+        
+        $activity4PrevActi = $this->service->getPreviousActivities($connector3);
+
+        $this->assertIsA($activity4PrevActi,'array');
+        $this->assertTrue(sizeof($activity4PrevActi) == 5);
+        $prevActivitiesarrayCount = array();
+        foreach ($activity4PrevActi as $acti){
+            $this->assertTrue(array_key_exists($acti->uriResource, $newActivitiesArray));
+            if(array_key_exists($acti->uriResource, $newActivitiesArray)){      
+                if(isset( $prevActivitiesarrayCount[$acti->uriResource])){
+                    $prevActivitiesarrayCount[$acti->uriResource] ++;
+                }
+                else{
+                    $prevActivitiesarrayCount[$acti->uriResource] = 1;
+                }  
+            }
+
+        }
+        $this->assertEqual($prevActivitiesarrayCount, $newActivitiesArray);
+        
+        $then->delete(true);
+        $else->delete(true);
+        $activity3->delete(true);
+        $activity4->delete(true);
+        $activity5->delete(true);
+        $activity6->delete(true);
+
+        $transitionRule->delete(true);
+        $connector1->delete(true);
+        $connector2->delete(true);
+        $connector3->delete(true);
+        $connector4->delete(true);
+
+    }
 
 }
