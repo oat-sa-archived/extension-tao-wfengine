@@ -159,11 +159,14 @@ class ConnectorServiceTestCase extends UnitTestCase {
 
         $this->authoringService->setParallelActivities($connector2, $newActivitiesArray);
         $activity6 = $this->authoringService->createJoinActivity($connector3, null, '', $activity4);
-        $this->authoringService->createJoinActivity($connector4, null, '', $activity5);
-
+		$activity7 = $this->authoringService->createJoinActivity($connector4, $activity6, '', $activity5);
+		
+		//check if the connector merging has been effective:
+		$this->assertFalse($connector4->exists());
+		$this->assertEqual($activity6->uriResource, $activity7->uriResource);
+		
         $this->assertEqual($this->service->getType($connector2)->uriResource, INSTANCE_TYPEOFCONNECTORS_PARALLEL);
         $this->assertEqual($this->service->getType($connector3)->uriResource, INSTANCE_TYPEOFCONNECTORS_JOIN);
-        $this->assertEqual($this->service->getType($connector4)->uriResource, INSTANCE_TYPEOFCONNECTORS_JOIN);
 
         $then->delete(true);
         $else->delete(true);
@@ -176,7 +179,8 @@ class ConnectorServiceTestCase extends UnitTestCase {
         $connector1->delete(true);
         $connector2->delete(true);
         $connector3->delete(true);
-        $connector4->delete(true);
+//        $connector4->delete(true);
+		
 
     }
     

@@ -477,7 +477,7 @@ class wfEngine_models_classes_ProcessAuthoringService
 					$connectorInstance->setPropertyValue($propConnectorsPreviousActivities, $previousActivity->uriResource);
 				}
 			}else{
-				throw new Exception('unexpected null multiplicity');
+				throw new wfEngine_models_classes_ProcessDefinitonException('unexpected null multiplicity in join connector');
 			}
 			
 			$returnValue = $followingActivity;
