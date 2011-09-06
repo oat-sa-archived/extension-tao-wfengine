@@ -109,7 +109,7 @@ class wfEngine_models_classes_ConnectorService
 
         // section 127-0-1-1-66b8afb4:1322473370c:-8000:0000000000002ECB begin
         $prevActivitiesProp = new core_kernel_classes_Property(PROPERTY_CONNECTORS_PREVIOUSACTIVITIES,__METHOD__);
-        $prevActivities = $connector->getPropertyValues($precActivitiesProp);
+        $prevActivities = $connector->getPropertyValues($prevActivitiesProp);
 		$count = count($prevActivities);
 		for($i=0;$i<$count;$i++){
 			if(common_Utils::isUri($prevActivities[$i])){

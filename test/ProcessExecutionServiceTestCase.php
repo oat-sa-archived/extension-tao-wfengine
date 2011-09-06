@@ -15,7 +15,7 @@ class ProcessExecutionTestCase extends UnitTestCase{
 	 * CHANGE IT MANNUALLY to see step by step the output
 	 * @var boolean
 	 */
-	const OUTPUT = false;
+	const OUTPUT = true;
 	
 	/**
 	 * @var wfEngine_models_classes_ActivityExecutionService the tested service
@@ -101,7 +101,7 @@ class ProcessExecutionTestCase extends UnitTestCase{
 	/**
 	 * Test the tokens into a sequancial process
 	 */
-	public function testVirtualSequencialProcess(){
+	public function _testVirtualSequencialProcess(){
 		
 		error_reporting(E_ALL);
 		
@@ -222,7 +222,7 @@ class ProcessExecutionTestCase extends UnitTestCase{
 	/**
 	 * Test the tokens into a parallel process
 	 */
-	public function _testVirtualParallelJoinProcess(){
+	public function testVirtualParallelJoinProcess(){
 		
 		error_reporting(E_ALL);
 		
@@ -264,12 +264,12 @@ class ProcessExecutionTestCase extends UnitTestCase{
 			
 			$parallelCount1 = 2;
 			$parallelCount2 = 2;
-			$newActivitiesArray = array(
+			$prallelActivitiesArray = array(
 				$parallelActivity1->uriResource => $parallelCount1,
 				$parallelActivity2->uriResource => $parallelCount2
 			);
 			
-			$this->assertTrue($authoringService->setParallelActivities($connector0, $newActivitiesArray));
+			$this->assertTrue($authoringService->setParallelActivities($connector0, $prallelActivitiesArray));
 		
 			$joinActivity = $authoringService->createActivity($processDefinition, 'activity3');
 			
@@ -283,37 +283,58 @@ class ProcessExecutionTestCase extends UnitTestCase{
 			$factory->execution = $processDefinition->uriResource;
 			$factory->ownerUri = SYS_USER_LOGIN;
 	
+			//run the process
+			$processExecName = 'Test Parallel Process Execution';
+			$processExecComment = 'created for processExecustionService test case by '.__METHOD__;
+			$processInstance = $this->service->createProcessExecution($processDefinition, $processExecName, $processExecComment);
 			
-			$proc = $factory->create();
-			$this->out("process status: ".$proc->status);
+			$this->assertTrue($this->service->checkStatus($processInstance, 'started'));
 			
 			$this->out(__METHOD__, true);
 			
-			$i = 0;
 			$numberActivities = 2 + $parallelCount1 + $parallelCount2;
-			$current = 0;
 			$createdUsers = array();
-			while($i < $numberActivities){
+			for($i=1; $i <= $numberActivities; $i++){
 				
-				$activity = $proc->currentActivity[$current];
+				$activities = $this->service->getCurrentActivities($processInstance);
+				$countActivities = count($activities);
+				$activity = null;
+				if($countActivities > 1){
+					//select one of the available activities in the parallel branch:
+					for($j=0;$j<$countActivities;$j++){
+						$activityTmp = $activities[$j];
+						if(isset($prallelActivitiesArray[$activityTmp->uriResource])){
+							if($prallelActivitiesArray[$activityTmp->uriResource]>0){
+								$prallelActivitiesArray[$activityTmp->uriResource]--;
+								$activity = $activityTmp;
+								break;
+							}
+						}
+					}
+				}else if($countActivities == 1){
+					$activity = $activities[0];
+				}else{
+					$this->fail('no current activity definition found for the iteration '.$i);
+				}
 		
-				$this->out("<strong>".$activity->resource->label."</strong> (among ".count($proc->currentActivity).")", true);
+				$this->out("<strong> Iteration {$i}: {$activity->getLabel()}</strong> (among {$countActivities})", true);
 						
 				//init execution
-				$this->assertTrue($this->service->initCurrentExecution($proc->resource, $activity->resource, $this->currentUser));
+				$this->assertTrue($this->service->initCurrentExecution($processInstance, $activity, $this->currentUser));
 				
-				$activityExecuction = $activityExecutionService->getExecution($activity->resource, $this->currentUser, $proc->resource);
-				$this->assertNotNull($activityExecuction);
+				$activityExecution = $activityExecutionService->getExecution($activity, $this->currentUser, $processInstance);
+				$this->assertNotNull($activityExecution);
 				
 				//transition to next activity
 				$this->out("current user: ".$this->currentUser->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_USER_LOGIN)).' "'.$this->currentUser->uriResource.'"', true);
 				$this->out("performing transition", true);
 				
-				$proc->performTransition($activityExecuction->uriResource);
+				//transition to next activity
+				$this->service->performTransition($processInstance, $activityExecution);
 				
-				$this->out("process status: ".$proc->status);
+				$this->out("process status: ".$this->service->getStatus($processInstance)->getLabel());
 				
-				if($proc->isPaused()){
+				if($this->service->isPaused($processInstance)){
 					
 					//Login another user to execute parallel branch
 					core_kernel_users_Service::logout();
@@ -337,30 +358,21 @@ class ProcessExecutionTestCase extends UnitTestCase{
 					if($this->userService->loginUser($login, md5($pass))){
 						$this->userService->connectCurrentUser();
 						$this->currentUser = $this->userService->getCurrentUser();
-						if($current == 0){
-							$current = 1;
-						}
-						else{
-							$current = 0;
-						}
 						$this->out("new user logged in: ".$this->currentUser->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_USER_LOGIN)).' "'.$this->currentUser->uriResource.'"', true);
 					}else{
 						$this->fail("unable to login user $login<br>");
 					}
-				}else{
-					$current = 0;
 				}
 			
-				$i++;
 			}
 			
-			$this->assertTrue($proc->isFinished());
+			$this->assertTrue($this->service->isFinished($processInstance));
 			
 			//delete process exec:
-			$this->assertTrue($processExecutionService->deleteProcessExecution($proc->resource));
+			$this->assertTrue($processExecutionService->deleteProcessExecution($processInstance));
 			
 			//delete processdef:
-			$authoringService->deleteProcess($processDefinition);
+			$this->assertTrue($authoringService->deleteProcess($processDefinition));
 			
 			//delete created users:
 			foreach($createdUsers as $createdUser){

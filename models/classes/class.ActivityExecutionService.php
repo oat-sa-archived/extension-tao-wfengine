@@ -637,6 +637,62 @@ class wfEngine_models_classes_ActivityExecutionService
         return (array) $returnValue;
     }
 
+    /**
+     * Short description of method getExecutionOf
+     *
+     * @access public
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @param  Resource activityExecution
+     * @return core_kernel_classes_Resource
+     */
+    public function getExecutionOf( core_kernel_classes_Resource $activityExecution)
+    {
+        $returnValue = null;
+
+        // section 127-0-1-1--42c550f9:1323e0e4fe5:-8000:0000000000002FB3 begin
+		$returnValue = $activityExecution->getUniquePropertyValue($this->activityProperty);
+        // section 127-0-1-1--42c550f9:1323e0e4fe5:-8000:0000000000002FB3 end
+
+        return $returnValue;
+    }
+
+    /**
+     * Short description of method getRelatedProcessExecution
+     *
+     * @access public
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @param  Resource activityExecution
+     * @return core_kernel_classes_Resource
+     */
+    public function getRelatedProcessExecution( core_kernel_classes_Resource $activityExecution)
+    {
+        $returnValue = null;
+
+        // section 127-0-1-1--42c550f9:1323e0e4fe5:-8000:0000000000002FB9 begin
+		$returnValue = $activityExecution->getUniquePropertyValue($this->processExecutionProperty);
+        // section 127-0-1-1--42c550f9:1323e0e4fe5:-8000:0000000000002FB9 end
+
+        return $returnValue;
+    }
+
+    /**
+     * Short description of method isFinished
+     *
+     * @access public
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @param  activityExecution
+     * @return boolean
+     */
+    public function isFinished($activityExecution)
+    {
+        $returnValue = (bool) false;
+
+        // section 127-0-1-1--4a6e3e05:1323e2d5c53:-8000:0000000000002FBE begin
+        // section 127-0-1-1--4a6e3e05:1323e2d5c53:-8000:0000000000002FBE end
+
+        return (bool) $returnValue;
+    }
+
 } /* end of class wfEngine_models_classes_ActivityExecutionService */
 
 ?>

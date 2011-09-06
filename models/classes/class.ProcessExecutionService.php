@@ -720,7 +720,7 @@ class wfEngine_models_classes_ProcessExecutionService
 		$nextConnector = $activityDefinitionService->getUniqueNextConnector($activityDefinition);
 		$newActivities = array();
 		if(!is_null($nextConnector)){
-			$newActivities = $this->getNewActivities($activityExecution, $nextConnector);
+			$newActivities = $this->getNewActivities($processExecution, $activityExecution, $nextConnector);
 		}
 		
 		if($newActivities === false){
@@ -747,15 +747,15 @@ class wfEngine_models_classes_ProcessExecutionService
 		//get the current activities, whether the user has the right or not:
 		$currentActivities = array();
 		foreach($tokenService->getCurrentActivities($processExecution) as $currentActivity){
+			//TODO: investigate if possible to use the array of newActivities instead of using the token service here
 			
-			$newActivity = new wfEngine_models_classes_Activity($currentActivity->uriResource);
+			$currentActivities[] = $currentActivity;
 			
 			//manage path here:
 //			$activityBeforeTransitionObject = new wfEngine_models_classes_Activity($activityBeforeTransition->uriResource);
 //			$this->path->invalidate($activityBeforeTransitionObject, ($this->path->contains($newActivity) ? $newActivity : null));
 //			$this->path->insertActivity($newActivity);// We insert in the ontology the last activity in the path stack.
 			
-			$currentActivities[] = $newActivity;
 		}
 		
 		//if the connector is not a parallel one, let the user continue in his current branch and prevent the pause:
@@ -894,11 +894,12 @@ class wfEngine_models_classes_ProcessExecutionService
      *
      * @access protected
      * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @param  Resource processExecution
      * @param  Resource activityExecution
      * @param  Resource currentConnector
      * @return mixed
      */
-    protected function getNewActivities( core_kernel_classes_Resource $activityExecution,  core_kernel_classes_Resource $currentConnector)
+    protected function getNewActivities( core_kernel_classes_Resource $processExecution,  core_kernel_classes_Resource $activityExecution,  core_kernel_classes_Resource $currentConnector)
     {
         $returnValue = null;
 
@@ -913,7 +914,6 @@ class wfEngine_models_classes_ProcessExecutionService
 		}
 		
 		$connectorType = $connectorService->getType($currentConnector);
-//		var_dump($connectorType->getLabel().' '.$connectorType->uriResource);
 		if(!($connectorType instanceof core_kernel_classes_Resource)){
 			throw new common_Exception('Connector type must be a Resource');
 		}
@@ -933,7 +933,7 @@ class wfEngine_models_classes_ProcessExecutionService
 			}
 			case INSTANCE_TYPEOFCONNECTORS_JOIN : {
 			
-				$returnValue = $this->getJoinConnectorNewActivities($activityExecution, $currentConnector);
+				$returnValue = $this->getJoinConnectorNewActivities($processExecution, $currentConnector);
 				
 				break;
 			}
@@ -946,7 +946,7 @@ class wfEngine_models_classes_ProcessExecutionService
 						if($activityService->isActivity($nextActivity)){
 							$returnValue[]= $nextActivity;
 						}else if($connectorService->isConnector($nextActivity)){
-							$returnValue = $this->getNewActivities($activityExecution, $nextActivity);
+							$returnValue = $this->getNewActivities($processExecution, $activityExecution, $nextActivity);
 						}
 
 						if(!empty($returnValue)){
@@ -968,11 +968,12 @@ class wfEngine_models_classes_ProcessExecutionService
      *
      * @access protected
      * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @param  Resource processExecution
      * @param  Resource activityExecution
      * @param  Resource conditionalConnector
      * @return array
      */
-    protected function getConditionalConnectorNewActivities( core_kernel_classes_Resource $activityExecution,  core_kernel_classes_Resource $conditionalConnector)
+    protected function getConditionalConnectorNewActivities( core_kernel_classes_Resource $processExecution,  core_kernel_classes_Resource $activityExecution,  core_kernel_classes_Resource $conditionalConnector)
     {
         $returnValue = array();
 
@@ -998,7 +999,7 @@ class wfEngine_models_classes_ProcessExecutionService
 				if($activityService->isActivity($thenActivity)){
 					$newActivities[] = $thenActivity;
 				}else if($activityService->isConnector($thenActivity)){
-					$newActivities = $this->getNewActivities($activityExecution, $thenActivity);
+					$newActivities = $this->getNewActivities($processExecution, $activityExecution, $thenActivity);
 				}
 			}else{
 				throw new wfEngine_models_classes_ProcessDefinitonException('no "then" activity found for the transition rule '.$transitionRule->uriResource);
@@ -1010,7 +1011,7 @@ class wfEngine_models_classes_ProcessExecutionService
 				if($activityService->isActivity($elseActivity)){
 					$newActivities[] = $elseActivity;
 				}else{
-					$newActivities = $this->getNewActivities($activityExecution, $elseActivity);
+					$newActivities = $this->getNewActivities($processExecution, $activityExecution, $elseActivity);
 				}
 			}else{
 				throw new wfEngine_models_classes_ProcessDefinitonException('no "else" activity found for the transition rule '.$transitionRule->uriResource);
@@ -1028,28 +1029,29 @@ class wfEngine_models_classes_ProcessExecutionService
      *
      * @access protected
      * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
-     * @param  Resource activityExecution
+     * @param  Resource processExecution
      * @param  Resource joinConnector
      * @return mixed
      */
-    protected function getJoinConnectorNewActivities( core_kernel_classes_Resource $activityExecution,  core_kernel_classes_Resource $joinConnector)
+    protected function getJoinConnectorNewActivities( core_kernel_classes_Resource $processExecution,  core_kernel_classes_Resource $joinConnector)
     {
         $returnValue = null;
 
         // section 127-0-1-1--4b38ca35:1323a4c748d:-8000:0000000000002F8F begin
 		
 		$connectorService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ConnectorService');
+		$activityService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityService');
 		
 		$returnValue = false;
 		$completed = false;
 				
 		//count the number of each different activity definition that has to be done parallely:
 		$activityResourceArray = array();
-		$prevActivites = $connectorService->getPreviousActivities($activityExecution);
+		$prevActivites = $connectorService->getPreviousActivities($joinConnector);
 		$countPrevActivities = count($prevActivites);
 		for($i=0; $i<$countPrevActivities; $i++){
 			$activityResource = $prevActivites[$i];
-			if($this->activityService->isActivity($activityResource)){
+			if($activityService->isActivity($activityResource)){
 				if(!isset($activityResourceArray[$activityResource->uriResource])){
 					$activityResourceArray[$activityResource->uriResource] = 1;
 				}else{
@@ -1079,7 +1081,7 @@ class wfEngine_models_classes_ProcessExecutionService
 				// $debug[$activityDefinition]['$this->resource->uri'] = $this->resource->uri;
 
 				if(!is_null($processExecutionResource)){
-					if($processExecutionResource->uriResource == $this->resource->uriResource){
+					if($processExecutionResource->uriResource == $processExecution->uriResource){
 						//check if the activity execution is associated to a token: 
 						//take the activity exec into account only if it is the case:
 						$tokens = $tokenClass->searchInstances(array(PROPERTY_TOKEN_ACTIVITYEXECUTION => $activityExecutionResource->uriResource), array('like' => false));
@@ -1108,7 +1110,7 @@ class wfEngine_models_classes_ProcessExecutionService
 				break;
 			}
 		}
-
+		
 		if($completed){
 			$returnValue = array();
 			//get THE (unique) next activity
@@ -1119,6 +1121,25 @@ class wfEngine_models_classes_ProcessExecutionService
 		}
 				
         // section 127-0-1-1--4b38ca35:1323a4c748d:-8000:0000000000002F8F end
+
+        return $returnValue;
+    }
+
+    /**
+     * Short description of method getExecutionOf
+     *
+     * @access public
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @param  Resource processExecution
+     * @return core_kernel_classes_Resource
+     */
+    public function getExecutionOf( core_kernel_classes_Resource $processExecution)
+    {
+        $returnValue = null;
+
+        // section 127-0-1-1--42c550f9:1323e0e4fe5:-8000:0000000000002FB6 begin
+		$returnValue = $processExecution->getUniquePropertyValue($this->processInstancesExecutionOfProp);
+        // section 127-0-1-1--42c550f9:1323e0e4fe5:-8000:0000000000002FB6 end
 
         return $returnValue;
     }
