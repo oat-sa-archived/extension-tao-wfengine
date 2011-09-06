@@ -5,7 +5,7 @@ error_reporting(E_ALL);
 /**
  * Connector Services
  *
- * @author Cédric Alfonsi, <cedric.alfonsi@tudor.lu>
+ * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
  * @package wfEngine
  * @subpackage models_classes
  */
@@ -18,7 +18,7 @@ if (0 > version_compare(PHP_VERSION, '5')) {
  * The Service class is an abstraction of each service instance. 
  * Used to centralize the behavior related to every servcie instances.
  *
- * @author Cédric Alfonsi, <cedric.alfonsi@tudor.lu>
+ * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
  */
 require_once('tao/models/classes/class.GenerisService.php');
 
@@ -34,7 +34,7 @@ require_once('tao/models/classes/class.GenerisService.php');
  * Connector Services
  *
  * @access public
- * @author Cédric Alfonsi, <cedric.alfonsi@tudor.lu>
+ * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
  * @package wfEngine
  * @subpackage models_classes
  */
@@ -52,7 +52,7 @@ class wfEngine_models_classes_ConnectorService
      * Check if the resource is a connector
      *
      * @access public
-     * @author Cédric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @param  Resource connector
      * @return boolean
      */
@@ -73,7 +73,7 @@ class wfEngine_models_classes_ConnectorService
      * retrieve connector nexts activities
      *
      * @access public
-     * @author Cédric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @param  Resource connector
      * @return array
      */
@@ -83,7 +83,13 @@ class wfEngine_models_classes_ConnectorService
 
         // section 127-0-1-1-66b8afb4:1322473370c:-8000:0000000000002EC5 begin
         $nextActivitiesProp = new core_kernel_classes_Property(PROPERTY_CONNECTORS_NEXTACTIVITIES);
-        $returnValue = $connector->getPropertyValuesCollection($nextActivitiesProp);
+        $nextActivities = $connector->getPropertyValues($nextActivitiesProp);
+		$count = count($nextActivities);
+		for($i=0;$i<$count;$i++){
+			if(common_Utils::isUri($nextActivities[$i])){
+				$returnValue[] = new core_kernel_classes_Resource($nextActivities[$i]);
+			}
+		}
         // section 127-0-1-1-66b8afb4:1322473370c:-8000:0000000000002EC5 end
 
         return (array) $returnValue;
@@ -93,7 +99,7 @@ class wfEngine_models_classes_ConnectorService
      * retrieve connector previous activities
      *
      * @access public
-     * @author Cédric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @param  Resource connector
      * @return array
      */
@@ -103,7 +109,14 @@ class wfEngine_models_classes_ConnectorService
 
         // section 127-0-1-1-66b8afb4:1322473370c:-8000:0000000000002ECB begin
         $prevActivitiesProp = new core_kernel_classes_Property(PROPERTY_CONNECTORS_PREVIOUSACTIVITIES,__METHOD__);
-        $returnValue = $connector->getPropertyValuesCollection($precActivitiesProp);      
+        $prevActivities = $connector->getPropertyValues($precActivitiesProp);
+		$count = count($prevActivities);
+		for($i=0;$i<$count;$i++){
+			if(common_Utils::isUri($prevActivities[$i])){
+				$returnValue[] = new core_kernel_classes_Resource($prevActivities[$i]);
+			}
+		}
+		
         // section 127-0-1-1-66b8afb4:1322473370c:-8000:0000000000002ECB end
 
         return (array) $returnValue;
@@ -113,7 +126,7 @@ class wfEngine_models_classes_ConnectorService
      * retrive type of Connector Conditionnal, Sequestionnal Parallele...
      *
      * @access public
-     * @author Cédric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @param  Resource connector
      * @return core_kernel_classes_Resource
      */
@@ -123,11 +136,11 @@ class wfEngine_models_classes_ConnectorService
 
         // section 127-0-1-1-66b8afb4:1322473370c:-8000:0000000000002ECF begin
        	$connTypeProp = new core_kernel_classes_Property(PROPERTY_CONNECTORS_TYPE);
-       	try {
+       	try{
        	    $returnValue = $connector->getUniquePropertyValue($connTypeProp);
        	}
        	catch (common_Exception $e) {
-       	    echo 'Exception when retreiving Connector type ' . $connector->uriResource;
+			throw new wfEngine_models_classes_ProcessDefinitonException('Exception when retreiving connector type ' . $connector->uriResource);
        	}
         // section 127-0-1-1-66b8afb4:1322473370c:-8000:0000000000002ECF end
 
@@ -135,14 +148,14 @@ class wfEngine_models_classes_ConnectorService
     }
 
     /**
-     * Short description of method getTransitionnalRule
+     * Short description of method getTransitionRule
      *
      * @access public
-     * @author Cédric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @param  Resource connector
      * @return core_kernel_classes_Resource
      */
-    public function getTransitionnalRule( core_kernel_classes_Resource $connector)
+    public function getTransitionRule( core_kernel_classes_Resource $connector)
     {
         $returnValue = null;
 

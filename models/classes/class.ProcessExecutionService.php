@@ -695,8 +695,6 @@ class wfEngine_models_classes_ProcessExecutionService
         // section 127-0-1-1-7a69d871:1322a76df3c:-8000:0000000000002F84 begin
 		
 		Session::setAttribute("activityExecutionUri", $activityExecution->uriResource);
-//		$processVars 				= $this->getVariables();//TBR
-//		$arrayOfProcessVars 		= wfEngine_helpers_ProcessUtil::processVarsToArray($processVars);//used only for conditional connector rule evaluation
 		
 		//init the services
 		$activityDefinitionService	= tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityService');
@@ -719,17 +717,14 @@ class wfEngine_models_classes_ProcessExecutionService
 			throw new Exception("cannot find the activity execution of the current activity {$activityBeforeTransition->uriResource} in perform transition");
 		}
 		
-		$proc = new wfEngine_models_classes_ProcessExecution($processExecution->uriResource);
-		
 		$nextConnector = $activityDefinitionService->getUniqueNextConnector($activityDefinition);
-		
 		$newActivities = array();
 		if(!is_null($nextConnector)){
-			$newActivities = $proc->getNewActivities($activityExecution, $nextConnector->uriResource);//TODO
+			$newActivities = $this->getNewActivities($activityExecution, $nextConnector);
 		}
 		
 		if($newActivities === false){
-			//means that the process must be paused:
+			//means that the process must be paused before transition: transition condition not fullfilled
 			$this->pause($processExecution);
 			return;
 		}
@@ -737,14 +732,9 @@ class wfEngine_models_classes_ProcessExecutionService
 		// The actual transition starts here:
 		
 		if(!is_null($nextConnector)){
-		
-			$nextActivities = array();
-			foreach($newActivities as $newActivity){
-				$nextActivities[] = $newActivity->resource;
-			}
 			
 			//transition done here the tokens are "moved" to the next step: even when it is the last, i.e. newActivity empty
-			$tokenService->move($nextConnector, $nextActivities, $currentUser, $processExecution);
+			$tokenService->move($nextConnector, $newActivities, $currentUser, $processExecution);
 			
 			//trigger the notifications
 			$notificationService->trigger($nextConnector, $processExecution);
@@ -772,14 +762,12 @@ class wfEngine_models_classes_ProcessExecutionService
 		$uniqueNextActivity = null;
 		if(!is_null($nextConnector)){
 			$connectorType = $nextConnector->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_TYPE));
-			
 			if($connectorType->uriResource != INSTANCE_TYPEOFCONNECTORS_PARALLEL){
 				
 				if(count($newActivities)==1){
 					//TODO: could do a double check here: if($newActivities[0] is one of the activty found in the current tokens):
 					
-					if($activityExecutionService->checkAcl($newActivities[0]->resource, $currentUser, $processExecution)){
-						
+					if($activityExecutionService->checkAcl($newActivities[0], $currentUser, $processExecution)){
 						$uniqueNextActivity = $newActivities[0];//the Activity Object
 					}
 				}
@@ -805,7 +793,7 @@ class wfEngine_models_classes_ProcessExecutionService
 			
 			foreach ($currentActivities as $activityAfterTransition){
 				//check if the current user is allowed to execute the activity
-				if($activityExecutionService->checkAcl($activityAfterTransition->resource, $currentUser, $processExecution)){
+				if($activityExecutionService->checkAcl($activityAfterTransition, $currentUser, $processExecution)){
 					$authorizedActivityDefinitions[] = $activityAfterTransition;
 					$setPause = false;
 				}
@@ -818,18 +806,14 @@ class wfEngine_models_classes_ProcessExecutionService
 		
 		//finish actions on the authorized acitivty definitions
 		foreach($authorizedActivityDefinitions as $activityAfterTransition){
-			// The process is not finished.
-			// It means we have to run the onBeforeInference rule of the new current activity.
 			
-			$activityAfterTransition->feedFlow(1);
-
-
 			// Last but not least ... is the next activity a machine activity ?
 			// if yes, we perform the transition.
 			/*
 			 * @todo to be tested
 			 */
-			if ($activityAfterTransition->isHidden){
+			
+			if ($activityDefinitionService->isHidden($activityAfterTransition)){
 				//required to create an activity execution here with:
 				
 				$currentUser = $userService->getCurrentUser();
@@ -842,13 +826,12 @@ class wfEngine_models_classes_ProcessExecutionService
 					// $this->redirect(_url('index', 'Main'));
 				// }//already performed above...
 				
-				$activityExecutionResource = $activityExecutionService->initExecution($activityAfterTransition->resource, $currentUser, $processExecution);
+				$activityExecutionResource = $activityExecutionService->initExecution($activityAfterTransition, $currentUser, $processExecution);
 				if(!is_null($activityExecutionResource)){
 					$this->performTransition($processExecution, $activityExecutionResource);
 				}else{
 					throw new wfEngine_models_classes_WfException('the activit execution cannot be create for the hidden activity');
 				}
-				
 				
 				//service not executed? use curl request?
 			}
@@ -909,64 +892,66 @@ class wfEngine_models_classes_ProcessExecutionService
     /**
      * Short description of method getNewActivities
      *
-     * @access public
+     * @access protected
      * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @param  Resource activityExecution
      * @param  Resource currentConnector
      * @return mixed
      */
-    public function getNewActivities( core_kernel_classes_Resource $activityExecution,  core_kernel_classes_Resource $currentConnector)
+    protected function getNewActivities( core_kernel_classes_Resource $activityExecution,  core_kernel_classes_Resource $currentConnector)
     {
         $returnValue = null;
 
         // section 127-0-1-1--4b38ca35:1323a4c748d:-8000:0000000000002F87 begin
+		
+		$connectorService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ConnectorService');
+		$activityService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityService');
 		
 		$returnValue = array();
 		if(is_null($currentConnector)){
 			return $returnValue;//certainly the last activity
 		}
 		
-		$connectorType = $currentConnector->getType();
+		$connectorType = $connectorService->getType($currentConnector);
+//		var_dump($connectorType->getLabel().' '.$connectorType->uriResource);
 		if(!($connectorType instanceof core_kernel_classes_Resource)){
 			throw new common_Exception('Connector type must be a Resource');
 		}
-		$connectorService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ConnectorService');
-		$activityService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityService');
 		
 		switch ($connectorType->uriResource) {
 			case INSTANCE_TYPEOFCONNECTORS_CONDITIONAL : {
 				
-				$returnValue = $this->getConditionalConnectorNewActivities($processExecution, $currentConnector);
+				$returnValue = $this->getConditionalConnectorNewActivities($activityExecution, $currentConnector);
 				
 				break;
 			}
 			case INSTANCE_TYPEOFCONNECTORS_PARALLEL : {
 
-				$nextActivitesCollection = $connectorService->getNextActivities($currentConnector);
-				foreach ($nextActivitesCollection->getIterator() as $activityResource){
-					$returnValue[] = $activityResource;
-				}
+				$returnValue = $connectorService->getNextActivities($currentConnector);
 				
 				break;
 			}
 			case INSTANCE_TYPEOFCONNECTORS_JOIN : {
 			
-				$returnValue = $this->getJoinConnectorNewActivities($processExecution, $currentConnector);
+				$returnValue = $this->getJoinConnectorNewActivities($activityExecution, $currentConnector);
 				
 				break;
 			}
 			default : {
 				//considered as a sequential connector
-				foreach ($currentConnector->getNextActivities()->getIterator() as $val){
-					
-					if($activityService->isActivity($val)){
-						$returnValue[]= $val;
-					}else if($connectorService->isConnector($val)){
-						$returnValue = $this->getNewActivities($processExecution, $val);
-					}
-					
-					if(!empty($returnValue)){
-						break;//since it is a sequential one, stop at the first valid loop:
+				$newActivities = $connectorService->getNextActivities($currentConnector);
+				if(count($newActivities)){
+					foreach ($newActivities as $nextActivity){
+
+						if($activityService->isActivity($nextActivity)){
+							$returnValue[]= $nextActivity;
+						}else if($connectorService->isConnector($nextActivity)){
+							$returnValue = $this->getNewActivities($activityExecution, $nextActivity);
+						}
+
+						if(!empty($returnValue)){
+							break;//since it is a sequential one, stop at the first valid loop:
+						}
 					}
 				}
 				break;
@@ -1053,15 +1038,17 @@ class wfEngine_models_classes_ProcessExecutionService
 
         // section 127-0-1-1--4b38ca35:1323a4c748d:-8000:0000000000002F8F begin
 		
-		throw new Exception('work in progress '.__METHOD__);
+		$connectorService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ConnectorService');
 		
 		$returnValue = false;
 		$completed = false;
 				
 		//count the number of each different activity definition that has to be done parallely:
 		$activityResourceArray = array();
-		$prevActivitesCollection = $joinConnector->getPreviousActivities();
-		foreach ($prevActivitesCollection->getIterator() as $activityResource){
+		$prevActivites = $connectorService->getPreviousActivities($activityExecution);
+		$countPrevActivities = count($prevActivites);
+		for($i=0; $i<$countPrevActivities; $i++){
+			$activityResource = $prevActivites[$i];
 			if($this->activityService->isActivity($activityResource)){
 				if(!isset($activityResourceArray[$activityResource->uriResource])){
 					$activityResourceArray[$activityResource->uriResource] = 1;
@@ -1076,7 +1063,7 @@ class wfEngine_models_classes_ProcessExecutionService
 		$propActivityExecIsFinished = new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_IS_FINISHED);
 		$propActivityExecProcessExec = new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_PROCESSEXECUTION);
 		$activityExecutionClass = new core_kernel_classes_Class(CLASS_ACTIVITY_EXECUTION);				
-		foreach($activityResourceArray as $activityDefinition=>$count){
+		foreach($activityResourceArray as $activityDefinition => $count){
 			//get all activity execution for the current activity definition and for the current process execution indepedently from the user (which is not known at the authoring time)
 
 			//get the collection of the activity executions performed for the given actiivty definition:
@@ -1125,10 +1112,7 @@ class wfEngine_models_classes_ProcessExecutionService
 		if($completed){
 			$returnValue = array();
 			//get THE (unique) next activity
-			$nextActivitesCollection = $joinConnector->getNextActivities();
-			foreach ($nextActivitesCollection->getIterator() as $activityResource){
-				$returnValue[] = new wfEngine_models_classes_Activity($activityResource->uriResource);//normally, should be only ONE, so could actually break after the first loop
-			}
+			$returnValue = $connectorService->getNextActivities($joinConnector);//normally, should be only ONE, so could actually break after the first loop
 		}else{
 			//pause, do not allow transition so return boolean false
 			$returnValue = false;

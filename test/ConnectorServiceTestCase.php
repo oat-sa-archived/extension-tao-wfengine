@@ -99,7 +99,7 @@ class ConnectorServiceTestCase extends UnitTestCase {
         $myProcessVar1 = $this->authoringService->getProcessVariable('myProcessVarCode1', true);
         $transitionRule = $this->authoringService->createTransitionRule($connector1, '^myProcessVarCode1 == 1');
 
-        $transitionRuleBis = $this->service->getTransitionnalRule($connector1);
+        $transitionRuleBis = $this->service->getTransitionRule($connector1);
         $this->assertEqual($transitionRule->uriResource,$transitionRuleBis->uriResource);
 
         $then->delete(true);
