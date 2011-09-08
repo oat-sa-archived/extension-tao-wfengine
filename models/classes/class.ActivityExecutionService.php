@@ -114,13 +114,18 @@ class wfEngine_models_classes_ActivityExecutionService
     public function __construct()
     {
         // section 127-0-1-1--14d619a:12ce565682e:-8000:000000000000297B begin
-        
+        $this->activityExecutionClass	= new core_kernel_classes_Class(CLASS_ACTIVITY_EXECUTION);
+		$this->activityExecutionStatusProperty = new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_STATUS);
+			
     	$this->processExecutionProperty = new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_PROCESSEXECUTION);
         $this->currentUserProperty		= new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_CURRENT_USER);
     	$this->activityProperty			= new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_ACTIVITY);
     	$this->ACLModeProperty			= new core_kernel_classes_Property(PROPERTY_ACTIVITIES_ACL_MODE);
         $this->restrictedUserProperty	= new core_kernel_classes_Property(PROPERTY_ACTIVITIES_RESTRICTED_USER);
         $this->restrictedRoleProperty	= new core_kernel_classes_Property(PROPERTY_ACTIVITIES_RESTRICTED_ROLE);
+		
+		$this->processInstanceActivityExecutionsProperty = new core_kernel_classes_Property(PROPERTY_PROCESSINSTANCES_ACTIVITYEXECUTIONS); 
+		
         $this->activityService          = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityService');
         // section 127-0-1-1--14d619a:12ce565682e:-8000:000000000000297B end
     }
@@ -288,7 +293,7 @@ class wfEngine_models_classes_ActivityExecutionService
         $returnValue = null;
 
         // section 127-0-1-1--11ec324e:128d9678eea:-8000:0000000000001F7C begin
-        
+        //deprecated
         
         if(!is_null($activity) && !is_null($currentUser) && !is_null($processExecution)){
 	        
@@ -537,7 +542,7 @@ class wfEngine_models_classes_ActivityExecutionService
         $returnValue = array();
 
         // section 127-0-1-1--10e47d9e:128d54bbb0d:-8000:0000000000001F6F begin
-
+		//not used
         if(!is_null($process) && !is_null($currentUser)){
         	
         	//loop on all the activities of a process
@@ -676,19 +681,166 @@ class wfEngine_models_classes_ActivityExecutionService
     }
 
     /**
-     * Short description of method isFinished
+     * Short description of method setStatus
      *
      * @access public
      * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
-     * @param  activityExecution
+     * @param  Resource activityExecution
+     * @param  string status
      * @return boolean
      */
-    public function isFinished($activityExecution)
+    public function setStatus( core_kernel_classes_Resource $activityExecution, $status)
     {
         $returnValue = (bool) false;
 
         // section 127-0-1-1--4a6e3e05:1323e2d5c53:-8000:0000000000002FBE begin
+		
+		//add status information
+		if (!empty($status)){
+			if($status instanceof core_kernel_classes_Resource){
+				switch($status->uriResource){
+					case INSTANCE_PROCESSSTATUS_RESUMED:
+					case INSTANCE_PROCESSSTATUS_STARTED:
+					case INSTANCE_PROCESSSTATUS_FINISHED:
+					case INSTANCE_PROCESSSTATUS_PAUSED:
+					case INSTANCE_PROCESSSTATUS_CLOSED:{
+						$returnValue = $activityExecution->editPropertyValues($this->activityExecutionStatusProperty, $status->uriResource);
+						break;
+					}
+				}
+			}else if(is_string($status)){
+				switch($status){
+					case 'resumed':{$returnValue = $activityExecution->editPropertyValues($this->activityExecutionStatusProperty, INSTANCE_PROCESSSTATUS_RESUMED);break;}
+					case 'started':{$returnValue = $activityExecution->editPropertyValues($this->activityExecutionStatusProperty, INSTANCE_PROCESSSTATUS_STARTED);break;}
+					case 'finished':{$returnValue = $activityExecution->editPropertyValues($this->activityExecutionStatusProperty, INSTANCE_PROCESSSTATUS_FINISHED);break;}
+					case 'paused':{$returnValue = $activityExecution->editPropertyValues($this->activityExecutionStatusProperty, INSTANCE_PROCESSSTATUS_PAUSED);break;}
+					case 'closed':{$returnValue = $activityExecution->editPropertyValues($this->activityExecutionStatusProperty, INSTANCE_PROCESSSTATUS_CLOSED);break;}
+				}
+			}
+		}
+		
         // section 127-0-1-1--4a6e3e05:1323e2d5c53:-8000:0000000000002FBE end
+
+        return (bool) $returnValue;
+    }
+
+    /**
+     * Short description of method createActivityExecution
+     *
+     * @access public
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @param  Resource activityDefinition
+     * @param  Resource processExecution
+     * @return core_kernel_classes_Resource
+     */
+    public function createActivityExecution( core_kernel_classes_Resource $activityDefinition,  core_kernel_classes_Resource $processExecution)
+    {
+        $returnValue = null;
+
+        // section 127-0-1-1--6e0edde7:13247ef74e0:-8000:0000000000002FC1 begin
+		
+		$activityExecution = $this->createInstance($this->activityExecutionClass, 'Execution of '.$activityDefinition->getLabel().' at '.time());//d-m-Y H:i:s u
+        $activityExecution->setPropertyValue($this->activityProperty, $activityDefinition->uriResource);
+		if($processExecution->setPropertyValue($this->processInstanceActivityExecutionsProperty, $activityExecution->uriResource)){
+			$returnValue = $activityExecution;
+		}
+        // section 127-0-1-1--6e0edde7:13247ef74e0:-8000:0000000000002FC1 end
+
+        return $returnValue;
+    }
+
+    /**
+     * Short description of method setActivityExecutionUser
+     *
+     * @access public
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @param  Resource activityExecution
+     * @param  Resource user
+     * @param  boolean forced
+     * @return boolean
+     */
+    public function setActivityExecutionUser( core_kernel_classes_Resource $activityExecution,  core_kernel_classes_Resource $user, $forced = false)
+    {
+        $returnValue = (bool) false;
+
+        // section 127-0-1-1--6e0edde7:13247ef74e0:-8000:0000000000002FE0 begin
+		
+		if($forced){
+			$returnValue = $activityExecution->editPropertyValues($this->activityExecutionCurrentUserProperty, $status->uriResource);
+		}else{
+			$currentUser = $activityExecution->getOnePropertyValue($this->activityExecutionCurrentUserProperty);
+			if(!is_null($currentUser)){
+				$errorMessage = "the activity execution {$activityExecution->getLabel()}({$activityExecution->uriResource}) has already been assigned to the user {$user->getLabel()}({$user->uriResource})";
+				throw new wfEngine_models_classes_ProcessExecutionException($errorMessage);
+			}else{
+				$returnValue = $activityExecution->editPropertyValues($this->activityExecutionCurrentUserProperty, $status->uriResource);
+			}
+		}
+		
+        // section 127-0-1-1--6e0edde7:13247ef74e0:-8000:0000000000002FE0 end
+
+        return (bool) $returnValue;
+    }
+
+    /**
+     * Short description of method finish
+     *
+     * @access public
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @param  Resource activityExecution
+     * @return boolean
+     */
+    public function finish( core_kernel_classes_Resource $activityExecution)
+    {
+        $returnValue = (bool) false;
+
+        // section 127-0-1-1--6e0edde7:13247ef74e0:-8000:0000000000002FF3 begin
+		$this->setStatus($activityExecution, 'finished');
+		
+        // section 127-0-1-1--6e0edde7:13247ef74e0:-8000:0000000000002FF3 end
+
+        return (bool) $returnValue;
+    }
+
+    /**
+     * Short description of method isFinished
+     *
+     * @access public
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @param  Resource activityExecution
+     * @return boolean
+     */
+    public function isFinished( core_kernel_classes_Resource $activityExecution)
+    {
+        $returnValue = (bool) false;
+
+        // section 127-0-1-1--6e0edde7:13247ef74e0:-8000:0000000000002FF7 begin
+		$status = $processExecution->getOnePropertyValue($this->activityExecutionStatusProperty);
+		if(!is_null($status)){
+			if($status->uriResource == INSTANCE_PROCESSSTATUS_FINISHED){
+				$returnValue = true;
+			}
+		}
+        // section 127-0-1-1--6e0edde7:13247ef74e0:-8000:0000000000002FF7 end
+
+        return (bool) $returnValue;
+    }
+
+    /**
+     * Short description of method resume
+     *
+     * @access public
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @param  Resource activityExecution
+     * @return boolean
+     */
+    public function resume( core_kernel_classes_Resource $activityExecution)
+    {
+        $returnValue = (bool) false;
+
+        // section 127-0-1-1--6e0edde7:13247ef74e0:-8000:0000000000003005 begin
+		$this->setStatus($activityExecution, 'resumed');
+        // section 127-0-1-1--6e0edde7:13247ef74e0:-8000:0000000000003005 end
 
         return (bool) $returnValue;
     }
