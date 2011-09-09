@@ -899,6 +899,200 @@ class wfEngine_models_classes_ActivityExecutionService
         return $returnValue;
     }
 
+    /**
+     * Short description of method moveForward
+     *
+     * @access public
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @param  Resource activityExecution
+     * @param  Resource connector
+     * @param  array nextActivities
+     * @param  Resource processExecution
+     * @return array
+     */
+    public function moveForward( core_kernel_classes_Resource $activityExecution,  core_kernel_classes_Resource $connector, $nextActivities,  core_kernel_classes_Resource $processExecution)
+    {
+        $returnValue = array();
+
+        // section 127-0-1-1-6bd62662:1324d269203:-8000:0000000000002FFF begin
+		
+		if(!is_null($connector) && !is_null($user) && !is_null($processExecution)){
+             
+            $activityExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityExecutionService');
+            $activityService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityService');
+            
+            //get the activity around the connector
+            $previousActivities = $connector->getPropertyValuesCollection(new core_kernel_classes_Property(PROPERTY_CONNECTORS_PREVIOUSACTIVITIES));
+             
+            $currentTokens = array();
+            $type = $connector->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_TYPE));
+            switch($type->uriResource){
+
+                /// SEQUENCE & SPLIT ///
+                case INSTANCE_TYPEOFCONNECTORS_SEQUENCE:
+                case INSTANCE_TYPEOFCONNECTORS_CONDITIONAL:
+                     
+                    if(count($nextActivities) == 0){
+                        throw new Exception("No next activity defined");
+                    }
+                    if(count($nextActivities) > 1){
+                        throw new Exception("Too many next activities, only one is required after a split or a sequence connector");
+                    }
+                    $nextActivity = $nextActivities[0];
+                     
+                    //get the tokens on the previous activity
+                    $tokens = array();
+                    foreach($previousActivities->getIterator() as $previousActivity){
+                        $previousActivityExecution = $activityExecutionService->getExecution($previousActivity, $user, $processExecution);
+                        $tokens = array_merge($tokens, $this->getTokens($previousActivityExecution));
+                    }
+                     
+                    if(count($tokens) == 0){
+                        throw new Exception("No token found for that user");
+                    }
+                    if(count($tokens) > 1){
+                        throw new Exception("To many tokens, unable to move them through a split or a sequence connector");
+                    }
+                    foreach($tokens as $token){
+                        //create the token for next activity
+                        $newToken = $this->duplicate($token);
+
+                        //bind the next activity
+                        $newToken->setPropertyValue($this->tokenActivityProp, $nextActivity->uriResource);
+                         
+                        //set as current
+                        $currentTokens[] = $newToken;
+                         
+                        //delete the previous
+                       	$this->delete($token);
+                    }
+                     
+                    break;
+                     
+                    /// PARALLEL ///
+                case INSTANCE_TYPEOFCONNECTORS_PARALLEL:
+                     
+                    //get the tokens on the previous activity
+                    $tokens = array();
+                    foreach($previousActivities->getIterator() as $previousActivity){
+                        $previousActivityExecution = $activityExecutionService->getExecution($previousActivity, $user, $processExecution);
+                        $tokens = array_merge($tokens, $this->getTokens($previousActivityExecution));
+                    }
+                     
+                    if(count($tokens) == 0){
+                        throw new Exception("No token found for that user");
+                    }
+                    if(count($tokens) > 1){
+                        throw new Exception("To many tokens, unable to move them through a split or a sequence connector");
+                    }
+                    foreach($tokens as $token){
+                         
+                        foreach($nextActivities as $nextActivity){
+                            $newToken = $this->duplicate($token);
+                            $newToken->setPropertyValue($this->tokenActivityProp, $nextActivity->uriResource);
+                            $currentTokens[] = $newToken;
+                        }
+                        $this->delete($token);
+                    }
+                    break;
+                     
+                    /// JOIN ///
+                case INSTANCE_TYPEOFCONNECTORS_JOIN:
+
+                    if(count($nextActivities) == 0){
+                        throw new Exception("No next activity defined");
+                    }
+                    if(count($nextActivities) > 1){
+                        throw new Exception("Too many next activities, only one is allowed after a join connector");
+                    }
+                    $nextActivity = $nextActivities[0];
+                     
+                    $activityResourceArray = array();
+                    $tokens = array();
+                    foreach ($previousActivities->getIterator() as $activityResource){
+                        if($activityService->isActivity($activityResource)){
+                            if(!isset($activityResourceArray[$activityResource->uriResource])){
+                                $activityResourceArray[$activityResource->uriResource] = 1;
+                            }else{
+                                $activityResourceArray[$activityResource->uriResource] += 1;
+                            }
+                        }
+                    }
+                    foreach($activityResourceArray as $activityDefinitionUri => $count){
+                        //compare with execution and get tokens:
+                        $previousActivityExecutions = $activityExecutionService->getExecutions(new core_kernel_classes_Resource($activityDefinitionUri), $processExecution);
+                        if(count($previousActivityExecutions) == $count){
+                            foreach($previousActivityExecutions as $previousActivityExecution){
+                                //get the related tokens:
+                                $tokens = array_merge($tokens, $this->getTokens($previousActivityExecution, false));
+                            }
+                        }else{
+                            throw new Exception("the number of activity execution does not correspond to the join connector definition (".count($previousActivityExecutions)." against {$count})");
+                        }
+                    }
+                    	
+                    //create the token for next activity
+                    $newToken = $this->merge($tokens);
+                     
+                    //bind the next activity
+                    $newToken->setPropertyValue($this->tokenActivityProp, $nextActivity->uriResource);
+                     
+                    //set as current
+                    $currentTokens[] = $newToken;
+                     
+                    //delete the previous
+                    foreach($tokens as $token){
+                        $this->delete($token);
+                    }
+                    break;
+            }
+            $this->setCurrents($processExecution, $currentTokens);
+        }
+		
+        // section 127-0-1-1-6bd62662:1324d269203:-8000:0000000000002FFF end
+
+        return (array) $returnValue;
+    }
+
+    /**
+     * Short description of method jump
+     *
+     * @access public
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @param  Resource activityExecution
+     * @param  Resource nextActivity
+     * @param  Resource processExecution
+     * @return core_kernel_classes_Resource
+     */
+    public function jump( core_kernel_classes_Resource $activityExecution,  core_kernel_classes_Resource $nextActivity,  core_kernel_classes_Resource $processExecution)
+    {
+        $returnValue = null;
+
+        // section 127-0-1-1-6bd62662:1324d269203:-8000:0000000000003002 begin
+        // section 127-0-1-1-6bd62662:1324d269203:-8000:0000000000003002 end
+
+        return $returnValue;
+    }
+
+    /**
+     * Short description of method moveBackward
+     *
+     * @access public
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @param  Resource activityExecution
+     * @param  Resource processExecution
+     * @return array
+     */
+    public function moveBackward( core_kernel_classes_Resource $activityExecution,  core_kernel_classes_Resource $processExecution)
+    {
+        $returnValue = array();
+
+        // section 127-0-1-1-6bd62662:1324d269203:-8000:000000000000300A begin
+        // section 127-0-1-1-6bd62662:1324d269203:-8000:000000000000300A end
+
+        return (array) $returnValue;
+    }
+
 } /* end of class wfEngine_models_classes_ActivityExecutionService */
 
 ?>

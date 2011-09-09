@@ -695,22 +695,18 @@ class wfEngine_models_classes_ProcessExecutionService
 		$tokenService 				= tao_models_classes_ServiceFactory::get('wfEngine_models_classes_TokenService');
 		$notificationService 		= tao_models_classes_ServiceFactory::get('wfEngine_models_classes_NotificationService');
 		
-		//get the current user
 		$currentUser = $userService->getCurrentUser();
 		
 		$activityExecution = new core_kernel_classes_Resource($activityExecution->uriResource);
-		$activityDefinition = $this->activityExecutionService->getExecutionOf($activityExecution);
-		$activityBeforeTransition = $activityDefinition;
-
 		//set the activity execution of the current user as finished:
-		if(!is_null($activityExecution)){
+		if($activityExecution->exists()){
 			$this->activityExecutionService->finish($activityExecution);
-			
 		}else{
 			throw new Exception("cannot find the activity execution of the current activity {$activityBeforeTransition->uriResource} in perform transition");
 		}
 		
-		$nextConnector = $activityDefinitionService->getUniqueNextConnector($activityDefinition);
+		$activityBeforeTransition = $this->activityExecutionService->getExecutionOf($activityExecution);
+		$nextConnector = $activityDefinitionService->getUniqueNextConnector($activityBeforeTransition);
 		$newActivities = array();
 		if(!is_null($nextConnector)){
 			$newActivities = $this->getNewActivities($processExecution, $activityExecution, $nextConnector);
@@ -719,7 +715,7 @@ class wfEngine_models_classes_ProcessExecutionService
 		if($newActivities === false){
 			//means that the process must be paused before transition: transition condition not fullfilled
 			$this->pause($processExecution);
-			return;
+			return $returnValue;
 		}
 		
 		// The actual transition starts here:
@@ -737,12 +733,16 @@ class wfEngine_models_classes_ProcessExecutionService
 		
 		//transition done: now get the following activities:
 		
+		//Manage the path:
+		//set previous activity executions:
+		
+		//set following activity executions:
 		
 		//get the current activities, whether the user has the right or not:
 		$currentActivities = array();
 		foreach($tokenService->getCurrentActivities($processExecution) as $currentActivity){
 			//TODO: investigate if possible to use the array of newActivities instead of using the token service here
-			
+			//ccl: only usefull to check if the "token" has effectively been moved
 			$currentActivities[] = $currentActivity;
 			
 			//manage path here:
@@ -752,6 +752,7 @@ class wfEngine_models_classes_ProcessExecutionService
 			
 		}
 		
+		$currentActivities = $newActivities;
 		//if the connector is not a parallel one, let the user continue in his current branch and prevent the pause:
 		$uniqueNextActivity = null;
 		if(!is_null($nextConnector)){
@@ -778,7 +779,7 @@ class wfEngine_models_classes_ProcessExecutionService
 			return;
 		}elseif(!is_null($uniqueNextActivity)){
 			
-			//we are certain what the next activity would be for the user so return it:
+			//we are certain that the next activity would be for the user so return it:
 			$authorizedActivityDefinitions[] = $uniqueNextActivity;
 			$currentActivities = array();
 			$currentActivities[] = $uniqueNextActivity;
@@ -836,6 +837,8 @@ class wfEngine_models_classes_ProcessExecutionService
 		}else{
 			$this->resume($processExecution);
 		}
+		
+		$returnValue = true;
 		
         // section 127-0-1-1-7a69d871:1322a76df3c:-8000:0000000000002F84 end
 
@@ -1257,7 +1260,7 @@ class wfEngine_models_classes_ProcessExecutionService
 				}
 			}else if(count($activityExecutions) == 1){
 				//the activity execution for the given activity definiiton and the current user is already exists, so retirieve it and set the execution to the status resumed:
-				$currentActivityExec = $activityExecutions[0];
+				$currentActivityExec = array_pop($activityExecutions);
 				if($this->activityExecutionService->resume($currentActivityExec)){
 					$returnValue = $currentActivityExec;
 				}
@@ -1288,18 +1291,7 @@ class wfEngine_models_classes_ProcessExecutionService
         $returnValue = array();
 
         // section 127-0-1-1--6e0edde7:13247ef74e0:-8000:0000000000002FE5 begin
-		/*
-		$availableActivityExecutions = $this->activityExecutionsClass->searchInstances(array(
-			PROPERTY_ACTIVITY_EXECUTION_PROCESSEXECUTION	=>	$processExecution->uriResource,
-			PROPERTY_ACTIVITY_EXECUTION_CURRENT_USER		=>	array(
-				$currentUser->uriResource,
-				NULL
-			)
-		),array(
-			'like'	=> false,
-			'recursive' => false
-		));
-		*/
+		
 		$availableActivityExecutions = array();
 		$currentActivityExecutions = $this->getCurrentActivityExecutions($processExecution);
 		$propActivityExecutionCurrentUser = new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_CURRENT_USER);
