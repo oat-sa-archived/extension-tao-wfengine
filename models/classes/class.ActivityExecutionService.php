@@ -629,13 +629,27 @@ class wfEngine_models_classes_ActivityExecutionService
 
         // section 127-0-1-1--4b38ca35:1323a4c748d:-8000:0000000000002F9B begin
 		
-		$tokenService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_TokenService');
-		
-		$token = $tokenService->getCurrent($activityExecution);
-		if(!is_null($token)){
-			$arrayOfProcessVars[VAR_PROCESS_INSTANCE] = $token->uriResource;
-			//TODO: get actual variables values from token instead of this key
-		}
+		if(!is_null($activityExecution)){
+            $tokenVarKeys = @unserialize($activityExecution->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_VARIABLES)));
+            if($tokenVarKeys !== false){
+                if(is_array($tokenVarKeys)){
+					$processVariablesClass = new core_kernel_classes_Class(CLASS_PROCESSVARIABLES);
+                    foreach($tokenVarKeys as $key){
+						$processVariables = $processVariablesClass->searchInstances(array(PROPERTY_PROCESSVARIABLES_CODE => $key), array('like' => false));
+						if(count($processVariables) == 1) {//not necessary
+							$property = new core_kernel_classes_Property(array_shift($processVariables)->uriResource);
+							$returnValue[] = array(
+									'code'			=> $key,
+									'propertyUri'	=> $property->uriResource,
+									'value'			=> $activityExecution->getPropertyValues($property)
+								);
+						}else{
+							throw new wfEngine_models_classes_ProcessExecutionException('More than one process variable share the same code');
+						}
+                    }
+                }
+            }
+        }
 		
         // section 127-0-1-1--4b38ca35:1323a4c748d:-8000:0000000000002F9B end
 
@@ -916,100 +930,72 @@ class wfEngine_models_classes_ActivityExecutionService
 
         // section 127-0-1-1-6bd62662:1324d269203:-8000:0000000000002FFF begin
 		
-		if(!is_null($connector) && !is_null($user) && !is_null($processExecution)){
+		if(!is_null($activityExecution) && !is_null($connector) && !is_null($processExecution)){
              
-            $activityExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityExecutionService');
             $activityService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityService');
             
-            //get the activity around the connector
-            $previousActivities = $connector->getPropertyValuesCollection(new core_kernel_classes_Property(PROPERTY_CONNECTORS_PREVIOUSACTIVITIES));
              
             $currentTokens = array();
             $type = $connector->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_TYPE));
             switch($type->uriResource){
 
-                /// SEQUENCE & SPLIT ///
+                /// SEQUENCE & CONDITIONAL ///
                 case INSTANCE_TYPEOFCONNECTORS_SEQUENCE:
-                case INSTANCE_TYPEOFCONNECTORS_CONDITIONAL:
+                case INSTANCE_TYPEOFCONNECTORS_CONDITIONAL:{
                      
                     if(count($nextActivities) == 0){
-                        throw new Exception("No next activity defined");
+                        throw new wfEngine_models_classes_ProcessExecutionException("No next activity defined");
                     }
                     if(count($nextActivities) > 1){
-                        throw new Exception("Too many next activities, only one is required after a split or a sequence connector");
+                        throw new wfEngine_models_classes_ProcessExecutionException("Too many next activities, only one is required after a conditional or a sequence connector");
                     }
                     $nextActivity = $nextActivities[0];
-                     
-                    //get the tokens on the previous activity
-                    $tokens = array();
-                    foreach($previousActivities->getIterator() as $previousActivity){
-                        $previousActivityExecution = $activityExecutionService->getExecution($previousActivity, $user, $processExecution);
-                        $tokens = array_merge($tokens, $this->getTokens($previousActivityExecution));
-                    }
-                     
-                    if(count($tokens) == 0){
-                        throw new Exception("No token found for that user");
-                    }
-                    if(count($tokens) > 1){
-                        throw new Exception("To many tokens, unable to move them through a split or a sequence connector");
-                    }
-                    foreach($tokens as $token){
-                        //create the token for next activity
-                        $newToken = $this->duplicate($token);
-
-                        //bind the next activity
-                        $newToken->setPropertyValue($this->tokenActivityProp, $nextActivity->uriResource);
-                         
-                        //set as current
-                        $currentTokens[] = $newToken;
-                         
-                        //delete the previous
-                       	$this->delete($token);
-                    }
-                     
+                    
+					$newActivityExecution = $this->duplicateActivityExecutionVariables($activityExecution, $nextActivity, $processExecution);
+					if(!is_null($newActivityExecution)){
+						//set backward and forward property values:
+						$activityExecution->setPropertyValue(new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_FOLLOWING), $newActivityExecution->uriResource);
+						$newActivityExecution->setPropertyValue(new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_PREVIOUS), $activityExecution->uriResource);
+						$returnValue[$newActivityExecution->uriResource] = $newActivityExecution;
+					}
+		
                     break;
-                     
-                    /// PARALLEL ///
-                case INSTANCE_TYPEOFCONNECTORS_PARALLEL:
-                     
-                    //get the tokens on the previous activity
-                    $tokens = array();
-                    foreach($previousActivities->getIterator() as $previousActivity){
-                        $previousActivityExecution = $activityExecutionService->getExecution($previousActivity, $user, $processExecution);
-                        $tokens = array_merge($tokens, $this->getTokens($previousActivityExecution));
-                    }
-                     
-                    if(count($tokens) == 0){
-                        throw new Exception("No token found for that user");
-                    }
-                    if(count($tokens) > 1){
-                        throw new Exception("To many tokens, unable to move them through a split or a sequence connector");
-                    }
-                    foreach($tokens as $token){
-                         
-                        foreach($nextActivities as $nextActivity){
-                            $newToken = $this->duplicate($token);
-                            $newToken->setPropertyValue($this->tokenActivityProp, $nextActivity->uriResource);
-                            $currentTokens[] = $newToken;
-                        }
-                        $this->delete($token);
-                    }
+                }
+				/// PARALLEL ///
+                case INSTANCE_TYPEOFCONNECTORS_PARALLEL:{
+                    
+					foreach($nextActivities as $nextActivity){
+						$newActivityExecution = $this->duplicateActivityExecutionVariables($activityExecution, $nextActivity, $processExecution);
+						if(!is_null($newActivityExecution)){
+							$activityExecution->setPropertyValue(new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_FOLLOWING), $newActivityExecution->uriResource);
+							$newActivityExecution->setPropertyValue(new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_PREVIOUS), $activityExecution->uriResource);
+							$returnValue[$newActivityExecution->uriResource] = $newActivityExecution;
+						}
+					}
+					
                     break;
-                     
-                    /// JOIN ///
-                case INSTANCE_TYPEOFCONNECTORS_JOIN:
-
+                }
+				/// JOIN ///
+                case INSTANCE_TYPEOFCONNECTORS_JOIN:{
+					
+					$processExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessExecutionService');
+					
                     if(count($nextActivities) == 0){
-                        throw new Exception("No next activity defined");
+                        throw new wfEngine_models_classes_ProcessExecutionException("No next activity defined");
                     }
                     if(count($nextActivities) > 1){
-                        throw new Exception("Too many next activities, only one is allowed after a join connector");
+                        throw new wfEngine_models_classes_ProcessExecutionException("Too many next activities, only one is allowed after a join connector");
                     }
                     $nextActivity = $nextActivities[0];
-                     
+                    
+					//get the activity around the connector
+		            $previousActivities = $connector->getPropertyValues(new core_kernel_classes_Property(PROPERTY_CONNECTORS_PREVIOUSACTIVITIES));
+			
                     $activityResourceArray = array();
-                    $tokens = array();
-                    foreach ($previousActivities->getIterator() as $activityResource){
+                    $mergingActivityExecutions = array();
+					$previousActivitiesCount = count($previousActivities);
+                    for($i=0; $i<$previousActivitiesCount; $i++){
+						$activityResource = new core_kernel_classes_Resource($previousActivities[$i]);
                         if($activityService->isActivity($activityResource)){
                             if(!isset($activityResourceArray[$activityResource->uriResource])){
                                 $activityResourceArray[$activityResource->uriResource] = 1;
@@ -1017,37 +1003,37 @@ class wfEngine_models_classes_ActivityExecutionService
                                 $activityResourceArray[$activityResource->uriResource] += 1;
                             }
                         }
+						unset($activityResource);
                     }
                     foreach($activityResourceArray as $activityDefinitionUri => $count){
                         //compare with execution and get tokens:
-                        $previousActivityExecutions = $activityExecutionService->getExecutions(new core_kernel_classes_Resource($activityDefinitionUri), $processExecution);
+						$activityDefinition = new core_kernel_classes_Resource($activityDefinitionUri);
+                        $previousActivityExecutions = $processExecutionService->getCurrentActivityExecutions($processExecution, $activityDefinition);
                         if(count($previousActivityExecutions) == $count){
                             foreach($previousActivityExecutions as $previousActivityExecution){
-                                //get the related tokens:
-                                $tokens = array_merge($tokens, $this->getTokens($previousActivityExecution, false));
+                                $mergingActivityExecutions[$previousActivityExecution->uriResource] = $previousActivityExecution;
                             }
                         }else{
-                            throw new Exception("the number of activity execution does not correspond to the join connector definition (".count($previousActivityExecutions)." against {$count})");
+                            throw new wfEngine_models_classes_ProcessExecutionException("the number of activity execution does not correspond to the join connector definition (".count($previousActivityExecutions)." against {$count})");
                         }
+						unset($activityDefinition);
                     }
                     	
                     //create the token for next activity
-                    $newToken = $this->merge($tokens);
-                     
-                    //bind the next activity
-                    $newToken->setPropertyValue($this->tokenActivityProp, $nextActivity->uriResource);
-                     
-                    //set as current
-                    $currentTokens[] = $newToken;
-                     
-                    //delete the previous
-                    foreach($tokens as $token){
-                        $this->delete($token);
-                    }
+                    $newActivityExecution = $this->mergeActivityExecutionVariables($mergingActivityExecutions, $nextActivity, $processExecution);
+                    if(!is_null($newActivityExecution)){
+						foreach ($mergingActivityExecutions as $oldActivityExecution){
+							$oldActivityExecution->setPropertyValue(new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_FOLLOWING), $newActivityExecution->uriResource);
+							$newActivityExecution->setPropertyValue(new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_PREVIOUS), $oldActivityExecution->uriResource);
+						}
+						$returnValue[$newActivityExecution->uriResource] = $newActivityExecution;
+					}
                     break;
+				}	
             }
-            $this->setCurrents($processExecution, $currentTokens);
         }
+		//do not forget to set current activity exec after this method execution to 
+		
 		
         // section 127-0-1-1-6bd62662:1324d269203:-8000:0000000000002FFF end
 
@@ -1091,6 +1077,145 @@ class wfEngine_models_classes_ActivityExecutionService
         // section 127-0-1-1-6bd62662:1324d269203:-8000:000000000000300A end
 
         return (array) $returnValue;
+    }
+
+    /**
+     * Short description of method duplicateActivityExecutionVariables
+     *
+     * @access public
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @param  Resource oldActivityExecution
+     * @param  Resource newActivityDefinition
+     * @param  Resource processExecution
+     * @return core_kernel_classes_Resource
+     */
+    public function duplicateActivityExecutionVariables( core_kernel_classes_Resource $oldActivityExecution,  core_kernel_classes_Resource $newActivityDefinition,  core_kernel_classes_Resource $processExecution)
+    {
+        $returnValue = null;
+
+        // section 127-0-1-1--5016dfa1:1324df105c5:-8000:0000000000003001 begin
+		
+		$excludedProperties = array(
+			RDF_LABEL,
+			PROPERTY_ACTIVITY_EXECUTION_ACTIVITY,
+			PROPERTY_ACTIVITY_EXECUTION_CTX_RECOVERY,
+			PROPERTY_ACTIVITY_EXECUTION_PREVIOUS,
+			PROPERTY_ACTIVITY_EXECUTION_FOLLOWING,
+			PROPERTY_ACTIVITY_EXECUTION_STATUS
+		);
+		
+		$newActivityExecution = $oldActivityExecution->duplicate($excludedProperties);
+		$newActivityExecution->setLabel($newActivityDefinition->getLabel());
+		$newActivityExecution->setPropertyValue($this->activityProperty, $newActivityDefinition->uriResource);
+		
+		if($processExecution->setPropertyValue($this->processInstanceActivityExecutionsProperty, $newActivityExecution->uriResource)){
+			$returnValue = $newActivityExecution;
+		}
+		
+        // section 127-0-1-1--5016dfa1:1324df105c5:-8000:0000000000003001 end
+
+        return $returnValue;
+    }
+
+    /**
+     * Short description of method mergeActivityExecutionVariables
+     *
+     * @access public
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @param  array currentActivityExecutions
+     * @param  Resource newActivityDefinition
+     * @param  Resource processExecution
+     * @return core_kernel_classes_Resource
+     */
+    public function mergeActivityExecutionVariables($currentActivityExecutions,  core_kernel_classes_Resource $newActivityDefinition,  core_kernel_classes_Resource $processExecution)
+    {
+        $returnValue = null;
+
+        // section 127-0-1-1--5016dfa1:1324df105c5:-8000:000000000000300B begin
+		
+		//get tokens variables
+        $allVars = array();
+        foreach($currentActivityExecutions as $i => $token){
+            $allVars[$i] = $this->getVariables($token);
+        }
+
+        //merge the variables
+        $mergedVars = array();
+        foreach($allVars as $tokenVars){
+            foreach($tokenVars as $tokenVar){
+                $key = $tokenVar['code'];
+                foreach($tokenVar['value'] as $value){
+                    if(array_key_exists($key, $mergedVars)){
+                        if(is_array($mergedVars[$key])){
+                            $found = false;
+                            foreach($mergedVars[$key] as $tValue){
+                                if($tValue instanceof core_kernel_classes_Resource && $value instanceof core_kernel_classes_Resource){
+                                    if($tValue->uriResource == $value->uriResource){
+                                        $found = true;
+                                        break;
+                                    }
+                                }
+                                else if($tValue == $value){
+                                    $found = true;
+                                    break;
+                                }
+                            }
+                            if(!$found){
+                                $mergedVars[$key][] = $value;
+                            }
+                        }
+                        else{
+                            $tValue = $mergedVars[$key];
+                            if($tValue instanceof core_kernel_classes_Resource && $value instanceof core_kernel_classes_Resource){
+                                if($tValue->uriResource != $value->uriResource){
+                                    $mergedVars[$key] = array($tValue, $value);
+                                }
+                            }
+                            else if($tValue != $value){
+                                $mergedVars[$key] = array($tValue, $value);
+                            }
+                        }
+                    }
+                    else{
+                        $mergedVars[$key] = $value;
+                    }
+                }
+            }
+        }
+
+        //create the merged token
+		$newActivityExecution = $this->createActivityExecution($newActivityDefinition, $processExecution);
+        if(count($mergedVars) > 0){
+            $keys = array();
+			$processVariablesClass = new core_kernel_classes_Class(CLASS_PROCESSVARIABLES);
+			//TODO: use Resource::setPropertyValues() here when implemented to improve performance:
+            foreach($mergedVars as $code => $values){
+				$processVariables = $processVariablesClass->searchInstances(array(PROPERTY_PROCESSVARIABLES_CODE => $code), array('like' => false, 'recursive' => 0));
+                if(!empty($processVariables)){
+                    if(count($processVariables) == 1) {
+                        if(is_array($values)){
+                            foreach($values as $value){
+                                $newActivityExecution->setPropertyValue(new core_kernel_classes_Property(array_shift($processVariables)->uriResource), $value);
+                            }
+                        }
+                        else{
+                            $newActivityExecution->setPropertyValue(new core_kernel_classes_Property(array_shift($processVariables)->uriResource), $values);
+                        }
+                    }
+                }
+                $keys[] = $code;
+            }
+             
+            $newActivityExecution->setPropertyValue(new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_VARIABLES), serialize($keys));
+        }
+		
+		if($processExecution->setPropertyValue($this->processInstanceActivityExecutionsProperty, $newActivityExecution->uriResource)){
+			$returnValue = $newActivityExecution;
+		}
+		
+        // section 127-0-1-1--5016dfa1:1324df105c5:-8000:000000000000300B end
+
+        return $returnValue;
     }
 
 } /* end of class wfEngine_models_classes_ActivityExecutionService */

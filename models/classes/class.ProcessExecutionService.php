@@ -723,8 +723,8 @@ class wfEngine_models_classes_ProcessExecutionService
 		
 		if(!is_null($nextConnector)){
 			
-			//transition done here the tokens are "moved" to the next step: even when it is the last, i.e. newActivity empty
-			$tokenService->move($nextConnector, $newActivities, $currentUser, $processExecution);
+			$newActivityExecutions = $this->activityExecutionService->moveForward($activityExecution, $nextConnector, $newActivities, $processExecution);
+			$this->activityExecutionService->setCurrentActivityExecutions($processExecution, $newActivityExecutions);
 			
 			//trigger the notifications
 			$notificationService->trigger($nextConnector, $processExecution);
@@ -1181,7 +1181,7 @@ class wfEngine_models_classes_ProcessExecutionService
      * @param  mixed user
      * @return array
      */
-    public function getCurrentActivityExecutions( core_kernel_classes_Resource $processExecution,  core_kernel_classes_Resource $activityDefinition = null,  $user = null)
+    public function getCurrentActivityExecutions( core_kernel_classes_Resource $processExecution,  core_kernel_classes_Resource $activityDefinition = null,  mixed $user = null)
     {
         $returnValue = array();
 
@@ -1315,6 +1315,47 @@ class wfEngine_models_classes_ProcessExecutionService
         // section 127-0-1-1--6e0edde7:13247ef74e0:-8000:0000000000002FE5 end
 
         return (array) $returnValue;
+    }
+
+    /**
+     * Short description of method removeCurrentActivityExecutions
+     *
+     * @access public
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @param  Resource processExecution
+     * @param  array activityExecutions
+     * @return boolean
+     */
+    public function removeCurrentActivityExecutions( core_kernel_classes_Resource $processExecution, $activityExecutions = array())
+    {
+        $returnValue = (bool) false;
+
+        // section 127-0-1-1--5016dfa1:1324df105c5:-8000:0000000000003022 begin
+		
+		if(!is_null($processExecution)){
+            if(!is_array($activityExecutions) && !empty($activityExecutions) && $activityExecutions instanceof core_kernel_classes_Resource){
+                $activityExecutions = array($activityExecutions);
+            }
+			if(is_array($activityExecutions)){
+				if(empty($activityExecutions)){
+					$returnValue = $processExecution->removePropertyValues($this->processInstancesCurrentActivityExecutionsProp);
+				}else{
+					$removePattern = array();
+					foreach($activityExecutions as $activityExecution){
+						$removePattern[] = $activityExecution->uriResource;
+					}
+					
+					$returnValue = $processExecution->removePropertyValues($this->processInstancesCurrentActivityExecutionsProp, array(
+						'like' => false,
+						'pattern' => $removePattern
+					));
+				}
+			}
+        }
+		
+        // section 127-0-1-1--5016dfa1:1324df105c5:-8000:0000000000003022 end
+
+        return (bool) $returnValue;
     }
 
 } /* end of class wfEngine_models_classes_ProcessExecutionService */

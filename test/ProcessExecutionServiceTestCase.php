@@ -283,12 +283,6 @@ class ProcessExecutionServiceTestCase extends UnitTestCase{
 			//join parallel Activity 1 and 2 to "joinActivity"
 			$authoringService->createJoinActivity($connector1, $joinActivity, '', $parallelActivity1);
 			$authoringService->createJoinActivity($connector2, $joinActivity, '', $parallelActivity2);
-			
-			//run process
-			$factory = new wfEngine_models_classes_ProcessExecutionFactory();
-			$factory->name = 'Test Process Execution Parallel';
-			$factory->execution = $processDefinition->uriResource;
-			$factory->ownerUri = SYS_USER_LOGIN;
 	
 			//run the process
 			$processExecName = 'Test Parallel Process Execution';
