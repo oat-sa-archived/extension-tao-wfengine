@@ -130,8 +130,7 @@ class wfEngine_models_classes_ProcessExecutionService
         if(!is_null($processExecution) && !is_null($activity) && !is_null($user)){
              
             //initialise the acitivity execution
-            $activityExecutionService 	= tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityExecutionService');
-            $activityExecutionResource = $activityExecutionService->initExecution($activity, $user, $processExecution);
+            $activityExecutionResource = $this->activityExecutionService->initExecution($activity, $user, $processExecution);
            
             if(!is_null($activityExecutionResource)){
                 //dispatch the tokens to the user and assign him
@@ -328,12 +327,11 @@ class wfEngine_models_classes_ProcessExecutionService
 		$this->instanceProcessResumed = new core_kernel_classes_Resource(INSTANCE_PROCESSSTATUS_RESUMED);
 		
         $this->processInstancesClass = new core_kernel_classes_Class(CLASS_PROCESSINSTANCES);
-        $this->processInstacesStatusProp = new core_kernel_classes_Property(PROPERTY_PROCESSINSTANCES_STATUS);
-        $this->processInstacesCurrentTokensProp = new core_kernel_classes_Property(PROPERTY_PROCESSINSTANCES_CURRENTTOKEN);
-		$this->processInstancesStatusProp = new core_kernel_classes_Property(PROPERTY_PROCESSINSTANCES_STATUS);
+        $this->processInstancesStatusProp = new core_kernel_classes_Property(PROPERTY_PROCESSINSTANCES_STATUS);
+        $this->processInstacesCurrentTokensProp = new core_kernel_classes_Property(PROPERTY_PROCESSINSTANCES_CURRENTTOKEN);//deprecated
 		$this->processInstancesExecutionOfProp = new core_kernel_classes_Property(PROPERTY_PROCESSINSTANCES_EXECUTIONOF);
-		$this->processInstancesProcessPathProp = new core_kernel_classes_Property(PROPERTY_PROCESSINSTANCES_PROCESSPATH);
-		$this->processInstacesCurrentActivityExecutionsProp = new core_kernel_classes_Property(PROPERTY_PROCESSINSTANCES_PROCESSPATH);
+		$this->processInstancesProcessPathProp = new core_kernel_classes_Property(PROPERTY_PROCESSINSTANCES_PROCESSPATH);//deprecated
+		$this->processInstancesCurrentActivityExecutionsProp = new core_kernel_classes_Property(PROPERTY_PROCESSINSTANCES_PROCESSPATH);
 		
 		$this->processVariablesCodeProp = new core_kernel_classes_Property(PROPERTY_PROCESSVARIABLES_CODE);
 		
@@ -371,11 +369,10 @@ class wfEngine_models_classes_ProcessExecutionService
 		$processDefinitionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessDefinitionService');
 		$initialActivities = $processDefinitionService->getRootActivities($processDefinition);
 		
-		$activityExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityExecutionService');
 		$activityExecutions = array();
 		
 		foreach ($initialActivities as $activity){
-			$activityExecution = $activityExecutionService->createActivityExecution($activity, $processInstance);
+			$activityExecution = $this->activityExecutionService->createActivityExecution($activity, $processInstance);
 			if(!is_null($activityExecution)){
 				$activityExecutions[] = $activityExecution;
 			}
@@ -565,17 +562,17 @@ class wfEngine_models_classes_ProcessExecutionService
 					case INSTANCE_PROCESSSTATUS_FINISHED:
 					case INSTANCE_PROCESSSTATUS_PAUSED:
 					case INSTANCE_PROCESSSTATUS_CLOSED:{
-						$returnValue = $processExecution->editPropertyValues($this->processInstacesStatusProp, $status->uriResource);
+						$returnValue = $processExecution->editPropertyValues($this->processInstancesStatusProp, $status->uriResource);
 						break;
 					}
 				}
 			}else if(is_string($status)){
 				switch($status){
-					case 'resumed':{$returnValue = $processExecution->editPropertyValues($this->processInstacesStatusProp, INSTANCE_PROCESSSTATUS_RESUMED);break;}
-					case 'started':{$returnValue = $processExecution->editPropertyValues($this->processInstacesStatusProp, INSTANCE_PROCESSSTATUS_STARTED);break;}
-					case 'finished':{$returnValue = $processExecution->editPropertyValues($this->processInstacesStatusProp, INSTANCE_PROCESSSTATUS_FINISHED);break;}
-					case 'paused':{$returnValue = $processExecution->editPropertyValues($this->processInstacesStatusProp, INSTANCE_PROCESSSTATUS_PAUSED);break;}
-					case 'closed':{$returnValue = $processExecution->editPropertyValues($this->processInstacesStatusProp, INSTANCE_PROCESSSTATUS_CLOSED);break;}
+					case 'resumed':{$returnValue = $processExecution->editPropertyValues($this->processInstancesStatusProp, INSTANCE_PROCESSSTATUS_RESUMED);break;}
+					case 'started':{$returnValue = $processExecution->editPropertyValues($this->processInstancesStatusProp, INSTANCE_PROCESSSTATUS_STARTED);break;}
+					case 'finished':{$returnValue = $processExecution->editPropertyValues($this->processInstancesStatusProp, INSTANCE_PROCESSSTATUS_FINISHED);break;}
+					case 'paused':{$returnValue = $processExecution->editPropertyValues($this->processInstancesStatusProp, INSTANCE_PROCESSSTATUS_PAUSED);break;}
+					case 'closed':{$returnValue = $processExecution->editPropertyValues($this->processInstancesStatusProp, INSTANCE_PROCESSSTATUS_CLOSED);break;}
 				}
 			}
 			
@@ -599,7 +596,7 @@ class wfEngine_models_classes_ProcessExecutionService
 
         // section 127-0-1-1-7a69d871:1322a76df3c:-8000:0000000000002F7D begin
 		
-		$status = $processExecution->getOnePropertyValue($this->processInstacesStatusProp);
+		$status = $processExecution->getOnePropertyValue($this->processInstancesStatusProp);
 		if (!is_null($status)){
 			switch($status->uriResource){
 				case INSTANCE_PROCESSSTATUS_RESUMED:
@@ -694,7 +691,6 @@ class wfEngine_models_classes_ProcessExecutionService
 		
 		//init the services
 		$activityDefinitionService	= tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityService');
-		$activityExecutionService 	= tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityExecutionService');
 		$userService 				= tao_models_classes_ServiceFactory::get('wfEngine_models_classes_UserService');
 		$tokenService 				= tao_models_classes_ServiceFactory::get('wfEngine_models_classes_TokenService');
 		$notificationService 		= tao_models_classes_ServiceFactory::get('wfEngine_models_classes_NotificationService');
@@ -765,7 +761,7 @@ class wfEngine_models_classes_ProcessExecutionService
 				if(count($newActivities)==1){
 					//TODO: could do a double check here: if($newActivities[0] is one of the activty found in the current tokens):
 					
-					if($activityExecutionService->checkAcl($newActivities[0], $currentUser, $processExecution)){
+					if($this->activityExecutionService->checkAcl($newActivities[0], $currentUser, $processExecution)){
 						$uniqueNextActivity = $newActivities[0];//the Activity Object
 					}
 				}
@@ -791,7 +787,7 @@ class wfEngine_models_classes_ProcessExecutionService
 			
 			foreach ($currentActivities as $activityAfterTransition){
 				//check if the current user is allowed to execute the activity
-				if($activityExecutionService->checkAcl($activityAfterTransition, $currentUser, $processExecution)){
+				if($this->activityExecutionService->checkAcl($activityAfterTransition, $currentUser, $processExecution)){
 					$authorizedActivityDefinitions[] = $activityAfterTransition;
 					$setPause = false;
 				}
@@ -824,7 +820,7 @@ class wfEngine_models_classes_ProcessExecutionService
 					// $this->redirect(_url('index', 'Main'));
 				// }//already performed above...
 				
-				$activityExecutionResource = $activityExecutionService->initExecution($activityAfterTransition, $currentUser, $processExecution);
+				$activityExecutionResource = $this->activityExecutionService->initExecution($activityAfterTransition, $currentUser, $processExecution);
 				if(!is_null($activityExecutionResource)){
 					$this->performTransition($processExecution, $activityExecutionResource);
 				}else{
@@ -980,14 +976,13 @@ class wfEngine_models_classes_ProcessExecutionService
 		$activityService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityService');
 		$connectorService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ConnectorService');
 		$transitionRuleService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_TransitionRuleService');
-		$activityExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityExecutionService');
 		
 		$transitionRule = $connectorService->getTransitionRule($conditionalConnector);
 		if(is_null($transitionRule)){
 			return $returnValue;
 		}
 		
-		$processVarValues = $activityExecutionService->getVariables($activityExecution);
+		$processVarValues = $this->activityExecutionService->getVariables($activityExecution);
 		$evaluationResult = $transitionRuleService->getExpression($transitionRule)->evaluate($processVarValues);
 
 		if ($evaluationResult){
@@ -1163,7 +1158,7 @@ class wfEngine_models_classes_ProcessExecutionService
             }
 			if(is_array($activityExecutions)){
 				foreach($activityExecutions as $activityExecution){
-					$returnValue = $processExecution->setPropertyValue($this->processInstacesCurrentActivityExecutionsProp, $activityExecution->uriResource);
+					$returnValue = $processExecution->setPropertyValue($this->processInstancesCurrentActivityExecutionsProp, $activityExecution->uriResource);
 				}
 			}
         }
@@ -1180,22 +1175,47 @@ class wfEngine_models_classes_ProcessExecutionService
      * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @param  Resource processExecution
      * @param  Resource activityDefinition
-     * @param  Resource user
+     * @param  mixed user
      * @return array
      */
-    public function getCurrentActivityExecutions( core_kernel_classes_Resource $processExecution,  core_kernel_classes_Resource $activityDefinition = null,  core_kernel_classes_Resource $user = null)
+    public function getCurrentActivityExecutions( core_kernel_classes_Resource $processExecution,  core_kernel_classes_Resource $activityDefinition = null,  $user = null)
     {
         $returnValue = array();
 
         // section 127-0-1-1--6e0edde7:13247ef74e0:-8000:0000000000002FCD begin
 		
-        $currentActivityExecutions = $processExecution->getPropertyValues($this->processInstacesCurrentActivityExecutionsProp);
-		$count = count($currentActivityExecutions);
-		for($i=0;$i<$count;$i++){
-			if(common_Utils::isUri($currentActivityExecutions[$i])){
-				$returnValue[] = new core_kernel_classes_Resource($currentActivityExecutions[$i]);
+		if(is_null($activityDefinition) && is_null($user)){
+			$currentActivityExecutions = $processExecution->getPropertyValues($this->processInstancesCurrentActivityExecutionsProp);
+			$count = count($currentActivityExecutions);
+			for($i=0;$i<$count;$i++){
+				$uri = $currentActivityExecutions[$i];
+				if(common_Utils::isUri($uri)){
+					$returnValue[$uri] = new core_kernel_classes_Resource($uri);
+				}
+			}
+		}else{
+			//search by criteria:
+			$propertyFilter = array(PROPERTY_ACTIVITY_EXECUTION_PROCESSEXECUTION =>	$processExecution->uriResource);
+			if(!is_null($activityDefinition)){
+				$propertyFilter[PROPERTY_ACTIVITY_EXECUTION_ACTIVITY] = $activityDefinition->uriResource;
+			}
+			if(!is_null($user) && $user instanceof core_kernel_classes_Resource){
+				$propertyFilter[PROPERTY_ACTIVITY_EXECUTION_CURRENT_USER] = $user->uriResource;
+			}
+				
+			$returnValue = $this->activityExecutionsClass->searchInstances($propertyFilter,array('like'	=> false,'recursive' => false));
+			
+			//special case:check if we want an 'empty-user' activityExecution:
+			if(!is_null($activityDefinition) && is_string($user) && empty($user)){
+				
+				foreach($returnValue as $uri => $currentActivityExecution){
+					if(!is_null($this->activityExecutionService->getActivityExecutionUser($currentActivityExecution))){
+						unset($returnValue[$uri]);
+					}
+				}
 			}
 		}
+        
 		
         // section 127-0-1-1--6e0edde7:13247ef74e0:-8000:0000000000002FCD end
 
@@ -1221,8 +1241,6 @@ class wfEngine_models_classes_ProcessExecutionService
 		
 		if(!is_null($processExecution) && !is_null($activityDefinition) && !is_null($user)){
              
-            $activityExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityExecutionService');
-            
 			//find if the an user is already given a *current* activity execution (among the possible one), given an activity definition:
 			$activityExecutions = $this->getCurrentActivityExecutions($processExecution, $activityDefinition, $user);
 			
@@ -1231,15 +1249,16 @@ class wfEngine_models_classes_ProcessExecutionService
 				$activityExecutionsByActivity = $this->getCurrentActivityExecutions($processExecution, $activityDefinition, '');
 				foreach($activityExecutionsByActivity as $activityExec){
 					//if user empty, bind execution to current 
-					if($activityExecutionService->setActivityExecutionUser($activityExec, $user)){
+					if($this->activityExecutionService->setActivityExecutionUser($activityExec, $user)){
 						$returnValue = $activityExec;
+						$this->activityExecutionService->setStatus($activityExec, 'started');//optional
 						break;
 					}
 				}
 			}else if(count($activityExecutions) == 1){
 				//the activity execution for the given activity definiiton and the current user is already exists, so retirieve it and set the execution to the status resumed:
 				$currentActivityExec = $activityExecutions[0];
-				if($activityExecutionService->resume($currentActivityExec)){
+				if($this->activityExecutionService->resume($currentActivityExec)){
 					$returnValue = $currentActivityExec;
 				}
 			}else{
@@ -1269,7 +1288,7 @@ class wfEngine_models_classes_ProcessExecutionService
         $returnValue = array();
 
         // section 127-0-1-1--6e0edde7:13247ef74e0:-8000:0000000000002FE5 begin
-		
+		/*
 		$availableActivityExecutions = $this->activityExecutionsClass->searchInstances(array(
 			PROPERTY_ACTIVITY_EXECUTION_PROCESSEXECUTION	=>	$processExecution->uriResource,
 			PROPERTY_ACTIVITY_EXECUTION_CURRENT_USER		=>	array(
@@ -1280,12 +1299,25 @@ class wfEngine_models_classes_ProcessExecutionService
 			'like'	=> false,
 			'recursive' => false
 		));
+		*/
+		$availableActivityExecutions = array();
+		$currentActivityExecutions = $this->getCurrentActivityExecutions($processExecution);
+		$propActivityExecutionCurrentUser = new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_CURRENT_USER);
+		foreach($currentActivityExecutions as $currentActivityExecution){
+			$assignedUser = $currentActivityExecution->getOnePropertyValue($propActivityExecutionCurrentUser);
+			if(!is_null($assignedUser)){
+				if($assignedUser->uriResource == $currentUser->uriResource){
+					$availableActivityExecutions[] = $currentActivityExecution;
+				}
+			}else{
+				$availableActivityExecutions[] = $currentActivityExecution;
+			}
+		}
 		
 		foreach($availableActivityExecutions as $availableActivityExecution){
 			$activityDefinition = $this->activityExecutionService->getExecutionOf($availableActivityExecution);
-			if(!in_array($activityDefinition->uriResource, $returnValue)){
-				$returnValue[] = $activityDefinition;
-			}
+			//TODO: check access right here?
+			$returnValue[$activityDefinition->uriResource] = $activityDefinition;
 		}
 		
         // section 127-0-1-1--6e0edde7:13247ef74e0:-8000:0000000000002FE5 end

@@ -740,7 +740,10 @@ class wfEngine_models_classes_ActivityExecutionService
         // section 127-0-1-1--6e0edde7:13247ef74e0:-8000:0000000000002FC1 begin
 		
 		$activityExecution = $this->createInstance($this->activityExecutionClass, 'Execution of '.$activityDefinition->getLabel().' at '.time());//d-m-Y H:i:s u
-        $activityExecution->setPropertyValue($this->activityProperty, $activityDefinition->uriResource);
+		$activityExecution->setPropertyValue($this->activityProperty, $activityDefinition->uriResource);
+		
+		//add bijective relation for performance optimization (not modifiable)
+		$activityExecution->setPropertyValue($this->processExecutionProperty, $processExecution->uriResource);
 		if($processExecution->setPropertyValue($this->processInstanceActivityExecutionsProperty, $activityExecution->uriResource)){
 			$returnValue = $activityExecution;
 		}
@@ -766,14 +769,14 @@ class wfEngine_models_classes_ActivityExecutionService
         // section 127-0-1-1--6e0edde7:13247ef74e0:-8000:0000000000002FE0 begin
 		
 		if($forced){
-			$returnValue = $activityExecution->editPropertyValues($this->activityExecutionCurrentUserProperty, $status->uriResource);
+			$returnValue = $activityExecution->editPropertyValues($this->currentUserProperty, $user->uriResource);
 		}else{
-			$currentUser = $activityExecution->getOnePropertyValue($this->activityExecutionCurrentUserProperty);
+			$currentUser = $activityExecution->getOnePropertyValue($this->currentUserProperty);
 			if(!is_null($currentUser)){
 				$errorMessage = "the activity execution {$activityExecution->getLabel()}({$activityExecution->uriResource}) has already been assigned to the user {$user->getLabel()}({$user->uriResource})";
 				throw new wfEngine_models_classes_ProcessExecutionException($errorMessage);
 			}else{
-				$returnValue = $activityExecution->editPropertyValues($this->activityExecutionCurrentUserProperty, $status->uriResource);
+				$returnValue = $activityExecution->editPropertyValues($this->currentUserProperty, $user->uriResource);
 			}
 		}
 		
@@ -843,6 +846,57 @@ class wfEngine_models_classes_ActivityExecutionService
         // section 127-0-1-1--6e0edde7:13247ef74e0:-8000:0000000000003005 end
 
         return (bool) $returnValue;
+    }
+
+    /**
+     * Short description of method getActivityExecutionUser
+     *
+     * @access public
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @param  Resource activityExecution
+     * @return core_kernel_classes_Resource
+     */
+    public function getActivityExecutionUser( core_kernel_classes_Resource $activityExecution)
+    {
+        $returnValue = null;
+
+        // section 127-0-1-1-6bd62662:1324d269203:-8000:0000000000002FF9 begin
+		$returnValue = $activityExecution->getOnePropertyValue($this->currentUserProperty);
+        // section 127-0-1-1-6bd62662:1324d269203:-8000:0000000000002FF9 end
+
+        return $returnValue;
+    }
+
+    /**
+     * Short description of method getStatus
+     *
+     * @access public
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @param  Resource activityExecution
+     * @return core_kernel_classes_Resource
+     */
+    public function getStatus( core_kernel_classes_Resource $activityExecution)
+    {
+        $returnValue = null;
+
+        // section 127-0-1-1-6bd62662:1324d269203:-8000:0000000000002FFC begin
+		$status = $activityExecution->getOnePropertyValue($this->activityExecutionStatusProperty);
+		if (!is_null($status)){
+			switch($status->uriResource){
+				case INSTANCE_PROCESSSTATUS_RESUMED:
+				case INSTANCE_PROCESSSTATUS_STARTED:
+				case INSTANCE_PROCESSSTATUS_FINISHED:
+				case INSTANCE_PROCESSSTATUS_PAUSED:
+				case INSTANCE_PROCESSSTATUS_CLOSED:{
+					$returnValue = $status;
+					break;
+				}
+			}
+			
+		}
+        // section 127-0-1-1-6bd62662:1324d269203:-8000:0000000000002FFC end
+
+        return $returnValue;
     }
 
 } /* end of class wfEngine_models_classes_ActivityExecutionService */

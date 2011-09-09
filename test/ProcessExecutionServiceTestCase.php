@@ -163,8 +163,8 @@ class ProcessExecutionServiceTestCase extends UnitTestCase{
 			
 			$currentActivityExecutions = $this->service->getCurrentActivityExecutions($processInstance);
 			$this->assertEqual(count($currentActivityExecutions), 1);
-			$this->assertEqual(strpos($currentActivityExecutions[0]->getLabel(), 'Execution of activity1'), 0);
-			return;
+			$this->assertEqual(strpos(array_pop($currentActivityExecutions)->getLabel(), 'Execution of activity1'), 0);
+			
 			
 			$i = 1;
 			while($i <= 5 ){
@@ -175,7 +175,7 @@ class ProcessExecutionServiceTestCase extends UnitTestCase{
 				
 				$activities = $this->service->getAvailableCurrentActivityDefinitions($processInstance, $this->currentUser);
 				$this->assertEqual(count($activities), 1);
-				$activity = $activities[0];
+				$activity = array_shift($activities);
 				
 				$this->out("<strong>".$activity->getLabel()."</strong>", true);
 				$this->assertTrue($activity->getLabel() == 'activity'.$i);
@@ -183,6 +183,9 @@ class ProcessExecutionServiceTestCase extends UnitTestCase{
 				//init execution
 				$activityExecution = $this->service->initCurrentActivityExecution($processInstance, $activity, $this->currentUser);
 				$this->assertNotNull($activityExecution);
+				$activityExecStatus = $activityExecutionService->getStatus($activityExecution);
+				$this->assertNotNull($activityExecStatus);
+				$this->assertEqual($activityExecStatus->uriResource, INSTANCE_PROCESSSTATUS_STARTED);
 				return;
 				
 				//transition to next activity
