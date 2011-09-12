@@ -196,23 +196,13 @@ class ProcessExecutionServiceTestCase extends UnitTestCase{
 			}
 			$this->assertTrue($this->service->isFinished($processInstance));
 			
-			$activity1->delete();
-			$activity2->delete();
-			$activity3->delete();
-			$activity4->delete();
-			$activity5->delete();
-			
-			$connector1->delete();
-			$connector2->delete();
-			$connector3->delete();
-			$connector4->delete();
-			
-			$processDefinition->delete();
+			//delete processdef:
+			$this->assertTrue($authoringService->deleteProcess($processDefinition));
 			
 			//delete process execution:
-			$this->assertTrue($processInstance->hasType(new core_kernel_classes_Class(CLASS_PROCESSINSTANCES)));
+			$this->assertTrue($processInstance->exists());
 			$this->assertTrue($this->service->deleteProcessExecution($processInstance));
-			$this->assertFalse($processInstance->hasType(new core_kernel_classes_Class(CLASS_PROCESSINSTANCES)));
+			$this->assertFalse($processInstance->exists());
 			
 			if(!is_null($this->currentUser)){
 				core_kernel_users_Service::logout();
@@ -228,7 +218,7 @@ class ProcessExecutionServiceTestCase extends UnitTestCase{
 	/**
 	 * Test the tokens into a parallel process
 	 */
-	public function _testVirtualParallelJoinProcess(){
+	public function testVirtualParallelJoinProcess(){
 		
 		error_reporting(E_ALL);
 		
@@ -296,23 +286,22 @@ class ProcessExecutionServiceTestCase extends UnitTestCase{
 			$createdUsers = array();
 			for($i=1; $i <= $numberActivities; $i++){
 				
-				$activities = $this->service->getCurrentActivities($processInstance);
+				$activities = $this->service->getAvailableCurrentActivityDefinitions($processInstance, $this->currentUser);
 				$countActivities = count($activities);
 				$activity = null;
 				if($countActivities > 1){
 					//select one of the available activities in the parallel branch:
-					for($j=0;$j<$countActivities;$j++){
-						$activityTmp = $activities[$j];
-						if(isset($prallelActivitiesArray[$activityTmp->uriResource])){
-							if($prallelActivitiesArray[$activityTmp->uriResource]>0){
-								$prallelActivitiesArray[$activityTmp->uriResource]--;
-								$activity = $activityTmp;
+					foreach($activities as $activityUri => $act){
+						if(isset($prallelActivitiesArray[$activityUri])){
+							if($prallelActivitiesArray[$activityUri] > 0){
+								$prallelActivitiesArray[$activityUri]--;
+								$activity = $act;
 								break;
 							}
 						}
 					}
 				}else if($countActivities == 1){
-					$activity = $activities[0];
+					$activity = array_shift($activities);
 				}else{
 					$this->fail('no current activity definition found for the iteration '.$i);
 				}
@@ -320,10 +309,12 @@ class ProcessExecutionServiceTestCase extends UnitTestCase{
 				$this->out("<strong> Iteration {$i}: {$activity->getLabel()}</strong> (among {$countActivities})", true);
 						
 				//init execution
-				$this->assertTrue($this->service->initCurrentExecution($processInstance, $activity, $this->currentUser));
-				
-				$activityExecution = $activityExecutionService->getExecution($activity, $this->currentUser, $processInstance);
+				$activityExecution = $this->service->initCurrentActivityExecution($processInstance, $activity, $this->currentUser);
 				$this->assertNotNull($activityExecution);
+				
+				$activityExecStatus = $activityExecutionService->getStatus($activityExecution);
+				$this->assertNotNull($activityExecStatus);
+				$this->assertEqual($activityExecStatus->uriResource, INSTANCE_PROCESSSTATUS_STARTED);
 				
 				//transition to next activity
 				$this->out("current user: ".$this->currentUser->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_USER_LOGIN)).' "'.$this->currentUser->uriResource.'"', true);

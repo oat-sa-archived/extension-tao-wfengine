@@ -26,7 +26,6 @@ if (0 > version_compare(PHP_VERSION, '5')) {
  *
  * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
  */
-require_once('class.Exception.php');
 
 /* user defined includes */
 // section 127-0-1-1--6e0edde7:13247ef74e0:-8000:0000000000003000-includes begin

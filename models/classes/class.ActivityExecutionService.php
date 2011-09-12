@@ -629,12 +629,13 @@ class wfEngine_models_classes_ActivityExecutionService
 
         // section 127-0-1-1--4b38ca35:1323a4c748d:-8000:0000000000002F9B begin
 		
-		if(!is_null($activityExecution)){
-            $tokenVarKeys = @unserialize($activityExecution->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_VARIABLES)));
-            if($tokenVarKeys !== false){
-                if(is_array($tokenVarKeys)){
+		$activityExecutionVariables = $activityExecution->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_VARIABLES));
+		if(!is_null($activityExecutionVariables)){
+			$tokenVarKeys = @unserialize($activityExecutionVariables);
+			if($tokenVarKeys !== false){
+				if(is_array($tokenVarKeys)){
 					$processVariablesClass = new core_kernel_classes_Class(CLASS_PROCESSVARIABLES);
-                    foreach($tokenVarKeys as $key){
+					foreach($tokenVarKeys as $key){
 						$processVariables = $processVariablesClass->searchInstances(array(PROPERTY_PROCESSVARIABLES_CODE => $key), array('like' => false));
 						if(count($processVariables) == 1) {//not necessary
 							$property = new core_kernel_classes_Property(array_shift($processVariables)->uriResource);
@@ -644,11 +645,11 @@ class wfEngine_models_classes_ActivityExecutionService
 									'value'			=> $activityExecution->getPropertyValues($property)
 								);
 						}else{
-							throw new wfEngine_models_classes_ProcessExecutionException('More than one process variable share the same code');
+							throw new wfEngine_models_classes_ProcessExecutionException("More than one process variable share the same code ({$key})");
 						}
-                    }
-                }
-            }
+					}
+				}
+			}
         }
 		
         // section 127-0-1-1--4b38ca35:1323a4c748d:-8000:0000000000002F9B end
@@ -1023,7 +1024,7 @@ class wfEngine_models_classes_ActivityExecutionService
                     }
                     	
                     //create the token for next activity
-                    $newActivityExecution = $this->mergeActivityExecutionVariables($mergingActivityExecutions, $nextActivity, $processExecution);
+                    $newActivityExecution = $this->mergeActivityExecutionVariables($oldActivityExecutions, $nextActivity, $processExecution);
                     if(!is_null($newActivityExecution)){
 						foreach ($oldActivityExecutions as $oldActivityExecution){
 							$oldActivityExecution->setPropertyValue(new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_FOLLOWING), $newActivityExecution->uriResource);
@@ -1116,6 +1117,8 @@ class wfEngine_models_classes_ActivityExecutionService
 		);
 		
 		$newActivityExecution = $oldActivityExecution->duplicate($excludedProperties);
+		 
+		 
 		$newActivityExecution->setLabel($newActivityDefinition->getLabel());
 		$newActivityExecution->setPropertyValue($this->activityProperty, $newActivityDefinition->uriResource);
 		
@@ -1146,8 +1149,8 @@ class wfEngine_models_classes_ActivityExecutionService
 		
 		//get tokens variables
         $allVars = array();
-        foreach($currentActivityExecutions as $i => $token){
-            $allVars[$i] = $this->getVariables($token);
+        foreach($currentActivityExecutions as $i => $currentActivityExec){
+            $allVars[$i] = $this->getVariables($currentActivityExec);
         }
 
         //merge the variables
@@ -1216,7 +1219,7 @@ class wfEngine_models_classes_ActivityExecutionService
                 }
                 $keys[] = $code;
             }
-             
+            
             $newActivityExecution->setPropertyValue(new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_VARIABLES), serialize($keys));
         }
 		

@@ -379,7 +379,7 @@ class wfEngine_models_classes_ProcessExecutionService
 		}
 		
 		//foreach first tokens, assign the user input prop values:
-		$codes[] = array();
+		$codes = array();
 		foreach($variablesValues as $uri => $value) {
 			// have to skip name because doesnt work like other variables
 			if($uri != RDFS_LABEL) {
@@ -1039,9 +1039,10 @@ class wfEngine_models_classes_ProcessExecutionService
 		$debug = array();
 		$propActivityExecIsFinished = new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_IS_FINISHED);
 		//count finished activity execution by activity definition
-		foreach($activityResourceArray as $activityDefinition => $count){
+		foreach($activityResourceArray as $activityDefinitionUri => $count){
 			
-			$debug[$activityDefinition] = array();
+			$activityDefinition = new core_kernel_classes_Resource($activityDefinitionUri);
+			$debug[$activityDefinitionUri] = array();
 			$activityExecutionArray = array();
 			
 			//get all activity execution for the current activity definition and for the current process execution indepedently from the user (which is not known at the authoring time)
@@ -1058,7 +1059,7 @@ class wfEngine_models_classes_ProcessExecutionService
 				
 			}
 
-			$debug[$activityDefinition]['activityExecutionArray'] = $activityExecutionArray;
+			$debug[$activityDefinitionUri]['activityExecutionArray'] = $activityExecutionArray;
 
 			if(count($activityExecutionArray) == $count){
 				//ok for this activity definiton, continue to the next loop
