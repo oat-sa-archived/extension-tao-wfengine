@@ -754,7 +754,7 @@ class wfEngine_models_classes_ActivityExecutionService
 
         // section 127-0-1-1--6e0edde7:13247ef74e0:-8000:0000000000002FC1 begin
 		
-		$activityExecution = $this->createInstance($this->activityExecutionClass, 'Execution of '.$activityDefinition->getLabel().' at '.time());//d-m-Y H:i:s u
+		$activityExecution = $this->createInstance($this->activityExecutionClass, $this->generateActivityExecutionLabel($activityDefinition));//d-m-Y H:i:s u
 		$activityExecution->setPropertyValue($this->activityProperty, $activityDefinition->uriResource);
 		
 		//add bijective relation for performance optimization (not modifiable)
@@ -1038,8 +1038,12 @@ class wfEngine_models_classes_ActivityExecutionService
 			
 			if(!empty($returnValue)){
 				//set the process' current activity executions:
+				var_dump('not way before', count($processExecutionService->getCurrentActivityExecutions($processExecution)));
 				$processExecutionService->removeCurrentActivityExecutions($processExecution, $oldActivityExecutions);
+				var_dump('right before', count($processExecutionService->getCurrentActivityExecutions($processExecution)));
+				var_dump('to be removed', $oldActivityExecutions, array_pop($oldActivityExecutions)->getLabel());
 				$processExecutionService->setCurrentActivityExecutions($processExecution, $returnValue);
+				var_dump('right after', count($processExecutionService->getCurrentActivityExecutions($processExecution)));
 			}
 			
         }
@@ -1085,6 +1089,51 @@ class wfEngine_models_classes_ActivityExecutionService
         $returnValue = array();
 
         // section 127-0-1-1-6bd62662:1324d269203:-8000:000000000000300A begin
+		$processExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessExecutionService');
+		
+		//check if the previous connector is not parallel:
+		$previousProperty = new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_PREVIOUS);
+		$followingProperty = new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_FOLLOWING);
+		
+		$previousActivityExecutions = array();
+		$previous = $activityExecution->getPropertyValues($previousProperty);
+		$count = count($previous);
+		for($i=0; $i<$count; $i++){
+			if(common_Utils::isUri($previous[$i])){
+				$prevousActivityExecution = new core_kernel_classes_Resource($previous[$i]);
+				if(count($prevousActivityExecution->getPropertyValues($followingProperty)) == 1){
+					$previousActivityExecutions[] = $prevousActivityExecution;
+				}else{
+					return $returnValue;//forbidden to go backward of a parallel connector
+				}
+			}
+		}
+		
+		if(!empty($previousActivityExecutions)){
+			//set the process' current activity executions:
+			$processExecutionService->removeCurrentActivityExecutions($processExecution, array($activityExecution));
+			
+			//not performance efficient:
+//			$activityExecution->delete();
+//			$processExecution->removePropertyValues(
+//				new core_kernel_classes_Property(PROPERTY_PROCESSINSTANCES_ACTIVITYEXECUTIONS),
+//				array(
+//					'like' => false,
+//					'pattern' => array()
+//				));
+			//instead, set the current activity execution as closed (i.e. invalidate the path):		
+			$this->setStatus($activityExecution, 'closed');
+			
+			foreach($previousActivityExecutions as $previousActivityExecution) {
+				$previousActivityExecution->removePropertyValues($followingProperty);
+			}
+			
+			if($processExecutionService->setCurrentActivityExecutions($processExecution, $previousActivityExecutions)){
+				$returnValue = $previousActivityExecutions;
+			}
+			
+		}
+			
         // section 127-0-1-1-6bd62662:1324d269203:-8000:000000000000300A end
 
         return (array) $returnValue;
@@ -1119,7 +1168,7 @@ class wfEngine_models_classes_ActivityExecutionService
 		$newActivityExecution = $oldActivityExecution->duplicate($excludedProperties);
 		 
 		 
-		$newActivityExecution->setLabel($newActivityDefinition->getLabel());
+		$newActivityExecution->setLabel($this->generateActivityExecutionLabel($newActivityDefinition));
 		$newActivityExecution->setPropertyValue($this->activityProperty, $newActivityDefinition->uriResource);
 		
 		if($processExecution->setPropertyValue($this->processInstanceActivityExecutionsProperty, $newActivityExecution->uriResource)){
@@ -1230,6 +1279,25 @@ class wfEngine_models_classes_ActivityExecutionService
         // section 127-0-1-1--5016dfa1:1324df105c5:-8000:000000000000300B end
 
         return $returnValue;
+    }
+
+    /**
+     * Short description of method generateActivityExecutionLabel
+     *
+     * @access public
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @param  Resource activityDefinition
+     * @return string
+     */
+    public function generateActivityExecutionLabel( core_kernel_classes_Resource $activityDefinition)
+    {
+        $returnValue = (string) '';
+
+        // section 127-0-1-1--1e75179b:1325dc5c4e1:-8000:0000000000003015 begin
+		$returnValue = 'Execution of '.$activityDefinition->getLabel().' at '.  microtime();//d-m-Y H:i:s u
+        // section 127-0-1-1--1e75179b:1325dc5c4e1:-8000:0000000000003015 end
+
+        return (string) $returnValue;
     }
 
 } /* end of class wfEngine_models_classes_ActivityExecutionService */
