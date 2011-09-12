@@ -186,7 +186,6 @@ class ProcessExecutionServiceTestCase extends UnitTestCase{
 				$activityExecStatus = $activityExecutionService->getStatus($activityExecution);
 				$this->assertNotNull($activityExecStatus);
 				$this->assertEqual($activityExecStatus->uriResource, INSTANCE_PROCESSSTATUS_STARTED);
-				return;
 				
 				//transition to next activity
 				$this->service->performTransition($processInstance, $activityExecution);

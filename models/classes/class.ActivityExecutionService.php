@@ -812,7 +812,7 @@ class wfEngine_models_classes_ActivityExecutionService
         $returnValue = (bool) false;
 
         // section 127-0-1-1--6e0edde7:13247ef74e0:-8000:0000000000002FF3 begin
-		$this->setStatus($activityExecution, 'finished');
+		$returnValue = $this->setStatus($activityExecution, 'finished');
 		
         // section 127-0-1-1--6e0edde7:13247ef74e0:-8000:0000000000002FF3 end
 
@@ -832,7 +832,7 @@ class wfEngine_models_classes_ActivityExecutionService
         $returnValue = (bool) false;
 
         // section 127-0-1-1--6e0edde7:13247ef74e0:-8000:0000000000002FF7 begin
-		$status = $processExecution->getOnePropertyValue($this->activityExecutionStatusProperty);
+		$status = $activityExecution->getOnePropertyValue($this->activityExecutionStatusProperty);
 		if(!is_null($status)){
 			if($status->uriResource == INSTANCE_PROCESSSTATUS_FINISHED){
 				$returnValue = true;
@@ -856,7 +856,7 @@ class wfEngine_models_classes_ActivityExecutionService
         $returnValue = (bool) false;
 
         // section 127-0-1-1--6e0edde7:13247ef74e0:-8000:0000000000003005 begin
-		$this->setStatus($activityExecution, 'resumed');
+		$returnValue = $this->setStatus($activityExecution, 'resumed');
         // section 127-0-1-1--6e0edde7:13247ef74e0:-8000:0000000000003005 end
 
         return (bool) $returnValue;
@@ -931,13 +931,12 @@ class wfEngine_models_classes_ActivityExecutionService
         // section 127-0-1-1-6bd62662:1324d269203:-8000:0000000000002FFF begin
 		
 		if(!is_null($activityExecution) && !is_null($connector) && !is_null($processExecution)){
-             
-            $activityService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityService');
             
-             
-            $currentTokens = array();
-            $type = $connector->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_TYPE));
-            switch($type->uriResource){
+			$processExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessExecutionService');
+			$connectorService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ConnectorService');
+			
+			$oldActivityExecutions = array();//holds the old activity executions to be removed from the current process activity executions at the end of the function
+            switch($connectorService->getType($connector)->uriResource){
 
                 /// SEQUENCE & CONDITIONAL ///
                 case INSTANCE_TYPEOFCONNECTORS_SEQUENCE:
@@ -957,6 +956,8 @@ class wfEngine_models_classes_ActivityExecutionService
 						$activityExecution->setPropertyValue(new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_FOLLOWING), $newActivityExecution->uriResource);
 						$newActivityExecution->setPropertyValue(new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_PREVIOUS), $activityExecution->uriResource);
 						$returnValue[$newActivityExecution->uriResource] = $newActivityExecution;
+						
+						$oldActivityExecutions = array($activityExecution->uriResource => $activityExecution);
 					}
 		
                     break;
@@ -973,11 +974,14 @@ class wfEngine_models_classes_ActivityExecutionService
 						}
 					}
 					
+					$oldActivityExecutions = array($activityExecution->uriResource => $activityExecution);
+					
                     break;
                 }
 				/// JOIN ///
                 case INSTANCE_TYPEOFCONNECTORS_JOIN:{
 					
+					$activityService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityService');
 					$processExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessExecutionService');
 					
                     if(count($nextActivities) == 0){
@@ -992,7 +996,6 @@ class wfEngine_models_classes_ActivityExecutionService
 		            $previousActivities = $connector->getPropertyValues(new core_kernel_classes_Property(PROPERTY_CONNECTORS_PREVIOUSACTIVITIES));
 			
                     $activityResourceArray = array();
-                    $mergingActivityExecutions = array();
 					$previousActivitiesCount = count($previousActivities);
                     for($i=0; $i<$previousActivitiesCount; $i++){
 						$activityResource = new core_kernel_classes_Resource($previousActivities[$i]);
@@ -1011,7 +1014,7 @@ class wfEngine_models_classes_ActivityExecutionService
                         $previousActivityExecutions = $processExecutionService->getCurrentActivityExecutions($processExecution, $activityDefinition);
                         if(count($previousActivityExecutions) == $count){
                             foreach($previousActivityExecutions as $previousActivityExecution){
-                                $mergingActivityExecutions[$previousActivityExecution->uriResource] = $previousActivityExecution;
+                                $oldActivityExecutions[$previousActivityExecution->uriResource] = $previousActivityExecution;
                             }
                         }else{
                             throw new wfEngine_models_classes_ProcessExecutionException("the number of activity execution does not correspond to the join connector definition (".count($previousActivityExecutions)." against {$count})");
@@ -1022,7 +1025,7 @@ class wfEngine_models_classes_ActivityExecutionService
                     //create the token for next activity
                     $newActivityExecution = $this->mergeActivityExecutionVariables($mergingActivityExecutions, $nextActivity, $processExecution);
                     if(!is_null($newActivityExecution)){
-						foreach ($mergingActivityExecutions as $oldActivityExecution){
+						foreach ($oldActivityExecutions as $oldActivityExecution){
 							$oldActivityExecution->setPropertyValue(new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_FOLLOWING), $newActivityExecution->uriResource);
 							$newActivityExecution->setPropertyValue(new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_PREVIOUS), $oldActivityExecution->uriResource);
 						}
@@ -1031,6 +1034,13 @@ class wfEngine_models_classes_ActivityExecutionService
                     break;
 				}	
             }
+			
+			if(!empty($returnValue)){
+				//set the process' current activity executions:
+				$processExecutionService->removeCurrentActivityExecutions($processExecution, $oldActivityExecutions);
+				$processExecutionService->setCurrentActivityExecutions($processExecution, $returnValue);
+			}
+			
         }
 		//do not forget to set current activity exec after this method execution to 
 		
@@ -1096,7 +1106,8 @@ class wfEngine_models_classes_ActivityExecutionService
         // section 127-0-1-1--5016dfa1:1324df105c5:-8000:0000000000003001 begin
 		
 		$excludedProperties = array(
-			RDF_LABEL,
+			RDFS_LABEL,
+			PROPERTY_ACTIVITY_EXECUTION_CURRENT_USER,
 			PROPERTY_ACTIVITY_EXECUTION_ACTIVITY,
 			PROPERTY_ACTIVITY_EXECUTION_CTX_RECOVERY,
 			PROPERTY_ACTIVITY_EXECUTION_PREVIOUS,

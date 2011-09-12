@@ -719,38 +719,17 @@ class wfEngine_models_classes_ProcessExecutionService
 		}
 		
 		// The actual transition starts here:
-		throw new Exception('work in progress');
-		
 		if(!is_null($nextConnector)){
 			
+			//trigger the forward transition:
 			$newActivityExecutions = $this->activityExecutionService->moveForward($activityExecution, $nextConnector, $newActivities, $processExecution);
-			$this->activityExecutionService->setCurrentActivityExecutions($processExecution, $newActivityExecutions);
 			
 			//trigger the notifications
 			$notificationService->trigger($nextConnector, $processExecution);
 			
 		}
 		
-		//transition done: now get the following activities:
-		
-		//Manage the path:
-		//set previous activity executions:
-		
-		//set following activity executions:
-		
-		//get the current activities, whether the user has the right or not:
-		$currentActivities = array();
-		foreach($tokenService->getCurrentActivities($processExecution) as $currentActivity){
-			//TODO: investigate if possible to use the array of newActivities instead of using the token service here
-			//ccl: only usefull to check if the "token" has effectively been moved
-			$currentActivities[] = $currentActivity;
-			
-			//manage path here:
-//			$activityBeforeTransitionObject = new wfEngine_models_classes_Activity($activityBeforeTransition->uriResource);
-//			$this->path->invalidate($activityBeforeTransitionObject, ($this->path->contains($newActivity) ? $newActivity : null));
-//			$this->path->insertActivity($newActivity);// We insert in the ontology the last activity in the path stack.
-			
-		}
+		//transition done from here: now get the following activities:
 		
 		$currentActivities = $newActivities;
 		//if the connector is not a parallel one, let the user continue in his current branch and prevent the pause:
@@ -916,25 +895,26 @@ class wfEngine_models_classes_ProcessExecutionService
 		}
 		
 		switch ($connectorType->uriResource) {
-			case INSTANCE_TYPEOFCONNECTORS_CONDITIONAL : {
+			case INSTANCE_TYPEOFCONNECTORS_CONDITIONAL:{
 				
 				$returnValue = $this->getConditionalConnectorNewActivities($activityExecution, $currentConnector);
 				
 				break;
 			}
-			case INSTANCE_TYPEOFCONNECTORS_PARALLEL : {
+			case INSTANCE_TYPEOFCONNECTORS_PARALLEL:{
 
 				$returnValue = $connectorService->getNextActivities($currentConnector);
 				
 				break;
 			}
-			case INSTANCE_TYPEOFCONNECTORS_JOIN : {
+			case INSTANCE_TYPEOFCONNECTORS_JOIN:{
 			
 				$returnValue = $this->getJoinConnectorNewActivities($processExecution, $currentConnector);
 				
 				break;
 			}
-			default : {
+			case INSTANCE_TYPEOFCONNECTORS_SEQUENCE:
+			default:{
 				//considered as a sequential connector
 				$newActivities = $connectorService->getNextActivities($currentConnector);
 				if(count($newActivities)){
@@ -1057,43 +1037,25 @@ class wfEngine_models_classes_ProcessExecutionService
 		}
 
 		$debug = array();
-		$tokenClass = new core_kernel_classes_Class(CLASS_TOKEN);
 		$propActivityExecIsFinished = new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_IS_FINISHED);
-		$propActivityExecProcessExec = new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_PROCESSEXECUTION);
-		$activityExecutionClass = new core_kernel_classes_Class(CLASS_ACTIVITY_EXECUTION);				
+		//count finished activity execution by activity definition
 		foreach($activityResourceArray as $activityDefinition => $count){
-			//get all activity execution for the current activity definition and for the current process execution indepedently from the user (which is not known at the authoring time)
-
-			//get the collection of the activity executions performed for the given actiivty definition:
-
-			$activityExecutions = $activityExecutionClass->searchInstances(array(PROPERTY_ACTIVITY_EXECUTION_ACTIVITY => $activityDefinition), array('like'=>false));
-
-			$activityExecutionArray = array();
+			
 			$debug[$activityDefinition] = array();
+			$activityExecutionArray = array();
+			
+			//get all activity execution for the current activity definition and for the current process execution indepedently from the user (which is not known at the authoring time)
+			$activityExecutions = $this->getCurrentActivityExecutions($processExecution, $activityDefinition);
 			foreach($activityExecutions as $activityExecutionResource){
-				$processExecutionResource = $activityExecutionResource->getOnePropertyValue($propActivityExecProcessExec);
-
-				$debug[$activityDefinition][$activityExecutionResource->getLabel()] = $processExecutionResource->getLabel().':'.$processExecutionResource->uriResource;
-				// $debug[$activityDefinition]['$this->resource->uri'] = $this->resource->uri;
-
-				if(!is_null($processExecutionResource)){
-					if($processExecutionResource->uriResource == $processExecution->uriResource){
-						//check if the activity execution is associated to a token: 
-						//take the activity exec into account only if it is the case:
-						$tokens = $tokenClass->searchInstances(array(PROPERTY_TOKEN_ACTIVITYEXECUTION => $activityExecutionResource->uriResource), array('like' => false));
-						if(count($tokens)){
-							//found one: check if it is finished:
-							$isFinished = $activityExecutionResource->getOnePropertyValue($propActivityExecIsFinished);
-							if(!$isFinished instanceof core_kernel_classes_Resource || $isFinished->uriResource == GENERIS_FALSE){
-								$completed = false;
-								break(2); //leave the $completed value as false, no neet to continue
-							}else{
-								//a finished activity execution for the process execution
-								$activityExecutionArray[] = $activityExecutionResource;
-							}
-						}
-					}
+				
+				if($this->activityExecutionService->isFinished($activityExecutionResource)){
+					//a finished activity execution for the process execution
+					$activityExecutionArray[] = $activityExecutionResource;
+				}else{
+					$completed = false;
+					break(2); //leave the $completed value as false, no neet to continue
 				}
+				
 			}
 
 			$debug[$activityDefinition]['activityExecutionArray'] = $activityExecutionArray;
@@ -1108,7 +1070,6 @@ class wfEngine_models_classes_ProcessExecutionService
 		}
 		
 		if($completed){
-			$returnValue = array();
 			//get THE (unique) next activity
 			$returnValue = $connectorService->getNextActivities($joinConnector);//normally, should be only ONE, so could actually break after the first loop
 		}else{
@@ -1181,7 +1142,7 @@ class wfEngine_models_classes_ProcessExecutionService
      * @param  mixed user
      * @return array
      */
-    public function getCurrentActivityExecutions( core_kernel_classes_Resource $processExecution,  core_kernel_classes_Resource $activityDefinition = null,  mixed $user = null)
+    public function getCurrentActivityExecutions( core_kernel_classes_Resource $processExecution,  core_kernel_classes_Resource $activityDefinition = null, $user = null)
     {
         $returnValue = array();
 
@@ -1265,7 +1226,7 @@ class wfEngine_models_classes_ProcessExecutionService
 					$returnValue = $currentActivityExec;
 				}
 			}else{
-				throw new Exception('too many activity executions found');
+				throw new wfEngine_models_classes_ProcessExecutionException('too many activity executions found');
 			}
         }
 		
