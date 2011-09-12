@@ -722,10 +722,10 @@ class wfEngine_models_classes_ProcessExecutionService
 		
 		// The actual transition starts here:
 		if(!is_null($nextConnector)){
-				var_dump('way before', count($this->getCurrentActivityExecutions($processExecution)));
+//				var_dump('way before', count($this->getCurrentActivityExecutions($processExecution)));
 			//trigger the forward transition:
 			$newActivityExecutions = $this->activityExecutionService->moveForward($activityExecution, $nextConnector, $newActivities, $processExecution);
-				var_dump('after', count($this->getCurrentActivityExecutions($processExecution)));
+//				var_dump('after', count($this->getCurrentActivityExecutions($processExecution)));
 			//trigger the notifications
 			$notificationService->trigger($nextConnector, $processExecution);
 			
