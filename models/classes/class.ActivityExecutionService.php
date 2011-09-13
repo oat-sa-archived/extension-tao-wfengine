@@ -1038,12 +1038,8 @@ class wfEngine_models_classes_ActivityExecutionService
 			
 			if(!empty($returnValue)){
 				//set the process' current activity executions:
-//				var_dump('not way before', count($processExecutionService->getCurrentActivityExecutions($processExecution)));
 				$processExecutionService->removeCurrentActivityExecutions($processExecution, $oldActivityExecutions);
-//				var_dump('right before', count($processExecutionService->getCurrentActivityExecutions($processExecution)));
-//				var_dump('to be removed', $oldActivityExecutions, array_pop($oldActivityExecutions)->getLabel());
 				$processExecutionService->setCurrentActivityExecutions($processExecution, $returnValue);
-//				var_dump('right after', count($processExecutionService->getCurrentActivityExecutions($processExecution)));
 			}
 			
         }

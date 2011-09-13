@@ -165,10 +165,12 @@ class ProcessExecutionServiceTestCase extends UnitTestCase{
 			$this->assertEqual(count($currentActivityExecutions), 1);
 			$this->assertEqual(strpos(array_pop($currentActivityExecutions)->getLabel(), 'Execution of activity1'), 0);
 			
+			$this->out("<strong>Forward transitions:</strong>", true);
 			
+			$iterationNumber = 5;
 			$i = 1;
-			while($i <= 5 ){
-				if($i<5){
+			while($i <= $iterationNumber){
+				if($i<$iterationNumber){
 					//try deleting a process that is not finished
 					$this->assertFalse($this->service->deleteProcessExecution($processInstance, true));
 				}
@@ -188,7 +190,93 @@ class ProcessExecutionServiceTestCase extends UnitTestCase{
 				$this->assertEqual($activityExecStatus->uriResource, INSTANCE_PROCESSSTATUS_STARTED);
 				
 				//transition to next activity
-				$this->service->performTransition($processInstance, $activityExecution);
+				$transitionResult = $this->service->performTransition($processInstance, $activityExecution);
+				if($i<$iterationNumber){
+					$this->assertTrue($transitionResult);
+				}else{
+					$this->assertFalse($transitionResult);
+				}
+				
+				$this->assertFalse($this->service->isPaused($processInstance));
+				
+				$i++;
+			}
+			$this->assertTrue($this->service->isFinished($processInstance));
+			
+			$this->out("<strong>Backward transitions:</strong>", true);
+			$j = 0;
+			while($j < $iterationNumber){
+				
+				$activities = $this->service->getAvailableCurrentActivityDefinitions($processInstance, $this->currentUser);
+				$this->assertEqual(count($activities), 1);
+				$activity = array_shift($activities);
+				
+				$this->out("<strong>".$activity->getLabel()."</strong>", true);
+				$index = $iterationNumber - $j;
+				$this->assertEqual($activity->getLabel(), "activity$index");
+				
+				//init execution
+				$activityExecution = $this->service->initCurrentActivityExecution($processInstance, $activity, $this->currentUser);
+				$this->assertNotNull($activityExecution);
+				$activityExecStatus = $activityExecutionService->getStatus($activityExecution);
+				$this->assertNotNull($activityExecStatus);
+				$this->assertEqual($activityExecStatus->uriResource, INSTANCE_PROCESSSTATUS_RESUMED);
+				
+				//transition to next activity
+				$transitionResult = $this->service->performBackwardTransition($processInstance, $activityExecution);
+				$processStatus = $this->service->getStatus($processInstance);
+				$this->assertNotNull($processStatus);
+				$this->assertEqual($processStatus->uriResource, INSTANCE_PROCESSSTATUS_RESUMED);
+				if($j<$iterationNumber-1){
+					$this->assertTrue($transitionResult);
+				}else{
+					$this->assertFalse($transitionResult);
+				}
+				
+				$j++;
+			}
+			
+			$this->out("<strong>Forward transitions again:</strong>", true);
+			
+			$i = 1;
+			while($i <= $iterationNumber){
+				if($i<$iterationNumber){
+					//try deleting a process that is not finished
+					$this->assertFalse($this->service->deleteProcessExecution($processInstance, true));
+				}
+				
+				$activities = $this->service->getAvailableCurrentActivityDefinitions($processInstance, $this->currentUser);
+				
+				$this->assertEqual(count($activities), 1);
+				$activity = array_shift($activities);
+				
+				$this->out("<strong>".$activity->getLabel()."</strong>", true);
+				$this->assertTrue($activity->getLabel() == 'activity'.$i);
+				foreach ($activities as $activity){
+					var_dump($activity->getLabel());
+				}
+				
+				//init execution
+				$activityExecution = $this->service->initCurrentActivityExecution($processInstance, $activity, $this->currentUser);
+				$this->assertNotNull($activityExecution);
+				$activityExecStatus = $activityExecutionService->getStatus($activityExecution);
+				$this->assertNotNull($activityExecStatus);
+				if($i == 1){
+					$this->assertEqual($activityExecStatus->uriResource, INSTANCE_PROCESSSTATUS_RESUMED);
+				}else{
+					$this->assertEqual($activityExecStatus->uriResource, INSTANCE_PROCESSSTATUS_STARTED);
+				}
+				
+				//check process content:
+//				var_dump($this->service->getAllActivityExecutions($processInstance));
+				
+				//transition to next activity
+				$transitionResult = $this->service->performTransition($processInstance, $activityExecution);
+				if($i<$iterationNumber){
+					$this->assertTrue($transitionResult);
+				}else{
+					$this->assertFalse($transitionResult);
+				}
 				
 				$this->assertFalse($this->service->isPaused($processInstance));
 				
@@ -218,7 +306,7 @@ class ProcessExecutionServiceTestCase extends UnitTestCase{
 	/**
 	 * Test the tokens into a parallel process
 	 */
-	public function testVirtualParallelJoinProcess(){
+	public function _testVirtualParallelJoinProcess(){
 		
 		error_reporting(E_ALL);
 		

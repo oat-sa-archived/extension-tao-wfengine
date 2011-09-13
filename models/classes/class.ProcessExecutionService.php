@@ -722,10 +722,10 @@ class wfEngine_models_classes_ProcessExecutionService
 		
 		// The actual transition starts here:
 		if(!is_null($nextConnector)){
-//				var_dump('way before', count($this->getCurrentActivityExecutions($processExecution)));
+			
 			//trigger the forward transition:
 			$newActivityExecutions = $this->activityExecutionService->moveForward($activityExecution, $nextConnector, $newActivities, $processExecution);
-//				var_dump('after', count($this->getCurrentActivityExecutions($processExecution)));
+			
 			//trigger the notifications
 			$notificationService->trigger($nextConnector, $processExecution);
 			
@@ -1175,16 +1175,20 @@ class wfEngine_models_classes_ProcessExecutionService
         $returnValue = array();
 
         // section 127-0-1-1--6e0edde7:13247ef74e0:-8000:0000000000002FCD begin
+		$allCurrentActivityExecutions = array();
+		$currentActivityExecutions = $processExecution->getPropertyValues($this->processInstancesCurrentActivityExecutionsProp);
+		$count = count($currentActivityExecutions);
+		for($i=0;$i<$count;$i++){
+			$uri = $currentActivityExecutions[$i];
+			if(common_Utils::isUri($uri)){
+				$allCurrentActivityExecutions[$uri] = new core_kernel_classes_Resource($uri);
+			}
+		}
 		
 		if(is_null($activityDefinition) && is_null($user)){
-			$currentActivityExecutions = $processExecution->getPropertyValues($this->processInstancesCurrentActivityExecutionsProp);
-			$count = count($currentActivityExecutions);
-			for($i=0;$i<$count;$i++){
-				$uri = $currentActivityExecutions[$i];
-				if(common_Utils::isUri($uri)){
-					$returnValue[$uri] = new core_kernel_classes_Resource($uri);
-				}
-			}
+			
+			$returnValue = $allCurrentActivityExecutions;
+			
 		}else{
 			//search by criteria:
 			$propertyFilter = array(PROPERTY_ACTIVITY_EXECUTION_PROCESSEXECUTION =>	$processExecution->uriResource);
@@ -1195,7 +1199,8 @@ class wfEngine_models_classes_ProcessExecutionService
 				$propertyFilter[PROPERTY_ACTIVITY_EXECUTION_CURRENT_USER] = $user->uriResource;
 			}
 				
-			$returnValue = $this->activityExecutionsClass->searchInstances($propertyFilter,array('like'	=> false,'recursive' => false));
+			$foundActivityExecutions = $this->activityExecutionsClass->searchInstances($propertyFilter, array('like' => false, 'recursive' => false));
+			$returnValue = array_intersect_key($allCurrentActivityExecutions, $foundActivityExecutions);
 			
 			//special case:check if we want an 'empty-user' activityExecution:
 			if(!is_null($activityDefinition) && is_string($user) && empty($user)){
@@ -1401,11 +1406,13 @@ class wfEngine_models_classes_ProcessExecutionService
 				}
 				
 				$user = $this->activityExecutionService->getActivityExecutionUser($activityExecution);
+				
+				$status = $this->activityExecutionService->getStatus($activityExecution);
 				$returnValue[$uri] = array(
 					'label' => $activityExecution->getLabel(),
 					'executionOf' => $activityDefinition->getLabel().' ('.$activityDefinition->uriResource.')',
 					'user' => (is_null($user))?'none':$user->getLabel().' ('.$user->uriResource.')',
-					'status' => $this->activityExecutionService->getStatus($activityExecution)->uriResource,
+					'status' => (is_null($status))?'none':$status->getLabel(),
 					'current' => array_key_exists($activityExecution->uriResource, $currentActivityExecutions),
 					'previous' => $previousArray,
 					'following' => $followingArray
