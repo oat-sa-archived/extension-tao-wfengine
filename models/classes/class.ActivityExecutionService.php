@@ -1290,7 +1290,7 @@ class wfEngine_models_classes_ActivityExecutionService
         $returnValue = (string) '';
 
         // section 127-0-1-1--1e75179b:1325dc5c4e1:-8000:0000000000003015 begin
-		$returnValue = 'Execution of '.$activityDefinition->getLabel().' at '.  microtime();//d-m-Y H:i:s u
+		$returnValue = 'Execution of '.$activityDefinition->getLabel().' at '.date('d-m-Y G:i:s');//d-m-Y G:i:s u
         // section 127-0-1-1--1e75179b:1325dc5c4e1:-8000:0000000000003015 end
 
         return (string) $returnValue;

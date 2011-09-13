@@ -63,14 +63,24 @@ class InteractiveServiceServiceTestCase extends UnitTestCase {
 	
 	public function testGetCallUrl(){
 		
-		$myProcessVar1 = $this->authoringService->getProcessVariable('myProcessVarCode1', true);
-		$myProcessVar2 = $this->authoringService->getProcessVariable('myProcessVarCode2', true);
+		//create unique process variables for this unit test only:
+		$myProcessVarCode1 = 'myProcessVarCode1'.time();
+		$myProcessVarCode2 = 'myProcessVarCode2'.time();
+		$myProcessVar1 = $this->authoringService->getProcessVariable($myProcessVarCode1, true);
+		$myProcessVar2 = $this->authoringService->getProcessVariable($myProcessVarCode2, true);
 		
+		
+		$parameterNames = array(
+			'param1'.time(),
+			'param2'.time(),
+			'param3'.time(),
+			'param4'.time()
+		);
 		$inputParameters = array(
-			'param1' => $myProcessVar1,
-			'param2' => '^myProcessVarCode2',
-			'param3' => 'myConstantValue',
-			'param4' => null
+			$parameterNames[0] => $myProcessVar1,
+			$parameterNames[1] => '^'.$myProcessVarCode2,
+			$parameterNames[2] => 'myConstantValue',
+			$parameterNames[3] => null
 		);
 		
 		$serviceUrl = 'http://www.myWebSite.com/myServiceScript.php';
@@ -88,7 +98,7 @@ class InteractiveServiceServiceTestCase extends UnitTestCase {
 		
 		//assign actual params:
 		for($i=1;$i<=4;$i++){
-			$formalParam = $this->authoringService->getFormalParameter('param'.$i);
+			$formalParam = $this->authoringService->getFormalParameter($parameterNames[$i-1]);
 			$this->assertNotNull($formalParam);
 			if(!is_null($formalParam) && $formalParam instanceof core_kernel_classes_Resource){
 				$defaultProcessVar = $formalParam->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_FORMALPARAMETER_DEFAULTPROCESSVARIABLE));
@@ -100,7 +110,7 @@ class InteractiveServiceServiceTestCase extends UnitTestCase {
 			}
 		}
 		
-		//a no-orthodox way to create a valid token-activity execution pair:
+		//a no-orthodox way to create a valid activity execution :
 		$userService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_UserService');
 		$currentUser = new core_kernel_classes_Resource(LOCAL_NAMESPACE.'#unitTestUser');
 		$this->assertNotNull($currentUser);
@@ -109,34 +119,32 @@ class InteractiveServiceServiceTestCase extends UnitTestCase {
 		$activityExec1 = $classActivityExecution->createInstance('activity exec for interactive service test case');
 		$activityExec1->setPropertyValue(new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_CURRENT_USER), $currentUser->uriResource);
 		
-		$classToken = new core_kernel_classes_Class(CLASS_TOKEN);
-		$token1 = $classToken->createInstance('token for interactive service test case');
-		$token1->setPropertyValue(new core_kernel_classes_Property(PROPERTY_TOKEN_ACTIVITYEXECUTION), $activityExec1->uriResource);
-		$token1->setPropertyValue(new core_kernel_classes_Property(PROPERTY_TOKEN_CURRENTUSER), $currentUser->uriResource);
 		$procVarValue1 = 'procVarValue1';
 		$procVarValue2 = 'procVarValue2';
-		$token1->setPropertyValue(new core_kernel_classes_Property($myProcessVar1->uriResource), $procVarValue1);
-		$token1->setPropertyValue(new core_kernel_classes_Property($myProcessVar2->uriResource), $procVarValue2);
+		$activityExec1->setPropertyValue(new core_kernel_classes_Property($myProcessVar1->uriResource), $procVarValue1);
+		$activityExec1->setPropertyValue(new core_kernel_classes_Property($myProcessVar2->uriResource), $procVarValue2);
 		
 		//check call url again
 		$callUrl = $this->service->getCallUrl($service1);
-		$this->assertEqual(strlen($callUrl), strlen('http://www.myWebSite.com/myServiceScript.php?param2=&param1=&param3=&param4=&'));
+		$this->assertEqual(strlen($callUrl), strlen('http://www.myWebSite.com/myServiceScript.php?'.$parameterNames[0].'=&'.$parameterNames[1].'=&'.$parameterNames[2].'=&'.$parameterNames[3].'=&'));
 		
 		//and again:
 		$callUrl = $this->service->getCallUrl($service1, $activityExec1);
-		$this->assertEqual(strlen($callUrl), strlen('http://www.myWebSite.com/myServiceScript.php?param1=procVarValue1&param2=procVarValue2&param3=value3&param4=value4&'));
+		$this->assertEqual(strlen($callUrl), strlen('http://www.myWebSite.com/myServiceScript.php?'.$parameterNames[0].'=procVarValue1&'.$parameterNames[1].'=procVarValue2&'.$parameterNames[2].'=value3&'.$parameterNames[3].'=value4&'));
 		$this->assertTrue(strpos($callUrl, $procVarValue1));
 		$this->assertTrue(strpos($callUrl, $procVarValue2));
+		$this->assertTrue(strpos($callUrl, $parameterNames[2].'=value3'));
+		$this->assertTrue(strpos($callUrl, $parameterNames[3].'=value4'));
 		
 		//delete all created resources:
 		$myProcessVar1->delete();
 		$myProcessVar2->delete();
 		$serviceDefinition1->delete();
 		$activityExec1->delete();
-		$token1->delete();
+		$service1->delete();
 		
-		for($i=1;$i<=4;$i++){
-			$formalParam = $this->authoringService->getFormalParameter('param'.$i);
+		for($i=0;$i<4;$i++){
+			$formalParam = $this->authoringService->getFormalParameter($parameterNames[$i]);
 			$this->assertNotNull($formalParam);
 			if(!is_null($formalParam) && $formalParam instanceof core_kernel_classes_Resource){
 				$this->assertTrue($formalParam->delete());

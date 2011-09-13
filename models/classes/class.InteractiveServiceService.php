@@ -100,13 +100,6 @@ class wfEngine_models_classes_InteractiveServiceService
 		$output	= array();//for later use
 		$inParameterCollection = $interactiveService->getPropertyValuesCollection(new core_kernel_classes_Property(PROPERTY_CALLOFSERVICES_ACTUALPARAMETERIN));
 		
-		//get the current and unique token to get the process variable value:
-		$token = null;
-		if(!is_null($activityExecution)){
-			$tokenService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_TokenService');
-			$token = $tokenService->getCurrent($activityExecution);
-		}
-		
 		foreach ($inParameterCollection->getIterator() as $inParameter){
 			
 			$inParameterProcessVariable = $inParameter->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_ACTUALPARAMETER_PROCESSVARIABLE));//a resource
@@ -114,8 +107,9 @@ class wfEngine_models_classes_InteractiveServiceService
 			
 			$formalParameter = $inParameter->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_ACTUALPARAMETER_FORMALPARAMETER));
 			$formalParameterName = $formalParameter->getUniquePropertyValue( new core_kernel_classes_Property(PROPERTY_FORMALPARAMETER_NAME));
-				
-			if (!is_null($token)){
+			
+			//the current activity execution contains the current context of execution:
+			if (!is_null($activityExecution)){
 				
 				if(!is_null($inParameterProcessVariable)){
 					
@@ -127,9 +121,7 @@ class wfEngine_models_classes_InteractiveServiceService
 					$paramValue = '';
 					
 					//use the current and unique token to get the process variable value:
-					$paramValueResourceArray = $token->getPropertyValues(new core_kernel_classes_Property($inParameterProcessVariable->uriResource));
-					
-					//var_dump($inParameterProcessVariable,$paramValueResourceArray);
+					$paramValueResourceArray = $activityExecution->getPropertyValues(new core_kernel_classes_Property($inParameterProcessVariable->uriResource));
 					
 					$paramValue = '';
 					if(sizeof($paramValueResourceArray)){
@@ -158,8 +150,6 @@ class wfEngine_models_classes_InteractiveServiceService
 					}else if($inParameterConstant instanceof core_kernel_classes_Resource){
 						$paramValue = $inParameterConstant->uriResource;//encode??
 					}
-					
-					// var_dump($inParameterConstant, $paramValue);
 					
 					$input[common_Utils::fullTrim($formalParameterName)] = array(
 						'type' => $paramType,
