@@ -43,10 +43,10 @@
 					<tbody>
 						<?php foreach ($processViewData as $procData): ?>
 						<tr>
-							<td class="status"><img src="<?php echo BASE_WWW;?>/<?php echo GUIHelper::buildStatusImageURI($procData['status']); ?>"/></td>
+							<td class="status"><img src="<?php echo BASE_WWW;?>/<?php echo wfEngine_helpers_GUIHelper::buildStatusImageURI($procData['status']); ?>"/></td>
 							
 							
-							<td class="label"><?php echo GUIHelper::sanitizeGenerisString($procData['label']); ?></td>
+							<td class="label"><?php echo wfEngine_helpers_GUIHelper::sanitizeGenerisString($procData['label']); ?></td>
 			
 							<td class="join">
 								<?php if ($procData['status'] != 'Finished'): ?>
@@ -74,7 +74,7 @@
 					<?php foreach($availableProcessDefinition as $procDef) : ?>
 						<li>
 							<a href="<?php echo BASE_URL;?>/Processes/authoring?processDefinitionUri=<?php echo urlencode($procDef->uriResource); ?>">
-							<?php echo GUIHelper::sanitizeGenerisString($procDef->getLabel()); ?></a>
+							<?php echo wfEngine_helpers_GUIHelper::sanitizeGenerisString($procDef->getLabel()); ?></a>
 						</li>
 					<?php endforeach;  ?>
 				</div>	

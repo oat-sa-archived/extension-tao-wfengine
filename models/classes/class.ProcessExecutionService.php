@@ -1247,7 +1247,7 @@ class wfEngine_models_classes_ProcessExecutionService
 					//if user empty, bind execution to current 
 					if($this->activityExecutionService->setActivityExecutionUser($activityExec, $user)){
 						$returnValue = $activityExec;
-						$this->activityExecutionService->setStatus($activityExec, 'started');//optional
+						$this->activityExecutionService->setStatus($activityExec, 'started');//or "resumed"?
 						break;
 					}
 				}
@@ -1277,36 +1277,45 @@ class wfEngine_models_classes_ProcessExecutionService
      * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @param  Resource processExecution
      * @param  Resource currentUser
+     * @param  boolean checkACL
      * @return array
      */
-    public function getAvailableCurrentActivityDefinitions( core_kernel_classes_Resource $processExecution,  core_kernel_classes_Resource $currentUser)
+    public function getAvailableCurrentActivityDefinitions( core_kernel_classes_Resource $processExecution,  core_kernel_classes_Resource $currentUser, $checkACL = false)
     {
         $returnValue = array();
 
         // section 127-0-1-1--6e0edde7:13247ef74e0:-8000:0000000000002FE5 begin
 		
-		$availableActivityExecutions = array();
 		$currentActivityExecutions = $this->getCurrentActivityExecutions($processExecution);
 		$propActivityExecutionCurrentUser = new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_CURRENT_USER);
 		foreach($currentActivityExecutions as $currentActivityExecution){
-			
-			//add access permission checking here:
-			
+			$ok = false;
+			$activityDefinition = null;
 			$assignedUser = $currentActivityExecution->getOnePropertyValue($propActivityExecutionCurrentUser);
 			if(!is_null($assignedUser)){
 				if($assignedUser->uriResource == $currentUser->uriResource){
-					$availableActivityExecutions[] = $currentActivityExecution;
+					$ok = true;
 				}
 			}else{
-				$availableActivityExecutions[] = $currentActivityExecution;
+				if($checkACL){
+					$activityDefinition = $this->activityExecutionService->getExecutionOf($currentActivityExecution);
+					if($this->activityExecutionService->checkACL($activityDefinition, $currentUser, $processExecution)){
+						$ok = true;
+					}
+				}else{
+					$ok = true;
+				}
+			}
+			
+			if($ok){
+				if(is_null($activityDefinition)){
+					$activityDefinition = $this->activityExecutionService->getExecutionOf($currentActivityExecution);
+				}
+				$returnValue[$activityDefinition->uriResource] = $activityDefinition;
 			}
 		}
 		
-		foreach($availableActivityExecutions as $availableActivityExecution){
-			$activityDefinition = $this->activityExecutionService->getExecutionOf($availableActivityExecution);
-			//TODO: check access right here?
-			$returnValue[$activityDefinition->uriResource] = $activityDefinition;
-		}
+		//suggestion: check ACL on the return values of this method
 		
         // section 127-0-1-1--6e0edde7:13247ef74e0:-8000:0000000000002FE5 end
 

@@ -1,4 +1,5 @@
 <?php
+//deprecated: new class generated
 class GUIHelper
 {
 	

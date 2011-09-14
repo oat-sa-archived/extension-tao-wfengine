@@ -689,7 +689,12 @@ class wfEngine_models_classes_ActivityExecutionService
         $returnValue = null;
 
         // section 127-0-1-1--42c550f9:1323e0e4fe5:-8000:0000000000002FB9 begin
-		$returnValue = $activityExecution->getUniquePropertyValue($this->processExecutionProperty);
+		//use get one property value for better performance:
+		$returnValue = $activityExecution->getOnePropertyValue($this->processExecutionProperty);
+		if(is_null($returnValue)){
+			throw new wfEngine_models_classes_ProcessExecutionException('no process execution found for the activity execution '.$activityExecution->uriResource);
+		}
+		
         // section 127-0-1-1--42c550f9:1323e0e4fe5:-8000:0000000000002FB9 end
 
         return $returnValue;

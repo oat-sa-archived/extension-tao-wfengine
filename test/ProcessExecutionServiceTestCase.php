@@ -202,7 +202,8 @@ class ProcessExecutionServiceTestCase extends UnitTestCase{
 				}else{
 					$this->assertFalse($transitionResult);
 				}
-				
+				$this->out("activity status: ".$activityExecutionService->getStatus($activityExecution)->getLabel());
+				$this->out("process status: ".$this->service->getStatus($processInstance)->getLabel());
 				$this->assertFalse($this->service->isPaused($processInstance));
 				
 				$i++;
@@ -239,6 +240,8 @@ class ProcessExecutionServiceTestCase extends UnitTestCase{
 					$this->assertFalse($transitionResult);
 				}
 				
+				$this->out("activity status: ".$activityExecutionService->getStatus($activityExecution)->getLabel());
+				$this->out("process status: ".$this->service->getStatus($processInstance)->getLabel());
 				$j++;
 			}
 			
@@ -280,6 +283,8 @@ class ProcessExecutionServiceTestCase extends UnitTestCase{
 				}else{
 					$this->assertFalse($transitionResult);
 				}
+				$this->out("activity status: ".$activityExecutionService->getStatus($activityExecution)->getLabel());
+				$this->out("process status: ".$this->service->getStatus($processInstance)->getLabel());
 				
 				$this->assertFalse($this->service->isPaused($processInstance));
 				
@@ -410,11 +415,11 @@ class ProcessExecutionServiceTestCase extends UnitTestCase{
 
 			//transition to next activity
 			$this->out("current user: ".$this->currentUser->getOnePropertyValue($loginProperty).' "'.$this->currentUser->uriResource.'"');
-			$this->out("performing transition");
+			$this->out("performing transition ...");
 
 			//transition to next activity
 			$this->service->performTransition($processInstance, $activityExecution);
-
+			$this->out("activity status: ".$activityExecutionService->getStatus($activityExecution)->getLabel());
 			$this->out("process status: ".$this->service->getStatus($processInstance)->getLabel());
 
 			if($this->service->isPaused($processInstance)){
@@ -470,7 +475,7 @@ class ProcessExecutionServiceTestCase extends UnitTestCase{
 			$this->assertEqual($activityExecStatus->uriResource, INSTANCE_PROCESSSTATUS_RESUMED);
 			
 			$this->out("current user: ".$this->currentUser->getOnePropertyValue($loginProperty).' "'.$this->currentUser->uriResource.'"');
-			$this->out("performing transition");
+			$this->out("performing transition ...");
 
 			//transition to next activity
 			$transitionResult = $this->service->performBackwardTransition($processInstance, $activityExecution);
@@ -482,6 +487,7 @@ class ProcessExecutionServiceTestCase extends UnitTestCase{
 			
 			$processStatus = $this->service->getStatus($processInstance);
 			$this->assertNotNull($processStatus);
+			$this->out("activity status: ".$activityExecutionService->getStatus($activityExecution)->getLabel());
 			$this->out("process status: ".$processStatus->getLabel());
 			$this->assertEqual($processStatus->uriResource, INSTANCE_PROCESSSTATUS_PAUSED);
 			
@@ -541,11 +547,11 @@ class ProcessExecutionServiceTestCase extends UnitTestCase{
 				
 				//transition to next activity
 				$this->out("current user: ".$this->currentUser->getOnePropertyValue($loginProperty).' "'.$this->currentUser->uriResource.'"');
-				$this->out("performing transition");
+				$this->out("performing transition ...");
 
 				//transition to next activity
 				$this->service->performTransition($processInstance, $activityExecution);
-
+				$this->out("activity status: ".$activityExecutionService->getStatus($activityExecution)->getLabel());
 				$this->out("process status: ".$this->service->getStatus($processInstance)->getLabel());
 			}
 		}
@@ -567,10 +573,11 @@ class ProcessExecutionServiceTestCase extends UnitTestCase{
 
 		//transition to next activity
 		$this->out("current user: ".$this->currentUser->getOnePropertyValue($loginProperty).' "'.$this->currentUser->uriResource.'"');
-		$this->out("performing transition");
+		$this->out("performing transition ...");
 
 		//transition to next activity
 		$this->service->performTransition($processInstance, $activityExecution);
+		$this->out("activity status: ".$activityExecutionService->getStatus($activityExecution)->getLabel());
 		$this->out("process status: ".$this->service->getStatus($processInstance)->getLabel());
 		$this->assertTrue($this->service->isFinished($processInstance));
 		
