@@ -371,7 +371,7 @@ class ProcessExecutionServiceTestCase extends UnitTestCase{
 		$this->assertTrue($this->service->checkStatus($processInstance, 'started'));
 
 		$this->out(__METHOD__, true);
-		$this->out("<strong>Forward transitions again:</strong>", true);
+		$this->out("<strong>Forward transitions:</strong>", true);
 		
 		$numberActivities = 2 + $parallelCount1 + $parallelCount2;
 		$createdUsers = array();
@@ -409,8 +409,8 @@ class ProcessExecutionServiceTestCase extends UnitTestCase{
 			$this->assertEqual($activityExecStatus->uriResource, INSTANCE_PROCESSSTATUS_STARTED);
 
 			//transition to next activity
-			$this->out("current user: ".$this->currentUser->getOnePropertyValue($loginProperty).' "'.$this->currentUser->uriResource.'"', true);
-			$this->out("performing transition", true);
+			$this->out("current user: ".$this->currentUser->getOnePropertyValue($loginProperty).' "'.$this->currentUser->uriResource.'"');
+			$this->out("performing transition");
 
 			//transition to next activity
 			$this->service->performTransition($processInstance, $activityExecution);
@@ -421,7 +421,7 @@ class ProcessExecutionServiceTestCase extends UnitTestCase{
 
 				//Login another user to execute parallel branch
 				core_kernel_users_Service::logout();
-				$this->out("logout");
+				$this->out("logout ". $this->currentUser->getOnePropertyValue($loginProperty) . ' "' . $this->currentUser->uriResource . '"', true);
 				
 				list($usec, $sec) = explode(" ", microtime());
 				$login = 'wfTester-'.$i.'-'.$usec;
@@ -442,7 +442,7 @@ class ProcessExecutionServiceTestCase extends UnitTestCase{
 				if($this->userService->loginUser($login, md5($pass))){
 					$this->userService->connectCurrentUser();
 					$this->currentUser = $this->userService->getCurrentUser();
-					$this->out("new user logged in: ".$this->currentUser->getOnePropertyValue($loginProperty).' "'.$this->currentUser->uriResource.'"', true);
+					$this->out("new user logged in: ".$this->currentUser->getOnePropertyValue($loginProperty).' "'.$this->currentUser->uriResource.'"');
 				}else{
 					$this->fail("unable to login user $login<br>");
 				}
@@ -469,8 +469,8 @@ class ProcessExecutionServiceTestCase extends UnitTestCase{
 			$this->assertNotNull($activityExecStatus);
 			$this->assertEqual($activityExecStatus->uriResource, INSTANCE_PROCESSSTATUS_RESUMED);
 			
-			$this->out("current user: ".$this->currentUser->getOnePropertyValue($loginProperty).' "'.$this->currentUser->uriResource.'"', true);
-			$this->out("performing transition", true);
+			$this->out("current user: ".$this->currentUser->getOnePropertyValue($loginProperty).' "'.$this->currentUser->uriResource.'"');
+			$this->out("performing transition");
 
 			//transition to next activity
 			$transitionResult = $this->service->performBackwardTransition($processInstance, $activityExecution);
@@ -489,6 +489,7 @@ class ProcessExecutionServiceTestCase extends UnitTestCase{
 		}
 		
 		$this->out("<strong>Forward transitions again:</strong>", true);
+//		var_dump($this->service->getAllActivityExecutions($processInstance));
 		$currentActivityExecutions = $this->service->getCurrentActivityExecutions($processInstance);
 		
 		$currentActivityExecutionsCount = count($currentActivityExecutions);
@@ -505,7 +506,7 @@ class ProcessExecutionServiceTestCase extends UnitTestCase{
 			if(!is_null($user) && !is_null($activityDefinition)){
 				
 				core_kernel_users_Service::logout();
-				$this->out("logout", true);
+				$this->out("logout ". $this->currentUser->getOnePropertyValue($loginProperty) . ' "' . $this->currentUser->uriResource . '"', true);
 
 				$login = (string) $user->getUniquePropertyValue($loginProperty);
 				$pass = 'test123';
@@ -521,7 +522,6 @@ class ProcessExecutionServiceTestCase extends UnitTestCase{
 				$activityAvailable = false;
 				$activities = $this->service->getAvailableCurrentActivityDefinitions($processInstance, $this->currentUser);
 				foreach($activities as $activity){
-					$this->out("check activity def {$activity->getLabel()}");
 					if($activity->uriResource == $activityDefinition->uriResource){
 						$activityAvailable = true;
 						break;
@@ -544,16 +544,17 @@ class ProcessExecutionServiceTestCase extends UnitTestCase{
 				$this->out("performing transition");
 
 				//transition to next activity
-//				$this->service->performTransition($processInstance, $activityExecution);
+				$this->service->performTransition($processInstance, $activityExecution);
 
 				$this->out("process status: ".$this->service->getStatus($processInstance)->getLabel());
 			}
 		}
-		/*
+		
 		$activities = $this->service->getAvailableCurrentActivityDefinitions($processInstance, $this->currentUser);
 		$this->assertEqual(count($activities), 1);
 		$activity = array_shift($activities);
-
+		$this->assertEqual($activity->uriResource, $joinActivity->uriResource);
+		
 		$this->out("<strong>Executing last activity: ".$activity->getLabel()."</strong>", true);
 			
 		//init execution
@@ -565,15 +566,15 @@ class ProcessExecutionServiceTestCase extends UnitTestCase{
 		$this->assertEqual($activityExecStatus->uriResource, INSTANCE_PROCESSSTATUS_STARTED);
 
 		//transition to next activity
-		$this->out("current user: ".$this->currentUser->getOnePropertyValue($loginProperty).' "'.$this->currentUser->uriResource.'"', true);
-		$this->out("performing transition", true);
+		$this->out("current user: ".$this->currentUser->getOnePropertyValue($loginProperty).' "'.$this->currentUser->uriResource.'"');
+		$this->out("performing transition");
 
 		//transition to next activity
 		$this->service->performTransition($processInstance, $activityExecution);
 		$this->out("process status: ".$this->service->getStatus($processInstance)->getLabel());
 		$this->assertTrue($this->service->isFinished($processInstance));
-		*/
 		
+		$this->out('deleting created resources:', true);
 		//delete process exec:
 		$this->assertTrue($this->service->deleteProcessExecution($processInstance));
 
@@ -582,7 +583,7 @@ class ProcessExecutionServiceTestCase extends UnitTestCase{
 
 		//delete created users:
 		foreach($createdUsers as $createdUser){
-			$this->out('deleting '.$createdUser->getLabel().' "'.$createdUser->uriResource.'"', true);
+			$this->out('deleting '.$createdUser->getLabel().' "'.$createdUser->uriResource.'"');
 			$this->assertTrue($this->userService->removeUser($createdUser));
 		}
 

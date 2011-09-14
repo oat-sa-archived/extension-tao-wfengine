@@ -1099,13 +1099,10 @@ class wfEngine_models_classes_ProcessExecutionService
 		if($completed){
 			//get THE (unique) next activity
 			$returnValue = $connectorService->getNextActivities($joinConnector);//normally, should be only ONE, so could actually break after the first loop
-//			var_dump('transiton allowed');
 		}else{
 			//pause, do not allow transition so return boolean false
 			$returnValue = false;
-//			var_dump('transiton not allowed');
 		}
-//		var_dump($debug, $processExecution->uriResource);
 		
         // section 127-0-1-1--4b38ca35:1323a4c748d:-8000:0000000000002F8F end
 

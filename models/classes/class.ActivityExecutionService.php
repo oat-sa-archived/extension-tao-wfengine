@@ -1122,6 +1122,7 @@ class wfEngine_models_classes_ActivityExecutionService
 			
 			foreach($previousActivityExecutions as $previousActivityExecution) {
 				$previousActivityExecution->removePropertyValues($followingProperty);
+				$this->setStatus($previousActivityExecution, 'paused');
 			}
 			
 			if($processExecutionService->setCurrentActivityExecutions($processExecution, $previousActivityExecutions)){
