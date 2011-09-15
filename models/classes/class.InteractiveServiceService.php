@@ -171,7 +171,7 @@ class wfEngine_models_classes_InteractiveServiceService
 			$actualValue = $value['value'];
 			
 			if($value['type'] == 'processVar'){
-				//check if the same is passed in param:
+				//check if the same is passed in args to overwrite the current value:
 				if(array_key_exists($value['uri'], $variables)){
 					$actualValue = $variables[ $value['uri'] ];//set the actual value as the one given in parameter
 				}

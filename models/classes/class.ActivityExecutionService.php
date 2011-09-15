@@ -506,7 +506,7 @@ class wfEngine_models_classes_ActivityExecutionService
 							$process = $processExecution->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_PROCESSINSTANCES_EXECUTIONOF));
 							if(!is_null($process)){
 								
-								$actsProp 			= new core_kernel_classes_Property(PROPERTY_PROCESS_ACTIVITIES);
+								$actsProp = new core_kernel_classes_Property(PROPERTY_PROCESS_ACTIVITIES);
 								//get  activities
 								foreach ($process->getPropertyValues($actsProp) as $pactivityUri){
 									$pactivity = new core_kernel_classes_Resource($pactivityUri);

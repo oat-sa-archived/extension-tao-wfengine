@@ -71,7 +71,7 @@ class wfEngine_models_classes_ProcessExecutionService
 
             //process and current must be set to the activty execution otherwise a common Exception is thrown
              
-            $modeUri 		= $process->getOnePropertyValue($processModeProp);
+            $modeUri = $process->getOnePropertyValue($processModeProp);
             if(is_null($modeUri) || (string)$modeUri == ''){
                 $returnValue = true;	//if no mode defined, the process is allowed
             }
@@ -597,7 +597,7 @@ class wfEngine_models_classes_ProcessExecutionService
         $returnValue = null;
 
         // section 127-0-1-1-7a69d871:1322a76df3c:-8000:0000000000002F7D begin
-		
+		//TODO: to be cached
 		$status = $processExecution->getOnePropertyValue($this->processInstancesStatusProp);
 		if (!is_null($status)){
 			switch($status->uriResource){
@@ -681,11 +681,11 @@ class wfEngine_models_classes_ProcessExecutionService
      * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @param  Resource processExecution
      * @param  Resource activityExecution
-     * @return boolean
+     * @return array
      */
     public function performTransition( core_kernel_classes_Resource $processExecution,  core_kernel_classes_Resource $activityExecution)
     {
-        $returnValue = (bool) false;
+        $returnValue = array();
 
         // section 127-0-1-1-7a69d871:1322a76df3c:-8000:0000000000002F84 begin
 		
@@ -758,18 +758,15 @@ class wfEngine_models_classes_ProcessExecutionService
 			$this->finish($processExecution);
 			return;
 		}elseif(!is_null($uniqueNextActivity)){
-			
 			//we are certain that the next activity would be for the user so return it:
-			$authorizedActivityDefinitions[] = $uniqueNextActivity;
-			$currentActivities = array();
-			$currentActivities[] = $uniqueNextActivity;
+			$authorizedActivityDefinitions[$uniqueNextActivity->uriResource] = $uniqueNextActivity;
 			$setPause = false;
 		}else{
 			
 			foreach ($currentActivities as $activityAfterTransition){
 				//check if the current user is allowed to execute the activity
 				if($this->activityExecutionService->checkAcl($activityAfterTransition, $currentUser, $processExecution)){
-					$authorizedActivityDefinitions[] = $activityAfterTransition;
+					$authorizedActivityDefinitions[$activityAfterTransition->uriResource] = $activityAfterTransition;
 					$setPause = false;
 				}
 				else{
@@ -780,7 +777,7 @@ class wfEngine_models_classes_ProcessExecutionService
 		}
 		
 		//finish actions on the authorized acitivty definitions
-		foreach($authorizedActivityDefinitions as $activityAfterTransition){
+		foreach($authorizedActivityDefinitions as $uri => $activityAfterTransition){
 			
 			// Last but not least ... is the next activity a machine activity ?
 			// if yes, we perform the transition.
@@ -801,14 +798,19 @@ class wfEngine_models_classes_ProcessExecutionService
 					// $this->redirect(_url('index', 'Main'));
 				// }//already performed above...
 				
-				$activityExecutionResource = $this->activityExecutionService->initExecution($activityAfterTransition, $currentUser, $processExecution);
+				$activityExecutionResource = $this->initCurrentActivityExecutions($activityAfterTransition, $currentUser, $processExecution);
+				//service not executed? use curl request?
 				if(!is_null($activityExecutionResource)){
-					$this->performTransition($processExecution, $activityExecutionResource);
+					$followingActivities = $this->performTransition($processExecution, $activityExecutionResource);
+					unset($authorizedActivityDefinitions[$uri]);
+					foreach($followingActivities as $followingActivity){
+						$authorizedActivityDefinitions[$followingActivity->uriResource] = $followingActivity;
+					}
 				}else{
 					throw new wfEngine_models_classes_WfException('the activit execution cannot be create for the hidden activity');
 				}
 				
-				//service not executed? use curl request?
+				
 			}
 		}
 		
@@ -818,11 +820,11 @@ class wfEngine_models_classes_ProcessExecutionService
 			$this->resume($processExecution);
 		}
 		
-		$returnValue = true;
+		$returnValue = $authorizedActivityDefinitions;
 		
         // section 127-0-1-1-7a69d871:1322a76df3c:-8000:0000000000002F84 end
 
-        return (bool) $returnValue;
+        return (array) $returnValue;
     }
 
     /**
@@ -832,11 +834,11 @@ class wfEngine_models_classes_ProcessExecutionService
      * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @param  Resource processExecution
      * @param  Resource activityExecution
-     * @return boolean
+     * @return array
      */
     public function performBackwardTransition( core_kernel_classes_Resource $processExecution,  core_kernel_classes_Resource $activityExecution)
     {
-        $returnValue = (bool) false;
+        $returnValue = array();
 
         // section 127-0-1-1-7a69d871:1322a76df3c:-8000:0000000000002F88 begin
 		
@@ -844,30 +846,35 @@ class wfEngine_models_classes_ProcessExecutionService
 			
 		$newActivityExecutions = $this->activityExecutionService->moveBackward($activityExecution, $processExecution);
 		$count = count($newActivityExecutions);
+		
+		$newActivityDefinitions = array();
+		
 		if($count){
-			
 			//see if needs to go back again
 			foreach($newActivityExecutions as $newActivityExecution){
 				$newActivityDefinition = $this->activityExecutionService->getExecutionOf($newActivityExecution);
 				if($activityService->isHidden($newActivityDefinition) && !$activityService->isInitial($newActivityDefinition)){
-					$returnValue = $this->performBackwardTransition($processExecution, $newActivityExecution);
-					if(!$returnValue){
-						return $returnValue;
+					$newNewActivityDefinitions = $this->performBackwardTransition($processExecution, $newActivityExecution);
+					foreach($newNewActivityDefinitions as $newNewActivityDefinition){
+						$newActivityDefinitions[$newNewActivityDefinition->uriResource] = $newNewActivityDefinition;
 					}
+				}else{
+					$newActivityDefinitions[$newActivityDefinition->uriResource] = $newActivityDefinition;
 				}
 			}
 			
 			if($count == 1){
-				$returnValue = $this->resume($processExecution);
+				$this->resume($processExecution);
 			}else{
-				$returnValue = $this->pause($processExecution);
+				$this->pause($processExecution);
 			}
+			
+			$returnValue = $newActivityDefinitions;
 		}
-		
 		
         // section 127-0-1-1-7a69d871:1322a76df3c:-8000:0000000000002F88 end
 
-        return (bool) $returnValue;
+        return (array) $returnValue;
     }
 
     /**
@@ -1122,6 +1129,8 @@ class wfEngine_models_classes_ProcessExecutionService
         $returnValue = null;
 
         // section 127-0-1-1--42c550f9:1323e0e4fe5:-8000:0000000000002FB6 begin
+		
+		//TODO: to be cached
 		$returnValue = $processExecution->getUniquePropertyValue($this->processInstancesExecutionOfProp);
         // section 127-0-1-1--42c550f9:1323e0e4fe5:-8000:0000000000002FB6 end
 
@@ -1174,6 +1183,9 @@ class wfEngine_models_classes_ProcessExecutionService
         $returnValue = array();
 
         // section 127-0-1-1--6e0edde7:13247ef74e0:-8000:0000000000002FCD begin
+		
+		//TODO: to be cached !!!
+		
 		$allCurrentActivityExecutions = array();
 		$currentActivityExecutions = $processExecution->getPropertyValues($this->processInstancesCurrentActivityExecutionsProp);
 		$count = count($currentActivityExecutions);

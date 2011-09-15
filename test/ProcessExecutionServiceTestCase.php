@@ -197,10 +197,10 @@ class ProcessExecutionServiceTestCase extends UnitTestCase{
 				
 				//transition to next activity
 				$transitionResult = $this->service->performTransition($processInstance, $activityExecution);
-				if($i<$iterationNumber){
-					$this->assertTrue($transitionResult);
+				if($i < $iterationNumber){
+					$this->assertTrue(count($transitionResult));
 				}else{
-					$this->assertFalse($transitionResult);
+					$this->assertFalse(count($transitionResult));
 				}
 				$this->out("activity status: ".$activityExecutionService->getStatus($activityExecution)->getLabel());
 				$this->out("process status: ".$this->service->getStatus($processInstance)->getLabel());
@@ -234,10 +234,10 @@ class ProcessExecutionServiceTestCase extends UnitTestCase{
 				$processStatus = $this->service->getStatus($processInstance);
 				$this->assertNotNull($processStatus);
 				$this->assertEqual($processStatus->uriResource, INSTANCE_PROCESSSTATUS_RESUMED);
-				if($j<$iterationNumber-1){
-					$this->assertTrue($transitionResult);
+				if($j < $iterationNumber-1){
+					$this->assertTrue(count($transitionResult));
 				}else{
-					$this->assertFalse($transitionResult);
+					$this->assertFalse(count($transitionResult));
 				}
 				
 				$this->out("activity status: ".$activityExecutionService->getStatus($activityExecution)->getLabel());
@@ -279,9 +279,9 @@ class ProcessExecutionServiceTestCase extends UnitTestCase{
 				//transition to next activity
 				$transitionResult = $this->service->performTransition($processInstance, $activityExecution);
 				if($i<$iterationNumber){
-					$this->assertTrue($transitionResult);
+					$this->assertTrue(count($transitionResult));
 				}else{
-					$this->assertFalse($transitionResult);
+					$this->assertFalse(count($transitionResult));
 				}
 				$this->out("activity status: ".$activityExecutionService->getStatus($activityExecution)->getLabel());
 				$this->out("process status: ".$this->service->getStatus($processInstance)->getLabel());
