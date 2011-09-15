@@ -22,6 +22,13 @@ if (0 > version_compare(PHP_VERSION, '5')) {
  */
 require_once('tao/models/classes/class.GenerisService.php');
 
+/**
+ * include tao_models_classes_ServiceCacheInterface
+ *
+ * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+ */
+require_once('tao/models/classes/interface.ServiceCacheInterface.php');
+
 /* user defined includes */
 // section 127-0-1-1--10e47d9e:128d54bbb0d:-8000:0000000000001F5B-includes begin
 // section 127-0-1-1--10e47d9e:128d54bbb0d:-8000:0000000000001F5B-includes end
@@ -40,6 +47,7 @@ require_once('tao/models/classes/class.GenerisService.php');
  */
 class wfEngine_models_classes_ActivityExecutionService
     extends tao_models_classes_GenerisService
+        implements tao_models_classes_ServiceCacheInterface
 {
     // --- ASSOCIATIONS ---
 
@@ -105,6 +113,99 @@ class wfEngine_models_classes_ActivityExecutionService
     // --- OPERATIONS ---
 
     /**
+     * Short description of method setCache
+     *
+     * @access public
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @param  string methodName
+     * @param  array args
+     * @param  array value
+     * @return boolean
+     */
+    public function setCache($methodName, $args, $value)
+    {
+        $returnValue = (bool) false;
+
+        // section 127-0-1-1-3a6b44f1:1326d50ba09:-8000:00000000000065CB begin
+		
+		switch($methodName):
+			case __CLASS__.'::getExecutionOf':
+			case __CLASS__.'::getStatus':{
+				if($args[0] instanceof core_kernel_classes_Resource){
+					$activityExecution = $args[0];
+					if(!isset($this->instancesCache[$activityExecution->uriResource])){
+						$this->instancesCache[$activityExecution->uriResource] = array();
+					}
+					$this->instancesCache[$activityExecution->uriResource][$methodName] = $value;
+					$returnValue = true;
+					break;
+				}
+				break;
+			}	
+		endswitch;
+		
+        // section 127-0-1-1-3a6b44f1:1326d50ba09:-8000:00000000000065CB end
+
+        return (bool) $returnValue;
+    }
+
+    /**
+     * Short description of method getCache
+     *
+     * @access public
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @param  string methodName
+     * @param  array args
+     * @return mixed
+     */
+    public function getCache($methodName, $args = array())
+    {
+        $returnValue = null;
+
+        // section 127-0-1-1-3a6b44f1:1326d50ba09:-8000:00000000000065D0 begin
+		
+		switch($methodName):
+			case __CLASS__.'::getExecutionOf':
+			case __CLASS__.'::getStatus':{
+				if(isset($args[0]) && $args[0] instanceof core_kernel_classes_Resource){
+					$activityExecution = $args[0];
+					if(isset($this->instancesCache[$activityExecution->uriResource])
+					&& isset($this->instancesCache[$activityExecution->uriResource][$methodName])){
+						
+						$returnValue = $this->instancesCache[$activityExecution->uriResource][$methodName];
+						
+//						var_dump('getCache '.$methodName, $returnValue);
+					}
+				}
+				break;
+			}	
+		endswitch;
+		
+        // section 127-0-1-1-3a6b44f1:1326d50ba09:-8000:00000000000065D0 end
+
+        return $returnValue;
+    }
+
+    /**
+     * Short description of method clearCache
+     *
+     * @access public
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @param  string methodName
+     * @param  array args
+     * @return boolean
+     */
+    public function clearCache($methodName = '', $args = array())
+    {
+        $returnValue = (bool) false;
+
+        // section 127-0-1-1-3a6b44f1:1326d50ba09:-8000:00000000000065D4 begin
+        // section 127-0-1-1-3a6b44f1:1326d50ba09:-8000:00000000000065D4 end
+
+        return (bool) $returnValue;
+    }
+
+    /**
      * Short description of method __construct
      *
      * @access public
@@ -114,6 +215,8 @@ class wfEngine_models_classes_ActivityExecutionService
     public function __construct()
     {
         // section 127-0-1-1--14d619a:12ce565682e:-8000:000000000000297B begin
+		$this->instancesCache = array();
+		
         $this->activityExecutionClass	= new core_kernel_classes_Class(CLASS_ACTIVITY_EXECUTION);
 		$this->activityExecutionStatusProperty = new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_STATUS);
 			
@@ -670,7 +773,11 @@ class wfEngine_models_classes_ActivityExecutionService
         $returnValue = null;
 
         // section 127-0-1-1--42c550f9:1323e0e4fe5:-8000:0000000000002FB3 begin
-		$returnValue = $activityExecution->getUniquePropertyValue($this->activityProperty);
+		$returnValue = $this->getCache(__METHOD__, array($activityExecution));
+		if(empty($returnValue)){
+			$returnValue = $activityExecution->getUniquePropertyValue($this->activityProperty);
+			$this->setCache(__METHOD__, array($activityExecution), $returnValue);
+		}
         // section 127-0-1-1--42c550f9:1323e0e4fe5:-8000:0000000000002FB3 end
 
         return $returnValue;
@@ -715,7 +822,6 @@ class wfEngine_models_classes_ActivityExecutionService
 
         // section 127-0-1-1--4a6e3e05:1323e2d5c53:-8000:0000000000002FBE begin
 		
-		//add status information
 		if (!empty($status)){
 			if($status instanceof core_kernel_classes_Resource){
 				switch($status->uriResource){
@@ -729,13 +835,36 @@ class wfEngine_models_classes_ActivityExecutionService
 					}
 				}
 			}else if(is_string($status)){
+				$status = strtolower(trim($status));
 				switch($status){
-					case 'resumed':{$returnValue = $activityExecution->editPropertyValues($this->activityExecutionStatusProperty, INSTANCE_PROCESSSTATUS_RESUMED);break;}
-					case 'started':{$returnValue = $activityExecution->editPropertyValues($this->activityExecutionStatusProperty, INSTANCE_PROCESSSTATUS_STARTED);break;}
-					case 'finished':{$returnValue = $activityExecution->editPropertyValues($this->activityExecutionStatusProperty, INSTANCE_PROCESSSTATUS_FINISHED);break;}
-					case 'paused':{$returnValue = $activityExecution->editPropertyValues($this->activityExecutionStatusProperty, INSTANCE_PROCESSSTATUS_PAUSED);break;}
-					case 'closed':{$returnValue = $activityExecution->editPropertyValues($this->activityExecutionStatusProperty, INSTANCE_PROCESSSTATUS_CLOSED);break;}
+					case 'resumed':{
+						$status = new core_kernel_classes_Resource(INSTANCE_PROCESSSTATUS_RESUMED);
+						break;
+					}
+					case 'started':{
+						$status = new core_kernel_classes_Resource(INSTANCE_PROCESSSTATUS_STARTED);
+						break;
+					}
+					case 'finished':{
+						$status = new core_kernel_classes_Resource(INSTANCE_PROCESSSTATUS_FINISHED);
+						break;
+					}
+					case 'paused':{
+						$status = new core_kernel_classes_Resource(INSTANCE_PROCESSSTATUS_PAUSED);
+						break;
+					}
+					case 'closed':{
+						$status = new core_kernel_classes_Resource(INSTANCE_PROCESSSTATUS_CLOSED);
+						break;
+					}
 				}
+				if($status instanceof core_kernel_classes_Resource){
+					$returnValue = $activityExecution->editPropertyValues($this->activityExecutionStatusProperty, $status->uriResource);
+				}
+			}
+			
+			if($returnValue){
+				$this->setCache(__CLASS__.'::getStatus', array($activityExecution), $status);
 			}
 		}
 		
@@ -900,19 +1029,25 @@ class wfEngine_models_classes_ActivityExecutionService
         $returnValue = null;
 
         // section 127-0-1-1-6bd62662:1324d269203:-8000:0000000000002FFC begin
-		$status = $activityExecution->getOnePropertyValue($this->activityExecutionStatusProperty);
-		if (!is_null($status)){
-			switch($status->uriResource){
-				case INSTANCE_PROCESSSTATUS_RESUMED:
-				case INSTANCE_PROCESSSTATUS_STARTED:
-				case INSTANCE_PROCESSSTATUS_FINISHED:
-				case INSTANCE_PROCESSSTATUS_PAUSED:
-				case INSTANCE_PROCESSSTATUS_CLOSED:{
-					$returnValue = $status;
-					break;
+		$returnValue = $this->getCache(__METHOD__, array($activityExecution));
+		if(empty($returnValue)){
+			
+			$status = $activityExecution->getOnePropertyValue($this->activityExecutionStatusProperty);
+			if (!is_null($status)){
+				switch($status->uriResource){
+					case INSTANCE_PROCESSSTATUS_RESUMED:
+					case INSTANCE_PROCESSSTATUS_STARTED:
+					case INSTANCE_PROCESSSTATUS_FINISHED:
+					case INSTANCE_PROCESSSTATUS_PAUSED:
+					case INSTANCE_PROCESSSTATUS_CLOSED:{
+						$returnValue = $status;
+						break;
+					}
 				}
+
 			}
 			
+			$this->setCache(__METHOD__, array($activityExecution), $returnValue);
 		}
         // section 127-0-1-1-6bd62662:1324d269203:-8000:0000000000002FFC end
 

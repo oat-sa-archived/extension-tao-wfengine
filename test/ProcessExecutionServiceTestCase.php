@@ -162,6 +162,8 @@ class ProcessExecutionServiceTestCase extends UnitTestCase{
 			$processExecName = 'Test Process Execution';
 			$processExecComment = 'created for processExecustionService test case by '.__METHOD__;
 			$processInstance = $this->service->createProcessExecution($processDefinition, $processExecName, $processExecComment);
+			$this->assertEqual($processDefinition->uriResource, $this->service->getExecutionOf($processInstance)->uriResource);
+			$this->assertEqual($processDefinition->uriResource, $this->service->getExecutionOf($processInstance)->uriResource);
 			
 			$this->assertTrue($this->service->checkStatus($processInstance, 'started'));
 			
@@ -372,7 +374,7 @@ class ProcessExecutionServiceTestCase extends UnitTestCase{
 		$processExecName = 'Test Parallel Process Execution';
 		$processExecComment = 'created for processExecustionService test case by '.__METHOD__;
 		$processInstance = $this->service->createProcessExecution($processDefinition, $processExecName, $processExecComment);
-
+		
 		$this->assertTrue($this->service->checkStatus($processInstance, 'started'));
 
 		$this->out(__METHOD__, true);
