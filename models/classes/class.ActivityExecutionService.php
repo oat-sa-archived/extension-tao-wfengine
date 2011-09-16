@@ -174,7 +174,6 @@ class wfEngine_models_classes_ActivityExecutionService
 						
 						$returnValue = $this->instancesCache[$activityExecution->uriResource][$methodName];
 						
-//						var_dump('getCache '.$methodName, $returnValue);
 					}
 				}
 				break;
@@ -645,7 +644,7 @@ class wfEngine_models_classes_ActivityExecutionService
         $returnValue = array();
 
         // section 127-0-1-1--10e47d9e:128d54bbb0d:-8000:0000000000001F6F begin
-		//not used
+		//deprecated:not used
         if(!is_null($process) && !is_null($currentUser)){
         	
         	//loop on all the activities of a process
@@ -1238,7 +1237,7 @@ class wfEngine_models_classes_ActivityExecutionService
 			if(common_Utils::isUri($previous[$i])){
 				$prevousActivityExecution = new core_kernel_classes_Resource($previous[$i]);
 				if(count($prevousActivityExecution->getPropertyValues($followingProperty)) == 1){
-					$previousActivityExecutions[] = $prevousActivityExecution;
+					$previousActivityExecutions[$prevousActivityExecution->uriResource] = $prevousActivityExecution;
 				}else{
 					return $returnValue;//forbidden to go backward of a parallel connector
 				}

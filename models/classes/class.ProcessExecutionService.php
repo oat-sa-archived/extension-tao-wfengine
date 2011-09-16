@@ -119,6 +119,7 @@ class wfEngine_models_classes_ProcessExecutionService
 		switch($methodName):
 			case __CLASS__.'::getCurrentActivityExecutions':{
 				if(count($args) != 1){
+					//only allow the simplest version of the method
 					break;
 				}
 			}
@@ -131,7 +132,6 @@ class wfEngine_models_classes_ProcessExecutionService
 						
 						$returnValue = $this->instancesCache[$processExecution->uriResource][$methodName];
 						
-//						var_dump('get cache for '.$methodName, $returnValue);
 					}
 				}
 				break;
@@ -158,6 +158,44 @@ class wfEngine_models_classes_ProcessExecutionService
         $returnValue = (bool) false;
 
         // section 127-0-1-1-3a6b44f1:1326d50ba09:-8000:00000000000065D4 begin
+		if(empty($methodName)){
+			$this->instancesCache = array();
+			$returnValue = true;
+		}
+		
+		switch($methodName){
+			case __CLASS__.'::getCurrentActivityExecutions': {
+				if (count($args) == 1 && isset($args[0]) && $args[0] instanceof core_kernel_classes_Resource) {
+					$processExecution = $args[0];
+					if(isset($this->instancesCache[$processExecution->uriResource])
+					&& $this->instancesCache[$processExecution->uriResource][$methodName]){
+						unset($this->instancesCache[$processExecution->uriResource][$methodName]);
+						$returnValue = true;
+					}
+				}else if(count($args) == 2 
+					&& isset($args[0]) && $args[0] instanceof core_kernel_classes_Resource
+					&& isset($args[1]) && is_array($args[1])){
+					
+					$processExecution = $args[0];
+					if(isset($this->instancesCache[$processExecution->uriResource])
+						&& isset($this->instancesCache[$processExecution->uriResource][$methodName])){
+						
+						foreach($args[1] as $activityExecution) {
+							if($activityExecution instanceof core_kernel_classes_Resource){
+								if(isset($this->instancesCache[$processExecution->uriResource][$methodName][$activityExecution->uriResource])){
+									unset($this->instancesCache[$processExecution->uriResource][$methodName][$activityExecution->uriResource]);
+								}
+							}
+						}
+						unset($this->instancesCache[$processExecution->uriResource][$methodName]);
+						$returnValue = true;
+					}
+				}
+				break;
+			}
+		}
+		
+			
         // section 127-0-1-1-3a6b44f1:1326d50ba09:-8000:00000000000065D4 end
 
         return (bool) $returnValue;
@@ -448,7 +486,7 @@ class wfEngine_models_classes_ProcessExecutionService
         $this->processInstacesCurrentTokensProp = new core_kernel_classes_Property(PROPERTY_PROCESSINSTANCES_CURRENTTOKEN);//deprecated
 		$this->processInstancesExecutionOfProp = new core_kernel_classes_Property(PROPERTY_PROCESSINSTANCES_EXECUTIONOF);
 		$this->processInstancesProcessPathProp = new core_kernel_classes_Property(PROPERTY_PROCESSINSTANCES_PROCESSPATH);//deprecated
-		$this->processInstancesCurrentActivityExecutionsProp = new core_kernel_classes_Property(PROPERTY_PROCESSINSTANCES_PROCESSPATH);
+		$this->processInstancesCurrentActivityExecutionsProp = new core_kernel_classes_Property(PROPERTY_PROCESSINSTANCES_CURRENTACTIVITYEXECUTIONS);
 		$this->processInstancesActivityExecutionsProp = new core_kernel_classes_Property(PROPERTY_PROCESSINSTANCES_ACTIVITYEXECUTIONS);
 		
 		$this->processVariablesCodeProp = new core_kernel_classes_Property(PROPERTY_PROCESSVARIABLES_CODE);
@@ -492,7 +530,7 @@ class wfEngine_models_classes_ProcessExecutionService
 		foreach ($initialActivities as $activity){
 			$activityExecution = $this->activityExecutionService->createActivityExecution($activity, $processInstance);
 			if(!is_null($activityExecution)){
-				$activityExecutions[] = $activityExecution;
+				$activityExecutions[$activityExecution->uriResource] = $activityExecution;
 			}
 		}
 		
@@ -1307,6 +1345,7 @@ class wfEngine_models_classes_ProcessExecutionService
 				foreach($activityExecutions as $activityExecution){
 					$returnValue = $processExecution->setPropertyValue($this->processInstancesCurrentActivityExecutionsProp, $activityExecution->uriResource);
 				}
+				//associative array mendatory in cache!
 				$this->setCache(__CLASS__.'::getCurrentActivityExecutions', array($processExecution), $activityExecutions);
 			}
         }
@@ -1336,10 +1375,10 @@ class wfEngine_models_classes_ProcessExecutionService
 		
 		$allCurrentActivityExecutions = array();
 		
-//		$cachedValues = $this->getCache(__METHOD__,array($processExecution));
-//		if(!is_null($cachedValues)){
-//			$allCurrentActivityExecutions = $cachedValues;
-//		}else{
+		$cachedValues = $this->getCache(__METHOD__,array($processExecution));
+		if(!is_null($cachedValues)){
+			$allCurrentActivityExecutions = $cachedValues;
+		}else{
 			$currentActivityExecutions = $processExecution->getPropertyValues($this->processInstancesCurrentActivityExecutionsProp);
 			$count = count($currentActivityExecutions);
 			for($i=0;$i<$count;$i++){
@@ -1348,8 +1387,8 @@ class wfEngine_models_classes_ProcessExecutionService
 					$allCurrentActivityExecutions[$uri] = new core_kernel_classes_Resource($uri);
 				}
 			}
-//			$this->setCache(__METHOD__,array($processExecution), $allCurrentActivityExecutions);
-//		}
+			$this->setCache(__METHOD__,array($processExecution), $allCurrentActivityExecutions);
+		}
 		
 		if(is_null($activityDefinition) && is_null($user)){
 			
@@ -1511,6 +1550,10 @@ class wfEngine_models_classes_ProcessExecutionService
 			if(is_array($activityExecutions)){
 				if(empty($activityExecutions)){
 					$returnValue = $processExecution->removePropertyValues($this->processInstancesCurrentActivityExecutionsProp);
+					if($returnValue){
+						$this->clearCache(__CLASS__.'::getCurrentActivityExecutions', array($processExecution));
+					}
+				
 				}else{
 					$removePattern = array();
 					foreach($activityExecutions as $activityExecution){
@@ -1521,6 +1564,14 @@ class wfEngine_models_classes_ProcessExecutionService
 						'like' => false,
 						'pattern' => $removePattern
 					));
+					
+					if($returnValue){
+						$this->clearCache(__CLASS__.'::getCurrentActivityExecutions', array($processExecution, $activityExecutions));
+					}
+				}
+				
+				if($returnValue){
+					$this->clearCache(__CLASS__.'::getCurrentActivityExecutions', array($processExecution, $activityExecutions));
 				}
 			}
         }
@@ -1549,8 +1600,6 @@ class wfEngine_models_classes_ProcessExecutionService
 					
 					
 		$currentActivityExecutions = $this->getCurrentActivityExecutions($processInstance);
-		
-//		echo count($currentActivityExecutions);
 		
 		$allActivityExecutions = $processInstance->getPropertyValues($this->processInstancesActivityExecutionsProp);
 		$count = count($allActivityExecutions);
