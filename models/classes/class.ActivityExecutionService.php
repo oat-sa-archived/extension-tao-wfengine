@@ -127,23 +127,44 @@ class wfEngine_models_classes_ActivityExecutionService
         $returnValue = (bool) false;
 
         // section 127-0-1-1-3a6b44f1:1326d50ba09:-8000:00000000000065CB begin
-		
-		switch($methodName):
-			case __CLASS__.'::getExecutionOf':
-			case __CLASS__.'::getStatus':{
-				if($args[0] instanceof core_kernel_classes_Resource){
-					$activityExecution = $args[0];
-					if(!isset($this->instancesCache[$activityExecution->uriResource])){
-						$this->instancesCache[$activityExecution->uriResource] = array();
+		if($this->cache){
+			
+			switch($methodName):
+				case __CLASS__.'::getExecutionOf':
+				case __CLASS__.'::getStatus':{
+					if($args[0] instanceof core_kernel_classes_Resource){
+						$activityExecution = $args[0];
+						if(!isset($this->instancesCache[$activityExecution->uriResource])){
+							$this->instancesCache[$activityExecution->uriResource] = array();
+						}
+						$this->instancesCache[$activityExecution->uriResource][$methodName] = $value;
+						$returnValue = true;
 					}
-					$this->instancesCache[$activityExecution->uriResource][$methodName] = $value;
-					$returnValue = true;
 					break;
 				}
-				break;
-			}	
-		endswitch;
-		
+				case __CLASS__.'::checkAcl':{
+					if(count($args) == 3 
+						&& $args[0] instanceof core_kernel_classes_Resource
+						&& $args[1] instanceof core_kernel_classes_Resource
+						&& $args[2] instanceof core_kernel_classes_Resource){
+							$activity = $args[0];
+							$currentUser = $args[1];
+							$processExecution = $args[2];
+
+							if(!isset($this->instancesCache[$processExecution->uriResource])){
+								$this->instancesCache[$processExecution->uriResource] = array();
+							}
+							if(!isset($this->instancesCache[$processExecution->uriResource][$activity->uriResource])){
+								$this->instancesCache[$processExecution->uriResource][$activity->uriResource] = array();
+							}
+							$this->instancesCache[$processExecution->uriResource][$activity->uriResource][$currentUser->uriResource] = (bool) $value;
+							$returnValue = true;
+					}
+					break;
+				}
+			endswitch;
+			
+		}
         // section 127-0-1-1-3a6b44f1:1326d50ba09:-8000:00000000000065CB end
 
         return (bool) $returnValue;
@@ -163,23 +184,46 @@ class wfEngine_models_classes_ActivityExecutionService
         $returnValue = null;
 
         // section 127-0-1-1-3a6b44f1:1326d50ba09:-8000:00000000000065D0 begin
-		
-		switch($methodName):
-			case __CLASS__.'::getExecutionOf':
-			case __CLASS__.'::getStatus':{
-				if(isset($args[0]) && $args[0] instanceof core_kernel_classes_Resource){
-					$activityExecution = $args[0];
-					if(isset($this->instancesCache[$activityExecution->uriResource])
-					&& isset($this->instancesCache[$activityExecution->uriResource][$methodName])){
-						
-						$returnValue = $this->instancesCache[$activityExecution->uriResource][$methodName];
-						
+		if($this->cache){
+			switch($methodName):
+				case __CLASS__.'::getExecutionOf':
+				case __CLASS__.'::getStatus':{
+					if(isset($args[0]) && $args[0] instanceof core_kernel_classes_Resource){
+						$activityExecution = $args[0];
+						if(isset($this->instancesCache[$activityExecution->uriResource])
+						&& isset($this->instancesCache[$activityExecution->uriResource][$methodName])){
+
+							$returnValue = $this->instancesCache[$activityExecution->uriResource][$methodName];
+
+						}
 					}
+					break;
 				}
-				break;
-			}	
-		endswitch;
-		
+				case __CLASS__.'::checkAcl':{
+					if(count($args) == 3 
+						&& $args[0] instanceof core_kernel_classes_Resource
+						&& $args[1] instanceof core_kernel_classes_Resource
+						&& $args[2] instanceof core_kernel_classes_Resource){
+							$activity = $args[0];
+							$currentUser = $args[1];
+							$processExecution = $args[2];
+
+							if(!isset($this->instancesCache[$processExecution->uriResource])){
+								break;
+							}
+							if(!isset($this->instancesCache[$processExecution->uriResource][$activity->uriResource])){
+								break;
+							}
+							if(isset($this->instancesCache[$processExecution->uriResource][$activity->uriResource][$currentUser->uriResource])){
+								$returnValue = $this->instancesCache[$processExecution->uriResource][$activity->uriResource][$currentUser->uriResource];
+							}
+					}
+					break;
+				}
+			endswitch;
+			
+//			var_dump($methodName);
+		}
         // section 127-0-1-1-3a6b44f1:1326d50ba09:-8000:00000000000065D0 end
 
         return $returnValue;
@@ -215,6 +259,7 @@ class wfEngine_models_classes_ActivityExecutionService
     {
         // section 127-0-1-1--14d619a:12ce565682e:-8000:000000000000297B begin
 		$this->instancesCache = array();
+		$this->cache = false;
 		
         $this->activityExecutionClass	= new core_kernel_classes_Class(CLASS_ACTIVITY_EXECUTION);
 		$this->activityExecutionStatusProperty = new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_STATUS);
@@ -497,8 +542,15 @@ class wfEngine_models_classes_ActivityExecutionService
 
         if(!is_null($activity) && !is_null($currentUser)){
         	
+			//get cached value:
+			$cachedValue = $this->getCache(__METHOD__, array($activity, $currentUser, $processExecution));
+			if(!is_null($cachedValue) && is_bool($cachedValue)){
+				$returnValue = $cachedValue;
+				return $returnValue;
+			}
+			
         	//activity and current must be set to the activty execution otherwise a common Exception is thrown
-        	$modeUri 		= $activity->getOnePropertyValue($this->ACLModeProperty);
+        	$modeUri = $activity->getOnePropertyValue($this->ACLModeProperty);
         	
         	if(is_null($modeUri)){
         		$returnValue = true;	//if no mode defined, the activity is allowed
@@ -523,7 +575,8 @@ class wfEngine_models_classes_ActivityExecutionService
 						if(!is_null($activityRole) && is_array($userRoles)){
 							foreach($userRoles as $userRole){
 								if($activityRole->uriResource == $userRole->uriResource){
-									return true;
+									$returnValue = true;
+									break;
 								}
 							}
 						}
@@ -598,11 +651,12 @@ class wfEngine_models_classes_ActivityExecutionService
 							if(!is_null($activityRole) && is_array($userRoles)){
 								foreach($userRoles as $userRole){
 									if($activityRole->uriResource == $userRole->uriResource){
-										return true;
+										$returnValue = true;
+										break(2);
 									}
 								}
 							}
-							return false;
+							$returnValue = false;
 						}
 						else{
 							$process = $processExecution->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_PROCESSINSTANCES_EXECUTIONOF));
@@ -614,7 +668,7 @@ class wfEngine_models_classes_ActivityExecutionService
 									$pactivity = new core_kernel_classes_Resource($pactivityUri);
 									if($this->activityService->isInitial($pactivity)){
 										if(!is_null($this->getExecution($pactivity, $currentUser, $processExecution))){
-											return true;
+											$returnValue = true;
 										}
 										break;
 									}
@@ -625,6 +679,12 @@ class wfEngine_models_classes_ActivityExecutionService
         		}
         	}
         }
+		
+		//set cached value:
+		if(is_null($cachedValue) || !is_bool($cachedValue)){
+			$this->setCache(__METHOD__, array($activity, $currentUser, $processExecution), $returnValue);
+		}
+			
         // section 127-0-1-1--10e47d9e:128d54bbb0d:-8000:0000000000001F62 end
 
         return (bool) $returnValue;

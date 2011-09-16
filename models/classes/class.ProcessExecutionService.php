@@ -71,31 +71,34 @@ class wfEngine_models_classes_ProcessExecutionService
         $returnValue = (bool) false;
 
         // section 127-0-1-1-3a6b44f1:1326d50ba09:-8000:00000000000065CB begin
-		switch($methodName):
-			case __CLASS__.'::getExecutionOf':
-			case __CLASS__.'::getStatus':{
-				if(isset($args[0]) && $args[0] instanceof core_kernel_classes_Resource){
-					$processExecution = $args[0];
-					if(!isset($this->instancesCache[$processExecution->uriResource])){
-						$this->instancesCache[$processExecution->uriResource] = array();
+		if($this->cache){
+			
+			switch($methodName):
+				case __CLASS__.'::getExecutionOf':
+				case __CLASS__.'::getStatus':{
+					if(isset($args[0]) && $args[0] instanceof core_kernel_classes_Resource){
+						$processExecution = $args[0];
+						if(!isset($this->instancesCache[$processExecution->uriResource])){
+							$this->instancesCache[$processExecution->uriResource] = array();
+						}
+						$this->instancesCache[$processExecution->uriResource][$methodName] = $value;
+						$returnValue = true;
 					}
-					$this->instancesCache[$processExecution->uriResource][$methodName] = $value;
-					$returnValue = true;
+					break;
 				}
-				break;
-			}
-			case __CLASS__.'::getCurrentActivityExecutions':{
-				if(count($args) == 1 && isset($args[0]) && $args[0] instanceof core_kernel_classes_Resource){
-					$processExecution = $args[0];
-					if(!isset($this->instancesCache[$processExecution->uriResource])){
-						$this->instancesCache[$processExecution->uriResource] = array();
+				case __CLASS__.'::getCurrentActivityExecutions':{
+					if(count($args) == 1 && isset($args[0]) && $args[0] instanceof core_kernel_classes_Resource){
+						$processExecution = $args[0];
+						if(!isset($this->instancesCache[$processExecution->uriResource])){
+							$this->instancesCache[$processExecution->uriResource] = array();
+						}
+						$this->instancesCache[$processExecution->uriResource][$methodName] = $value;
+						$returnValue = true;
 					}
-					$this->instancesCache[$processExecution->uriResource][$methodName] = $value;
-					$returnValue = true;
+					break;
 				}
-				break;
-			}
-		endswitch;
+			endswitch;
+		}
         // section 127-0-1-1-3a6b44f1:1326d50ba09:-8000:00000000000065CB end
 
         return (bool) $returnValue;
@@ -115,29 +118,30 @@ class wfEngine_models_classes_ProcessExecutionService
         $returnValue = null;
 
         // section 127-0-1-1-3a6b44f1:1326d50ba09:-8000:00000000000065D0 begin
-		
-		switch($methodName):
-			case __CLASS__.'::getCurrentActivityExecutions':{
-				if(count($args) != 1){
-					//only allow the simplest version of the method
-					break;
-				}
-			}
-			case __CLASS__.'::getExecutionOf':
-			case __CLASS__.'::getStatus':{
-				if(isset($args[0]) && $args[0] instanceof core_kernel_classes_Resource){
-					$processExecution = $args[0];
-					if(isset($this->instancesCache[$processExecution->uriResource])
-					&& isset($this->instancesCache[$processExecution->uriResource][$methodName])){
-						
-						$returnValue = $this->instancesCache[$processExecution->uriResource][$methodName];
-						
+		if($this->cache){
+			switch($methodName):
+				case __CLASS__.'::getCurrentActivityExecutions':{
+					if(count($args) != 1){
+						//only allow the simplest version of the method
+						break;
 					}
 				}
-				break;
-			}
-		endswitch;
-		
+				case __CLASS__.'::getExecutionOf':
+				case __CLASS__.'::getStatus':{
+					if(isset($args[0]) && $args[0] instanceof core_kernel_classes_Resource){
+						$processExecution = $args[0];
+						if(isset($this->instancesCache[$processExecution->uriResource])
+						&& isset($this->instancesCache[$processExecution->uriResource][$methodName])){
+
+							$returnValue = $this->instancesCache[$processExecution->uriResource][$methodName];
+
+						}
+					}
+					break;
+				}
+			endswitch;
+//			var_dump($methodName);
+		}
 		
         // section 127-0-1-1-3a6b44f1:1326d50ba09:-8000:00000000000065D0 end
 
@@ -158,44 +162,45 @@ class wfEngine_models_classes_ProcessExecutionService
         $returnValue = (bool) false;
 
         // section 127-0-1-1-3a6b44f1:1326d50ba09:-8000:00000000000065D4 begin
-		if(empty($methodName)){
-			$this->instancesCache = array();
-			$returnValue = true;
-		}
-		
-		switch($methodName){
-			case __CLASS__.'::getCurrentActivityExecutions': {
-				if (count($args) == 1 && isset($args[0]) && $args[0] instanceof core_kernel_classes_Resource) {
-					$processExecution = $args[0];
-					if(isset($this->instancesCache[$processExecution->uriResource])
-					&& $this->instancesCache[$processExecution->uriResource][$methodName]){
-						unset($this->instancesCache[$processExecution->uriResource][$methodName]);
-						$returnValue = true;
-					}
-				}else if(count($args) == 2 
-					&& isset($args[0]) && $args[0] instanceof core_kernel_classes_Resource
-					&& isset($args[1]) && is_array($args[1])){
-					
-					$processExecution = $args[0];
-					if(isset($this->instancesCache[$processExecution->uriResource])
-						&& isset($this->instancesCache[$processExecution->uriResource][$methodName])){
-						
-						foreach($args[1] as $activityExecution) {
-							if($activityExecution instanceof core_kernel_classes_Resource){
-								if(isset($this->instancesCache[$processExecution->uriResource][$methodName][$activityExecution->uriResource])){
-									unset($this->instancesCache[$processExecution->uriResource][$methodName][$activityExecution->uriResource]);
+		if($this->cache){
+			
+			if(empty($methodName)){
+				$this->instancesCache = array();
+				$returnValue = true;
+			}
+
+			switch($methodName){
+				case __CLASS__.'::getCurrentActivityExecutions': {
+					if (count($args) == 1 && isset($args[0]) && $args[0] instanceof core_kernel_classes_Resource) {
+						$processExecution = $args[0];
+						if(isset($this->instancesCache[$processExecution->uriResource])
+						&& $this->instancesCache[$processExecution->uriResource][$methodName]){
+							unset($this->instancesCache[$processExecution->uriResource][$methodName]);
+							$returnValue = true;
+						}
+					}else if(count($args) == 2 
+						&& isset($args[0]) && $args[0] instanceof core_kernel_classes_Resource
+						&& isset($args[1]) && is_array($args[1])){
+
+						$processExecution = $args[0];
+						if(isset($this->instancesCache[$processExecution->uriResource])
+							&& isset($this->instancesCache[$processExecution->uriResource][$methodName])){
+
+							foreach($args[1] as $activityExecution) {
+								if($activityExecution instanceof core_kernel_classes_Resource){
+									if(isset($this->instancesCache[$processExecution->uriResource][$methodName][$activityExecution->uriResource])){
+										unset($this->instancesCache[$processExecution->uriResource][$methodName][$activityExecution->uriResource]);
+									}
 								}
 							}
+							unset($this->instancesCache[$processExecution->uriResource][$methodName]);
+							$returnValue = true;
 						}
-						unset($this->instancesCache[$processExecution->uriResource][$methodName]);
-						$returnValue = true;
 					}
+					break;
 				}
-				break;
 			}
 		}
-		
-			
         // section 127-0-1-1-3a6b44f1:1326d50ba09:-8000:00000000000065D4 end
 
         return (bool) $returnValue;
@@ -477,6 +482,7 @@ class wfEngine_models_classes_ProcessExecutionService
         parent::__construct();
 		
 		$this->instancesCache = array();
+		$this->cache = false;
 		
 		$this->instanceProcessFinished = new core_kernel_classes_Resource(INSTANCE_PROCESSSTATUS_FINISHED);
 		$this->instanceProcessResumed = new core_kernel_classes_Resource(INSTANCE_PROCESSSTATUS_RESUMED);

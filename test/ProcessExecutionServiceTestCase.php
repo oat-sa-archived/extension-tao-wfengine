@@ -18,6 +18,12 @@ class ProcessExecutionServiceTestCase extends UnitTestCase{
 	const OUTPUT = true;
 	
 	/**
+	 * CHANGE IT MANNUALLY to use service cache
+	 * @var boolean
+	 */
+	const SERVICE_CACHE = false;
+	
+	/**
 	 * @var wfEngine_models_classes_ActivityExecutionService the tested service
 	 */
 	protected $service = null;
@@ -102,6 +108,7 @@ class ProcessExecutionServiceTestCase extends UnitTestCase{
 		$processExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessExecutionService');
 		$this->assertIsA($processExecutionService, 'tao_models_classes_Service');
 		$this->service = $processExecutionService;
+		$processExecutionService->cache = (bool) self::SERVICE_CACHE;
 	}
 	
 	/**
@@ -112,9 +119,11 @@ class ProcessExecutionServiceTestCase extends UnitTestCase{
 		error_reporting(E_ALL);
 		
 		try{
+			$t_start = microtime(true);
 			
 			$authoringService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessAuthoringService');
 			$activityExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityExecutionService');
+			$activityExecutionService->cache = (bool) self::SERVICE_CACHE;
 			$this->service = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessExecutionService');
 			
 			//create a new process def
@@ -294,6 +303,10 @@ class ProcessExecutionServiceTestCase extends UnitTestCase{
 			}
 			$this->assertTrue($this->service->isFinished($processInstance));
 			
+			$t_end = microtime(true);
+			$duration = $t_end - $t_start;
+			$this->out('Elapsed time: '.$duration.'s', true);
+		
 			//delete processdef:
 			$this->assertTrue($authoringService->deleteProcess($processDefinition));
 			
@@ -320,11 +333,13 @@ class ProcessExecutionServiceTestCase extends UnitTestCase{
 		
 		error_reporting(E_ALL);
 		
-
+		$t_start = microtime(true);
+		
 		//init services
 		$authoringService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessAuthoringService');
 		$activityExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityExecutionService');
-
+		$activityExecutionService->cache = (bool) self::SERVICE_CACHE;
+		
 		//process definition
 		$processDefinitionClass = new core_kernel_classes_Class(CLASS_PROCESS);
 		$processDefinition = $processDefinitionClass->createInstance('PJ processForUnitTest_' . date(DATE_ISO8601),'created for the unit test of process execution');
@@ -582,6 +597,10 @@ class ProcessExecutionServiceTestCase extends UnitTestCase{
 		$this->out("activity status: ".$activityExecutionService->getStatus($activityExecution)->getLabel());
 		$this->out("process status: ".$this->service->getStatus($processInstance)->getLabel());
 		$this->assertTrue($this->service->isFinished($processInstance));
+		
+		$t_end = microtime(true);
+		$duration = $t_end - $t_start;
+		$this->out('Elapsed time: '.$duration.'s', true);
 		
 		$this->out('deleting created resources:', true);
 		//delete process exec:
