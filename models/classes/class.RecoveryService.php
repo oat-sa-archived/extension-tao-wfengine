@@ -9,10 +9,10 @@ error_reporting(E_ALL);
  *
  * This file is part of TAO.
  *
- * Automatically generated on 04.11.2010, 14:57:56 with ArgoUML PHP module 
+ * Automatically generated on 21.09.2011, 16:36:28 with ArgoUML PHP module 
  * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
  *
- * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+ * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
  * @package wfEngine
  * @subpackage models_classes
  */
@@ -25,7 +25,7 @@ if (0 > version_compare(PHP_VERSION, '5')) {
  * The Service class is an abstraction of each service instance. 
  * Used to centralize the behavior related to every servcie instances.
  *
- * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+ * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
  */
 require_once('tao/models/classes/class.GenerisService.php');
 
@@ -41,7 +41,7 @@ require_once('tao/models/classes/class.GenerisService.php');
  * Short description of class wfEngine_models_classes_RecoveryService
  *
  * @access public
- * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+ * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
  * @package wfEngine
  * @subpackage models_classes
  */
@@ -67,7 +67,7 @@ class wfEngine_models_classes_RecoveryService
      * Short description of method __construct
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @return mixed
      */
     public function __construct()
@@ -83,7 +83,7 @@ class wfEngine_models_classes_RecoveryService
      * Short description of method saveContext
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @param  Resource activityExecution
      * @param  array context
      * @return boolean
@@ -107,18 +107,50 @@ class wfEngine_models_classes_RecoveryService
      * Short description of method getContext
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @param  Resource activityExecution
+     * @param  string level
      * @return array
      */
-    public function getContext( core_kernel_classes_Resource $activityExecution)
+    public function getContext( core_kernel_classes_Resource $activityExecution, $level = '')
     {
         $returnValue = array();
 
         // section 127-0-1-1-1a24352c:12c1717dc9c:-8000:00000000000027F8 begin
         
          if(!is_null($activityExecution)){
-         	$contextData = (string)$activityExecution->getOnePropertyValue($this->contextRecoveryProperty);
+			 $theActivityExecution = null;
+			 if($level == ''){
+				 $theActivityExecution = $activityExecution;
+			 }else{
+				 //offer the option to retrieve the context at the nth execution:
+				 $activityExecutions = $this->getUserActivityExecutionsStack($activityExecution);
+				 $count = count($activityExecutions);
+				 if($level == '*'){
+					 for($i = 0; $i < $count; $i++) {
+						 $contextData = (string)$activityExecutions[$i]['resource']->getOnePropertyValue($this->contextRecoveryProperty);
+						if(!empty($contextData)){
+							$returnValue[] = unserialize($contextData);
+						}else{
+							$returnValue[] = array();
+						}
+					 }
+					 
+					 return (array) $returnValue;
+				 }else{
+					 $level = intval($level);
+					 if($level < 0){
+						 $level = $count - $level;
+					 }
+					 
+					 if($level >= 0 && isset($activityExecutions[$level])){
+						 $theActivityExecution = $activityExecutions[$level]['resource'];
+					 }
+				 }
+			 }
+			 
+			 
+         	$contextData = (string)$theActivityExecution->getOnePropertyValue($this->contextRecoveryProperty);
          	if(!empty($contextData)){
          		$returnValue = unserialize($contextData);
          	}
@@ -134,11 +166,12 @@ class wfEngine_models_classes_RecoveryService
      * Short description of method removeContext
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @param  Resource activityExecution
+     * @param  string level
      * @return boolean
      */
-    public function removeContext( core_kernel_classes_Resource $activityExecution)
+    public function removeContext( core_kernel_classes_Resource $activityExecution, $level = '')
     {
         $returnValue = (bool) false;
 
@@ -151,6 +184,67 @@ class wfEngine_models_classes_RecoveryService
         // section 127-0-1-1-1a24352c:12c1717dc9c:-8000:00000000000027FC end
 
         return (bool) $returnValue;
+    }
+
+    /**
+     * Short description of method getUserActivityExecutionsStack
+     *
+     * @access public
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @param  Resource activityExecution
+     * @param  Resource user
+     * @return array
+     */
+    public function getUserActivityExecutionsStack( core_kernel_classes_Resource $activityExecution,  core_kernel_classes_Resource $user = null)
+    {
+        $returnValue = array();
+
+        // section 127-0-1-1-53da607c:1328c576a23:-8000:000000000000303B begin
+		
+		$activityExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityExecutionService');
+		if(is_null($user)){
+			$user = $activityExecutionService->getActivityExecutionUser($activityExecution);
+		}
+		if(is_null($user)){
+			$processExecution = $activityExecutionService->getRelatedProcessExecution($activityExecution);
+			$activityExecutionClass = new core_kernel_classes_Class(CLASS_ACTIVITY_EXECUTION);
+			$activityExecutions = $activityExecutionClass->searchInstances(
+				array(
+					PROPERTY_ACTIVITY_EXECUTION_PROCESSEXECUTION => $processExecution->uriResource,
+					PROPERTY_ACTIVITY_EXECUTION_CURRENT_USER => $user->uriResource
+				),
+				array(
+					'like' => false,
+					'recursive' => 0
+				)
+			);
+			
+			$sortedArray = array();
+			foreach($activityExecutions as $activityExec){
+				$time = time();
+				$sortKey = $time;
+				
+				//compare them 
+				if(isset($sortedArray[$time])){
+					$sortKey = $time++;
+				}
+				
+				$sortedArray[$sortKey] = array(
+					'resource' => $activityExec,
+					'time' => $time
+				);
+			}
+			
+			ksort($sortedArray);
+			
+			foreach($sortedArray as $sortedData){
+				$returnValue[] = $sortedData;
+			}
+		}
+		
+        // section 127-0-1-1-53da607c:1328c576a23:-8000:000000000000303B end
+
+        return (array) $returnValue;
     }
 
 } /* end of class wfEngine_models_classes_RecoveryService */

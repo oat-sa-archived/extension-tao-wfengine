@@ -100,13 +100,18 @@ class wfEngine_models_classes_InteractiveServiceService
 		$output	= array();//for later use
 		$inParameterCollection = $interactiveService->getPropertyValuesCollection(new core_kernel_classes_Property(PROPERTY_CALLOFSERVICES_ACTUALPARAMETERIN));
 		
+		$propActualParamProcessVariable = new core_kernel_classes_Property(PROPERTY_ACTUALPARAMETER_PROCESSVARIABLE);
+		$propActualParamConstantValue = new core_kernel_classes_Property(PROPERTY_ACTUALPARAMETER_CONSTANTVALUE);
+		$propActualParamFormalParam = new core_kernel_classes_Property(PROPERTY_ACTUALPARAMETER_FORMALPARAMETER);
+		$propFormalParamName = new core_kernel_classes_Property(PROPERTY_FORMALPARAMETER_NAME);
+		
 		foreach ($inParameterCollection->getIterator() as $inParameter){
 			
-			$inParameterProcessVariable = $inParameter->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_ACTUALPARAMETER_PROCESSVARIABLE));//a resource
-			$inParameterConstant = $inParameter->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_ACTUALPARAMETER_CONSTANTVALUE));
+			$inParameterProcessVariable = $inParameter->getOnePropertyValue($propActualParamProcessVariable);//a resource
+			$inParameterConstant = $inParameter->getOnePropertyValue($propActualParamConstantValue);
 			
-			$formalParameter = $inParameter->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_ACTUALPARAMETER_FORMALPARAMETER));
-			$formalParameterName = $formalParameter->getUniquePropertyValue( new core_kernel_classes_Property(PROPERTY_FORMALPARAMETER_NAME));
+			$formalParameter = $inParameter->getUniquePropertyValue($propActualParamFormalParam);
+			$formalParameterName = $formalParameter->getUniquePropertyValue($propFormalParamName);
 			
 			//the current activity execution contains the current context of execution:
 			if (!is_null($activityExecution)){

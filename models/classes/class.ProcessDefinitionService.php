@@ -98,11 +98,13 @@ class wfEngine_models_classes_ProcessDefinitionService
 		// Unfortunately at this time we have no other possibility than iterate on the
 		// activities because the association between PROCESSES (1) and ACTIVITIES (2) is directed
 		// from (1) to (2).
-		//could be replaced by a Class::searchInstance()
+		//solution:
+		//1 - could be replaced by a Class::searchInstance() by adding the asociation (2) to (1)
+		//2 - add a property to class PROCESSES: initialActivities (would then need to update all the related methods)
 		
 		foreach ($activities->getIterator() as $activity)
 		{
-			$isInitialCollection= $activity->getOnePropertyValue($this->activitiesIsInitialProp);
+			$isInitialCollection = $activity->getOnePropertyValue($this->activitiesIsInitialProp);
 		
 			if ($isInitialCollection!= null && $isInitialCollection->uriResource == GENERIS_TRUE)
 			{
