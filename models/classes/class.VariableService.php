@@ -67,23 +67,17 @@ class wfEngine_models_classes_VariableService
 			
 			$activityExecution = new core_kernel_classes_Resource(Session::getAttribute("activityExecutionUri"));
 			
-			$tokenService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_TokenService');
-			$token = $tokenService->getCurrent($activityExecution);
-			
-			$tokenVarProp = new core_kernel_classes_Property(PROPERTY_TOKEN_VARIABLE);
-			if(is_null($token)) {
-					throw new Exception('Activity Token should never be null');
-			}
+			$variablesProp = new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_VARIABLES);
+			$newVar = unserialize($activityExecution->getOnePropertyValue($variablesProp));
 			
 			$processVariablesClass = new core_kernel_classes_Class(CLASS_PROCESSVARIABLES);
-			$newVar = unserialize($token->getOnePropertyValue($tokenVarProp));
 			foreach($variable as $k => $v) {
 				$processVariables = $processVariablesClass->searchInstances(array(PROPERTY_PROCESSVARIABLES_CODE => $k), array('like' => false));
 				if(!empty($processVariables)){
 					if(count($processVariables) == 1) {
 						$property = new core_kernel_classes_Property(array_shift($processVariables)->uriResource);
 
-						$returnValue &= $token->editPropertyValues($property,$v);
+						$returnValue &= $activityExecution->editPropertyValues($property,$v);
 						if(is_array($newVar)){
 							$newVar = array_merge($newVar, array($k)); 
 						}
@@ -94,7 +88,7 @@ class wfEngine_models_classes_VariableService
 				}
 				
 			}
-			$returnValue &= $token->editPropertyValues($tokenVarProp,serialize($newVar));
+			$returnValue &= $activityExecution->editPropertyValues($variablesProp, serialize($newVar));
 		}
 		
         // section -87--2--3--76--7eb229c2:12916be1ece:-8000:0000000000003C07 end
@@ -119,14 +113,8 @@ class wfEngine_models_classes_VariableService
 			
 			$activityExecution = new core_kernel_classes_Resource(Session::getAttribute("activityExecutionUri"));
 			
-			$tokenService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_TokenService');
-			$token = $tokenService->getCurrent($activityExecution);
-			$tokenVarProp = new core_kernel_classes_Property(PROPERTY_TOKEN_VARIABLE);
-			if(is_null($token)) {
-					throw new Exception('Activity Token should never be null');
-			}
-			
-			$oldVar = unserialize($token->getOnePropertyValue($tokenVarProp));
+			$variablesProp = new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_VARIABLES);
+			$oldVar = unserialize($activityExecution->getOnePropertyValue($variablesProp));
 			if(is_string($params)){
 				$params = array($params);
 			}
@@ -140,13 +128,13 @@ class wfEngine_models_classes_VariableService
 							if(count($processVariables) == 1) {
 								$property = new core_kernel_classes_Property(array_shift($processVariables)->uriResource);
 								
-								$returnValue &= $token->removePropertyValues($property);
+								$returnValue &= $activityExecution->removePropertyValues($property);
 								$oldVar = array_diff($oldVar,array($param));
 							}
 						}
 					}
 				}
-				$returnValue &= $token->editPropertyValues($tokenVarProp,serialize($oldVar));
+				$returnValue &= $activityExecution->editPropertyValues($variablesProp, serialize($oldVar));
 			}
 		}
 
@@ -170,21 +158,15 @@ class wfEngine_models_classes_VariableService
         // section -87--2--3--76--7eb229c2:12916be1ece:-8000:0000000000003C0E begin
 		if(Session::hasAttribute("activityExecutionUri")){
 			$activityExecution = new core_kernel_classes_Resource(Session::getAttribute("activityExecutionUri"));
-			
-			$tokenService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_TokenService');
-			$token = $tokenService->getCurrent($activityExecution);
-			if(is_null($token)) {
-				throw new Exception('Activity Token should never be null');
-			}
-			$tokenVarProp = new core_kernel_classes_Property(PROPERTY_TOKEN_VARIABLE);
-			$vars = unserialize($token->getOnePropertyValue($tokenVarProp));
+			$variablesProp = new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_VARIABLES);
+			$vars = unserialize($activityExecution->getOnePropertyValue($variablesProp));
 			if(in_array($key,$vars)){
 				$processVariablesClass = new core_kernel_classes_Class(CLASS_PROCESSVARIABLES);
 				$processVariables = $processVariablesClass->searchInstances(array(PROPERTY_PROCESSVARIABLES_CODE => $key), array('like' => false));
 				if(!empty($processVariables)){
 					if(count($processVariables) == 1) {
 						$property = new core_kernel_classes_Property(array_shift($processVariables)->uriResource);
-						$values = $token->getPropertyValuesCollection($property);
+						$values = $activityExecution->getPropertyValuesCollection($property);
 						if($values->count() == 1){
 							$returnValue = $values->get(0);
 						}
@@ -215,22 +197,18 @@ class wfEngine_models_classes_VariableService
 		if(Session::hasAttribute("activityExecutionUri")){
 			$activityExecution = new core_kernel_classes_Resource(Session::getAttribute("activityExecutionUri"));
 			
-			$tokenService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_TokenService');
-			$token = $tokenService->getCurrent($activityExecution);
-			if(is_null($token)) {
-				throw new Exception('Activity Token should never be null');
-			}
-			$tokenVarProp = new core_kernel_classes_Property(PROPERTY_TOKEN_VARIABLE);
-			$vars = unserialize($token->getOnePropertyValue($tokenVarProp));
+			$variablesProp = new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_VARIABLES);
+			$vars = unserialize($activityExecution->getOnePropertyValue($variablesProp));
 			
 			$processVariablesClass = new core_kernel_classes_Class(CLASS_PROCESSVARIABLES);
+			
             if(is_array($vars)){
 				foreach($vars as $code){
 					$processVariables = $processVariablesClass->searchInstances(array(PROPERTY_PROCESSVARIABLES_CODE => $code), array('like' => false));
 					if(!empty($processVariables)){
 						if(count($processVariables) == 1) {
 							$property = new core_kernel_classes_Property(array_shift($processVariables)->uriResource);
-							$values = $token->getPropertyValuesCollection($property);
+							$values = $activityExecution->getPropertyValuesCollection($property);
 							if($values->count() == 1){
 								$returnValue[$code] = $values->get(0);
 							}
@@ -262,17 +240,11 @@ class wfEngine_models_classes_VariableService
         // section 127-0-1-1--55065e1d:1294a729605:-8000:0000000000002006 begin
         
     	if(Session::hasAttribute("activityExecutionUri")){
+			
 			$activityExecution = new core_kernel_classes_Resource(Session::getAttribute("activityExecutionUri"));
 			
-			$tokenService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_TokenService');
-			$token = $tokenService->getCurrent($activityExecution);
-			
-			$tokenVarProp = new core_kernel_classes_Property(PROPERTY_TOKEN_VARIABLE);
-			if(is_null($token)) {
-					throw new Exception('Activity Token should never be null');
-			}
-			
-			$newVar = unserialize($token->getOnePropertyValue($tokenVarProp));
+			$variablesProp = new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_VARIABLES);
+			$newVar = unserialize($activityExecution->getOnePropertyValue($variablesProp));
 			
 			$processVariablesClass = new core_kernel_classes_Class(CLASS_PROCESSVARIABLES);
 			$processVariables = $processVariablesClass->searchInstances(array(PROPERTY_PROCESSVARIABLES_CODE => $key), array('like' => false));
@@ -280,7 +252,7 @@ class wfEngine_models_classes_VariableService
 				if(count($processVariables) == 1) {
 					$property = new core_kernel_classes_Property(array_shift($processVariables)->uriResource);
 					
-					$returnValue &= $token->setPropertyValue($property, $value);
+					$returnValue &= $activityExecution->setPropertyValue($property, $value);
 					if(is_array($newVar)){
 						$newVar = array_merge($newVar, array($key)); 
 					}
@@ -290,7 +262,7 @@ class wfEngine_models_classes_VariableService
 				}
 			}
 				
-			$returnValue &= $token->editPropertyValues($tokenVarProp, serialize($newVar));
+			$returnValue &= $activityExecution->editPropertyValues($variablesProp, serialize($newVar));
 		}
     	
         // section 127-0-1-1--55065e1d:1294a729605:-8000:0000000000002006 end
