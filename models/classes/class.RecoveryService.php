@@ -112,7 +112,7 @@ class wfEngine_models_classes_RecoveryService
      * @param  string level
      * @return array
      */
-    public function getContext( core_kernel_classes_Resource $activityExecution, $level = 'any')
+    public function getContext( core_kernel_classes_Resource $activityExecution, $level = '')
     {
         $returnValue = array();
 

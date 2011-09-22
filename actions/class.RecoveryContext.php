@@ -25,7 +25,7 @@ class wfEngine_actions_RecoveryContext extends tao_actions_Api {
 				$activityExecution = new core_kernel_classes_Resource($activityExecutionUri);
 				$recoveryService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_RecoveryService');
 				
-				$context = $recoveryService->getContext($activityExecution);
+				$context = $recoveryService->getContext($activityExecution, 'any');//get the first, no null context!
 			}
 		}
 		echo json_encode($context);
