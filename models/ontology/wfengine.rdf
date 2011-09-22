@@ -108,6 +108,7 @@
     <widget:widget rdf:resource="http://www.tao.lu/datatypes/WidgetDefinitions.rdf#CheckBox"/>
     <rdfs:domain rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessInstances"/>
     <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+	<generis:Multiple rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#True" />
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessInstancesActivityExecutions">
     <rdfs:label xml:lang="EN"><![CDATA[Activity Executions]]></rdfs:label>
@@ -115,6 +116,7 @@
     <widget:widget rdf:resource="http://www.tao.lu/datatypes/WidgetDefinitions.rdf#CheckBox"/>
     <rdfs:domain rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessInstances"/>
     <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+	<generis:Multiple rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#True" />
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessInstances">
     <rdfs:label xml:lang="EN"><![CDATA[Process Instances]]></rdfs:label>
@@ -468,6 +470,7 @@
     <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
     <rdfs:label xml:lang="EN"><![CDATA[Previous Activity Executions]]></rdfs:label>
     <rdfs:comment xml:lang="EN"><![CDATA[to build the process path]]></rdfs:comment>
+	<generis:Multiple rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#True" />
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsFollowingActivityExecutions">
     <rdfs:range rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassActivityExecutions"/>
@@ -476,6 +479,7 @@
     <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
     <rdfs:label xml:lang="EN"><![CDATA[Following Activity Executions]]></rdfs:label>
     <rdfs:comment xml:lang="EN"><![CDATA[to build the process path]]></rdfs:comment>
+	<generis:Multiple rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#True" />
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsStatus">
     <rdfs:range rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessInstanceStatus"/>

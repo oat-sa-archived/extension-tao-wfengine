@@ -482,7 +482,7 @@ class wfEngine_models_classes_ProcessExecutionService
         parent::__construct();
 		
 		$this->instancesCache = array();
-		$this->cache = false;
+		$this->cache = true;
 		
 		$this->instanceProcessFinished = new core_kernel_classes_Resource(INSTANCE_PROCESSSTATUS_FINISHED);
 		$this->instanceProcessResumed = new core_kernel_classes_Resource(INSTANCE_PROCESSSTATUS_RESUMED);
@@ -1318,8 +1318,13 @@ class wfEngine_models_classes_ProcessExecutionService
 		
 		$returnValue = $this->getCache(__METHOD__, array($processExecution));
 		if(empty($returnValue)){
-			$returnValue = $processExecution->getUniquePropertyValue($this->processInstancesExecutionOfProp);
-			$this->setCache(__METHOD__, array($processExecution), $returnValue);
+			try{
+				$returnValue = $processExecution->getUniquePropertyValue($this->processInstancesExecutionOfProp);
+			}catch(common_Exception $e){
+				throw new wfEngine_models_classes_ProcessExecutionException('No empty value allowed for the property "execution of"');
+			}
+			
+			if(!empty($returnValue)) $this->setCache(__METHOD__, array($processExecution), $returnValue);
 		}
 		
         // section 127-0-1-1--42c550f9:1323e0e4fe5:-8000:0000000000002FB6 end
@@ -1375,8 +1380,6 @@ class wfEngine_models_classes_ProcessExecutionService
         $returnValue = array();
 
         // section 127-0-1-1--6e0edde7:13247ef74e0:-8000:0000000000002FCD begin
-		
-		//TODO: to be cached !!!
 		
 		$allCurrentActivityExecutions = array();
 		
@@ -1602,7 +1605,7 @@ class wfEngine_models_classes_ProcessExecutionService
 		
 		$previousProperty = new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_PREVIOUS);
 		$followingProperty = new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_FOLLOWING);
-					
+		$recoveryService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_RecoveryService');
 					
 		$currentActivityExecutions = $this->getCurrentActivityExecutions($processInstance);
 		
@@ -1642,9 +1645,11 @@ class wfEngine_models_classes_ProcessExecutionService
 					'executionOf' => $activityDefinition->getLabel().' ('.$activityDefinition->uriResource.')',
 					'user' => (is_null($user))?'none':$user->getLabel().' ('.$user->uriResource.')',
 					'status' => (is_null($status))?'none':$status->getLabel(),
+					'createdOn' => date('d-m-Y G:i:s', (string)$activityExecution->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_TIME_CREATED))),
 					'current' => array_key_exists($activityExecution->uriResource, $currentActivityExecutions),
 					'previous' => $previousArray,
-					'following' => $followingArray
+					'following' => $followingArray,
+					'context' => $recoveryService->getContext($activityExecution, '')
 				);
 			}
 		}

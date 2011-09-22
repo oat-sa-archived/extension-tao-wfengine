@@ -13,6 +13,7 @@ class wfDebugger{
         
         public function __construct($options = array()){
                 core_control_FrontController::connect(SYS_USER_LOGIN, SYS_USER_PASS, DATABASE_NAME);
+				$this->processExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessExecutionService');
                 $this->localNS = core_kernel_classes_Session::singleton()->getNameSpace();
                 $this->unserialize = (isset($options['unserialize']))? (int)$options['unserialize']:0;
         }
@@ -102,7 +103,13 @@ class wfDebugger{
 
                 return $returnValue;
         }
-
+		
+		public function debugProcessExecution(core_kernel_classes_Resource $processExecution){
+			
+			$activityExecutionsData = $this->processExecutionService->getAllActivityExecutions($processExecution);
+			var_dump($activityExecutionsData);
+		}
+		
         public function debugProcessInstance(core_kernel_classes_Resource $processInstance){
 
                $apiModel = core_kernel_impl_ApiModelOO::singleton();
@@ -172,17 +179,13 @@ $processInstance = $wfDebugger->getData('processInstance');
 $processDefinition = $wfDebugger->getData('processDefinition');
 $activityExecution = $wfDebugger->getData('activityExecution');
 
+echo "Debugging : ".$processInstance->getLabel();
+
 if(!is_null($processInstance)){
-        $wfDebugger->debugProcessInstance($processInstance);
-}else{
-        $processInstances = new core_kernel_classes_Class(CLASS_PROCESSINSTANCES);
-        foreach($processInstances->getInstances() as $procExec){
-                $wfDebugger->debugProcessInstance($procExec);
-        }
-        
+	$wfDebugger->debugProcessExecution($processInstance);
 }
 
-echo "Property labels:";
-var_dump($wfDebugger->getPropertyLabels());
+//echo "Property labels:";
+//var_dump($wfDebugger->getPropertyLabels());
 
 ?>

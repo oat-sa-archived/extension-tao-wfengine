@@ -222,7 +222,6 @@ class wfEngine_models_classes_ActivityExecutionService
 				}
 			endswitch;
 			
-//			var_dump($methodName);
 		}
         // section 127-0-1-1-3a6b44f1:1326d50ba09:-8000:00000000000065D0 end
 
@@ -259,7 +258,7 @@ class wfEngine_models_classes_ActivityExecutionService
     {
         // section 127-0-1-1--14d619a:12ce565682e:-8000:000000000000297B begin
 		$this->instancesCache = array();
-		$this->cache = false;
+		$this->cache = true;
 		
         $this->activityExecutionClass	= new core_kernel_classes_Class(CLASS_ACTIVITY_EXECUTION);
 		$this->activityExecutionStatusProperty = new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_STATUS);
