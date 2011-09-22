@@ -952,6 +952,7 @@ class wfEngine_models_classes_ActivityExecutionService
 		
 		//add bijective relation for performance optimization (not modifiable)
 		$activityExecution->setPropertyValue($this->processExecutionProperty, $processExecution->uriResource);
+		$activityExecution->setPropertyValue(new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_TIME_CREATED), time());
 		if($processExecution->setPropertyValue($this->processInstanceActivityExecutionsProperty, $activityExecution->uriResource)){
 			$returnValue = $activityExecution;
 		}
@@ -1362,10 +1363,9 @@ class wfEngine_models_classes_ActivityExecutionService
 		);
 		
 		$newActivityExecution = $oldActivityExecution->duplicate($excludedProperties);
-		 
-		 
 		$newActivityExecution->setLabel($this->generateActivityExecutionLabel($newActivityDefinition));
 		$newActivityExecution->setPropertyValue($this->activityProperty, $newActivityDefinition->uriResource);
+		$newActivityExecution->setPropertyValue(new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_TIME_CREATED), time());
 		
 		if($processExecution->setPropertyValue($this->processInstanceActivityExecutionsProperty, $newActivityExecution->uriResource)){
 			$returnValue = $newActivityExecution;

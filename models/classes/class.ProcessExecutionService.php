@@ -886,7 +886,6 @@ class wfEngine_models_classes_ProcessExecutionService
 		
 		$currentUser = $userService->getCurrentUser();
 		
-		$activityExecution = new core_kernel_classes_Resource($activityExecution->uriResource);
 		//set the activity execution of the current user as finished:
 		if($activityExecution->exists()){
 			$this->activityExecutionService->finish($activityExecution);
@@ -994,7 +993,7 @@ class wfEngine_models_classes_ProcessExecutionService
 						$authorizedActivityDefinitions[$followingActivity->uriResource] = $followingActivity;
 					}
 				}else{
-					throw new wfEngine_models_classes_WfException('the activit execution cannot be create for the hidden activity');
+					throw new wfEngine_models_classes_WfException('the activity execution cannot be create for the hidden activity');
 				}
 				
 				

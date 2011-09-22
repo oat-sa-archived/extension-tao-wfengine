@@ -112,7 +112,7 @@ class wfEngine_models_classes_RecoveryService
      * @param  string level
      * @return array
      */
-    public function getContext( core_kernel_classes_Resource $activityExecution, $level = '')
+    public function getContext( core_kernel_classes_Resource $activityExecution, $level = 'any')
     {
         $returnValue = array();
 
@@ -120,19 +120,33 @@ class wfEngine_models_classes_RecoveryService
         
          if(!is_null($activityExecution)){
 			 $theActivityExecution = null;
+			 $level = strtolower(trim($level));
 			 if($level == ''){
 				 $theActivityExecution = $activityExecution;
 			 }else{
 				 //offer the option to retrieve the context at the nth execution:
 				 $activityExecutions = $this->getUserActivityExecutionsStack($activityExecution);
+				 
 				 $count = count($activityExecutions);
-				 if($level == '*'){
+				 if($level == '*' || $level == 'all'){
 					 for($i = 0; $i < $count; $i++) {
 						 $contextData = (string)$activityExecutions[$i]['resource']->getOnePropertyValue($this->contextRecoveryProperty);
 						if(!empty($contextData)){
 							$returnValue[] = unserialize($contextData);
 						}else{
 							$returnValue[] = array();
+						}
+					 }
+					 
+					 return (array) $returnValue;
+					 
+				 }else if($level == 'any'){
+					 
+					 for($i = $count-1; $i >= 0; $i--) {
+						$contextData = (string)$activityExecutions[$i]['resource']->getOnePropertyValue($this->contextRecoveryProperty);
+						if(!empty($contextData)){
+							$returnValue = unserialize($contextData);
+							return (array) $returnValue;
 						}
 					 }
 					 
@@ -205,12 +219,14 @@ class wfEngine_models_classes_RecoveryService
 		if(is_null($user)){
 			$user = $activityExecutionService->getActivityExecutionUser($activityExecution);
 		}
-		if(is_null($user)){
+		if(!is_null($user)){
 			$processExecution = $activityExecutionService->getRelatedProcessExecution($activityExecution);
+			$activityDefinition = $activityExecutionService->getExecutionOf($activityExecution);
 			$activityExecutionClass = new core_kernel_classes_Class(CLASS_ACTIVITY_EXECUTION);
 			$activityExecutions = $activityExecutionClass->searchInstances(
 				array(
 					PROPERTY_ACTIVITY_EXECUTION_PROCESSEXECUTION => $processExecution->uriResource,
+					PROPERTY_ACTIVITY_EXECUTION_ACTIVITY => $activityDefinition->uriResource,
 					PROPERTY_ACTIVITY_EXECUTION_CURRENT_USER => $user->uriResource
 				),
 				array(
@@ -225,8 +241,8 @@ class wfEngine_models_classes_RecoveryService
 				$sortKey = $time;
 				
 				//compare them 
-				if(isset($sortedArray[$time])){
-					$sortKey = $time++;
+				while(isset($sortedArray[$sortKey])){
+					$sortKey++;
 				}
 				
 				$sortedArray[$sortKey] = array(

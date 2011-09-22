@@ -124,6 +124,8 @@ $todefine = array(
 	'PROPERTY_ACTIVITY_EXECUTION_PREVIOUS'			=> NS_WFENGINE  .'#PropertyActivityExecutionsPreviousActivityExecutions',
 	'PROPERTY_ACTIVITY_EXECUTION_FOLLOWING'			=> NS_WFENGINE  .'#PropertyActivityExecutionsFollowingActivityExecutions',
 	'PROPERTY_ACTIVITY_EXECUTION_STATUS'			=> NS_WFENGINE  .'#PropertyActivityExecutionsStatus',
+	'PROPERTY_ACTIVITY_EXECUTION_TIME_CREATED'		=> NS_WFENGINE . '#PropertyActivityExecutionsTimeCreated',
+	'PROPERTY_ACTIVITY_EXECUTION_TIME_STARTED'		=> NS_WFENGINE . '#PropertyActivityExecutionsTimeStarted',
 	
 	'CLASS_ACL_MODES'								=> NS_WFENGINE . '#ClassAccessControlModes',
 	'INSTANCE_ACL_ROLE'								=> NS_WFENGINE . '#PropertyAccessControlModesRole',
