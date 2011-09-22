@@ -9,7 +9,7 @@ error_reporting(E_ALL);
  *
  * This file is part of TAO.
  *
- * Automatically generated on 01.09.2011, 15:56:10 with ArgoUML PHP module 
+ * Automatically generated on 22.09.2011, 17:13:20 with ArgoUML PHP module 
  * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
  *
  * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
@@ -96,80 +96,8 @@ class wfEngine_models_classes_InteractiveServiceService
 		$returnValue = $urlPart[0];
 		$returnValue .= '?';
 		
-		$input 	= array();
+		$input 	= $this->getInputValues($interactiveService, $activityExecution);
 		$output	= array();//for later use
-		$inParameterCollection = $interactiveService->getPropertyValuesCollection(new core_kernel_classes_Property(PROPERTY_CALLOFSERVICES_ACTUALPARAMETERIN));
-		
-		$propActualParamProcessVariable = new core_kernel_classes_Property(PROPERTY_ACTUALPARAMETER_PROCESSVARIABLE);
-		$propActualParamConstantValue = new core_kernel_classes_Property(PROPERTY_ACTUALPARAMETER_CONSTANTVALUE);
-		$propActualParamFormalParam = new core_kernel_classes_Property(PROPERTY_ACTUALPARAMETER_FORMALPARAMETER);
-		$propFormalParamName = new core_kernel_classes_Property(PROPERTY_FORMALPARAMETER_NAME);
-		
-		foreach ($inParameterCollection->getIterator() as $inParameter){
-			
-			$inParameterProcessVariable = $inParameter->getOnePropertyValue($propActualParamProcessVariable);//a resource
-			$inParameterConstant = $inParameter->getOnePropertyValue($propActualParamConstantValue);
-			
-			$formalParameter = $inParameter->getUniquePropertyValue($propActualParamFormalParam);
-			$formalParameterName = $formalParameter->getUniquePropertyValue($propFormalParamName);
-			
-			//the current activity execution contains the current context of execution:
-			if (!is_null($activityExecution)){
-				
-				if(!is_null($inParameterProcessVariable)){
-					
-					if(!($inParameterProcessVariable instanceof core_kernel_classes_Resource)){
-						throw new Exception("the process variable set as the value of the parameter 'in' is not a resource");
-					}
-					
-					$paramType 	= 'processvar'; 
-					$paramValue = '';
-					
-					//use the current and unique token to get the process variable value:
-					$paramValueResourceArray = $activityExecution->getPropertyValues(new core_kernel_classes_Property($inParameterProcessVariable->uriResource));
-					
-					$paramValue = '';
-					if(sizeof($paramValueResourceArray)){
-						if(count($paramValueResourceArray)>1){
-							//allowing multiple values to process variable in service input:
-							$paramValue = serialize($paramValueResourceArray);
-						}else{
-							if (trim(strip_tags($paramValueResourceArray[0])) != ""){
-								$paramValue = trim($paramValueResourceArray[0]);
-							}
-						}
-					}
-			
-					$input[common_Utils::fullTrim($formalParameterName)] = array(
-						'type' => $paramType, 
-						'value' => $paramValue, 
-						'uri' => $inParameterProcessVariable->uriResource
-						);
-				}else if(!is_null($inParameterConstant)){
-					
-					$paramType 	= 'constant';
-					$paramValue = '';
-					
-					if($inParameterConstant instanceof core_kernel_classes_Literal){
-						$paramValue = $inParameterConstant->literal;
-					}else if($inParameterConstant instanceof core_kernel_classes_Resource){
-						$paramValue = $inParameterConstant->uriResource;//encode??
-					}
-					
-					$input[common_Utils::fullTrim($formalParameterName)] = array(
-						'type' => $paramType,
-						'value' => $paramValue
-						);
-				}else{
-				
-				}
-				
-				
-			}else{
-				$input[common_Utils::fullTrim($formalParameterName)] = array('type' => null, 'value' => null);
-			}
-			
-		}
 		
 		foreach ($input as $name => $value){
 		
@@ -264,6 +192,119 @@ class wfEngine_models_classes_InteractiveServiceService
         // section 127-0-1-1-52a9110:13219ee179c:-8000:0000000000002EC1 end
 
         return (bool) $returnValue;
+    }
+
+    /**
+     * Short description of method getInputValues
+     *
+     * @access public
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @param  Resource interactiveService
+     * @param  Resource activityExecution
+     * @return array
+     */
+    public function getInputValues( core_kernel_classes_Resource $interactiveService,  core_kernel_classes_Resource $activityExecution = null)
+    {
+        $returnValue = array();
+
+        // section 127-0-1-1-511681e7:13291a3c527:-8000:000000000000303E begin
+		
+		$inParameterCollection = $interactiveService->getPropertyValuesCollection(new core_kernel_classes_Property(PROPERTY_CALLOFSERVICES_ACTUALPARAMETERIN));
+		
+		$propActualParamProcessVariable = new core_kernel_classes_Property(PROPERTY_ACTUALPARAMETER_PROCESSVARIABLE);
+		$propActualParamConstantValue = new core_kernel_classes_Property(PROPERTY_ACTUALPARAMETER_CONSTANTVALUE);
+		$propActualParamFormalParam = new core_kernel_classes_Property(PROPERTY_ACTUALPARAMETER_FORMALPARAMETER);
+		$propFormalParamName = new core_kernel_classes_Property(PROPERTY_FORMALPARAMETER_NAME);
+		
+		foreach ($inParameterCollection->getIterator() as $inParameter){
+			
+			$inParameterProcessVariable = $inParameter->getOnePropertyValue($propActualParamProcessVariable);//a resource
+			$inParameterConstant = $inParameter->getOnePropertyValue($propActualParamConstantValue);
+			
+			$formalParameter = $inParameter->getUniquePropertyValue($propActualParamFormalParam);
+			$formalParameterName = $formalParameter->getUniquePropertyValue($propFormalParamName);
+			
+			//the current activity execution contains the current context of execution:
+			if (!is_null($activityExecution)){
+				
+				if(!is_null($inParameterProcessVariable)){
+					
+					if(!($inParameterProcessVariable instanceof core_kernel_classes_Resource)){
+						throw new Exception("the process variable set as the value of the parameter 'in' is not a resource");
+					}
+					
+					$paramType 	= 'processvar'; 
+					$paramValue = '';
+					
+					//use the current and unique token to get the process variable value:
+					$paramValueResourceArray = $activityExecution->getPropertyValues(new core_kernel_classes_Property($inParameterProcessVariable->uriResource));
+					
+					$paramValue = '';
+					if(sizeof($paramValueResourceArray)){
+						if(count($paramValueResourceArray)>1){
+							//allowing multiple values to process variable in service input:
+							$paramValue = serialize($paramValueResourceArray);
+						}else{
+							if (trim(strip_tags($paramValueResourceArray[0])) != ""){
+								$paramValue = trim($paramValueResourceArray[0]);
+							}
+						}
+					}
+			
+					$returnValue[common_Utils::fullTrim($formalParameterName)] = array(
+						'type' => $paramType, 
+						'value' => $paramValue, 
+						'uri' => $inParameterProcessVariable->uriResource
+						);
+					
+				}else if(!is_null($inParameterConstant)){
+					
+					$paramType 	= 'constant';
+					$paramValue = '';
+					
+					if($inParameterConstant instanceof core_kernel_classes_Literal){
+						$paramValue = $inParameterConstant->literal;
+					}else if($inParameterConstant instanceof core_kernel_classes_Resource){
+						$paramValue = $inParameterConstant->uriResource;//encode??
+					}
+					
+					$returnValue[common_Utils::fullTrim($formalParameterName)] = array(
+						'type' => $paramType,
+						'value' => $paramValue
+						);
+				}else{
+				
+				}
+				
+				
+			}else{
+				$returnValue[common_Utils::fullTrim($formalParameterName)] = array('type' => null, 'value' => null);
+			}
+			
+		}
+		
+        // section 127-0-1-1-511681e7:13291a3c527:-8000:000000000000303E end
+
+        return (array) $returnValue;
+    }
+
+    /**
+     * Short description of method getOutputValues
+     *
+     * @access public
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @param  Resource interactiveService
+     * @param  Resource activityExecution
+     * @return array
+     */
+    public function getOutputValues( core_kernel_classes_Resource $interactiveService,  core_kernel_classes_Resource $activityExecution = null)
+    {
+        $returnValue = array();
+
+        // section 127-0-1-1-511681e7:13291a3c527:-8000:0000000000003042 begin
+        // section 127-0-1-1-511681e7:13291a3c527:-8000:0000000000003042 end
+
+        return (array) $returnValue;
     }
 
 } /* end of class wfEngine_models_classes_InteractiveServiceService */
