@@ -9,7 +9,7 @@ include_once dirname(__FILE__) . '/../includes/raw_start.php';
  * @package wfEngine
  * @subpackage test
  */
-class ProcessExecutionServiceTestCase extends UnitTestCase{
+class ProcessExecutionTestCase extends UnitTestCase{
 
 	/**
 	 * CHANGE IT MANNUALLY to see step by step the output
