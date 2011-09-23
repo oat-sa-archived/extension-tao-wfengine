@@ -262,6 +262,7 @@ class wfEngine_models_classes_ActivityExecutionService
 		
         $this->activityExecutionClass	= new core_kernel_classes_Class(CLASS_ACTIVITY_EXECUTION);
 		$this->activityExecutionStatusProperty = new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_STATUS);
+		$this->activityExecutionNonceProperty = new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_NONCE);
 			
     	$this->processExecutionProperty = new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_PROCESSEXECUTION);
         $this->currentUserProperty		= new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_CURRENT_USER);
@@ -1494,6 +1495,56 @@ class wfEngine_models_classes_ActivityExecutionService
         // section 127-0-1-1--1e75179b:1325dc5c4e1:-8000:0000000000003015 end
 
         return (string) $returnValue;
+    }
+
+    /**
+     * Short description of method createNonce
+     *
+     * @access public
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @param  Resource activityExecution
+     * @param  string nonce
+     * @return string
+     */
+    public function createNonce( core_kernel_classes_Resource $activityExecution, $nonce = '')
+    {
+        $returnValue = (string) '';
+
+        // section 127-0-1-1-f0f5ff2:1329704a0db:-8000:0000000000003048 begin
+		//tip : to be executed after a transition :
+		$nonce = trim($nonce);
+		if(empty($nonce)){
+			$nonce = time();
+		}
+		if($activityExecution->editPropertyValues($this->activityExecutionNonceProperty, $nonce)){
+			$returnValue = $nonce;
+		}
+        // section 127-0-1-1-f0f5ff2:1329704a0db:-8000:0000000000003048 end
+
+        return (string) $returnValue;
+    }
+
+    /**
+     * Short description of method checkNonce
+     *
+     * @access public
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @param  Resource activityExecution
+     * @param  string nonce
+     * @return boolean
+     */
+    public function checkNonce( core_kernel_classes_Resource $activityExecution, $nonce)
+    {
+        $returnValue = (bool) false;
+
+        // section 127-0-1-1-f0f5ff2:1329704a0db:-8000:000000000000304E begin
+		$nonce = trim($nonce);
+		if($nonce == (string)$activityExecution->getOnePropertyValue($this->activityExecutionNonceProperty)){
+			$returnValue = true;
+		}
+        // section 127-0-1-1-f0f5ff2:1329704a0db:-8000:000000000000304E end
+
+        return (bool) $returnValue;
     }
 
 } /* end of class wfEngine_models_classes_ActivityExecutionService */
