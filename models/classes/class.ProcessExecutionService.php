@@ -1641,7 +1641,6 @@ class wfEngine_models_classes_ProcessExecutionService
 				
 				$status = $this->activityExecutionService->getStatus($activityExecution);
 				$returnValue[$uri] = array(
-					'label' => $activityExecution->getLabel(),
 					'executionOf' => $activityDefinition->getLabel().' ('.$activityDefinition->uriResource.')',
 					'user' => (is_null($user))?'none':$user->getLabel().' ('.$user->uriResource.')',
 					'status' => (is_null($status))?'none':$status->getLabel(),

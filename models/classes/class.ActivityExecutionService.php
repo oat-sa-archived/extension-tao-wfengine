@@ -490,7 +490,7 @@ class wfEngine_models_classes_ActivityExecutionService
         $returnValue = (bool) false;
 
         // section 127-0-1-1--10e47d9e:128d54bbb0d:-8000:0000000000001F78 begin
-        
+        //deprecated
         if(!is_null($activityExecution) && !is_null($currentUser)){
         	
         	//check if the activity execution isn't already bound
@@ -946,7 +946,7 @@ class wfEngine_models_classes_ActivityExecutionService
 
         // section 127-0-1-1--6e0edde7:13247ef74e0:-8000:0000000000002FC1 begin
 		
-		$activityExecution = $this->createInstance($this->activityExecutionClass, $this->generateActivityExecutionLabel($activityDefinition));//d-m-Y H:i:s u
+		$activityExecution = $this->activityExecutionClass->createInstance();//do not create label! useless for activity exec management: to identify an activity execution, use time and executionOf property
 		$activityExecution->setPropertyValue($this->activityProperty, $activityDefinition->uriResource);
 		
 		//add bijective relation for performance optimization (not modifiable)
@@ -1358,11 +1358,12 @@ class wfEngine_models_classes_ActivityExecutionService
 			PROPERTY_ACTIVITY_EXECUTION_CTX_RECOVERY,
 			PROPERTY_ACTIVITY_EXECUTION_PREVIOUS,
 			PROPERTY_ACTIVITY_EXECUTION_FOLLOWING,
-			PROPERTY_ACTIVITY_EXECUTION_STATUS
+			PROPERTY_ACTIVITY_EXECUTION_STATUS,
+			PROPERTY_ACTIVITY_EXECUTION_TIME_CREATED,
+			PROPERTY_ACTIVITY_EXECUTION_TIME_STARTED
 		);
 		
 		$newActivityExecution = $oldActivityExecution->duplicate($excludedProperties);
-		$newActivityExecution->setLabel($this->generateActivityExecutionLabel($newActivityDefinition));
 		$newActivityExecution->setPropertyValue($this->activityProperty, $newActivityDefinition->uriResource);
 		$newActivityExecution->setPropertyValue(new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_TIME_CREATED), time());
 		
