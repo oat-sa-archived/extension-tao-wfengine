@@ -1514,8 +1514,10 @@ class wfEngine_models_classes_ActivityExecutionService
 		//tip : to be executed after a transition :
 		$nonce = trim($nonce);
 		if(empty($nonce)){
-			$nonce = time();
+//			$nonce = (string)time();
+			$nonce = (string)uniqid(time().'n');
 		}
+		
 		if($activityExecution->editPropertyValues($this->activityExecutionNonceProperty, $nonce)){
 			$returnValue = $nonce;
 		}
@@ -1539,12 +1541,34 @@ class wfEngine_models_classes_ActivityExecutionService
 
         // section 127-0-1-1-f0f5ff2:1329704a0db:-8000:000000000000304E begin
 		$nonce = trim($nonce);
-		if($nonce == (string)$activityExecution->getOnePropertyValue($this->activityExecutionNonceProperty)){
+		if($nonce == $this->getNonce($activityExecution)){
 			$returnValue = true;
 		}
         // section 127-0-1-1-f0f5ff2:1329704a0db:-8000:000000000000304E end
 
         return (bool) $returnValue;
+    }
+
+    /**
+     * Short description of method getNonce
+     *
+     * @access public
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @param  Resource activityExecution
+     * @return string
+     */
+    public function getNonce( core_kernel_classes_Resource $activityExecution)
+    {
+        $returnValue = (string) '';
+
+        // section 127-0-1-1-6b5af0cd:132a49d9579:-8000:0000000000003051 begin
+		$nonce = $activityExecution->getOnePropertyValue($this->activityExecutionNonceProperty);
+		if(!is_null($nonce) && $nonce instanceof core_kernel_classes_Literal){
+			$returnValue = $nonce->literal;
+		}
+        // section 127-0-1-1-6b5af0cd:132a49d9579:-8000:0000000000003051 end
+
+        return (string) $returnValue;
     }
 
 } /* end of class wfEngine_models_classes_ActivityExecutionService */

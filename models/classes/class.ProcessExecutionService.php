@@ -1624,7 +1624,7 @@ class wfEngine_models_classes_ProcessExecutionService
 				for($j=0; $j<$countPrevious; $j++){
 					if(common_Utils::isUri($previous[$j])){
 						$prevousActivityExecution = new core_kernel_classes_Resource($previous[$j]);
-						$previousArray[$prevousActivityExecution->uriResource] = $prevousActivityExecution->getLabel();
+						$previousArray[] = $prevousActivityExecution->uriResource;
 					}
 				}
 
@@ -1633,7 +1633,7 @@ class wfEngine_models_classes_ProcessExecutionService
 				for($k=0; $k<$countFollowing; $k++){
 					if(common_Utils::isUri($following[$k])){
 						$followingActivityExecution = new core_kernel_classes_Resource($following[$k]);
-						$followingArray[$followingActivityExecution->uriResource] = $followingActivityExecution->getLabel();
+						$followingArray[] = $followingActivityExecution->uriResource;
 					}
 				}
 				
@@ -1648,7 +1648,8 @@ class wfEngine_models_classes_ProcessExecutionService
 					'current' => array_key_exists($activityExecution->uriResource, $currentActivityExecutions),
 					'previous' => $previousArray,
 					'following' => $followingArray,
-					'context' => $recoveryService->getContext($activityExecution, '')
+					'context' => $recoveryService->getContext($activityExecution, ''),
+					'nonce' => $this->activityExecutionService->getNonce($activityExecution)
 				);
 			}
 		}
