@@ -284,20 +284,6 @@ class wfEngine_models_classes_ProcessExecutionService
         $returnValue = (bool) false;
 
         // section 127-0-1-1--2bba7ca5:129262ff3bb:-8000:0000000000001FED begin
-		//deprecated
-        if(!is_null($processExecution) && !is_null($activity) && !is_null($user)){
-             
-            //initialise the acitivity execution
-            $activityExecutionResource = $this->activityExecutionService->initExecution($activity, $user, $processExecution);
-           
-            if(!is_null($activityExecutionResource)){
-                //dispatch the tokens to the user and assign him
-                $tokenService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_TokenService');
-                $tokenService->dispatch($tokenService->getCurrents($processExecution), $activityExecutionResource);
-                $returnValue = true;
-            }
-        }
-
         // section 127-0-1-1--2bba7ca5:129262ff3bb:-8000:0000000000001FED end
 
         return (bool) $returnValue;
@@ -1055,11 +1041,6 @@ class wfEngine_models_classes_ProcessExecutionService
         $returnValue = array();
 
         // section 127-0-1-1--1cda705:13239584a17:-8000:0000000000002F81 begin
-		//deprecated
-		$tokenService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_TokenService');
-		foreach($tokenService->getCurrentActivities($processExecution) as $activity){
-			$returnValue[] = $activity;
-		}
         // section 127-0-1-1--1cda705:13239584a17:-8000:0000000000002F81 end
 
         return (array) $returnValue;

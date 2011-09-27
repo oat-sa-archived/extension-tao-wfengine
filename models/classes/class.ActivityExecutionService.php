@@ -440,36 +440,6 @@ class wfEngine_models_classes_ActivityExecutionService
         $returnValue = null;
 
         // section 127-0-1-1--11ec324e:128d9678eea:-8000:0000000000001F7C begin
-        //deprecated
-        
-        if(!is_null($activity) && !is_null($currentUser) && !is_null($processExecution)){
-	        
-        	$execution = $this->getExecution($activity, $currentUser, $processExecution);
-	        
-	        //if no activty execution, create one for that user
-	        if(is_null($execution)){
-	        	
-	        	
-	        	$label = 'Activity Execution of '.$activity->getLabel();
-	        	
-	        	//create a new activity execution
-	        	$execution = $this->createInstance(new core_kernel_classes_Class(CLASS_ACTIVITY_EXECUTION),  $label);
-	        	
-	        	//link it to the activity definition:
-	        	$execution->setPropertyValue($this->activityProperty, $activity->uriResource);
-	        	
-	        	//bind this execution of the activity with the current user and the current process execution
-	        	$this->bindExecution($execution, $currentUser, $processExecution);
-	       		
-	        }
-	        else{
-	       		//execution is initialized back if it already exists
-	        	$execution->editPropertyValues(new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_IS_FINISHED), GENERIS_FALSE);
-	        }
-	        
-	        $returnValue = $execution;
-        }
-        
         // section 127-0-1-1--11ec324e:128d9678eea:-8000:0000000000001F7C end
 
         return $returnValue;
@@ -491,33 +461,6 @@ class wfEngine_models_classes_ActivityExecutionService
         $returnValue = (bool) false;
 
         // section 127-0-1-1--10e47d9e:128d54bbb0d:-8000:0000000000001F78 begin
-        //deprecated
-        if(!is_null($activityExecution) && !is_null($currentUser)){
-        	
-        	//check if the activity execution isn't already bound
-        	if(is_null($activityExecution->getOnePropertyValue($this->currentUserProperty))){
-
-        		//link the current user
-	        	$activityExecution->setPropertyValue( $this->currentUserProperty, $currentUser->uriResource);
-	        	
-				//link the current process execution
-	        	$activityExecution->setPropertyValue( $this->processExecutionProperty, $processExecution->uriResource);
-	        	
-	        	//in case of role and user restriction, set the current user as activty user
-	        	$activity		= $activityExecution->getUniquePropertyValue($this->activityProperty);
-	        	//$activity		= new core_kernel_classes_Resource($activityUri->uriResource);
-	        	$mode			= $activity->getOnePropertyValue($this->ACLModeProperty);
-
-	        	if(!is_null($mode)){
-	        		if($mode->uriResource == INSTANCE_ACL_ROLE_RESTRICTED_USER){
-	        			if(is_null($activity->getOnePropertyValue($this->restrictedUserProperty))){
-	        				$activity->setPropertyValue($this->restrictedUserProperty, $currentUser->uriResource);
-	        			}
-	        		}
-	        	}
-        	}
-        }
-        
         // section 127-0-1-1--10e47d9e:128d54bbb0d:-8000:0000000000001F78 end
 
         return (bool) $returnValue;
@@ -704,19 +647,6 @@ class wfEngine_models_classes_ActivityExecutionService
         $returnValue = array();
 
         // section 127-0-1-1--10e47d9e:128d54bbb0d:-8000:0000000000001F6F begin
-		//deprecated:not used
-        if(!is_null($process) && !is_null($currentUser)){
-        	
-        	//loop on all the activities of a process
-        	foreach($process->getAllActivities() as $activity){
-        		
-        		//check if the current user is allowed to access the activity
-        		if($this->checkAcl($activity, $currentUser)){
-        			$returnValue[] = $activity;
-        		}
-        	}
-        }
-        
         // section 127-0-1-1--10e47d9e:128d54bbb0d:-8000:0000000000001F6F end
 
         return (array) $returnValue;
