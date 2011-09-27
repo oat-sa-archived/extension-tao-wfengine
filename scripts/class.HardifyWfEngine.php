@@ -148,20 +148,7 @@ extends tao_scripts_Runner
 					"http://www.tao.lu/middleware/wfEngine.rdf#ClassCallOfservicesResources",
 					"http://www.tao.lu/middleware/wfEngine.rdf#ClassServiceDefinitionResources",
 					"http://www.tao.lu/middleware/wfEngine.rdf#ClassServicesResources",
-					"http://www.tao.lu/middleware/wfEngine.rdf#ClassConnectors",
-				//			"http://www.tao.lu/middleware/wfEngine.rdf#ClassTransitionRules",
-				//			"http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessVariables",
-				//			"http://www.tao.lu/middleware/wfEngine.rdf#ClassSupportServices",
-				//			"http://www.tao.lu/middleware/wfEngine.rdf#ClassCallOfServices",
-				//			"http://www.tao.lu/middleware/wfEngine.rdf#ClassActualParameters",
-				//			"http://www.tao.lu/middleware/wfEngine.rdf#ClassFormalParameters",
-				//			"http://www.tao.lu/middleware/wfEngine.rdf#ClassRole"
-    				"http://www.tao.lu/middleware/wfEngine.rdf#ClassTokens",
-				//			"http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessInstances",
-				//			"http://www.tao.lu/middleware/wfEngine.rdf#ClassActivityExecutions",
-				//			"http://www.tao.lu/middleware/wfEngine.rdf#ClassServiceDefinitions",
-				//			"http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessDefinitions",
-				//			"http://www.tao.lu/middleware/wfEngine.rdf#ClassActivities",
+					"http://www.tao.lu/middleware/wfEngine.rdf#ClassConnectors"
 				);
 				 
 				foreach($wfClasses as $classUri){
@@ -240,20 +227,7 @@ extends tao_scripts_Runner
 					"http://www.tao.lu/middleware/wfEngine.rdf#ClassCallOfservicesResources",
 					"http://www.tao.lu/middleware/wfEngine.rdf#ClassServiceDefinitionResources",
 					"http://www.tao.lu/middleware/wfEngine.rdf#ClassServicesResources",
-					"http://www.tao.lu/middleware/wfEngine.rdf#ClassConnectors",
-				//			"http://www.tao.lu/middleware/wfEngine.rdf#ClassTransitionRules",
-				//			"http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessVariables",
-				//			"http://www.tao.lu/middleware/wfEngine.rdf#ClassSupportServices",
-				//			"http://www.tao.lu/middleware/wfEngine.rdf#ClassCallOfServices",
-				//			"http://www.tao.lu/middleware/wfEngine.rdf#ClassActualParameters",
-				//			"http://www.tao.lu/middleware/wfEngine.rdf#ClassFormalParameters",
-				//			"http://www.tao.lu/middleware/wfEngine.rdf#ClassRole"
-    				"http://www.tao.lu/middleware/wfEngine.rdf#ClassTokens",
-				//			"http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessInstances",
-				//			"http://www.tao.lu/middleware/wfEngine.rdf#ClassActivityExecutions",
-				//			"http://www.tao.lu/middleware/wfEngine.rdf#ClassServiceDefinitions",
-				//			"http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessDefinitions",
-				//			"http://www.tao.lu/middleware/wfEngine.rdf#ClassActivities",
+					"http://www.tao.lu/middleware/wfEngine.rdf#ClassConnectors"
 				);
 				 
 				foreach($wfClasses as $classUri){
@@ -329,13 +303,10 @@ extends tao_scripts_Runner
 		    	'http://www.tao.lu/middleware/wfEngine.rdf#PropertyConnectorsActivityReference',
 		    	'http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessInstancesStatus',
 		    	'http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessInstancesExecutionOf',
-		    	'http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsFinished',
+		    	'http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsStatus',
 		    	'http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsExecutionOf',
 		    	'http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsCurrentUser',
 	    		'http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsProcessExecution',
-	    		'http://www.tao.lu/middleware/wfEngine.rdf#PropertyTokensActivityExecution',
-		    	'http://www.tao.lu/middleware/wfEngine.rdf#PropertyTokensActivity',
-		    	'http://www.tao.lu/middleware/wfEngine.rdf#PropertyTokensCurrentUser',
 		    	'http://www.tao.lu/Ontologies/generis.rdf#login',
 		    	'http://www.tao.lu/Ontologies/generis.rdf#password',
 		    	'http://www.tao.lu/Ontologies/TAOResult.rdf#TAO_PROCESS_EXEC_ID',
