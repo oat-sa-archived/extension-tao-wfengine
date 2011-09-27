@@ -109,7 +109,6 @@ class wfEngine_models_classes_ProcessDefinitionService
 			if ($isInitialCollection!= null && $isInitialCollection->uriResource == GENERIS_TRUE)
 			{
 				//new: return array of Resource insteand of Activity
-//				$activityObject = new wfEngine_models_classes_Activity($activity->uriResource);
 				$returnValue[] = $activity;
 			}
 		}

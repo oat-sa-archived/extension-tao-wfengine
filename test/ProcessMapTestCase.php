@@ -186,38 +186,7 @@ class ProcessMapTestCase extends UnitTestCase {
 		
 		$this->assertEqual(count($activityList), 3);
 		
-		//execute the process definition:
-		/*
-		$factory = new wfEngine_models_classes_ProcessExecutionFactory();
-		$factory->name = 'ProcessMap Process Execution';
-		$factory->execution = $processDefinition->uriResource;
-		$factory->ownerUri = SYS_USER_LOGIN;
-		
-		$proc = $factory->create();
-		
-		$i = 1;
-		while($i <= 3 ){
 			
-			$activity = $proc->currentActivity[0];
-			
-			$this->assertTrue($activity->label == 'activity'.$i);
-			
-			//init execution
-			$this->assertTrue($processExecutionService->initCurrentExecution($proc->resource, $activity->resource, $this->currentUser));
-			
-			$activityExecuction = $this->service->getExecution($activity->resource, $this->currentUser, $proc->resource);
-			$this->assertNotNull($activityExecuction);
-			
-			//transition to the following activity
-			$proc->performTransition($activityExecuction->uriResource);
-			
-			$this->assertFalse($proc->isPaused());
-			
-			$i++;
-		}
-		$this->assertTrue($proc->isFinished());
-		*/
-		
 		//delete all created resources:
 		$var_map->delete();
 		$var_param1->delete();

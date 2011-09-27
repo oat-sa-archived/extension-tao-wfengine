@@ -23,9 +23,6 @@ $todefine = array(
 	'CLASS_PROCESSINSTANCES'						=> NS_WFENGINE . '#ClassProcessInstances',
 	'PROPERTY_PROCESSINSTANCES_STATUS'				=> NS_WFENGINE . '#PropertyProcessInstancesStatus',
 	'PROPERTY_PROCESSINSTANCES_EXECUTIONOF'			=> NS_WFENGINE . '#PropertyProcessInstancesExecutionOf',
-	'PROPERTY_PROCESSINSTANCES_CURRENTTOKEN'		=> NS_WFENGINE . '#PropertyProcessInstancesCurrentToken',//deprecated
-	'PROPERTY_PROCESSINSTANCES_PROCESSPATH'			=> NS_WFENGINE . '#PropertyProcessInstancesProcessPath',//deprecated
-	'PROPERTY_PROCESSINSTANCES_FULLPROCESSPATH'		=> NS_WFENGINE . '#PropertyProcessInstancesProcessFullPath',//deprecated
 	'PROPERTY_PROCESSINSTANCES_CURRENTACTIVITYEXECUTIONS'=> NS_WFENGINE . '#PropertyProcessInstancesCurrentActivityExecutions',
 	'PROPERTY_PROCESSINSTANCES_ACTIVITYEXECUTIONS'=> NS_WFENGINE . '#PropertyProcessInstancesActivityExecutions',
 	
@@ -117,7 +114,6 @@ $todefine = array(
 	'CLASS_ACTIVITY_EXECUTION' 						=> NS_WFENGINE . '#ClassActivityExecutions',
 	'PROPERTY_ACTIVITY_EXECUTION_ACTIVITY'			=> NS_WFENGINE . '#PropertyActivityExecutionsExecutionOf',
 	'PROPERTY_ACTIVITY_EXECUTION_CURRENT_USER'		=> NS_WFENGINE . '#PropertyActivityExecutionsCurrentUser',
-	'PROPERTY_ACTIVITY_EXECUTION_IS_FINISHED' 		=> NS_WFENGINE . '#PropertyActivityExecutionsFinished',//deprecated
 	'PROPERTY_ACTIVITY_EXECUTION_PROCESSEXECUTION' 	=> NS_WFENGINE . '#PropertyActivityExecutionsProcessExecution',
 	'PROPERTY_ACTIVITY_EXECUTION_CTX_RECOVERY'		=> NS_WFENGINE . '#PropertyActivityExecutionsContextRecovery',
 	'PROPERTY_ACTIVITY_EXECUTION_VARIABLES'			=> NS_WFENGINE  .'#PropertyActivityExecutionsHasVariables',

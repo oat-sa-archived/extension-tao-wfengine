@@ -200,35 +200,32 @@ class NotificationServiceTestCase extends UnitTestCase {
 			$this->assertNotNull($activity5);
 			
 			//run the process
-			$factory = new wfEngine_models_classes_ProcessExecutionFactory();
-			$factory->name = 'Test Process Execution';
-			$factory->execution = $processDefinition->uriResource;
-			$factory->ownerUri = SYS_USER_LOGIN;
-			
-			//init 1st activity
-			$proc = $factory->create();
+			$processExecName = 'Test Process Execution';
+			$processExecComment = 'created for Notification service test case by '.__METHOD__;
+			$proc = $processExecutionService->createProcessExecution($processDefinition, $processExecName, $processExecComment);
 			
 			$i = 1;
 			while($i <= 5 ){
 				
-				$activity = $proc->currentActivity[0];
+				$activities = $processExecutionService->getAvailableCurrentActivityDefinitions($proc, $this->currentUser);
+				$this->assertEqual(count($activities), 1);
+				$activity = array_shift($activities);
 				
-				$this->out("Activity: ".$activity->resource->getLabel(), true);
-				$this->assertEqual($activity->resource->getLabel(), 'activity'.$i);
+				$this->out("<strong>".$activity->getLabel()."</strong>", true);
+				$this->assertTrue($activity->getLabel() == 'activity'.$i);
 				
 				//init execution
-				$processExecutionService->initCurrentExecution($proc->resource, $activity->resource, $this->currentUser);
-				$activityExecuction = $activityExecutionService->getExecution($activity->resource, $this->currentUser, $proc->resource);
-				$this->assertIsA($activityExecuction, "core_kernel_classes_Resource");
+				$activityExecution = $processExecutionService->initCurrentActivityExecution($proc, $activity, $this->currentUser);
+				$this->assertIsA($activityExecution, "core_kernel_classes_Resource");
 				
 				//transition to nextactivity
-				$proc->performTransition($activityExecuction->uriResource);
+				$transitionResult = $processExecutionService->performTransition($proc, $activityExecution);
 				
-				$this->assertFalse($proc->isPaused());
+				$this->assertFalse($processExecutionService->isPaused($proc));
 				
 				$i++;
 			}
-			$this->assertTrue($proc->isFinished());
+			$this->assertTrue($processExecutionService->isFinished($proc));
 			
 			//check the created notifications
 			$notificationCount = 0;
@@ -241,7 +238,7 @@ class NotificationServiceTestCase extends UnitTestCase {
 			foreach($this->service->getNotificationsToSend() as $notification){
 				$notificationProcess = $notification->getOnePropertyValue($notificationProcessExecProp);
 				if(!is_null($notificationProcess)){
-					if($notificationProcess->uriResource == $proc->resource->uriResource){
+					if($notificationProcess->uriResource == $proc->uriResource){
 						
 						$notifiedUser = $notification->getOnePropertyValue($notificationToProp);
 						$this->assertNotNull($notifiedUser);
@@ -260,21 +257,14 @@ class NotificationServiceTestCase extends UnitTestCase {
 //			$this->service->sendNotifications(new tao_helpers_transfert_MailAdapter());
 //			$this->out("All notifications sent");
 			
-			
-			$this->assertTrue($activity1->delete());
-			$this->assertTrue($activity2->delete());
-			$this->assertTrue($activity3->delete());
-			$this->assertTrue($activity4->delete());
-			$this->assertTrue($activity5->delete());
-			
-			$this->assertTrue($connector1->delete());
-			$this->assertTrue($connector2->delete());
-			$this->assertTrue($connector3->delete());
-			$this->assertTrue($connector4->delete());
-			
 			$this->assertTrue($role2->delete());
-			$this->assertTrue($proc->resource->delete());
-			$this->assertTrue($processDefinition->delete());
+			
+			//delete process exec:
+			$this->assertTrue($processExecutionService->deleteProcessExecution($proc));
+
+			//delete processdef:
+			$this->assertTrue($authoringService->deleteProcess($processDefinition));
+		
 			
 			if(!is_null($this->currentUser)){
 				core_kernel_users_Service::logout();

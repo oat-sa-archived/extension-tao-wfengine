@@ -264,8 +264,6 @@ class wfEngine_actions_ProcessBrowser extends wfEngine_actions_WfModule{
 	public function next(){
 		
 		if(is_null($this->processExecution) || is_null($this->activityExecution) || !$this->activityExecutionNonce){
-			var_dump($this);
-			
 			$this->redirectToIndex();
 			return;
 		}

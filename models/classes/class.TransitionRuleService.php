@@ -93,7 +93,7 @@ class wfEngine_models_classes_TransitionRuleService
        
         }
         catch (common_Exception $e){
-            throw new wfEngine_models_classes_WfException('Transition Rule ' . $rule->uriResource . ' do not have value for Then Property');
+            throw new wfEngine_models_classes_ProcessExecutionException('Transition Rule ' . $rule->uriResource . ' do not have value for Then Property');
         }
         // section 127-0-1-1-66b8afb4:1322473370c:-8000:0000000000002EDB end
 

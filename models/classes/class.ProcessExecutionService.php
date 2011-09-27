@@ -325,24 +325,13 @@ class wfEngine_models_classes_ProcessExecutionService
 				}
 			}
 			
-			//delete associated activity executions
-			$activityExecClass = $this->activityExecutionsClass;
-			$activityExecutions = $activityExecClass->searchInstances(array($this->activityExecutionsProcessExecutionProp->uriResource => $processExecution->uriResource), array('like' => false));
-			if(count($activityExecutions) > 0){
-				foreach($activityExecutions as $activityExecution){
-					if($activityExecution instanceof core_kernel_classes_Resource){
-						$activityExecution->delete();//no need for the second param to "true" since all the related resources are going to be deleted in this method
-					}
-				}
-			}
-			
-			//delete current tokens:
-			$tokenCollection = $processExecution->getPropertyValuesCollection($this->processInstacesCurrentTokensProp);
-			if($tokenCollection->count() > 0){
-				foreach($tokenCollection->getIterator() as $token){
-					if($token instanceof core_kernel_classes_Resource){
-						$token->delete();
-					}
+			$allActivityExecutions = $processExecution->getPropertyValues($this->processInstancesActivityExecutionsProp);
+			$count = count($allActivityExecutions);
+			for($i=0;$i<$count;$i++){
+				$uri = $allActivityExecutions[$i];
+				if(common_Utils::isUri($uri)){
+					$activityExecution = new core_kernel_classes_Resource($uri);
+					$activityExecution->delete();//no need for the second param to "true" since all the related resources are going to be deleted in this method
 				}
 			}
 			
@@ -377,43 +366,27 @@ class wfEngine_models_classes_ProcessExecutionService
 					$processExecutions[] = $processInstance;
 				}
 				
-				$deleteTokens = true;
-				if($deleteTokens){
-					foreach($processExecutions as $processExecution){
-						//delete current tokens:
-						$tokenCollection = $processExecution->getPropertyValuesCollection($this->processInstacesCurrentTokensProp);
-						if($tokenCollection->count() > 0){
-							foreach($tokenCollection->getIterator() as $token){
-								if($token instanceof core_kernel_classes_Resource){
-									$token->delete();//do not delete ref right now, since it should be done later
-								}
-							}
-						}
-					}
-				}
-				
 				$dbWrapper = core_kernel_classes_DbWrapper::singleton();
-				$apiModel  	= core_kernel_impl_ApiModelOO::singleton();
+				$queryRemove =  "DELETE FROM statements WHERE subject IN ( ";
 				foreach($processExecutions as $processExecution){ 
-					$activityExecutionSubject = array();
-
-					$activityExecutionCollection = $apiModel->getSubject($this->activityExecutionsProcessExecutionProp->uriResource,  $processExecution->uriResource);
-					if($activityExecutionCollection->count() > 0){
-						foreach($activityExecutionCollection->getIterator() as $activityExecution){
-							$activityExecutionSubject[] = $activityExecution->uriResource;
-						}
-							
-						$queryRemove =  "DELETE FROM statements WHERE subject IN ( ";
-						$queryRemove  .= "'".$processExecution->uriResource."',";
-						foreach($activityExecutionSubject as $subject){
-							$queryRemove  .= "'".$subject."',";
-						}
-						$queryRemove = substr($queryRemove, 0, strlen($queryRemove) - 1).")";
+					
+					$queryRemove  .= "'".$processExecution->uriResource."',";
 						
-						$dbWrapper->execSql($queryRemove);
+					$allActivityExecutions = $processExecution->getPropertyValues($this->processInstancesActivityExecutionsProp);
+					$count = count($allActivityExecutions);
+					for($i=0;$i<$count;$i++){
+						$uri = $allActivityExecutions[$i];
+						if(common_Utils::isUri($uri)){
+							$queryRemove  .= "'".$uri."',";
+						}
 					}
+					
+					$queryRemove = substr($queryRemove, 0, strlen($queryRemove) - 1).")";
+					
 				}
-
+				$dbWrapper->execSql($queryRemove);
+				var_dump('removing', $queryRemove);
+				
 			}
 			
 			foreach($processExecutions as $processExecution){
@@ -489,9 +462,7 @@ class wfEngine_models_classes_ProcessExecutionService
 		
         $this->processInstancesClass = new core_kernel_classes_Class(CLASS_PROCESSINSTANCES);
         $this->processInstancesStatusProp = new core_kernel_classes_Property(PROPERTY_PROCESSINSTANCES_STATUS);
-        $this->processInstacesCurrentTokensProp = new core_kernel_classes_Property(PROPERTY_PROCESSINSTANCES_CURRENTTOKEN);//deprecated
 		$this->processInstancesExecutionOfProp = new core_kernel_classes_Property(PROPERTY_PROCESSINSTANCES_EXECUTIONOF);
-		$this->processInstancesProcessPathProp = new core_kernel_classes_Property(PROPERTY_PROCESSINSTANCES_PROCESSPATH);//deprecated
 		$this->processInstancesCurrentActivityExecutionsProp = new core_kernel_classes_Property(PROPERTY_PROCESSINSTANCES_CURRENTACTIVITYEXECUTIONS);
 		$this->processInstancesActivityExecutionsProp = new core_kernel_classes_Property(PROPERTY_PROCESSINSTANCES_ACTIVITYEXECUTIONS);
 		
@@ -677,10 +648,6 @@ class wfEngine_models_classes_ProcessExecutionService
 		
 		$returnValue = $this->setStatus($processExecution, 'finished');
 		
-		//remove the current tokens
-		$tokenService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_TokenService');
-		$tokenService->setCurrents($processExecution, array());
-		
         // section 127-0-1-1-7a69d871:1322a76df3c:-8000:0000000000002F70 end
 
         return (bool) $returnValue;
@@ -704,6 +671,8 @@ class wfEngine_models_classes_ProcessExecutionService
 		
 		//delete process execution data: activity executions, tokens and remove all process execution properties but label, comment and status (+serialize the execution path?)
 		//implementation...
+		//remove the current tokens
+		$this->removeCurrentActivityExecutions($processExecution);
 		
         // section 127-0-1-1-7a69d871:1322a76df3c:-8000:0000000000002F76 end
 
@@ -1003,7 +972,7 @@ class wfEngine_models_classes_ProcessExecutionService
 						$authorizedActivityDefinitions[$followingActivity->uriResource] = $followingActivity;
 					}
 				}else{
-					throw new wfEngine_models_classes_WfException('the activity execution cannot be create for the hidden activity');
+					throw new wfEngine_models_classes_ProcessExecutionException('the activity execution cannot be created for the hidden activity');
 				}
 				
 				
@@ -1086,6 +1055,7 @@ class wfEngine_models_classes_ProcessExecutionService
         $returnValue = array();
 
         // section 127-0-1-1--1cda705:13239584a17:-8000:0000000000002F81 begin
+		//deprecated
 		$tokenService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_TokenService');
 		foreach($tokenService->getCurrentActivities($processExecution) as $activity){
 			$returnValue[] = $activity;
