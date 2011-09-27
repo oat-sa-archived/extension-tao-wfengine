@@ -3,17 +3,17 @@
 	<head>
 		<title><?php echo __("TAO - An Open and Versatile Computer-Based Assessment Platform"); ?></title>
 		
-		<script type="text/javascript" src="<?echo BASE_WWW; ?>js/jquery-1.4.2.min.js"></script>
-		<script type="text/javascript" src="<?echo BASE_WWW; ?>js/jquery-ui-1.8.4.custom.min.js"></script>
-		<script type="text/javascript" src="<?echo BASE_WWW; ?>js/jquery.json.js"></script>	
-		<script type="text/javascript" src="<?echo BASE_WWW; ?>js/jquery.ui.taoqualDialog.js"></script>
-		<script type="text/javascript" src="<?echo BASE_WWW; ?>js/wfEngine.js"></script>
-		<script type="text/javascript" src="<?echo BASE_WWW; ?>js/process_browser.js"></script>
+		<script type="text/javascript" src="<?=BASE_WWW?>js/jquery-1.4.2.min.js"></script>
+		<script type="text/javascript" src="<?=BASE_WWW?>js/jquery-ui-1.8.4.custom.min.js"></script>
+		<script type="text/javascript" src="<?=BASE_WWW?>js/jquery.json.js"></script>	
+		<script type="text/javascript" src="<?=BASE_WWW?>js/jquery.ui.taoqualDialog.js"></script>
+		<script type="text/javascript" src="<?=BASE_WWW?>js/wfEngine.js"></script>
+		<script type="text/javascript" src="<?=BASE_WWW?>js/process_browser.js"></script>
 			
 		<script type="text/javascript">
-			window.processUri = '<?php echo urlencode($processUri); ?>';
-			window.activityUri = '<?php echo urlencode($activity->uri); ?>';
-			window.activeResources = <?php echo $browserViewData['active_Resource']; ?>;
+			window.processUri = '<?=urlencode($processUri)?>';
+			window.activityUri = '<?=urlencode($activity->uri)?>';
+			window.activeResources = <?=$browserViewData['active_Resource']?>;
 			
 			
 			function goToPage(page_str){
@@ -28,18 +28,27 @@
 
 		       // Back and next function bindings for the ProcessBrowser.
 		       $("#back").click(function(){
-					goToPage('<?php echo BASE_URL;?>/ProcessBrowser/back?processUri=<?php echo urlencode($processUri); ?>');
+					goToPage('<?=BASE_URL?>/ProcessBrowser/back?processUri=<?=urlencode($processUri)?>&activityExecutionUri=<?=urlencode($browserViewData['activityExecutionUri'])?>&nc=<?=$browserViewData['activityExecutionNonce']?>');
 					$(this).unbind('click');
 					$("#next").unbind('click');
 				});
 		       
 		       	
 			   $("#next").click(function(){
-			       	goToPage('<?php echo BASE_URL;?>/ProcessBrowser/next?processUri=<?php echo urlencode($processUri); ?>&activityExecutionUri=<?php echo urlencode($browserViewData['activityExecutionUri']);?>');
+			       	goToPage('<?=BASE_URL?>/ProcessBrowser/next?processUri=<?=urlencode($processUri)?>&activityExecutionUri=<?=urlencode($browserViewData['activityExecutionUri'])?>&nc=<?=$browserViewData['activityExecutionNonce']?>');
 			       	$(this).unbind('click');
 			       	$("#back").unbind('click');
 				});
 			   	
+				//buil services iframes
+				<?foreach($services as $service):?>
+				var $aFrame = $('<iframe class="toolframe" frameborder="0" style="<?=$service['style']?>" src="<?=BASE_URL?>/ProcessBrowser/loading"></iframe>').appendTo('#tools');
+				$aFrame.unbind('load').load(function(){
+					$(this).attr('src', "<?=$service['callUrl']?>");
+					$(this).unbind('load');
+				});
+				<?endforeach;?>
+				
 			   <?if(get_data('debugWidget')):?>
 
 				$("#debug").click(function(){
@@ -52,7 +61,7 @@
 		</script>
 		
 		<style media="screen">
-			@import url(<?echo BASE_WWW; ?>css/process_browser.css);
+			@import url(<?=BASE_WWW?>css/process_browser.css);
 		</style>
 
 	</head>
@@ -122,9 +131,6 @@
 				
 			
 				<div id="tools">
-					<?php foreach($services as $service): ?>
-					<iframe frameborder="0" style="<?php echo $service->getStyle();?>" src="<?php echo $service->getCallUrl($variablesViewData);?>"></iframe>
-					<?php endforeach;?>
 				</div>
 
 			</div>

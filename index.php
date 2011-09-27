@@ -10,7 +10,7 @@ $modules = array(
 	'Authentication', 
 	'Main', 
 	'ProcessBrowser',
-	'Processes',
+	'ProcessInstanciation',
 	'ItemDelivery', 
 	'ResultDelivery',
 	'RecoveryContext'

@@ -9,214 +9,310 @@
  * @license GPLv2  http://www.opensource.org/licenses/gpl-2.0.php
  */
 
-class wfEngine_actions_ProcessBrowser extends wfEngine_actions_WfModule
-{
-	public function index($processUri, $activityUri='')
-	{
+error_reporting(E_ALL);
 
-		try{
+class wfEngine_actions_ProcessBrowser extends wfEngine_actions_WfModule{
+	
+	protected $processExecution = null;
+	protected $activityExecution = null;
+	protected $processExecutionService = null;
+	protected $activityExecutionService = null;
+	
+	public function __construct(){
+		
+		parent::__construct();
+		
+		$this->processExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessExecutionService');
+		$this->activityExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityExecutionService');
+		
+	}
+	
+	protected function validateParameters(){
+		
+		$returnValue = true;
+		
+		$processExecutionUri = urldecode($this->getRequestParameter('processUri'));
+		$activityExecutionUri = urldecode($this->getRequestParameter('activityExecutionUri'));
+		if(empty($processExecutionUri)){
+			Session::removeAttribute("processUri");
+			$this->redirect(tao_helpers_Uri::url('index', 'Main'));
+			$returnValue = false;
+		}else{
+			$processExecution = new core_kernel_classes_Resource($processExecutionUri);
 			
-		Session::setAttribute("processUri", $processUri);
-		$processUri 		= urldecode($processUri); // parameters clean-up.
-		$this->setData('processUri',$processUri);
-		
-		$activityUri = urldecode($activityUri);
-		
-		$userViewData 		= UsersHelper::buildCurrentUserForView(); // user data for browser view.
-		$this->setData('userViewData',$userViewData);
-		$browserViewData 	= array(); // general data for browser view.
-		
-		$process 			= new wfEngine_models_classes_ProcessExecution($processUri);
-		$currentActivity = null;
-		if(!empty($activityUri)){
-			//check that it is an uri of a valid activity definition (which is contained in currentActivity):
-			foreach($process->currentActivity as $processCurrentActivity){
-				if($processCurrentActivity->uri == $activityUri){
-					$currentActivity = new wfEngine_models_classes_Activity($activityUri);
-					break;
+			//check that the process execution is not finished or closed here:
+			
+			$this->processExecution = $processExecution;
+			if(!empty($activityExecutionUri)){
+				$activityExecution = new core_kernel_classes_Resource($activityExecutionUri);
+				$currentActivityExecutions = $this->processExecutionService->getCurrentActivityExecutions($this->processExecution);
+				//check if it is a current activity exec:
+				if(array_key_exists($activityExecutionUri, $currentActivityExecutions)){
+					$this->activityExecution = $activityExecution;
+					
+					//if ok, check the nonce:
+					$nc = $this->getRequestParameter('nc');
+					if($this->activityExecutionService->checkNonce($this->activityExecution, $nc)){
+						$returnValue = true;
+					}else{
+						$this->redirectToIndex();
+						$returnValue = false;
+					}
+				}else{
+					//if not redirect to the process browser and let it manage the situation:
+					$this->redirectToIndex();
+					$returnValue = false;
 				}
 			}
 		}
 		
-		if(is_null($currentActivity)){
-			//if the activity is still null check if there is a value in $process->currentActivity:
-			if(empty($process->currentActivity)) {
-				die('No current activity found in the process: ' . $processUri);
-			}
-			if(count($process->currentActivity) > 1) {
-				// echo 'paused in process browser';exit;
-				$this->redirect(_url('pause', 'ProcessBrowser'));
-			}else{
-				//use the first one:
-				$currentActivity = $process->currentActivity[0];
-			}
+		return $returnValue;
+	}
+	
+	protected function redirectToIndex($activityUri = ''){
+		
+		$parameters = array();
+		$parameters['processUri'] = urlencode($this->processExecution->uriResource);
+		$parameters['activityUri'] = '';
+		if(ENABLE_HTTP_REDIRECT_PROCESS_BROWSER){
+			$this->redirect(tao_helpers_Uri::url('index', 'ProcessBrowser', null, $parameters));
+		}else{
+			$this->index($parameters['processUri'], $parameters['activityUri']);
 		}
 		
-		$activity 			= $currentActivity;
+	}
+	
+	public function index($processUri, $activityUri=''){
+		/*
+		 * known use of Session::setAttribute("processUri") in:
+		 * - taoDelivery_actions_ItemDelivery::runner()
+		 * - tao_actions_Api::createAuthEnvironment()
+		 * TODO: clean usage
+		 */
+		Session::setAttribute("processUri", $processUri);//actually used somewhere...
+		$activityUri = urldecode($activityUri);
+		$processUri = urldecode($processUri); // parameters clean-up.
+		$this->setData('processUri', $processUri);
+		$processExecution = new core_kernel_classes_Resource($processUri);
 		
+		//user data for browser view
+		$userViewData = UsersHelper::buildCurrentUserForView(); 
+		$this->setData('userViewData', $userViewData);
+		$browserViewData = array(); // general data for browser view.
+		
+		//init services:
 		$userService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_UserService');
+		$activityService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityService');
+		$interactiveServiceService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_InteractiveServiceService');
+		
+		//get current user:
 		$currentUser = $userService->getCurrentUser();
 		if(is_null($currentUser)){
-			throw new Exception("No current user found!");
+			throw new wfEngine_models_classes_ProcessExecutionException("No current user found!");
 		}
 		
-	
-		//security check if the user is allowed to access this activity
-		$activityExecutionService 	= tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityExecutionService');
-		if(!$activityExecutionService->checkAcl($activity->resource, $currentUser, $process->resource)){
-			Session::removeAttribute("processUri");
-			$this->redirect(tao_helpers_Uri::url('index', 'Main'));
+		//get activity execution from currently available process definitions:
+		$currentlyAvailableActivityDefinitions = $this->processExecutionService->getAvailableCurrentActivityDefinitions($processExecution, $currentUser, true);
+		
+		$activityExecution = null;
+		if(count($currentlyAvailableActivityDefinitions) == 0){
+			//no available current activity definition found: no permission or issue in process execution:
+			$this->pause(urlencode($processExecution->uriResource));
+			return;
+		}else{
+			if(!empty($activityUri)){
+				foreach($currentlyAvailableActivityDefinitions as $availableActivity){
+					if($availableActivity->uriResource == $activityUri){
+						$activityExecution = $this->processExecutionService->initCurrentActivityExecution($processExecution, new core_kernel_classes_Resource($activityUri), $currentUser);
+						break;
+					}
+				}
+				if(is_null($activityExecution)){
+					//invalid choice of activity definition:
+//					$invalidActivity = new core_kernel_classes_Resource($activityUri);
+//					throw new wfEngine_models_classes_ProcessExecutionException("invalid choice of activity definition in process browser {$invalidActivity->getLabel()} ({$invalidActivity->uriResource}). \n<br/> The link may be outdated.");
+					$this->index(urlencode($processExecution->uriResource));
+					return;
+				}
+			}else{
+				if(count($currentlyAvailableActivityDefinitions) == 1){
+					$activityExecution = $this->processExecutionService->initCurrentActivityExecution($processExecution, array_pop($currentlyAvailableActivityDefinitions), $currentUser);
+					if(is_null($activityExecution)){
+						throw new wfEngine_models_classes_ProcessExecutionException('cannot initiate the actiivty execution of the unique next activity definition');
+					}
+				}else{
+					//count > 1:
+					//parallel branch, ask the user to select activity to execute:
+					$this->pause(urlencode($processExecution->uriResource));
+					return;
+				}
+			}
 		}
 		
-		//initialise the activity execution and assign the tokens to the current user
-		$processExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessExecutionService');
-	
-		$processExecutionService->initCurrentExecution($process->resource, $activity->resource, $currentUser);
-		
-		$activityExecutionResource = $activityExecutionService->getExecution($activity->resource, $currentUser, $process->resource);
-		$browserViewData['activityExecutionUri']= $activityExecutionResource->uriResource;
-		Session::setAttribute('activityExecutionUri', $activityExecutionResource->uriResource);
-		
-		
-		$this->setData('activity',$activity);
-		
-		$activityPerf 		= new wfEngine_models_classes_Activity($activity->uri, false); // Performance WA
-		$activityExecution 	= new wfEngine_models_classes_ActivityExecution($process, $activityExecutionResource);//would need for activityexecution to get the current token and thus the value of the variables
-
-		$browserViewData['activityContentLanguages'] = array();
-
-		// If paused, resume it.
-		if ($process->status == 'Paused'){
-			$process->resume();
-		}
-		
-		$controls = $activity->getControls();
-		$browserViewData['controls'] = array(
-			'backward' 	=> ($controls[INSTANCE_CONTROL_BACKWARD]),
-			'forward'	=> ($controls[INSTANCE_CONTROL_FORWARD])
-		);
-		
-		
-		// Browser view main data.
-		$browserViewData['isInteractiveService']	= false;
-
-		$browserViewData['processLabel'] 			= $process->process->label;
-		$browserViewData['processExecutionLabel']	= $process->label;
-		$browserViewData['activityLabel'] 			= $activity->label;
-		$browserViewData['processUri']				= $processUri ;
-
-
-		
-		// process variables data, to be given to url: refactor with call of variableService::getVariablesValues
-		$variablesViewData = array();
-		$variables = $process->getVariables();
-
-		foreach ($variables as $var)
-		{
-			$variablesViewData[$var->uri] = urlencode($var->value);	
-		}
-		
-		$this->setData('variablesViewData',$variablesViewData);
-		
-
-		$browserViewData['active_Resource']="'".$activity->uri."'" ;
-		$browserViewData['isInteractiveService'] 	= true;
-		
-		
-		$servicesViewData 	= array();
-		
-		$services = $activityExecution->getInteractiveServices();
-		
-		$this->setData('services',$services);
-
-		$this->setData('browserViewData', $browserViewData);
-		
-		$this->setData('debugWidget', DEBUG_MODE);
-		if(DEBUG_MODE){
+		if(!is_null($activityExecution)){
 			
+			$browserViewData['activityExecutionUri']= $activityExecution->uriResource;
+			$browserViewData['activityExecutionNonce']= $this->activityExecutionService->getNonce($activityExecution);
+			Session::setAttribute('activityExecutionUri', $activityExecution->uriResource);//for variable service only?
 			
-			$tokenService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_TokenService');
-			
-			$servicesResources = array();
-			foreach($services as $service){
-				$servicesResources[] = array(
-					'resource' => $service->resource,
-					'input'		=> $service->input,
-					'output'	=> $service->output
+			//get interactive services (call of services):
+			$activityDefinition = $this->activityExecutionService->getExecutionOf($activityExecution);
+			$interactiveServices = $activityService->getInteractiveServices($activityDefinition);
+			$services = array();
+			foreach($interactiveServices as $interactiveService){
+				$services[] = array(
+					'callUrl'	=> $interactiveServiceService->getCallUrl($interactiveService, $activityExecution),
+					'style'		=> $interactiveServiceService->getStyle($interactiveService),
+					'resource'	=> $interactiveService,
 				);
 			}
+			$this->setData('services', $services);
 			
-			$this->setData('debugData', array(
-					'Activity' => $activity->resource,
-					'ActivityExecution' => $activityExecutionResource,
-					'Token' => $tokenService->getCurrent($activityExecutionResource),
-					'All tokens' => $tokenService->getCurrents($process->resource),
-					'Current activities' => $tokenService->getCurrentActivities($process->resource),
-					'Services' => $servicesResources,
-					'VariableStack' => wfEngine_models_classes_VariableService::getAll()
-			));
-		}
-		}
-		catch(common_Exception $ce){
-			print $ce;exit;
-		}
-		$this->setView('process_browser.tpl');
-	}
-
-	public function back($processUri)
-	{
-		$processUri 	= urldecode($processUri);
-		$processExecution = new wfEngine_models_classes_ProcessExecution($processUri);
-		$activity = $processExecution->currentActivity[0];
-		$processExecution->performBackwardTransition($activity);
-		$processUri 	 = urlencode($processUri);
-
-		if (!ENABLE_HTTP_REDIRECT_PROCESS_BROWSER)
-		{
-			$this->index($processUri);
-		}
-		else
-		{
-			$this->redirect(_url('index', 'ProcessBrowser', null, array('processUri' => urlencode($processUri))));
-		}
-	}
-
-	public function next($processUri, $activityExecutionUri, $ignoreConsistency = 'false')
-	{
-	
-		$processUri 		= urldecode($processUri);
-		$processExecution 	= new wfEngine_models_classes_ProcessExecution($processUri);
-
-		$processExecution->performTransition($activityExecutionUri);
+			$processDefinition = $this->processExecutionService->getExecutionOf($processExecution);
+			
+			//set activity control:
+			$controls = $activityService->getControls($activityDefinition);
+			$browserViewData['controls'] = array(
+				'backward' 	=> in_array(INSTANCE_CONTROL_BACKWARD, $controls),
+				'forward'	=> in_array(INSTANCE_CONTROL_FORWARD, $controls)
+			);
 		
-		if ($processExecution->isFinished()){
-			$this->redirect(_url('index', 'Main'));
+			// If paused, resume it:
+			if ($this->processExecutionService->isFinished($processExecution)){
+				$this->processExecutionService->resume($processExecution);
+			}
+			
+			// Browser view main data.
+			$browserViewData['processLabel'] 			= $processDefinition->getLabel();
+			$browserViewData['processExecutionLabel']	= $processExecution->getLabel();
+			$browserViewData['activityLabel'] 			= $activityDefinition->getLabel();
+			$browserViewData['processUri']				= $processExecution->uriResource;
+			$browserViewData['active_Resource']			="'".$activityDefinition->uriResource."'" ;
+			$browserViewData['isInteractiveService'] 	= true;
+			$this->setData('browserViewData', $browserViewData);
+					
+			$this->setData('activity', $activityDefinition);
+		
+		
+			/* <DEBUG> :populate the debug widget */
+			if(DEBUG_MODE){
+				
+				$this->setData('debugWidget', DEBUG_MODE);
+				
+				$servicesResources = array();
+				foreach($services as $service){
+					$servicesResources[] = array(
+						'resource' => $service['resource'],
+						'callUrl'	=> $service['callUrl'],
+						'style'	=> $service['style'],
+						'input'		=> $interactiveServiceService->getInputValues($interactiveService, $activityExecution),
+						'output'	=> $interactiveServiceService->getOutputValues($interactiveService, $activityExecution)
+					);
+				}
+				
+				$this->setData('debugData', array(
+						'Activity' => $activityDefinition,
+						'ActivityExecution' => $activityExecution,
+						'CurrentActivities' => $currentlyAvailableActivityDefinitions,
+						'Services' => $servicesResources,
+						'VariableStack' => wfEngine_models_classes_VariableService::getAll()
+				));
+			}
+			/* </DEBUG> */
+
+			$this->setView('process_browser.tpl');
 		}
-		elseif($processExecution->isPaused()){
-			$this->pause($processUri);
+	}
+
+	public function back($processUri, $activityExecutionUri){
+		
+		if(!$this->validateParameters()){
+			$this->redirectToIndex();
+			return;
+		}
+		
+		$processExecution = new core_kernel_classes_Resource(urldecode($processUri));
+		$activityExecution = new core_kernel_classes_Resource(urldecode($activityExecutionUri));
+		
+		$previousActivityDefinitions = $this->processExecutionService->performBackwardTransition($processExecution, $activityExecution);
+		
+		//reinitiate nonce:
+		$this->activityExecutionService->createNonce($activityExecution);
+		
+		if($this->processExecutionService->isPaused($processExecution)){
+			$this->pause($processExecution->uriResource);
+		}else{
+			$parameters = array();
+			$parameters['processUri'] = urlencode($processExecution->uriResource);
+			if(count($previousActivityDefinitions) == 1){
+				$parameters['activityUri'] = urlencode(array_pop($previousActivityDefinitions)->uriResource);
+			}else{
+				$parameters['activityUri'] = '';
+			}
+			
+			if(ENABLE_HTTP_REDIRECT_PROCESS_BROWSER){
+				$this->redirect(tao_helpers_Uri::url('index', 'ProcessBrowser', null, $parameters));
+			}else{
+				$this->index($parameters['processUri'], $parameters['activityUri']);
+			}
+			
+		}
+	}
+
+	public function next($processUri, $activityExecutionUri){
+		
+		if(!$this->validateParameters()){
+			$this->redirectToIndex();
+			return;
+		}
+		
+		$processExecution = new core_kernel_classes_Resource(urldecode($processUri));
+		$activityExecution = new core_kernel_classes_Resource(urldecode($activityExecutionUri));
+		
+		$nextActivityDefinitions = $this->processExecutionService->performTransition($processExecution, $activityExecution);
+		
+		//reinitiate nonce:
+		$this->activityExecutionService->createNonce($activityExecution);
+		
+		if($this->processExecutionService->isFinished($processExecution)){
+			$this->redirect(tao_helpers_Uri::url('index', 'Main'));
+		}
+		elseif($this->processExecutionService->isPaused($processExecution)){
+			$this->pause($processExecution->uriResource);
 		}
 		else{
-			//perform transition returns a unique next activity, execute it straight away:
-			$nextActivityDefinitionUri = '';
-			if(count($processExecution->currentActivity) == 1){
-				$nextActivityDefinitionUri = $processExecution->currentActivity[0]->resource->uriResource;
+			//if $nextActivityDefinitions count = 1, pass it to the url:
+			$parameters = array();
+			$parameters['processUri'] = urlencode($processExecution->uriResource);
+			if(count($nextActivityDefinitions) == 1){
+				$parameters['activityUri'] = urlencode(array_pop($nextActivityDefinitions)->uriResource);
+			}else{
+				$parameters['activityUri'] = '';
 			}
-			$this->redirect(_url('index', 'ProcessBrowser', null, array('processUri' => urlencode($processUri), 'activityUri'=>urlencode($nextActivityDefinitionUri)) ));
+			
+			if(ENABLE_HTTP_REDIRECT_PROCESS_BROWSER){
+				$this->redirect(tao_helpers_Uri::url('index', 'ProcessBrowser', null, $parameters));
+			}else{
+				$this->index($parameters['processUri'], $parameters['activityUri']);
+			}
 		}
-
 	}
 
-	public function pause($processUri)
-	{
-
-		$processUri 	= urldecode($processUri);
-		$processExecution = new wfEngine_models_classes_ProcessExecution($processUri);
-
-		$processExecution->pause();
+	public function pause($processUri){
+		
+		$processExecution = new core_kernel_classes_Resource(urldecode($processUri));
+		if(!$this->processExecutionService->isPaused($processExecution)){
+			$this->processExecutionService->pause($processExecution);
+		}
+		
 		Session::removeAttribute("processUri");
-		$this->redirect(_url('index', 'Main'));
+		$this->redirect(tao_helpers_Uri::url('index', 'Main'));
+		
 	}
-
+	
+	public function loading(){
+		$this->setView('itemLoading.tpl');
+	}
 
 }
 ?>
