@@ -270,26 +270,6 @@ class wfEngine_models_classes_ProcessExecutionService
     }
 
     /**
-     * Initialize the current process execution
-     *
-     * @access public
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
-     * @param  Resource processExecution
-     * @param  Resource activity
-     * @param  Resource user
-     * @return boolean
-     */
-    public function initCurrentExecution( core_kernel_classes_Resource $processExecution,  core_kernel_classes_Resource $activity,  core_kernel_classes_Resource $user)
-    {
-        $returnValue = (bool) false;
-
-        // section 127-0-1-1--2bba7ca5:129262ff3bb:-8000:0000000000001FED begin
-        // section 127-0-1-1--2bba7ca5:129262ff3bb:-8000:0000000000001FED end
-
-        return (bool) $returnValue;
-    }
-
-    /**
      * Short description of method deleteProcessExecution
      *
      * @access public
@@ -1024,24 +1004,6 @@ class wfEngine_models_classes_ProcessExecutionService
 		}
 		
         // section 127-0-1-1-7a69d871:1322a76df3c:-8000:0000000000002F88 end
-
-        return (array) $returnValue;
-    }
-
-    /**
-     * Short description of method getCurrentActivities
-     *
-     * @access public
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
-     * @param  Resource processExecution
-     * @return array
-     */
-    public function getCurrentActivities( core_kernel_classes_Resource $processExecution)
-    {
-        $returnValue = array();
-
-        // section 127-0-1-1--1cda705:13239584a17:-8000:0000000000002F81 begin
-        // section 127-0-1-1--1cda705:13239584a17:-8000:0000000000002F81 end
 
         return (array) $returnValue;
     }

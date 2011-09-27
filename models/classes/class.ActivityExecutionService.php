@@ -426,47 +426,6 @@ class wfEngine_models_classes_ActivityExecutionService
     }
 
     /**
-     * initialize the exectuion of that activity by the currentUser
-     *
-     * @access public
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
-     * @param  Resource activity
-     * @param  Resource currentUser
-     * @param  Resource processExecution
-     * @return core_kernel_classes_Resource
-     */
-    public function initExecution( core_kernel_classes_Resource $activity,  core_kernel_classes_Resource $currentUser,  core_kernel_classes_Resource $processExecution)
-    {
-        $returnValue = null;
-
-        // section 127-0-1-1--11ec324e:128d9678eea:-8000:0000000000001F7C begin
-        // section 127-0-1-1--11ec324e:128d9678eea:-8000:0000000000001F7C end
-
-        return $returnValue;
-    }
-
-    /**
-     * Link an activity execution to the current user (it will enables you to
-     * the execution for that user or restrict it afterwhile)
-     *
-     * @access public
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
-     * @param  Resource activityExecution
-     * @param  Resource currentUser
-     * @param  Resource processExecution
-     * @return boolean
-     */
-    public function bindExecution( core_kernel_classes_Resource $activityExecution,  core_kernel_classes_Resource $currentUser,  core_kernel_classes_Resource $processExecution)
-    {
-        $returnValue = (bool) false;
-
-        // section 127-0-1-1--10e47d9e:128d54bbb0d:-8000:0000000000001F78 begin
-        // section 127-0-1-1--10e47d9e:128d54bbb0d:-8000:0000000000001F78 end
-
-        return (bool) $returnValue;
-    }
-
-    /**
      * Check the ACL of a user for a given activity.
      * It returns false if the user cannot access the activity.
      *
@@ -631,25 +590,6 @@ class wfEngine_models_classes_ActivityExecutionService
         // section 127-0-1-1--10e47d9e:128d54bbb0d:-8000:0000000000001F62 end
 
         return (bool) $returnValue;
-    }
-
-    /**
-     * Get the list of available process execution for a user
-     *
-     * @access public
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
-     * @param  Process process
-     * @param  Resource currentUser
-     * @return array
-     */
-    public function getProcessActivities( Process $process,  core_kernel_classes_Resource $currentUser)
-    {
-        $returnValue = array();
-
-        // section 127-0-1-1--10e47d9e:128d54bbb0d:-8000:0000000000001F6F begin
-        // section 127-0-1-1--10e47d9e:128d54bbb0d:-8000:0000000000001F6F end
-
-        return (array) $returnValue;
     }
 
     /**
