@@ -45,7 +45,7 @@
 								<?if($procData['status'] != 'Finished'): ?>
 									<?foreach ($procData['activities'] as $activity): ?>
 										<?if($activity['may_participate']):?>
-											<a href="<?=BASE_URL?>/ProcessBrowser/index?processUri=<?=urlencode($procData['uri'])?>&activityExecutionUri=<?=urlencode($activity['uri'])?>"><?=$activity['label']?></a>
+											<a href="<?=BASE_URL?>/ProcessBrowser/index?processUri=<?=urlencode($procData['uri'])?>&activityUri=<?=urlencode($activity['uri'])?>"><?=$activity['label']?></a>
 										<?elseif (!$activity['allowed'] || $activity['activityEnded']):?>
 											<span class="activity-denied"><?=$activity['label']?></span>
 										<?endif;?>

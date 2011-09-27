@@ -531,43 +531,53 @@ class wfEngine_models_classes_ProcessExecutionService
 		$processDefinitionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessDefinitionService');
 		$initialActivities = $processDefinitionService->getRootActivities($processDefinition);
 		
-		$activityExecutions = array();
-		
-		foreach ($initialActivities as $activity){
-			$activityExecution = $this->activityExecutionService->createActivityExecution($activity, $processInstance);
-			if(!is_null($activityExecution)){
-				$activityExecutions[$activityExecution->uriResource] = $activityExecution;
-			}
-		}
-		
-		//foreach first tokens, assign the user input prop values:
-		$codes = array();
-		foreach($variablesValues as $uri => $value) {
-			// have to skip name because doesnt work like other variables
-			if($uri != RDFS_LABEL) {
-				
-				$property = new core_kernel_classes_Property($uri);
-				
-				//assign property values to them:
-				foreach($activityExecutions as $activityExecution){
-					$activityExecution->setPropertyValue($property, $value);
-				}
-				
-				//prepare the array of codes to be inserted as the "variables" property of the current token
-				$code = $property->getUniquePropertyValue($this->processVariablesCodeProp);
-				$codes[] = (string) $code;
-				
-			}
-		}
-		
-		//set serialized codes array into variable property:
-		$propActivityExecutionVariables = new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_VARIABLES);
-		foreach($activityExecutions as $activityExecution){
-			$activityExecution->setPropertyValue($propActivityExecutionVariables, serialize($codes)); 
-		}
-		
-		if($this->setCurrentActivityExecutions($processInstance, $activityExecutions)){
+		if(!count($initialActivities)){
+			
+			//manage special case of empty process:
+			$this->setStatus($processInstance, 'finished');
+			$processInstance->setComment('empty process execution of '.$processDefinition->getLabel());
 			$returnValue = $processInstance;
+			
+		}else{
+		
+			$activityExecutions = array();
+			foreach ($initialActivities as $activity){
+				$activityExecution = $this->activityExecutionService->createActivityExecution($activity, $processInstance);
+				if(!is_null($activityExecution)){
+					$activityExecutions[$activityExecution->uriResource] = $activityExecution;
+				}
+			}
+
+			//foreach first tokens, assign the user input prop values:
+			$codes = array();
+			foreach($variablesValues as $uri => $value) {
+				// have to skip name because doesnt work like other variables
+				if($uri != RDFS_LABEL) {
+
+					$property = new core_kernel_classes_Property($uri);
+
+					//assign property values to them:
+					foreach($activityExecutions as $activityExecution){
+						$activityExecution->setPropertyValue($property, $value);
+					}
+
+					//prepare the array of codes to be inserted as the "variables" property of the current token
+					$code = $property->getUniquePropertyValue($this->processVariablesCodeProp);
+					$codes[] = (string) $code;
+
+				}
+			}
+
+			//set serialized codes array into variable property:
+			$propActivityExecutionVariables = new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_VARIABLES);
+			foreach($activityExecutions as $activityExecution){
+				$activityExecution->setPropertyValue($propActivityExecutionVariables, serialize($codes)); 
+			}
+
+			if($this->setCurrentActivityExecutions($processInstance, $activityExecutions)){
+				$returnValue = $processInstance;
+			}
+			
 		}
 		
         // section 127-0-1-1-7a69d871:1322a76df3c:-8000:0000000000002F51 end

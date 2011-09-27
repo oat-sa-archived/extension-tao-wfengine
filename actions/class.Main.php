@@ -101,7 +101,6 @@ class wfEngine_actions_Main extends wfEngine_actions_WfModule
 		$activityExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityExecutionService');
 		$processExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessExecutionService');
 		$userService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_UserService');
-		$wfEngineService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_WfEngineService');
 		
 		//get current user:
 		$currentUser = $userService->getCurrentUser();

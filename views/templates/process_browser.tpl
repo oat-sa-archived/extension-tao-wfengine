@@ -11,8 +11,8 @@
 		<script type="text/javascript" src="<?=BASE_WWW?>js/process_browser.js"></script>
 			
 		<script type="text/javascript">
-			window.processUri = '<?=urlencode($processUri)?>';
-			window.activityUri = '<?=urlencode($activity->uri)?>';
+			window.processUri = '<?=urlencode($browserViewData['processUri'])?>';
+			window.activityUri = '<?=urlencode($activity->uriResource)?>';
 			window.activeResources = <?=$browserViewData['active_Resource']?>;
 			
 			
@@ -28,14 +28,14 @@
 
 		       // Back and next function bindings for the ProcessBrowser.
 		       $("#back").click(function(){
-					goToPage('<?=BASE_URL?>/ProcessBrowser/back?processUri=<?=urlencode($processUri)?>&activityExecutionUri=<?=urlencode($browserViewData['activityExecutionUri'])?>&nc=<?=$browserViewData['activityExecutionNonce']?>');
+					goToPage('<?=BASE_URL?>/ProcessBrowser/back?processUri=<?=urlencode($browserViewData['processUri'])?>&activityExecutionUri=<?=urlencode($browserViewData['activityExecutionUri'])?>&nc=<?=$browserViewData['activityExecutionNonce']?>');
 					$(this).unbind('click');
 					$("#next").unbind('click');
 				});
 		       
 		       	
 			   $("#next").click(function(){
-			       	goToPage('<?=BASE_URL?>/ProcessBrowser/next?processUri=<?=urlencode($processUri)?>&activityExecutionUri=<?=urlencode($browserViewData['activityExecutionUri'])?>&nc=<?=$browserViewData['activityExecutionNonce']?>');
+			       	goToPage('<?=BASE_URL?>/ProcessBrowser/next?processUri=<?=urlencode($browserViewData['processUri'])?>&activityExecutionUri=<?=urlencode($browserViewData['activityExecutionUri'])?>&nc=<?=$browserViewData['activityExecutionNonce']?>');
 			       	$(this).unbind('click');
 			       	$("#back").unbind('click');
 				});
