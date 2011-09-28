@@ -18,6 +18,7 @@ class wfEngine_actions_ProcessBrowser extends wfEngine_actions_WfModule{
 	protected $processExecutionService = null;
 	protected $activityExecutionService = null;
 	protected $activityExecutionNonce = false;
+	protected $requestedActivityDefinition = null;
 	
 	public function __construct(){
 		
@@ -27,12 +28,8 @@ class wfEngine_actions_ProcessBrowser extends wfEngine_actions_WfModule{
 		$this->activityExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityExecutionService');
 		
 		//validate all posted values:
-		
 		$processExecutionUri = urldecode($this->getRequestParameter('processUri'));
-		$activityExecutionUri = urldecode($this->getRequestParameter('activityExecutionUri'));
-		
 		if(!empty($processExecutionUri)){
-			
 			$processExecution = new core_kernel_classes_Resource($processExecutionUri);
 			//check that the process execution is not finished or closed here:
 			if($this->processExecutionService->isFinished($processExecution)){
@@ -43,6 +40,14 @@ class wfEngine_actions_ProcessBrowser extends wfEngine_actions_WfModule{
 			}else{
 				
 				$this->processExecution = $processExecution;
+				
+				$activityUri = urldecode($this->getRequestParameter('activityUri'));
+				$activityExecutionUri = urldecode($this->getRequestParameter('activityExecutionUri'));
+				
+				if(!empty($activityUri)){
+					$this->requestedActivityDefinition = new core_kernel_classes_Resource($activityUri);
+				}
+				
 				if(!empty($activityExecutionUri)){
 					
 					$activityExecution = new core_kernel_classes_Resource($activityExecutionUri);
@@ -90,13 +95,12 @@ class wfEngine_actions_ProcessBrowser extends wfEngine_actions_WfModule{
 	
 	public function index($activityUri = ''){
 		
-		
 		if(is_null($this->processExecution)){
 			$this->redirectToMain();
 			return;
 		}
-		if(empty($activityUri)){
-			$activityUri = urldecode($this->getRequestParameter('activityUri'));
+		if(empty($activityUri) && !is_null($this->requestedActivityDefinition)){
+			$activityUri = $this->requestedActivityDefinition->uriResource;
 		}
 		
 		/*
@@ -142,6 +146,7 @@ class wfEngine_actions_ProcessBrowser extends wfEngine_actions_WfModule{
 				}
 				if(is_null($activityExecution)){
 					//invalid choice of activity definition:
+					$this->requestedActivityDefinition = null;
 //					$invalidActivity = new core_kernel_classes_Resource($activityUri);
 //					throw new wfEngine_models_classes_ProcessExecutionException("invalid choice of activity definition in process browser {$invalidActivity->getLabel()} ({$invalidActivity->uriResource}). \n<br/> The link may be outdated.");
 					$this->redirectToIndex();

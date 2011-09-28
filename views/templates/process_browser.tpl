@@ -15,7 +15,6 @@
 			window.activityUri = '<?=urlencode($activity->uriResource)?>';
 			window.activeResources = <?=$browserViewData['active_Resource']?>;
 			
-			
 			function goToPage(page_str){
 				$("#loader").css('display', 'block');
 				$("#tools").empty();

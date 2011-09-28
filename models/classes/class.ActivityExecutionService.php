@@ -499,7 +499,7 @@ class wfEngine_models_classes_ActivityExecutionService
         						
 		        				if($activityRole->uriResource == $userRole->uriResource){
 		        					
-		        					$activityExecutions = $this->getExecutions($activity, $processExecution);
+		        					$activityExecutions = $this->getExecutions($activity, $processExecution);//need to be refactored to take into account new implementeation of actiivty execs
 		        					$estimatedActivityExecutions = $this->getEstimatedExecutionCount($activity);
 		        					
 		        					if(count($activityExecutions) < $estimatedActivityExecutions){
