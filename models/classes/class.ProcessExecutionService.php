@@ -1045,14 +1045,14 @@ class wfEngine_models_classes_ProcessExecutionService
 				break;
 			}
 			case INSTANCE_TYPEOFCONNECTORS_PARALLEL:{
-
-				$returnValue = $connectorService->getNextActivities($currentConnector);
+				
+				$returnValue = $this->getSplitConnectorNewActivities($activityExecution, $currentConnector);
 				
 				break;
 			}
 			case INSTANCE_TYPEOFCONNECTORS_JOIN:{
 			
-				$returnValue = $this->getJoinConnectorNewActivities($processExecution, $currentConnector);
+				$returnValue = $this->getJoinConnectorNewActivities($processExecution, $activityExecution, $currentConnector);
 				
 				break;
 			}
@@ -1149,17 +1149,18 @@ class wfEngine_models_classes_ProcessExecutionService
      * @access protected
      * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @param  Resource processExecution
+     * @param  Resource activityExecution
      * @param  Resource joinConnector
      * @return mixed
      */
-    protected function getJoinConnectorNewActivities( core_kernel_classes_Resource $processExecution,  core_kernel_classes_Resource $joinConnector)
+    protected function getJoinConnectorNewActivities( core_kernel_classes_Resource $processExecution,  core_kernel_classes_Resource $activityExecution,  core_kernel_classes_Resource $joinConnector)
     {
         $returnValue = null;
 
         // section 127-0-1-1--4b38ca35:1323a4c748d:-8000:0000000000002F8F begin
 		
 		$connectorService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ConnectorService');
-		$activityService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityService');
+		$cardinalityService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityCardinalityService');
 		
 		$returnValue = false;
 		$completed = false;
@@ -1169,15 +1170,13 @@ class wfEngine_models_classes_ProcessExecutionService
 		$prevActivites = $connectorService->getPreviousActivities($joinConnector);
 		$countPrevActivities = count($prevActivites);
 		for($i=0; $i<$countPrevActivities; $i++){
-			$activityResource = $prevActivites[$i];
-			if($activityService->isActivity($activityResource)){
-				if(!isset($activityResourceArray[$activityResource->uriResource])){
-					$activityResourceArray[$activityResource->uriResource] = 1;
-				}else{
-					$activityResourceArray[$activityResource->uriResource] += 1;
-				}
+			$activityCardinality = $prevActivites[$i];
+			if($cardinalityService->isCardinality($activityCardinality)){
+				$activity = $cardinalityService->getActivity($activityCardinality);
+				$activityResourceArray[$activity->uriResource] = $cardinalityService->getCardinality($activityCardinality, $activityExecution);
 			}
 		}
+		//TODO: implement the case of successive merging: A & B merging to C, D & E merging F and C & F merging to G...
 
 		$debug = array();
 		//count finished activity execution by activity definition
@@ -1579,6 +1578,39 @@ class wfEngine_models_classes_ProcessExecutionService
 		
 		ksort($returnValue);
         // section 127-0-1-1--1e75179b:1325dc5c4e1:-8000:0000000000003012 end
+
+        return (array) $returnValue;
+    }
+
+    /**
+     * Short description of method getSplitConnectorNewActivities
+     *
+     * @access public
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @param  Resource activityExecution
+     * @param  Resource currentConnector
+     * @return array
+     */
+    public function getSplitConnectorNewActivities( core_kernel_classes_Resource $activityExecution,  core_kernel_classes_Resource $currentConnector)
+    {
+        $returnValue = array();
+
+        // section 127-0-1-1-6eb1148b:132b4a0f8d0:-8000:000000000000306D begin
+		$connectorService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ConnectorService');
+		$cardinalityService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityCardinalityService');
+		
+		foreach($connectorService->getNextActivities($currentConnector) as $cardinality){
+			$activity = $cardinalityService->getActivity($cardinality);
+			if(!is_null($activity)){
+				$count = $cardinalityService->getCardinality($cardinality, $activityExecution);
+				for($i=0; $i<$count; $i++){
+					$returnValue[] = $activity;
+				}
+			}
+		}
+		
+		
+        // section 127-0-1-1-6eb1148b:132b4a0f8d0:-8000:000000000000306D end
 
         return (array) $returnValue;
     }

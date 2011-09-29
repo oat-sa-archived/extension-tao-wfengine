@@ -44,7 +44,11 @@ $todefine = array(
 	'PROPERTY_ACTIVITIES_ISHIDDEN'					=> NS_WFENGINE . '#PropertyActivitiesHidden',
 	'PROPERTY_ACTIVITIES_ISINITIAL'					=> NS_WFENGINE . '#PropertyActivitiesInitial',
 	'PROPERTY_ACTIVITIES_CONTROLS'					=> NS_WFENGINE  .'#PropertyActivitiesControls',
-
+	
+	'CLASS_ACTIVITYCARDINALITY'						=> NS_WFENGINE . '#ClassActivityCardinality',
+	'PROPERTY_ACTIVITYCARDINALITY_ACTIVITY'			=> NS_WFENGINE . '#PropertyActivityCardinalityActivity',
+	'PROPERTY_ACTIVITYCARDINALITY_CARDINALITY'		=> NS_WFENGINE . '#PropertyActivityCardinalityCardinality',
+	
 	'CLASS_CONTROLS'								=> NS_WFENGINE  .'#ClassControls',
 	'INSTANCE_CONTROL_BACKWARD'						=> NS_WFENGINE  .'#InstanceControlsBackward',
 	'INSTANCE_CONTROL_FORWARD'						=> NS_WFENGINE  .'#InstanceControlsForward',
@@ -103,10 +107,10 @@ $todefine = array(
 	
 	'CLASS_FORMALPARAMETER'							=> NS_WFENGINE . '#ClassFormalParameters',
 	'PROPERTY_FORMALPARAMETER_DEFAULTCONSTANTVALUE' => NS_WFENGINE . '#PropertyFormalParametersDefaultConstantValue',
-	'PROPERTY_FORMALPARAMETER_DEFAULTPROCESSVARIABLE'=> NS_WFENGINE . '#PropertyFormalParametersDefaultProcessVariable',
+	'PROPERTY_FORMALPARAMETER_DEFAULTPROCESSVARIABLE'=>NS_WFENGINE . '#PropertyFormalParametersDefaultProcessVariable',
 	'PROPERTY_FORMALPARAMETER_NAME'					=> NS_WFENGINE . '#PropertyFormalParametersName',
 	
-	'CLASS_ACTUALPARAMETER'							=>  NS_WFENGINE . '#ClassActualParameters',
+	'CLASS_ACTUALPARAMETER'							=> NS_WFENGINE . '#ClassActualParameters',
 	'PROPERTY_ACTUALPARAMETER_PROCESSVARIABLE'		=> NS_WFENGINE . '#PropertyActualParametersProcessVariable',
 	'PROPERTY_ACTUALPARAMETER_CONSTANTVALUE'		=> NS_WFENGINE . '#PropertyActualParametersConstantValue',
 	'PROPERTY_ACTUALPARAMETER_FORMALPARAMETER'		=> NS_WFENGINE . '#PropertyActualParametersFormalParameter',
@@ -123,6 +127,9 @@ $todefine = array(
 	'PROPERTY_ACTIVITY_EXECUTION_TIME_CREATED'		=> NS_WFENGINE . '#PropertyActivityExecutionsTimeCreated',
 	'PROPERTY_ACTIVITY_EXECUTION_TIME_STARTED'		=> NS_WFENGINE . '#PropertyActivityExecutionsTimeStarted',
 	'PROPERTY_ACTIVITY_EXECUTION_NONCE'				=> NS_WFENGINE . '#PropertyActivityExecutionsNonce',
+	'PROPERTY_ACTIVITY_EXECUTION_RESTRICTED_USER'	=> NS_WFENGINE . '#PropertyActivityExecutionsRestrictedUser',
+	'PROPERTY_ACTIVITY_EXECUTION_RESTRICTED_ROLE'	=> NS_WFENGINE . '#PropertyActivityExecutionsRestrictedRole',
+	'PROPERTY_ACTIVITY_EXECUTION_ACL_MODE'			=> NS_WFENGINE . '#PropertyActivityExecutionsAccessControlMode',
 	
 	'CLASS_ACL_MODES'								=> NS_WFENGINE . '#ClassAccessControlModes',
 	'INSTANCE_ACL_ROLE'								=> NS_WFENGINE . '#PropertyAccessControlModesRole',

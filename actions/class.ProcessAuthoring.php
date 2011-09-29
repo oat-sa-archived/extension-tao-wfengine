@@ -574,11 +574,8 @@ class wfEngine_actions_ProcessAuthoring extends tao_actions_TaoModule {
 		//delete its related properties
 		$deleted = $this->service->deleteActualParameters($callOfService);
 		
-		//remove the reference from this interactive service
-		$deleted = $this->service->deleteReference(new core_kernel_classes_Property(PROPERTY_ACTIVITIES_INTERACTIVESERVICES), $callOfService);
-		
 		//delete call of service itself
-		$deleted = $this->service->deleteInstance($callOfService);
+		$deleted = $callOfService->delete(true);
 	
 		echo json_encode(array('deleted' => $deleted));
 	}
@@ -922,7 +919,7 @@ class wfEngine_actions_ProcessAuthoring extends tao_actions_TaoModule {
 						// }
 						
 						//if the current type is still 'join' && target activity has changed || type of connector has changed:
-						if( $oldNextActivity->uriResource != $data["join_activityUri"] || $data[PROPERTY_CONNECTORS_TYPE]!= INSTANCE_TYPEOFCONNECTORS_JOIN){
+						if($oldNextActivity->uriResource != $data["join_activityUri"] || $data[PROPERTY_CONNECTORS_TYPE]!= INSTANCE_TYPEOFCONNECTORS_JOIN){
 							
 							//check if another activities is joined with the same connector:
 							$previousActivityCollection = $connectorInstance->getPropertyValuesCollection(new core_kernel_classes_Property(PROPERTY_CONNECTORS_PREVIOUSACTIVITIES)); 
@@ -940,7 +937,7 @@ class wfEngine_actions_ProcessAuthoring extends tao_actions_TaoModule {
 								// echo ' creating new connector for it ';
 								//there is another activity, so:
 								//remove reference of that activity from previous connector, and update its activity reference to the one of the other previous activity, update the 'old' join connector
-								$this->service->deleteReference(new core_kernel_classes_Property(PROPERTY_CONNECTORS_PREVIOUSACTIVITIES), $activity);
+								$connectorInstance->removePropertyValues(new core_kernel_classes_Property(PROPERTY_CONNECTORS_PREVIOUSACTIVITIES), $activity->uriResource);
 								$connectorInstance->editPropertyValues(new core_kernel_classes_Property(PROPERTY_CONNECTORS_ACTIVITYREFERENCE), $anotherPreviousActivity->uriResource);
 							
 								//since it used to share the connector with other previous activities, now that it needs a new connector of its own, create one here:

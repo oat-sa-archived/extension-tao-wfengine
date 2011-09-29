@@ -398,12 +398,14 @@ class wfEngine_models_classes_ProcessAuthoringService
 		$this->setConnectorType($connectorInstance, new core_kernel_classes_Resource(INSTANCE_TYPEOFCONNECTORS_JOIN));
 		
 		$propNextActivity = new core_kernel_classes_Property(PROPERTY_CONNECTORS_NEXTACTIVITIES);
+		if(is_null($previousActivity)){
+			throw new wfEngine_models_classes_ProcessDefinitonException('no previous activity found to be connected to the next activity');
+		}
 		
 		if(is_null($followingActivity)){
-			//TODO: create an activity if null:
 			$followingActivity = $this->createActivityFromConnector($connectorInstance, $newActivityLabel);
 		}else{
-			//find if a join connector already leads to the following activity:
+			//search if a join connector already leads to the following activity:
 			$connectorClass = new core_kernel_classes_Class(CLASS_CONNECTORS);
 			$connectors = $connectorClass->searchInstances(array(
 				PROPERTY_CONNECTORS_NEXTACTIVITIES => $followingActivity->uriResource,
@@ -412,69 +414,69 @@ class wfEngine_models_classes_ProcessAuthoringService
 		
 			$found = false;
 			foreach($connectors as $connector){
-						
-				if(!is_null($previousActivity)){
-					
-					//important: check that the connector found is NOT the same as the current one:
-					if($connectorInstance->uriResource != $connector->uriResource){
-						//delete old connector, 
-						$this->deleteConnector($connectorInstance);
-						//and associate the activity to that one the existing one via a set property value to the "previous activities" property
-						$connectorInstance = $connector;
-						$found = true;
-						
-						break;//one join connector allowed for a next activity
-					}else{
-						//nothing to do, since the connector is already 
-						//it would be the case when one re-save the join connector with the same followinf activity
-						return 'same activity';
-					}
-					
+				//important: check that the connector found is NOT the same as the current one:
+				if($connectorInstance->uriResource != $connector->uriResource){
+					//delete old connector, 
+					$this->deleteConnector($connectorInstance);
+					//and associate the activity to that one the existing one via a set property value to the "previous activities" property
+					$connectorInstance = $connector;
+					$found = true;
+
+					break;//one join connector allowed for a next activity
 				}else{
-					throw new Exception('no previous activity found to be connected to the next activity');
+					//nothing to do, since the connector is already 
+					//it would be the case when one re-save the join connector with the same following activity
+					return 'same activity';
 				}
-						
 			}
-			if($found){
-			
-			}else{
-			
-			}
-			
 		}
 		
 		if($followingActivity instanceof core_kernel_classes_Resource){
-			$connectorInstance->editPropertyValues($propNextActivity, $followingActivity->uriResource);
-			$connectorInstance->setLabel(__("merge to ").$followingActivity->getLabel());
 			
-			//check multiplivity here
-			// $connectorInstance = $connector;
-			//calculate the number of time the same triple must be set (according to the multiplicity of the related parallel connector):
-			$multiplicity = 1;//default multiplicity, if no multiple parallel activity 
+			$connectorInstance->editPropertyValues($propNextActivity, $followingActivity->uriResource);
+			$connectorInstance->setLabel(__("Merge to ").$followingActivity->getLabel());
+			
+			//check multiplicity  (according to the cardinality defined in the related parallel connector):
 			$processFlow = new wfEngine_models_classes_ProcessFlow();
+			$cardinalityService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityCardinalityService');
+			
+			$multiplicity = 1;//default multiplicity, if no multiple parallel activity 
+			
 			$parallelConnector = null;
 			$parallelConnector = $processFlow->findParallelFromActivityBackward($previousActivity);
-			
 			if(!is_null($parallelConnector)){
-				$firstActivityOfTheBranch = array_pop($processFlow->getCheckedActivities());
+				$firstActivityOfTheThreadUri = array_pop($processFlow->getCheckedActivities());
 				//count the number of time theprevious activity must be set as the previous activity of the join connector
-				$multiplicity = 0; //restart counting: we are sure that at least one of such activity will be found
-				$nextActivityCollection = $parallelConnector->getPropertyValuesCollection(new core_kernel_classes_Property(PROPERTY_CONNECTORS_NEXTACTIVITIES));
-				foreach($nextActivityCollection->getIterator() as $nextActivity){
-					if($nextActivity->uriResource == $firstActivityOfTheBranch->uriResource){
-						$multiplicity++;
+				$nextActivitiesCollection = $parallelConnector->getPropertyValuesCollection(new core_kernel_classes_Property(PROPERTY_CONNECTORS_NEXTACTIVITIES));
+				foreach($nextActivitiesCollection->getIterator() as $nextActivityCardinality){
+					if($cardinalityService->getActivity($nextActivityCardinality)->uriResource == $firstActivityOfTheThreadUri){
+						$multiplicity = $cardinalityService->getCardinality($nextActivityCardinality);
+						break;
 					}
 				}
 			}
 			
 			if($multiplicity){
-				//delete old connector, and associate the activity to that one:
-				// $this->deleteConnector($connectorInstance);
-				$propConnectorsPreviousActivities = new core_kernel_classes_Property(PROPERTY_CONNECTORS_PREVIOUSACTIVITIES);
-				$connectorInstance->removePropertyValues($propConnectorsPreviousActivities, array('pattern' => $previousActivity->uriResource));
 				
-				for($i=0;$i<$multiplicity;$i++){
-					$connectorInstance->setPropertyValue($propConnectorsPreviousActivities, $previousActivity->uriResource);
+				$oldPreviousActivityCardinality = null;
+				$propConnectorsPreviousActivities = new core_kernel_classes_Property(PROPERTY_CONNECTORS_PREVIOUSACTIVITIES);
+				
+				//update the cardinality of the corresponding previous activity if exists
+				$prevActivitiesCollection = $connectorInstance->getPropertyValuesCollection($propConnectorsPreviousActivities);
+				foreach($prevActivitiesCollection->getIterator() as $cardinality){
+					if($cardinalityService->isCardinality($cardinality)){
+						if($cardinalityService->getActivity($cardinality)->uriResource == $previousActivity->uriResource){
+							$oldPreviousActivityCardinality = $cardinality;
+							$cardinalityService->editCardinality($oldPreviousActivityCardinality, $multiplicity);
+							break;
+						}
+					}
+				}
+				
+				//if it does not exists, create a new cardinality resource and assign it to the join connector:
+				if(is_null($oldPreviousActivityCardinality)){
+					$cardinality = $cardinalityService->createCardinality($previousActivity, $multiplicity);
+					$connectorInstance->setPropertyValue($propConnectorsPreviousActivities, $cardinality);
 				}
 			}else{
 				throw new wfEngine_models_classes_ProcessDefinitonException('unexpected null multiplicity in join connector');
@@ -1599,73 +1601,72 @@ class wfEngine_models_classes_ProcessAuthoringService
 		$this->setConnectorType($connectorInstance, new core_kernel_classes_Resource(INSTANCE_TYPEOFCONNECTORS_PARALLEL));
 		
 		$propNextActivities = new core_kernel_classes_Property(PROPERTY_CONNECTORS_NEXTACTIVITIES);
-		$processFlow = new wfEngine_models_classes_ProcessFlow();
+		$propPreviousActivities = new core_kernel_classes_Resource(PROPERTY_CONNECTORS_PREVIOUSACTIVITIES);
+		$cardinalityService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityCardinalityService');
 		
-		//calculate the number of parallel activities, for each activity definition 
+		//remove old property values:
 		$nextActivitiesCollection = $connectorInstance->getPropertyValuesCollection($propNextActivities);
-		$oldActivitiesArray = array();
-		foreach ($nextActivitiesCollection->getIterator() as $activityResource){
-			if(!isset($oldActivitiesArray[$activityResource->uriResource])){
-				$oldActivitiesArray[$activityResource->uriResource] = 1;
-			}else{
-				$oldActivitiesArray[$activityResource->uriResource] += 1;
+		foreach ($nextActivitiesCollection->getIterator() as $activityMultiplicityResource){
+			if($cardinalityService->isCardinality($activityMultiplicityResource)){
+				$activityMultiplicityResource->delete();
 			}
 		}
+		$returnValue = $connectorInstance->removePropertyValues($propNextActivities);
 		
-		$connectorInstance->removePropertyValues($propNextActivities);
-			
-		//check if the number has changed in the new posted data, otherwise, need to update the related join connector:
-		$propConnectorsPreviousActivities = new core_kernel_classes_Resource(PROPERTY_CONNECTORS_PREVIOUSACTIVITIES);
-		foreach($oldActivitiesArray as $activityUri=>$count){
-			
-			//need for update:
-			$updateRequired = true;
-			
-			if(isset($newActivitiesArray[$activityUri])){
-				if($newActivitiesArray[$activityUri] == $count){
-					//$ok, no need to update
-					$updateRequired = false;
-				}
-			}
-			
-			if($updateRequired){
-				
-				$processFlow->resetCheckedResources();
-				$joinConnector = null;
-				$joinConnector = $processFlow->findJoinFromActivityForward(new core_kernel_classes_Resource($activityUri));
-				if(!is_null($joinConnector)){
-					$joinConnectorsPreviousActivity = array_pop($processFlow->getCheckedActivities());
-					$joinConnector->removePropertyValues($propConnectorsPreviousActivities, array('pattern' => $joinConnectorsPreviousActivity->uriResource));
-					for($i=0; $i<$newActivitiesArray[$activityUri]; $i++){
-						$joinConnector->setPropertyValue($propConnectorsPreviousActivities, $activityUri);
-					}
-				}
-				
-			}
-		}
 		
-		//finally, set the next activities values of the parallel connector:
-		foreach($newActivitiesArray as $activityUri=>$count){
-			//set property value as much as required
-			for($i=0;$i<$count;$i++){
-				$returnValue = $connectorInstance->setPropertyValue($propNextActivities, $activityUri);
-			}
+		
+		//finally, set the next activities values to the parallel connector:
+		
+		$joinConnector = null;
+		$processFlow = new wfEngine_models_classes_ProcessFlow();
+		$i = 0;
+		
+		foreach($newActivitiesArray as $activityUri => $count){
+			$activity = new core_kernel_classes_Resource($activityUri);
 			
-			//check if need for updating the related join connector:
-			if(!isset($oldActivitiesArray[$activityUri])){
-				
+			//set multiplicity to the parallel connector:
+			$multiplicity = $cardinalityService->createCardinality($activity, $count);
+			$connectorInstance->setPropertyValue($propNextActivities, $multiplicity);
+			
+			//set multiplicity to the merge connector:
+			$previousActvityUri = '';
+			if($i == 0){
+				//use the ProcessFlow service to find if a merge connector exists for the current parallel connector:
+				//do it only once:
 				$processFlow->resetCheckedResources();
-				$joinConnector = null;
-				$joinConnector = $processFlow->findJoinFromActivityForward(new core_kernel_classes_Resource($activityUri));
+				$joinConnector = $processFlow->findJoinFromActivityForward($activity);
+				
 				if(!is_null($joinConnector)){
-					$joinConnectorsPreviousActivity = array_pop($processFlow->getCheckedActivities());
-					$joinConnector->removePropertyValues($propConnectorsPreviousActivities, array('pattern' => $joinConnectorsPreviousActivity->uriResource));
-					for($i=0; $i<$newActivitiesArray[$activityUri]; $i++){
-						$joinConnector->setPropertyValue($propConnectorsPreviousActivities, $activityUri);
+					//if it exists, we erase all previous activities:
+					//the previous acitivites must be related to the *exact* same activity-multiplicity objects as the parallel but not necessarily the same (e.g. parallel thread with more than 1 acitivty)
+					//we suppose that the previous activities of the found merge connector come *exactly* from the thread generated by its parallel connector (condition for a valid process design)
+					$prevActivitiesCollection = $joinConnector->getPropertyValuesCollection($propPreviousActivities);
+					foreach ($prevActivitiesCollection->getIterator() as $activityMultiplicityResource){
+						if($cardinalityService->isCardinality($activityMultiplicityResource)){
+							$activityMultiplicityResource->delete();
+						}
 					}
+					$returnValue = $joinConnector->removePropertyValues($propPreviousActivities);
+				}
+				
+				$previousActvityUri = array_pop($processFlow->getCheckedActivities());
+			}
+			if(!is_null($joinConnector)){
+				if(empty($previousActvityUri)){
+					//if there are more than 1 activity in the newActivitiesArray:
+					$processFlow->resetCheckedResources();
+					$joinConnector = $processFlow->findJoinFromActivityForward($activity);
+					$previousActvityUri = array_pop($processFlow->getCheckedActivities());
+				}
+				
+				if(!empty($previousActvityUri)){
+					$multiplicity = $cardinalityService->createCardinality(new core_kernel_classes_Resource($previousActvityUri), $count);
+					$returnValue = $joinConnector->setPropertyValue($propPreviousActivities, $multiplicity);
 				}
 				
 			}
+			
+			$i++;
 		}
 		
         // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004EA1 end

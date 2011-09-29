@@ -75,7 +75,7 @@ class wfEngine_actions_ProcessBrowser extends wfEngine_actions_WfModule{
 	
 	protected function redirectToIndex($activityUri = ''){
 		
-		$parameters = array();
+		$parameters = array('activityUri'=>'');
 		if(!empty($activityUri)){
 			$parameters['activityUri'] = $activityUri;
 		}

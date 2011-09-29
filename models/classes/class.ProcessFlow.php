@@ -38,6 +38,7 @@ class wfEngine_models_classes_ProcessFlow{
 	}
 	
 	public function getCheckedActivities(){
+		//return and ordered array of the sequence of activities that have been checked during the process flow analysis:
 		return $this->checkedActivities;
 	}
 	
@@ -46,7 +47,7 @@ class wfEngine_models_classes_ProcessFlow{
 		$returnValue = null;
 		
 		//put the activity being searched in an array to prevent searching from it again in case of back connection
-		$this->checkedActivities[$activity->uriResource] = $activity;
+		$this->checkedActivities[] = $activity->uriResource;
 		
 		$connectorClass = new core_kernel_classes_Class(CLASS_CONNECTORS);
 		$previousConnectors = $connectorClass->searchInstances(array(PROPERTY_CONNECTORS_NEXTACTIVITIES => $activity->uriResource), array('like' => false));//note: count()>1 only 
@@ -85,7 +86,7 @@ class wfEngine_models_classes_ProcessFlow{
 			//Note: the use of the property activity reference allow to jump to the "main" (in case of a join connector and successive conditionnal connectors) directly
 			
 			//if the previousActivity happens to have already been checked, jump it
-			if(in_array($previousActivity->uriResource, array_keys($this->checkedActivities))){
+			if(in_array($previousActivity->uriResource, $this->checkedActivities)){
 				continue;
 			}else{
 				$parallelConnector = $this->findParallelFromActivityBackward($previousActivity);
@@ -108,7 +109,7 @@ class wfEngine_models_classes_ProcessFlow{
 		$returnValue = null;
 		
 		//put the activity being searched in an array to prevent searching from it again in case of back connection
-		$this->checkedActivities[$activity->uriResource] = $activity;
+		$this->checkedActivities[] = $activity->uriResource;
 		
 		$connectorClass = new core_kernel_classes_Class(CLASS_CONNECTORS);
 		$nextConnectors = $connectorClass->searchInstances(array(PROPERTY_CONNECTORS_PREVIOUSACTIVITIES => $activity->uriResource), array('like' => false));//note: count()>1 only 
@@ -143,12 +144,19 @@ class wfEngine_models_classes_ProcessFlow{
 				}
 			}
 			
+			$classMultiplicity = new core_kernel_classes_Class(CLASS_ACTIVITYCARDINALITY);
+			$propMultiplicityActivity = new core_kernel_classes_Property(PROPERTY_ACTIVITYCARDINALITY_ACTIVITY);
 			//if the wanted join connector has not be found (i.e. no value returned so far):
 			//get the nextActivitiesCollection and recursively execute the same function ON ONLY ONE of the next parallel branch, but both banches in case of a conditionnal connector
 			$nextActivitiesCollection = $connector->getPropertyValuesCollection(new core_kernel_classes_Property(PROPERTY_CONNECTORS_NEXTACTIVITIES));
 			foreach($nextActivitiesCollection->getIterator() as $nextActivity){
+				
+				if($nextActivity->hasType($classMultiplicity)){
+					$activity = $nextActivity->getPropertyValue();
+				}
+			
 				//if the nextActivity happens to have already been checked, jump it
-				if(in_array($nextActivity->uriResource, array_keys($this->checkedActivities))){
+				if(in_array($nextActivity->uriResource, $this->checkedActivities)){
 					continue;
 				}else{
 					$joinConnector = $this->findJoinFromActivityForward($nextActivity);
