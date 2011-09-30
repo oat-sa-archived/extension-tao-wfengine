@@ -351,7 +351,6 @@ class wfEngine_models_classes_ProcessExecutionService
 					
 				}
 				$dbWrapper->execSql($queryRemove);
-				var_dump('removing', $queryRemove);
 				
 			}
 			
@@ -843,6 +842,8 @@ class wfEngine_models_classes_ProcessExecutionService
 		$newActivities = array();
 		if(!is_null($nextConnector)){
 			$newActivities = $this->getNewActivities($processExecution, $activityExecution, $nextConnector);
+		}else{
+			//final activity:
 		}
 		
 		if($newActivities === false){
@@ -921,7 +922,7 @@ class wfEngine_models_classes_ProcessExecutionService
 				
 				$currentUser = $userService->getCurrentUser();
 				if(is_null($currentUser)){
-					throw new Exception("No current user found!");
+					throw new wfEngine_models_classes_ProcessExecutionException("No current user found!");
 				}
 				//security check if the user is allowed to access this activity
 				// if(!$activityExecutionService->checkAcl($activity->resource, $currentUser, $processExecution)){
@@ -1045,19 +1046,20 @@ class wfEngine_models_classes_ProcessExecutionService
 				break;
 			}
 			case INSTANCE_TYPEOFCONNECTORS_PARALLEL:{
-				
+				echo 'parallel';
 				$returnValue = $this->getSplitConnectorNewActivities($activityExecution, $currentConnector);
 				
 				break;
 			}
 			case INSTANCE_TYPEOFCONNECTORS_JOIN:{
-			
+				echo 'join';
 				$returnValue = $this->getJoinConnectorNewActivities($processExecution, $activityExecution, $currentConnector);
 				
 				break;
 			}
 			case INSTANCE_TYPEOFCONNECTORS_SEQUENCE:
 			default:{
+				echo 'seq';
 				//considered as a sequential connector
 				$newActivities = $connectorService->getNextActivities($currentConnector);
 				if(count($newActivities)){
@@ -1608,7 +1610,6 @@ class wfEngine_models_classes_ProcessExecutionService
 				}
 			}
 		}
-		
 		
         // section 127-0-1-1-6eb1148b:132b4a0f8d0:-8000:000000000000306D end
 

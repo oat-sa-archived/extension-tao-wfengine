@@ -50,7 +50,11 @@ class wfEngine_models_classes_ProcessFlow{
 		$this->checkedActivities[] = $activity->uriResource;
 		
 		$connectorClass = new core_kernel_classes_Class(CLASS_CONNECTORS);
-		$previousConnectors = $connectorClass->searchInstances(array(PROPERTY_CONNECTORS_NEXTACTIVITIES => $activity->uriResource), array('like' => false));//note: count()>1 only 
+		$cardinalityClass = new core_kernel_classes_Class(CLASS_ACTIVITYCARDINALITY);
+		
+		$activityCardinalities = $cardinalityClass->searchInstances(array(PROPERTY_ACTIVITYCARDINALITY_ACTIVITY => $activity->uriResource), array('like' => false));//note: count()>1 only 
+		$nextActivities = array_merge(array($activity->uriResource), array_keys($activityCardinalities));
+		$previousConnectors = $connectorClass->searchInstances(array(PROPERTY_CONNECTORS_NEXTACTIVITIES => $nextActivities), array('like' => false));//note: count()>1 only 
 		foreach($previousConnectors as $connector){
 		
 			if(in_array($connector->uriResource, array_keys($this->checkedConnectors))){

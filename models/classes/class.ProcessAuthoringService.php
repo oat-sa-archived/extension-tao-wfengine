@@ -444,10 +444,14 @@ class wfEngine_models_classes_ProcessAuthoringService
 			
 			$parallelConnector = null;
 			$parallelConnector = $processFlow->findParallelFromActivityBackward($previousActivity);
+			
 			if(!is_null($parallelConnector)){
+				
 				$firstActivityOfTheThreadUri = array_pop($processFlow->getCheckedActivities());
+				
 				//count the number of time theprevious activity must be set as the previous activity of the join connector
 				$nextActivitiesCollection = $parallelConnector->getPropertyValuesCollection(new core_kernel_classes_Property(PROPERTY_CONNECTORS_NEXTACTIVITIES));
+				
 				foreach($nextActivitiesCollection->getIterator() as $nextActivityCardinality){
 					if($cardinalityService->getActivity($nextActivityCardinality)->uriResource == $firstActivityOfTheThreadUri){
 						$multiplicity = $cardinalityService->getCardinality($nextActivityCardinality);
@@ -635,7 +639,7 @@ class wfEngine_models_classes_ProcessAuthoringService
         $returnValue = null;
 
         // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004DC3 begin
-		
+		//rename it to conditional:
 		$this->setConnectorType($connector, new core_kernel_classes_Resource(INSTANCE_TYPEOFCONNECTORS_CONDITIONAL));
 		
 		//remove property PROPERTY_CONNECTORS_NEXTACTIVITIES values on connector before:

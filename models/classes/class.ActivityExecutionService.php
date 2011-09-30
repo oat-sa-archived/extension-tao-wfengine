@@ -1052,8 +1052,7 @@ class wfEngine_models_classes_ActivityExecutionService
 				/// JOIN ///
                 case INSTANCE_TYPEOFCONNECTORS_JOIN:{
 					
-					$activityService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityService');
-					$processExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessExecutionService');
+					$cardinalityService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityCardinalityService');
 					
                     if(count($nextActivities) == 0){
                         throw new wfEngine_models_classes_ProcessExecutionException("No next activity defined");
@@ -1064,21 +1063,17 @@ class wfEngine_models_classes_ActivityExecutionService
                     $nextActivity = $nextActivities[0];
                     
 					//get the activity around the connector
-		            $previousActivities = $connector->getPropertyValues(new core_kernel_classes_Property(PROPERTY_CONNECTORS_PREVIOUSACTIVITIES));
-			
-                    $activityResourceArray = array();
-					$previousActivitiesCount = count($previousActivities);
-                    for($i=0; $i<$previousActivitiesCount; $i++){
-						$activityResource = new core_kernel_classes_Resource($previousActivities[$i]);
-                        if($activityService->isActivity($activityResource)){
-                            if(!isset($activityResourceArray[$activityResource->uriResource])){
-                                $activityResourceArray[$activityResource->uriResource] = 1;
-                            }else{
-                                $activityResourceArray[$activityResource->uriResource] += 1;
-                            }
-                        }
-						unset($activityResource);
-                    }
+		            $activityResourceArray = array();
+					$prevActivites = $connectorService->getPreviousActivities($connector);
+					$countPrevActivities = count($prevActivites);
+					for($i=0; $i<$countPrevActivities; $i++){
+						$activityCardinality = $prevActivites[$i];
+						if($cardinalityService->isCardinality($activityCardinality)){
+							$activity = $cardinalityService->getActivity($activityCardinality);
+							$activityResourceArray[$activity->uriResource] = $cardinalityService->getCardinality($activityCardinality, $activityExecution);
+						}
+					}
+					
                     foreach($activityResourceArray as $activityDefinitionUri => $count){
                         //compare with execution and get tokens:
 						$activityDefinition = new core_kernel_classes_Resource($activityDefinitionUri);

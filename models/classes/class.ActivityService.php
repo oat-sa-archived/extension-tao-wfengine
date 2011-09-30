@@ -142,9 +142,8 @@ class wfEngine_models_classes_ActivityService
         $returnValue = (bool) false;
 
         // section 127-0-1-1-4ecae359:132158f9a4c:-8000:0000000000002EA7 begin
-        $connectorClass = new core_kernel_classes_Class(CLASS_CONNECTORS);
-        $nextActivities = $connectorClass->searchInstances(array(PROPERTY_CONNECTORS_PREVIOUSACTIVITIES => $activity->uriResource), array('like' => true, 'recursive' => 0));
-        if(count($nextActivities) == 0){
+        $nextConnectors = $this->getNextConnectors($activity);
+        if(count($nextConnectors) == 0){
             $returnValue = true;
         }
         // section 127-0-1-1-4ecae359:132158f9a4c:-8000:0000000000002EA7 end
@@ -165,8 +164,14 @@ class wfEngine_models_classes_ActivityService
         $returnValue = array();
 
         // section 127-0-1-1-4ecae359:132158f9a4c:-8000:0000000000002EAB begin
-        $connectorsClass = new core_kernel_classes_Class(CLASS_CONNECTORS);
-        $nextConnectors = $connectorsClass->searchInstances(array(PROPERTY_CONNECTORS_PREVIOUSACTIVITIES => $activity->uriResource), array('like' => false, 'recursive' => 0));
+		
+		//to be cached!!
+		
+		$connectorClass = new core_kernel_classes_Class(CLASS_CONNECTORS);
+		$cardinalityClass = new core_kernel_classes_Class(CLASS_ACTIVITYCARDINALITY);
+		$activityCardinalities = $cardinalityClass->searchInstances(array(PROPERTY_ACTIVITYCARDINALITY_ACTIVITY => $activity->uriResource), array('like' => false));//note: count()>1 only 
+		$previousActivities = array_merge(array($activity->uriResource), array_keys($activityCardinalities));
+        $nextConnectors = $connectorClass->searchInstances(array(PROPERTY_CONNECTORS_PREVIOUSACTIVITIES => $previousActivities), array('like' => true, 'recursive' => 0));
         foreach ($nextConnectors as $nextConnector){
 			$returnValue[$nextConnector->uriResource] = $nextConnector;
         }
