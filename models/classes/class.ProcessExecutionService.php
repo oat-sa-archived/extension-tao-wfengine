@@ -1046,20 +1046,20 @@ class wfEngine_models_classes_ProcessExecutionService
 				break;
 			}
 			case INSTANCE_TYPEOFCONNECTORS_PARALLEL:{
-				echo 'parallel';
+				
 				$returnValue = $this->getSplitConnectorNewActivities($activityExecution, $currentConnector);
 				
 				break;
 			}
 			case INSTANCE_TYPEOFCONNECTORS_JOIN:{
-				echo 'join';
+				
 				$returnValue = $this->getJoinConnectorNewActivities($processExecution, $activityExecution, $currentConnector);
 				
 				break;
 			}
 			case INSTANCE_TYPEOFCONNECTORS_SEQUENCE:
 			default:{
-				echo 'seq';
+				
 				//considered as a sequential connector
 				$newActivities = $connectorService->getNextActivities($currentConnector);
 				if(count($newActivities)){

@@ -114,7 +114,7 @@ class ProcessExecutionServiceTestCase extends UnitTestCase{
 	/**
 	 * Test the tokens into a sequancial process
 	 */
-	public function _testVirtualSequencialProcess(){
+	public function testVirtualSequencialProcess(){
 		
 		error_reporting(E_ALL);
 		
@@ -380,10 +380,13 @@ class ProcessExecutionServiceTestCase extends UnitTestCase{
 			$parallelActivity1->uriResource => $parallelCount1,
 			$parallelActivity2->uriResource => $parallelCount2_processVar
 		);
+		
 		$result = $authoringService->setParallelActivities($connector0, $prallelActivitiesArray);
+		$this->assertTrue($result);
+		
 		$prallelActivitiesArray[$parallelActivity2->uriResource] = $parallelCount2;
 		
-		$this->assertFalse($result);
+		
 
 		$joinActivity = $authoringService->createActivity($processDefinition, 'activity3');
 
