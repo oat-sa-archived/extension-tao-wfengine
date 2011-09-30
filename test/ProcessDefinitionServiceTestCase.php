@@ -66,8 +66,9 @@ class ProcessDefinitionServiceTestCase extends UnitTestCase {
 		$processVars = $this->service->getProcessVars($this->processDefinition);
 		$this->assertEqual(count($processVars), 1);
 		
+		$variableService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_VariableService');
 		$myProcessVarName1 = 'myProcDefVarName1';
-		$myProcessVar1 = $this->authoringService->getProcessVariable($myProcessVarName1, true);
+		$myProcessVar1 = $variableService->getProcessVariable($myProcessVarName1, true);
 		$this->service->setProcessVariable($this->processDefinition, $myProcessVarName1);
 		//this works too: $this->service->setProcessVariable($this->processDefinition, $myProcessVar1);
 		

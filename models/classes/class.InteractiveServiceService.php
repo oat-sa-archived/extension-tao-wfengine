@@ -9,7 +9,7 @@ error_reporting(E_ALL);
  *
  * This file is part of TAO.
  *
- * Automatically generated on 22.09.2011, 17:13:20 with ArgoUML PHP module 
+ * Automatically generated on 30.09.2011, 17:11:39 with ArgoUML PHP module 
  * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
  *
  * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
@@ -305,6 +305,38 @@ class wfEngine_models_classes_InteractiveServiceService
         // section 127-0-1-1-511681e7:13291a3c527:-8000:0000000000003042 end
 
         return (array) $returnValue;
+    }
+
+    /**
+     * Short description of method deleteInteractiveService
+     *
+     * @access public
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @param  Resource interactiveService
+     * @return boolean
+     */
+    public function deleteInteractiveService( core_kernel_classes_Resource $interactiveService)
+    {
+        $returnValue = (bool) false;
+
+        // section 127-0-1-1-8ae8e2e:132ba7fdd5a:-8000:0000000000003086 begin
+		
+		$propActualParamIn = new core_kernel_classes_Property(PROPERTY_CALLOFSERVICES_ACTUALPARAMETERIN);
+		$propActualParamOut = new core_kernel_classes_Property(PROPERTY_CALLOFSERVICES_ACTUALPARAMETEROUT);
+		
+		foreach($interactiveService->getPropertyValuesCollection($propActualParamIn)->getIterator() as $actualParam){
+			$actualParam->delete();
+			//no need to remove reference here, since the resource that uses them is going to be deleted by the end of the method
+		}
+		foreach($interactiveService->getPropertyValuesCollection($propActualParamOut)->getIterator() as $actualParam){
+			$actualParam->delete();
+		}
+		
+		$returnValue = $interactiveService->delete(true);
+		
+        // section 127-0-1-1-8ae8e2e:132ba7fdd5a:-8000:0000000000003086 end
+
+        return (bool) $returnValue;
     }
 
 } /* end of class wfEngine_models_classes_InteractiveServiceService */

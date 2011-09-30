@@ -64,10 +64,11 @@ class InteractiveServiceServiceTestCase extends UnitTestCase {
 	public function testGetCallUrl(){
 		
 		//create unique process variables for this unit test only:
+		$variableService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_VariableService');
 		$myProcessVarCode1 = 'myProcessVarCode1'.time();
 		$myProcessVarCode2 = 'myProcessVarCode2'.time();
-		$myProcessVar1 = $this->authoringService->getProcessVariable($myProcessVarCode1, true);
-		$myProcessVar2 = $this->authoringService->getProcessVariable($myProcessVarCode2, true);
+		$myProcessVar1 = $variableService->getProcessVariable($myProcessVarCode1, true);
+		$myProcessVar2 = $variableService->getProcessVariable($myProcessVarCode2, true);
 		
 		
 		$parameterNames = array(

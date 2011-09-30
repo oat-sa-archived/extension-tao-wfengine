@@ -9,7 +9,7 @@ error_reporting(E_ALL);
  *
  * This file is part of TAO.
  *
- * Automatically generated on 30.09.2011, 15:33:12 with ArgoUML PHP module 
+ * Automatically generated on 30.09.2011, 18:32:07 with ArgoUML PHP module 
  * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
  *
  * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
@@ -653,22 +653,8 @@ class wfEngine_models_classes_ProcessAuthoringService
 
         // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004DDC begin
 		
-		$connectorClass = new core_kernel_classes_Class(CLASS_CONNECTORS);
-		$connectors = $connectorClass->searchInstances(array(PROPERTY_CONNECTORS_ACTIVITYREFERENCE => $activity->uriResource), array('like' => false, 'recursive' => 0));
-		foreach($connectors as $connector){
-			$this->deleteConnector($connector);
-		}
-		
-		//deleting resource "acitivty" with its references should be enough normally to remove all references... to be tested
-				
-		//delete call of service!!
-		$interactiveServices = $activity->getPropertyValuesCollection(new core_kernel_classes_Property(PROPERTY_ACTIVITIES_INTERACTIVESERVICES));
-		foreach($interactiveServices->getIterator() as $service){
-			$this->deleteCallOfService($service);
-		}
-		
-		//delete activity itself:
-		$returnValue = $this->deleteInstance($activity);
+		$activityService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityService');
+		$returnValue = $activityService->deleteActivity($activity);
 		
         // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004DDC end
 
@@ -730,19 +716,8 @@ class wfEngine_models_classes_ProcessAuthoringService
 
         // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004DF5 begin
 		
-		//delete related actual param as well:
-			
-		$propActualParamIn = new core_kernel_classes_Property(PROPERTY_CALLOFSERVICES_ACTUALPARAMETERIN);
-		$propActualParamOut = new core_kernel_classes_Property(PROPERTY_CALLOFSERVICES_ACTUALPARAMETEROUT);
-		
-		foreach($service->getPropertyValuesCollection($propActualParamIn)->getIterator() as $actualParam){
-			$actualParam->delete(true);
-		}
-		foreach($service->getPropertyValuesCollection($propActualParamOut)->getIterator() as $actualParam){
-			$actualParam->delete(true);
-		}
-		
-		$returnValue = $service->delete(true);
+		$interactiveServiceService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_InteractiveServiceService');
+		$returnValue = $interactiveServiceService->deleteInteractiveService($service);
 		
         // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004DF5 end
 
@@ -795,39 +770,9 @@ class wfEngine_models_classes_ProcessAuthoringService
         $returnValue = (bool) false;
 
         // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004DFC begin
+		
 		$connectorService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ConnectorService');
-		
-		if(!$connectorService->isConnector($connector)){
-			// throw new Exception("the resource in the parameter is not a connector: {$connector->getLabel()} ({$connector->uriResource})");
-			return $returnValue;
-		}
-		
-		//get the type of connector:
-		$connectorType = $connector->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_TYPE));
-		if(!is_null($connectorType) && $connectorType instanceof core_kernel_classes_Resource){
-			if($connectorType->uriResource == INSTANCE_TYPEOFCONNECTORS_CONDITIONAL){
-				//delete the related rule:
-				$relatedRule = $connector->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_TRANSITIONRULE));
-				if(!is_null($relatedRule)){
-					$this->deleteRule($relatedRule);
-				}
-			}
-		}
-				
-		//manage the connection to the following activities
-		$activityRef = $connector->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_ACTIVITYREFERENCE))->uriResource;
-		$nextActivityCollection = $connector->getPropertyValuesCollection(new core_kernel_classes_Property(PROPERTY_CONNECTORS_NEXTACTIVITIES));
-		foreach($nextActivityCollection->getIterator() as $nextActivity){
-			if($connectorService->isConnector($nextActivity)){
-				$nextActivityRef = $nextActivity->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_ACTIVITYREFERENCE))->uriResource;
-				if($nextActivityRef == $activityRef){
-					$this->deleteConnector($nextActivity);//delete following connectors only if they have the same activity reference
-				}
-			}
-		}
-		
-		//delete connector itself:
-		$returnValue = $this->deleteInstance($connector);
+		$returnValue = $connectorService->deleteConnector($connector);
 		
         // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004DFC end
 
@@ -1324,35 +1269,6 @@ class wfEngine_models_classes_ProcessAuthoringService
     }
 
     /**
-     * Short description of method getProcessVariable
-     *
-     * @access public
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
-     * @param  string code
-     * @param  boolean forceCreation
-     * @return core_kernel_classes_Resource
-     */
-    public function getProcessVariable($code, $forceCreation = false)
-    {
-        $returnValue = null;
-
-        // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004E63 begin
-		$processVariableClass =  new core_kernel_classes_Class(CLASS_PROCESSVARIABLES);
-		$variables = $processVariableClass->searchInstances(array(PROPERTY_PROCESSVARIABLES_CODE => $code), array('like' => false, 'recursive' => 0));
-		if(!empty($variables)){
-			$returnValue = array_shift($variables);
-		}else if($forceCreation){
-			$returnValue = $this->createProcessVariable($code, $code);
-			if(is_null($returnValue)){
-				throw new Exception("the process variable ({$code}) cannot be created.");
-			}
-		}
-        // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004E63 end
-
-        return $returnValue;
-    }
-
-    /**
      * Short description of method getServicesByActivity
      *
      * @access public
@@ -1682,6 +1598,7 @@ class wfEngine_models_classes_ProcessAuthoringService
 			$propFormalParam = new core_kernel_classes_Property(PROPERTY_SERVICESDEFINITION_FORMALPARAMIN);
 			$classFormalParam = new core_kernel_classes_Class(CLASS_FORMALPARAMETER);
 			$classProcessVariables = new core_kernel_classes_Class(CLASS_PROCESSVARIABLES);
+			$variableService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_VariableService');
 			
 			foreach($inputParameters as $paramName => $value){
 			
@@ -1700,9 +1617,9 @@ class wfEngine_models_classes_ProcessAuthoringService
 							if(substr($value, 0, 1) == '^'){
 								//is a process var, so get related process var resource:
 								$code = substr($value, 1);
-								$processVar = $this->getProcessVariable($code);
+								$processVar = $variableService->getProcessVariable($code);
 								if(is_null($processVar)){
-									$processVar = $this->createProcessVariable($code, $code);
+									$processVar = $variableService->createProcessVariable($code, $code);
 								}
 								if(!is_null($processVar)){
 									$defaultValue = $processVar->uriResource;
@@ -1759,33 +1676,6 @@ class wfEngine_models_classes_ProcessAuthoringService
 		}
 		
         // section 10-13-1-39--6cc6036b:12e4807fb4f:-8000:0000000000002BF9 end
-
-        return (bool) $returnValue;
-    }
-
-    /**
-     * Short description of method deleteProcessVariable
-     *
-     * @access public
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
-     * @param  string code
-     * @return boolean
-     */
-    public function deleteProcessVariable($code)
-    {
-        $returnValue = (bool) false;
-
-        // section 10-13-1-39--6cc6036b:12e4807fb4f:-8000:0000000000002BFD begin
-		if(!is_null($code)){
-		
-			$processVariableToDelete = null;
-			$processVariableToDelete = $this->getProcessVariable($code);
-			if(!is_null($processVariableToDelete)){
-				$returnValue = $processVariableToDelete->delete(true);
-			}
-			
-		}
-        // section 10-13-1-39--6cc6036b:12e4807fb4f:-8000:0000000000002BFD end
 
         return (bool) $returnValue;
     }

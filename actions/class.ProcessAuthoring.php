@@ -1219,7 +1219,8 @@ class wfEngine_actions_ProcessAuthoring extends tao_actions_TaoModule {
 		
 		$returnValue = array('exist' => false);
 		
-		$processVar = $this->service->getProcessVariable($code);
+		$variableService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_VariableService');
+		$processVar = $variableService->getProcessVariable($code);
 		if(!is_null($processVar)){
 			if($processVarUri != $processVar->uriResource){
 				$returnValue['exist'] = true;
@@ -1250,9 +1251,11 @@ class wfEngine_actions_ProcessAuthoring extends tao_actions_TaoModule {
 		
 		$processClass = new core_kernel_classes_Class(CLASS_PROCESS);
 		$processVarProp = new core_kernel_classes_Property(PROPERTY_PROCESS_VARIABLES);
+		$variableService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_VariableService');
+		
 		foreach($codes as $code){
 			//get the variable resource: 
-			$processVar = $this->service->getProcessVariable($code);
+			$processVar = $variableService->getProcessVariable($code);
 			if(is_null($processVar)){
 				$returnValue['doesNotExist'][] = $code;
 			}else{

@@ -50,6 +50,8 @@ class ConnectorServiceTestCase extends UnitTestCase {
         TestRunner::initTest();
 
         $this->authoringService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessAuthoringService');
+		$this->variableService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_VariableService');
+		
         $processDefinitionClass = new core_kernel_classes_Class(CLASS_PROCESS);
         $this->processDefinition = $processDefinitionClass->createInstance('ProcessForUnitTest', 'Unit test');
          
@@ -96,7 +98,7 @@ class ConnectorServiceTestCase extends UnitTestCase {
         $else = $this->authoringService->createSplitActivity($connector1, 'else', null, '', true);//create another connector
         $activity3 = $this->authoringService->createSequenceActivity($else, null, 'Act3');
 
-        $myProcessVar1 = $this->authoringService->getProcessVariable('myProcessVarCode1', true);
+        $myProcessVar1 = $this->variableService->getProcessVariable('myProcessVarCode1', true);
         $transitionRule = $this->authoringService->createTransitionRule($connector1, '^myProcessVarCode1 == 1');
 
         $transitionRuleBis = $this->service->getTransitionRule($connector1);
@@ -139,7 +141,7 @@ class ConnectorServiceTestCase extends UnitTestCase {
         $this->assertEqual($this->service->getType($thenConnector)->uriResource, INSTANCE_TYPEOFCONNECTORS_SEQUENCE);
         $this->assertEqual($this->service->getType($elseConnector)->uriResource, INSTANCE_TYPEOFCONNECTORS_SEQUENCE);
 
-        $myProcessVar1 = $this->authoringService->getProcessVariable('myProcessVarCode1', true);
+        $myProcessVar1 = $this->variableService->getProcessVariable('myProcessVarCode1', true);
         $transitionRule = $this->authoringService->createTransitionRule($connector1, '^myProcessVarCode1 == 1');
         
         $connectorType = $this->service->getType($connector1);
@@ -236,7 +238,7 @@ class ConnectorServiceTestCase extends UnitTestCase {
         }
 
         
-        $myProcessVar1 = $this->authoringService->getProcessVariable('myProcessVarCode1', true);
+        $myProcessVar1 = $this->variableService->getProcessVariable('myProcessVarCode1', true);
         $transitionRule = $this->authoringService->createTransitionRule($connector1, '^myProcessVarCode1 == 1');
         
 
@@ -260,21 +262,19 @@ class ConnectorServiceTestCase extends UnitTestCase {
 		$this->assertFalse($connector4->exists());
 		$this->assertEqual($activity6->uriResource, $activity7->uriResource);
 		
+		$cardinalityService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityCardinalityService');
         $activity3NextActi = $this->service->getNextActivities($connector2);
         $this->assertIsA($activity3NextActi,'array');
-        $this->assertTrue(sizeof($activity3NextActi) == 5);
+        $this->assertEqual(sizeof($activity3NextActi), 2);
         $newActivitiesarrayCount = array();
-        foreach ($activity3NextActi as $acti){
-            $this->assertTrue(array_key_exists($acti->uriResource, $newActivitiesArray));
-            if(array_key_exists($acti->uriResource, $newActivitiesArray)){      
-                if(isset( $newActivitiesarrayCount[$acti->uriResource])){
-                    $newActivitiesarrayCount[$acti->uriResource] ++;
-                }
-                else{
-                    $newActivitiesarrayCount[$acti->uriResource] = 1;
-                }  
+        foreach ($activity3NextActi as $cardinality){
+			$this->assertTrue($cardinalityService->isCardinality($cardinality));
+			$activity = $cardinalityService->getActivity($cardinality);
+			$keyExists = array_key_exists($activity->uriResource, $newActivitiesArray);
+            $this->assertTrue($keyExists);
+            if($keyExists){
+				$newActivitiesarrayCount[$activity->uriResource] = $cardinalityService->getCardinality($cardinality);
             }
-
         }
         $this->assertEqual($newActivitiesarrayCount, $newActivitiesArray);
         
@@ -350,7 +350,7 @@ class ConnectorServiceTestCase extends UnitTestCase {
         }
 
         
-        $myProcessVar1 = $this->authoringService->getProcessVariable('myProcessVarCode1', true);
+        $myProcessVar1 = $this->variableService->getProcessVariable('myProcessVarCode1', true);
         $transitionRule = $this->authoringService->createTransitionRule($connector1, '^myProcessVarCode1 == 1');
         
 
@@ -379,21 +379,19 @@ class ConnectorServiceTestCase extends UnitTestCase {
         }
         
         $activity4PrevActi = $this->service->getPreviousActivities($connector3);
-
+		var_dump($activity4PrevActi, $newActivitiesArray);
         $this->assertIsA($activity4PrevActi,'array');
-        $this->assertTrue(sizeof($activity4PrevActi) == 5);
-        $prevActivitiesarrayCount = array();
-        foreach ($activity4PrevActi as $acti){
-            $this->assertTrue(array_key_exists($acti->uriResource, $newActivitiesArray));
-            if(array_key_exists($acti->uriResource, $newActivitiesArray)){      
-                if(isset( $prevActivitiesarrayCount[$acti->uriResource])){
-                    $prevActivitiesarrayCount[$acti->uriResource] ++;
-                }
-                else{
-                    $prevActivitiesarrayCount[$acti->uriResource] = 1;
-                }  
+        $this->assertEqual(sizeof($activity4PrevActi), 2);
+        $cardinalityService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityCardinalityService');
+		$prevActivitiesarrayCount = array();
+        foreach ($activity4PrevActi as $cardinality){
+			$this->assertTrue($cardinalityService->isCardinality($cardinality));
+			$activity = $cardinalityService->getActivity($cardinality);
+			$keyExists = array_key_exists($activity->uriResource, $newActivitiesArray);
+            $this->assertTrue($keyExists);
+            if($keyExists){
+				$prevActivitiesarrayCount[$activity->uriResource] = $cardinalityService->getCardinality($cardinality);
             }
-
         }
         $this->assertEqual($prevActivitiesarrayCount, $newActivitiesArray);
         

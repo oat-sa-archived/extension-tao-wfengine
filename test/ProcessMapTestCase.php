@@ -25,24 +25,15 @@ class ProcessMapTestCase extends UnitTestCase {
 	}
 	
 	public function testCreateSequenceActivity(){
-		$authoringService = $this->authoringService;
+		
 		$processDefinition = $this->proc;
+		$authoringService = $this->authoringService;
+		$processVariableService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_VariableService');
 		
 		//set the required process variables subjectUri and wsdlContract
-		$var_map = $authoringService->getProcessVariable("map");
-		if(is_null($var_map)){
-			$var_map = $authoringService->createProcessVariable("process var map", "map");
-		}
-		
-		$var_param1 = $authoringService->getProcessVariable("param1");
-		if(is_null($var_param1)){
-			$var_param1 = $authoringService->createProcessVariable("process var param1", "param1");
-		}
-		
-		$var_param2 = $authoringService->getProcessVariable("param2");
-		if(is_null($var_param2)){
-			$var_param2 = $authoringService->createProcessVariable("process var param1", "param2");
-		}
+		$var_map = $processVariableService->getProcessVariable("map", true);
+		$var_param1 = $processVariableService->getProcessVariable("param1", true);
+		$var_param2 = $processVariableService->getProcessVariable("param2", true);
 		
 		//create formal param associated to the 3 required proc var:
 		$paramMap = $authoringService->getFormalParameter('map');

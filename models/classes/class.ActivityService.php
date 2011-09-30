@@ -340,6 +340,43 @@ class wfEngine_models_classes_ActivityService
         return $returnValue;
     }
 
+    /**
+     * Short description of method deleteActivity
+     *
+     * @access public
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @param  Resource activity
+     * @return boolean
+     */
+    public function deleteActivity( core_kernel_classes_Resource $activity)
+    {
+        $returnValue = (bool) false;
+
+        // section 127-0-1-1-8ae8e2e:132ba7fdd5a:-8000:0000000000003081 begin
+		
+		$connectorService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ConnectorService');
+		$interactiveServiceService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_InteractiveServiceService');
+		$connectorClass = new core_kernel_classes_Class(CLASS_CONNECTORS);
+		$connectors = $connectorClass->searchInstances(array(PROPERTY_CONNECTORS_ACTIVITYREFERENCE => $activity->uriResource), array('like' => false, 'recursive' => 0));
+		foreach($connectors as $connector){
+			$connectorService->deleteConnector($connector);
+		}
+		
+		//deleting resource "acitivty" with its references should be enough normally to remove all references... to be tested
+				
+		//delete call of service!!
+		foreach($this->getInteractiveServices($activity) as $service){
+			$interactiveServiceService->deleteInteractiveService($service);
+		}
+		
+		//delete activity itself:
+		$returnValue = $activity->delete(true);
+		
+        // section 127-0-1-1-8ae8e2e:132ba7fdd5a:-8000:0000000000003081 end
+
+        return (bool) $returnValue;
+    }
+
 } /* end of class wfEngine_models_classes_ActivityService */
 
 ?>

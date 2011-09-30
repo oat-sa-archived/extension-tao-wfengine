@@ -105,7 +105,7 @@ class wfEngine_models_classes_VariableService
      * @param  mixed params
      * @return boolean
      */
-    public function remove($params)
+    public function remove( mixed $params)
     {
         $returnValue = (bool) false;
 
@@ -353,6 +353,35 @@ class wfEngine_models_classes_VariableService
         // section 127-0-1-1-8ae8e2e:132ba7fdd5a:-8000:0000000000003073 end
 
         return $returnValue;
+    }
+
+    /**
+     * Short description of method deleteProcessVariable
+     *
+     * @access public
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @param  string code
+     * @return boolean
+     */
+    public function deleteProcessVariable($code)
+    {
+        $returnValue = (bool) false;
+
+        // section 127-0-1-1-8ae8e2e:132ba7fdd5a:-8000:0000000000003089 begin
+		
+		if(!is_null($code)){
+		
+			$processVariableToDelete = null;
+			$processVariableToDelete = $this->getProcessVariable($code);
+			if(!is_null($processVariableToDelete)){
+				$returnValue = $processVariableToDelete->delete(true);
+			}
+			
+		}
+		
+        // section 127-0-1-1-8ae8e2e:132ba7fdd5a:-8000:0000000000003089 end
+
+        return (bool) $returnValue;
     }
 
 } /* end of class wfEngine_models_classes_VariableService */

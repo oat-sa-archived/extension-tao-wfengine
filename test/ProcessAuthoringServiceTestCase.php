@@ -23,6 +23,7 @@ class ProcessAuthoringServiceTestCase extends UnitTestCase {
 			$this->fail('fail to create a process definition resource');
 		}
 		$this->apiModel = core_kernel_impl_ApiModelOO::singleton();
+		$this->variableService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_VariableService');
 	}
 	
 	/**
@@ -159,11 +160,12 @@ class ProcessAuthoringServiceTestCase extends UnitTestCase {
 		$this->assertEqual($else->uriResource, $transitionRule->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_TRANSITIONRULES_ELSE))->uriResource);
 		
 		$myProcessVar1 = null;
-		$myProcessVar1 = $this->authoringService->getProcessVariable('myProcessVarCode1', true);
+		$myProcessVar1 = $this->variableService->getProcessVariable('myProcessVarCode1', true);
 		$transitionRuleBis = $this->authoringService->createTransitionRule($connector1, '^myProcessVarCode1 == 1');
 		$this->assertEqual($transitionRule->uriResource, $transitionRuleBis->uriResource);
 		
-		$this->assertTrue($this->authoringService->deleteProcessVariable('myProcessVarCode1'));
+		
+		$this->assertTrue($this->variableService->deleteProcessVariable('myProcessVarCode1'));
 	}
 	
 	
@@ -240,7 +242,7 @@ class ProcessAuthoringServiceTestCase extends UnitTestCase {
 	public function testCreateServiceDefinition(){
 	
 		$myProcessVar1 = null;
-		$myProcessVar1 = $this->authoringService->getProcessVariable('myProcessVarCode1', true);
+		$myProcessVar1 = $this->variableService->getProcessVariable('myProcessVarCode1', true);
 				
 		$inputParameters = array(
 			'param1' => $myProcessVar1,
@@ -292,8 +294,8 @@ class ProcessAuthoringServiceTestCase extends UnitTestCase {
 		}
 		
 		$this->assertTrue($this->authoringService->deleteServiceDefinition($serviceUrl));
-		$this->assertTrue($this->authoringService->deleteProcessVariable('myProcessVarCode1'));
-		$this->assertTrue($this->authoringService->deleteProcessVariable('myProcessVarCode2'));
+		$this->assertTrue($this->variableService->deleteProcessVariable('myProcessVarCode1'));
+		$this->assertTrue($this->variableService->deleteProcessVariable('myProcessVarCode2'));
 	}
 	
 	public function tearDown() {
