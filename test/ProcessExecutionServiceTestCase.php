@@ -336,6 +336,7 @@ class ProcessExecutionServiceTestCase extends UnitTestCase{
 		$t_start = microtime(true);
 		
 		//init services
+		$processVariableService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_VariableService');
 		$authoringService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessAuthoringService');
 		$activityExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityExecutionService');
 		$activityExecutionService->cache = (bool) self::SERVICE_CACHE;
@@ -369,14 +370,19 @@ class ProcessExecutionServiceTestCase extends UnitTestCase{
 		$connector2 = null;
 		$connector2 = $authoringService->createConnector($parallelActivity2);
 		$this->assertNotNull($connector2);
-
-		$parallelCount1 = 2;
-		$parallelCount2 = 3;
+		
+		//define parallel activities, first branch with constant cardinality value, while the second listens to a process variable:
+		$parallelCount1 = 3;
+		$parallelCount2 = 5;
+		$parallelCount2_processVar_key = 'unit_var_'.time();
+		$parallelCount2_processVar = $processVariableService->createProcessVariable('Proc Var for unit test', $parallelCount2_processVar_key);
 		$prallelActivitiesArray = array(
 			$parallelActivity1->uriResource => $parallelCount1,
-			$parallelActivity2->uriResource => $parallelCount2
+			$parallelActivity2->uriResource => $parallelCount2_processVar
 		);
 		$result = $authoringService->setParallelActivities($connector0, $prallelActivitiesArray);
+		$prallelActivitiesArray[$parallelActivity2->uriResource] = $parallelCount2;
+		
 		$this->assertFalse($result);
 
 		$joinActivity = $authoringService->createActivity($processDefinition, 'activity3');
@@ -424,7 +430,11 @@ class ProcessExecutionServiceTestCase extends UnitTestCase{
 			//init execution
 			$activityExecution = $this->service->initCurrentActivityExecution($processInstance, $activity, $this->currentUser);
 			$this->assertNotNull($activityExecution);
-
+			if($i == 1){
+				//set value of the parallel thread:
+				$processVariableService->push($parallelCount2_processVar_key, $parallelCount2);
+			}
+			
 			$activityExecStatus = $activityExecutionService->getStatus($activityExecution);
 			$this->assertNotNull($activityExecStatus);
 			$this->assertEqual($activityExecStatus->uriResource, INSTANCE_PROCESSSTATUS_STARTED);
@@ -607,7 +617,8 @@ class ProcessExecutionServiceTestCase extends UnitTestCase{
 
 		//delete processdef:
 		$this->assertTrue($authoringService->deleteProcess($processDefinition));
-
+		$parallelCount2_processVar->delete();
+		
 		//delete created users:
 		foreach($createdUsers as $createdUser){
 			$this->out('deleting '.$createdUser->getLabel().' "'.$createdUser->uriResource.'"');

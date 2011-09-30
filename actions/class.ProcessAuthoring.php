@@ -530,8 +530,8 @@ class wfEngine_actions_ProcessAuthoring extends tao_actions_TaoModule {
 		$clazz = $this->getCurrentClass();
 		//case when a process variable has been just added:
 		if($clazz->uriResource == CLASS_PROCESSVARIABLES){
-			//
-			$instance =  $this->service->createProcessVariable();
+			$processVariableService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_VariableService');
+			$instance =  $processVariableService->createProcessVariable();
 			
 		}else{
 			$instance = $this->service->createInstance($clazz);

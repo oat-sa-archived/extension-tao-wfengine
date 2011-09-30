@@ -92,10 +92,19 @@ class wfEngine_models_classes_ActivityCardinalityService
         $returnValue = null;
 
         // section 127-0-1-1-6eb1148b:132b4a0f8d0:-8000:0000000000003052 begin
-		$cardinality = intval($cardinality);
-		$returnValue = $this->classMultiplicity->createInstance();//empty label please, for perf optimization
-		$returnValue->setPropertyValue($this->propMultiplicityActivity, $activity);
-		$returnValue->setPropertyValue($this->propMultiplicityCardinality, $cardinality);
+		$cardinalityValue = null;
+		if(is_numeric($cardinality)){
+			$cardinalityValue = intval($cardinality);
+		}else if($cardinality instanceof core_kernel_classes_Resource){
+			$cardinalityValue = $cardinality;
+		}
+		
+		if(!is_null($cardinalityValue)){
+			$returnValue = $this->classMultiplicity->createInstance(); //empty label please, for perf optimization
+			$returnValue->setPropertyValue($this->propMultiplicityActivity, $activity);
+			$returnValue->setPropertyValue($this->propMultiplicityCardinality, $cardinality);
+		}
+		
         // section 127-0-1-1-6eb1148b:132b4a0f8d0:-8000:0000000000003052 end
 
         return $returnValue;
@@ -146,7 +155,13 @@ class wfEngine_models_classes_ActivityCardinalityService
 					$returnValue = $cardinality;
 				}else{
 					//we want to retrieve the value in the context of execution
-					$returnValue = intval($activityExecution->getOnePropertyValue($cardinality));
+					$cardinalityValue = $activityExecution->getOnePropertyValue(new core_kernel_classes_Property($cardinality->uriResource));
+					if($cardinalityValue instanceof core_kernel_classes_Literal){
+						$returnValue = intval((string)$cardinalityValue);
+					}else{
+						$returnValue = 0;
+						throw new wfEngine_models_classes_ProcessExecutionException('cardinality must be of a numeric type in a process variable');
+					}
 				}
 			}else{
 				throw new wfEngine_models_classes_ProcessDefinitonException('cardinality must be a process variable of an integer');

@@ -171,7 +171,6 @@ class wfEngine_actions_ProcessBrowser extends wfEngine_actions_WfModule{
 			
 			$browserViewData['activityExecutionUri']= $activityExecution->uriResource;
 			$browserViewData['activityExecutionNonce']= $this->activityExecutionService->getNonce($activityExecution);
-			Session::setAttribute('activityExecutionUri', $activityExecution->uriResource);//for variable service only?
 			
 			//get interactive services (call of services):
 			$activityDefinition = $this->activityExecutionService->getExecutionOf($activityExecution);

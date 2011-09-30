@@ -22,6 +22,13 @@ if (0 > version_compare(PHP_VERSION, '5')) {
  */
 require_once('tao/models/classes/class.GenerisService.php');
 
+/**
+ * include tao_models_classes_ServiceCacheInterface
+ *
+ * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+ */
+require_once('tao/models/classes/interface.ServiceCacheInterface.php');
+
 /* user defined includes */
 // section 127-0-1-1--7eb5a1dd:13214d5811e:-8000:0000000000002E82-includes begin
 // section 127-0-1-1--7eb5a1dd:13214d5811e:-8000:0000000000002E82-includes end
@@ -40,6 +47,7 @@ require_once('tao/models/classes/class.GenerisService.php');
  */
 class wfEngine_models_classes_ActivityService
     extends tao_models_classes_GenerisService
+        implements tao_models_classes_ServiceCacheInterface
 {
     // --- ASSOCIATIONS ---
 
@@ -47,6 +55,64 @@ class wfEngine_models_classes_ActivityService
     // --- ATTRIBUTES ---
 
     // --- OPERATIONS ---
+
+    /**
+     * Short description of method setCache
+     *
+     * @access public
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @param  string methodName
+     * @param  array args
+     * @param  array value
+     * @return boolean
+     */
+    public function setCache($methodName, $args, $value)
+    {
+        $returnValue = (bool) false;
+
+        // section 127-0-1-1-3a6b44f1:1326d50ba09:-8000:00000000000065CB begin
+        // section 127-0-1-1-3a6b44f1:1326d50ba09:-8000:00000000000065CB end
+
+        return (bool) $returnValue;
+    }
+
+    /**
+     * Short description of method getCache
+     *
+     * @access public
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @param  string methodName
+     * @param  array args
+     * @return mixed
+     */
+    public function getCache($methodName, $args = array())
+    {
+        $returnValue = null;
+
+        // section 127-0-1-1-3a6b44f1:1326d50ba09:-8000:00000000000065D0 begin
+        // section 127-0-1-1-3a6b44f1:1326d50ba09:-8000:00000000000065D0 end
+
+        return $returnValue;
+    }
+
+    /**
+     * Short description of method clearCache
+     *
+     * @access public
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @param  string methodName
+     * @param  array args
+     * @return boolean
+     */
+    public function clearCache($methodName = '', $args = array())
+    {
+        $returnValue = (bool) false;
+
+        // section 127-0-1-1-3a6b44f1:1326d50ba09:-8000:00000000000065D4 begin
+        // section 127-0-1-1-3a6b44f1:1326d50ba09:-8000:00000000000065D4 end
+
+        return (bool) $returnValue;
+    }
 
     /**
      * indicate if the activity need back and forth controls

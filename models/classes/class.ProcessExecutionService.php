@@ -1400,9 +1400,13 @@ class wfEngine_models_classes_ProcessExecutionService
 			}
         }
 		
+		//set in the session the current activity uri
+		if(!is_null($returnValue)){
+			Session::setAttribute("activityExecutionUri", $returnValue->uriResource);//for variable service only?
+		}
+		
 		//if the returnValue is empty here, it means that there is no more activity execution available for that user...
-		
-		
+	
         // section 127-0-1-1--6e0edde7:13247ef74e0:-8000:0000000000002FD5 end
 
         return $returnValue;

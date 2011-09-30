@@ -9,7 +9,7 @@ error_reporting(E_ALL);
  *
  * This file is part of TAO.
  *
- * Automatically generated on 02.09.2011, 12:10:39 with ArgoUML PHP module 
+ * Automatically generated on 30.09.2011, 15:33:12 with ArgoUML PHP module 
  * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
  *
  * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
@@ -490,54 +490,6 @@ class wfEngine_models_classes_ProcessAuthoringService
 		}
 		
         // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004D9E end
-
-        return $returnValue;
-    }
-
-    /**
-     * Short description of method createProcessVariable
-     *
-     * @access public
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
-     * @param  string label
-     * @param  string code
-     * @return core_kernel_classes_Resource
-     */
-    public function createProcessVariable($label = '', $code = '')
-    {
-        $returnValue = null;
-
-        // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004DAC begin
-		
-		if(!empty($code) && $this->getProcessVariable($code)){
-			throw new Exception("A process variable with the code '{$code}' already exists");
-		}
-		
-		$classCode = new core_kernel_classes_Class(CLASS_PROCESSVARIABLES);
-		if(empty($label)){
-			$label = "Process variable";
-            if(!empty($code)){
-				$label .= " ".$code;
-			}
-		}
-		$returnValue = $this->createInstance($classCode, $label);
-		
-		if(!empty($code)){
-			$returnValue->setPropertyValue(new core_kernel_classes_Property(PROPERTY_PROCESSVARIABLES_CODE), $code);
-		}
-		
-		//set the new instance of process variable as a property of the class process instance:
-		$ok = $returnValue->setType(new core_kernel_classes_Class(RDF_PROPERTY));
-		if($ok){
-			$newTokenProperty = new core_kernel_classes_Property($returnValue->uriResource);
-			$newTokenProperty->setDomain(new core_kernel_classes_Class(CLASS_TOKEN));
-			$newTokenProperty->setRange(new core_kernel_classes_Class(RDFS_LITERAL));//literal only!
-			$newTokenProperty->setPropertyValue(new core_kernel_classes_Property(PROPERTY_MULTIPLE), GENERIS_TRUE);
-		}else{
-			throw new Exception("the newly created process variable {$label} ({$returnValue->uriResource}) cannot be set as a property of the class Token");
-		}
-		
-        // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004DAC end
 
         return $returnValue;
     }
