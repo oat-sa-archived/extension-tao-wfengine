@@ -369,6 +369,13 @@ class wfEngine_models_classes_ActivityService
 			$interactiveServiceService->deleteInteractiveService($service);
 		}
 		
+		//delete referenced actiivty cardinality resources:
+		$activityCardinalityClass = new core_kernel_classes_Class(CLASS_ACTIVITYCARDINALITY);
+		$cardinalities = $activityCardinalityClass->searchInstances(array(PROPERTY_ACTIVITYCARDINALITY_ACTIVITY => $activity->uriResource), array('like'=>false));
+		foreach($cardinalities as $cardinality) {
+			$cardinality->delete(true);
+		}
+		
 		//delete activity itself:
 		$returnValue = $activity->delete(true);
 		
