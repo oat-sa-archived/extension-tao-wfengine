@@ -231,12 +231,14 @@ class ProcessAuthoringServiceTestCase extends UnitTestCase {
 		);
 		
 		$this->assertTrue($this->authoringService->setParallelActivities($connectorB, $newActivitiesArray));
-		
+		$nextActivitiesCollection = $connectorB->getPropertyValuesCollection(new core_kernel_classes_Property(PROPERTY_CONNECTORS_NEXTACTIVITIES));
+		$this->assertEqual($nextActivitiesCollection->count(), 2);
+
 		//merge all activity D instance to F:
 		$this->authoringService->createJoinActivity($connectorD, $activityF, '', $activityD);
 		$previousActivitiesCollection = $connectorD->getPropertyValuesCollection(new core_kernel_classes_Property(PROPERTY_CONNECTORS_PREVIOUSACTIVITIES));
 		
-		$this->assertEqual($previousActivitiesCollection->count(), 3);
+		$this->assertEqual($previousActivitiesCollection->count(), 2);//2 cardinality resources
 	}
 	
 	public function testCreateServiceDefinition(){

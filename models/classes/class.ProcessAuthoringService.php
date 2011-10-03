@@ -398,12 +398,15 @@ class wfEngine_models_classes_ProcessAuthoringService
 		$this->setConnectorType($connectorInstance, new core_kernel_classes_Resource(INSTANCE_TYPEOFCONNECTORS_JOIN));
 		
 		$propNextActivity = new core_kernel_classes_Property(PROPERTY_CONNECTORS_NEXTACTIVITIES);
+		$propPreviousActivities = new core_kernel_classes_Property(PROPERTY_CONNECTORS_PREVIOUSACTIVITIES);
+		
 		if(is_null($previousActivity)){
 			throw new wfEngine_models_classes_ProcessDefinitonException('no previous activity found to be connected to the next activity');
 		}
 		
 		if(is_null($followingActivity)){
 			$followingActivity = $this->createActivityFromConnector($connectorInstance, $newActivityLabel);
+			$connectorInstance->removePropertyValues($propPreviousActivities);
 		}else{
 			//search if a join connector already leads to the following activity:
 			$connectorClass = new core_kernel_classes_Class(CLASS_CONNECTORS);
@@ -463,10 +466,10 @@ class wfEngine_models_classes_ProcessAuthoringService
 			if($multiplicity){
 				
 				$oldPreviousActivityCardinality = null;
-				$propConnectorsPreviousActivities = new core_kernel_classes_Property(PROPERTY_CONNECTORS_PREVIOUSACTIVITIES);
+				
 				
 				//update the cardinality of the corresponding previous activity if exists
-				$prevActivitiesCollection = $connectorInstance->getPropertyValuesCollection($propConnectorsPreviousActivities);
+				$prevActivitiesCollection = $connectorInstance->getPropertyValuesCollection($propPreviousActivities);
 				foreach($prevActivitiesCollection->getIterator() as $cardinality){
 					if($cardinalityService->isCardinality($cardinality)){
 						if($cardinalityService->getActivity($cardinality)->uriResource == $previousActivity->uriResource){
@@ -476,11 +479,12 @@ class wfEngine_models_classes_ProcessAuthoringService
 						}
 					}
 				}
+				//something wrong in here!!! CHECK if the previous activity is well removed.
 				
 				//if it does not exists, create a new cardinality resource and assign it to the join connector:
 				if(is_null($oldPreviousActivityCardinality)){
 					$cardinality = $cardinalityService->createCardinality($previousActivity, $multiplicity);
-					$connectorInstance->setPropertyValue($propConnectorsPreviousActivities, $cardinality);
+					$connectorInstance->setPropertyValue($propPreviousActivities, $cardinality);
 				}
 			}else{
 				throw new wfEngine_models_classes_ProcessDefinitonException('unexpected null multiplicity in join connector');

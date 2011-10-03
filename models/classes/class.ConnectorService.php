@@ -281,13 +281,18 @@ class wfEngine_models_classes_ConnectorService
 			$activity = null;
 			
 			if($cardinalityService->isCardinality($nextActivity)){
+				try{
 				$activity = $cardinalityService->getActivity($nextActivity);
+				}catch(Exception $e){
+					//the actiivty could be null if the reference have been removed...
+				}
+				
 				$nextActivity->delete();//delete the cardinality resource
 			}else{
 				$activity = $nextActivity;
 			}
 			
-			if($this->isConnector($activity)){
+			if(!is_null($activity) && $this->isConnector($activity)){
 				$nextActivityRef = $activity->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_ACTIVITYREFERENCE))->uriResource;
 				if($nextActivityRef == $activityRef){
 					$this->deleteConnector($activity);//delete following connectors only if they have the same activity reference

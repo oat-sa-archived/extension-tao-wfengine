@@ -369,7 +369,8 @@ class ConnectorServiceTestCase extends UnitTestCase {
         $this->authoringService->setParallelActivities($connector2, $newActivitiesArray);
         $activity6 = $this->authoringService->createJoinActivity($connector3, null, '', $activity4);
 		$activity7 = $this->authoringService->createJoinActivity($connector4, $activity6, '', $activity5);
-        
+        $this->assertEqual(count($this->service->getNextActivities($connector2)), 2);
+		
         $activity3PrevActi = $this->service->getPreviousActivities($connector2);
 
          $this->assertIsA($activity3PrevActi,'array');
@@ -379,7 +380,6 @@ class ConnectorServiceTestCase extends UnitTestCase {
         }
         
         $activity4PrevActi = $this->service->getPreviousActivities($connector3);
-		var_dump($activity4PrevActi, $newActivitiesArray);
         $this->assertIsA($activity4PrevActi,'array');
         $this->assertEqual(sizeof($activity4PrevActi), 2);
         $cardinalityService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityCardinalityService');
