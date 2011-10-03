@@ -8,6 +8,9 @@
 		<style media="screen">
 			@import url(<?echo BASE_WWW; ?>/css/login.css);
 		</style>
+		
+		<script type="text/javascript" src="<?=BASE_WWW?>js/jquery-1.4.2.min.js"></script>
+		<script type="text/javascript" src="<?=BASE_WWW ?>js/login.js"></script>
 	</head>
 	
 	<body>
