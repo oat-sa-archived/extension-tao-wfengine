@@ -384,6 +384,25 @@ class wfEngine_models_classes_VariableService
         return (bool) $returnValue;
     }
 
+    /**
+     * Short description of method isProcessVariable
+     *
+     * @access public
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @param  Resource variable
+     * @return boolean
+     */
+    public function isProcessVariable( core_kernel_classes_Resource $variable)
+    {
+        $returnValue = (bool) false;
+
+        // section 127-0-1-1--1b682bf3:132cdc3fef4:-8000:0000000000003096 begin
+		$returnValue = $variable->hasType(new core_kernel_classes_Class(CLASS_PROCESSVARIABLES));
+        // section 127-0-1-1--1b682bf3:132cdc3fef4:-8000:0000000000003096 end
+
+        return (bool) $returnValue;
+    }
+
 } /* end of class wfEngine_models_classes_VariableService */
 
 ?>

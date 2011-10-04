@@ -127,12 +127,12 @@ $todefine = array(
 	'PROPERTY_ACTIVITY_EXECUTION_TIME_CREATED'		=> NS_WFENGINE . '#PropertyActivityExecutionsTimeCreated',
 	'PROPERTY_ACTIVITY_EXECUTION_TIME_STARTED'		=> NS_WFENGINE . '#PropertyActivityExecutionsTimeStarted',
 	'PROPERTY_ACTIVITY_EXECUTION_NONCE'				=> NS_WFENGINE . '#PropertyActivityExecutionsNonce',
+	'PROPERTY_ACTIVITY_EXECUTION_ACL_MODE'			=> NS_WFENGINE . '#PropertyActivityExecutionsAccessControlMode',
 	'PROPERTY_ACTIVITY_EXECUTION_RESTRICTED_USER'	=> NS_WFENGINE . '#PropertyActivityExecutionsRestrictedUser',
 	'PROPERTY_ACTIVITY_EXECUTION_RESTRICTED_ROLE'	=> NS_WFENGINE . '#PropertyActivityExecutionsRestrictedRole',
-	'PROPERTY_ACTIVITY_EXECUTION_ACL_MODE'			=> NS_WFENGINE . '#PropertyActivityExecutionsAccessControlMode',
 	
 	'CLASS_ACL_MODES'								=> NS_WFENGINE . '#ClassAccessControlModes',
-	'INSTANCE_ACL_ROLE'								=> NS_WFENGINE . '#PropertyAccessControlModesRole',
+	'INSTANCE_ACL_ROLE'								=> NS_WFENGINE . '#PropertyAccessControlModesRole',//to be renamed to InstanceAccessControlModes...
 	'INSTANCE_ACL_ROLE_RESTRICTED_USER'				=> NS_WFENGINE . '#PropertyAccessControlModesRoleRestrictedUser',
 	'INSTANCE_ACL_USER'								=> NS_WFENGINE . '#PropertyAccessControlModesUser',
 	'INSTANCE_ACL_ROLE_RESTRICTED_USER_INHERITED'	=> NS_WFENGINE . '#PropertyAccessControlModesRoleRestrictedUserInherited',

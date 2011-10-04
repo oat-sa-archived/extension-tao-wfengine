@@ -852,6 +852,8 @@ class wfEngine_models_classes_ProcessExecutionService
 		}
 		
 		// The actual transition starts here:
+		$newActivityExecutions = array();
+		
 		if(!is_null($nextConnector)){
 			
 			//trigger the forward transition:
@@ -864,17 +866,16 @@ class wfEngine_models_classes_ProcessExecutionService
 		
 		//transition done from here: now get the following activities:
 		
-		$currentActivities = $newActivities;
 		//if the connector is not a parallel one, let the user continue in his current branch and prevent the pause:
 		$uniqueNextActivity = null;
 		if(!is_null($nextConnector)){
 			if($connectorService->getType($nextConnector)->uriResource != INSTANCE_TYPEOFCONNECTORS_PARALLEL){
 				
-				if(count($newActivities)==1){
+				if(count($newActivityExecutions)==1){
 					//TODO: could do a double check here: if($newActivities[0] is one of the activty found in the current tokens):
 					
-					if($this->activityExecutionService->checkAcl($newActivities[0], $currentUser, $processExecution)){
-						$uniqueNextActivity = $newActivities[0];//the Activity Object
+					if($this->activityExecutionService->checkAcl(reset($newActivityExecutions), $currentUser, $processExecution)){
+						$uniqueNextActivity = $this->activityExecutionService->getExecutionOf(reset($newActivityExecutions));
 					}
 				}
 			}
@@ -894,9 +895,10 @@ class wfEngine_models_classes_ProcessExecutionService
 			$setPause = false;
 		}else{
 			
-			foreach ($currentActivities as $activityAfterTransition){
+			foreach ($newActivityExecutions as $activityExecutionAfterTransition){
 				//check if the current user is allowed to execute the activity
-				if($this->activityExecutionService->checkAcl($activityAfterTransition, $currentUser, $processExecution)){
+				if($this->activityExecutionService->checkAcl($activityExecutionAfterTransition, $currentUser, $processExecution)){
+					$activityAfterTransition = $this->activityExecutionService->getExecutionOf($activityExecutionAfterTransition);
 					$authorizedActivityDefinitions[$activityAfterTransition->uriResource] = $activityAfterTransition;
 					$setPause = false;
 				}
@@ -1615,6 +1617,26 @@ class wfEngine_models_classes_ProcessExecutionService
 		}
 		
         // section 127-0-1-1-6eb1148b:132b4a0f8d0:-8000:000000000000306D end
+
+        return (array) $returnValue;
+    }
+
+    /**
+     * Short description of method getAvailableCurrentActivityExecutions
+     *
+     * @access public
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @param  Resource processExecution
+     * @param  Resource currentUser
+     * @param  boolean checkACL
+     * @return array
+     */
+    public function getAvailableCurrentActivityExecutions( core_kernel_classes_Resource $processExecution,  core_kernel_classes_Resource $currentUser, $checkACL = false)
+    {
+        $returnValue = array();
+
+        // section 127-0-1-1--1b682bf3:132cdc3fef4:-8000:000000000000307A begin
+        // section 127-0-1-1--1b682bf3:132cdc3fef4:-8000:000000000000307A end
 
         return (array) $returnValue;
     }

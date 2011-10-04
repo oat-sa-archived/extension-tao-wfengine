@@ -156,7 +156,7 @@ class wfEngine_actions_ProcessBrowser extends wfEngine_actions_WfModule{
 				if(count($currentlyAvailableActivityDefinitions) == 1){
 					$activityExecution = $this->processExecutionService->initCurrentActivityExecution($this->processExecution, array_pop($currentlyAvailableActivityDefinitions), $currentUser);
 					if(is_null($activityExecution)){
-						throw new wfEngine_models_classes_ProcessExecutionException('cannot initiate the actiivty execution of the unique next activity definition');
+						throw new wfEngine_models_classes_ProcessExecutionException('cannot initiate the activity execution of the unique next activity definition');
 					}
 				}else{
 					//count > 1:
