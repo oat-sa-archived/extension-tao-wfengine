@@ -1381,13 +1381,15 @@ class wfEngine_models_classes_ProcessExecutionService
 			
 			if(empty($activityExecutions)){
 				//not found, so retrieve *available* ones and assign it to the user:
-				$activityExecutionsByActivity = $this->getCurrentActivityExecutions($processExecution, $activityDefinition, '');
+				$activityExecutionsByActivity = $this->getCurrentActivityExecutions($processExecution, $activityDefinition);
 				foreach($activityExecutionsByActivity as $activityExec){
-					//if user empty, bind execution to current 
-					if($this->activityExecutionService->setActivityExecutionUser($activityExec, $user)){
-						$returnValue = $activityExec;
-						$this->activityExecutionService->setStatus($activityExec, 'started');//or "resumed"?
-						break;
+					//check access permission:
+					if($this->activityExecutionService->checkAcl($activityExec, $user, $processExecution)){
+						if ($this->activityExecutionService->setActivityExecutionUser($activityExec, $user, true)){
+							$returnValue = $activityExec;
+							$this->activityExecutionService->setStatus($activityExec, 'started'); //or "resumed"?
+							break;
+						}
 					}
 				}
 			}else if(count($activityExecutions) == 1){

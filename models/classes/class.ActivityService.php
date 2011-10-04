@@ -384,6 +384,86 @@ class wfEngine_models_classes_ActivityService
         return (bool) $returnValue;
     }
 
+    /**
+     * Short description of method setAcl
+     *
+     * @access public
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @param  Resource activity
+     * @param  Resource mode
+     * @param  Resource target
+     * @return boolean
+     */
+    public function setAcl( core_kernel_classes_Resource $activity,  core_kernel_classes_Resource $mode,  core_kernel_classes_Resource $target = null)
+    {
+        $returnValue = (bool) false;
+
+        // section 127-0-1-1--1b682bf3:132cdc3fef4:-8000:000000000000309D begin
+		
+		//check the kind of resources
+        if($this->getClass($activity)->uriResource != CLASS_ACTIVITIES){
+        	throw new Exception("Activity must be an instance of the class Activities");
+        }
+        if(!in_array($mode->uriResource, array_keys($this->getAclModes()))){
+        	throw new Exception("Unknow acl mode");
+        }
+        
+        //set the ACL mode
+        $properties = array(
+        	PROPERTY_ACTIVITIES_ACL_MODE => $mode->uriResource
+        );
+        
+        switch($mode->uriResource){
+        	case INSTANCE_ACL_ROLE:
+        	case INSTANCE_ACL_ROLE_RESTRICTED_USER:
+        	case INSTANCE_ACL_ROLE_RESTRICTED_USER_INHERITED:
+			case INSTANCE_ACL_ROLE_RESTRICTED_USER_DELIVERY:{
+        		if(is_null($target)){
+        			throw new Exception("Target must reference a role resource");
+        		}
+        		$properties[PROPERTY_ACTIVITIES_RESTRICTED_ROLE] = $target->uriResource;
+        		break;
+        	}	
+        	case INSTANCE_ACL_USER:{
+        		if(is_null($target)){
+        			throw new Exception("Target must reference a user resource");
+        		}
+        		$properties[PROPERTY_ACTIVITIES_RESTRICTED_USER] = $target->uriResource;
+        		break;
+			}
+        }
+        
+        //bind the mode and the target (user or role) to the activity
+        $returnValue = $this->bindProperties($activity, $properties);
+		
+        // section 127-0-1-1--1b682bf3:132cdc3fef4:-8000:000000000000309D end
+
+        return (bool) $returnValue;
+    }
+
+    /**
+     * Short description of method getAclModes
+     *
+     * @access public
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @return array
+     */
+    public function getAclModes()
+    {
+        $returnValue = array();
+
+        // section 127-0-1-1--1b682bf3:132cdc3fef4:-8000:00000000000030A2 begin
+		
+		$aclModeClass = new core_kernel_classes_Class(CLASS_ACL_MODES);
+        foreach($aclModeClass->getInstances() as $mode){
+        	$returnValue[$mode->uriResource] = $mode;
+        }
+		
+        // section 127-0-1-1--1b682bf3:132cdc3fef4:-8000:00000000000030A2 end
+
+        return (array) $returnValue;
+    }
+
 } /* end of class wfEngine_models_classes_ActivityService */
 
 ?>

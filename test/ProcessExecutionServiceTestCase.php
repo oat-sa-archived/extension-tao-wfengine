@@ -112,7 +112,7 @@ class ProcessExecutionServiceTestCase extends UnitTestCase{
 	}
 	
 	/**
-	 * Test the tokens into a sequancial process
+	 * Test the sequential process execution:
 	 */
 	public function testVirtualSequencialProcess(){
 		
@@ -423,13 +423,14 @@ class ProcessExecutionServiceTestCase extends UnitTestCase{
 					}
 				}
 			}else if($countActivities == 1){
-				$activity = array_shift($activities);
+				$activity = reset($activities);
 			}else{
 				$this->fail('no current activity definition found for the iteration '.$i);
 			}
 
-			$this->out("<strong> Iteration {$i}: {$activity->getLabel()}</strong> (among {$countActivities})", true);
-
+			$this->out("<strong> Iteration {$i} :</strong>", true);
+			$this->out("<strong>{$activity->getLabel()}</strong> (among {$countActivities})");
+			
 			//init execution
 			$activityExecution = $this->service->initCurrentActivityExecution($processInstance, $activity, $this->currentUser);
 			$this->assertNotNull($activityExecution);

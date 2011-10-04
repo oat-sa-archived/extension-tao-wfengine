@@ -289,7 +289,7 @@ class wfEngine_models_classes_ActivityExecutionService
         $returnValue = array();
 
         // section 127-0-1-1--10e47d9e:128d54bbb0d:-8000:0000000000001F6B begin
-
+		//deprecated, use activityService instead
         $aclModeClass = new core_kernel_classes_Class(CLASS_ACL_MODES);
         foreach($aclModeClass->getInstances() as $mode){
         	$returnValue[$mode->uriResource] = $mode;
@@ -315,7 +315,7 @@ class wfEngine_models_classes_ActivityExecutionService
         $returnValue = null;
 
         // section 127-0-1-1--10e47d9e:128d54bbb0d:-8000:0000000000001F5D begin
-        
+        //deprecated, use actiivytService instead:
         //check the kind of resources
         if($this->getClass($activity)->uriResource != CLASS_ACTIVITIES){
         	throw new Exception("Activity must be an instance of the class Activities");
@@ -474,6 +474,7 @@ class wfEngine_models_classes_ActivityExecutionService
         			case INSTANCE_ACL_ROLE:{
         				$activityRole 	= $this->getRestrictedRole($activityExecution);
         				$userRoles 		= $currentUser->getType();
+//						var_dump($activityRole->uriResource, $userRoles);
 						if(!is_null($activityRole) && is_array($userRoles)){
 							foreach($userRoles as $userRole){
 								if($activityRole->uriResource == $userRole->uriResource){
@@ -536,10 +537,13 @@ class wfEngine_models_classes_ActivityExecutionService
 									if(count($pastActivityExecutions)){
 										foreach($pastActivityExecutions as $pastActivityExecution) {
 											$pastUser = $this->getActivityExecutionUser($pastActivityExecution);
-											if(!is_null($pastUser) && $pastUser->uriResource == $currentUser->uriResouce){
-												$returnValue = true;
-												break;
+											if(is_null($pastUser)){
+												$returnValue = true;//free activity execution
+											}else if(!is_null($pastUser) && $pastUser->uriResource == $currentUser->uriResource){
+												$returnValue = true;//user's activity execution
 											}
+											//all other cases, no valid
+											break;
 										}
 									}else{
 										$returnValue = true;
@@ -1518,14 +1522,14 @@ class wfEngine_models_classes_ActivityExecutionService
     }
 
     /**
-     * Short description of method getAclModel
+     * Short description of method getAclMode
      *
      * @access public
      * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @param  Resource activityExecution
      * @return core_kernel_classes_Resource
      */
-    public function getAclModel( core_kernel_classes_Resource $activityExecution)
+    public function getAclMode( core_kernel_classes_Resource $activityExecution)
     {
         $returnValue = null;
 
@@ -1567,7 +1571,7 @@ class wfEngine_models_classes_ActivityExecutionService
 					$role = $activityDefinition->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_ACTIVITIES_RESTRICTED_ROLE));
 					if(!is_null($role)){
 						$activityExecution->setPropertyValue($this->ACLModeProperty, $ACLmode);
-						$returnValue = $activityExecution->setPropertyValue($this->restrictedRoleProperty, $user);
+						$returnValue = $activityExecution->setPropertyValue($this->restrictedRoleProperty, $role);
 					}
 					break;
 				}
