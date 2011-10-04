@@ -59,6 +59,7 @@ class wfEngine_actions_Main extends wfEngine_actions_WfModule
 					$isAllowed = false;
 					$userActivityExecutions = array();
 					$availableCurrentActivities = $processExecutionService->getAvailableCurrentActivityDefinitions($processExecution, $currentUser);
+					$availableActivityExecutions = array();
 					foreach ($availableCurrentActivities as $uri => $currentActivity){
 
 						$isAllowed = $activityExecutionService->checkAcl($currentActivity, $currentUser, $processExecution);

@@ -1502,7 +1502,7 @@ class wfEngine_models_classes_ProcessAuthoringService
 			
 			//set multiplicity to the parallel connector:
 			$multiplicity = $cardinalityService->createCardinality($activity, $count);
-			$connectorInstance->setPropertyValue($propNextActivities, $multiplicity);
+			$returnValue = $connectorInstance->setPropertyValue($propNextActivities, $multiplicity);
 			
 			//set multiplicity to the merge connector:
 			$previousActvityUri = '';

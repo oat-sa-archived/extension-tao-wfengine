@@ -921,14 +921,18 @@ class wfEngine_actions_ProcessAuthoring extends tao_actions_TaoModule {
 						//if the current type is still 'join' && target activity has changed || type of connector has changed:
 						if($oldNextActivity->uriResource != $data["join_activityUri"] || $data[PROPERTY_CONNECTORS_TYPE]!= INSTANCE_TYPEOFCONNECTORS_JOIN){
 							
+							$cardinalityService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityCardinalityService');
+							
 							//check if another activities is joined with the same connector:
 							$previousActivityCollection = $connectorInstance->getPropertyValuesCollection(new core_kernel_classes_Property(PROPERTY_CONNECTORS_PREVIOUSACTIVITIES)); 
 							$anotherPreviousActivity = null;
+							$thisCardinalityResource = null;
 							foreach($previousActivityCollection->getIterator() as $previousActivity){
-								if($previousActivity instanceof core_kernel_classes_Resource){
-									if($previousActivity->uriResource != $activity->uriResource){
+								if($cardinalityService->isCardinality($previousActivity)){
+									if($cardinalityService->getActivity($previousActivity) != $activity->uriResource){
 										$anotherPreviousActivity = $previousActivity;
-										break;
+									}else{
+										$thisCardinalityResource = $previousActivity;
 									}
 								}
 							}
@@ -937,12 +941,13 @@ class wfEngine_actions_ProcessAuthoring extends tao_actions_TaoModule {
 								// echo ' creating new connector for it ';
 								//there is another activity, so:
 								//remove reference of that activity from previous connector, and update its activity reference to the one of the other previous activity, update the 'old' join connector
-								$connectorInstance->removePropertyValues(new core_kernel_classes_Property(PROPERTY_CONNECTORS_PREVIOUSACTIVITIES), $activity->uriResource);
-								$connectorInstance->editPropertyValues(new core_kernel_classes_Property(PROPERTY_CONNECTORS_ACTIVITYREFERENCE), $anotherPreviousActivity->uriResource);
+								
+								$connectorInstance->removePropertyValues(new core_kernel_classes_Property(PROPERTY_CONNECTORS_PREVIOUSACTIVITIES), $thisCardinalityResource);
+								$connectorInstance->editPropertyValues(new core_kernel_classes_Property(PROPERTY_CONNECTORS_ACTIVITYREFERENCE), $anotherPreviousActivity);
 							
 								//since it used to share the connector with other previous activities, now that it needs a new connector of its own, create one here:
 								//create a new connector for the current previous activity: 
-								$newConnectorInstance = $this->service->createConnector($activity, 'merge to ');
+								$newConnectorInstance = $this->service->createConnector($thisCardinalityResource, 'merge to ');
 								$connectorInstance = $newConnectorInstance;
 							}else{
 								//the activity is the first activity that is joined via this connector so just let it be edited whilst removing its property value
@@ -951,7 +956,7 @@ class wfEngine_actions_ProcessAuthoring extends tao_actions_TaoModule {
 								
 								//and edit prec activity number to 1:
 								$connectorInstance->setLabel($activity->getLabel().'_c');
-								$connectorInstance->editPropertyValues(new core_kernel_classes_Property(PROPERTY_CONNECTORS_PREVIOUSACTIVITIES), $activity->uriResource);
+								$connectorInstance->editPropertyValues(new core_kernel_classes_Property(PROPERTY_CONNECTORS_PREVIOUSACTIVITIES), $thisCardinalityResource);
 							}
 							
 						}
