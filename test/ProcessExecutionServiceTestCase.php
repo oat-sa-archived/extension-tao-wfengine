@@ -60,9 +60,10 @@ class ProcessExecutionServiceTestCase extends UnitTestCase{
 			PROPERTY_USER_DEFLG		=>	'EN'
 		);
 		
+		$this->testUserRole = new core_kernel_classes_Resource(CLASS_ROLE_WORKFLOWUSERROLE);
 		$this->currentUser = $this->userService->getOneUser($login);
 		if(is_null($this->currentUser)){
-			$this->userService->saveUser($this->currentUser, $userData, new core_kernel_classes_Resource(CLASS_ROLE_WORKFLOWUSERROLE));
+			$this->userService->saveUser($this->currentUser, $userData, $this->testUserRole);
 		}
 		
 		core_kernel_users_Service::logout();
@@ -336,6 +337,7 @@ class ProcessExecutionServiceTestCase extends UnitTestCase{
 		$t_start = microtime(true);
 		
 		//init services
+		$activityService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityService');
 		$processVariableService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_VariableService');
 		$authoringService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessAuthoringService');
 		$activityExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityExecutionService');
@@ -359,14 +361,17 @@ class ProcessExecutionServiceTestCase extends UnitTestCase{
 
 		$parallelActivity1 = $authoringService->createActivity($processDefinition, 'activity1');
 		$this->assertNotNull($parallelActivity1);
-
+		$roleRestrictedUser = new core_kernel_classes_Resource(INSTANCE_ACL_ROLE_RESTRICTED_USER);
+		$activityService->setAcl($parallelActivity1, $roleRestrictedUser, $this->testUserRole);//!!! it is mendatory to set the role restricted user ACL mode to make this parallel process test case work
+		
 		$connector1 = null;
 		$connector1 = $authoringService->createConnector($parallelActivity1);
 		$this->assertNotNull($connector1);
 
 		$parallelActivity2 = $authoringService->createActivity($processDefinition, 'activity2');
 		$this->assertNotNull($parallelActivity2);
-
+		$activityService->setAcl($parallelActivity2, $roleRestrictedUser, $this->testUserRole);//!!! it is mendatory to set the role restricted user ACL mode to make this parallel process test case work
+		
 		$connector2 = null;
 		$connector2 = $authoringService->createConnector($parallelActivity2);
 		$this->assertNotNull($connector2);
@@ -407,7 +412,7 @@ class ProcessExecutionServiceTestCase extends UnitTestCase{
 		$createdUsers = array();
 		$loginProperty = new core_kernel_classes_Property(PROPERTY_USER_LOGIN);
 		for($i=1; $i <= $numberActivities; $i++){
-
+			
 			$activities = $this->service->getAvailableCurrentActivityDefinitions($processInstance, $this->currentUser);
 			$countActivities = count($activities);
 			$activity = null;
@@ -425,6 +430,7 @@ class ProcessExecutionServiceTestCase extends UnitTestCase{
 			}else if($countActivities == 1){
 				$activity = reset($activities);
 			}else{
+				
 				$this->fail('no current activity definition found for the iteration '.$i);
 			}
 
@@ -471,8 +477,9 @@ class ProcessExecutionServiceTestCase extends UnitTestCase{
 
 				$otherUser = $this->userService->getOneUser($login);
 				if(is_null($otherUser)){
-					$this->assertTrue($this->userService->saveUser(null, $userData, new core_kernel_classes_Resource(CLASS_ROLE_WORKFLOWUSERROLE)));
+					$this->assertTrue($this->userService->saveUser(null, $userData, $this->testUserRole));
 					$otherUser = $this->userService->getOneUser($login);
+					$otherUser->setLabel($login);
 				}
 				$createdUsers[$otherUser->uriResource] = $otherUser; 
 

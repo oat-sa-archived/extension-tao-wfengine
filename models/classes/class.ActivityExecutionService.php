@@ -1585,9 +1585,11 @@ class wfEngine_models_classes_ActivityExecutionService
 
         // section 127-0-1-1--1b682bf3:132cdc3fef4:-8000:0000000000003093 begin
 		$aclMode = $activityExecution->getOnePropertyValue($this->ACLModeProperty);
-		$activityService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityService');
-		if(array_key_exists($aclMode->uriResource, $activityService->getAclModes())){
-			$returnValue = $aclMode;
+		if($aclMode instanceof core_kernel_classes_Resource){
+			$activityService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityService');
+			if (array_key_exists($aclMode->uriResource, $activityService->getAclModes())) {
+				$returnValue = $aclMode;
+			}
 		}
         // section 127-0-1-1--1b682bf3:132cdc3fef4:-8000:0000000000003093 end
 
