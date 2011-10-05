@@ -168,7 +168,7 @@ class wfEngine_models_classes_VariableService
 				$processVariables = $processVariablesClass->searchInstances(array(PROPERTY_PROCESSVARIABLES_CODE => $key), array('like' => false));
 				if(!empty($processVariables)){
 					if(count($processVariables) == 1) {
-						$property = new core_kernel_classes_Property(array_shift($processVariables)->uriResource);
+						$property = new core_kernel_classes_Property(reset($processVariables)->uriResource);
 						$values = $activityExecution->getPropertyValuesCollection($property);
 						if($values->count() == 1){
 							$returnValue = $values->get(0);

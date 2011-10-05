@@ -179,6 +179,15 @@ class ActivityExecutionServiceTestCase extends UnitTestCase {
 			$activityService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityService');
 			$activityExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityExecutionService');
 			$processExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessExecutionService');
+			$processVariableService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_VariableService');
+			
+			//TEST PLAN :
+			//INSTANCE_ACL_ROLE, $roleA
+			//INSTANCE_ACL_ROLE_RESTRICTED_USER, $roleB
+			//INSTANCE_ACL_ROLE_RESTRICTED_USER_INHERITED, $roleB (assigned dynamically via process var $role_processVar in activity1)
+			//INSTANCE_ACL_USER, $user2	(assigned dynamically via process var $user_processVar in activity2)
+			//INSTANCE_ACL_ROLE_RESTRICTED_USER_INHERITED, $roleB (assigned dynamically via process var $role_processVar in activity1)
+			//INSTANCE_ACL_ROLE_RESTRICTED_USER_DELIVERY, $roleA 
 			
 			//create roles and users:
 			$roleClass = new core_kernel_classes_Class(CLASS_ROLE_WORKFLOWUSERROLE);
@@ -212,6 +221,12 @@ class ActivityExecutionServiceTestCase extends UnitTestCase {
 				$user6->uriResource
 			));
 			
+			//create some process variables:
+			$user_processVar_key = 'unit_var_user_'.time();
+			$user_processVar = $processVariableService->createProcessVariable('Proc Var for user assignation', $user_processVar_key);
+			$role_processVar_key = 'unit_var_role_'.time();
+			$role_processVar = $processVariableService->createProcessVariable('Proc Var for role assignation', $role_processVar_key);
+			
 			//create a new process def
 			$processDefinition = $authoringService->createProcess('ProcessForUnitTest', 'Unit test');
 			$this->assertIsA($processDefinition, 'core_kernel_classes_Resource');
@@ -240,7 +255,7 @@ class ActivityExecutionServiceTestCase extends UnitTestCase {
 			//activity 3:
 			$activity3 = $authoringService->createSequenceActivity($connector2, null, 'activity3');
 			$this->assertNotNull($activity3);
-			$activityService->setAcl($activity3, new core_kernel_classes_Resource(INSTANCE_ACL_ROLE_RESTRICTED_USER_INHERITED), $roleB);
+			$activityService->setAcl($activity3, new core_kernel_classes_Resource(INSTANCE_ACL_ROLE_RESTRICTED_USER_INHERITED), $role_processVar);
 			
 			$connector3 = $authoringService->createConnector($activity3);
 			$authoringService->setConnectorType($connector3, new core_kernel_classes_Resource(INSTANCE_TYPEOFCONNECTORS_SEQUENCE));
@@ -249,7 +264,7 @@ class ActivityExecutionServiceTestCase extends UnitTestCase {
 			//activity 4:
 			$activity4 = $authoringService->createSequenceActivity($connector3, null, 'activity4');
 			$this->assertNotNull($activity4);
-			$activityService->setAcl($activity4, new core_kernel_classes_Resource(INSTANCE_ACL_USER), $user2);
+			$activityService->setAcl($activity4, new core_kernel_classes_Resource(INSTANCE_ACL_USER), $user_processVar);
 			
 			$connector4 = $authoringService->createConnector($activity4);
 			$authoringService->setConnectorType($connector4, new core_kernel_classes_Resource(INSTANCE_TYPEOFCONNECTORS_SEQUENCE));
@@ -258,7 +273,7 @@ class ActivityExecutionServiceTestCase extends UnitTestCase {
 			//activity 5:
 			$activity5 = $authoringService->createSequenceActivity($connector4, null, 'activity5');
 			$this->assertNotNull($activity5);
-			$activityService->setAcl($activity5, new core_kernel_classes_Resource(INSTANCE_ACL_ROLE_RESTRICTED_USER_INHERITED), $roleB);
+			$activityService->setAcl($activity5, new core_kernel_classes_Resource(INSTANCE_ACL_ROLE_RESTRICTED_USER_INHERITED), $role_processVar);
 			
 			$connector5 = $authoringService->createConnector($activity5);
 			$authoringService->setConnectorType($connector5, new core_kernel_classes_Resource(INSTANCE_TYPEOFCONNECTORS_SEQUENCE));
@@ -331,6 +346,7 @@ class ActivityExecutionServiceTestCase extends UnitTestCase {
 						$this->assertTrue($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
 						$this->assertNotNull($processExecutionService->initCurrentActivityExecution($processInstance, $activity, $this->currentUser));
 						
+						$processVariableService->push($role_processVar_key, $roleB->uriResource);
 						break;
 					}
 					case 2:{
@@ -352,6 +368,7 @@ class ActivityExecutionServiceTestCase extends UnitTestCase {
 						$this->assertTrue($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
 						$this->assertNotNull($processExecutionService->initCurrentActivityExecution($processInstance, $activity, $this->currentUser));
 						
+						$processVariableService->push($user_processVar_key, $user2->uriResource);
 						break;
 					}
 					case 3:{
@@ -583,7 +600,6 @@ class ActivityExecutionServiceTestCase extends UnitTestCase {
 						$this->assertTrue($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
 						$this->assertNotNull($processExecutionService->initCurrentActivityExecution($processInstance, $activity, $this->currentUser));
 						
-//						var_dump($processExecutionService->getAllActivityExecutions($processInstance));
 						break;
 					}
 					case 6:{
@@ -675,6 +691,9 @@ class ActivityExecutionServiceTestCase extends UnitTestCase {
 						$this->assertTrue($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
 						$this->assertNotNull($processExecutionService->initCurrentActivityExecution($processInstance, $activity, $this->currentUser));
 						
+						//TODO:to be modified after "back"
+						$processVariableService->push($role_processVar_key, $roleB->uriResource);
+						
 						break;
 					}
 					case 2:{
@@ -695,6 +714,9 @@ class ActivityExecutionServiceTestCase extends UnitTestCase {
 						$this->assertTrue($this->changeUser($users[5]));
 						$this->assertTrue($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
 						$this->assertNotNull($processExecutionService->initCurrentActivityExecution($processInstance, $activity, $this->currentUser));
+						
+						//TODO:to be modified after "back"
+						$processVariableService->push($user_processVar_key, $user2->uriResource);
 						
 						break;
 					}
@@ -832,6 +854,8 @@ class ActivityExecutionServiceTestCase extends UnitTestCase {
 			$user4->delete();
 			$user5->delete();
 			$user6->delete();
+			$user_processVar->delete();
+			$role_processVar->delete();
 		}
 		catch(common_Exception $ce){
 			$this->fail($ce);

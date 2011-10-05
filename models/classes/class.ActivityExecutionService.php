@@ -372,19 +372,20 @@ class wfEngine_models_classes_ActivityExecutionService
         switch($mode->uriResource){
         	case INSTANCE_ACL_ROLE:
         	case INSTANCE_ACL_ROLE_RESTRICTED_USER:
-        	case INSTANCE_ACL_ROLE_RESTRICTED_USER_INHERITED:
+        	case INSTANCE_ACL_ROLE_RESTRICTED_USER_INHERITED:{
         		if(is_null($target)){
         			throw new Exception("Target must reference a role resource");
         		}
         		$properties[PROPERTY_ACTIVITIES_RESTRICTED_ROLE] = $target->uriResource;
         		break;
-        		
-        	case INSTANCE_ACL_USER:
+        	}	
+        	case INSTANCE_ACL_USER:{
         		if(is_null($target)){
         			throw new Exception("Target must reference a user resource");
         		}
         		$properties[PROPERTY_ACTIVITIES_RESTRICTED_USER] = $target->uriResource;
         		break;
+			}	
         }
         
         //bind the mode and the target (user or role) to the activity
@@ -1549,22 +1550,22 @@ class wfEngine_models_classes_ActivityExecutionService
         $returnValue = null;
 
         // section 127-0-1-1--1b682bf3:132cdc3fef4:-8000:000000000000308E begin
-		$activityRole = $activityExecution->getOnePropertyValue($this->restrictedUserProperty);
+		$activityUser = $activityExecution->getOnePropertyValue($this->restrictedUserProperty);
 		if($evaluateValue){
-			if($activityRole instanceof core_kernel_classes_Resource){
+			if($activityUser instanceof core_kernel_classes_Resource){
 				$variableService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_VariableService');
-				if($variableService->isProcessVariable($activityRole)){
-					$actualValue = $activityExecution->getOnePropertyValue(new core_kernel_classes_Property($activityRole->uriResource));
+				if($variableService->isProcessVariable($activityUser)){
+					$actualValue = $activityExecution->getOnePropertyValue(new core_kernel_classes_Property($activityUser->uriResource));
 					if(!is_null($actualValue) && $actualValue instanceof core_kernel_classes_Resource){
 						$returnValue = $actualValue;
 					}
 				}else{
 					//consider it as the role:
-					$returnValue = $activityRole;
+					$returnValue = $activityUser;
 				}
 			}
 		}else{
-			$returnValue = $activityRole;
+			$returnValue = $activityUser;
 		}
         // section 127-0-1-1--1b682bf3:132cdc3fef4:-8000:000000000000308E end
 
