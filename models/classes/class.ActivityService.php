@@ -66,11 +66,23 @@ class wfEngine_models_classes_ActivityService
      * @param  array value
      * @return boolean
      */
-    public function setCache($methodName, $args, $value)
+    public function setCache($methodName, $args = array(), $value = array())
     {
         $returnValue = (bool) false;
 
         // section 127-0-1-1-3a6b44f1:1326d50ba09:-8000:00000000000065CB begin
+		if($this->cache){
+			
+			switch($methodName):
+				case __CLASS__.'::getAclModes':{
+					if(is_array($value) && !empty($value)){
+						$this->instancesCache[$methodName] = $value;
+					}
+					break;
+				}
+			endswitch;
+			
+		}
         // section 127-0-1-1-3a6b44f1:1326d50ba09:-8000:00000000000065CB end
 
         return (bool) $returnValue;
@@ -90,6 +102,18 @@ class wfEngine_models_classes_ActivityService
         $returnValue = null;
 
         // section 127-0-1-1-3a6b44f1:1326d50ba09:-8000:00000000000065D0 begin
+		if($this->cache){
+			
+			switch($methodName):
+				case __CLASS__.'::getAclModes':{
+					if(isset($this->instancesCache[$methodName])){
+						$returnValue = $this->instancesCache[$methodName];
+					}
+					break;
+				}
+			endswitch;
+			
+		}
         // section 127-0-1-1-3a6b44f1:1326d50ba09:-8000:00000000000065D0 end
 
         return $returnValue;
@@ -453,15 +477,34 @@ class wfEngine_models_classes_ActivityService
         $returnValue = array();
 
         // section 127-0-1-1--1b682bf3:132cdc3fef4:-8000:00000000000030A2 begin
-		
-		$aclModeClass = new core_kernel_classes_Class(CLASS_ACL_MODES);
-        foreach($aclModeClass->getInstances() as $mode){
-        	$returnValue[$mode->uriResource] = $mode;
-        }
-		
+		$returnValue = $this->getCache(__METHOD__);
+		if(is_null($returnValue)){
+			$aclModeClass = new core_kernel_classes_Class(CLASS_ACL_MODES);
+			foreach($aclModeClass->getInstances() as $mode){
+				$returnValue[$mode->uriResource] = $mode;
+			}
+			$this->setCache(__METHOD__, array(), $returnValue);
+		}
         // section 127-0-1-1--1b682bf3:132cdc3fef4:-8000:00000000000030A2 end
 
         return (array) $returnValue;
+    }
+
+    /**
+     * Short description of method __construct
+     *
+     * @access public
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @return mixed
+     */
+    public function __construct()
+    {
+        // section 127-0-1-1--384c890a:132d352d389:-8000:00000000000030A8 begin
+		
+		$this->instancesCache = array();
+		$this->cache = true;
+		
+        // section 127-0-1-1--384c890a:132d352d389:-8000:00000000000030A8 end
     }
 
 } /* end of class wfEngine_models_classes_ActivityService */

@@ -66,7 +66,7 @@ class wfEngine_models_classes_ProcessExecutionService
      * @param  array value
      * @return boolean
      */
-    public function setCache($methodName, $args, $value)
+    public function setCache($methodName, $args = array(), $value = array())
     {
         $returnValue = (bool) false;
 
@@ -1567,10 +1567,12 @@ class wfEngine_models_classes_ProcessExecutionService
 						$followingArray[] = $followingActivityExecution->uriResource;
 					}
 				}
-				
 				$user = $this->activityExecutionService->getActivityExecutionUser($activityExecution);
-				
 				$status = $this->activityExecutionService->getStatus($activityExecution);
+				$aclMode = $this->activityExecutionService->getAclMode($activityExecution);
+				$restrictedRole = $this->activityExecutionService->getRestrictedRole($activityExecution);
+				$restrictedUser = $this->activityExecutionService->getRestrictedUser($activityExecution);
+				
 				$returnValue[$uri] = array(
 					'executionOf' => $activityDefinition->getLabel().' ('.$activityDefinition->uriResource.')',
 					'user' => (is_null($user))?'none':$user->getLabel().' ('.$user->uriResource.')',
@@ -1580,7 +1582,10 @@ class wfEngine_models_classes_ProcessExecutionService
 					'previous' => $previousArray,
 					'following' => $followingArray,
 					'context' => $recoveryService->getContext($activityExecution, ''),
-					'nonce' => $this->activityExecutionService->getNonce($activityExecution)
+					'nonce' => $this->activityExecutionService->getNonce($activityExecution),
+					'ACLmode' => (is_null($aclMode))?'none':$aclMode->getLabel(),
+					'restrictedRole' => (is_null($restrictedRole))?'none':$restrictedRole->getLabel(),
+					'restrictedUser' => (is_null($restrictedUser))?'none':$restrictedUser->getLabel()
 				);
 			}
 		}

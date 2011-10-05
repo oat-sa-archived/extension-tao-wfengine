@@ -430,6 +430,8 @@ class ProcessExecutionServiceTestCase extends UnitTestCase{
 
 			$this->out("<strong> Iteration {$i} :</strong>", true);
 			$this->out("<strong>{$activity->getLabel()}</strong> (among {$countActivities})");
+			//issue : no activity found for the last iteration...
+			
 			
 			//init execution
 			$activityExecution = $this->service->initCurrentActivityExecution($processInstance, $activity, $this->currentUser);

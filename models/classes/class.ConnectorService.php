@@ -66,7 +66,7 @@ class wfEngine_models_classes_ConnectorService
      * @param  array value
      * @return boolean
      */
-    public function setCache($methodName, $args, $value)
+    public function setCache($methodName, $args = array(), $value = array())
     {
         $returnValue = (bool) false;
 

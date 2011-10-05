@@ -122,7 +122,7 @@ class wfEngine_models_classes_ActivityExecutionService
      * @param  array value
      * @return boolean
      */
-    public function setCache($methodName, $args, $value)
+    public function setCache($methodName, $args = array(), $value = array())
     {
         $returnValue = (bool) false;
 
@@ -147,17 +147,17 @@ class wfEngine_models_classes_ActivityExecutionService
 						&& $args[0] instanceof core_kernel_classes_Resource
 						&& $args[1] instanceof core_kernel_classes_Resource
 						&& $args[2] instanceof core_kernel_classes_Resource){
-							$activity = $args[0];
+							$activityExecution = $args[0];
 							$currentUser = $args[1];
 							$processExecution = $args[2];
 
-							if(!isset($this->instancesCache[$processExecution->uriResource])){
-								$this->instancesCache[$processExecution->uriResource] = array();
+							if(!isset($this->instancesCache[$activityExecution->uriResource])){
+								$this->instancesCache[$activityExecution->uriResource] = array();
 							}
-							if(!isset($this->instancesCache[$processExecution->uriResource][$activity->uriResource])){
-								$this->instancesCache[$processExecution->uriResource][$activity->uriResource] = array();
+							if(!isset($this->instancesCache[$activityExecution->uriResource][$methodName])){
+								$this->instancesCache[$activityExecution->uriResource][$methodName] = array();
 							}
-							$this->instancesCache[$processExecution->uriResource][$activity->uriResource][$currentUser->uriResource] = (bool) $value;
+							$this->instancesCache[$activityExecution->uriResource][$methodName][$currentUser->uriResource] = (bool) $value;
 							$returnValue = true;
 					}
 					break;
@@ -204,18 +204,18 @@ class wfEngine_models_classes_ActivityExecutionService
 						&& $args[0] instanceof core_kernel_classes_Resource
 						&& $args[1] instanceof core_kernel_classes_Resource
 						&& $args[2] instanceof core_kernel_classes_Resource){
-							$activity = $args[0];
+							$activityExecution = $args[0];
 							$currentUser = $args[1];
 							$processExecution = $args[2];
 
-							if(!isset($this->instancesCache[$processExecution->uriResource])){
+							if(!isset($this->instancesCache[$activityExecution->uriResource])){
 								break;
 							}
-							if(!isset($this->instancesCache[$processExecution->uriResource][$activity->uriResource])){
+							if(!isset($this->instancesCache[$activityExecution->uriResource][$methodName])){
 								break;
 							}
-							if(isset($this->instancesCache[$processExecution->uriResource][$activity->uriResource][$currentUser->uriResource])){
-								$returnValue = $this->instancesCache[$processExecution->uriResource][$activity->uriResource][$currentUser->uriResource];
+							if(isset($this->instancesCache[$activityExecution->uriResource][$methodName][$currentUser->uriResource])){
+								$returnValue = (bool) $this->instancesCache[$activityExecution->uriResource][$methodName][$currentUser->uriResource];
 							}
 					}
 					break;
@@ -242,6 +242,46 @@ class wfEngine_models_classes_ActivityExecutionService
         $returnValue = (bool) false;
 
         // section 127-0-1-1-3a6b44f1:1326d50ba09:-8000:00000000000065D4 begin
+		if($this->cache){
+			
+			if(empty($methodName)){
+				$this->instancesCache = array();
+				$returnValue = true;
+			}
+
+			switch($methodName){
+				case __CLASS__.'::checkAcl': {
+					if(count($args) == 0){
+						foreach($this->instancesCache as $activityExecutionUri => $activityExecutionCache){
+							if(isset($activityExecutionCache[$methodName])){
+								unset($this->instancesCache[$activityExecutionUri][$methodName]);
+								$returnValue = true;
+							}
+						}
+					}else if(count($args) == 3 
+						&& isset($args[0]) && $args[0] instanceof core_kernel_classes_Resource
+						&& isset($args[1]) && $args[1] instanceof core_kernel_classes_Resource
+						&& isset($args[2]) && $args[2] instanceof core_kernel_classes_Resource){
+						
+						$activityExecution = $args[0];
+						$currentUser = $args[1];
+						$processExecution = $args[2];
+
+						if(!isset($this->instancesCache[$activityExecution->uriResource])){
+							break;
+						}
+						if(!isset($this->instancesCache[$activityExecution->uriResource][$methodName])){
+							break;
+						}
+						if(isset($this->instancesCache[$activityExecution->uriResource][$methodName][$currentUser->uriResource])){
+							unset($this->instancesCache[$activityExecution->uriResource][$methodName][$currentUser->uriResource]);
+							$returnValue = true;
+						}
+					}
+					break;
+				}
+			}
+		}
         // section 127-0-1-1-3a6b44f1:1326d50ba09:-8000:00000000000065D4 end
 
         return (bool) $returnValue;
@@ -444,9 +484,14 @@ class wfEngine_models_classes_ActivityExecutionService
 
         if(!is_null($activityExecution) && !is_null($currentUser)){
         	
+			if(is_null($processExecution)){
+				$processExecution = $this->getRelatedProcessExecution($activityExecution);
+			}
+			
 			//get cached value:
 			$cachedValue = $this->getCache(__METHOD__, array($activityExecution, $currentUser, $processExecution));
 			if(!is_null($cachedValue) && is_bool($cachedValue)){
+//				var_dump('ACL results from cache '.$activityExecution->uriResource.' '.$currentUser->getLabel());
 				$returnValue = $cachedValue;
 				return $returnValue;
 			}
@@ -474,7 +519,6 @@ class wfEngine_models_classes_ActivityExecutionService
         			case INSTANCE_ACL_ROLE:{
         				$activityRole 	= $this->getRestrictedRole($activityExecution);
         				$userRoles 		= $currentUser->getType();
-//						var_dump($activityRole->uriResource, $userRoles);
 						if(!is_null($activityRole) && is_array($userRoles)){
 							foreach($userRoles as $userRole){
 								if($activityRole->uriResource == $userRole->uriResource){
@@ -534,21 +578,24 @@ class wfEngine_models_classes_ActivityExecutionService
 										'like' => false
 									));
 									
-									if(count($pastActivityExecutions)){
-										foreach($pastActivityExecutions as $pastActivityExecution) {
+									$count = count($pastActivityExecutions);
+									if($count > 0){
+										foreach ($pastActivityExecutions as $pastActivityExecution) {
 											$pastUser = $this->getActivityExecutionUser($pastActivityExecution);
-											if(is_null($pastUser)){
-												$returnValue = true;//free activity execution
-											}else if(!is_null($pastUser) && $pastUser->uriResource == $currentUser->uriResource){
-												$returnValue = true;//user's activity execution
+											if (!is_null($pastUser)){
+												if($pastUser->uriResource == $currentUser->uriResource){
+													$returnValue = true; //user's activity execution
+												}
+												break(2);
+											}else{
+												continue;
 											}
-											//all other cases, no valid
-											break;
 										}
+										$returnValue = true;//no user has taken it
 									}else{
-										$returnValue = true;
+										//throw exception here, since there should be at least the current acitivty exec here
+										throw new wfEngine_models_classes_ProcessExecutionException('cannot even found a single activity execution that for the inherited role');
 									}
-									
 									break;
 								}
         					}
@@ -1236,7 +1283,10 @@ class wfEngine_models_classes_ActivityExecutionService
 			PROPERTY_ACTIVITY_EXECUTION_FOLLOWING,
 			PROPERTY_ACTIVITY_EXECUTION_STATUS,
 			PROPERTY_ACTIVITY_EXECUTION_TIME_CREATED,
-			PROPERTY_ACTIVITY_EXECUTION_TIME_STARTED
+			PROPERTY_ACTIVITY_EXECUTION_TIME_STARTED,
+			PROPERTY_ACTIVITY_EXECUTION_ACL_MODE,
+			PROPERTY_ACTIVITY_EXECUTION_RESTRICTED_USER,
+			PROPERTY_ACTIVITY_EXECUTION_RESTRICTED_ROLE
 		);
 		
 		$newActivityExecution = $oldActivityExecution->duplicate($excludedProperties);
@@ -1534,6 +1584,11 @@ class wfEngine_models_classes_ActivityExecutionService
         $returnValue = null;
 
         // section 127-0-1-1--1b682bf3:132cdc3fef4:-8000:0000000000003093 begin
+		$aclMode = $activityExecution->getOnePropertyValue($this->ACLModeProperty);
+		$activityService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityService');
+		if(array_key_exists($aclMode->uriResource, $activityService->getAclModes())){
+			$returnValue = $aclMode;
+		}
         // section 127-0-1-1--1b682bf3:132cdc3fef4:-8000:0000000000003093 end
 
         return $returnValue;
