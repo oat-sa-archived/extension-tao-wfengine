@@ -501,9 +501,11 @@ class wfEngine_models_classes_ActivityExecutionService
         	$modeUri = $activityExecution->getOnePropertyValue($this->ACLModeProperty);
         	
         	if(is_null($modeUri)){
+				
         		$returnValue = true;	//if no mode defined, the activity is allowed
-        	}
-        	else{
+				
+        	}else{
+				
         		switch($modeUri->uriResource){
         			
         			//check if th current user is the restricted user
@@ -760,7 +762,9 @@ class wfEngine_models_classes_ActivityExecutionService
 		$returnValue = $this->getCache(__METHOD__, array($activityExecution));
 		if(empty($returnValue)){
 			$returnValue = $activityExecution->getUniquePropertyValue($this->activityProperty);
-			$this->setCache(__METHOD__, array($activityExecution), $returnValue);
+			if(!is_null($returnValue)){
+				$this->setCache(__METHOD__, array($activityExecution), $returnValue);
+			}
 		}
         // section 127-0-1-1--42c550f9:1323e0e4fe5:-8000:0000000000002FB3 end
 
@@ -1201,9 +1205,10 @@ class wfEngine_models_classes_ActivityExecutionService
      * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @param  Resource activityExecution
      * @param  Resource processExecution
+     * @param  array revertOptions
      * @return array
      */
-    public function moveBackward( core_kernel_classes_Resource $activityExecution,  core_kernel_classes_Resource $processExecution)
+    public function moveBackward( core_kernel_classes_Resource $activityExecution,  core_kernel_classes_Resource $processExecution, $revertOptions = array())
     {
         $returnValue = array();
 
@@ -1245,6 +1250,11 @@ class wfEngine_models_classes_ActivityExecutionService
 			
 			foreach($previousActivityExecutions as $previousActivityExecution) {
 				$previousActivityExecution->removePropertyValues($followingProperty);
+				
+				//manage the additional option to full revert (default behaviour), full merge or partial merge (i.e. redifine some process variable values)
+				//...
+				
+				//change the status of the activity executions to 'paused' by default or nothing if not required (parallel branch):
 				$this->setStatus($previousActivityExecution, 'paused');
 			}
 			

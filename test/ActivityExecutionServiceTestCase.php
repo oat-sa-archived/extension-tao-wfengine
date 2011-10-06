@@ -332,19 +332,19 @@ class ActivityExecutionServiceTestCase extends UnitTestCase {
 						
 						$this->assertTrue($this->changeUser($users[4]));
 						$this->assertFalse($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
-						$this->assertNull($processExecutionService->initCurrentActivityExecution($processInstance, $activity, $this->currentUser));
+						$this->assertNull($processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser));
 				
 						$this->assertTrue($this->changeUser($users[6]));
 						$this->assertFalse($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
-						$this->assertNull($processExecutionService->initCurrentActivityExecution($processInstance, $activity, $this->currentUser));
+						$this->assertNull($processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser));
 				
 						$this->assertTrue($this->changeUser($users[1]));
 						$this->assertTrue($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
-						$this->assertNotNull($processExecutionService->initCurrentActivityExecution($processInstance, $activity, $this->currentUser));
+						$this->assertNotNull($processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser));
 				
 						$this->assertTrue($this->changeUser($users[2]));
 						$this->assertTrue($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
-						$this->assertNotNull($processExecutionService->initCurrentActivityExecution($processInstance, $activity, $this->currentUser));
+						$this->assertNotNull($processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser));
 						
 						$processVariableService->push($role_processVar_key, $roleB->uriResource);
 						break;
@@ -354,19 +354,19 @@ class ActivityExecutionServiceTestCase extends UnitTestCase {
 						
 						$this->assertTrue($this->changeUser($users[1]));
 						$this->assertFalse($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
-						$this->assertNull($processExecutionService->initCurrentActivityExecution($processInstance, $activity, $this->currentUser));
+						$this->assertNull($processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser));
 				
 						$this->assertTrue($this->changeUser($users[5]));
 						$this->assertTrue($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
-						$this->assertNotNull($processExecutionService->initCurrentActivityExecution($processInstance, $activity, $this->currentUser));
+						$this->assertNotNull($processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser));
 				
 						$this->assertTrue($this->changeUser($users[4]));
 						$this->assertFalse($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
-						$this->assertNull($processExecutionService->initCurrentActivityExecution($processInstance, $activity, $this->currentUser));
+						$this->assertNull($processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser));
 						
 						$this->assertTrue($this->changeUser($users[5]));
 						$this->assertTrue($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
-						$this->assertNotNull($processExecutionService->initCurrentActivityExecution($processInstance, $activity, $this->currentUser));
+						$this->assertNotNull($processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser));
 						
 						$processVariableService->push($user_processVar_key, $user2->uriResource);
 						break;
@@ -376,19 +376,19 @@ class ActivityExecutionServiceTestCase extends UnitTestCase {
 						
 						$this->assertTrue($this->changeUser($users[1]));
 						$this->assertFalse($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
-						$this->assertNull($processExecutionService->initCurrentActivityExecution($processInstance, $activity, $this->currentUser));
+						$this->assertNull($processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser));
 				
 						$this->assertTrue($this->changeUser($users[5]));
 						$this->assertTrue($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
-						$this->assertNotNull($processExecutionService->initCurrentActivityExecution($processInstance, $activity, $this->currentUser));
+						$this->assertNotNull($processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser));
 				
 						$this->assertTrue($this->changeUser($users[4]));
 						$this->assertFalse($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
-						$this->assertNull($processExecutionService->initCurrentActivityExecution($processInstance, $activity, $this->currentUser));
+						$this->assertNull($processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser));
 						
 						$this->assertTrue($this->changeUser($users[5]));
 						$this->assertTrue($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
-						$this->assertNotNull($processExecutionService->initCurrentActivityExecution($processInstance, $activity, $this->currentUser));
+						$this->assertNotNull($processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser));
 						
 						break;
 					}
@@ -397,19 +397,19 @@ class ActivityExecutionServiceTestCase extends UnitTestCase {
 						
 						$this->assertTrue($this->changeUser($users[3]));
 						$this->assertFalse($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
-						$this->assertNull($processExecutionService->initCurrentActivityExecution($processInstance, $activity, $this->currentUser));
+						$this->assertNull($processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser));
 						
 						$this->assertTrue($this->changeUser($users[2]));
 						$this->assertTrue($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
-						$this->assertNotNull($processExecutionService->initCurrentActivityExecution($processInstance, $activity, $this->currentUser));
+						$this->assertNotNull($processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser));
 						
 						$this->assertTrue($this->changeUser($users[6]));
 						$this->assertFalse($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
-						$this->assertNull($processExecutionService->initCurrentActivityExecution($processInstance, $activity, $this->currentUser));
+						$this->assertNull($processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser));
 						
 						$this->assertTrue($this->changeUser($users[2]));
 						$this->assertTrue($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
-						$this->assertNotNull($processExecutionService->initCurrentActivityExecution($processInstance, $activity, $this->currentUser));
+						$this->assertNotNull($processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser));
 						
 						break;
 					}
@@ -419,11 +419,11 @@ class ActivityExecutionServiceTestCase extends UnitTestCase {
 						
 						$this->assertTrue($this->changeUser($users[3]));
 						$this->assertFalse($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
-						$this->assertNull($processExecutionService->initCurrentActivityExecution($processInstance, $activity, $this->currentUser));
+						$this->assertNull($processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser));
 						
 						$this->assertTrue($this->changeUser($users[5]));
 						$this->assertTrue($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
-						$this->assertNotNull($processExecutionService->initCurrentActivityExecution($processInstance, $activity, $this->currentUser));
+						$this->assertNotNull($processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser));
 						
 						break;
 					}
@@ -433,19 +433,19 @@ class ActivityExecutionServiceTestCase extends UnitTestCase {
 						
 						$this->assertTrue($this->changeUser($users[1]));
 						$this->assertFalse($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
-						$this->assertNull($processExecutionService->initCurrentActivityExecution($processInstance, $activity, $this->currentUser));
+						$this->assertNull($processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser));
 						
 						$this->assertTrue($this->changeUser($users[3]));
 						$this->assertFalse($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
-						$this->assertNull($processExecutionService->initCurrentActivityExecution($processInstance, $activity, $this->currentUser));
+						$this->assertNull($processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser));
 						
 						$this->assertTrue($this->changeUser($users[6]));
 						$this->assertFalse($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
-						$this->assertNull($processExecutionService->initCurrentActivityExecution($processInstance, $activity, $this->currentUser));
+						$this->assertNull($processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser));
 						
 						$this->assertTrue($this->changeUser($users[2]));
 						$this->assertTrue($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
-						$this->assertNotNull($processExecutionService->initCurrentActivityExecution($processInstance, $activity, $this->currentUser));
+						$this->assertNotNull($processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser));
 						
 						break;
 					}
@@ -453,7 +453,7 @@ class ActivityExecutionServiceTestCase extends UnitTestCase {
 				
 				
 				//init execution
-				$activityExecution = $processExecutionService->initCurrentActivityExecution($processInstance, $activity, $this->currentUser);
+				$activityExecution = $processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser);
 				$this->assertNotNull($activityExecution);
 				$activityExecStatus = $activityExecutionService->getStatus($activityExecution);
 				$this->assertNotNull($activityExecStatus);
@@ -513,19 +513,19 @@ class ActivityExecutionServiceTestCase extends UnitTestCase {
 						
 						$this->assertTrue($this->changeUser($users[4]));
 						$this->assertFalse($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
-						$this->assertNull($processExecutionService->initCurrentActivityExecution($processInstance, $activity, $this->currentUser));
+						$this->assertNull($processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser));
 				
 						$this->assertTrue($this->changeUser($users[6]));
 						$this->assertFalse($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
-						$this->assertNull($processExecutionService->initCurrentActivityExecution($processInstance, $activity, $this->currentUser));
+						$this->assertNull($processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser));
 				
 						$this->assertTrue($this->changeUser($users[1]));
 						$this->assertTrue($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
-						$this->assertNotNull($processExecutionService->initCurrentActivityExecution($processInstance, $activity, $this->currentUser));
+						$this->assertNotNull($processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser));
 				
 						$this->assertTrue($this->changeUser($users[2]));
 						$this->assertTrue($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
-						$this->assertNotNull($processExecutionService->initCurrentActivityExecution($processInstance, $activity, $this->currentUser));
+						$this->assertNotNull($processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser));
 						
 						break;
 					}
@@ -534,19 +534,19 @@ class ActivityExecutionServiceTestCase extends UnitTestCase {
 						
 						$this->assertTrue($this->changeUser($users[1]));
 						$this->assertFalse($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
-						$this->assertNull($processExecutionService->initCurrentActivityExecution($processInstance, $activity, $this->currentUser));
+						$this->assertNull($processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser));
 				
 						$this->assertTrue($this->changeUser($users[5]));
 						$this->assertTrue($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
-						$this->assertNotNull($processExecutionService->initCurrentActivityExecution($processInstance, $activity, $this->currentUser));
+						$this->assertNotNull($processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser));
 				
 						$this->assertTrue($this->changeUser($users[4]));
 						$this->assertFalse($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
-						$this->assertNull($processExecutionService->initCurrentActivityExecution($processInstance, $activity, $this->currentUser));
+						$this->assertNull($processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser));
 						
 						$this->assertTrue($this->changeUser($users[5]));
 						$this->assertTrue($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
-						$this->assertNotNull($processExecutionService->initCurrentActivityExecution($processInstance, $activity, $this->currentUser));
+						$this->assertNotNull($processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser));
 						
 						break;
 					}
@@ -555,15 +555,15 @@ class ActivityExecutionServiceTestCase extends UnitTestCase {
 						
 						$this->assertTrue($this->changeUser($users[1]));
 						$this->assertFalse($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
-						$this->assertNull($processExecutionService->initCurrentActivityExecution($processInstance, $activity, $this->currentUser));
+						$this->assertNull($processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser));
 				
 						$this->assertTrue($this->changeUser($users[4]));
 						$this->assertFalse($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
-						$this->assertNull($processExecutionService->initCurrentActivityExecution($processInstance, $activity, $this->currentUser));
+						$this->assertNull($processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser));
 						
 						$this->assertTrue($this->changeUser($users[5]));
 						$this->assertTrue($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
-						$this->assertNotNull($processExecutionService->initCurrentActivityExecution($processInstance, $activity, $this->currentUser));
+						$this->assertNotNull($processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser));
 						
 						break;
 					}
@@ -572,19 +572,19 @@ class ActivityExecutionServiceTestCase extends UnitTestCase {
 						
 						$this->assertTrue($this->changeUser($users[3]));
 						$this->assertFalse($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
-						$this->assertNull($processExecutionService->initCurrentActivityExecution($processInstance, $activity, $this->currentUser));
+						$this->assertNull($processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser));
 						
 						$this->assertTrue($this->changeUser($users[2]));
 						$this->assertTrue($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
-						$this->assertNotNull($processExecutionService->initCurrentActivityExecution($processInstance, $activity, $this->currentUser));
+						$this->assertNotNull($processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser));
 						
 						$this->assertTrue($this->changeUser($users[6]));
 						$this->assertFalse($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
-						$this->assertNull($processExecutionService->initCurrentActivityExecution($processInstance, $activity, $this->currentUser));
+						$this->assertNull($processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser));
 						
 						$this->assertTrue($this->changeUser($users[2]));
 						$this->assertTrue($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
-						$this->assertNotNull($processExecutionService->initCurrentActivityExecution($processInstance, $activity, $this->currentUser));
+						$this->assertNotNull($processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser));
 						
 						break;
 					}
@@ -594,11 +594,11 @@ class ActivityExecutionServiceTestCase extends UnitTestCase {
 						
 						$this->assertTrue($this->changeUser($users[3]));
 						$this->assertFalse($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
-						$this->assertNull($processExecutionService->initCurrentActivityExecution($processInstance, $activity, $this->currentUser));
+						$this->assertNull($processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser));
 						
 						$this->assertTrue($this->changeUser($users[5]));
 						$this->assertTrue($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
-						$this->assertNotNull($processExecutionService->initCurrentActivityExecution($processInstance, $activity, $this->currentUser));
+						$this->assertNotNull($processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser));
 						
 						break;
 					}
@@ -608,19 +608,19 @@ class ActivityExecutionServiceTestCase extends UnitTestCase {
 						
 						$this->assertTrue($this->changeUser($users[1]));
 						$this->assertFalse($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
-						$this->assertNull($processExecutionService->initCurrentActivityExecution($processInstance, $activity, $this->currentUser));
+						$this->assertNull($processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser));
 						
 						$this->assertTrue($this->changeUser($users[3]));
 						$this->assertFalse($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
-						$this->assertNull($processExecutionService->initCurrentActivityExecution($processInstance, $activity, $this->currentUser));
+						$this->assertNull($processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser));
 						
 						$this->assertTrue($this->changeUser($users[6]));
 						$this->assertFalse($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
-						$this->assertNull($processExecutionService->initCurrentActivityExecution($processInstance, $activity, $this->currentUser));
+						$this->assertNull($processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser));
 						
 						$this->assertTrue($this->changeUser($users[2]));
 						$this->assertTrue($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
-						$this->assertNotNull($processExecutionService->initCurrentActivityExecution($processInstance, $activity, $this->currentUser));
+						$this->assertNotNull($processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser));
 						
 						break;
 					}
@@ -628,7 +628,7 @@ class ActivityExecutionServiceTestCase extends UnitTestCase {
 				}
 				
 				//init execution
-				$activityExecution = $processExecutionService->initCurrentActivityExecution($processInstance, $activity, $this->currentUser);
+				$activityExecution = $processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser);
 				$this->assertNotNull($activityExecution);
 				$activityExecStatus = $activityExecutionService->getStatus($activityExecution);
 				$this->assertNotNull($activityExecStatus);
@@ -677,19 +677,19 @@ class ActivityExecutionServiceTestCase extends UnitTestCase {
 						
 						$this->assertTrue($this->changeUser($users[4]));
 						$this->assertFalse($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
-						$this->assertNull($processExecutionService->initCurrentActivityExecution($processInstance, $activity, $this->currentUser));
+						$this->assertNull($processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser));
 				
 						$this->assertTrue($this->changeUser($users[6]));
 						$this->assertFalse($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
-						$this->assertNull($processExecutionService->initCurrentActivityExecution($processInstance, $activity, $this->currentUser));
+						$this->assertNull($processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser));
 				
 						$this->assertTrue($this->changeUser($users[1]));
 						$this->assertTrue($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
-						$this->assertNotNull($processExecutionService->initCurrentActivityExecution($processInstance, $activity, $this->currentUser));
+						$this->assertNotNull($processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser));
 				
 						$this->assertTrue($this->changeUser($users[2]));
 						$this->assertTrue($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
-						$this->assertNotNull($processExecutionService->initCurrentActivityExecution($processInstance, $activity, $this->currentUser));
+						$this->assertNotNull($processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser));
 						
 						//TODO:to be modified after "back"
 						$processVariableService->push($role_processVar_key, $roleB->uriResource);
@@ -701,19 +701,19 @@ class ActivityExecutionServiceTestCase extends UnitTestCase {
 						
 						$this->assertTrue($this->changeUser($users[1]));
 						$this->assertFalse($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
-						$this->assertNull($processExecutionService->initCurrentActivityExecution($processInstance, $activity, $this->currentUser));
+						$this->assertNull($processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser));
 				
 						$this->assertTrue($this->changeUser($users[5]));
 						$this->assertTrue($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
-						$this->assertNotNull($processExecutionService->initCurrentActivityExecution($processInstance, $activity, $this->currentUser));
+						$this->assertNotNull($processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser));
 				
 						$this->assertTrue($this->changeUser($users[4]));
 						$this->assertFalse($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
-						$this->assertNull($processExecutionService->initCurrentActivityExecution($processInstance, $activity, $this->currentUser));
+						$this->assertNull($processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser));
 						
 						$this->assertTrue($this->changeUser($users[5]));
 						$this->assertTrue($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
-						$this->assertNotNull($processExecutionService->initCurrentActivityExecution($processInstance, $activity, $this->currentUser));
+						$this->assertNotNull($processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser));
 						
 						//TODO:to be modified after "back"
 						$processVariableService->push($user_processVar_key, $user2->uriResource);
@@ -725,15 +725,15 @@ class ActivityExecutionServiceTestCase extends UnitTestCase {
 						
 						$this->assertTrue($this->changeUser($users[1]));
 						$this->assertFalse($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
-						$this->assertNull($processExecutionService->initCurrentActivityExecution($processInstance, $activity, $this->currentUser));
+						$this->assertNull($processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser));
 				
 						$this->assertTrue($this->changeUser($users[4]));
 						$this->assertFalse($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
-						$this->assertNull($processExecutionService->initCurrentActivityExecution($processInstance, $activity, $this->currentUser));
+						$this->assertNull($processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser));
 						
 						$this->assertTrue($this->changeUser($users[5]));
 						$this->assertTrue($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
-						$this->assertNotNull($processExecutionService->initCurrentActivityExecution($processInstance, $activity, $this->currentUser));
+						$this->assertNotNull($processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser));
 						
 						break;
 					}
@@ -742,19 +742,19 @@ class ActivityExecutionServiceTestCase extends UnitTestCase {
 						
 						$this->assertTrue($this->changeUser($users[3]));
 						$this->assertFalse($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
-						$this->assertNull($processExecutionService->initCurrentActivityExecution($processInstance, $activity, $this->currentUser));
+						$this->assertNull($processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser));
 						
 						$this->assertTrue($this->changeUser($users[2]));
 						$this->assertTrue($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
-						$this->assertNotNull($processExecutionService->initCurrentActivityExecution($processInstance, $activity, $this->currentUser));
+						$this->assertNotNull($processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser));
 						
 						$this->assertTrue($this->changeUser($users[6]));
 						$this->assertFalse($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
-						$this->assertNull($processExecutionService->initCurrentActivityExecution($processInstance, $activity, $this->currentUser));
+						$this->assertNull($processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser));
 						
 						$this->assertTrue($this->changeUser($users[2]));
 						$this->assertTrue($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
-						$this->assertNotNull($processExecutionService->initCurrentActivityExecution($processInstance, $activity, $this->currentUser));
+						$this->assertNotNull($processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser));
 						
 						break;
 					}
@@ -764,11 +764,11 @@ class ActivityExecutionServiceTestCase extends UnitTestCase {
 						
 						$this->assertTrue($this->changeUser($users[3]));
 						$this->assertFalse($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
-						$this->assertNull($processExecutionService->initCurrentActivityExecution($processInstance, $activity, $this->currentUser));
+						$this->assertNull($processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser));
 						
 						$this->assertTrue($this->changeUser($users[5]));
 						$this->assertTrue($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
-						$this->assertNotNull($processExecutionService->initCurrentActivityExecution($processInstance, $activity, $this->currentUser));
+						$this->assertNotNull($processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser));
 						
 						break;
 					}
@@ -778,19 +778,19 @@ class ActivityExecutionServiceTestCase extends UnitTestCase {
 						
 						$this->assertTrue($this->changeUser($users[1]));
 						$this->assertFalse($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
-						$this->assertNull($processExecutionService->initCurrentActivityExecution($processInstance, $activity, $this->currentUser));
+						$this->assertNull($processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser));
 						
 						$this->assertTrue($this->changeUser($users[3]));
 						$this->assertFalse($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
-						$this->assertNull($processExecutionService->initCurrentActivityExecution($processInstance, $activity, $this->currentUser));
+						$this->assertNull($processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser));
 						
 						$this->assertTrue($this->changeUser($users[6]));
 						$this->assertFalse($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
-						$this->assertNull($processExecutionService->initCurrentActivityExecution($processInstance, $activity, $this->currentUser));
+						$this->assertNull($processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser));
 						
 						$this->assertTrue($this->changeUser($users[2]));
 						$this->assertTrue($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
-						$this->assertNotNull($processExecutionService->initCurrentActivityExecution($processInstance, $activity, $this->currentUser));
+						$this->assertNotNull($processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser));
 						
 						break;
 					}
@@ -798,7 +798,7 @@ class ActivityExecutionServiceTestCase extends UnitTestCase {
 				}
 				
 				//init execution
-				$activityExecution = $processExecutionService->initCurrentActivityExecution($processInstance, $activity, $this->currentUser);
+				$activityExecution = $processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser);
 				$this->assertNotNull($activityExecution);
 				
 				//transition to next activity

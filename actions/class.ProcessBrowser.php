@@ -18,7 +18,6 @@ class wfEngine_actions_ProcessBrowser extends wfEngine_actions_WfModule{
 	protected $processExecutionService = null;
 	protected $activityExecutionService = null;
 	protected $activityExecutionNonce = false;
-	protected $requestedActivityDefinition = null;
 	
 	public function __construct(){
 		
@@ -27,7 +26,7 @@ class wfEngine_actions_ProcessBrowser extends wfEngine_actions_WfModule{
 		$this->processExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessExecutionService');
 		$this->activityExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityExecutionService');
 		
-		//validate all posted values:
+		//validate ALL posted values:
 		$processExecutionUri = urldecode($this->getRequestParameter('processUri'));
 		if(!empty($processExecutionUri)){
 			$processExecution = new core_kernel_classes_Resource($processExecutionUri);
@@ -41,12 +40,7 @@ class wfEngine_actions_ProcessBrowser extends wfEngine_actions_WfModule{
 				
 				$this->processExecution = $processExecution;
 				
-				$activityUri = urldecode($this->getRequestParameter('activityUri'));
-				$activityExecutionUri = urldecode($this->getRequestParameter('activityExecutionUri'));
-				
-				if(!empty($activityUri)){
-					$this->requestedActivityDefinition = new core_kernel_classes_Resource($activityUri);
-				}
+				$activityExecutionUri = urldecode($this->getRequestParameter('activityUri'));
 				
 				if(!empty($activityExecutionUri)){
 					
@@ -73,17 +67,16 @@ class wfEngine_actions_ProcessBrowser extends wfEngine_actions_WfModule{
 		
 	}
 	
-	protected function redirectToIndex($activityUri = ''){
-		
-		$parameters = array('activityUri'=>'');
-		if(!empty($activityUri)){
-			$parameters['activityUri'] = $activityUri;
-		}
+	protected function redirectToIndex(){
 		
 		if(ENABLE_HTTP_REDIRECT_PROCESS_BROWSER){
+			$parameters = array();
+			if(!empty($this->activityExecution)){
+				$parameters['activityExecutionUri'] = urlencode($this->activityExecution->uriResource);
+			}
 			$this->redirect(tao_helpers_Uri::url('index', 'ProcessBrowser', null, $parameters));
 		}else{
-			$this->index($parameters['activityUri']);
+			$this->index();
 		}
 		
 	}
@@ -93,16 +86,12 @@ class wfEngine_actions_ProcessBrowser extends wfEngine_actions_WfModule{
 		$this->redirect(tao_helpers_Uri::url('index', 'Main'));
 	}
 	
-	public function index($activityUri = ''){
+	public function index(){
 		
 		if(is_null($this->processExecution)){
 			$this->redirectToMain();
 			return;
 		}
-		if(empty($activityUri) && !is_null($this->requestedActivityDefinition)){
-			$activityUri = $this->requestedActivityDefinition->uriResource;
-		}
-		
 		/*
 		 * known use of Session::setAttribute("processUri") in:
 		 * - taoDelivery_actions_ItemDelivery::runner()
@@ -128,33 +117,32 @@ class wfEngine_actions_ProcessBrowser extends wfEngine_actions_WfModule{
 		}
 		
 		//get activity execution from currently available process definitions:
-		$currentlyAvailableActivityDefinitions = $this->processExecutionService->getAvailableCurrentActivityDefinitions($this->processExecution, $currentUser, true);
+		$currentlyAvailableActivityExecutions = $this->processExecutionService->getAvailableCurrentActivityExecutions($this->processExecution, $currentUser, true);
 		
-		//get a valid activity execution from the given actiivyt definition
 		$activityExecution = null;
-		if(count($currentlyAvailableActivityDefinitions) == 0){
-			//no available current activity definition found: no permission or issue in process execution:
+		if(count($currentlyAvailableActivityExecutions) == 0){
+			//no available current activity exec found: no permission or issue in process execution:
 			$this->pause();
 			return;
 		}else{
-			if(!empty($activityUri)){
-				foreach($currentlyAvailableActivityDefinitions as $availableActivity){
-					if($availableActivity->uriResource == $activityUri){
-						$activityExecution = $this->processExecutionService->initCurrentActivityExecution($this->processExecution, new core_kernel_classes_Resource($activityUri), $currentUser);
+			if(!is_null($this->activityExecution) && $this->activityExecution instanceof core_kernel_classes_Resource){
+				foreach($currentlyAvailableActivityExecutions as $availableActivityExec){
+					if($availableActivityExec->uriResource == $this->activityExecution->uriResource){
+						$activityExecution = $this->processExecutionService->initCurrentActivityExecution($this->processExecution, $this->activityExecution, $currentUser);
 						break;
 					}
 				}
 				if(is_null($activityExecution)){
-					//invalid choice of activity definition:
-					$this->requestedActivityDefinition = null;
+					//invalid choice of activity execution:
+					$this->activityExecution = null;
 //					$invalidActivity = new core_kernel_classes_Resource($activityUri);
 //					throw new wfEngine_models_classes_ProcessExecutionException("invalid choice of activity definition in process browser {$invalidActivity->getLabel()} ({$invalidActivity->uriResource}). \n<br/> The link may be outdated.");
 					$this->redirectToIndex();
 					return;
 				}
 			}else{
-				if(count($currentlyAvailableActivityDefinitions) == 1){
-					$activityExecution = $this->processExecutionService->initCurrentActivityExecution($this->processExecution, array_pop($currentlyAvailableActivityDefinitions), $currentUser);
+				if(count($currentlyAvailableActivityExecutions) == 1){
+					$activityExecution = $this->processExecutionService->initCurrentActivityExecution($this->processExecution, reset($currentlyAvailableActivityExecutions), $currentUser);
 					if(is_null($activityExecution)){
 						throw new wfEngine_models_classes_ProcessExecutionException('cannot initiate the activity execution of the unique next activity definition');
 					}
@@ -168,6 +156,8 @@ class wfEngine_actions_ProcessBrowser extends wfEngine_actions_WfModule{
 		}
 		
 		if(!is_null($activityExecution)){
+			
+			$this->activityExecution = $activityExecution;
 			
 			$browserViewData['activityExecutionUri']= $activityExecution->uriResource;
 			$browserViewData['activityExecutionNonce']= $this->activityExecutionService->getNonce($activityExecution);
@@ -231,7 +221,7 @@ class wfEngine_actions_ProcessBrowser extends wfEngine_actions_WfModule{
 				$this->setData('debugData', array(
 						'Activity' => $activityDefinition,
 						'ActivityExecution' => $activityExecution,
-						'CurrentActivities' => $currentlyAvailableActivityDefinitions,
+						'CurrentActivities' => $currentlyAvailableActivityExecutions,
 						'Services' => $servicesResources,
 						'VariableStack' => wfEngine_models_classes_VariableService::getAll()
 				));
@@ -249,7 +239,7 @@ class wfEngine_actions_ProcessBrowser extends wfEngine_actions_WfModule{
 			return;
 		}
 		
-		$previousActivityDefinitions = $this->processExecutionService->performBackwardTransition($this->processExecution, $this->activityExecution);
+		$previousActivityExecutions = $this->processExecutionService->performBackwardTransition($this->processExecution, $this->activityExecution);
 		
 		//reinitiate nonce:
 		$this->activityExecutionService->createNonce($this->activityExecution);
@@ -257,11 +247,28 @@ class wfEngine_actions_ProcessBrowser extends wfEngine_actions_WfModule{
 		if($this->processExecutionService->isPaused($this->processExecution)){
 			$this->pause();
 		}else{
-			$activityUri = '';
-			if(count($previousActivityDefinitions) == 1){
-				$activityUri = urlencode(array_pop($previousActivityDefinitions)->uriResource);
+			//look if the next activity execs are from the same definition:
+			if(count($previousActivityExecutions) == 1){
+				
+				$this->activityExecution = reset($previousActivityExecutions);
+				
+			}else if(count($previousActivityExecutions) > 1){
+				
+				//check if it is the executions of a single actiivty or not:
+				$activityDefinition = null;
+				foreach($previousActivityExecutions as $previousActivityExecution){
+					if(is_null($activityDefinition)){
+						$activityDefinition = $this->activityExecutionService->getExecutionOf($previousActivityExecution);
+					}else{
+						if($activityDefinition->uriResource != $this->activityExecutionService->getExecutionOf($previousActivityExecution)->uriResource){
+							break;
+						}
+					}
+				}
+				$this->activityExecution = reset($previousActivityExecutions);
+				
 			}
-			$this->redirectToIndex($activityUri);
+			$this->redirectToIndex();
 		}
 	}
 
@@ -272,7 +279,7 @@ class wfEngine_actions_ProcessBrowser extends wfEngine_actions_WfModule{
 			return;
 		}
 		
-		$nextActivityDefinitions = $this->processExecutionService->performTransition($this->processExecution, $this->activityExecution);
+		$nextActivityExecutions = $this->processExecutionService->performTransition($this->processExecution, $this->activityExecution);
 		
 		//reinitiate nonce:
 		$this->activityExecutionService->createNonce($this->activityExecution);
@@ -284,12 +291,28 @@ class wfEngine_actions_ProcessBrowser extends wfEngine_actions_WfModule{
 			$this->pause();
 		}
 		else{
-			//if $nextActivityDefinitions count = 1, pass it to the url:
-			$activityUri = '';
-			if(count($nextActivityDefinitions) == 1){
-				$activityUri = urlencode(array_pop($nextActivityDefinitions)->uriResource);
+			//look if the next activity execs are from the same definition:
+			if(count($nextActivityExecutions) == 1){
+				
+				$this->activityExecution = reset($nextActivityExecutions);
+				
+			}else if(count($nextActivityExecutions) > 1){
+				
+				//check if it is the executions of a single actiivty or not:
+				$activityDefinition = null;
+				foreach($nextActivityExecutions as $nextActivityExecution){
+					if(is_null($activityDefinition)){
+						$activityDefinition = $this->activityExecutionService->getExecutionOf($nextActivityExecution);
+					}else{
+						if($activityDefinition->uriResource != $this->activityExecutionService->getExecutionOf($nextActivityExecution)->uriResource){
+							break;
+						}
+					}
+				}
+				$this->activityExecution = reset($nextActivityExecutions);
+				
 			}
-			$this->redirectToIndex($activityUri);
+			$this->redirectToIndex();
 		}
 	}
 
@@ -298,6 +321,7 @@ class wfEngine_actions_ProcessBrowser extends wfEngine_actions_WfModule{
 		if(!is_null($this->processExecution)){
 			if(!$this->processExecutionService->isPaused($this->processExecution)){
 				$this->processExecutionService->pause($this->processExecution);
+				//set the current activity execution to pause too...
 			}
 		}
 		

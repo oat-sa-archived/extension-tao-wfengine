@@ -207,15 +207,16 @@ class NotificationServiceTestCase extends UnitTestCase {
 			$i = 1;
 			while($i <= 5 ){
 				
-				$activities = $processExecutionService->getAvailableCurrentActivityDefinitions($proc, $this->currentUser);
-				$this->assertEqual(count($activities), 1);
-				$activity = array_shift($activities);
+				$activityExecs = $processExecutionService->getAvailableCurrentActivityExecutions($proc, $this->currentUser);
+				$this->assertEqual(count($activityExecs), 1);
+				$activityExec = reset($activityExecs);
+				$activity = $activityExecutionService->getExecutionOf($activityExec);
 				
 				$this->out("<strong>".$activity->getLabel()."</strong>", true);
 				$this->assertTrue($activity->getLabel() == 'activity'.$i);
 				
 				//init execution
-				$activityExecution = $processExecutionService->initCurrentActivityExecution($proc, $activity, $this->currentUser);
+				$activityExecution = $processExecutionService->initCurrentActivityExecution($proc, $activityExec, $this->currentUser);
 				$this->assertIsA($activityExecution, "core_kernel_classes_Resource");
 				
 				//transition to nextactivity

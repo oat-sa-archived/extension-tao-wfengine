@@ -36,52 +36,48 @@ class wfEngine_actions_Main extends wfEngine_actions_WfModule
 			
 			if(!is_null($processExecution) && $processExecution instanceof core_kernel_classes_Resource){
 				
-				$status = $processExecutionService->getStatus($processExecution);
+				$processStatus = $processExecutionService->getStatus($processExecution);
 				$processDefinition = $processExecutionService->getExecutionOf($processExecution);
-				if(is_null($status) || !$status instanceof core_kernel_classes_Resource){
+				if(is_null($processStatus) || !$processStatus instanceof core_kernel_classes_Resource){
 					continue;
 				}
 					
 				$currentActivities = array();
 				// Bypass ACL Check if possible...
-				if ($status->uriResource == INSTANCE_PROCESSSTATUS_FINISHED) {
+				if ($processStatus->uriResource == INSTANCE_PROCESSSTATUS_FINISHED) {
 					$processViewData[] = array(
 						'type' 			=> $processDefinition->getLabel(),
 						'label' 		=> $processExecution->getLabel(),
 						'uri' 			=> $processExecution->uriResource,
 						'activities'	=> array(array('label' => '', 'uri' => '', 'may_participate' => false, 'finished' => true, 'allowed'=> true)),
-						'status'		=> $status
+						'status'		=> $processStatus
 					);
 					continue;
 
 				}else{
 
-					$isAllowed = false;
-					$userActivityExecutions = array();
-					$availableCurrentActivities = $processExecutionService->getAvailableCurrentActivityDefinitions($processExecution, $currentUser);
-					$availableActivityExecutions = array();
-					foreach ($availableCurrentActivities as $uri => $currentActivity){
+					$currentActivityExecutions = $processExecutionService->getCurrentActivityExecutions($processExecution);
+					
+					foreach ($currentActivityExecutions as $uri => $currentActivityExecution){
 
-						$isAllowed = $activityExecutionService->checkAcl($currentActivity, $currentUser, $processExecution);
-
-						$userActivityExecution = null;
-						$userActivityExecutions = $processExecutionService->getCurrentActivityExecutions($processExecution, $currentActivity, $currentUser);
-						if(count($userActivityExecutions) == 1){
-							$userActivityExecution = array_pop($userActivityExecutions);
+						$isAllowed = $activityExecutionService->checkAcl($currentActivityExecution, $currentUser, $processExecution);
+						
+						$activityExecFinishedByUser = false;
+						$assignedUser = $activityExecutionService->getActivityExecutionUser($currentActivityExecution);
+						if(!is_null($assignedUser) && $assignedUser->uriResource == $currentUser->uriResource){
+							$activityExecFinishedByUser = $activityExecutionService->isFinished($currentActivityExecution);
 						}
-
+						
+						$currentActivity = $activityExecutionService->getExecutionOf($currentActivityExecution);
+						
 						$currentActivities[] = array(
 							'label'				=> $currentActivity->getLabel(),
 							'uri' 				=> $uri,
-							'may_participate'	=> ($status->uriResource != INSTANCE_PROCESSSTATUS_FINISHED && $isAllowed),
-							'finished'			=> ($status->uriResource == INSTANCE_PROCESSSTATUS_FINISHED),
+							'may_participate'	=> ($processStatus->uriResource != INSTANCE_PROCESSSTATUS_FINISHED && $isAllowed),
+							'finished'			=> ($processStatus->uriResource == INSTANCE_PROCESSSTATUS_FINISHED),
 							'allowed'			=> $isAllowed,
-							'activityEnded'		=> (!is_null($userActivityExecution))?$activityExecutionService->isFinished($userActivityExecution):false
+							'activityEnded'		=> $activityExecFinishedByUser
 						);
-					}
-
-					if(!$isAllowed){
-//							continue;
 					}
 
 					$processViewData[] = array(
@@ -89,7 +85,7 @@ class wfEngine_actions_Main extends wfEngine_actions_WfModule
 						'label' 		=> $processExecution->getLabel(),
 						'uri' 			=> $processExecution->uriResource,
 						'activities'	=> $currentActivities,
-						'status'		=> $status
+						'status'		=> $processStatus
 					);
 					
 				}

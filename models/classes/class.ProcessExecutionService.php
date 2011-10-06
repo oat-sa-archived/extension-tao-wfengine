@@ -843,6 +843,8 @@ class wfEngine_models_classes_ProcessExecutionService
 			$newActivities = $this->getNewActivities($processExecution, $activityExecution, $nextConnector);
 		}else{
 			//final activity:
+			$this->finish($processExecution);
+			return;
 		}
 		
 		if($newActivities === false){
@@ -867,15 +869,15 @@ class wfEngine_models_classes_ProcessExecutionService
 		//transition done from here: now get the following activities:
 		
 		//if the connector is not a parallel one, let the user continue in his current branch and prevent the pause:
-		$uniqueNextActivity = null;
+		$uniqueNextActivityExecution = null;
 		if(!is_null($nextConnector)){
 			if($connectorService->getType($nextConnector)->uriResource != INSTANCE_TYPEOFCONNECTORS_PARALLEL){
 				
-				if(count($newActivityExecutions)==1){
+				if(count($newActivityExecutions) == 1){
 					//TODO: could do a double check here: if($newActivities[0] is one of the activty found in the current tokens):
 					
 					if($this->activityExecutionService->checkAcl(reset($newActivityExecutions), $currentUser, $processExecution)){
-						$uniqueNextActivity = $this->activityExecutionService->getExecutionOf(reset($newActivityExecutions));
+						$uniqueNextActivityExecution = reset($newActivityExecutions);
 					}
 				}
 			}
@@ -883,23 +885,22 @@ class wfEngine_models_classes_ProcessExecutionService
 		
 		
 		$setPause = true;
-		$authorizedActivityDefinitions = array();
+		$authorizedActivityExecutions = array();
 		
 		if (!count($newActivities) || $activityDefinitionService->isFinal($activityBeforeTransition)){
 			//there is no following activity so the process ends here:
 			$this->finish($processExecution);
 			return;
-		}elseif(!is_null($uniqueNextActivity)){
+		}elseif(!is_null($uniqueNextActivityExecution)){
 			//we are certain that the next activity would be for the user so return it:
-			$authorizedActivityDefinitions[$uniqueNextActivity->uriResource] = $uniqueNextActivity;
+			$authorizedActivityExecutions[$uniqueNextActivityExecution->uriResource] = $uniqueNextActivityExecution;
 			$setPause = false;
 		}else{
 			
 			foreach ($newActivityExecutions as $activityExecutionAfterTransition){
 				//check if the current user is allowed to execute the activity
 				if($this->activityExecutionService->checkAcl($activityExecutionAfterTransition, $currentUser, $processExecution)){
-					$activityAfterTransition = $this->activityExecutionService->getExecutionOf($activityExecutionAfterTransition);
-					$authorizedActivityDefinitions[$activityAfterTransition->uriResource] = $activityAfterTransition;
+					$authorizedActivityExecutions[$activityExecutionAfterTransition->uriResource] = $activityExecutionAfterTransition;
 					$setPause = false;
 				}
 				else{
@@ -910,14 +911,14 @@ class wfEngine_models_classes_ProcessExecutionService
 		}
 		
 		//finish actions on the authorized acitivty definitions
-		foreach($authorizedActivityDefinitions as $uri => $activityAfterTransition){
+		foreach($authorizedActivityExecutions as $uri => $activityExecutionAfterTransition){
 			
 			// Last but not least ... is the next activity a machine activity ?
 			// if yes, we perform the transition.
 			/*
 			 * @todo to be tested
 			 */
-			
+			$activityAfterTransition = $this->activityExecutionService->getExecutionOf($activityExecutionAfterTransition);
 			if ($activityDefinitionService->isHidden($activityAfterTransition)){
 				//required to create an activity execution here with:
 				
@@ -931,19 +932,20 @@ class wfEngine_models_classes_ProcessExecutionService
 					// $this->redirect(_url('index', 'Main'));
 				// }//already performed above...
 				
-				$activityExecutionResource = $this->initCurrentActivityExecutions($activityAfterTransition, $currentUser, $processExecution);
+				$activityExecutionResource = $this->initCurrentActivityExecutions($activityExecutionAfterTransition, $currentUser, $processExecution);
 				//service not executed? use curl request?
 				if(!is_null($activityExecutionResource)){
-					$followingActivities = $this->performTransition($processExecution, $activityExecutionResource);
-					unset($authorizedActivityDefinitions[$uri]);
-					foreach($followingActivities as $followingActivity){
-						$authorizedActivityDefinitions[$followingActivity->uriResource] = $followingActivity;
+					$followingActivityExecutions = $this->performTransition($processExecution, $activityExecutionResource);
+					unset($authorizedActivityExecutions[$uri]);
+					foreach($followingActivityExecutions as $followingActivityExec){
+						$returnValue[$followingActivityExec->uriResource] = $followingActivityExec;
 					}
 				}else{
 					throw new wfEngine_models_classes_ProcessExecutionException('the activity execution cannot be created for the hidden activity');
 				}
 				
-				
+			}else{
+				$returnValue[$uri] = $activityExecutionAfterTransition;
 			}
 		}
 		
@@ -953,7 +955,6 @@ class wfEngine_models_classes_ProcessExecutionService
 			$this->resume($processExecution);
 		}
 		
-		$returnValue = $authorizedActivityDefinitions;
 		
         // section 127-0-1-1-7a69d871:1322a76df3c:-8000:0000000000002F84 end
 
@@ -967,9 +968,10 @@ class wfEngine_models_classes_ProcessExecutionService
      * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @param  Resource processExecution
      * @param  Resource activityExecution
+     * @param  revertOptions
      * @return array
      */
-    public function performBackwardTransition( core_kernel_classes_Resource $processExecution,  core_kernel_classes_Resource $activityExecution)
+    public function performBackwardTransition( core_kernel_classes_Resource $processExecution,  core_kernel_classes_Resource $activityExecution, $revertOptions = array())
     {
         $returnValue = array();
 
@@ -980,19 +982,18 @@ class wfEngine_models_classes_ProcessExecutionService
 		$newActivityExecutions = $this->activityExecutionService->moveBackward($activityExecution, $processExecution);
 		$count = count($newActivityExecutions);
 		
-		$newActivityDefinitions = array();
-		
 		if($count){
 			//see if needs to go back again
 			foreach($newActivityExecutions as $newActivityExecution){
 				$newActivityDefinition = $this->activityExecutionService->getExecutionOf($newActivityExecution);
 				if($activityService->isHidden($newActivityDefinition) && !$activityService->isInitial($newActivityDefinition)){
-					$newNewActivityDefinitions = $this->performBackwardTransition($processExecution, $newActivityExecution);
-					foreach($newNewActivityDefinitions as $newNewActivityDefinition){
-						$newActivityDefinitions[$newNewActivityDefinition->uriResource] = $newNewActivityDefinition;
+					$newNewActivityExecutions = $this->performBackwardTransition($processExecution, $newActivityExecution);
+					unset($newActivityExecutions[$newActivityExecution->uriResource]);
+					foreach($newNewActivityExecutions as $newNewActivityExec){
+						$returnValue[$newNewActivityExec->uriResource] = $newNewActivityExec;
 					}
 				}else{
-					$newActivityDefinitions[$newActivityDefinition->uriResource] = $newActivityDefinition;
+					$returnValue[$newActivityExecution->uriResource] = $newActivityExecution; 
 				}
 			}
 			
@@ -1001,8 +1002,6 @@ class wfEngine_models_classes_ProcessExecutionService
 			}else{
 				$this->pause($processExecution);
 			}
-			
-			$returnValue = $newActivityDefinitions;
 		}
 		
         // section 127-0-1-1-7a69d871:1322a76df3c:-8000:0000000000002F88 end
@@ -1364,52 +1363,40 @@ class wfEngine_models_classes_ProcessExecutionService
      * @access public
      * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @param  Resource processExecution
-     * @param  Resource activityDefinition
+     * @param  Resource activityExecution
      * @param  Resource user
      * @return core_kernel_classes_Resource
      */
-    public function initCurrentActivityExecution( core_kernel_classes_Resource $processExecution,  core_kernel_classes_Resource $activityDefinition,  core_kernel_classes_Resource $user)
+    public function initCurrentActivityExecution( core_kernel_classes_Resource $processExecution,  core_kernel_classes_Resource $activityExecution,  core_kernel_classes_Resource $user)
     {
         $returnValue = null;
 
         // section 127-0-1-1--6e0edde7:13247ef74e0:-8000:0000000000002FD5 begin
-		
-		if(!is_null($processExecution) && !is_null($activityDefinition) && !is_null($user)){
+		if(!is_null($processExecution) && !is_null($activityExecution) && !is_null($user)){
              
-			//find if the an user is already given a *current* activity execution (among the possible one), given an activity definition:
-			$activityExecutions = $this->getCurrentActivityExecutions($processExecution, $activityDefinition, $user);
+			$assignedUser = $this->activityExecutionService->getActivityExecutionUser($activityExecution);
 			
-			if(empty($activityExecutions)){
-				//not found, so retrieve *available* ones and assign it to the user:
-				$activityExecutionsByActivity = $this->getCurrentActivityExecutions($processExecution, $activityDefinition);
-				foreach($activityExecutionsByActivity as $activityExec){
-					//check access permission:
-					if($this->activityExecutionService->checkAcl($activityExec, $user, $processExecution)){
-						if ($this->activityExecutionService->setActivityExecutionUser($activityExec, $user, true)){
-							$returnValue = $activityExec;
-							$this->activityExecutionService->setStatus($activityExec, 'started'); //or "resumed"?
-							break;
-						}
-					}
+			if(!is_null($assignedUser) && $assignedUser->uriResource == $user->uriResource){
+				
+				$this->activityExecutionService->setStatus($activityExecution, 'resumed');
+				$returnValue = $activityExecution;
+
+			}else if($this->activityExecutionService->checkAcl($activityExecution, $user, $processExecution)){
+				
+				//force assignation to the user:
+				if ($this->activityExecutionService->setActivityExecutionUser($activityExecution, $user, true)) {
+					$this->activityExecutionService->setStatus($activityExecution, 'started');
+					$returnValue = $activityExecution;
 				}
-			}else if(count($activityExecutions) == 1){
-				//the activity execution for the given activity definiiton and the current user is already exists, so retirieve it and set the execution to the status resumed:
-				$currentActivityExec = array_pop($activityExecutions);
-				if($this->activityExecutionService->resume($currentActivityExec)){
-					$returnValue = $currentActivityExec;
-				}
-			}else{
-				throw new wfEngine_models_classes_ProcessExecutionException('too many activity executions found');
+				
 			}
+					
+			//set in the session the current activity uri
+			if(!is_null($returnValue)){
+				Session::setAttribute("activityExecutionUri", $returnValue->uriResource);//for variable service only?
+			}
+			
         }
-		
-		//set in the session the current activity uri
-		if(!is_null($returnValue)){
-			Session::setAttribute("activityExecutionUri", $returnValue->uriResource);//for variable service only?
-		}
-		
-		//if the returnValue is empty here, it means that there is no more activity execution available for that user...
-	
         // section 127-0-1-1--6e0edde7:13247ef74e0:-8000:0000000000002FD5 end
 
         return $returnValue;
@@ -1431,6 +1418,7 @@ class wfEngine_models_classes_ProcessExecutionService
 
         // section 127-0-1-1--6e0edde7:13247ef74e0:-8000:0000000000002FE5 begin
 		
+		//old method to return available current definition:
 		$currentActivityExecutions = $this->getCurrentActivityExecutions($processExecution);
 		$propActivityExecutionCurrentUser = new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_CURRENT_USER);
 		foreach($currentActivityExecutions as $currentActivityExecution){
@@ -1635,14 +1623,29 @@ class wfEngine_models_classes_ProcessExecutionService
      * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @param  Resource processExecution
      * @param  Resource currentUser
-     * @param  boolean checkACL
      * @return array
      */
-    public function getAvailableCurrentActivityExecutions( core_kernel_classes_Resource $processExecution,  core_kernel_classes_Resource $currentUser, $checkACL = false)
+    public function getAvailableCurrentActivityExecutions( core_kernel_classes_Resource $processExecution,  core_kernel_classes_Resource $currentUser)
     {
         $returnValue = array();
 
         // section 127-0-1-1--1b682bf3:132cdc3fef4:-8000:000000000000307A begin
+		
+		$currentActivityExecutions = $this->getCurrentActivityExecutions($processExecution);
+		$propActivityExecutionCurrentUser = new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_CURRENT_USER);
+		foreach($currentActivityExecutions as $currentActivityExecution){
+			$ok = false;
+			$assignedUser = $currentActivityExecution->getOnePropertyValue($propActivityExecutionCurrentUser);
+			if(!is_null($assignedUser)){
+				$ok = ($assignedUser->uriResource == $currentUser->uriResource);
+			}else{
+				$ok = $this->activityExecutionService->checkACL($currentActivityExecution, $currentUser, $processExecution);
+			}
+			
+			if($ok){
+				$returnValue[$currentActivityExecution->uriResource] = $currentActivityExecution;
+			}
+		}	
         // section 127-0-1-1--1b682bf3:132cdc3fef4:-8000:000000000000307A end
 
         return (array) $returnValue;

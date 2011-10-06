@@ -193,15 +193,16 @@ class ProcessExecutionServiceTestCase extends UnitTestCase{
 					$this->assertFalse($this->service->deleteProcessExecution($processInstance, true));
 				}
 				
-				$activities = $this->service->getAvailableCurrentActivityDefinitions($processInstance, $this->currentUser);
-				$this->assertEqual(count($activities), 1);
-				$activity = array_shift($activities);
+				$activitieExecs = $this->service->getCurrentActivityExecutions($processInstance);
+				$this->assertEqual(count($activitieExecs), 1);
+				$activityExecution = reset($activitieExecs);
+				$activity = $activityExecutionService->getExecutionOf($activityExecution);
 				
 				$this->out("<strong>".$activity->getLabel()."</strong>", true);
 				$this->assertTrue($activity->getLabel() == 'activity'.$i);
 				
 				//init execution
-				$activityExecution = $this->service->initCurrentActivityExecution($processInstance, $activity, $this->currentUser);
+				$activityExecution = $this->service->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser);
 				$this->assertNotNull($activityExecution);
 				$activityExecStatus = $activityExecutionService->getStatus($activityExecution);
 				$this->assertNotNull($activityExecStatus);
@@ -226,16 +227,17 @@ class ProcessExecutionServiceTestCase extends UnitTestCase{
 			$j = 0;
 			while($j < $iterationNumber){
 				
-				$activities = $this->service->getAvailableCurrentActivityDefinitions($processInstance, $this->currentUser);
-				$this->assertEqual(count($activities), 1);
-				$activity = array_shift($activities);
+				$activitieExecs = $this->service->getCurrentActivityExecutions($processInstance);
+				$this->assertEqual(count($activitieExecs), 1);
+				$activityExecution = reset($activitieExecs);
+				$activity = $activityExecutionService->getExecutionOf($activityExecution);
 				
 				$this->out("<strong>".$activity->getLabel()."</strong>", true);
 				$index = $iterationNumber - $j;
 				$this->assertEqual($activity->getLabel(), "activity$index");
 				
 				//init execution
-				$activityExecution = $this->service->initCurrentActivityExecution($processInstance, $activity, $this->currentUser);
+				$activityExecution = $this->service->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser);
 				$this->assertNotNull($activityExecution);
 				$activityExecStatus = $activityExecutionService->getStatus($activityExecution);
 				$this->assertNotNull($activityExecStatus);
@@ -266,16 +268,16 @@ class ProcessExecutionServiceTestCase extends UnitTestCase{
 					$this->assertFalse($this->service->deleteProcessExecution($processInstance, true));
 				}
 				
-				$activities = $this->service->getAvailableCurrentActivityDefinitions($processInstance, $this->currentUser);
-				
-				$this->assertEqual(count($activities), 1);
-				$activity = array_shift($activities);
+				$activitieExecs = $this->service->getCurrentActivityExecutions($processInstance);
+				$this->assertEqual(count($activitieExecs), 1);
+				$activityExecution = reset($activitieExecs);
+				$activity = $activityExecutionService->getExecutionOf($activityExecution);
 				
 				$this->out("<strong>".$activity->getLabel()."</strong>", true);
 				$this->assertTrue($activity->getLabel() == 'activity'.$i);
 				
 				//init execution
-				$activityExecution = $this->service->initCurrentActivityExecution($processInstance, $activity, $this->currentUser);
+				$activityExecution = $this->service->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser);
 				$this->assertNotNull($activityExecution);
 				$activityExecStatus = $activityExecutionService->getStatus($activityExecution);
 				$this->assertNotNull($activityExecStatus);
@@ -413,22 +415,29 @@ class ProcessExecutionServiceTestCase extends UnitTestCase{
 		$loginProperty = new core_kernel_classes_Property(PROPERTY_USER_LOGIN);
 		for($i=1; $i <= $numberActivities; $i++){
 			
-			$activities = $this->service->getAvailableCurrentActivityDefinitions($processInstance, $this->currentUser);
-			$countActivities = count($activities);
+			$activitieExecs = $this->service->getCurrentActivityExecutions($processInstance);
+			$countActivities = count($activitieExecs);
 			$activity = null;
+			$activityExecution = null;
 			if($countActivities > 1){
 				//select one of the available activities in the parallel branch:
-				foreach($activities as $activityUri => $act){
-					if(isset($prallelActivitiesArray[$activityUri])){
-						if($prallelActivitiesArray[$activityUri] > 0){
-							$prallelActivitiesArray[$activityUri]--;
-							$activity = $act;
-							break;
+				foreach($activitieExecs as $activityExecUri => $activityExec){
+					if(!$activityExecutionService->isFinished($activityExec)){
+						$activityDefinition = $activityExecutionService->getExecutionOf($activityExec);
+						$activityUri = $activityDefinition->uriResource;
+						if(isset($prallelActivitiesArray[$activityUri])){
+							if($prallelActivitiesArray[$activityUri] > 0){
+								$prallelActivitiesArray[$activityUri]--;
+								$activityExecution = $activityExec;
+								$activity = $activityDefinition;
+								break;
+							}
 						}
 					}
 				}
 			}else if($countActivities == 1){
-				$activity = reset($activities);
+				$activityExecution = reset($activitieExecs);
+				$activity = $activityExecutionService->getExecutionOf($activityExecution);
 			}else{
 				
 				$this->fail('no current activity definition found for the iteration '.$i);
@@ -440,7 +449,7 @@ class ProcessExecutionServiceTestCase extends UnitTestCase{
 			
 			
 			//init execution
-			$activityExecution = $this->service->initCurrentActivityExecution($processInstance, $activity, $this->currentUser);
+			$activityExecution = $this->service->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser);
 			$this->assertNotNull($activityExecution);
 			if($i == 1){
 				//set value of the parallel thread:
@@ -500,14 +509,47 @@ class ProcessExecutionServiceTestCase extends UnitTestCase{
 		$iterationNumber = 2;
 		while($j < $iterationNumber){
 
-			$activities = $this->service->getAvailableCurrentActivityDefinitions($processInstance, $this->currentUser);
-			$this->assertEqual(count($activities), 1);
-			$activity = array_shift($activities);
+			$activitieExecs = $this->service->getCurrentActivityExecutions($processInstance);
+			$activityExecution = null;
+			$activity = null;
+			switch($j){
+				case 0:
+					
+					$this->assertEqual(count($activitieExecs), 1);//check
+					
+					$activityExecution = reset($activitieExecs);
+					$activity = $activityExecutionService->getExecutionOf($activityExecution);
+			
+					break;
+				case 1:
+					
+					$this->assertEqual(count($activitieExecs), $parallelCount1 + $parallelCount2);//check
+					
+					$activity = $parallelActivity2;
+					foreach($this->service->getCurrentActivityExecutions($processInstance, $activity) as $activityExec){
+						if($activityExecutionService->getActivityExecutionUser($activityExec)->uriResource == $this->currentUser->uriResource){
+							$activityExecution = $activityExec;
+						}
+					}
+					
+					if(is_null($activityExecution)){
+						$activity = $parallelActivity1;
+						foreach ($this->service->getCurrentActivityExecutions($processInstance, $activity) as $activityExec) {
+							if ($activityExecutionService->getActivityExecutionUser($activityExec)->uriResource == $this->currentUser->uriResource) {
+								$activityExecution = $activityExec;
+							}
+						}
+					}
+					
+					$this->assertNotNull($activityExecution);
+					
+					break;
+			}
 
 			$this->out("<strong>".$activity->getLabel()."</strong>", true);
 
 			//init execution
-			$activityExecution = $this->service->initCurrentActivityExecution($processInstance, $activity, $this->currentUser);
+			$activityExecution = $this->service->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser);
 			$this->assertNotNull($activityExecution);
 			$activityExecStatus = $activityExecutionService->getStatus($activityExecution);
 			$this->assertNotNull($activityExecStatus);
@@ -534,7 +576,7 @@ class ProcessExecutionServiceTestCase extends UnitTestCase{
 		}
 		
 		$this->out("<strong>Forward transitions again:</strong>", true);
-//		var_dump($this->service->getAllActivityExecutions($processInstance));
+		
 		$currentActivityExecutions = $this->service->getCurrentActivityExecutions($processInstance);
 		
 		$currentActivityExecutionsCount = count($currentActivityExecutions);
@@ -563,22 +605,11 @@ class ProcessExecutionServiceTestCase extends UnitTestCase{
 					$this->fail("unable to login user $login<br>");
 				}
 				
-				//check if the activity definition is among the currently available ones:
-				$activityAvailable = false;
-				$activities = $this->service->getAvailableCurrentActivityDefinitions($processInstance, $this->currentUser);
-				foreach($activities as $activity){
-					if($activity->uriResource == $activityDefinition->uriResource){
-						$activityAvailable = true;
-						break;
-					}
-				}
-				$this->assertTrue($activityAvailable);
-				
 				$iterationNo = $i+1;
 				$this->out("<strong>Iteration $iterationNo: ".$activityDefinition->getLabel()."</strong>", true);
 				
 				//execute activity:
-				$activityExecution = $this->service->initCurrentActivityExecution($processInstance, $activityDefinition, $this->currentUser);
+				$activityExecution = $this->service->initCurrentActivityExecution($processInstance, $currentActivityExecution, $this->currentUser);
 				$this->assertNotNull($activityExecution);
 				$activityExecStatus = $activityExecutionService->getStatus($activityExecution);
 				$this->assertNotNull($activityExecStatus);
@@ -595,15 +626,16 @@ class ProcessExecutionServiceTestCase extends UnitTestCase{
 			}
 		}
 		
-		$activities = $this->service->getAvailableCurrentActivityDefinitions($processInstance, $this->currentUser);
-		$this->assertEqual(count($activities), 1);
-		$activity = array_shift($activities);
+		$activitieExecs = $this->service->getCurrentActivityExecutions($processInstance);
+		$this->assertEqual(count($activitieExecs), 1);
+		$activityExecution = reset($activitieExecs);
+		$activity = $activityExecutionService->getExecutionOf($activityExecution);
 		$this->assertEqual($activity->uriResource, $joinActivity->uriResource);
 		
 		$this->out("<strong>Executing last activity: ".$activity->getLabel()."</strong>", true);
 			
 		//init execution
-		$activityExecution = $this->service->initCurrentActivityExecution($processInstance, $activity, $this->currentUser);
+		$activityExecution = $this->service->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser);
 		$this->assertNotNull($activityExecution);
 
 		$activityExecStatus = $activityExecutionService->getStatus($activityExecution);

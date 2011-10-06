@@ -208,6 +208,7 @@ class wfEngine_models_classes_ActivityService
         $returnValue = (bool) false;
 
         // section 127-0-1-1-4ecae359:132158f9a4c:-8000:0000000000002EA3 begin
+		//to be cached!!
         $isIntial = $activity->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_ACTIVITIES_ISINITIAL));
         if(!is_null($isIntial) && $isIntial instanceof core_kernel_classes_Resource){
             if($isIntial->uriResource == GENERIS_TRUE){
@@ -304,6 +305,7 @@ class wfEngine_models_classes_ActivityService
         $returnValue = (bool) false;
 
         // section 127-0-1-1-52a9110:13219ee179c:-8000:0000000000002EBE begin
+		//to be cached!
         $propHidden = new core_kernel_classes_Property(PROPERTY_ACTIVITIES_ISHIDDEN);
         $hidden = $activity->getOnePropertyValue($propHidden);
         if(!is_null($hidden) && $hidden instanceof core_kernel_classes_Resource){
