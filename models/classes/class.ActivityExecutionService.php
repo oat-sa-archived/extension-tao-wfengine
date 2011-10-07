@@ -1264,10 +1264,17 @@ class wfEngine_models_classes_ActivityExecutionService
 			$this->setStatus($activityExecution, 'closed');
 			
 			foreach($previousActivityExecutions as $previousActivityExecution) {
+				
 				$previousActivityExecution->removePropertyValues($followingProperty);
 				
 				//manage the additional option to full revert (default behaviour), full merge or partial merge (i.e. redifine some process variable values)
-				//...
+				if(!$revert){
+					$overwritingVariables = array();
+					if(isset($newVariables[$previousActivityExecution->uriResource])){
+						$overwritingVariables = $newVariables[$previousActivityExecution->uriResource];
+					}
+					$this->mergeActivityExecutionVariables($previousActivityExecution, array($activityExecution), $processExecution, $overwritingVariables);
+				}
 				
 				//change the status of the activity executions to 'paused' by default or nothing if not required (parallel branch):
 				if(!isset($notResumed[$previousActivityExecution->uriResource])){
@@ -1342,9 +1349,10 @@ class wfEngine_models_classes_ActivityExecutionService
      * @param  Resource newActivityExecution
      * @param  array currentActivityExecutions
      * @param  Resource processExecution
+     * @param  array newVariables
      * @return core_kernel_classes_Resource
      */
-    public function mergeActivityExecutionVariables( core_kernel_classes_Resource $newActivityExecution, $currentActivityExecutions,  core_kernel_classes_Resource $processExecution = null)
+    public function mergeActivityExecutionVariables( core_kernel_classes_Resource $newActivityExecution, $currentActivityExecutions,  core_kernel_classes_Resource $processExecution = null, $newVariables = array())
     {
         $returnValue = null;
 
@@ -1368,20 +1376,20 @@ class wfEngine_models_classes_ActivityExecutionService
                 foreach($tokenVar['value'] as $value){
                     if(array_key_exists($key, $mergedVars)){
                         if(is_array($mergedVars[$key])){
-                            $found = false;
+                            $alreadyExists = false;
                             foreach($mergedVars[$key] as $tValue){
                                 if($tValue instanceof core_kernel_classes_Resource && $value instanceof core_kernel_classes_Resource){
                                     if($tValue->uriResource == $value->uriResource){
-                                        $found = true;
+                                        $alreadyExists = true;
                                         break;
                                     }
                                 }
                                 else if($tValue == $value){
-                                    $found = true;
+                                    $alreadyExists = true;
                                     break;
                                 }
                             }
-                            if(!$found){
+                            if(!$alreadyExists){
                                 $mergedVars[$key][] = $value;
                             }
                         }
@@ -1403,8 +1411,12 @@ class wfEngine_models_classes_ActivityExecutionService
                 }
             }
         }
-
-        //create the merged token
+		
+		if(!empty($newVariables)){
+			$mergedVars = array_merge($mergedVars, $newVariables);
+		}
+		
+        //store merged values:
         if(count($mergedVars) > 0){
 			
 			$variableService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_VariableService');
