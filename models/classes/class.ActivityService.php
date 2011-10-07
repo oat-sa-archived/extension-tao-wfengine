@@ -74,6 +74,19 @@ class wfEngine_models_classes_ActivityService
 		if($this->cache){
 			
 			switch($methodName):
+//				case __CLASS__.'::isInitial':
+//				case __CLASS__.'::isHidden':
+				case __CLASS__.'::getNextConnectors':{
+					if(isset($args[0]) && $args[0] instanceof core_kernel_classes_Resource){
+						$activity = $args[0];
+						if(!isset($this->instancesCache[$activity->uriResource])){
+							$this->instancesCache[$activity->uriResource] = array();
+						}
+						$this->instancesCache[$activity->uriResource][$methodName] = $value;
+						$returnValue = true;
+					}
+					break;
+				}	
 				case __CLASS__.'::getAclModes':{
 					if(is_array($value) && !empty($value)){
 						$this->instancesCache[$methodName] = $value;
@@ -105,6 +118,18 @@ class wfEngine_models_classes_ActivityService
 		if($this->cache){
 			
 			switch($methodName):
+//				case __CLASS__.'::isInitial':
+//				case __CLASS__.'::isHidden':
+				case __CLASS__.'::getNextConnectors':{
+					if(isset($args[0]) && $args[0] instanceof core_kernel_classes_Resource){
+						$activity = $args[0];
+						if(isset($this->instancesCache[$activity->uriResource])
+						&& isset($this->instancesCache[$activity->uriResource][$methodName])){
+							$returnValue = $this->instancesCache[$activity->uriResource][$methodName];
+						}
+					}
+					break;
+				}	
 				case __CLASS__.'::getAclModes':{
 					if(isset($this->instancesCache[$methodName])){
 						$returnValue = $this->instancesCache[$methodName];
@@ -208,13 +233,19 @@ class wfEngine_models_classes_ActivityService
         $returnValue = (bool) false;
 
         // section 127-0-1-1-4ecae359:132158f9a4c:-8000:0000000000002EA3 begin
-		//to be cached!!
-        $isIntial = $activity->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_ACTIVITIES_ISINITIAL));
-        if(!is_null($isIntial) && $isIntial instanceof core_kernel_classes_Resource){
-            if($isIntial->uriResource == GENERIS_TRUE){
-                $returnValue = true;
-            }
-        }
+		$cachedValue = $this->getCache(__METHOD__, array($activity));
+		if(!is_null($cachedValue) && is_bool($cachedValue)){
+			$returnValue = $cachedValue;
+		}else{
+			$isIntial = $activity->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_ACTIVITIES_ISINITIAL));
+			if(!is_null($isIntial) && $isIntial instanceof core_kernel_classes_Resource){
+				if($isIntial->uriResource == GENERIS_TRUE){
+					$returnValue = true;
+				}
+			}
+			$this->setCache(__METHOD__, array($activity), $returnValue);
+		}
+        
         // section 127-0-1-1-4ecae359:132158f9a4c:-8000:0000000000002EA3 end
 
         return (bool) $returnValue;
@@ -256,16 +287,22 @@ class wfEngine_models_classes_ActivityService
 
         // section 127-0-1-1-4ecae359:132158f9a4c:-8000:0000000000002EAB begin
 		
-		//to be cached!!
+		$cachedValue = $this->getCache(__METHOD__, array($activity));
+		if(!is_null($cachedValue) && is_array($cachedValue)){
+			$returnValue = $cachedValue;
+		}else{
+			$connectorClass = new core_kernel_classes_Class(CLASS_CONNECTORS);
+			$cardinalityClass = new core_kernel_classes_Class(CLASS_ACTIVITYCARDINALITY);
+			$activityCardinalities = $cardinalityClass->searchInstances(array(PROPERTY_ACTIVITYCARDINALITY_ACTIVITY => $activity->uriResource), array('like' => false)); //note: count()>1 only 
+			$previousActivities = array_merge(array($activity->uriResource), array_keys($activityCardinalities));
+			$nextConnectors = $connectorClass->searchInstances(array(PROPERTY_CONNECTORS_PREVIOUSACTIVITIES => $previousActivities), array('like' => true, 'recursive' => 0));
+			foreach ($nextConnectors as $nextConnector) {
+				$returnValue[$nextConnector->uriResource] = $nextConnector;
+			}
+			
+			$this->getCache(__METHOD__, array($activity), $returnValue);
+		}
 		
-		$connectorClass = new core_kernel_classes_Class(CLASS_CONNECTORS);
-		$cardinalityClass = new core_kernel_classes_Class(CLASS_ACTIVITYCARDINALITY);
-		$activityCardinalities = $cardinalityClass->searchInstances(array(PROPERTY_ACTIVITYCARDINALITY_ACTIVITY => $activity->uriResource), array('like' => false));//note: count()>1 only 
-		$previousActivities = array_merge(array($activity->uriResource), array_keys($activityCardinalities));
-        $nextConnectors = $connectorClass->searchInstances(array(PROPERTY_CONNECTORS_PREVIOUSACTIVITIES => $previousActivities), array('like' => true, 'recursive' => 0));
-        foreach ($nextConnectors as $nextConnector){
-			$returnValue[$nextConnector->uriResource] = $nextConnector;
-        }
         // section 127-0-1-1-4ecae359:132158f9a4c:-8000:0000000000002EAB end
 
         return (array) $returnValue;
@@ -305,14 +342,20 @@ class wfEngine_models_classes_ActivityService
         $returnValue = (bool) false;
 
         // section 127-0-1-1-52a9110:13219ee179c:-8000:0000000000002EBE begin
-		//to be cached!
-        $propHidden = new core_kernel_classes_Property(PROPERTY_ACTIVITIES_ISHIDDEN);
-        $hidden = $activity->getOnePropertyValue($propHidden);
-        if(!is_null($hidden) && $hidden instanceof core_kernel_classes_Resource){
-            if($hidden->uriResource == GENERIS_TRUE){
-                $returnValue = true;
-            }
-        }
+		$cachedValue = $this->getCache(__METHOD__, array($activity));
+		if(!is_null($cachedValue) && is_bool($cachedValue)){
+			$returnValue = $cachedValue;
+		}else{
+			$propHidden = new core_kernel_classes_Property(PROPERTY_ACTIVITIES_ISHIDDEN);
+			$hidden = $activity->getOnePropertyValue($propHidden);
+			if (!is_null($hidden) && $hidden instanceof core_kernel_classes_Resource) {
+				if ($hidden->uriResource == GENERIS_TRUE) {
+					$returnValue = true;
+				}
+			}
+			$this->setCache(__METHOD__, array($activity), $returnValue);
+		}
+        
         // section 127-0-1-1-52a9110:13219ee179c:-8000:0000000000002EBE end
 
         return (bool) $returnValue;

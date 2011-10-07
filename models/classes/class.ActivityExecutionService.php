@@ -131,8 +131,9 @@ class wfEngine_models_classes_ActivityExecutionService
 			
 			switch($methodName):
 				case __CLASS__.'::getExecutionOf':
-				case __CLASS__.'::getStatus':{
-					if($args[0] instanceof core_kernel_classes_Resource){
+				case __CLASS__.'::getStatus':
+				case __CLASS__.'::getActivityExecutionUser':{
+					if(isset($args[0]) && $args[0] instanceof core_kernel_classes_Resource){
 						$activityExecution = $args[0];
 						if(!isset($this->instancesCache[$activityExecution->uriResource])){
 							$this->instancesCache[$activityExecution->uriResource] = array();
@@ -187,7 +188,8 @@ class wfEngine_models_classes_ActivityExecutionService
 		if($this->cache){
 			switch($methodName):
 				case __CLASS__.'::getExecutionOf':
-				case __CLASS__.'::getStatus':{
+				case __CLASS__.'::getStatus':
+				case __CLASS__.'::getActivityExecutionUser':{
 					if(isset($args[0]) && $args[0] instanceof core_kernel_classes_Resource){
 						$activityExecution = $args[0];
 						if(isset($this->instancesCache[$activityExecution->uriResource])
@@ -477,7 +479,7 @@ class wfEngine_models_classes_ActivityExecutionService
      * @param  Resource processExecution
      * @return boolean
      */
-    public function checkAcl( core_kernel_classes_Resource $activityExecution,  core_kernel_classes_Resource $currentUser,  core_kernel_classes_Resource $processExecution)
+    public function checkAcl( core_kernel_classes_Resource $activityExecution,  core_kernel_classes_Resource $currentUser,  core_kernel_classes_Resource $processExecution = null)
     {
         $returnValue = (bool) false;
 
@@ -717,24 +719,21 @@ class wfEngine_models_classes_ActivityExecutionService
         $returnValue = array();
 
         // section 127-0-1-1--4b38ca35:1323a4c748d:-8000:0000000000002F9B begin
-		
+		$variableService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_VariableService');
 		$activityExecutionVariables = $activityExecution->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_VARIABLES));
 		if(!is_null($activityExecutionVariables)){
 			$tokenVarKeys = @unserialize($activityExecutionVariables);
 			if($tokenVarKeys !== false){
 				if(is_array($tokenVarKeys)){
-					$processVariablesClass = new core_kernel_classes_Class(CLASS_PROCESSVARIABLES);
 					foreach($tokenVarKeys as $key){
-						$processVariables = $processVariablesClass->searchInstances(array(PROPERTY_PROCESSVARIABLES_CODE => $key), array('like' => false));
-						if(count($processVariables) == 1) {//not necessary
-							$property = new core_kernel_classes_Property(array_shift($processVariables)->uriResource);
+						$processVariable = $variableService->getProcessVariable($key);
+						if(!is_null($processVariable)){
+							$property = new core_kernel_classes_Property($processVariable->uriResource);
 							$returnValue[] = array(
 									'code'			=> $key,
 									'propertyUri'	=> $property->uriResource,
 									'value'			=> $activityExecution->getPropertyValues($property)
 								);
-						}else{
-							throw new wfEngine_models_classes_ProcessExecutionException("More than one process variable share the same code ({$key})");
 						}
 					}
 				}
@@ -921,6 +920,9 @@ class wfEngine_models_classes_ActivityExecutionService
 			}
 		}
 		
+		if($returnValue){
+			$this->setCache(__CLASS__.'::getActivityExecutionUser', array($activityExecution), $user);
+		}
         // section 127-0-1-1--6e0edde7:13247ef74e0:-8000:0000000000002FE0 end
 
         return (bool) $returnValue;
@@ -1002,7 +1004,14 @@ class wfEngine_models_classes_ActivityExecutionService
         $returnValue = null;
 
         // section 127-0-1-1-6bd62662:1324d269203:-8000:0000000000002FF9 begin
-		$returnValue = $activityExecution->getOnePropertyValue($this->currentUserProperty);
+		$cacheValue = $this->getCache(__METHOD__, array($activityExecution));
+		if(!is_null($cacheValue)){
+			$returnValue = $cacheValue;
+		}else{
+			$returnValue = $activityExecution->getOnePropertyValue($this->currentUserProperty);
+			$this->setCache(__METHOD__, array($activityExecution), $returnValue);
+		}
+		
         // section 127-0-1-1-6bd62662:1324d269203:-8000:0000000000002FF9 end
 
         return $returnValue;
@@ -1151,8 +1160,9 @@ class wfEngine_models_classes_ActivityExecutionService
                     }
                     	
                     //create the token for next activity
-                    $newActivityExecution = $this->mergeActivityExecutionVariables($oldActivityExecutions, $nextActivity, $processExecution);
-                    if(!is_null($newActivityExecution)){
+					$newActivityExecution = $this->createActivityExecution($nextActivity, $processExecution);
+                    $variableMerged = $this->mergeActivityExecutionVariables($newActivityExecution, $oldActivityExecutions, $processExecution);
+                    if($variableMerged){
 						foreach ($oldActivityExecutions as $oldActivityExecution){
 							$oldActivityExecution->setPropertyValue(new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_FOLLOWING), $newActivityExecution->uriResource);
 							$newActivityExecution->setPropertyValue(new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_PREVIOUS), $oldActivityExecution->uriResource);
@@ -1215,6 +1225,11 @@ class wfEngine_models_classes_ActivityExecutionService
         // section 127-0-1-1-6bd62662:1324d269203:-8000:000000000000300A begin
 		$processExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessExecutionService');
 		
+		//fill options:
+		$revert = isset($revertOptions['revert'])?(bool)$revertOptions['revert']:true;
+		$newVariables = (isset($revertOptions['newVariables']) && is_array($revertOptions['newVariables']))?$revertOptions['newVariables']:array();
+		$notResumed = (isset($revertOptions['notResumed']) && is_array($revertOptions['notResumeds']))?$revertOptions['notResumed']:array();
+		
 		//check if the previous connector is not parallel:
 		$previousProperty = new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_PREVIOUS);
 		$followingProperty = new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_FOLLOWING);
@@ -1255,7 +1270,10 @@ class wfEngine_models_classes_ActivityExecutionService
 				//...
 				
 				//change the status of the activity executions to 'paused' by default or nothing if not required (parallel branch):
-				$this->setStatus($previousActivityExecution, 'paused');
+				if(!isset($notResumed[$previousActivityExecution->uriResource])){
+					$this->setStatus($previousActivityExecution, 'paused');
+				}
+				
 			}
 			
 			if($processExecutionService->setCurrentActivityExecutions($processExecution, $previousActivityExecutions)){
@@ -1321,16 +1339,20 @@ class wfEngine_models_classes_ActivityExecutionService
      *
      * @access public
      * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @param  Resource newActivityExecution
      * @param  array currentActivityExecutions
-     * @param  Resource newActivityDefinition
      * @param  Resource processExecution
      * @return core_kernel_classes_Resource
      */
-    public function mergeActivityExecutionVariables($currentActivityExecutions,  core_kernel_classes_Resource $newActivityDefinition,  core_kernel_classes_Resource $processExecution)
+    public function mergeActivityExecutionVariables( core_kernel_classes_Resource $newActivityExecution, $currentActivityExecutions,  core_kernel_classes_Resource $processExecution = null)
     {
         $returnValue = null;
 
         // section 127-0-1-1--5016dfa1:1324df105c5:-8000:000000000000300B begin
+		
+		if(is_null($processExecution)){
+			$processExecution = $this->getRelatedProcessExecution($newActivityExecution);
+		}
 		
 		//get tokens variables
         $allVars = array();
@@ -1383,24 +1405,22 @@ class wfEngine_models_classes_ActivityExecutionService
         }
 
         //create the merged token
-		$newActivityExecution = $this->createActivityExecution($newActivityDefinition, $processExecution);
         if(count($mergedVars) > 0){
+			
+			$variableService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_VariableService');
             $keys = array();
-			$processVariablesClass = new core_kernel_classes_Class(CLASS_PROCESSVARIABLES);
 			//TODO: use Resource::setPropertyValues() here when implemented to improve performance:
             foreach($mergedVars as $code => $values){
-				$processVariables = $processVariablesClass->searchInstances(array(PROPERTY_PROCESSVARIABLES_CODE => $code), array('like' => false, 'recursive' => 0));
-                if(!empty($processVariables)){
-                    if(count($processVariables) == 1) {
-                        if(is_array($values)){
-                            foreach($values as $value){
-                                $newActivityExecution->setPropertyValue(new core_kernel_classes_Property(array_shift($processVariables)->uriResource), $value);
-                            }
-                        }
-                        else{
-                            $newActivityExecution->setPropertyValue(new core_kernel_classes_Property(array_shift($processVariables)->uriResource), $values);
-                        }
-                    }
+				$processVariable = $variableService->getProcessVariable($code);
+                if(!is_null($processVariable)){
+					if(is_array($values)){
+						foreach($values as $value){
+							$newActivityExecution->setPropertyValue(new core_kernel_classes_Property($processVariable->uriResource), $value);
+						}
+					}
+					else{
+						$newActivityExecution->setPropertyValue(new core_kernel_classes_Property($processVariable->uriResource), $values);
+					}
                 }
                 $keys[] = $code;
             }
@@ -1408,9 +1428,7 @@ class wfEngine_models_classes_ActivityExecutionService
             $newActivityExecution->setPropertyValue(new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_VARIABLES), serialize($keys));
         }
 		
-		if($processExecution->setPropertyValue($this->processInstanceActivityExecutionsProperty, $newActivityExecution->uriResource)){
-			$returnValue = $newActivityExecution;
-		}
+		$returnValue =  true;
 		
         // section 127-0-1-1--5016dfa1:1324df105c5:-8000:000000000000300B end
 

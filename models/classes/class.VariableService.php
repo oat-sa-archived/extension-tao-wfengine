@@ -22,6 +22,13 @@ if (0 > version_compare(PHP_VERSION, '5')) {
  */
 require_once('tao/models/classes/class.GenerisService.php');
 
+/**
+ * include tao_models_classes_ServiceCacheInterface
+ *
+ * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+ */
+require_once('tao/models/classes/interface.ServiceCacheInterface.php');
+
 /* user defined includes */
 // section -87--2--3--76--7eb229c2:12916be1ece:-8000:0000000000003C05-includes begin
 // section -87--2--3--76--7eb229c2:12916be1ece:-8000:0000000000003C05-includes end
@@ -40,6 +47,7 @@ require_once('tao/models/classes/class.GenerisService.php');
  */
 class wfEngine_models_classes_VariableService
     extends tao_models_classes_GenerisService
+        implements tao_models_classes_ServiceCacheInterface
 {
     // --- ASSOCIATIONS ---
 
@@ -47,6 +55,99 @@ class wfEngine_models_classes_VariableService
     // --- ATTRIBUTES ---
 
     // --- OPERATIONS ---
+
+    /**
+     * Short description of method setCache
+     *
+     * @access public
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @param  string methodName
+     * @param  array args
+     * @param  array value
+     * @return boolean
+     */
+    public function setCache($methodName, $args = array(), $value = array())
+    {
+        $returnValue = (bool) false;
+
+        // section 127-0-1-1-3a6b44f1:1326d50ba09:-8000:00000000000065CB begin
+		
+		if($this->cache){
+			switch($methodName):
+				case __CLASS__.'::getProcessVariable':{
+					if(isset($args[0]) && is_string($args[0]) && $value instanceof core_kernel_classes_Resource){
+						$code = $args[0];
+						if(!isset($this->instancesCache[$methodName])){
+							$this->instancesCache[$methodName] = array();
+						}
+						$this->instancesCache[$methodName][$code] = $value;
+						$returnValue = true;
+					}
+					break;
+				}	
+			endswitch;
+		}
+		
+        // section 127-0-1-1-3a6b44f1:1326d50ba09:-8000:00000000000065CB end
+
+        return (bool) $returnValue;
+    }
+	
+
+    /**
+     * Short description of method getCache
+     *
+     * @access public
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @param  string methodName
+     * @param  array args
+     * @return mixed
+     */
+    public function getCache($methodName, $args = array())
+    {
+        $returnValue = null;
+
+        // section 127-0-1-1-3a6b44f1:1326d50ba09:-8000:00000000000065D0 begin
+		// 
+		if($this->cache){
+			
+			switch($methodName):
+				case __CLASS__.'::getProcessVariable':{
+					if(isset($args[0]) && is_string($args[0])){
+						$code = $args[0];
+						if(isset($this->instancesCache[$methodName])
+						&& isset($this->instancesCache[$methodName][$code])){
+							$returnValue = $this->instancesCache[$methodName][$code];
+						}
+					}
+					break;
+				}	
+			endswitch;
+			
+		}
+        // section 127-0-1-1-3a6b44f1:1326d50ba09:-8000:00000000000065D0 end
+
+        return $returnValue;
+    }
+
+    /**
+     * Short description of method clearCache
+     *
+     * @access public
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @param  string methodName
+     * @param  array args
+     * @return boolean
+     */
+    public function clearCache($methodName = '', $args = array())
+    {
+        $returnValue = (bool) false;
+
+        // section 127-0-1-1-3a6b44f1:1326d50ba09:-8000:00000000000065D4 begin
+        // section 127-0-1-1-3a6b44f1:1326d50ba09:-8000:00000000000065D4 end
+
+        return (bool) $returnValue;
+    }
 
     /**
      * save a list of process variable by key/value pair
@@ -289,18 +390,25 @@ class wfEngine_models_classes_VariableService
         $returnValue = null;
 
         // section 127-0-1-1--6e15d8e:132297dc60d:-8000:0000000000002F0C begin
-		
-		$processVariableClass =  new core_kernel_classes_Class(CLASS_PROCESSVARIABLES);
-		$variables = $processVariableClass->searchInstances(array(PROPERTY_PROCESSVARIABLES_CODE => $code), array('like' => false, 'recursive' => 0));
-		if(!empty($variables)){
-			$returnValue = array_shift($variables);
-		}else if($forceCreation){
-			$returnValue = $this->createProcessVariable($code, $code);
-			if(is_null($returnValue)){
-				throw new Exception("the process variable ({$code}) cannot be created.");
+		$cachedValue = $this->getCache(__METHOD__, array($code));
+		if(!is_null($cachedValue) && $cachedValue instanceof core_kernel_classes_Resource){
+			$returnValue = $cachedValue;
+		}else{
+			$processVariableClass = new core_kernel_classes_Class(CLASS_PROCESSVARIABLES);
+			$variables = $processVariableClass->searchInstances(array(PROPERTY_PROCESSVARIABLES_CODE => $code), array('like' => false, 'recursive' => 0));
+			if (!empty($variables)) {
+				$returnValue = reset($variables);
+			} else if ($forceCreation) {
+				$returnValue = $this->createProcessVariable($code, $code);
+				if (is_null($returnValue)) {
+					throw new Exception("the process variable ({$code}) cannot be created.");
+				}
+			}
+			
+			if(!is_null($cachedValue) && $cachedValue instanceof core_kernel_classes_Resource){
+				$this->setCache(__METHOD__, array($code), $returnValue);
 			}
 		}
-		
         // section 127-0-1-1--6e15d8e:132297dc60d:-8000:0000000000002F0C end
 
         return $returnValue;
@@ -401,6 +509,23 @@ class wfEngine_models_classes_VariableService
         // section 127-0-1-1--1b682bf3:132cdc3fef4:-8000:0000000000003096 end
 
         return (bool) $returnValue;
+    }
+
+    /**
+     * Short description of method __construct
+     *
+     * @access public
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @return mixed
+     */
+    public function __construct()
+    {
+        // section 127-0-1-1-ce05865:132dda78a59:-8000:00000000000030A8 begin
+		
+		$this->instancesCache = array();
+		$this->cache = true;
+		
+        // section 127-0-1-1-ce05865:132dda78a59:-8000:00000000000030A8 end
     }
 
 } /* end of class wfEngine_models_classes_VariableService */

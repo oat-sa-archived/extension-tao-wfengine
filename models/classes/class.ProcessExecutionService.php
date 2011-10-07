@@ -979,7 +979,7 @@ class wfEngine_models_classes_ProcessExecutionService
 		
 		$activityService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityService');
 			
-		$newActivityExecutions = $this->activityExecutionService->moveBackward($activityExecution, $processExecution);
+		$newActivityExecutions = $this->activityExecutionService->moveBackward($activityExecution, $processExecution, $revertOptions);
 		$count = count($newActivityExecutions);
 		
 		if($count){
@@ -1635,7 +1635,7 @@ class wfEngine_models_classes_ProcessExecutionService
 		$propActivityExecutionCurrentUser = new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_CURRENT_USER);
 		foreach($currentActivityExecutions as $currentActivityExecution){
 			$ok = false;
-			$assignedUser = $currentActivityExecution->getOnePropertyValue($propActivityExecutionCurrentUser);
+			$assignedUser = $this->activityExecutionService->getActivityExecutionUser($currentActivityExecution);
 			if(!is_null($assignedUser)){
 				$ok = ($assignedUser->uriResource == $currentUser->uriResource);
 			}else{

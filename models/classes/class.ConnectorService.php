@@ -308,6 +308,19 @@ class wfEngine_models_classes_ConnectorService
         return (bool) $returnValue;
     }
 
+    /**
+     * Short description of method __construct
+     *
+     * @access public
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @return mixed
+     */
+    public function __construct()
+    {
+        // section 127-0-1-1-ce05865:132dda78a59:-8000:00000000000030A6 begin
+        // section 127-0-1-1-ce05865:132dda78a59:-8000:00000000000030A6 end
+    }
+
 } /* end of class wfEngine_models_classes_ConnectorService */
 
 ?>
