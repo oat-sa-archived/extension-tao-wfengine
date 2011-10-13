@@ -317,25 +317,25 @@ class wfEngine_models_classes_ConnectorService
      */
     public function __construct()
     {
-        // section 127-0-1-1-ce05865:132dda78a59:-8000:00000000000030A6 begin
-        // section 127-0-1-1-ce05865:132dda78a59:-8000:00000000000030A6 end
+        // section 127-0-1-1-2c295278:132fc7ce41a:-8000:00000000000030E3 begin
+        // section 127-0-1-1-2c295278:132fc7ce41a:-8000:00000000000030E3 end
     }
-	
-	/**
-     * Short description of method getTransitionRule
+
+    /**
+     * Short description of method setSplitVariables
      *
      * @access public
      * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @param  Resource connector
-	 * * @param  Resource connector
-     * @return core_kernel_classes_Resource
+     * @param  array variables
+     * @return boolean
      */
     public function setSplitVariables( core_kernel_classes_Resource $connector, $variables)
     {
-        $returnValue = false;
+        $returnValue = (bool) false;
 
+        // section 127-0-1-1-2c295278:132fc7ce41a:-8000:00000000000030E5 begin
 		if($this->getType($connector)->uriResource == INSTANCE_TYPEOFCONNECTORS_PARALLEL){
-			
 			$cardinalityService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityCardinalityService');
 			foreach($this->getNextActivities($connector) as $cardinality){
 				
@@ -351,6 +351,7 @@ class wfEngine_models_classes_ConnectorService
 			}
 		
 		}
+        // section 127-0-1-1-2c295278:132fc7ce41a:-8000:00000000000030E5 end
 
         return (bool) $returnValue;
     }
