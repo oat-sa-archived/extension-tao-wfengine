@@ -1107,9 +1107,18 @@ class wfEngine_models_classes_ActivityExecutionService
 				/// PARALLEL ///
                 case INSTANCE_TYPEOFCONNECTORS_PARALLEL:{
                     
+					$splitVariablesArray = $this->getSplitVariables($activityExecution, $connector);
+					
 					foreach($nextActivities as $nextActivity){
-						$newActivityExecution = $this->duplicateActivityExecutionVariables($activityExecution, $nextActivity, $processExecution);
-						if(!is_null($newActivityExecution)){
+						
+						$splitVariables = array();
+						if(count($splitVariablesArray) > 0){
+							$splitVariables = array_shift($splitVariablesArray);
+						}
+						
+						$newActivityExecution = $this->createActivityExecution($nextActivity, $processExecution);
+						$variableMerged = $this->mergeActivityExecutionVariables($newActivityExecution, array($activityExecution->uriResource => $activityExecution), $processExecution, $splitVariables);
+						if($variableMerged){
 							$activityExecution->setPropertyValue(new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_FOLLOWING), $newActivityExecution->uriResource);
 							$newActivityExecution->setPropertyValue(new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_PREVIOUS), $activityExecution->uriResource);
 							$returnValue[$newActivityExecution->uriResource] = $newActivityExecution;
@@ -1372,12 +1381,12 @@ class wfEngine_models_classes_ActivityExecutionService
         $mergedVars = array();
         foreach($allVars as $tokenVars){
             foreach($tokenVars as $tokenVar){
-                $key = $tokenVar['code'];
+                $code = $tokenVar['code'];
                 foreach($tokenVar['value'] as $value){
-                    if(array_key_exists($key, $mergedVars)){
-                        if(is_array($mergedVars[$key])){
+                    if(array_key_exists($code, $mergedVars)){
+                        if(is_array($mergedVars[$code])){
                             $alreadyExists = false;
-                            foreach($mergedVars[$key] as $tValue){
+                            foreach($mergedVars[$code] as $tValue){
                                 if($tValue instanceof core_kernel_classes_Resource && $value instanceof core_kernel_classes_Resource){
                                     if($tValue->uriResource == $value->uriResource){
                                         $alreadyExists = true;
@@ -1390,23 +1399,23 @@ class wfEngine_models_classes_ActivityExecutionService
                                 }
                             }
                             if(!$alreadyExists){
-                                $mergedVars[$key][] = $value;
+                                $mergedVars[$code][] = $value;
                             }
                         }
                         else{
-                            $tValue = $mergedVars[$key];
+                            $tValue = $mergedVars[$code];
                             if($tValue instanceof core_kernel_classes_Resource && $value instanceof core_kernel_classes_Resource){
                                 if($tValue->uriResource != $value->uriResource){
-                                    $mergedVars[$key] = array($tValue, $value);
+                                    $mergedVars[$code] = array($tValue, $value);
                                 }
                             }
                             else if($tValue != $value){
-                                $mergedVars[$key] = array($tValue, $value);
+                                $mergedVars[$code] = array($tValue, $value);
                             }
                         }
                     }
                     else{
-                        $mergedVars[$key] = $value;
+                        $mergedVars[$code] = $value;
                     }
                 }
             }
@@ -1678,6 +1687,49 @@ class wfEngine_models_classes_ActivityExecutionService
         // section 127-0-1-1--1b682bf3:132cdc3fef4:-8000:0000000000003099 end
 
         return (bool) $returnValue;
+    }
+
+    /**
+     * Short description of method getSplitVariables
+     *
+     * @access public
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @param  Resource activityExecution
+     * @param  Resource connector
+     * @return array
+     */
+    public function getSplitVariables( core_kernel_classes_Resource $activityExecution,  core_kernel_classes_Resource $connector)
+    {
+        $returnValue = array();
+
+        // section 127-0-1-1-2c295278:132fc7ce41a:-8000:00000000000030BC begin
+		$splitVariables = $connector->getPropertyValues(new core_kernel_classes_Property(PROPERTY_CONNECTORS_SPLITVARIABLES));
+        $codeProperty = new core_kernel_classes_Property(PROPERTY_PROCESSVARIABLES_CODE);
+		
+		foreach($splitVariables as $splitVariable){
+			$codeLiteral = $splitVariable->getOnePropertyValue($codeProperty);
+			if(!is_null($codeLiteral) && $codeLiteral instanceof core_kernel_classes_Literal){
+				$code = $codeLiteral->literal;
+				$serialisedValues = $activityExecution->getOnePropertyValue(new core_kernel_classes_Property($splitVariable->uriResource));
+				if(!empty($serialisedValues) && $serialisedValues instanceof core_kernel_classes_Literal){
+					$values &= unserialize($serialisedValues);
+					if($values && is_array($values) && !empty($values)){
+						$count = count($values);
+						for($i = 0; $i < $count; $i++){
+							if(!isset($returnValue[$i])){
+								$returnValue[$i] = array();
+							}
+							$returnValue[$i][$code] = $values[$i];
+						}
+					}
+				}
+				
+			}
+		}
+
+        // section 127-0-1-1-2c295278:132fc7ce41a:-8000:00000000000030BC end
+
+        return (array) $returnValue;
     }
 
 } /* end of class wfEngine_models_classes_ActivityExecutionService */

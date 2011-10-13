@@ -92,7 +92,6 @@ class wfEngine_models_classes_VariableService
 
         return (bool) $returnValue;
     }
-	
 
     /**
      * Short description of method getCache
@@ -155,37 +154,37 @@ class wfEngine_models_classes_VariableService
      * @access public
      * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @param  array variable
+     * @param  Resource activityExecution
      * @return boolean
      */
-    public function save($variable)
+    public function save($variable,  core_kernel_classes_Resource $activityExecution = null)
     {
         $returnValue = (bool) false;
 
         // section -87--2--3--76--7eb229c2:12916be1ece:-8000:0000000000003C07 begin
     	
-		if(Session::hasAttribute("activityExecutionUri")){
+		if(is_null($activityExecution) && Session::hasAttribute("activityExecutionUri")){
+			$activityExecution = new core_kernel_classes_Resource(Session::getAttribute("activityExecutionUri"));
+		}
+		
+		if(!is_null($activityExecution)){
 			
 			Bootstrap::loadConstants('wfEngine');	//because it could be called anywhere
-			
-			$activityExecution = new core_kernel_classes_Resource(Session::getAttribute("activityExecutionUri"));
 			
 			$variablesProp = new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_VARIABLES);
 			$newVar = unserialize($activityExecution->getOnePropertyValue($variablesProp));
 			
-			$processVariablesClass = new core_kernel_classes_Class(CLASS_PROCESSVARIABLES);
 			foreach($variable as $k => $v) {
-				$processVariables = $processVariablesClass->searchInstances(array(PROPERTY_PROCESSVARIABLES_CODE => $k), array('like' => false));
-				if(!empty($processVariables)){
-					if(count($processVariables) == 1) {
-						$property = new core_kernel_classes_Property(array_shift($processVariables)->uriResource);
+				$processVariable = $this->getProcessVariable($k);
+				if(!is_null($processVariable)){
+					$property = new core_kernel_classes_Property($processVariable->uriResource);
 
-						$returnValue &= $activityExecution->editPropertyValues($property,$v);
-						if(is_array($newVar)){
-							$newVar = array_merge($newVar, array($k)); 
-						}
-						else{
-							$newVar = array($k);
-						}
+					$returnValue &= $activityExecution->editPropertyValues($property,$v);
+					if(is_array($newVar)){
+						$newVar = array_merge($newVar, array($k)); 
+					}
+					else{
+						$newVar = array($k);
 					}
 				}
 				
@@ -204,41 +203,39 @@ class wfEngine_models_classes_VariableService
      * @access public
      * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @param  mixed params
+     * @param  Resource activityExecution
      * @return boolean
      */
-    public function remove( mixed $params)
+    public function remove( mixed $params,  core_kernel_classes_Resource $activityExecution = null)
     {
         $returnValue = (bool) false;
 
         // section -87--2--3--76--7eb229c2:12916be1ece:-8000:0000000000003C0B begin
-		if(Session::hasAttribute("activityExecutionUri")){
+		if(is_null($activityExecution) && Session::hasAttribute("activityExecutionUri")){
+			$activityExecution = new core_kernel_classes_Resource(Session::getAttribute("activityExecutionUri"));
+		}
+		
+		if(!is_null($activityExecution)){
 			
 			Bootstrap::loadConstants('wfEngine');	//because it could be called anywhere
 			
-			$activityExecution = new core_kernel_classes_Resource(Session::getAttribute("activityExecutionUri"));
-			
-			$variablesProp = new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_VARIABLES);
-			$oldVar = unserialize($activityExecution->getOnePropertyValue($variablesProp));
+			$oldVar = unserialize($activityExecution->getOnePropertyValue($this->variablesProperty));
 			if(is_string($params)){
 				$params = array($params);
 			}
 			
 			if(is_array($params)){
-				$processVariablesClass = new core_kernel_classes_Class(CLASS_PROCESSVARIABLES);
 				foreach($params as $param) {
 					if(in_array($param,$oldVar)){
-						$processVariables = $processVariablesClass->searchInstances(array(PROPERTY_PROCESSVARIABLES_CODE => $param), array('like' => false));
-						if(!empty($processVariables)){
-							if(count($processVariables) == 1) {
-								$property = new core_kernel_classes_Property(array_shift($processVariables)->uriResource);
-								
-								$returnValue &= $activityExecution->removePropertyValues($property);
-								$oldVar = array_diff($oldVar,array($param));
-							}
+						$processVariable = $this->getProcessVariable($param);
+						if(!is_null($processVariable)){
+							$property = new core_kernel_classes_Property($processVariable->uriResource);
+							$returnValue &= $activityExecution->removePropertyValues($property);
+							$oldVar = array_diff($oldVar,array($param));
 						}
 					}
 				}
-				$returnValue &= $activityExecution->editPropertyValues($variablesProp, serialize($oldVar));
+				$returnValue &= $activityExecution->editPropertyValues($this->variablesProperty, serialize($oldVar));
 			}
 		}
 
@@ -253,30 +250,30 @@ class wfEngine_models_classes_VariableService
      * @access public
      * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @param  string key
+     * @param  Resource activityExecution
      * @return mixed
      */
-    public function get($key)
+    public function get($key,  core_kernel_classes_Resource $activityExecution = null)
     {
         $returnValue = null;
 
         // section -87--2--3--76--7eb229c2:12916be1ece:-8000:0000000000003C0E begin
-		if(Session::hasAttribute("activityExecutionUri")){
+		if(is_null($activityExecution) && Session::hasAttribute("activityExecutionUri")){
 			$activityExecution = new core_kernel_classes_Resource(Session::getAttribute("activityExecutionUri"));
-			$variablesProp = new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_VARIABLES);
-			$vars = unserialize($activityExecution->getOnePropertyValue($variablesProp));
+		}
+		
+		if(!is_null($activityExecution)){
+			$vars = unserialize($activityExecution->getOnePropertyValue($this->variablesProperty));
 			if(in_array($key,$vars)){
-				$processVariablesClass = new core_kernel_classes_Class(CLASS_PROCESSVARIABLES);
-				$processVariables = $processVariablesClass->searchInstances(array(PROPERTY_PROCESSVARIABLES_CODE => $key), array('like' => false));
-				if(!empty($processVariables)){
-					if(count($processVariables) == 1) {
-						$property = new core_kernel_classes_Property(reset($processVariables)->uriResource);
-						$values = $activityExecution->getPropertyValuesCollection($property);
-						if($values->count() == 1){
-							$returnValue = $values->get(0);
-						}
-						if($values->count() > 1){
-							$returnValue = (array)$values->getIterator();
-						}
+				$processVariable = $this->getProcessVariable($key);
+				if(!is_null($processVariable)){
+					$property = new core_kernel_classes_Property($processVariable->uriResource);
+					$values = $activityExecution->getPropertyValuesCollection($property);
+					if($values->count() == 1){
+						$returnValue = $values->get(0);
+					}
+					if($values->count() > 1){
+						$returnValue = (array)$values->getIterator();
 					}
 				}
 			}
@@ -291,34 +288,33 @@ class wfEngine_models_classes_VariableService
      *
      * @access public
      * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @param  Resource activityExecution
      * @return array
      */
-    public function getAll()
+    public function getAll( core_kernel_classes_Resource $activityExecution = null)
     {
         $returnValue = array();
 
         // section -87--2--3--76--7eb229c2:12916be1ece:-8000:0000000000003C11 begin
-		if(Session::hasAttribute("activityExecutionUri")){
+		if(is_null($activityExecution) && Session::hasAttribute("activityExecutionUri")){
 			$activityExecution = new core_kernel_classes_Resource(Session::getAttribute("activityExecutionUri"));
+		}
+		
+		if(!is_null($activityExecution)){
 			
-			$variablesProp = new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_VARIABLES);
-			$vars = unserialize($activityExecution->getOnePropertyValue($variablesProp));
-			
-			$processVariablesClass = new core_kernel_classes_Class(CLASS_PROCESSVARIABLES);
+			$vars = unserialize($activityExecution->getOnePropertyValue($this->variablesProperty));
 			
             if(is_array($vars)){
 				foreach($vars as $code){
-					$processVariables = $processVariablesClass->searchInstances(array(PROPERTY_PROCESSVARIABLES_CODE => $code), array('like' => false));
-					if(!empty($processVariables)){
-						if(count($processVariables) == 1) {
-							$property = new core_kernel_classes_Property(array_shift($processVariables)->uriResource);
-							$values = $activityExecution->getPropertyValuesCollection($property);
-							if($values->count() == 1){
-								$returnValue[$code] = $values->get(0);
-							}
-							if($values->count() > 1){
-								$returnValue[$code] = (array)$values->getIterator();
-							}
+					$processVariable = $this->getProcessVariable($code);
+					if(!is_null($processVariable)){
+						$property = new core_kernel_classes_Property($processVariable->uriResource);
+						$values = $activityExecution->getPropertyValuesCollection($property);
+						if($values->count() == 1){
+							$returnValue[$code] = $values->get(0);
+						}
+						if($values->count() > 1){
+							$returnValue[$code] = (array)$values->getIterator();
 						}
 					}
 				}
@@ -337,38 +333,37 @@ class wfEngine_models_classes_VariableService
      * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @param  string key
      * @param  string value
+     * @param  Resource activityExecution
      * @return boolean
      */
-    public function push($key, $value)
+    public function push($key, $value,  core_kernel_classes_Resource $activityExecution = null)
     {
         $returnValue = (bool) false;
 
         // section 127-0-1-1--55065e1d:1294a729605:-8000:0000000000002006 begin
         
-    	if(Session::hasAttribute("activityExecutionUri")){
-			
+    	if(is_null($activityExecution) && Session::hasAttribute("activityExecutionUri")){
 			$activityExecution = new core_kernel_classes_Resource(Session::getAttribute("activityExecutionUri"));
+		}
+		
+		if(!is_null($activityExecution)){
 			
-			$variablesProp = new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_VARIABLES);
-			$newVar = unserialize($activityExecution->getOnePropertyValue($variablesProp));
+			$newVar = unserialize($activityExecution->getOnePropertyValue($this->variablesProperty));
+			$processVariable = $this->getProcessVariable($key);
 			
-			$processVariablesClass = new core_kernel_classes_Class(CLASS_PROCESSVARIABLES);
-			$processVariables = $processVariablesClass->searchInstances(array(PROPERTY_PROCESSVARIABLES_CODE => $key), array('like' => false));
-			if(!empty($processVariables)){
-				if(count($processVariables) == 1) {
-					$property = new core_kernel_classes_Property(array_shift($processVariables)->uriResource);
-					
-					$returnValue &= $activityExecution->setPropertyValue($property, $value);
-					if(is_array($newVar)){
-						$newVar = array_merge($newVar, array($key)); 
-					}
-					else{
-						$newVar = array($key);
-					}
+			if(!is_null($processVariable)){
+				$property = new core_kernel_classes_Property($processVariable->uriResource);
+
+				$returnValue &= $activityExecution->setPropertyValue($property, $value);
+				if(is_array($newVar)){
+					$newVar = array_merge($newVar, array($key)); 
+				}
+				else{
+					$newVar = array($key);
 				}
 			}
 				
-			$returnValue &= $activityExecution->editPropertyValues($variablesProp, serialize($newVar));
+			$returnValue &= $activityExecution->editPropertyValues($this->variablesProperty, serialize($newVar));
 		}
     	
         // section 127-0-1-1--55065e1d:1294a729605:-8000:0000000000002006 end
@@ -394,8 +389,7 @@ class wfEngine_models_classes_VariableService
 		if(!is_null($cachedValue) && $cachedValue instanceof core_kernel_classes_Resource){
 			$returnValue = $cachedValue;
 		}else{
-			$processVariableClass = new core_kernel_classes_Class(CLASS_PROCESSVARIABLES);
-			$variables = $processVariableClass->searchInstances(array(PROPERTY_PROCESSVARIABLES_CODE => $code), array('like' => false, 'recursive' => 0));
+			$variables = $this->processVariablesClass->searchInstances(array(PROPERTY_PROCESSVARIABLES_CODE => $code), array('like' => false, 'recursive' => 0));
 			if (!empty($variables)) {
 				$returnValue = reset($variables);
 			} else if ($forceCreation) {
@@ -433,17 +427,16 @@ class wfEngine_models_classes_VariableService
 			throw new Exception("A process variable with the code '{$code}' already exists");
 		}
 		
-		$classCode = new core_kernel_classes_Class(CLASS_PROCESSVARIABLES);
 		if(empty($label)){
 			$label = "Process variable";
             if(!empty($code)){
 				$label .= " ".$code;
 			}
 		}
-		$returnValue = $this->createInstance($classCode, $label);
+		$returnValue = $this->createInstance($this->processVariablesClass, $label);
 		
 		if(!empty($code)){
-			$returnValue->setPropertyValue(new core_kernel_classes_Property(PROPERTY_PROCESSVARIABLES_CODE), $code);
+			$returnValue->setPropertyValue($this->codeProperty, $code);
 		}
 		
 		//set the new instance of process variable as a property of the class process instance:
@@ -454,7 +447,7 @@ class wfEngine_models_classes_VariableService
 			$newTokenProperty->setRange(new core_kernel_classes_Class(RDFS_LITERAL));//literal only!
 			$newTokenProperty->setPropertyValue(new core_kernel_classes_Property(PROPERTY_MULTIPLE), GENERIS_TRUE);
 		}else{
-			throw new Exception("the newly created process variable {$label} ({$returnValue->uriResource}) cannot be set as a property of the class Token");
+			throw new Exception("the newly created process variable {$label} ({$returnValue->uriResource}) cannot be set as a property of the class Activity Execution");
 		}
 		
 		
@@ -524,6 +517,9 @@ class wfEngine_models_classes_VariableService
 		
 		$this->instancesCache = array();
 		$this->cache = true;
+		$this->processVariablesClass = new core_kernel_classes_Class(CLASS_PROCESSVARIABLES);
+		$this->variablesProperty = new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_VARIABLES);
+		$this->codeProperty = new core_kernel_classes_Property(PROPERTY_PROCESSVARIABLES_CODE);
 		
         // section 127-0-1-1-ce05865:132dda78a59:-8000:00000000000030A8 end
     }

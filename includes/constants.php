@@ -63,6 +63,7 @@ $todefine = array(
 	'PROPERTY_CONNECTORS_USER_NOTIFIED'				=> NS_WFENGINE  .'#PropertyConnectorsNotifiedUser',
 	'PROPERTY_CONNECTORS_ROLE_NOTIFIED'				=> NS_WFENGINE  .'#PropertyConnectorsNotifiedRole',
 	'PROPERTY_CONNECTORS_NOTIFICATION_MESSAGE'		=> NS_WFENGINE  .'#PropertyConnectorsNotificationMessage',
+	'PROPERTY_CONNECTORS_SPLITVARIABLES'			=> NS_WFENGINE  .'#PropertyConnectorsSplitVariables',
 	
 	'CLASS_TYPEOFCONNECTORS'						=> NS_WFENGINE . '#ClassTypeOfConnectors',
 	'INSTANCE_TYPEOFCONNECTORS_CONDITIONAL'			=> NS_WFENGINE . '#InstanceTypeOfConnectorsConditional',
