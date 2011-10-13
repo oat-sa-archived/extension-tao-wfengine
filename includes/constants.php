@@ -48,6 +48,7 @@ $todefine = array(
 	'CLASS_ACTIVITYCARDINALITY'						=> NS_WFENGINE . '#ClassActivityCardinality',
 	'PROPERTY_ACTIVITYCARDINALITY_ACTIVITY'			=> NS_WFENGINE . '#PropertyActivityCardinalityActivity',
 	'PROPERTY_ACTIVITYCARDINALITY_CARDINALITY'		=> NS_WFENGINE . '#PropertyActivityCardinalityCardinality',
+	'PROPERTY_ACTIVITYCARDINALITY_SPLITVARIABLES'	=> NS_WFENGINE  .'#PropertyActivityCardinalitySplitVariables',
 	
 	'CLASS_CONTROLS'								=> NS_WFENGINE  .'#ClassControls',
 	'INSTANCE_CONTROL_BACKWARD'						=> NS_WFENGINE  .'#InstanceControlsBackward',
@@ -63,7 +64,6 @@ $todefine = array(
 	'PROPERTY_CONNECTORS_USER_NOTIFIED'				=> NS_WFENGINE  .'#PropertyConnectorsNotifiedUser',
 	'PROPERTY_CONNECTORS_ROLE_NOTIFIED'				=> NS_WFENGINE  .'#PropertyConnectorsNotifiedRole',
 	'PROPERTY_CONNECTORS_NOTIFICATION_MESSAGE'		=> NS_WFENGINE  .'#PropertyConnectorsNotificationMessage',
-	'PROPERTY_CONNECTORS_SPLITVARIABLES'			=> NS_WFENGINE  .'#PropertyConnectorsSplitVariables',
 	
 	'CLASS_TYPEOFCONNECTORS'						=> NS_WFENGINE . '#ClassTypeOfConnectors',
 	'INSTANCE_TYPEOFCONNECTORS_CONDITIONAL'			=> NS_WFENGINE . '#InstanceTypeOfConnectorsConditional',

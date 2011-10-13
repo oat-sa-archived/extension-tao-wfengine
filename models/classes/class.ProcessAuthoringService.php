@@ -366,10 +366,10 @@ class wfEngine_models_classes_ProcessAuthoringService
 			$activity->setPropertyValue(new core_kernel_classes_Property(PROPERTY_ACTIVITIES_INTERACTIVESERVICES), $returnValue->uriResource);
 			
 			//set default position and size value:
-			$returnValue->editPropertyValues(new core_kernel_classes_Property(PROPERTY_CALLOFSERVICES_WIDTH), 100);
-			$returnValue->editPropertyValues(new core_kernel_classes_Property(PROPERTY_CALLOFSERVICES_HEIGHT), 100);
-			$returnValue->editPropertyValues(new core_kernel_classes_Property(PROPERTY_CALLOFSERVICES_TOP), 0);
-			$returnValue->editPropertyValues(new core_kernel_classes_Property(PROPERTY_CALLOFSERVICES_LEFT), 0);
+			$returnValue->setPropertyValue(new core_kernel_classes_Property(PROPERTY_CALLOFSERVICES_WIDTH), 100);
+			$returnValue->setPropertyValue(new core_kernel_classes_Property(PROPERTY_CALLOFSERVICES_HEIGHT), 100);
+			$returnValue->setPropertyValue(new core_kernel_classes_Property(PROPERTY_CALLOFSERVICES_TOP), 0);
+			$returnValue->setPropertyValue(new core_kernel_classes_Property(PROPERTY_CALLOFSERVICES_LEFT), 0);
 		}else{
 			throw new Exception("the interactive service cannot be created for the activity {$activity->uriResource}");
 		}
@@ -479,7 +479,6 @@ class wfEngine_models_classes_ProcessAuthoringService
 						}
 					}
 				}
-				//something wrong in here!!! CHECK if the previous activity is well removed.
 				
 				//if it does not exists, create a new cardinality resource and assign it to the join connector:
 				if(is_null($oldPreviousActivityCardinality)){
@@ -1485,8 +1484,15 @@ class wfEngine_models_classes_ProcessAuthoringService
 		
 		//remove old property values:
 		$nextActivitiesCollection = $connectorInstance->getPropertyValuesCollection($propNextActivities);
+		$oldSplitVariablesByActivity = array();
 		foreach ($nextActivitiesCollection->getIterator() as $activityMultiplicityResource){
 			if($cardinalityService->isCardinality($activityMultiplicityResource)){
+				
+				//record the old split variables values in case it is needed (TODO: optimize this process)
+				$activity = $cardinalityService->getActivity($activityMultiplicityResource);
+				$oldSplitVariablesByActivity[$activity->uriResource] = $cardinalityService->getSplitVariables($activityMultiplicityResource);
+				
+				//delete it
 				$activityMultiplicityResource->delete();
 			}
 		}
@@ -1504,8 +1510,14 @@ class wfEngine_models_classes_ProcessAuthoringService
 			$activity = new core_kernel_classes_Resource($activityUri);
 			
 			//set multiplicity to the parallel connector:
-			$multiplicity = $cardinalityService->createCardinality($activity, $count);
-			$returnValue = $connectorInstance->setPropertyValue($propNextActivities, $multiplicity);
+			$cardinality = $cardinalityService->createCardinality($activity, $count);
+			if(isset($oldSplitVariablesByActivity[$activityUri])){
+				if(!$cardinalityService->setSplitVariables($cardinality, $oldSplitVariablesByActivity[$activityUri])) {
+					throw new Exception('cannot set split variables to new cardinality resources');
+				}
+			}
+			
+			$returnValue = $connectorInstance->setPropertyValue($propNextActivities, $cardinality);
 			
 			//set multiplicity to the merge connector:
 			$previousActvityUri = '';

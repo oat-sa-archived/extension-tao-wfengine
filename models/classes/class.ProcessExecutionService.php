@@ -1602,13 +1602,16 @@ class wfEngine_models_classes_ProcessExecutionService
 		$cardinalityService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityCardinalityService');
 		
 		foreach($connectorService->getNextActivities($currentConnector) as $cardinality){
-			$activity = $cardinalityService->getActivity($cardinality);
-			if(!is_null($activity)){
-				$count = $cardinalityService->getCardinality($cardinality, $activityExecution);
-				for($i=0; $i<$count; $i++){
-					$returnValue[] = $activity;
+			if($cardinalityService->isCardinality($cardinality)){
+				$activity = $cardinalityService->getActivity($cardinality);
+				if (!is_null($activity)) {
+					$count = $cardinalityService->getCardinality($cardinality, $activityExecution);
+					for ($i = 0; $i < $count; $i++) {
+						$returnValue[] = $activity;
+					}
 				}
 			}
+			
 		}
 		
         // section 127-0-1-1-6eb1148b:132b4a0f8d0:-8000:000000000000306D end

@@ -9,7 +9,7 @@ error_reporting(E_ALL);
  *
  * This file is part of TAO.
  *
- * Automatically generated on 29.09.2011, 14:49:27 with ArgoUML PHP module 
+ * Automatically generated on 13.10.2011, 14:12:38 with ArgoUML PHP module 
  * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
  *
  * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
@@ -123,6 +123,7 @@ class wfEngine_models_classes_ActivityCardinalityService
         $returnValue = null;
 
         // section 127-0-1-1-6eb1148b:132b4a0f8d0:-8000:0000000000003058 begin
+		//TODO: to be cached
 		if(!is_null($activityCardinality)){
 			$returnValue = $activityCardinality->getUniquePropertyValue($this->propMultiplicityActivity);
 		}
@@ -145,6 +146,7 @@ class wfEngine_models_classes_ActivityCardinalityService
         $returnValue = null;
 
         // section 127-0-1-1-6eb1148b:132b4a0f8d0:-8000:000000000000305B begin
+		//TODO: to be cached
 		if(!is_null($activityCardinality)){
 			$cardinality = $activityCardinality->getUniquePropertyValue($this->propMultiplicityCardinality);
 			if($cardinality instanceof core_kernel_classes_Literal && is_numeric((string)$cardinality)){
@@ -186,6 +188,7 @@ class wfEngine_models_classes_ActivityCardinalityService
 		$this->classMultiplicity = new core_kernel_classes_Class(CLASS_ACTIVITYCARDINALITY);
 		$this->propMultiplicityActivity = new core_kernel_classes_Property(PROPERTY_ACTIVITYCARDINALITY_ACTIVITY);
 		$this->propMultiplicityCardinality = new core_kernel_classes_Property(PROPERTY_ACTIVITYCARDINALITY_CARDINALITY);
+		$this->propSplitVariables = new core_kernel_classes_Property(PROPERTY_ACTIVITYCARDINALITY_SPLITVARIABLES);
 		
         // section 127-0-1-1-6eb1148b:132b4a0f8d0:-8000:0000000000003064 end
     }
@@ -204,12 +207,58 @@ class wfEngine_models_classes_ActivityCardinalityService
         $returnValue = (bool) false;
 
         // section 127-0-1-1-6eb1148b:132b4a0f8d0:-8000:0000000000003067 begin
+		//TODO: to be cached
 		if(!is_null($activityCardinality)){
 			$returnValue = $activityCardinality->editPropertyValues($this->propMultiplicityCardinality, intval($cardinality));
 		}
         // section 127-0-1-1-6eb1148b:132b4a0f8d0:-8000:0000000000003067 end
 
         return (bool) $returnValue;
+    }
+
+    /**
+     * Short description of method editSplitVariables
+     *
+     * @access public
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @param  Resource activityCardinality
+     * @param  array variables
+     * @return boolean
+     */
+    public function editSplitVariables( core_kernel_classes_Resource $activityCardinality, $variables)
+    {
+        $returnValue = (bool) false;
+
+        // section 127-0-1-1-2c295278:132fc7ce41a:-8000:00000000000030D2 begin
+		$returnValue = $activityCardinality->editPropertyValues($this->propSplitVariables, $variables);
+        // section 127-0-1-1-2c295278:132fc7ce41a:-8000:00000000000030D2 end
+
+        return (bool) $returnValue;
+    }
+
+    /**
+     * Short description of method getSplitVariables
+     *
+     * @access public
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @param  Resource activityCardinality
+     * @return array
+     */
+    public function getSplitVariables( core_kernel_classes_Resource $activityCardinality)
+    {
+        $returnValue = array();
+
+        // section 127-0-1-1-2c295278:132fc7ce41a:-8000:00000000000030D7 begin
+		
+		foreach($activityCardinality->getPropertyValues($this->propSplitVariables) as $splitVariableUri){
+			if(common_Utils::isUri($splitVariableUri)){
+				$returnValue[$splitVariableUri] = new core_kernel_classes_Resource($splitVariableUri);
+			}
+		}
+		
+        // section 127-0-1-1-2c295278:132fc7ce41a:-8000:00000000000030D7 end
+
+        return (array) $returnValue;
     }
 
 } /* end of class wfEngine_models_classes_ActivityCardinalityService */

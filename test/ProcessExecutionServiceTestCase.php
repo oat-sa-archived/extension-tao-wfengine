@@ -382,7 +382,7 @@ class ProcessExecutionServiceTestCase extends UnitTestCase{
 		$parallelCount1 = 3;
 		$parallelCount2 = 5;
 		$parallelCount2_processVar_key = 'unit_var_'.time();
-		$parallelCount2_processVar = $processVariableService->createProcessVariable('Proc Var for unit test', $parallelCount2_processVar_key);
+		$parallelCount2_processVar = $processVariableService->createProcessVariable('Var for unit test', $parallelCount2_processVar_key);
 		$prallelActivitiesArray = array(
 			$parallelActivity1->uriResource => $parallelCount1,
 			$parallelActivity2->uriResource => $parallelCount2_processVar
@@ -391,8 +391,20 @@ class ProcessExecutionServiceTestCase extends UnitTestCase{
 		$result = $authoringService->setParallelActivities($connector0, $prallelActivitiesArray);
 		$this->assertTrue($result);
 		
-		$prallelActivitiesArray[$parallelActivity2->uriResource] = $parallelCount2;
+		//set several split variables:
+		$splitVariable1_key = 'unit_split_var1_'.time();
+		$splitVariable1 = $processVariableService->createProcessVariable('Split Var1 for unit test', $splitVariable1_key);
+		$splitVariable2_key = 'unit_split_var2_'.time();
+		$splitVariable2 = $processVariableService->createProcessVariable('Split Var2 for unit test', $splitVariable2_key);
 		
+		$splitVariablesArray = array(
+			$parallelActivity1->uriResource => array($splitVariable1),
+			$parallelActivity2->uriResource => array($splitVariable1, $splitVariable2)
+		);
+		$connectorService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ConnectorService');
+		$connectorService->setSplitVariables($connector0, $splitVariablesArray);
+		
+		$prallelActivitiesArray[$parallelActivity2->uriResource] = $parallelCount2;
 		
 
 		$joinActivity = $authoringService->createActivity($processDefinition, 'activity3');
@@ -454,6 +466,26 @@ class ProcessExecutionServiceTestCase extends UnitTestCase{
 			if($i == 1){
 				//set value of the parallel thread:
 				$processVariableService->push($parallelCount2_processVar_key, $parallelCount2);
+				
+				//set some values to the split variables:
+				$values1 = array();
+				for($j = 1; $j <= $parallelCount1; $j++){
+					$values1[] = 'A'.$j;
+				}
+				$values2 = array();
+				for($j = 1; $j <= $parallelCount2; $j++){
+					$values2[] = 'B'.$j;
+				}
+				$processVariableService->push($splitVariable1_key, serialize($values1));
+				$processVariableService->push($splitVariable2_key, serialize($values2));
+				
+			}else{
+				
+				//check dispatched value:
+//				$value1 = $processVariableService->get($splitVariable1_key);
+//				$value2 = $processVariableService->get($splitVariable2_key);
+//				var_dump($value1, $value2);
+				
 			}
 			
 			$activityExecStatus = $activityExecutionService->getStatus($activityExecution);

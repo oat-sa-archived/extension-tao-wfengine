@@ -1113,7 +1113,9 @@ class wfEngine_models_classes_ActivityExecutionService
 						
 						$splitVariables = array();
 						if(count($splitVariablesArray) > 0){
-							$splitVariables = array_shift($splitVariablesArray);
+							if(isset($splitVariablesArray[$nextActivity->uriResource])){
+								$splitVariables = array_shift($splitVariablesArray[$nextActivity->uriResource]);
+							}
 						}
 						
 						$newActivityExecution = $this->createActivityExecution($nextActivity, $processExecution);
@@ -1703,28 +1705,50 @@ class wfEngine_models_classes_ActivityExecutionService
         $returnValue = array();
 
         // section 127-0-1-1-2c295278:132fc7ce41a:-8000:00000000000030BC begin
-		$splitVariables = $connector->getPropertyValues(new core_kernel_classes_Property(PROPERTY_CONNECTORS_SPLITVARIABLES));
+		$connectorService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ConnectorService');
+		$cardinalityService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityCardinalityService');
+		
+		$allSplitVariables = array();
+		foreach($connectorService->getNextActivities($connector) as $cardinality){
+			if($cardinalityService->isCardinality($cardinality)){
+				$splitVars = $cardinalityService->getSplitVariables($cardinality);
+				$activity = $cardinalityService->getActivity($cardinality);
+				
+				if(!is_null($activity) && !empty($splitVars)) {
+					$allSplitVariables[$activity->uriResource] = $splitVars;
+				}
+			}
+		}
+		
         $codeProperty = new core_kernel_classes_Property(PROPERTY_PROCESSVARIABLES_CODE);
 		
-		foreach($splitVariables as $splitVariable){
-			$codeLiteral = $splitVariable->getOnePropertyValue($codeProperty);
-			if(!is_null($codeLiteral) && $codeLiteral instanceof core_kernel_classes_Literal){
-				$code = $codeLiteral->literal;
-				$serialisedValues = $activityExecution->getOnePropertyValue(new core_kernel_classes_Property($splitVariable->uriResource));
-				if(!empty($serialisedValues) && $serialisedValues instanceof core_kernel_classes_Literal){
-					$values &= unserialize($serialisedValues);
-					if($values && is_array($values) && !empty($values)){
-						$count = count($values);
-						for($i = 0; $i < $count; $i++){
-							if(!isset($returnValue[$i])){
-								$returnValue[$i] = array();
+		foreach($allSplitVariables as $activityUri => $splitVariables){
+			
+			$returnValue[$activityUri] = array();
+			
+			foreach($splitVariables as $splitVariable){
+				if($splitVariable instanceof core_kernel_classes_Resource){
+					$codeLiteral = $splitVariable->getOnePropertyValue($codeProperty);
+					if (!is_null($codeLiteral) && $codeLiteral instanceof core_kernel_classes_Literal) {
+						$code = $codeLiteral->literal;
+						$serialisedValues = $activityExecution->getOnePropertyValue(new core_kernel_classes_Property($splitVariable->uriResource));
+						if (!empty($serialisedValues) && $serialisedValues instanceof core_kernel_classes_Literal) {
+							$values = unserialize($serialisedValues);
+							if ($values && is_array($values) && !empty($values)) {
+								$count = count($values);
+								for ($i = 0; $i < $count; $i++) {
+									if (!isset($returnValue[$activityUri][$i])) {
+										$returnValue[$activityUri][$i] = array();
+									}
+									$returnValue[$activityUri][$i][$code] = $values[$i];
+								}
 							}
-							$returnValue[$i][$code] = $values[$i];
 						}
 					}
 				}
-				
 			}
+			
+			
 		}
 
         // section 127-0-1-1-2c295278:132fc7ce41a:-8000:00000000000030BC end

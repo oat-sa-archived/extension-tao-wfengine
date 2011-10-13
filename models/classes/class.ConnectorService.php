@@ -320,6 +320,40 @@ class wfEngine_models_classes_ConnectorService
         // section 127-0-1-1-ce05865:132dda78a59:-8000:00000000000030A6 begin
         // section 127-0-1-1-ce05865:132dda78a59:-8000:00000000000030A6 end
     }
+	
+	/**
+     * Short description of method getTransitionRule
+     *
+     * @access public
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @param  Resource connector
+	 * * @param  Resource connector
+     * @return core_kernel_classes_Resource
+     */
+    public function setSplitVariables( core_kernel_classes_Resource $connector, $variables)
+    {
+        $returnValue = false;
+
+		if($this->getType($connector)->uriResource == INSTANCE_TYPEOFCONNECTORS_PARALLEL){
+			
+			$cardinalityService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityCardinalityService');
+			foreach($this->getNextActivities($connector) as $cardinality){
+				
+				if($cardinalityService->isCardinality($cardinality)){
+					
+					//find the right cardinality resource (according to the activity defined in the connector):
+					$activity = $cardinalityService->getActivity($cardinality);
+					if(!is_null($activity) && isset($variables[$activity->uriResource])){
+						$cardinalityService->editSplitVariables($cardinality, $variables[$activity->uriResource]);
+					}
+				}
+				
+			}
+		
+		}
+
+        return (bool) $returnValue;
+    }
 
 } /* end of class wfEngine_models_classes_ConnectorService */
 
