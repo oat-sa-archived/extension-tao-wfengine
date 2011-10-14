@@ -26,7 +26,6 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 	public function setUp(){
 		
 		parent::setUp();
-		
 		$this->userPassword = 'pisa2015';
 	}
 	
@@ -35,9 +34,25 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
     }
 	
 	/**
-	 * Test the sequential process execution:
+	 * Recursive create users from their logins:
 	 */
-	public function testVirtualTranslationProcess(){
+	private function createUsers($usersLogin){
+		foreach($usersLogin as $logins){
+			if(is_string($logins)){
+				 $createdUser = $this->createUser($logins);
+				 $this->assertIsA($createdUser, 'core_kernel_classes_Resource');
+				 $createdUser->setLabel($logins);
+				 $this->users[$logins] = $createdUser;
+			}else{
+				$this->createUsers($logins);
+			}
+		}
+	}
+	
+	/**
+	 * Test generation of users:
+	 */
+	public function testCreateUsers(){
 		
 		error_reporting(E_ALL);
 		
@@ -50,6 +65,8 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 			$processExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessExecutionService');
 			$processVariableService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_VariableService');
 			
+			$usec = time();
+			
 			//TEST PLAN :
 			//INSTANCE_ACL_ROLE, $roleA
 			//INSTANCE_ACL_ROLE_RESTRICTED_USER, $roleB
@@ -58,101 +75,78 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 			//INSTANCE_ACL_ROLE_RESTRICTED_USER_INHERITED, $roleB (assigned dynamically via process var $role_processVar in activity1)
 			//INSTANCE_ACL_ROLE_RESTRICTED_USER_DELIVERY, $roleA 
 			
+			$this->userLogins = array();
+			$this->users = array();	
+			$this->roles = array();
+			
 			//create roles and users:
 			$roleClass = new core_kernel_classes_Class(CLASS_ROLE_WORKFLOWUSERROLE);
-			$roleA = $roleService->createInstance($roleClass, 'ACLTestCaseRoleA');
-			$roleB = $roleService->createInstance($roleClass, 'ACLTestCaseRoleB');
-			$roleC = $roleService->createInstance($roleClass, 'ACLTestCaseRoleC');
+			$this->roles['NPM'] = $roleService->createInstance($roleClass, 'NPMs - '.$usec);
+			$this->roles['translator'] = $roleService->createInstance($roleClass, 'translators - '.$usec);
+			$this->roles['reconciler'] = $roleService->createInstance($roleClass, 'reconcilers - '.$usec);
+			$this->roles['verifier'] = $roleService->createInstance($roleClass, 'verifiers - '.$usec);
+			$this->roles['developer'] = $roleService->createInstance($roleClass, 'developers - '.$usec);
+			$this->roles['testDeveloper'] = $roleService->createInstance($roleClass, 'test developers - '.$usec);
 			
-			list($usec, $sec) = explode(" ", microtime());
-			$users = array();
-			$users[0] = $usec;
-			for($i=1; $i<=6; $i++){
-				$users[] = 'ACLTestCaseUser'.$i.'-'.$usec;
+			$langCountries = array(
+				'LU' => array('fr', 'de', 'lb'),
+				'DE' => array('de')
+			);
+			
+			//generate users' logins:
+			$this->userLogins = array();
+			$this->roleLogins = array();
+			
+			$this->userLogins['developer'] = array();
+			$nbDevelopers = 5;
+			for($i = 1; $i <= $nbDevelopers; $i++){
+				$this->userLogins['developer'][$i] = 'developer_'.$i.'_'.$usec;
+				$this->roleLogins[$this->roles['developer']->uriResource][] = $this->userLogins['developer'][$i];
 			}
-			$user1 = $this->createUser($users[1]);$user1->setLabel($users[1]);
-			$user2 = $this->createUser($users[2]);$user2->setLabel($users[2]);
-			$user3 = $this->createUser($users[3]);$user3->setLabel($users[3]);
-			$user4 = $this->createUser($users[4]);$user4->setLabel($users[4]);
-			$user5 = $this->createUser($users[5]);$user5->setLabel($users[5]);
-			$user6 = $this->createUser($users[6]);$user6->setLabel($users[6]);
 			
-			$roleService->setRoleToUsers($roleA, array(
-				$user1->uriResource,
-				$user2->uriResource,
-				$user3->uriResource
-			));
-			$roleService->setRoleToUsers($roleB, array(
-				$user4->uriResource,
-				$user5->uriResource
-			));
-			$roleService->setRoleToUsers($roleC, array(
-				$user6->uriResource
-			));
+			$nbTranslatorsByCountryLang = 3;
+			foreach($langCountries as $countryCode => $languageCodes){
+				$this->userLogins[$countryCode] = array();
+				
+				//one NPM by country
+				$this->userLogins[$countryCode]['NPM'] = 'NPM_'.$countryCode.'_'.$usec;
+				$this->roleLogins[$this->roles['NPM']->uriResource][] = $this->userLogins[$countryCode]['NPM'];
+				
+				foreach($languageCodes as $languageCode){
+					
+					//one reconciler and verifier by country-language
+					$this->userLogins[$countryCode][$languageCode] = array(
+						'translator' => array(),
+						'reconciler' => 'reconciler_'.$countryCode.'_'.$languageCode.'_'.$usec,
+						'verifier' => 'verifier_'.$countryCode.'_'.$languageCode.'_'.$usec
+					);
+					$this->roleLogins[$this->roles['reconciler']->uriResource][] = $this->userLogins[$countryCode][$languageCode]['reconciler'];
+					$this->roleLogins[$this->roles['verifier']->uriResource][] = $this->userLogins[$countryCode][$languageCode]['verifier'];
+					
+					//as many translators as wanted:
+					for($i = 1; $i <= $nbTranslatorsByCountryLang; $i++){
+						$this->userLogins[$countryCode][$languageCode]['translator'][$i] = 'translator_'.$countryCode.'_'.$languageCode.'_'.$usec;
+						$this->roleLogins[$this->roles['translator']->uriResource][] = $this->userLogins[$countryCode][$languageCode]['translator'][$i];
+					}
+				}
+			}
 			
-			//create some process variables:
-			$user_processVar_key = 'unit_var_user_'.time();
-			$user_processVar = $processVariableService->createProcessVariable('Proc Var for user assignation', $user_processVar_key);
-			$role_processVar_key = 'unit_var_role_'.time();
-			$role_processVar = $processVariableService->createProcessVariable('Proc Var for role assignation', $role_processVar_key);
+			$this->createUsers($this->userLogins);
 			
-			//create a new process def
-			$processDefinition = $authoringService->createProcess('ProcessForUnitTest', 'Unit test');
-			$this->assertIsA($processDefinition, 'core_kernel_classes_Resource');
+			foreach($this->roleLogins as $roleUri => $usrs){
+				$role = new core_kernel_classes_Resource($roleUri);
+				$userUris = array();
+				foreach($usrs as $login){
+					if(isset($this->users[$login])){
+						$userUris[] = $this->users[$login]->uriResource;
+					}
+				}
+				$this->assertTrue($roleService->setRoleToUsers($role, $userUris));
+			}
 			
-			//define activities and connectors
+			var_dump($this->userLogins, $this->roleLogins);
 			
-			//activity 1:
-			$activity1 = $authoringService->createActivity($processDefinition, 'activity1');
-			$this->assertNotNull($activity1);
-			$authoringService->setFirstActivity($processDefinition, $activity1);
-			$activityService->setAcl($activity1, new core_kernel_classes_Resource(INSTANCE_ACL_ROLE), $roleA);
-			
-			$connector1 = $authoringService->createConnector($activity1);
-			$authoringService->setConnectorType($connector1, new core_kernel_classes_Resource(INSTANCE_TYPEOFCONNECTORS_SEQUENCE));
-			$this->assertNotNull($connector1);
-			
-			//activity 2:
-			$activity2 = $authoringService->createSequenceActivity($connector1, null, 'activity2');
-			$this->assertNotNull($activity2);
-			$activityService->setAcl($activity2, new core_kernel_classes_Resource(INSTANCE_ACL_ROLE_RESTRICTED_USER), $roleB);
-			
-			$connector2 = $authoringService->createConnector($activity2);
-			$authoringService->setConnectorType($connector2, new core_kernel_classes_Resource(INSTANCE_TYPEOFCONNECTORS_SEQUENCE));
-			$this->assertNotNull($connector2);
-			
-			//activity 3:
-			$activity3 = $authoringService->createSequenceActivity($connector2, null, 'activity3');
-			$this->assertNotNull($activity3);
-			$activityService->setAcl($activity3, new core_kernel_classes_Resource(INSTANCE_ACL_ROLE_RESTRICTED_USER_INHERITED), $role_processVar);
-			
-			$connector3 = $authoringService->createConnector($activity3);
-			$authoringService->setConnectorType($connector3, new core_kernel_classes_Resource(INSTANCE_TYPEOFCONNECTORS_SEQUENCE));
-			$this->assertNotNull($connector3);
-			
-			//activity 4:
-			$activity4 = $authoringService->createSequenceActivity($connector3, null, 'activity4');
-			$this->assertNotNull($activity4);
-			$activityService->setAcl($activity4, new core_kernel_classes_Resource(INSTANCE_ACL_USER), $user_processVar);
-			
-			$connector4 = $authoringService->createConnector($activity4);
-			$authoringService->setConnectorType($connector4, new core_kernel_classes_Resource(INSTANCE_TYPEOFCONNECTORS_SEQUENCE));
-			$this->assertNotNull($connector4);
-			
-			//activity 5:
-			$activity5 = $authoringService->createSequenceActivity($connector4, null, 'activity5');
-			$this->assertNotNull($activity5);
-			$activityService->setAcl($activity5, new core_kernel_classes_Resource(INSTANCE_ACL_ROLE_RESTRICTED_USER_INHERITED), $role_processVar);
-			
-			$connector5 = $authoringService->createConnector($activity5);
-			$authoringService->setConnectorType($connector5, new core_kernel_classes_Resource(INSTANCE_TYPEOFCONNECTORS_SEQUENCE));
-			$this->assertNotNull($connector5);
-			
-			//activity 6:
-			$activity6 = $authoringService->createSequenceActivity($connector5, null, 'activity6');
-			$this->assertNotNull($activity6);
-			$activityService->setAcl($activity6, new core_kernel_classes_Resource(INSTANCE_ACL_ROLE_RESTRICTED_USER_DELIVERY), $roleA);
-			
+			return;
 			
 			//run the process
 			$processExecName = 'Test Process Execution';
@@ -729,6 +723,98 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		catch(common_Exception $ce){
 			$this->fail($ce);
 		}
+	}
+	
+	public function testCreateTranslationProcess(){
+		
+		$roleService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_RoleService');
+		$authoringService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessAuthoringService');
+		$activityService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityService');
+		$activityExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityExecutionService');
+		$processExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessExecutionService');
+		$processVariableService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_VariableService');
+		
+		return;
+		
+		//create some process variables:
+		$user_processVar_key = 'unit_var_user_'.time();
+		$user_processVar = $processVariableService->createProcessVariable('Proc Var for user assignation', $user_processVar_key);
+		$role_processVar_key = 'unit_var_role_'.time();
+		$role_processVar = $processVariableService->createProcessVariable('Proc Var for role assignation', $role_processVar_key);
+
+		//create a new process def
+		$processDefinition = $authoringService->createProcess('TranslationProcess', 'Unit test');
+		$this->assertIsA($processDefinition, 'core_kernel_classes_Resource');
+
+		//define activities and connectors
+
+		//activity 1:
+		$activitySelectTranslators = $authoringService->createActivity($processDefinition, 'Select Translator');
+		$this->assertNotNull($activitySelectTranslators);
+		$authoringService->setFirstActivity($processDefinition, $activitySelectTranslators);
+		$activityService->setAcl($activitySelectTranslators, new core_kernel_classes_Resource(INSTANCE_ACL_ROLE), $roleA);
+
+		$connectorSelectTranslators = $authoringService->createConnector($activitySelectTranslators);
+		$authoringService->setConnectorType($connectorSelectTranslators, new core_kernel_classes_Resource(INSTANCE_TYPEOFCONNECTORS_SEQUENCE));
+		$this->assertNotNull($connectorSelectTranslators);
+
+		//activity 2:
+		$activity2 = $authoringService->createSequenceActivity($connectorSelectTranslators, null, 'Translate Item');
+		$this->assertNotNull($activity2);
+		$activityService->setAcl($activity2, new core_kernel_classes_Resource(INSTANCE_ACL_ROLE_RESTRICTED_USER), $roleB);
+
+		$connector2 = $authoringService->createConnector($activity2);
+		$authoringService->setConnectorType($connector2, new core_kernel_classes_Resource(INSTANCE_TYPEOFCONNECTORS_SEQUENCE));
+		$this->assertNotNull($connector2);
+
+		//activity 3:
+		$activity3 = $authoringService->createSequenceActivity($connector2, null, 'activity3');
+		$this->assertNotNull($activity3);
+		$activityService->setAcl($activity3, new core_kernel_classes_Resource(INSTANCE_ACL_ROLE_RESTRICTED_USER_INHERITED), $role_processVar);
+
+		$connector3 = $authoringService->createConnector($activity3);
+		$authoringService->setConnectorType($connector3, new core_kernel_classes_Resource(INSTANCE_TYPEOFCONNECTORS_SEQUENCE));
+		$this->assertNotNull($connector3);
+
+		//activity 4:
+		$activity4 = $authoringService->createSequenceActivity($connector3, null, 'activity4');
+		$this->assertNotNull($activity4);
+		$activityService->setAcl($activity4, new core_kernel_classes_Resource(INSTANCE_ACL_USER), $user_processVar);
+
+		$connector4 = $authoringService->createConnector($activity4);
+		$authoringService->setConnectorType($connector4, new core_kernel_classes_Resource(INSTANCE_TYPEOFCONNECTORS_SEQUENCE));
+		$this->assertNotNull($connector4);
+
+		//activity 5:
+		$activity5 = $authoringService->createSequenceActivity($connector4, null, 'activity5');
+		$this->assertNotNull($activity5);
+		$activityService->setAcl($activity5, new core_kernel_classes_Resource(INSTANCE_ACL_ROLE_RESTRICTED_USER_INHERITED), $role_processVar);
+
+		$connector5 = $authoringService->createConnector($activity5);
+		$authoringService->setConnectorType($connector5, new core_kernel_classes_Resource(INSTANCE_TYPEOFCONNECTORS_SEQUENCE));
+		$this->assertNotNull($connector5);
+
+		//activity 6:
+		$activity6 = $authoringService->createSequenceActivity($connector5, null, 'activity6');
+		$this->assertNotNull($activity6);
+		$activityService->setAcl($activity6, new core_kernel_classes_Resource(INSTANCE_ACL_ROLE_RESTRICTED_USER_DELIVERY), $roleA);
+				
+	}
+	
+	public function testDeleteCreatedResources(){
+		
+		if(!empty($this->users)){
+			foreach($this->users as $user){
+				$this->assertTrue($user->delete());
+			}
+		}
+		
+		if(!empty($this->roles)){
+			foreach($this->roles as $role){
+				$this->assertTrue($role->delete());
+			}
+		}
+		
 	}
 }
 ?>
