@@ -67,14 +67,6 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 			
 			$usec = time();
 			
-			//TEST PLAN :
-			//INSTANCE_ACL_ROLE, $roleA
-			//INSTANCE_ACL_ROLE_RESTRICTED_USER, $roleB
-			//INSTANCE_ACL_ROLE_RESTRICTED_USER_INHERITED, $roleB (assigned dynamically via process var $role_processVar in activity1)
-			//INSTANCE_ACL_USER, $user2	(assigned dynamically via process var $user_processVar in activity2)
-			//INSTANCE_ACL_ROLE_RESTRICTED_USER_INHERITED, $roleB (assigned dynamically via process var $role_processVar in activity1)
-			//INSTANCE_ACL_ROLE_RESTRICTED_USER_DELIVERY, $roleA 
-			
 			$this->userLogins = array();
 			$this->users = array();	
 			$this->roles = array();
@@ -144,7 +136,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 				$this->assertTrue($roleService->setRoleToUsers($role, $userUris));
 			}
 			
-			var_dump($this->userLogins, $this->roleLogins);
+//			var_dump($this->userLogins, $this->roleLogins);
 			
 			return;
 			
@@ -734,36 +726,62 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		$processExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessExecutionService');
 		$processVariableService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_VariableService');
 		
-		return;
+		//TEST PLAN :
+		//INSTANCE_ACL_ROLE, $roleA
+		//INSTANCE_ACL_ROLE_RESTRICTED_USER, $roleB
+		//INSTANCE_ACL_ROLE_RESTRICTED_USER_INHERITED, $roleB (assigned dynamically via process var $role_processVar in activity1)
+		//INSTANCE_ACL_USER, $user2	(assigned dynamically via process var $user_processVar in activity2)
+		//INSTANCE_ACL_ROLE_RESTRICTED_USER_INHERITED, $roleB (assigned dynamically via process var $role_processVar in activity1)
+		//INSTANCE_ACL_ROLE_RESTRICTED_USER_DELIVERY, $roleA
 		
 		//create some process variables:
-		$user_processVar_key = 'unit_var_user_'.time();
-		$user_processVar = $processVariableService->createProcessVariable('Proc Var for user assignation', $user_processVar_key);
-		$role_processVar_key = 'unit_var_role_'.time();
-		$role_processVar = $processVariableService->createProcessVariable('Proc Var for role assignation', $role_processVar_key);
-
+		$vars = array();
+		$varCodes = array(
+			'npm', //define the *unique* NPM that can access the activity
+			'translator',//seerialized array (the system variable) that will be split during parallel branch creation
+			'reconciler',//define the *unique* reconciler that can access the activity
+			'verifier'
+		);
+		foreach($varCodes as $varCode){
+			$vars[$varCode] = $processVariableService->getProcessVariable($varCode, true);
+		}
+		
+		return;
+		
 		//create a new process def
-		$processDefinition = $authoringService->createProcess('TranslationProcess', 'Unit test');
+		$typeSequential = new core_kernel_classes_Resource(INSTANCE_TYPEOFCONNECTORS_SEQUENCE);
+		$typeConditional = new core_kernel_classes_Resource(INSTANCE_TYPEOFCONNECTORS_CONDITIONAL);
+		$typeSplit = new core_kernel_classes_Resource(INSTANCE_TYPEOFCONNECTORS_PARALLEL);
+		$typeJoin = new core_kernel_classes_Resource(INSTANCE_TYPEOFCONNECTORS_JOIN);
+		
+		$aclUser = new core_kernel_classes_Resource(INSTANCE_ACL_USER);
+		$aclRole = new core_kernel_classes_Resource(INSTANCE_ACL_USER);
+		$aclRoleRestricted = new core_kernel_classes_Resource(INSTANCE_ACL_USER);
+		
+		$processDefinition = $authoringService->createProcess('TranslationProcess', 'For Unit test');
 		$this->assertIsA($processDefinition, 'core_kernel_classes_Resource');
 
 		//define activities and connectors
 
-		//activity 1:
+		//Select translator:
 		$activitySelectTranslators = $authoringService->createActivity($processDefinition, 'Select Translator');
 		$this->assertNotNull($activitySelectTranslators);
 		$authoringService->setFirstActivity($processDefinition, $activitySelectTranslators);
-		$activityService->setAcl($activitySelectTranslators, new core_kernel_classes_Resource(INSTANCE_ACL_ROLE), $roleA);
+
+		$activityService->setAcl($activitySelectTranslators, $aclUser, $vars['npm']);
 
 		$connectorSelectTranslators = $authoringService->createConnector($activitySelectTranslators);
-		$authoringService->setConnectorType($connectorSelectTranslators, new core_kernel_classes_Resource(INSTANCE_TYPEOFCONNECTORS_SEQUENCE));
+		$authoringService->setConnectorType($connectorSelectTranslators, $typeSplit);
 		$this->assertNotNull($connectorSelectTranslators);
-
+		
+		return;
+		
 		//activity 2:
-		$activity2 = $authoringService->createSequenceActivity($connectorSelectTranslators, null, 'Translate Item');
-		$this->assertNotNull($activity2);
-		$activityService->setAcl($activity2, new core_kernel_classes_Resource(INSTANCE_ACL_ROLE_RESTRICTED_USER), $roleB);
+		$activityTranslate = $authoringService->createSequenceActivity($connectorSelectTranslators, null, 'Translate Item');
+		$this->assertNotNull($activityTranslate);
+		$activityService->setAcl($activityTranslate, $aclUser, $roleB);
 
-		$connector2 = $authoringService->createConnector($activity2);
+		$connectorTranslate = $authoringService->createConnector($activityTranslate);
 		$authoringService->setConnectorType($connector2, new core_kernel_classes_Resource(INSTANCE_TYPEOFCONNECTORS_SEQUENCE));
 		$this->assertNotNull($connector2);
 
@@ -799,6 +817,10 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		$this->assertNotNull($activity6);
 		$activityService->setAcl($activity6, new core_kernel_classes_Resource(INSTANCE_ACL_ROLE_RESTRICTED_USER_DELIVERY), $roleA);
 				
+	}
+	
+	public function testExecuteTranslationProcess(){
+		
 	}
 	
 	public function testDeleteCreatedResources(){
