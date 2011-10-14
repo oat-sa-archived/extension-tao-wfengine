@@ -2,18 +2,23 @@
 require_once dirname(__FILE__) . '/wfEngineServiceTest.php';
 
 /**
- * Test the service wfEngine_models_classes_ActivityExecutionService
+ * Test the execution of the PISA translation process
  * 
  * @author Somsack Sipasseuth, <taosupport@tudor.lu>
  * @package wfEngine
  * @subpackage test
  */
-class ActivityExecutionServiceTestCase extends wfEngineServiceTest {
+class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 	
 	/**
 	 * @var wfEngine_models_classes_ActivityExecutionService the tested service
 	 */
 	protected $service = null;
+	
+	/**
+	 * @var core_kernel_classes_Resource
+	 */
+	protected $currentUser = null;
 	
 	/**
 	 * initialize a test method
@@ -22,47 +27,17 @@ class ActivityExecutionServiceTestCase extends wfEngineServiceTest {
 		
 		parent::setUp();
 		
-		$login = 'wfTester';
-		$userData = array(
-			PROPERTY_USER_LOGIN		=> 	$login,
-			PROPERTY_USER_PASSWORD	=>	md5($this->userPassword),
-			PROPERTY_USER_DEFLG		=>	'EN'
-		);
-		
-		$this->currentUser = $this->userService->getOneUser($login);
-		if(is_null($this->currentUser)){
-			$this->userService->saveUser($this->currentUser, $userData, new core_kernel_classes_Resource(CLASS_ROLE_WORKFLOWUSERROLE));
-		}
-		
-		core_kernel_users_Service::logout();
-		if($this->userService->loginUser($login, md5($this->userPassword))){
-			$this->userService->connectCurrentUser();
-			$this->currentUser = $this->userService->getCurrentUser();
-			$this->currentUser0 = $this->currentUser;
-		}
-		
-		$this->service = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityExecutionService');
+		$this->userPassword = 'pisa2015';
 	}
 	
 	public function tearDown() {
-		$this->currentUser0->delete();
-    }
-	
-	/**
-	 * Test the service implementation
-	 */
-	public function testService(){
 		
-		$aeService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityExecutionService');
-		$this->assertIsA($aeService, 'tao_models_classes_Service');
-		$this->assertIsA($aeService, 'wfEngine_models_classes_ActivityExecutionService');
-
-	}
+    }
 	
 	/**
 	 * Test the sequential process execution:
 	 */
-	public function testVirtualSequencialProcess(){
+	public function testVirtualTranslationProcess(){
 		
 		error_reporting(E_ALL);
 		
