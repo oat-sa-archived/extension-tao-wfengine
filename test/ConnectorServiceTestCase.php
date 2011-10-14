@@ -94,8 +94,8 @@ class ConnectorServiceTestCase extends UnitTestCase {
     public function testGetTransitionRule(){
         $connector1 = $this->authoringService->createConnector($this->activity);
 
-        $then = $this->authoringService->createSplitActivity($connector1, 'then');//create "Activity_2"
-        $else = $this->authoringService->createSplitActivity($connector1, 'else', null, '', true);//create another connector
+        $then = $this->authoringService->createConditionalActivity($connector1, 'then');//create "Activity_2"
+        $else = $this->authoringService->createConditionalActivity($connector1, 'else', null, '', true);//create another connector
         $activity3 = $this->authoringService->createSequenceActivity($else, null, 'Act3');
 
         $myProcessVar1 = $this->variableService->getProcessVariable('myProcessVarCode1', true);
@@ -127,10 +127,10 @@ class ConnectorServiceTestCase extends UnitTestCase {
          */
         $connector1 = $this->authoringService->createConnector($this->activity);
 
-        $then = $this->authoringService->createSplitActivity($connector1, 'then');//create "Activity_2"
+        $then = $this->authoringService->createConditionalActivity($connector1, 'then');//create "Activity_2"
         $thenConnector = $this->authoringService->createConnector($then, 'then Connector');//create "Activity_2"
 
-        $else = $this->authoringService->createSplitActivity($connector1, 'else', null, '', true);//create another connector
+        $else = $this->authoringService->createConditionalActivity($connector1, 'else', null, '', true);//create another connector
         $elseConnector = $this->authoringService->createConnector($else, 'else Connector');//create "Activity_2"
 
         $activity3 = $this->authoringService->createSequenceActivity($thenConnector, null, 'Act3');
@@ -201,10 +201,10 @@ class ConnectorServiceTestCase extends UnitTestCase {
          */
         $connector1 = $this->authoringService->createConnector($this->activity);
 
-        $then = $this->authoringService->createSplitActivity($connector1, 'then');//create "Activity_2"
+        $then = $this->authoringService->createConditionalActivity($connector1, 'then');//create "Activity_2"
         $thenConnector = $this->authoringService->createConnector($then, 'then Connector');//create "Activity_2"
 
-        $else = $this->authoringService->createSplitActivity($connector1, 'else', null, '', true);//create another connector
+        $else = $this->authoringService->createConditionalActivity($connector1, 'else', null, '', true);//create another connector
         $elseConnector = $this->authoringService->createConnector($else, 'else Connector');//create "Activity_2"
 
         $activity3 = $this->authoringService->createSequenceActivity($thenConnector, null, 'Act3');
@@ -315,10 +315,10 @@ class ConnectorServiceTestCase extends UnitTestCase {
          */
         $connector1 = $this->authoringService->createConnector($this->activity);
 
-        $then = $this->authoringService->createSplitActivity($connector1, 'then');//create "Activity_2"
+        $then = $this->authoringService->createConditionalActivity($connector1, 'then');//create "Activity_2"
         $thenConnector = $this->authoringService->createConnector($then, 'then Connector');//create "Activity_2"
 
-        $else = $this->authoringService->createSplitActivity($connector1, 'else', null, '', true);//create another connector
+        $else = $this->authoringService->createConditionalActivity($connector1, 'else', null, '', true);//create another connector
         $elseConnector = $this->authoringService->createConnector($else, 'else Connector');//create "Activity_2"
 
         $activity3 = $this->authoringService->createSequenceActivity($thenConnector, null, 'Act3');

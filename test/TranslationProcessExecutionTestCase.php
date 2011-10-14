@@ -755,8 +755,8 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		$typeJoin = new core_kernel_classes_Resource(INSTANCE_TYPEOFCONNECTORS_JOIN);
 		
 		$aclUser = new core_kernel_classes_Resource(INSTANCE_ACL_USER);
-		$aclRole = new core_kernel_classes_Resource(INSTANCE_ACL_USER);
-		$aclRoleRestricted = new core_kernel_classes_Resource(INSTANCE_ACL_USER);
+		$aclRole = new core_kernel_classes_Resource(INSTANCE_ACL_ROLE);
+		$aclRoleRestricted = new core_kernel_classes_Resource(INSTANCE_ACL_ROLE_RESTRICTED_USER);
 		
 		$processDefinition = $authoringService->createProcess('TranslationProcess', 'For Unit test');
 		$this->assertIsA($processDefinition, 'core_kernel_classes_Resource');
@@ -771,52 +771,84 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		$activityService->setAcl($activitySelectTranslators, $aclUser, $vars['npm']);
 
 		$connectorSelectTranslators = $authoringService->createConnector($activitySelectTranslators);
-		$authoringService->setConnectorType($connectorSelectTranslators, $typeSplit);
 		$this->assertNotNull($connectorSelectTranslators);
+		
+		//select translators:
+		$activityTranslate = $authoringService->createSequenceActivity($connectorSelectTranslators, null, 'Translate Item');
+		$this->assertNotNull($activityTranslate);
+		$activityService->setAcl($activityTranslate, $aclUser, $vars['translator']);
+		
+		//reconciliation:
+		$activityReconciliation = $authoringService->createActivity($processDefinition, 'Reconciliation');
+		$this->assertNotNull($activityReconciliation);
+		
+		$connectorTranslate = $authoringService->createConnector($activityTranslate);
+		$result = $authoringService->setParallelActivities($connectorTranslate, array($activityReconciliation->uriResource => $vars['reconciler']));
+		$this->assertTrue($result);
+
+		//verify translations
+		$connectorReconciliation = $authoringService->createConnector($activityReconciliation);
+		$this->assertNotNull($connectorReconciliation);
+		
+		$activityVerifyTranslations = $authoringService->createSequenceActivity($connectorReconciliation, null, 'Verify Translations');
+		$this->assertNotNull($activityVerifyTranslations);
+		$activityService->setAcl($activityVerifyTranslations, $aclUser, $vars['verifier']);
+
+		$connectorVerifyTranslations = $authoringService->createConnector($activityVerifyTranslations);
+		$this->assertNotNull($connectorVerifyTranslations);
+
+		//correct verification
+		$activityCorrectVerification = $authoringService->createSequenceActivity($connectorVerifyTranslations, null, 'Correct Verification');
+		$this->assertNotNull($activityCorrectVerification);
+		$activityService->setAcl($activityCorrectVerification, $aclUser, $vars['reconciler']);
+
+		$connectorCorrectVerification = $authoringService->createConnector($activityCorrectVerification);
+		$this->assertNotNull($connectorCorrectVerification);
+
+		//correct layout :
+		$activityCorrectLayout = $authoringService->createSequenceActivity($connectorCorrectVerification, null, 'Correct Layout');
+		$this->assertNotNull($activityCorrectLayout);
+		$activityService->setAcl($activityCorrectLayout, $aclRole, $vars['developer']);
+
+		$connectorCorrectLayout = $authoringService->createConnector($activityCorrectLayout);
+		$this->assertNotNull($connectorCorrectLayout);
 		
 		return;
 		
-		//activity 2:
-		$activityTranslate = $authoringService->createSequenceActivity($connectorSelectTranslators, null, 'Translate Item');
-		$this->assertNotNull($activityTranslate);
-		$activityService->setAcl($activityTranslate, $aclUser, $roleB);
+		//final check :
+		$activityFinalCheck = $this->authoringService->createConditionalActivity($connectorCorrectLayout, 'then', null, 'Final Check');
+		$activityService->setAcl($activityFinalCheck, $aclRole, $vars['developer']);
+		
+		$this->authoringService->createConditionalActivity($connectorCorrectLayout, 'else', $activityCorrectVerification);
+			
+		$connectorFinalCheck = $authoringService->createConnector($activityFinalCheck);
+		$this->assertNotNull($connectorFinalCheck);
+		
+		//check:
+		
+		//scoring definition :
+		$activityScoringDefinition = $this->authoringService->createConditionalActivity($connectorCorrectLayout, 'then', null, 'Scoring definition');
+	
+		$activityService->setAcl($activityScoringDefinition, $aclUser, $vars['reconciler']);
+		
+		$connectorScoringDefinition = $authoringService->createConnector($activityScoringDefinition);
+		$this->assertNotNull($connectorScoringDefinition);
+		
+		//scoring verification:
+		
+		//final sign off :
+		$activityFinalSignOff = $authoringService->createSequenceActivity($connectorScoringDefinition, null, 'Final Sign Off');
+		$this->assertNotNull($activityFinalSignOff);
+		$activityService->setAcl($activityFinalSignOff, $aclRole, $vars['developer']);
 
-		$connectorTranslate = $authoringService->createConnector($activityTranslate);
-		$authoringService->setConnectorType($connector2, new core_kernel_classes_Resource(INSTANCE_TYPEOFCONNECTORS_SEQUENCE));
-		$this->assertNotNull($connector2);
-
-		//activity 3:
-		$activity3 = $authoringService->createSequenceActivity($connector2, null, 'activity3');
-		$this->assertNotNull($activity3);
-		$activityService->setAcl($activity3, new core_kernel_classes_Resource(INSTANCE_ACL_ROLE_RESTRICTED_USER_INHERITED), $role_processVar);
-
-		$connector3 = $authoringService->createConnector($activity3);
-		$authoringService->setConnectorType($connector3, new core_kernel_classes_Resource(INSTANCE_TYPEOFCONNECTORS_SEQUENCE));
-		$this->assertNotNull($connector3);
-
-		//activity 4:
-		$activity4 = $authoringService->createSequenceActivity($connector3, null, 'activity4');
-		$this->assertNotNull($activity4);
-		$activityService->setAcl($activity4, new core_kernel_classes_Resource(INSTANCE_ACL_USER), $user_processVar);
-
-		$connector4 = $authoringService->createConnector($activity4);
-		$authoringService->setConnectorType($connector4, new core_kernel_classes_Resource(INSTANCE_TYPEOFCONNECTORS_SEQUENCE));
-		$this->assertNotNull($connector4);
-
-		//activity 5:
-		$activity5 = $authoringService->createSequenceActivity($connector4, null, 'activity5');
-		$this->assertNotNull($activity5);
-		$activityService->setAcl($activity5, new core_kernel_classes_Resource(INSTANCE_ACL_ROLE_RESTRICTED_USER_INHERITED), $role_processVar);
-
-		$connector5 = $authoringService->createConnector($activity5);
-		$authoringService->setConnectorType($connector5, new core_kernel_classes_Resource(INSTANCE_TYPEOFCONNECTORS_SEQUENCE));
-		$this->assertNotNull($connector5);
-
-		//activity 6:
-		$activity6 = $authoringService->createSequenceActivity($connector5, null, 'activity6');
-		$this->assertNotNull($activity6);
-		$activityService->setAcl($activity6, new core_kernel_classes_Resource(INSTANCE_ACL_ROLE_RESTRICTED_USER_DELIVERY), $roleA);
-				
+		$connectorFinalSignOff = $authoringService->createConnector($activityFinalSignOff);
+		$this->assertNotNull($connectorFinalSignOff);
+		
+		//sign off :
+		$activitySignOff = $this->authoringService->createConditionalActivity($connectorFinalSignOff, 'then', null, 'Sign Off');
+		$activityService->setAcl($activitySignOff, $aclUser, $vars['reconciler']);
+		
+		$this->authoringService->createConditionalActivity($connectorFinalSignOff, 'else', $activityFinalCheck);
 	}
 	
 	public function testExecuteTranslationProcess(){

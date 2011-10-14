@@ -578,7 +578,7 @@ class wfEngine_models_classes_ProcessAuthoringService
     }
 
     /**
-     * Short description of method createSplitActivity
+     * Short description of method createConditionalActivity
      *
      * @access public
      * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
@@ -589,7 +589,7 @@ class wfEngine_models_classes_ProcessAuthoringService
      * @param  boolean followingActivityisConnector
      * @return core_kernel_classes_Resource
      */
-    public function createSplitActivity( core_kernel_classes_Resource $connector, $connectionType,  core_kernel_classes_Resource $followingActivity = null, $newActivityLabel = '', $followingActivityisConnector = false)
+    public function createConditionalActivity( core_kernel_classes_Resource $connector, $connectionType,  core_kernel_classes_Resource $followingActivity = null, $newActivityLabel = '', $followingActivityisConnector = false)
     {
         $returnValue = null;
 

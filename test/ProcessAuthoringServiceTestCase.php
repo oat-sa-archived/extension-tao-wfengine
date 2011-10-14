@@ -144,8 +144,8 @@ class ProcessAuthoringServiceTestCase extends UnitTestCase {
 		$activity1 = $this->authoringService->createActivity($this->proc, 'myActivity');
 		$connector1 = $this->authoringService->createConnector($activity1);
 		
-		$then = $this->authoringService->createSplitActivity($connector1, 'then');//create "Activity_2"
-		$else = $this->authoringService->createSplitActivity($connector1, 'else', null, '', true);//create another connector
+		$then = $this->authoringService->createConditionalActivity($connector1, 'then');//create "Activity_2"
+		$else = $this->authoringService->createConditionalActivity($connector1, 'else', null, '', true);//create another connector
 		$this->assertEqual($connector1->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_TYPE))->uriResource, INSTANCE_TYPEOFCONNECTORS_CONDITIONAL);
 		$activityService = new wfEngine_models_classes_ActivityService();
 		$this->assertTrue($activityService->isActivity($then));
@@ -184,8 +184,8 @@ class ProcessAuthoringServiceTestCase extends UnitTestCase {
 		$this->assertNull($followingActivity1);
 		
 		$connector2 = $this->authoringService->createConnector($activity2);
-		$then = $this->authoringService->createSplitActivity($connector2, 'then');//create "Activity_2"
-		$else = $this->authoringService->createSplitActivity($connector2, 'else', null, '', true);//create another connector
+		$then = $this->authoringService->createConditionalActivity($connector2, 'then');//create "Activity_2"
+		$else = $this->authoringService->createConditionalActivity($connector2, 'else', null, '', true);//create another connector
 		
 		$this->authoringService->deleteConnectorNextActivity($connector2, 'then');
 		$this->authoringService->deleteConnectorNextActivity($connector2, 'else');

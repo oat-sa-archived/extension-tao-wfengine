@@ -138,8 +138,8 @@ class ActivityServiceTestCase extends UnitTestCase {
         
         $connector2 = $authoringService->createConnector($activity2);
         		
-        $then = $authoringService->createSplitActivity($connector2, 'then');//create "Activity_2"
-		$else = $authoringService->createSplitActivity($connector2, 'else', null, '', true);//create another connector
+        $then = $authoringService->createConditionalActivity($connector2, 'then');//create "Activity_2"
+		$else = $authoringService->createConditionalActivity($connector2, 'else', null, '', true);//create another connector
         
 		
 		$connector3 = $authoringService->createConnector($then);

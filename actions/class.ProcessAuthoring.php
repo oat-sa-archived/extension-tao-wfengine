@@ -1061,23 +1061,23 @@ class wfEngine_actions_ProcessAuthoring extends tao_actions_TaoModule {
 			if(($data['then_activityOrConnector']=="activity") && isset($data["then_activityUri"])){
 				//destruction of the connector of the connector?
 				if($data["then_activityUri"]=="newActivity"){
-					$newActivity = $this->service->createSplitActivity($connectorInstance, 'then', null, $data["then_activityLabel"], false);
+					$newActivity = $this->service->createConditionalActivity($connectorInstance, 'then', null, $data["then_activityLabel"], false);
 					if($newActivity instanceof core_kernel_classes_Resource){
 						$newActivities[] = $this->newActivityTransferData($newActivity, 0);
 					}
 				}else{
 					$followingActivity = new core_kernel_classes_Resource($data["then_activityUri"]);
-					$this->service->createSplitActivity($connectorInstance, 'then', $followingActivity, '', false);
+					$this->service->createConditionalActivity($connectorInstance, 'then', $followingActivity, '', false);
 				}
 			}elseif(($data['then_activityOrConnector']=="connector") && isset($data["then_connectorUri"])){
 				if($data["then_connectorUri"]=="newConnector"){
-					$newConnector = $this->service->createSplitActivity($connectorInstance, 'then', null, '', true);
+					$newConnector = $this->service->createConditionalActivity($connectorInstance, 'then', null, '', true);
 					$this->service->setConnectorType($newConnector, new core_kernel_classes_Resource(INSTANCE_TYPEOFCONNECTORS_SEQUENCE));
 					$newConnectors[] = $this->newConnectorTransferData($newConnector, 0);
 					
 				}else{
 					$followingActivity = new core_kernel_classes_Resource($data["then_connectorUri"]);
-					$this->service->createSplitActivity($connectorInstance, 'then', $followingActivity, '', true);
+					$this->service->createConditionalActivity($connectorInstance, 'then', $followingActivity, '', true);
 				}
 			}elseif($data['then_activityOrConnector']=="delete"){
 				$this->service->deleteConnectorNextActivity($connectorInstance, 'then');
@@ -1086,23 +1086,23 @@ class wfEngine_actions_ProcessAuthoring extends tao_actions_TaoModule {
 			//save the activity in "ELSE":
 			if(($data['else_activityOrConnector']=="activity") && isset($data["else_activityUri"])){
 				if($data["else_activityUri"]=="newActivity"){
-					$newActivity = $this->service->createSplitActivity($connectorInstance, 'else', null, $data["else_activityLabel"], false);
+					$newActivity = $this->service->createConditionalActivity($connectorInstance, 'else', null, $data["else_activityLabel"], false);
 					if($newActivity instanceof core_kernel_classes_Resource){
 						$newActivities[] = $this->newActivityTransferData($newActivity, 1);
 					}
 					
 				}else{
 					$followingActivity = new core_kernel_classes_Resource($data["else_activityUri"]);
-					$this->service->createSplitActivity($connectorInstance, 'else', $followingActivity, '', false);
+					$this->service->createConditionalActivity($connectorInstance, 'else', $followingActivity, '', false);
 				}
 			}elseif(($data['else_activityOrConnector']=="connector") && isset($data["else_connectorUri"])){
 				if($data["else_connectorUri"]=="newConnector"){
-					$newConnector = $this->service->createSplitActivity($connectorInstance, 'else', null, '', true);
+					$newConnector = $this->service->createConditionalActivity($connectorInstance, 'else', null, '', true);
 					$this->service->setConnectorType($newConnector, new core_kernel_classes_Resource(INSTANCE_TYPEOFCONNECTORS_SEQUENCE));
 					$newConnectors[] = $this->newConnectorTransferData($newConnector, 1);
 				}else{
 					$followingActivity = new core_kernel_classes_Resource($data["else_connectorUri"]);
-					$this->service->createSplitActivity($connectorInstance, 'else', $followingActivity, '', true);
+					$this->service->createConditionalActivity($connectorInstance, 'else', $followingActivity, '', true);
 				}
 			}elseif($data['else_activityOrConnector']=="delete"){
 				$this->service->deleteConnectorNextActivity($connectorInstance, 'else');
