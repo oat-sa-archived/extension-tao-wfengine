@@ -429,7 +429,6 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 
 		$currentActivityExecutions = $processExecutionService->getCurrentActivityExecutions($processInstance);
 		$this->assertEqual(count($currentActivityExecutions), 1);
-		var_dump($activityExecutionService->getExecutionOf(reset($currentActivityExecutions))->getLabel());
 
 		$this->out("<strong>Forward transitions:</strong>", true);
 		
@@ -479,10 +478,37 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 				case 1:{
 					break;
 				}
-			}	
+			}
 			
 		}
 		
+	}
+	
+	private function bashCheckAcl($activityExecution, $authorizedUsers, $unauthorizedUsers = array()){
+		
+		$currentUser = $this->currentUser;
+		
+		if(empty($unauthorizedUsers)){
+			$allLogins = array_keys($this->users);//all logins
+			$unauthorizedUsers = array_diff($allLogins, $authorizedUsers);
+		}
+		
+		$activityExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityExecutionService');
+		$processInstance = $processInstance->getRelatedProcessExecution($activityExecution);
+		
+		foreach($unauthorizedUsers as $login){
+			$this->assertTrue($this->changeUser($login));
+			$this->assertFalse($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
+		}
+		
+		foreach($authorizedUsers as $login){
+			$this->assertTrue($this->changeUser($login));
+			$this->assertTrue($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
+		}
+		
+		//relog initial user:
+		$currentLogin = $currentUser->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_USER_LOGIN));
+		$this->assertTrue($this->changeUser($currentLogin));
 	}
 	
 	/*
