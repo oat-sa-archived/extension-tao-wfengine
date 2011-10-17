@@ -341,31 +341,7 @@ class wfEngine_models_classes_VariableService
         $returnValue = (bool) false;
 
         // section 127-0-1-1--55065e1d:1294a729605:-8000:0000000000002006 begin
-        
-    	if(is_null($activityExecution) && Session::hasAttribute("activityExecutionUri")){
-			$activityExecution = new core_kernel_classes_Resource(Session::getAttribute("activityExecutionUri"));
-		}
-		
-		if(!is_null($activityExecution)){
-			
-			$newVar = unserialize($activityExecution->getOnePropertyValue($this->variablesProperty));
-			$processVariable = $this->getProcessVariable($key);
-			
-			if(!is_null($processVariable)){
-				$property = new core_kernel_classes_Property($processVariable->uriResource);
-
-				$returnValue &= $activityExecution->setPropertyValue($property, $value);
-				if(is_array($newVar)){
-					$newVar = array_merge($newVar, array($key)); 
-				}
-				else{
-					$newVar = array($key);
-				}
-			}
-				
-			$returnValue &= $activityExecution->editPropertyValues($this->variablesProperty, serialize($newVar));
-		}
-    	
+        $returnValue = $this->_set($key, $value, $activityExecution, false);
         // section 127-0-1-1--55065e1d:1294a729605:-8000:0000000000002006 end
 
         return (bool) $returnValue;
@@ -522,6 +498,78 @@ class wfEngine_models_classes_VariableService
 		$this->codeProperty = new core_kernel_classes_Property(PROPERTY_PROCESSVARIABLES_CODE);
 		
         // section 127-0-1-1-ce05865:132dda78a59:-8000:00000000000030A8 end
+    }
+
+    /**
+     * Short description of method edit
+     *
+     * @access public
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @param  string key
+     * @param  string value
+     * @param  Resource activityExecution
+     * @return boolean
+     */
+    public function edit($key, $value,  core_kernel_classes_Resource $activityExecution = null)
+    {
+        $returnValue = (bool) false;
+
+        // section 127-0-1-1-1899355b:13312537157:-8000:00000000000030E0 begin
+		$returnValue = $this->_set($key, $value, $activityExecution, true);
+        // section 127-0-1-1-1899355b:13312537157:-8000:00000000000030E0 end
+
+        return (bool) $returnValue;
+    }
+
+    /**
+     * Short description of method _set
+     *
+     * @access private
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @param  string key
+     * @param  string value
+     * @param  Resource activityExecution
+     * @param  boolean edit
+     * @return boolean
+     */
+    private function _set($key, $value,  core_kernel_classes_Resource $activityExecution = null, $edit = false)
+    {
+        $returnValue = (bool) false;
+
+        // section 127-0-1-1-1899355b:13312537157:-8000:00000000000030E7 begin
+		if(is_null($activityExecution) && Session::hasAttribute("activityExecutionUri")){
+			$activityExecution = new core_kernel_classes_Resource(Session::getAttribute("activityExecutionUri"));
+		}
+		
+		if(!is_null($activityExecution)){
+			
+			$allVars = unserialize($activityExecution->getOnePropertyValue($this->variablesProperty));
+			$processVariable = $this->getProcessVariable($key);
+			
+			if(!is_null($processVariable)){
+				$property = new core_kernel_classes_Property($processVariable->uriResource);
+				if($edit){
+					$returnValue &= $activityExecution->editPropertyValues($property, $value);
+				}else{
+					$returnValue &= $activityExecution->setPropertyValue($property, $value);
+				}
+				
+				if(is_array($allVars)){
+					if(!array_search($key, $allVars)){
+						$allVars[] = $key;
+					}
+				}
+				else{
+					$allVars = array($key);
+				}
+			}
+				
+			$returnValue &= $activityExecution->editPropertyValues($this->variablesProperty, serialize($allVars));
+		}
+		
+        // section 127-0-1-1-1899355b:13312537157:-8000:00000000000030E7 end
+
+        return (bool) $returnValue;
     }
 
 } /* end of class wfEngine_models_classes_VariableService */
