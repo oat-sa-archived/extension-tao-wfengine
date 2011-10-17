@@ -25,6 +25,8 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 	 */
 	protected $processDefinition = null;
 	
+	protected $processLabel = 'TranslationProcess';
+	
 	/**
 	 * @var array()
 	 */
@@ -39,7 +41,11 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 	public function setUp(){
 		
 		parent::setUp();
-		$this->userPassword = 'pisa2015';
+		$this->userPassword = '123456';
+		$this->processLabel = 'TranslationProcess';
+		$this->createUsers = true;
+		$this->createProcess = true;
+		
 	}
 	
 	public function tearDown() {
@@ -62,6 +68,33 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		}
 	}
 	
+	private function getAuthorizedUsersByCountryLanguage($countryCode, $languageCode){
+		
+		$returnValue = array();
+		
+		if(!empty($this->userLogins)){
+			if(isset($this->userLogins[$countryCode])){
+				if(isset($this->userLogins[$countryCode][$languageCode])){
+					
+					$npmLogin = $this->userLogins[$countryCode]['NPM'];
+					$reconcilerLogin =  $this->userLogins[$countryCode][$languageCode]['reconciler'];
+					$verifierLogin =  $this->userLogins[$countryCode][$languageCode]['verifier'];
+					
+					if(isset($this->users[$npmLogin]) && isset($this->users[$reconcilerLogin]) && isset($this->users[$verifierLogin])){
+						$returnValue = array(
+							'npm' => $this->users[$npmLogin]->uriResource,
+							'reconciler' => $this->users[$reconcilerLogin]->uriResource,
+							'verifier' => $this->users[$verifierLogin]->uriResource
+						);
+					}
+					
+				}
+			}
+		}
+		
+		return $returnValue;
+	}
+
 	/**
 	 * Test generation of users:
 	 */
@@ -69,13 +102,10 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		
 		error_reporting(E_ALL);
 		
-		try{
+		if($this->createUsers){
 			
 			$roleService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_RoleService');
 			$authoringService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessAuthoringService');
-			$activityService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityService');
-			$activityExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityExecutionService');
-			$processExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessExecutionService');
 			$processVariableService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_VariableService');
 			
 			$usec = time();
@@ -148,10 +178,12 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 				$this->assertTrue($roleService->setRoleToUsers($role, $userUris));
 			}
 			
-//			var_dump($this->userLogins, $this->roleLogins);
+			var_dump($this->userLogins, $this->roleLogins);
 			
-			return;
 			
+		}
+		return;
+		
 			//run the process
 			$processExecName = 'Test Process Execution';
 			$processExecComment = 'created for processExecustionService test case by '.__METHOD__;
@@ -723,13 +755,13 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 			$user6->delete();
 			$user_processVar->delete();
 			$role_processVar->delete();
-		}
-		catch(common_Exception $ce){
-			$this->fail($ce);
-		}
 	}
 	
 	public function testCreateTranslationProcess(){
+		
+		if(!$this->createProcess){
+			return;
+		}
 		
 		$roleService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_RoleService');
 		$authoringService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessAuthoringService');
@@ -771,7 +803,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		$aclUser = new core_kernel_classes_Resource(INSTANCE_ACL_USER);
 		$aclRole = new core_kernel_classes_Resource(INSTANCE_ACL_ROLE);
 		
-		$processDefinition = $authoringService->createProcess('TranslationProcess', 'For Unit test');
+		$processDefinition = $authoringService->createProcess($this->processLabel, 'For Unit test');
 		$this->assertIsA($processDefinition, 'core_kernel_classes_Resource');
 
 		//define activities and connectors
@@ -918,6 +950,64 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 	}
 	
 	public function testExecuteTranslationProcess(){
+		
+		$activityService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityService');
+		$activityExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityExecutionService');
+		$processExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessExecutionService');
+		$processVariableService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_VariableService');
+		
+		if(!$this->processDefinition instanceof core_kernel_classes_Resource){
+			//try to find it:
+			$processClass = new core_kernel_classes_Class(CLASS_PROCESS);
+			$translationProcesses = $processClass->searchInstances(array(RDFS_LABEL => (string) $this->processLabel), array('like'=>false));
+			if(!empty($translationProcesses)){
+				$this->processDefinition = array_pop($translationProcesses);
+			}
+		}
+			
+		if(!$this->processDefinition instanceof core_kernel_classes_Resource){
+			$this->fail('No process definition found to be executed');
+		}
+		
+		$processExecName = 'Test Translation Process Execution';
+		$processExecComment = 'created by '.__CLASS__.'::'.__METHOD__;
+		
+		$itemUri = 'myItemUri';
+		$countryCode = 'LU';
+		$languageCode = 'de';
+		
+		$users = $this->getAuthorizedUsersByCountryLanguage($countryCode, $languageCode);
+		
+		if(empty($users)){
+			$this->fail('cannot find authorized npm, verifier and reconciler for this country-language');
+			return;
+		}
+		
+		$initVariables = array(
+			$this->vars['unitUri']->uriResource => $itemUri,
+			$this->vars['countryCode']->uriResource => $countryCode,
+			$this->vars['languageCode']->uriResource => $languageCode,
+			$this->vars['npm']->uriResource => $users['npm'],
+			$this->vars['reconciler']->uriResource => $users['reconciler'],
+			$this->vars['verifier']->uriResource => $users['verifier']
+		);
+			
+		$processInstance = $processExecutionService->createProcessExecution($this->processDefinition, $processExecName, $processExecComment, $initVariables);
+		$this->assertEqual($this->processDefinition->uriResource, $processExecutionService->getExecutionOf($processInstance)->uriResource);
+		$this->assertEqual($this->processDefinition->uriResource, $processExecutionService->getExecutionOf($processInstance)->uriResource);
+
+		$this->assertTrue($processExecutionService->checkStatus($processInstance, 'started'));
+
+		$this->out(__METHOD__, true);
+
+		$currentActivityExecutions = $processExecutionService->getCurrentActivityExecutions($processInstance);
+		$this->assertEqual(count($currentActivityExecutions), 1);
+		var_dump($activityExecutionService->getExecutionOf(reset($currentActivityExecutions))->getLabel());
+
+		$this->out("<strong>Forward transitions:</strong>", true);
+
+		$loginProperty = new core_kernel_classes_Property(PROPERTY_USER_LOGIN);
+
 		
 	}
 	
