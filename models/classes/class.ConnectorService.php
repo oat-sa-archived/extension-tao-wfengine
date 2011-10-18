@@ -344,7 +344,7 @@ class wfEngine_models_classes_ConnectorService
 					//find the right cardinality resource (according to the activity defined in the connector):
 					$activity = $cardinalityService->getActivity($cardinality);
 					if(!is_null($activity) && isset($variables[$activity->uriResource])){
-						$cardinalityService->editSplitVariables($cardinality, $variables[$activity->uriResource]);
+						$returnValue = $cardinalityService->editSplitVariables($cardinality, $variables[$activity->uriResource]);
 					}
 				}
 				

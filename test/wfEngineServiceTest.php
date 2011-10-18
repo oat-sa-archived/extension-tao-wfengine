@@ -133,7 +133,10 @@ class wfEngineServiceTest extends UnitTestCase {
 		$restrictedTo = !is_null($restricedRole) ? $restricedRole : $activityExecutionService->getRestrictedUser($activityExecution);
 		
 		$this->assertNotNull($aclMode);
-		$this->assertNotNull($restrictedTo);
+		if(is_null($restrictedTo)){
+			$activity = $activityExecutionService->getExecutionOf($activityExecution);
+			$this->fail("cannot get the restricted user or role for the activity execution {$activityExecution->uriResource} of the activity {$activity->getLabel()} ({$activity->uriResource} ");
+		}
 		$this->out("ACL mode: {$aclMode->getLabel()}; restricted to {$restrictedTo->getLabel()}", true);
 	}
 	

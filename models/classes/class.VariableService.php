@@ -564,7 +564,7 @@ class wfEngine_models_classes_VariableService
 				}
 			}
 				
-			$returnValue &= $activityExecution->editPropertyValues($this->variablesProperty, serialize($allVars));
+			$returnValue = $activityExecution->editPropertyValues($this->variablesProperty, serialize($allVars));
 		}
 		
         // section 127-0-1-1-1899355b:13312537157:-8000:00000000000030E7 end

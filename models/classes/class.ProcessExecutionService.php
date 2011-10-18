@@ -460,8 +460,8 @@ class wfEngine_models_classes_ProcessExecutionService
 			$comment = "create by processExecutionService on ".date("d-m-Y H:i:s");
 		}
 		$processInstance = $this->processInstancesClass->createInstance($name, $comment);
-		$processInstance->setPropertyValue($this->processInstancesStatusProp, INSTANCE_PROCESSSTATUS_STARTED);
-		$processInstance->setPropertyValue($this->processInstancesExecutionOfProp, $processDefinition->uriResource);
+		$this->setStatus($processInstance, 'started');
+		$processInstance->setPropertyValue($this->processInstancesExecutionOfProp, $processDefinition);
 		
 		$processDefinitionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessDefinitionService');
 		$initialActivities = $processDefinitionService->getRootActivities($processDefinition);
@@ -1041,7 +1041,7 @@ class wfEngine_models_classes_ProcessExecutionService
 		switch ($connectorType->uriResource) {
 			case INSTANCE_TYPEOFCONNECTORS_CONDITIONAL:{
 				
-				$returnValue = $this->getConditionalConnectorNewActivities($activityExecution, $currentConnector);
+				$returnValue = $this->getConditionalConnectorNewActivities($processExecution, $activityExecution, $currentConnector);
 				
 				break;
 			}
