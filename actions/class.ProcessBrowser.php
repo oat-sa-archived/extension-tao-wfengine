@@ -217,13 +217,13 @@ class wfEngine_actions_ProcessBrowser extends wfEngine_actions_WfModule{
 						'output'	=> $interactiveServiceService->getOutputValues($interactiveService, $activityExecution)
 					);
 				}
-				
+				$variableService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_VariableService');
 				$this->setData('debugData', array(
 						'Activity' => $activityDefinition,
 						'ActivityExecution' => $activityExecution,
 						'CurrentActivities' => $currentlyAvailableActivityExecutions,
 						'Services' => $servicesResources,
-						'VariableStack' => wfEngine_models_classes_VariableService::getAll()
+						'VariableStack' => $variableService->getAll()
 				));
 			}
 			/* </DEBUG> */
