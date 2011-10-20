@@ -1106,13 +1106,14 @@ class wfEngine_models_classes_ProcessExecutionService
 		$transitionRuleService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_TransitionRuleService');
 		
 		$transitionRule = $connectorService->getTransitionRule($conditionalConnector);
+		var_dump('transition rule');
 		if(is_null($transitionRule)){
 			return $returnValue;
 		}
 		
 		$processVarValues = $this->activityExecutionService->getVariables($activityExecution);
 		$evaluationResult = $transitionRuleService->getExpression($transitionRule)->evaluate($processVarValues);
-
+		var_dump($evaluationResult);
 		if ($evaluationResult){
 			// next activities = THEN
 			$thenActivity = $transitionRuleService->getThenActivity($transitionRule);

@@ -195,8 +195,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 				$this->assertTrue($roleService->setRoleToUsers($role, $userUris));
 			}
 			
-			var_dump($this->userLogins, $this->roleLogins);
-			
+//			var_dump($this->userLogins, $this->roleLogins);
 			
 		}
 			
@@ -212,6 +211,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		$activityService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityService');
 		$connectorService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ConnectorService');
 		$processVariableService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_VariableService');
+		$cardinalityService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityCardinalityService');
 		
 		//create some process variables:
 		$vars = array();
@@ -261,6 +261,13 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		$this->assertTrue($result);
 		$this->assertTrue($connectorService->setSplitVariables($connectorSelectTranslators, array($activityTranslate->uriResource => $vars['translator'])));
 		
+		$nextActivities = $connectorService->getNextActivities($connectorSelectTranslators);
+		$this->assertEqual(count($nextActivities), 1);
+		$cardinality = reset($nextActivities);
+		$this->assertTrue($cardinalityService->isCardinality($cardinality));
+		$this->assertEqual($cardinalityService->getActivity($cardinality)->uriResource, $activityTranslate->uriResource);
+		$this->assertEqual($cardinalityService->getCardinality($cardinality)->uriResource, $this->vars['translatorsCount']->uriResource);
+		
 		$connectorTranslate = $authoringService->createConnector($activityTranslate);
 		$this->assertNotNull($connectorTranslate);
 		
@@ -281,6 +288,14 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		$connectorReplaceTranslator = $authoringService->createConnector($activityReplaceTranslator);
 		$this->assertNotNull($connectorReplaceTranslator);
 		
+		//check connector translate:
+		$nextActivities = $connectorService->getNextActivities($connectorTranslate);
+		$this->assertEqual(count($nextActivities), 2);
+		foreach($nextActivities as $nextActivity){
+			$this->assertTrue($nextActivity->uriResource == $activityReplaceTranslator->uriResource || $nextActivity->uriResource == $activityEndTranslation->uriResource);
+		}
+		
+		
 		//if the translator has been replaced, go back to translate:
 		$transitionRule = $authoringService->createTransitionRule($connectorReplaceTranslator, '^translatorsCount == 1');
 		$this->assertNotNull($transitionRule);
@@ -297,6 +312,13 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 //		$activityReconciliation = $authoringService->createActivity($processDefinition, 'Reconciliation');
 //		$this->assertNotNull($activityReconciliation);
 		$activityReconciliation = $authoringService->createJoinActivity($connectorEndTranslation, null, 'Reconciliation', $activityEndTranslation);
+		$prevActivities = $connectorService->getPreviousActivities($connectorEndTranslation);
+		$this->assertEqual(count($prevActivities), 1);
+		$cardinality = reset($prevActivities);
+		$this->assertTrue($cardinalityService->isCardinality($cardinality));
+		$this->assertEqual($cardinalityService->getActivity($cardinality)->uriResource, $activityEndTranslation->uriResource);
+		$this->assertEqual($cardinalityService->getCardinality($cardinality)->uriResource, $this->vars['translatorsCount']->uriResource);
+		
 		$this->assertNotNull($activityReconciliation);
 		$activityService->setAcl($activityReconciliation, $aclUser, $vars['reconciler']);
 		
@@ -385,6 +407,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		//end of process definition
 		
 		$this->processDefinition = $processDefinition;
+		
 	}
 	
 	public function testExecuteTranslationProcess(){
@@ -493,7 +516,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 			if($i == 2 || $i == 3){
 				$this->assertEqual(count($activityExecutions), 2);
 				//parallel translation branch:
-				foreach($activityExecutions as $activityExecUri => $activityExec){
+				foreach($activityExecutions as $activityExec){
 					if(!$activityExecutionService->isFinished($activityExec)){
 						$activityExecution = $activityExec;
 						break;
@@ -551,8 +574,6 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 						'translatorUri' => $theTranslator->uriResource
 					)));
 					
-					//error in terms:
-					return;
 					
 					break;
 				}
@@ -568,6 +589,9 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 			
 		}
 		
+//		$activityExecutionsData = $processExecutionService->getAllActivityExecutions($processInstance);
+//		var_dump($activityExecutionsData);
+			
 		//delete process execution:
 		$this->assertTrue($processInstance->exists());
 		$this->assertTrue($processExecutionService->deleteProcessExecution($processInstance));

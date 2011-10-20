@@ -447,16 +447,13 @@ class wfEngine_models_classes_ProcessAuthoringService
 			
 			$parallelConnector = null;
 			$parallelConnector = $processFlow->findParallelFromActivityBackward($previousActivity);
-			
 			if(!is_null($parallelConnector)){
-				
-				$firstActivityOfTheThreadUri = array_pop($processFlow->getCheckedActivities());
 				
 				//count the number of time theprevious activity must be set as the previous activity of the join connector
 				$nextActivitiesCollection = $parallelConnector->getPropertyValuesCollection(new core_kernel_classes_Property(PROPERTY_CONNECTORS_NEXTACTIVITIES));
 				
 				foreach($nextActivitiesCollection->getIterator() as $nextActivityCardinality){
-					if($cardinalityService->getActivity($nextActivityCardinality)->uriResource == $firstActivityOfTheThreadUri){
+					if(in_array($cardinalityService->getActivity($nextActivityCardinality)->uriResource, $processFlow->getCheckedActivities())){
 						$multiplicity = $cardinalityService->getCardinality($nextActivityCardinality);
 						break;
 					}
