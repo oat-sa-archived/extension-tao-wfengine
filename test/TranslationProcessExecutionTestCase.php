@@ -185,7 +185,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 					
 					//as many translators as wanted:
 					for($i = 1; $i <= $nbTranslatorsByCountryLang; $i++){
-						$this->userLogins[$countryCode][$languageCode]['translator'][$i] = 'translator_'.$countryCode.'_'.$languageCode.'_'.$usec;
+						$this->userLogins[$countryCode][$languageCode]['translator'][$i] = 'translator_'.$countryCode.'_'.$languageCode.'_'.$i.'_'.$usec;
 						$this->roleLogins[$this->roles['translator']->uriResource][] = $this->userLogins[$countryCode][$languageCode]['translator'][$i];
 					}
 				}
@@ -484,8 +484,10 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		 * sign off
 		 */
 		
+		$nbTranslators = 2;//>=1
+		$indexActivityTranslate = 2;//the index of the activity in the process deifnition
 		$iterations = 24;
-		$iterations = 3;
+		$iterations = 4;
 		$this->changeUser($this->userLogins[$countryCode]['NPM']);
 		$selectedTranslators = array();
 		for($i = 1; $i <= $iterations; $i++){
@@ -493,7 +495,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 			$activityExecutions = $processExecutionService->getCurrentActivityExecutions($processInstance);
 			$activityExecution = null;
 			$activity = null;
-			if($i == 2 || $i == 3){
+			if($i >= $indexActivityTranslate && $i < $indexActivityTranslate+$nbTranslators){
 				$this->assertEqual(count($activityExecutions), 2);
 				//parallel translation branch:
 				foreach($activityExecutions as $activityExec){
@@ -515,48 +517,62 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 			$this->checkAccessControl($activityExecution);
 			
 			$currentActivityExecution = null;
-			switch($i){
-				case 1:{
-					
-					$this->bashCheckAcl($activityExecution, array($this->userLogins[$countryCode]['NPM']));
-					
-					$this->changeUser($this->userLogins[$countryCode]['NPM']);
-					$currentActivityExecution = $this->initCurrentActivityExecution($activityExecution);
-					$translators = $this->getAuthorizedUsersByCountryLanguage($countryCode, $languageCode, 2);
-					$selectedTranslators = $translators['translators'];
-					$this->assertTrue($this->executeServiceSelectTranslators($selectedTranslators));
-					
-					break;
-				}
-				case 2:
-				case 3:{
-					
-					$this->assertFalse(empty($selectedTranslators));
-					$theTranslator = null;
-					foreach($selectedTranslators as $translatorUri){
-						$translator = new core_kernel_classes_Resource($translatorUri);
-						if($activityExecutionService->checkAcl($activityExecution, $translator)){
-							$theTranslator = $translator;
-							break;
-						}
+			
+			if($i >= $indexActivityTranslate && $i < $indexActivityTranslate+$nbTranslators){
+				
+				//we are executing the translation activity:
+				$this->assertFalse(empty($selectedTranslators));
+				$theTranslator = null;
+				foreach($selectedTranslators as $translatorUri){
+					$translator = new core_kernel_classes_Resource($translatorUri);
+					if($activityExecutionService->checkAcl($activityExecution, $translator)){
+						$theTranslator = $translator;
+						break;
 					}
-					
-					$this->assertNotNull($theTranslator);
-					$login = (string) $theTranslator->getUniquePropertyValue($loginProperty);
-					$this->assertFalse(empty($login));
-					
-					$this->bashCheckAcl($activityExecution, array($login));
-					$this->changeUser($login);
-					
-					$currentActivityExecution = $this->initCurrentActivityExecution($activityExecution);
-					
-					$this->assertTrue($this->executeServiceTranslate(array(
-						'translatorUri' => $theTranslator->uriResource
-					)));
-					
-					
-					break;
 				}
+
+				$this->assertNotNull($theTranslator);
+				$login = (string) $theTranslator->getUniquePropertyValue($loginProperty);
+				$this->assertFalse(empty($login));
+
+				$this->bashCheckAcl($activityExecution, array($login));
+				$this->changeUser($login);
+
+				$currentActivityExecution = $this->initCurrentActivityExecution($activityExecution);
+
+				//execute service:
+				$this->assertTrue($this->executeServiceTranslate(array(
+					'translatorUri' => $theTranslator->uriResource
+				)));
+				
+			}else{
+				
+				//switch to activity's specific check:
+				switch ($i) {
+					case 1: {
+
+						$this->bashCheckAcl($activityExecution, array($this->userLogins[$countryCode]['NPM']));
+
+						$this->changeUser($this->userLogins[$countryCode]['NPM']);
+						$currentActivityExecution = $this->initCurrentActivityExecution($activityExecution);
+
+						//execute service:
+						$translators = $this->getAuthorizedUsersByCountryLanguage($countryCode, $languageCode, $nbTranslators);
+						$selectedTranslators = $translators['translators'];
+						$this->assertTrue($this->executeServiceSelectTranslators($selectedTranslators));
+
+						break;
+					}
+					case $indexActivityTranslate + $nbTranslators: {
+						//reconciliation:
+						$login = $this->userLogins[$countryCode][$languageCode]['reconciler'];
+						$this->assertFalse(empty($login));
+						$this->bashCheckAcl($activityExecution, array($login));
+						$this->changeUser($login);
+						$currentActivityExecution = $this->initCurrentActivityExecution($activityExecution);
+					}
+				}
+				
 			}
 			
 			//transition to next activity
@@ -569,8 +585,8 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 			
 		}
 		
-//		$activityExecutionsData = $processExecutionService->getAllActivityExecutions($processInstance);
-//		var_dump($activityExecutionsData);
+		$activityExecutionsData = $processExecutionService->getAllActivityExecutions($processInstance);
+		var_dump($activityExecutionsData);
 			
 		//delete process execution:
 		$this->assertTrue($processInstance->exists());
@@ -738,8 +754,8 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		
 		if($this->processDefinition instanceof core_kernel_classes_Resource){
 			$authoringService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessAuthoringService');
-//			$this->assertTrue($authoringService->deleteProcess($this->processDefinition));
-//			$this->assertFalse($this->processDefinition->exists());
+			$this->assertTrue($authoringService->deleteProcess($this->processDefinition));
+			$this->assertFalse($this->processDefinition->exists());
 		}
 		
 		if(!empty($this->vars)){
