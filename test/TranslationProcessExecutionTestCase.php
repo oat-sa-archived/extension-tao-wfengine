@@ -138,6 +138,8 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 			$this->roles['reconciler'] = $roleService->createInstance($roleClass, 'reconcilers - '.$usec);
 			$this->roles['verifier'] = $roleService->createInstance($roleClass, 'verifiers - '.$usec);
 			$this->roles['developer'] = $roleService->createInstance($roleClass, 'developers - '.$usec);
+			$this->roles['testDeveloper'] = $roleService->createInstance($roleClass, 'test developers - '.$usec);
+			
 			
 			$langCountries = array(
 				'LU' => array('fr', 'de', 'lb'),
@@ -153,6 +155,13 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 			for($i = 1; $i <= $nbDevelopers; $i++){
 				$this->userLogins['developer'][$i] = 'developer_'.$i.'_'.$usec;//ETS_01, ETS_02, etc.
 				$this->roleLogins[$this->roles['developer']->uriResource][] = $this->userLogins['developer'][$i];
+			}
+			
+			$this->userLogins['testDeveloper'] = array();
+			$nbTestDevelopers = 3;
+			for($i = 1; $i <= $nbTestDevelopers; $i++){
+				$this->userLogins['testDeveloper'][$i] = 'testDeveloper_'.$i.'_'.$usec;//test creators
+				$this->roleLogins[$this->roles['testDeveloper']->uriResource][] = $this->userLogins['testDeveloper'][$i];
 			}
 			
 			$nbTranslatorsByCountryLang = 3;
@@ -271,52 +280,13 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		$connectorTranslate = $authoringService->createConnector($activityTranslate);
 		$this->assertNotNull($connectorTranslate);
 		
-		//if ok, go to "end translation"
-		$transitionRule = $authoringService->createTransitionRule($connectorTranslate, '^translationFinished == 1');
-		$this->assertNotNull($transitionRule);
-		$activityEndTranslation = $authoringService->createConditionalActivity($connectorTranslate, 'then', null, 'end translation');
-		$authoringService->setActivityHidden($activityEndTranslation, true);
-		$this->assertNotNull($activityEndTranslation);
-		
-		$connectorEndTranslation = $authoringService->createConnector($activityEndTranslation);
-		$this->assertNotNull($connectorEndTranslation);
-		
-		//if not ok, go to replace translator:
-		$activityReplaceTranslator = $authoringService->createConditionalActivity($connectorTranslate, 'else', null, 'replace translator');
-		$this->assertNotNull($activityReplaceTranslator);
-		
-		$connectorReplaceTranslator = $authoringService->createConnector($activityReplaceTranslator);
-		$this->assertNotNull($connectorReplaceTranslator);
-		
-		//check connector translate:
-		$nextActivities = $connectorService->getNextActivities($connectorTranslate);
-		$this->assertEqual(count($nextActivities), 2);
-		foreach($nextActivities as $nextActivity){
-			$this->assertTrue($nextActivity->uriResource == $activityReplaceTranslator->uriResource || $nextActivity->uriResource == $activityEndTranslation->uriResource);
-		}
-		
-		
-		//if the translator has been replaced, go back to translate:
-		$transitionRule = $authoringService->createTransitionRule($connectorReplaceTranslator, '^translatorsCount == 1');
-		$this->assertNotNull($transitionRule);
-		$activityTranslateBis = $authoringService->createConditionalActivity($connectorReplaceTranslator, 'then', $activityTranslate);
-		$this->assertNotNull($activityTranslateBis);
-		$this->assertEqual($activityTranslateBis->uriResource, $activityTranslate->uriResource);
-		
-		//if no translator has been selected, shortcut to "end translation":
-		$activityEndTranslationBis = $authoringService->createConditionalActivity($connectorReplaceTranslator, 'else', $activityEndTranslation);
-		$this->assertNotNull($activityEndTranslationBis);
-		$this->assertEqual($activityEndTranslationBis->uriResource, $activityEndTranslation->uriResource);
-		
 		//reconciliation:
-//		$activityReconciliation = $authoringService->createActivity($processDefinition, 'Reconciliation');
-//		$this->assertNotNull($activityReconciliation);
-		$activityReconciliation = $authoringService->createJoinActivity($connectorEndTranslation, null, 'Reconciliation', $activityEndTranslation);
-		$prevActivities = $connectorService->getPreviousActivities($connectorEndTranslation);
+		$activityReconciliation = $authoringService->createJoinActivity($connectorTranslate, null, 'Reconciliation', $activityTranslate);
+		$prevActivities = $connectorService->getPreviousActivities($connectorTranslate);
 		$this->assertEqual(count($prevActivities), 1);
 		$cardinality = reset($prevActivities);
 		$this->assertTrue($cardinalityService->isCardinality($cardinality));
-		$this->assertEqual($cardinalityService->getActivity($cardinality)->uriResource, $activityEndTranslation->uriResource);
+		$this->assertEqual($cardinalityService->getActivity($cardinality)->uriResource, $activityTranslate->uriResource);
 		$this->assertEqual($cardinalityService->getCardinality($cardinality)->uriResource, $this->vars['translatorsCount']->uriResource);
 		
 		$this->assertNotNull($activityReconciliation);
@@ -352,32 +322,42 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		//final check :
 		$activityFinalCheck = $authoringService->createSequenceActivity($connectorCorrectLayout, null, 'Final Check');
 		$this->assertNotNull($activityFinalCheck);
-		$activityService->setAcl($activityFinalCheck, $aclRole, $this->roles['developer']);
+		$activityService->setAcl($activityFinalCheck, $aclRole, $this->roles['testDeveloper']);
 
 		$connectorFinalCheck = $authoringService->createConnector($activityFinalCheck);
 		$this->assertNotNull($connectorFinalCheck);
 		
-		//link it back to "correct verification"
-		$activityCorrectVerificationBis = $authoringService->createConditionalActivity($connectorFinalCheck, 'else', $activityCorrectVerification);
+		//if final check ok, go to scoring definition :
 		$transitionRule = $authoringService->createTransitionRule($connectorFinalCheck, '^layoutCheck == 1');
 		$this->assertNotNull($transitionRule);
-		$this->assertEqual($activityCorrectVerification->uriResource, $activityCorrectVerificationBis->uriResource);
 		
-		//verify layout correction :
-		$activityReviewCorrection = $authoringService->createConditionalActivity($connectorFinalCheck, 'then', null, 'Review Corrections');
-		$this->assertNotNull($activityReviewCorrection);
-		$activityService->setAcl($activityReviewCorrection, $aclUser, $vars['verifier']);
-
-		$connectorReviewCorrections = $authoringService->createConnector($activityReviewCorrection);
-		$this->assertNotNull($connectorReviewCorrections);
-		
-		//scoring definition :
-		$activityScoringDefinition = $authoringService->createSequenceActivity($connectorReviewCorrections, null, 'Scoring Definition and Testing');
+		$activityScoringDefinition = $authoringService->createConditionalActivity($connectorFinalCheck, 'then', null, 'Scoring Definition and Testing');//if ^layoutCheck == 1
 		$this->assertNotNull($activityScoringDefinition);
 		$activityService->setAcl($activityScoringDefinition, $aclUser, $vars['reconciler']);
 		
 		$connectorScoringDefinition = $authoringService->createConnector($activityScoringDefinition);
 		$this->assertNotNull($connectorScoringDefinition);
+		
+		
+		//if not ok, can go to optional activity to review corrections:
+		$connectorFinalCheckElse = $authoringService->createConditionalActivity($connectorFinalCheck, 'else', null, $connectorFinalCheck->getLabel().'_c', true);//if ^layoutCheck != 1
+		$transitionRule = $authoringService->createTransitionRule($connectorFinalCheckElse, '^layoutCheck == 2');
+		$this->assertNotNull($transitionRule);
+		
+		$activityReviewCorrection = $authoringService->createConditionalActivity($connectorFinalCheckElse, 'then', null, 'Review corrections');//if ^layoutCheck == 2
+		$this->assertNotNull($activityReviewCorrection);
+		$activityService->setAcl($activityReviewCorrection, $aclUser, $vars['verifier']);
+		
+		//link review correction back to the final "check activity"
+		$connectorReviewCorrections = $authoringService->createConnector($activityReviewCorrection);
+		$this->assertNotNull($connectorReviewCorrections);
+		$activityFinalCheckBis = $authoringService->createSequenceActivity($connectorReviewCorrections, $activityFinalCheck);
+		$this->assertEqual($activityFinalCheck->uriResource, $activityFinalCheckBis->uriResource);
+		
+		//else return to "correct verification":
+		$activityCorrectVerificationBis = $authoringService->createConditionalActivity($connectorFinalCheckElse, 'else', $activityCorrectVerification);//if ^layoutCheck != 2
+		$this->assertEqual($activityCorrectVerification->uriResource, $activityCorrectVerificationBis->uriResource);
+		//end of if(^layoutCheck == 1) elseif(^layoutCheck == 2) else
 		
 		//scoring verification:
 		$activityScoringVerification = $authoringService->createSequenceActivity($connectorScoringDefinition, null, 'Scoring verification');
@@ -390,7 +370,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		//final sign off :
 		$activityFinalSignOff = $authoringService->createSequenceActivity($connectorScoringVerification, null, 'Final Sign Off');
 		$this->assertNotNull($activityFinalSignOff);
-		$activityService->setAcl($activityFinalSignOff, $aclRole, $this->roles['developer']);
+		$activityService->setAcl($activityFinalSignOff, $aclRole, $this->roles['testDeveloper']);
 
 		$connectorFinalSignOff = $authoringService->createConnector($activityFinalSignOff);
 		$this->assertNotNull($connectorFinalSignOff);
@@ -580,12 +560,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 			}
 			
 			//transition to next activity
-			try{
-				$transitionResult = $processExecutionService->performTransition($processInstance, $currentActivityExecution);
-			}catch(Exception $e){
-				echo $e->getMessage();
-//				var_dump(debug_backtrace());
-			}
+			$transitionResult = $processExecutionService->performTransition($processInstance, $currentActivityExecution);
 			$this->assertEqual(count($transitionResult), 0);
 			$this->assertTrue($processExecutionService->isPaused($processInstance));
 			
