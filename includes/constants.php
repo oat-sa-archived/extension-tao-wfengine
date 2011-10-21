@@ -6,7 +6,7 @@ $todefine = array(
 	
 	'GENERIS_BOOLEAN' 								=> GENERIS_NS . '#Boolean',
 	'PROPERTY_USER_LABEL'							=> GENERIS_NS.'#login',
-	'VAR_PROCESS_INSTANCE' 							=> NS_RULES . '#VAR_PROCESS_INSTANCE',
+	'VAR_PROCESS_INSTANCE' 							=> NS_RULES . '#VarProcessInstance',
 	
 	'PROPERTY_GENERIS_ALLOWFREEVALUEOF'				=> NS_WFENGINE . '#PropertyAllowFreeValueOf',
 	

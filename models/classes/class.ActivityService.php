@@ -397,9 +397,9 @@ class wfEngine_models_classes_ActivityService
 			if(count($connectorsTmp) == 1){
 				//ok, the unique next connector has been found
 				$returnValue = $connectorsTmp[0];
-			}
+				}
 		}else if($countConnectors == 1){
-			$returnValue = array_shift($connectors);
+			$returnValue = reset($connectors);
 		}else{
 			//it is the final activity
 		}
