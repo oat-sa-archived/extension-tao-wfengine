@@ -1111,31 +1111,36 @@ class wfEngine_models_classes_ProcessExecutionService
 		}
 		
 		$evaluationResult = $transitionRuleService->getExpression($transitionRule)->evaluate(array(VAR_PROCESS_INSTANCE=>$activityExecution->uriResource));
+//		var_dump('transition rule '.$transitionRule->getLabel(), $evaluationResult);
+		
 		if ($evaluationResult){
 			// next activities = THEN
 			$thenActivity = $transitionRuleService->getThenActivity($transitionRule);
 			if(!is_null($thenActivity)){
 				if($activityService->isActivity($thenActivity)){
-					$newActivities[] = $thenActivity;
+					$thenActivity->getLabel();
+					$returnValue[] = $thenActivity;
 				}else if($activityService->isConnector($thenActivity)){
-					$newActivities = $this->getNewActivities($processExecution, $activityExecution, $thenActivity);
+					$returnValue = $this->getNewActivities($processExecution, $activityExecution, $thenActivity);
 				}
 			}else{
 				throw new wfEngine_models_classes_ProcessDefinitonException('no "then" activity found for the transition rule '.$transitionRule->uriResource);
 			}
+//			var_dump('then', $returnValue);
 		}else{
 			// next activities = ELSE
 			$elseActivity = $transitionRuleService->getElseActivity($transitionRule);
 			if(!is_null($elseActivity)){
 				if($activityService->isActivity($elseActivity)){
-					$newActivities[] = $elseActivity;
+					$elseActivity->getLabel();
+					$returnValue[] = $elseActivity;
 				}else{
-					$newActivities = $this->getNewActivities($processExecution, $activityExecution, $elseActivity);
+					$returnValue = $this->getNewActivities($processExecution, $activityExecution, $elseActivity);
 				}
 			}else{
 				throw new wfEngine_models_classes_ProcessDefinitonException('no "else" activity found for the transition rule '.$transitionRule->uriResource);
 			}
-			
+//			var_dump('else', $returnValue);
 		}
 		
         // section 127-0-1-1--4b38ca35:1323a4c748d:-8000:0000000000002F8B end

@@ -221,6 +221,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		$connectorService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ConnectorService');
 		$processVariableService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_VariableService');
 		$cardinalityService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityCardinalityService');
+		$transitionRuleService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_TransitionRuleService');
 		
 		//create some process variables:
 		$vars = array();
@@ -359,6 +360,14 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		$this->assertEqual($activityCorrectVerification->uriResource, $activityCorrectVerificationBis->uriResource);
 		//end of if(^layoutCheck == 1) elseif(^layoutCheck == 2) else
 		
+		//check transition rules:
+		$thenActivity = $transitionRuleService->getThenActivity($transitionRule);
+		$this->assertNotNull($thenActivity);
+		$this->assertEqual($thenActivity->uriResource, $activityReviewCorrection->uriResource);
+		$elseActivity = $transitionRuleService->getElseActivity($transitionRule);
+		$this->assertNotNull($elseActivity);
+		$this->assertEqual($elseActivity->uriResource, $activityCorrectVerification->uriResource);
+		
 		//scoring verification:
 		$activityScoringVerification = $authoringService->createSequenceActivity($connectorScoringDefinition, null, 'Scoring verification');
 		$this->assertNotNull($activityScoringVerification);
@@ -368,21 +377,21 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		$this->assertNotNull($connectorScoringVerification);
 		
 		//final sign off :
-		$activityFinalSignOff = $authoringService->createSequenceActivity($connectorScoringVerification, null, 'Final Sign Off');
-		$this->assertNotNull($activityFinalSignOff);
-		$activityService->setAcl($activityFinalSignOff, $aclRole, $this->roles['testDeveloper']);
+		$activityTDSignOff = $authoringService->createSequenceActivity($connectorScoringVerification, null, 'TD Sign Off');
+		$this->assertNotNull($activityTDSignOff);
+		$activityService->setAcl($activityTDSignOff, $aclRole, $this->roles['testDeveloper']);
 
-		$connectorFinalSignOff = $authoringService->createConnector($activityFinalSignOff);
-		$this->assertNotNull($connectorFinalSignOff);
+		$connectorTDSignOff = $authoringService->createConnector($activityTDSignOff);
+		$this->assertNotNull($connectorTDSignOff);
 		
 		//link back to final check:
-		$authoringService->createConditionalActivity($connectorFinalSignOff, 'else', $activityFinalCheck);
-		$transitionRule = $authoringService->createTransitionRule($connectorFinalSignOff, '^finalCheck == 1');
+		$authoringService->createConditionalActivity($connectorTDSignOff, 'else', $activityFinalCheck);
+		$transitionRule = $authoringService->createTransitionRule($connectorTDSignOff, '^finalCheck == 1');
 		$this->assertNotNull($transitionRule);
 		
 		//sign off :
-		$activitySignOff = $authoringService->createConditionalActivity($connectorFinalSignOff, 'then', null, 'Sign Off');
-		$activityService->setAcl($activitySignOff, $aclUser, $vars['reconciler']);
+		$activityCountrySignOff = $authoringService->createConditionalActivity($connectorTDSignOff, 'then', null, 'Country Sign Off');
+		$activityService->setAcl($activityCountrySignOff, $aclUser, $vars['reconciler']);
 		
 		//end of process definition
 		
@@ -485,8 +494,12 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		 */
 		
 		$nbTranslators = 2;//>=1
+		$nbLoops = 2;
+		
+		$loopsCounter = array();
+		
 		$indexActivityTranslate = 2;//the index of the activity in the process deifnition
-		$iterations = $indexActivityTranslate + $nbTranslators +3;
+		$iterations = $indexActivityTranslate + $nbTranslators +12;
 		$this->changeUser($this->userLogins[$countryCode]['NPM']);
 		$selectedTranslators = array();
 		
@@ -511,7 +524,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 			
 			$activity = $activityExecutionService->getExecutionOf($activityExecution);
 			
-			$this->out("<strong>".$activity->getLabel()."</strong>", true);
+			$this->out("<strong>Iteration $i : ".$activity->getLabel()."</strong>", true);
 			$this->out("current user : ".$this->currentUser->getOnePropertyValue($loginProperty).' "'.$this->currentUser->uriResource.'"', true);
 			
 			$this->checkAccessControl($activityExecution);
@@ -571,12 +584,20 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 						//reconciliation:
 						$login = $this->userLogins[$countryCode][$languageCode]['reconciler'];
 					}
-					case $indexActivityTranslate + $nbTranslators +1: {
-						//verify translations:
+					case $indexActivityTranslate + $nbTranslators +1: 
+					case $indexActivityTranslate + $nbTranslators +5:
+					case $indexActivityTranslate + $nbTranslators +11:{
+						//verify translations and review corrections:
+						//verify translations and review corrections:
+						//scoring verification
 						if(empty($login)) $login = $this->userLogins[$countryCode][$languageCode]['verifier'];
 					}	
-					case $indexActivityTranslate + $nbTranslators +2: {
+					case $indexActivityTranslate + $nbTranslators +2:
+					case $indexActivityTranslate + $nbTranslators +7:
+					case $indexActivityTranslate + $nbTranslators +10:{
 						//correct verification issues:
+						//correct verification issues:
+						//scoring definition and testing:
 						if(empty($login)) $login = $this->userLogins[$countryCode][$languageCode]['reconciler'];
 						
 						$this->assertFalse(empty($login));
@@ -586,7 +607,8 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 						
 						break;
 					}	
-					case $indexActivityTranslate + $nbTranslators +3: {
+					case $indexActivityTranslate + $nbTranslators +3:
+					case $indexActivityTranslate + $nbTranslators +8:{
 						
 						//correct layout, by developers:
 						
@@ -608,14 +630,64 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 						
 						break;
 					}
+					case $indexActivityTranslate + $nbTranslators +4:
+					case $indexActivityTranslate + $nbTranslators +6:
+					case $indexActivityTranslate + $nbTranslators +9:{
+						
+						//final check:
+						$developersLogins = $this->userLogins['testDeveloper'];
+						$this->bashCheckAcl($activityExecution, $developersLogins);
+						
+						$j = 1;
+						foreach(array_rand($developersLogins, 2) as $k){
+							
+							$this->out("test developer no$j ".$developersLogins[$k]." makes final check", true);
+							$this->changeUser($developersLogins[$k]);
+							$currentActivityExecution = $this->initCurrentActivityExecution($activityExecution);
+							
+							//check if all developers can access the activity, even after it has been taken:
+							$this->bashCheckAcl($activityExecution, $developersLogins, array_rand($this->users, 5));
+							
+							$j++;
+						}
+						
+						if(!isset($loopsCounter['reviewCorrections'])){
+							$loopsCounter['reviewCorrections'] = $nbLoops;
+							$this->assertTrue($this->executeServiceLayoutCheck(2));
+						}else if(!isset($loopsCounter['correctVerification'])){
+							$loopsCounter['correctVerification'] = $nbLoops;
+							$this->assertTrue($this->executeServiceLayoutCheck(0));
+						}else{
+							$this->assertTrue($this->executeServiceLayoutCheck(1));
+						}
+						
+						break;
+					}
+					case $indexActivityTranslate + $nbTranslators +12:{
+						
+						//TD sign off:
+						$developersLogins = $this->userLogins['testDeveloper'];
+						$this->bashCheckAcl($activityExecution, $developersLogins);
+						
+						$this->changeUser($developersLogins[array_rand($developersLogins)]);
+						$currentActivityExecution = $currentActivityExecution = $this->initCurrentActivityExecution($activityExecution);
+							
+						break;
+					}
 				}
 				
 			}
 			
 			//transition to next activity
 			$transitionResult = $processExecutionService->performTransition($processInstance, $currentActivityExecution);
-			$this->assertEqual(count($transitionResult), 0);
-			$this->assertTrue($processExecutionService->isPaused($processInstance));
+			if($i == $indexActivityTranslate + $nbTranslators +12){
+				$this->assertEqual(count($transitionResult), 1);
+				$this->assertFalse($processExecutionService->isPaused($processInstance));
+			}else{
+				$this->assertEqual(count($transitionResult), 0);
+				$this->assertTrue($processExecutionService->isPaused($processInstance));
+			}
+			
 			
 			$this->out("activity status: ".$activityExecutionService->getStatus($currentActivityExecution)->getLabel());
 			$this->out("process status: ".$processExecutionService->getStatus($processInstance)->getLabel());
@@ -700,14 +772,20 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		
 		$returnValue = false;
 		
+		$this->out("execute service select translators :", true);
+		
 		//push values:
 		$pushedVars = array();
 		foreach($translators as $translator){
+			$translatorResource = null;
 			if($translator instanceof core_kernel_classes_Resource){
 				$pushedVars[] = $translator->uriResource;
+				$translatorResource = $translator;
 			}else if(is_string($translator) && common_Utils::isUri($translator)){
 				$pushedVars[] = $translator;
+				$translatorResource = new core_kernel_classes_Resource($translator);
 			}
+			$this->out("selected translator : {$translatorResource->getLabel()} ({$translatorResource->uriResource})");
 		}
 		$this->assertTrue(count($pushedVars) > 0);
 		
@@ -724,6 +802,8 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		
 		//check validity of xliff file and VFF
 		
+		$this->out('executing service translate ', true);
+		
 		$valid = true;
 		if($valid){
 			$processVariableService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_VariableService');
@@ -735,6 +815,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		
 	}
 	
+	//deprecated:
 	private function executeServiceReplaceTranslator($replacement = null){
 		
 		$returnValue = false;
@@ -757,10 +838,12 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		
 		$returnValue = false;
 		
+		$this->out('executing service layout check with output code : '.$outputCode, true);
+		
 		$outputCode = intval($outputCode);
 		if(in_array($outputCode, array(0, 1, 2))){
 			$processVariableService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_VariableService');
-			$returnValue = $processVariableService->push('layoutCheck', $outputCode);
+			$returnValue = $processVariableService->edit('layoutCheck', $outputCode);
 		}else{
 			$this->fail('wrong output code for layout check activity');
 		}
@@ -769,6 +852,8 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 	}
 	
 	private function executeServiceFinalSignOff($ok = false){
+		
+		$this->out("execute service final sign off", true);
 		
 		$returnValue = $this->pushBooleanVariable('finalCheck', $ok);
 		return $returnValue;
