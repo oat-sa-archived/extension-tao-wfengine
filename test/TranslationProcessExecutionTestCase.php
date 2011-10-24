@@ -498,17 +498,22 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		
 		$loopsCounter = array();
 		
-		$indexActivityTranslate = 2;//the index of the activity in the process deifnition
-		$iterations = $indexActivityTranslate + $nbTranslators +12;
+		$indexActivityTranslate = 2;//the index of the activity in the process definition
+		$iterations = $indexActivityTranslate + $nbTranslators +9;
 		$this->changeUser($this->userLogins[$countryCode]['NPM']);
 		$selectedTranslators = array();
 		
-		for($i = 1; $i <= $iterations; $i++){
+		$i = 1;
+		$activityIndex = $i;
+		while($activityIndex <= $iterations){
+			
+			//for loop managements:
+			$goto = 0;
 			
 			$activityExecutions = $processExecutionService->getCurrentActivityExecutions($processInstance);
 			$activityExecution = null;
 			$activity = null;
-			if($i >= $indexActivityTranslate && $i < $indexActivityTranslate+$nbTranslators){
+			if($activityIndex >= $indexActivityTranslate && $activityIndex < $indexActivityTranslate+$nbTranslators){
 				$this->assertEqual(count($activityExecutions), 2);
 				//parallel translation branch:
 				foreach($activityExecutions as $activityExec){
@@ -524,14 +529,14 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 			
 			$activity = $activityExecutionService->getExecutionOf($activityExecution);
 			
-			$this->out("<strong>Iteration $i : ".$activity->getLabel()."</strong>", true);
+			$this->out("<strong>Iteration {$i} : activity no{$activityIndex} : ".$activity->getLabel()."</strong>", true);
 			$this->out("current user : ".$this->currentUser->getOnePropertyValue($loginProperty).' "'.$this->currentUser->uriResource.'"', true);
 			
 			$this->checkAccessControl($activityExecution);
 			
 			$currentActivityExecution = null;
 			
-			if($i >= $indexActivityTranslate && $i < $indexActivityTranslate+$nbTranslators){
+			if($activityIndex >= $indexActivityTranslate && $activityIndex < $indexActivityTranslate+$nbTranslators){
 				
 				//we are executing the translation activity:
 				$this->assertFalse(empty($selectedTranslators));
@@ -560,10 +565,8 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 				
 			}else{
 				
-				$login = '';
-				
 				//switch to activity's specific check:
-				switch ($i) {
+				switch ($activityIndex) {
 					case 1: {
 						
 						$login = $this->userLogins[$countryCode]['NPM'];
@@ -580,25 +583,34 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 
 						break;
 					}
-					case $indexActivityTranslate + $nbTranslators: {
-						//reconciliation:
-						$login = $this->userLogins[$countryCode][$languageCode]['reconciler'];
-					}
-					case $indexActivityTranslate + $nbTranslators +1: 
-					case $indexActivityTranslate + $nbTranslators +5:
-					case $indexActivityTranslate + $nbTranslators +11:{
-						//verify translations and review corrections:
-						//verify translations and review corrections:
-						//scoring verification
-						if(empty($login)) $login = $this->userLogins[$countryCode][$languageCode]['verifier'];
-					}	
+					case $indexActivityTranslate + $nbTranslators:
 					case $indexActivityTranslate + $nbTranslators +2:
-					case $indexActivityTranslate + $nbTranslators +7:
-					case $indexActivityTranslate + $nbTranslators +10:{
+					case $indexActivityTranslate + $nbTranslators +6:
+					case $indexActivityTranslate + $nbTranslators +9:{
+						//reconciliation:
 						//correct verification issues:
 						//correct verification issues:
 						//scoring definition and testing:
-						if(empty($login)) $login = $this->userLogins[$countryCode][$languageCode]['reconciler'];
+						//country sign off:
+						$login = $this->userLogins[$countryCode][$languageCode]['reconciler'];
+						
+						$this->assertFalse(empty($login));
+						$this->bashCheckAcl($activityExecution, array($login), array_rand($this->users, 5));
+						$this->changeUser($login);
+						$currentActivityExecution = $this->initCurrentActivityExecution($activityExecution);
+						
+						break;
+					}
+					case $indexActivityTranslate + $nbTranslators +5:{
+						//review corrections:
+						//the next activity is "final check":
+						$goto = $indexActivityTranslate + $nbTranslators +4;
+					}
+					case $indexActivityTranslate + $nbTranslators +1:
+					case $indexActivityTranslate + $nbTranslators +7:{
+						//verify translations :
+						//scoring verification
+						$login = $this->userLogins[$countryCode][$languageCode]['verifier'];
 						
 						$this->assertFalse(empty($login));
 						$this->bashCheckAcl($activityExecution, array($login), array_rand($this->users, 5));
@@ -607,8 +619,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 						
 						break;
 					}	
-					case $indexActivityTranslate + $nbTranslators +3:
-					case $indexActivityTranslate + $nbTranslators +8:{
+					case $indexActivityTranslate + $nbTranslators +3:{
 						
 						//correct layout, by developers:
 						
@@ -630,9 +641,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 						
 						break;
 					}
-					case $indexActivityTranslate + $nbTranslators +4:
-					case $indexActivityTranslate + $nbTranslators +6:
-					case $indexActivityTranslate + $nbTranslators +9:{
+					case $indexActivityTranslate + $nbTranslators +4:{
 						
 						//final check:
 						$developersLogins = $this->userLogins['testDeveloper'];
@@ -654,16 +663,19 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 						if(!isset($loopsCounter['reviewCorrections'])){
 							$loopsCounter['reviewCorrections'] = $nbLoops;
 							$this->assertTrue($this->executeServiceLayoutCheck(2));
+							$goto = $indexActivityTranslate + $nbTranslators +5;
 						}else if(!isset($loopsCounter['correctVerification'])){
 							$loopsCounter['correctVerification'] = $nbLoops;
 							$this->assertTrue($this->executeServiceLayoutCheck(0));
+							$goto = $indexActivityTranslate + $nbTranslators +2;
 						}else{
 							$this->assertTrue($this->executeServiceLayoutCheck(1));
+							$goto = $indexActivityTranslate + $nbTranslators +6;
 						}
 						
 						break;
 					}
-					case $indexActivityTranslate + $nbTranslators +12:{
+					case $indexActivityTranslate + $nbTranslators +8:{
 						
 						//TD sign off:
 						$developersLogins = $this->userLogins['testDeveloper'];
@@ -671,7 +683,15 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 						
 						$this->changeUser($developersLogins[array_rand($developersLogins)]);
 						$currentActivityExecution = $currentActivityExecution = $this->initCurrentActivityExecution($activityExecution);
-							
+						
+						if(!isset($loopsCounter['finalCheck'])){
+							$loopsCounter['finalCheck'] = $nbLoops;
+							$this->assertTrue($this->executeServiceFinalSignOff(false));
+							$goto = $indexActivityTranslate + $nbTranslators +4;
+						}else{
+							$this->assertTrue($this->executeServiceFinalSignOff(true));
+						}
+						
 						break;
 					}
 				}
@@ -680,18 +700,32 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 			
 			//transition to next activity
 			$transitionResult = $processExecutionService->performTransition($processInstance, $currentActivityExecution);
-			if($i == $indexActivityTranslate + $nbTranslators +12){
+			$goto = intval($goto);
+			if($activityIndex == $indexActivityTranslate + $nbTranslators +8 && $goto == $indexActivityTranslate + $nbTranslators +4){
+				//the same users are authorized to execute the current and the next activity (final check and correct layout)
 				$this->assertEqual(count($transitionResult), 1);
-				$this->assertFalse($processExecutionService->isPaused($processInstance));
+				$this->assertTrue($processExecutionService->checkStatus($processInstance, 'resumed'));
+			}else if($activityIndex == $iterations){
+				//test finished:
+				$this->assertEqual(count($transitionResult), 0);
+				$this->assertTrue($processExecutionService->isFinished($processInstance));
 			}else{
 				$this->assertEqual(count($transitionResult), 0);
 				$this->assertTrue($processExecutionService->isPaused($processInstance));
 			}
 			
+			//manage next activity index:
+			if($goto){
+				$activityIndex = $goto;
+			}else{
+				$activityIndex++;
+			}
 			
-			$this->out("activity status: ".$activityExecutionService->getStatus($currentActivityExecution)->getLabel());
-			$this->out("process status: ".$processExecutionService->getStatus($processInstance)->getLabel());
+			//increment iteration counts:
+			$i++;
 			
+			$this->out("activity status : ".$activityExecutionService->getStatus($currentActivityExecution)->getLabel());
+			$this->out("process status : ".$processExecutionService->getStatus($processInstance)->getLabel());
 		}
 		
 		$activityExecutionsData = $processExecutionService->getAllActivityExecutions($processInstance);
