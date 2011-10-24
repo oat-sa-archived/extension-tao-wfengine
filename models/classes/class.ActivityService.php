@@ -619,7 +619,7 @@ class wfEngine_models_classes_ActivityService
         $returnValue = array();
 
         // section 127-0-1-1--1e09aee3:133358e11e1:-8000:000000000000324F begin
-		$returnValue = array( INSTANCE_CONTROL_BACKWARD, INSTANCE_CONTROL_FORWARD ); 
+		$returnValue = array(INSTANCE_CONTROL_BACKWARD, INSTANCE_CONTROL_FORWARD); 
         // section 127-0-1-1--1e09aee3:133358e11e1:-8000:000000000000324F end
 
         return (array) $returnValue;

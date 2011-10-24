@@ -258,7 +258,8 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		$this->assertNotNull($activitySelectTranslators);
 		$authoringService->setFirstActivity($processDefinition, $activitySelectTranslators);
 		$activityService->setAcl($activitySelectTranslators, $aclUser, $vars['npm']);
-
+		$activityService->setControls($activitySelectTranslators, array(INSTANCE_CONTROL_FORWARD));
+		
 		$connectorSelectTranslators = $authoringService->createConnector($activitySelectTranslators);
 		$this->assertNotNull($connectorSelectTranslators);
 		
@@ -266,6 +267,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		$activityTranslate = $authoringService->createActivity($processDefinition, 'Translate');
 		$this->assertNotNull($activityTranslate);
 		$activityService->setAcl($activityTranslate, $aclUser, $vars['translator']);
+		$activityService->setControls($activityTranslate, array(INSTANCE_CONTROL_FORWARD));
 		
 		$result = $authoringService->setParallelActivities($connectorSelectTranslators, array($activityTranslate->uriResource => $vars['translatorsCount']));
 		$this->assertTrue($result);
@@ -292,6 +294,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		
 		$this->assertNotNull($activityReconciliation);
 		$activityService->setAcl($activityReconciliation, $aclUser, $vars['reconciler']);
+		$activityService->setControls($activityReconciliation, array(INSTANCE_CONTROL_FORWARD));
 		
 		$connectorReconciliation = $authoringService->createConnector($activityReconciliation);
 		$this->assertNotNull($connectorReconciliation);
@@ -300,7 +303,8 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		$activityVerifyTranslations = $authoringService->createSequenceActivity($connectorReconciliation, null, 'Verify Translations');
 		$this->assertNotNull($activityVerifyTranslations);
 		$activityService->setAcl($activityVerifyTranslations, $aclUser, $vars['verifier']);
-
+		$activityService->setControls($activityVerifyTranslations, array(INSTANCE_CONTROL_FORWARD));
+		
 		$connectorVerifyTranslations = $authoringService->createConnector($activityVerifyTranslations);
 		$this->assertNotNull($connectorVerifyTranslations);
 
@@ -308,7 +312,8 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		$activityCorrectVerification = $authoringService->createSequenceActivity($connectorVerifyTranslations, null, 'Correct Verification Issues');
 		$this->assertNotNull($activityCorrectVerification);
 		$activityService->setAcl($activityCorrectVerification, $aclUser, $vars['reconciler']);
-
+		$activityService->setControls($activityCorrectVerification, array(INSTANCE_CONTROL_FORWARD));
+		
 		$connectorCorrectVerification = $authoringService->createConnector($activityCorrectVerification);
 		$this->assertNotNull($connectorCorrectVerification);
 
@@ -316,7 +321,8 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		$activityCorrectLayout = $authoringService->createSequenceActivity($connectorCorrectVerification, null, 'Correct Layout Issues');
 		$this->assertNotNull($activityCorrectLayout);
 		$activityService->setAcl($activityCorrectLayout, $aclRole, $this->roles['developer']);
-
+		$activityService->setControls($activityCorrectLayout, array(INSTANCE_CONTROL_FORWARD));
+		
 		$connectorCorrectLayout = $authoringService->createConnector($activityCorrectLayout);
 		$this->assertNotNull($connectorCorrectLayout);
 		
@@ -324,7 +330,8 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		$activityFinalCheck = $authoringService->createSequenceActivity($connectorCorrectLayout, null, 'Final Check');
 		$this->assertNotNull($activityFinalCheck);
 		$activityService->setAcl($activityFinalCheck, $aclRole, $this->roles['testDeveloper']);
-
+		$activityService->setControls($activityFinalCheck, array(INSTANCE_CONTROL_BACKWARD, INSTANCE_CONTROL_FORWARD));
+		
 		$connectorFinalCheck = $authoringService->createConnector($activityFinalCheck);
 		$this->assertNotNull($connectorFinalCheck);
 		
@@ -335,6 +342,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		$activityScoringDefinition = $authoringService->createConditionalActivity($connectorFinalCheck, 'then', null, 'Scoring Definition and Testing');//if ^layoutCheck == 1
 		$this->assertNotNull($activityScoringDefinition);
 		$activityService->setAcl($activityScoringDefinition, $aclUser, $vars['reconciler']);
+		$activityService->setControls($activityScoringDefinition, array(INSTANCE_CONTROL_FORWARD));
 		
 		$connectorScoringDefinition = $authoringService->createConnector($activityScoringDefinition);
 		$this->assertNotNull($connectorScoringDefinition);
@@ -348,6 +356,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		$activityReviewCorrection = $authoringService->createConditionalActivity($connectorFinalCheckElse, 'then', null, 'Review corrections');//if ^layoutCheck == 2
 		$this->assertNotNull($activityReviewCorrection);
 		$activityService->setAcl($activityReviewCorrection, $aclUser, $vars['verifier']);
+		$activityService->setControls($activityReviewCorrection, array(INSTANCE_CONTROL_FORWARD));
 		
 		//link review correction back to the final "check activity"
 		$connectorReviewCorrections = $authoringService->createConnector($activityReviewCorrection);
@@ -372,15 +381,17 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		$activityScoringVerification = $authoringService->createSequenceActivity($connectorScoringDefinition, null, 'Scoring verification');
 		$this->assertNotNull($activityScoringVerification);
 		$activityService->setAcl($activityScoringVerification, $aclUser, $vars['verifier']);
+		$activityService->setControls($activityScoringVerification, array(INSTANCE_CONTROL_FORWARD));
 		
 		$connectorScoringVerification = $authoringService->createConnector($activityScoringVerification);
 		$this->assertNotNull($connectorScoringVerification);
 		
 		//final sign off :
-		$activityTDSignOff = $authoringService->createSequenceActivity($connectorScoringVerification, null, 'TD Sign Off');
+		$activityTDSignOff = $authoringService->createSequenceActivity($connectorScoringVerification, null, 'Test Developer Sign Off');
 		$this->assertNotNull($activityTDSignOff);
 		$activityService->setAcl($activityTDSignOff, $aclRole, $this->roles['testDeveloper']);
-
+		$activityService->setControls($activityTDSignOff, array(INSTANCE_CONTROL_FORWARD));
+		
 		$connectorTDSignOff = $authoringService->createConnector($activityTDSignOff);
 		$this->assertNotNull($connectorTDSignOff);
 		
@@ -392,6 +403,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		//sign off :
 		$activityCountrySignOff = $authoringService->createConditionalActivity($connectorTDSignOff, 'then', null, 'Country Sign Off');
 		$activityService->setAcl($activityCountrySignOff, $aclUser, $vars['reconciler']);
+		$activityService->setControls($activityCountrySignOff, array(INSTANCE_CONTROL_FORWARD));
 		
 		//end of process definition
 		
@@ -684,7 +696,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 						$this->bashCheckAcl($activityExecution, $developersLogins);
 						
 						$this->changeUser($developersLogins[array_rand($developersLogins)]);
-						$currentActivityExecution = $currentActivityExecution = $this->initCurrentActivityExecution($activityExecution);
+						$currentActivityExecution = $this->initCurrentActivityExecution($activityExecution);
 						
 						if(!isset($loopsCounter['finalCheck'])){
 							$loopsCounter['finalCheck'] = $nbLoops;
@@ -891,24 +903,11 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		
 		$this->out("execute service final sign off", true);
 		
-		$returnValue = $this->pushBooleanVariable('finalCheck', $ok);
-		return $returnValue;
-		
-	}
-	
-	private function pushBooleanVariable($variableCode, $ok = false){
-		
-		$returnValue = false;
-		
 		$processVariableService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_VariableService');
-		
-		if((bool) $ok){
-			$returnValue = $processVariableService->push($variableCode, 1);
-		}else{
-			$returnValue = $processVariableService->push($variableCode, 0);
-		}
+		$returnValue = $processVariableService->push('finalCheck', (bool)$ok?1:0);
 		
 		return $returnValue;
+		
 	}
 	
 	public function testDeleteCreatedResources(){
