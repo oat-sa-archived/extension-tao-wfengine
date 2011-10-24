@@ -176,19 +176,16 @@ class wfEngine_models_classes_ActivityService
         $returnValue = array();
 
         // section 127-0-1-1--7eb5a1dd:13214d5811e:-8000:0000000000002E84 begin
-        if(!is_null($activity)){
-            $possibleValues = array( INSTANCE_CONTROL_BACKWARD, INSTANCE_CONTROL_FORWARD ); 
-            $propValues = $activity->getPropertyValues(new core_kernel_classes_Property(PROPERTY_ACTIVITIES_CONTROLS));
-            foreach ($propValues as $value) {
-                if(in_array($value, $possibleValues)){
-                    $returnValue[$value] = true;
-                }
-            }
-            if($this->isInitial($activity) && isset($returnValue[INSTANCE_CONTROL_BACKWARD])){
-                $returnValue[INSTANCE_CONTROL_BACKWARD] = false ;
-            }
-             
-        }
+		$possibleValues = array( INSTANCE_CONTROL_BACKWARD, INSTANCE_CONTROL_FORWARD ); 
+		$propValues = $activity->getPropertyValues(new core_kernel_classes_Property(PROPERTY_ACTIVITIES_CONTROLS));
+		foreach ($propValues as $value) {
+			if(in_array($value, $possibleValues)){
+				$returnValue[$value] = true;
+			}
+		}
+		if($this->isInitial($activity) && isset($returnValue[INSTANCE_CONTROL_BACKWARD])){
+			$returnValue[INSTANCE_CONTROL_BACKWARD] = false ;
+		}
         // section 127-0-1-1--7eb5a1dd:13214d5811e:-8000:0000000000002E84 end
 
         return (array) $returnValue;
@@ -550,6 +547,82 @@ class wfEngine_models_classes_ActivityService
 		$this->cache = true;
 		
         // section 127-0-1-1--384c890a:132d352d389:-8000:00000000000030A8 end
+    }
+
+    /**
+     * Short description of method setHidden
+     *
+     * @access public
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @param  Resource activity
+     * @param  boolean hidden
+     * @return boolean
+     */
+    public function setHidden( core_kernel_classes_Resource $activity, $hidden = true)
+    {
+        $returnValue = (bool) false;
+
+        // section 127-0-1-1--1e09aee3:133358e11e1:-8000:0000000000003233 begin
+		
+		$propHidden = new core_kernel_classes_Property(PROPERTY_ACTIVITIES_ISHIDDEN);
+		$generisBoolean = GENERIS_FALSE;
+		if($hidden){
+			$generisBoolean = GENERIS_TRUE;
+		}
+		$returnValue = $activity->editPropertyValues($propHidden, $generisBoolean);
+		$this->setCache(__CLASS__.'::isHidden', array($activity), $hidden);
+		
+        // section 127-0-1-1--1e09aee3:133358e11e1:-8000:0000000000003233 end
+
+        return (bool) $returnValue;
+    }
+
+    /**
+     * Short description of method setControls
+     *
+     * @access public
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @param  Resource activity
+     * @param  array controls
+     * @return boolean
+     */
+    public function setControls( core_kernel_classes_Resource $activity, $controls)
+    {
+        $returnValue = (bool) false;
+
+        // section 127-0-1-1--1e09aee3:133358e11e1:-8000:000000000000323B begin
+		$possibleValues = $this->getAllControls();
+		if(is_array($controls)){
+			$values = array();
+			foreach($controls as $control){
+				if(in_array($control, $possibleValues)){
+					$values[] = $control;
+				}
+			}
+			$returnValue = $activity->editPropertyValues(new core_kernel_classes_Property(PROPERTY_ACTIVITIES_CONTROLS), $values);
+		}
+		
+        // section 127-0-1-1--1e09aee3:133358e11e1:-8000:000000000000323B end
+
+        return (bool) $returnValue;
+    }
+
+    /**
+     * Short description of method getAllControls
+     *
+     * @access public
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @return array
+     */
+    public function getAllControls()
+    {
+        $returnValue = array();
+
+        // section 127-0-1-1--1e09aee3:133358e11e1:-8000:000000000000324F begin
+		$returnValue = array( INSTANCE_CONTROL_BACKWARD, INSTANCE_CONTROL_FORWARD ); 
+        // section 127-0-1-1--1e09aee3:133358e11e1:-8000:000000000000324F end
+
+        return (array) $returnValue;
     }
 
 } /* end of class wfEngine_models_classes_ActivityService */

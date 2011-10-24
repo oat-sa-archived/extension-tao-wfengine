@@ -178,20 +178,18 @@ class ActivityServiceTestCase extends UnitTestCase {
     }
     
     public function testIsHidden(){
-        $processAuthoringService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessAuthoringService');
+		$authoringService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessAuthoringService');
         $processDefinitionClass = new core_kernel_classes_Class(CLASS_PROCESS);
         $processDefinition = $processDefinitionClass->createInstance('ProcessForUnitTest', 'Unit test');
         $this->assertIsA($processDefinition, 'core_kernel_classes_Resource');
         
-        $authoringService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessAuthoringService');
-        
         //define activities and connectors
         $activity1 = $authoringService->createActivity($processDefinition, 'activity1');
-        $this->assertFalse($this->service->isHidden($activity1) );
-        $authoringService->setActivityHidden($activity1, true);
-        $this->assertTrue($this->service->isHidden($activity1) );
-        $authoringService->setActivityHidden($activity1, false);
-        $this->assertFalse($this->service->isHidden($activity1) );
+        $this->assertFalse($this->service->isHidden($activity1));
+        $this->service->setHidden($activity1, true);
+        $this->assertTrue($this->service->isHidden($activity1));
+        $this->service->setHidden($activity1, false);
+        $this->assertFalse($this->service->isHidden($activity1));
         
         $activity1->delete(true);
        

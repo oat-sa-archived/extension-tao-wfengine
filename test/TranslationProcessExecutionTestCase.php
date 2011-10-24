@@ -406,8 +406,9 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		$languageCode = 'de';
 		
 		$simulationOptions = array(
-			'backRepeat' => 0,//O: do not back when possible
-			'loopRepeat' => 1
+			'repeatBack' => 0,//O: do not back when possible
+			'repeatLoop' => 1,
+			'translations' => 2//must be >= 1
 		);
 		
 		if(!$this->processDefinition instanceof core_kernel_classes_Resource){
@@ -493,8 +494,9 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		 * sign off
 		 */
 		
-		$nbTranslators = 2;//>=1
-		$nbLoops = 2;
+		$nbTranslators = (isset($simulationOptions['translations']) && intval($simulationOptions['translations'])>1 )?intval($simulationOptions['translations']):2;//>=1
+		$nbLoops = isset($simulationOptions['repeatLoop'])?intval($simulationOptions['repeatLoop']):1;
+		$nbBacks = isset($simulationOptions['repeatBack'])?intval($simulationOptions['repeatBack']):0;
 		
 		$loopsCounter = array();
 		

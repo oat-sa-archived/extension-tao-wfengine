@@ -380,9 +380,13 @@ class wfEngine_actions_ProcessAuthoring extends tao_actions_TaoModule {
 		}
 		
 		//set ishidden:
+		$activityService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityService');
 		if(isset($properties[PROPERTY_ACTIVITIES_ISHIDDEN])){
-			$this->service->setActivityHidden($activity, false);
+			$activityService->setHidden($activity, true);
+		}else{
+			$activityService->setHidden($activity, false);
 		}
+		
 		//save ACL mode:
 		if(isset($properties[PROPERTY_ACTIVITIES_ACL_MODE])){
 			$mode = $properties[PROPERTY_ACTIVITIES_ACL_MODE];

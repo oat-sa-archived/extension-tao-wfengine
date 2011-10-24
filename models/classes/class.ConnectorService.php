@@ -356,6 +356,29 @@ class wfEngine_models_classes_ConnectorService
         return (bool) $returnValue;
     }
 
+    /**
+     * Short description of method setConnectorType
+     *
+     * @access public
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @param  Resource connector
+     * @param  Resource type
+     * @return boolean
+     */
+    public function setConnectorType( core_kernel_classes_Resource $connector,  core_kernel_classes_Resource $type)
+    {
+        $returnValue = (bool) false;
+
+        // section 127-0-1-1--1e09aee3:133358e11e1:-8000:000000000000322F begin
+		
+		//@TODO: check range of type of connectors:
+		$returnValue = $connector->editPropertyValues(new core_kernel_classes_Property(PROPERTY_CONNECTORS_TYPE), $type->uriResource);
+		
+        // section 127-0-1-1--1e09aee3:133358e11e1:-8000:000000000000322F end
+
+        return (bool) $returnValue;
+    }
+
 } /* end of class wfEngine_models_classes_ConnectorService */
 
 ?>

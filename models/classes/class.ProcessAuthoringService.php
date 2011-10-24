@@ -9,7 +9,7 @@ error_reporting(E_ALL);
  *
  * This file is part of TAO.
  *
- * Automatically generated on 17.10.2011, 16:45:45 with ArgoUML PHP module 
+ * Automatically generated on 24.10.2011, 13:28:19 with ArgoUML PHP module 
  * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
  *
  * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
@@ -1317,34 +1317,6 @@ class wfEngine_models_classes_ProcessAuthoringService
     }
 
     /**
-     * Short description of method setActivityHidden
-     *
-     * @access public
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
-     * @param  Resource activity
-     * @param  boolean hidden
-     * @return boolean
-     */
-    public function setActivityHidden( core_kernel_classes_Resource $activity, $hidden)
-    {
-        $returnValue = (bool) false;
-
-        // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004E70 begin
-		
-		//TODO: to be moved to actiivty service:
-		$propHidden = new core_kernel_classes_Property(PROPERTY_ACTIVITIES_ISHIDDEN);
-		$generisBoolean = GENERIS_FALSE;
-		if($hidden){
-			$generisBoolean = GENERIS_TRUE;
-		}
-		$returnValue = $activity->editPropertyValues($propHidden, $generisBoolean);
-		
-        // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004E70 end
-
-        return (bool) $returnValue;
-    }
-
-    /**
      * Short description of method setActualParameter
      *
      * @access public
@@ -1402,28 +1374,6 @@ class wfEngine_models_classes_ProcessAuthoringService
         // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004E89 begin
 		$returnValue = $callOfService->editPropertyValues(new core_kernel_classes_Property(PROPERTY_CALLOFSERVICES_SERVICEDEFINITION), $serviceDefinition->uriResource);
         // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004E89 end
-
-        return (bool) $returnValue;
-    }
-
-    /**
-     * Short description of method setConnectorType
-     *
-     * @access public
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
-     * @param  Resource connector
-     * @param  Resource typeOfConnector
-     * @return boolean
-     */
-    public function setConnectorType( core_kernel_classes_Resource $connector,  core_kernel_classes_Resource $typeOfConnector)
-    {
-        $returnValue = (bool) false;
-
-        // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004E8D begin
-		//TODO: check range of type of connectors:
-		$returnValue = $connector->editPropertyValues(new core_kernel_classes_Property(PROPERTY_CONNECTORS_TYPE), $typeOfConnector->uriResource);
-	
-        // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004E8D end
 
         return (bool) $returnValue;
     }
@@ -1692,6 +1642,27 @@ class wfEngine_models_classes_ProcessAuthoringService
 		}
 		
         // section 10-13-1-39--6cc6036b:12e4807fb4f:-8000:0000000000002BF9 end
+
+        return (bool) $returnValue;
+    }
+
+    /**
+     * Short description of method setConnectorType
+     *
+     * @access public
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @param  Resource connector
+     * @param  Resource type
+     * @return boolean
+     */
+    public function setConnectorType( core_kernel_classes_Resource $connector,  core_kernel_classes_Resource $type)
+    {
+        $returnValue = (bool) false;
+
+        // section 127-0-1-1--1e09aee3:133358e11e1:-8000:0000000000003251 begin
+		$connectorService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ConnectorService');
+		$returnValue = $connectorService->setConnectorType($connector, $type);
+        // section 127-0-1-1--1e09aee3:133358e11e1:-8000:0000000000003251 end
 
         return (bool) $returnValue;
     }
