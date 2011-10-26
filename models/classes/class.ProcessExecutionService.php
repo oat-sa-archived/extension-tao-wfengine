@@ -862,7 +862,7 @@ class wfEngine_models_classes_ProcessExecutionService
 			$newActivityExecutions = $this->activityExecutionService->moveForward($activityExecution, $nextConnector, $newActivities, $processExecution);
 			
 			//trigger the notifications
-			$notificationService->trigger($nextConnector, $processExecution);
+			$notificationService->trigger($nextConnector, $activityExecution, $processExecution);
 			
 		}
 		

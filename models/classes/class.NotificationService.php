@@ -9,10 +9,10 @@ error_reporting(E_ALL);
  *
  * This file is part of TAO.
  *
- * Automatically generated on 10.08.2010, 16:41:04 with ArgoUML PHP module 
+ * Automatically generated on 26.10.2011, 15:36:30 with ArgoUML PHP module 
  * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
  *
- * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+ * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
  * @package wfEngine
  * @subpackage models_classes
  */
@@ -25,7 +25,7 @@ if (0 > version_compare(PHP_VERSION, '5')) {
  * The Service class is an abstraction of each service instance. 
  * Used to centralize the behavior related to every servcie instances.
  *
- * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+ * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
  */
 require_once('tao/models/classes/class.GenerisService.php');
 
@@ -41,7 +41,7 @@ require_once('tao/models/classes/class.GenerisService.php');
  * Short description of class wfEngine_models_classes_NotificationService
  *
  * @access public
- * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+ * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
  * @package wfEngine
  * @subpackage models_classes
  */
@@ -107,7 +107,7 @@ class wfEngine_models_classes_NotificationService
      * Short description of method __construct
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @return mixed
      */
     public function __construct()
@@ -120,7 +120,9 @@ class wfEngine_models_classes_NotificationService
         $this->notificationConnectorProp 	= new core_kernel_classes_Property(PROPERTY_NOTIFICATION_CONNECTOR);
         $this->notificationDateProp 		= new core_kernel_classes_Property(PROPERTY_NOTIFICATION_DATE);
         $this->notificationProcessExecProp 	= new core_kernel_classes_Property(PROPERTY_NOTIFICATION_PROCESS_EXECUTION);
-    	
+		$this->notificationMessageProp		= new core_kernel_classes_Property(PROPERTY_NOTIFICATION_MESSAGE);
+    	$this->connectorNotificationProp	= new core_kernel_classes_Property(PROPERTY_CONNECTORS_NOTIFICATION_MESSAGE);
+		
         // section 127-0-1-1-1609ec43:129caf00b07:-8000:0000000000002240 end
     }
 
@@ -128,18 +130,19 @@ class wfEngine_models_classes_NotificationService
      * Short description of method trigger
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @param  Resource connector
+     * @param  Resource activityExecution
      * @param  Resource processExecution
      * @return int
      */
-    public function trigger( core_kernel_classes_Resource $connector,  core_kernel_classes_Resource $processExecution)
+    public function trigger( core_kernel_classes_Resource $connector,  core_kernel_classes_Resource $activityExecution,  core_kernel_classes_Resource $processExecution = null)
     {
         $returnValue = (int) 0;
 
         // section 127-0-1-1-1609ec43:129caf00b07:-8000:000000000000223C begin
         
-        if(!is_null($connector) && !is_null($processExecution)){
+        if(!is_null($connector) && !is_null($activityExecution)){
 	        
         	//initialize properties 
         	$connectorUserNotifiedProp			= new core_kernel_classes_Property(PROPERTY_CONNECTORS_USER_NOTIFIED);
@@ -153,7 +156,12 @@ class wfEngine_models_classes_NotificationService
         	
         	$roleService 				= tao_models_classes_ServiceFactory::get("wfEngine_models_classes_RoleService");
         	$activityExecutionService 	= tao_models_classes_ServiceFactory::get("wfEngine_models_classes_ActivityExecutionService");
-        	
+        	$processExecutionService	= tao_models_classes_ServiceFactory::get("wfEngine_models_classes_ProcessExecutionService");
+			
+			if(is_null($processExecution)){
+				$processExecution = $activityExecutionService->getRelatedProcessExecution($activityExecution);
+			}
+						
         	$users = array();
         	
         	//get the notifications mode defined for that connector
@@ -187,8 +195,8 @@ class wfEngine_models_classes_NotificationService
 	        		case INSTANCE_NOTIFY_PREVIOUS:
 	        			$previousActivities = $connector->getPropertyValuesCollection($connectorPreviousActivitiesProp);
 	        			foreach($previousActivities->getIterator() as $activity){
-	        				foreach($activityExecutionService->getExecutions($activity, $processExecution) as $activityExecution){
-								$activityExecutionUser = $activityExecution->getOnePropertyValue($activityExecutionUserProp);
+	        				foreach($activityExecutionService->getExecutions($activity, $processExecution) as $activityExec){
+								$activityExecutionUser = $activityExecutionService->getActivityExecutionUser($activityExec);
 								if(!is_null($activityExecutionUser)){
 									if(!in_array($activityExecutionUser->uriResource, $users)){
 										$users[] = $activityExecutionUser->uriResource;
@@ -215,7 +223,7 @@ class wfEngine_models_classes_NotificationService
 	        						case INSTANCE_ACL_ROLE:
 	        						case INSTANCE_ACL_ROLE_RESTRICTED_USER:
 	        						case INSTANCE_ACL_ROLE_RESTRICTED_USER_INHERITED:
-	        							foreach($activity->getPropertyValues($activityAclRolesProp) as $roleUri){
+	        							foreach($activity->getPropertyValues($activityAclRoleProp) as $roleUri){
 				        					foreach($roleService->getUsers(new core_kernel_classes_Resource($roleUri)) as $userUri){
 				        						if(!in_array($userUri, $users)){
 				        							$users[] = $userUri;
@@ -229,16 +237,16 @@ class wfEngine_models_classes_NotificationService
 	        			break;
 	        	}
 	        }
-	        
+			
+			//build notification message for every user here:
 	        foreach($users as $userUri){
-	        	$notification = $this->notificationClass->createInstance();
-	        	$notification->setPropertyValue($this->notificationToProp, $userUri);
-	        	$notification->setPropertyValue($this->notificationProcessExecProp, $processExecution->uriResource);
-	        	$notification->setPropertyValue($this->notificationConnectorProp, $connector->uriResource);
-	        	$notification->setPropertyValue($this->notificationSentProp, GENERIS_FALSE);
-	        	$notification->setPropertyValue($this->notificationDateProp, date("Y-m-d H:i:s"));
-	        	$returnValue++;
+				if($this->createNotification($connector, new core_kernel_classes_Resource($userUri), $activityExecution, $processExecution)){
+					//get message from connector:
+					//replace SPX in message bodies
+					$returnValue++;
+				}
 	        }
+			
         }
         
         // section 127-0-1-1-1609ec43:129caf00b07:-8000:000000000000223C end
@@ -250,7 +258,7 @@ class wfEngine_models_classes_NotificationService
      * Short description of method getNotificationsToSend
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @return array
      */
     public function getNotificationsToSend()
@@ -278,7 +286,7 @@ class wfEngine_models_classes_NotificationService
      * Short description of method sendNotifications
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @param  Adapter adapter
      * @return boolean
      */
@@ -292,7 +300,6 @@ class wfEngine_models_classes_NotificationService
         	
         	//initialize properties used in the loop
         	
-        	$connectorNotificationMessageProp 	= new core_kernel_classes_Property(PROPERTY_CONNECTORS_NOTIFICATION_MESSAGE);
         	$userMailProp 						= new core_kernel_classes_Property(PROPERTY_USER_MAIL);
         	$processExecutionOfProp 			= new core_kernel_classes_Property(PROPERTY_PROCESSINSTANCES_EXECUTIONOF);
         	
@@ -301,17 +308,10 @@ class wfEngine_models_classes_NotificationService
         	$notificationsToSend = $this->getNotificationsToSend();
         	foreach($notificationsToSend as $notificationResource){
         		
-        		//get the message content from the connector
-        		$content = '';
-        		$connector = $notificationResource->getOnePropertyValue($this->notificationConnectorProp);
-        		if(!is_null($connector)){
-        			foreach($connector->getPropertyValues(new core_kernel_classes_Property(PROPERTY_CONNECTORS_NOTIFICATION_MESSAGE)) as $content){
-        				if(strlen(trim($content)) > 0){
-        					break;
-        				}
-        			}
-        		}
-        		
+				//get the message content from the notification
+				//@TODO: "getNotificationMessage" can be cached
+        		$content = (string) $notificationResource->getOnePropertyValue($this->notificationMessageProp);
+				
         		//get the email of the user
         		$toEmail = '';
         		$to = $notificationResource->getOnePropertyValue($this->notificationToProp);
@@ -360,6 +360,78 @@ class wfEngine_models_classes_NotificationService
         // section 127-0-1-1-1609ec43:129caf00b07:-8000:000000000000228C end
 
         return (bool) $returnValue;
+    }
+
+    /**
+     * Short description of method createNotification
+     *
+     * @access public
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @param  Resource connector
+     * @param  Resource user
+     * @param  Resource activityExecution
+     * @param  Resource processExecution
+     * @return core_kernel_classes_Resource
+     */
+    public function createNotification( core_kernel_classes_Resource $connector,  core_kernel_classes_Resource $user,  core_kernel_classes_Resource $activityExecution,  core_kernel_classes_Resource $processExecution = null)
+    {
+        $returnValue = null;
+
+        // section 127-0-1-1-278177bc:1333f1e99bb:-8000:0000000000003242 begin
+		
+		$activityExecutionService 	= tao_models_classes_ServiceFactory::get("wfEngine_models_classes_ActivityExecutionService");
+
+		if(is_null($processExecution)){
+			$processExecution = $activityExecutionService->getRelatedProcessExecution($activityExecution);
+		}
+			
+		$notification = $this->notificationClass->createInstance();
+		$notification->setPropertyValue($this->notificationToProp, $user);
+		$notification->setPropertyValue($this->notificationProcessExecProp, $processExecution);
+		$notification->setPropertyValue($this->notificationConnectorProp, $connector);
+		$notification->setPropertyValue($this->notificationSentProp, GENERIS_FALSE);
+		$notification->setPropertyValue($this->notificationDateProp, date("Y-m-d H:i:s"));
+			
+		//get the message content from the connector
+		$content = (string) $connector->getOnePropertyValue($this->connectorNotificationProp);
+		if(strlen(trim($content)) > 0){
+			$matches = array();
+			$expr = "/{{((http|https|file|ftp):\/\/[\/.A-Za-z0-9_-]+#[A-Za-z0-9]+)}}/";
+			if(preg_match_all($expr, $content, $matches)){
+				if(isset($matches[1])){
+					$termUris = $matches[1];
+					$activity = $activityExecutionService->getExecutionOf($activityExecution);
+					foreach ($termUris as $termUri) {
+						$term = new core_kernel_rules_Term($termUri);
+						$replacement = $term->evaluate(array(
+							VAR_PROCESS_INSTANCE => $processExecution->uriResource,
+							VAR_ACTIVITY_INSTANCE => $activityExecution->uriResource,
+							VAR_ACTIVITY_DEFINITION => $activity->uriResource,
+							VAR_CURRENT_USER => $user->uriResource
+						));
+						
+						if($replacement instanceof core_kernel_classes_Resource 
+							&& $replacement->uriResource == INSTANCE_TERM_IS_NULL){
+							$replacement = '';
+						}
+						
+						$content = str_replace('{{'.$termUri.'}}', $replacement, $content);
+					}
+					
+					
+				}
+			}
+		}
+		
+		if(empty($content)){
+			throw new common_Exception('empty notification message');
+		}
+		$notification->setPropertyValue($this->notificationMessageProp, $content);
+		$returnValue = $notification;
+			
+        // section 127-0-1-1-278177bc:1333f1e99bb:-8000:0000000000003242 end
+
+        return $returnValue;
     }
 
 } /* end of class wfEngine_models_classes_NotificationService */

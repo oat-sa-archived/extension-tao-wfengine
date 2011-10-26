@@ -7,6 +7,9 @@ $todefine = array(
 	'GENERIS_BOOLEAN' 								=> GENERIS_NS . '#Boolean',
 	'PROPERTY_USER_LABEL'							=> GENERIS_NS.'#login',
 	'VAR_PROCESS_INSTANCE' 							=> NS_RULES . '#VarProcessInstance',
+	'VAR_ACTIVITY_INSTANCE' 						=> NS_RULES . '#VarActivityInstance',
+	'VAR_ACTIVITY_DEFINITION'						=> NS_RULES . '#VarActivityDefinition',
+	'VAR_CURRENT_USER'								=> NS_RULES . '#VarCurrentUser',
 	
 	'PROPERTY_GENERIS_ALLOWFREEVALUEOF'				=> NS_WFENGINE . '#PropertyAllowFreeValueOf',
 	
@@ -87,6 +90,7 @@ $todefine = array(
 	'PROPERTY_NOTIFICATION_PROCESS_EXECUTION' 		=> NS_WFENGINE  .'#PropertyNotificationProcessExecution',
 	'PROPERTY_NOTIFICATION_SENT' 					=> NS_WFENGINE  .'#PropertyNotificationSent',
 	'PROPERTY_NOTIFICATION_DATE' 					=> NS_WFENGINE  .'#PropertyNotificationDate',
+	'PROPERTY_NOTIFICATION_MESSAGE'					=> NS_WFENGINE  .'#PropertyNotificationMessage',
 	
 	'CLASS_CALLOFSERVICES'							=> NS_WFENGINE . '#ClassCallOfServices',
 	'PROPERTY_CALLOFSERVICES_SERVICEDEFINITION'		=> NS_WFENGINE . '#PropertyCallOfServicesServiceDefinition',

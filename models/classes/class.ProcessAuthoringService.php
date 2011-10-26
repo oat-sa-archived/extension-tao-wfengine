@@ -1393,7 +1393,7 @@ class wfEngine_models_classes_ProcessAuthoringService
 
         // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004E9D begin
 		
-		//TODO: to be moved to actiivty service:
+		//@TODO: to be moved to actiivty service:
 		
 		$activities = $this->getActivitiesByProcess($process);
 		$propActivityInitial = new core_kernel_classes_Property(PROPERTY_ACTIVITIES_ISINITIAL);

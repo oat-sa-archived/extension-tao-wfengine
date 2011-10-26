@@ -51,7 +51,9 @@ class NotificationServiceTestCase extends UnitTestCase {
 			PROPERTY_USER_LOGIN		=> 	$login,
 			PROPERTY_USER_PASSWORD	=>	md5($pass),
 			PROPERTY_USER_DEFLG		=>	'EN',
-			PROPERTY_USER_MAIL		=> 'bertrand.chevrier@tudor.lu'
+			PROPERTY_USER_MAIL		=>  'somsack.sipasseuth@tudor.lu',
+			PROPERTY_USER_FIRTNAME  =>	'myFirstName',
+			PROPERTY_USER_LASTNAME  =>	'myLastName'
 		);
 		
 		$this->currentUser = $this->userService->getOneUser($login);
@@ -65,6 +67,10 @@ class NotificationServiceTestCase extends UnitTestCase {
 			$this->currentUser = $this->userService->getCurrentUser();
 		}
 	}
+	
+	public function tearDown() {
+		$this->currentUser->delete();
+    }
 	
 	/**
 	 * output messages
@@ -99,6 +105,144 @@ class NotificationServiceTestCase extends UnitTestCase {
 		$this->assertIsA($aeService, 'wfEngine_models_classes_NotificationService');
 
 		$this->service = $aeService;
+	}
+	
+	public function testCreateNotification(){
+		$processDefinitionLabel = 'proc_def_label';
+		$processInstanceLabel = 'proc_inst_label';
+		$activity1Label = 'activity1';
+		$activity2Label = 'activity2';
+		$notificationMessage = '';
+		
+		$processAuthoringService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessAuthoringService');
+		$processExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessExecutionService');
+		$activityExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityExecutionService');
+		$processVariableService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_VariableService');
+		
+		//create some process variables:
+		$vars = array();
+		$varCodes = array(
+			'unitLabel', //to be initialized
+			'countryCode', //to be initialized
+			'languageCode' //to be initialized
+		);
+		
+		foreach($varCodes as $varCode){
+			$vars[$varCode] = $processVariableService->getProcessVariable($varCode, true);
+		}
+		
+		$spx = array();
+		$spxDefinition = array(
+			VAR_PROCESS_INSTANCE => array(RDFS_LABEL),
+			VAR_ACTIVITY_DEFINITION => array(RDFS_LABEL),
+			VAR_ACTIVITY_INSTANCE => array(
+				RDFS_LABEL,
+				$vars['unitLabel']->uriResource,
+				$vars['countryCode']->uriResource,
+				$vars['languageCode']->uriResource
+			),
+			VAR_CURRENT_USER => array(
+				RDFS_LABEL,
+				PROPERTY_USER_FIRTNAME,
+				PROPERTY_USER_LASTNAME
+			)
+		);
+		foreach($spxDefinition as $contextUri => $predicates){
+			$context = new core_kernel_classes_Resource($contextUri);
+			$spx[$contextUri] = array();
+			foreach($predicates as $predicateUri){
+				$term = $this->createSPX($context, new core_kernel_classes_Property($predicateUri));
+				$this->assertNotNull($term);
+				$spx[$contextUri][$predicateUri] = $term;
+			}
+		}
+		
+		$notificationMessage = '
+			Dear {{'.$spx[VAR_CURRENT_USER][PROPERTY_USER_FIRTNAME]->uriResource.'}} {{'.$spx[VAR_CURRENT_USER][PROPERTY_USER_LASTNAME]->uriResource.'}},
+
+			Please join the translation process of the unit {{'.$spx[VAR_ACTIVITY_INSTANCE][$vars['unitLabel']->uriResource]->uriResource.'}} to {{'.$spx[VAR_ACTIVITY_INSTANCE][$vars['languageCode']->uriResource]->uriResource.'}}_{{'.$spx[VAR_ACTIVITY_INSTANCE][$vars['countryCode']->uriResource]->uriResource.'}} to complete your next task "{{'.$spx[VAR_ACTIVITY_DEFINITION][RDFS_LABEL]->uriResource.'}}".
+
+			Bests,
+			The Workflow Engine
+			';
+		
+		$processDefinition = $processAuthoringService->createProcess($processDefinitionLabel, 'create for notification service test case');
+		$this->assertNotNull($processDefinition);
+		
+		$activity1 = $processAuthoringService->createActivity($processDefinition, $activity1Label);
+		$this->assertNotNull($processDefinition);
+		
+		$this->assertTrue($processAuthoringService->setFirstActivity($processDefinition, $activity1));
+		
+		$connector1 = $processAuthoringService->createConnector($activity1);
+		$this->assertNotNull($processDefinition);
+		
+		$activity2 = $processAuthoringService->createSequenceActivity($connector1, null, $activity2Label);
+		$this->assertNotNull($activity2);
+		
+		$this->service->bindProperties($connector1, array(
+			PROPERTY_CONNECTORS_NOTIFY => INSTANCE_NOTIFY_USER,
+			PROPERTY_CONNECTORS_USER_NOTIFIED => $this->currentUser->uriResource,
+			PROPERTY_CONNECTORS_NOTIFICATION_MESSAGE => $notificationMessage
+		));
+		
+		
+		$processExecution = $processExecutionService->createProcessExecution(
+			$processDefinition,
+			$processInstanceLabel,
+			'created for the notification service test case',
+			array(
+				$vars['unitLabel']->uriResource => 'myUnit',
+				$vars['countryCode']->uriResource => 'FR',
+				$vars['languageCode']->uriResource => 'fr'
+			));
+		$this->assertNotNull($processExecution);
+		
+		
+		$activityExecs = $processExecutionService->getCurrentActivityExecutions($processExecution);
+		$this->assertEqual(count($activityExecs), 1);
+		$activityExecution = reset($activityExecs);
+		$activity = $activityExecutionService->getExecutionOf($activityExecution);
+		$this->assertEqual($activity->uriResource, $activity1->uriResource);
+		
+		//test notificaiton creation:
+		$notification = $this->service->createNotification($connector1, $this->currentUser, $activityExecution);
+		$this->assertNotNull($notification);
+		$builtMessage = (string) $notification->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_NOTIFICATION_MESSAGE));
+		$this->assertEqual($builtMessage, '
+			Dear myFirstName myLastName,
+
+			Please join the translation process of the unit myUnit to fr_FR to complete your next task "activity1".
+
+			Bests,
+			The Workflow Engine
+			');
+		
+		foreach($vars as $var){
+			$var->delete();
+		}
+		
+		foreach($spx as $predicates){
+			foreach($predicates as $term){
+				$term->delete();
+			}
+		}
+		
+		$this->assertTrue($processAuthoringService->deleteProcess($processDefinition));
+		$this->assertTrue($processExecutionService->deleteProcessExecution($processExecution));
+	}
+	
+	private function createSPX(core_kernel_classes_Resource $context, core_kernel_classes_Property $predicate){
+		
+		$termClass = new core_kernel_classes_Class(CLASS_TERM_SUJET_PREDICATE_X,__METHOD__);
+		$termInstance = $termClass->createInstance("Term : SPX ".$context->uriResource. "-" .$predicate->uriResource , 'generated by Condition Descriptor on '. date(DATE_ISO8601));
+
+		$subjectProperty = new core_kernel_classes_Property(PROPERTY_TERM_SPX_SUBJET,__METHOD__);
+		$predicateProperty = new core_kernel_classes_Property(PROPERTY_TERM_SPX_PREDICATE,__METHOD__);
+		$termInstance->setPropertyValue($subjectProperty , $context->uriResource);
+		$termInstance->setPropertyValue($predicateProperty , $predicate->uriResource);
+		
+		return $termInstance;
 	}
 	
 	/**
@@ -229,7 +373,7 @@ class NotificationServiceTestCase extends UnitTestCase {
 			$this->assertTrue($processExecutionService->isFinished($proc));
 			
 			//check the created notifications
-			$notificationCount = 0;
+			$notifications = array();
 			
 			$notificationProcessExecProp 	= new core_kernel_classes_Property(PROPERTY_NOTIFICATION_PROCESS_EXECUTION);
 			$notificationToProp 			= new core_kernel_classes_Property(PROPERTY_NOTIFICATION_TO);
@@ -245,18 +389,22 @@ class NotificationServiceTestCase extends UnitTestCase {
 						$this->assertNotNull($notifiedUser);
 						$this->assertEqual($notifiedUser->uriResource, $this->currentUser->uriResource);
 						
-						$notificationCount++;
-						
-						$this->assertTrue($notification->delete());
+						$notifications[] = $notification;
 					}
 				}
 			} 
 			
+			$notificationCount = count($notifications);
 			$this->assertEqual($notificationCount, 4);
 			
-//			$this->out("$notificationCount notification to send");
-//			$this->service->sendNotifications(new tao_helpers_transfert_MailAdapter());
-//			$this->out("All notifications sent");
+			$this->out("$notificationCount notifications to sent");
+			$this->assertTrue($this->service->sendNotifications(new tao_helpers_transfert_MailAdapter()));
+			$this->out("All notifications sent");
+			
+			//delete notifications:
+			foreach($notifications as $notification){
+				$this->assertTrue($notification->delete());
+			}
 			
 			$this->assertTrue($role2->delete());
 			
