@@ -94,9 +94,9 @@ class ProcessMapTestCase extends UnitTestCase {
 			$serviceDefinition = null;
 			
 			$serviceDefinitionClass = new core_kernel_classes_Class(CLASS_SUPPORTSERVICES);
-			$serviceDefinitions = $serviceDefinitionClass->searchInstances(array(PROPERTY_SUPPORTSERVICES_URL => $url_unit), array('like' => false));
-			if(!empty($serviceDefinitions)){
-				$serviceDefinition = array_shift($serviceDefinitions);
+			$foundServiceDefinitions = $serviceDefinitionClass->searchInstances(array(PROPERTY_SUPPORTSERVICES_URL => $url_unit), array('like' => false));
+			if(!empty($foundServiceDefinitions)){
+				$serviceDefinition = array_shift($foundServiceDefinitions);
 			}
 			if(is_null($serviceDefinition)){
 				//if no corresponding service def found, create a service definition:

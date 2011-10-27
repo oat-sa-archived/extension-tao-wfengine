@@ -245,12 +245,18 @@ class ProcessAuthoringServiceTestCase extends UnitTestCase {
 	
 		$myProcessVar1 = null;
 		$myProcessVar1 = $this->variableService->getProcessVariable('myProcessVarCode1', true);
-				
+		
+		$parameterNames = array(
+			'param1'.time(),
+			'param2'.time(),
+			'param3'.time(),
+			'param4'.time()
+		);
 		$inputParameters = array(
-			'param1' => $myProcessVar1,
-			'param2' => '^myProcessVarCode2',
-			'param3' => 'myConstantValue',
-			'param4' => null
+			$parameterNames[0] => $myProcessVar1,
+			$parameterNames[1] => '^myProcessVarCode2',
+			$parameterNames[2] => 'myConstantValue',
+			$parameterNames[3] => null
 		);
 		
 		$serviceUrl = 'http://www.myWebSite.com/myServiceScript.php';
@@ -298,6 +304,14 @@ class ProcessAuthoringServiceTestCase extends UnitTestCase {
 		$this->assertTrue($this->authoringService->deleteServiceDefinition($serviceUrl));
 		$this->assertTrue($this->variableService->deleteProcessVariable('myProcessVarCode1'));
 		$this->assertTrue($this->variableService->deleteProcessVariable('myProcessVarCode2'));
+		
+		for($i=0;$i<4;$i++){
+			$formalParam = $this->authoringService->getFormalParameter($parameterNames[$i]);
+			$this->assertNotNull($formalParam);
+			if(!is_null($formalParam) && $formalParam instanceof core_kernel_classes_Resource){
+				$this->assertTrue($formalParam->delete());
+			}
+		}
 	}
 	
 	public function tearDown() {

@@ -397,9 +397,9 @@ class NotificationServiceTestCase extends UnitTestCase {
 			$notificationCount = count($notifications);
 			$this->assertEqual($notificationCount, 4);
 			
-			$this->out("$notificationCount notifications to sent");
-			$this->assertTrue($this->service->sendNotifications(new tao_helpers_transfert_MailAdapter()));
-			$this->out("All notifications sent");
+//			$this->out("$notificationCount notifications to be sent");
+//			$this->assertTrue($this->service->sendNotifications(new tao_helpers_transfert_MailAdapter()));
+//			$this->out("All notifications sent");
 			
 			//delete notifications:
 			foreach($notifications as $notification){

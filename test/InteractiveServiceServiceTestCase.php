@@ -171,6 +171,7 @@ class InteractiveServiceServiceTestCase extends UnitTestCase {
 		$style = $this->service->getStyle($service1);
 		$this->assertEqual($style, 'position:absolute;left:50%;top:30%;width:5%;height:10%;');
 		
+		$service1->delete();
 	}
 
 }

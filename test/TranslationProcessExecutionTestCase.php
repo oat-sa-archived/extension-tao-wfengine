@@ -653,6 +653,8 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 							$j++;
 						}
 						
+						$this->changeUser($developersLogins[array_rand($developersLogins)]);
+						
 						break;
 					}
 					case $indexActivityTranslate + $nbTranslators +4:{
@@ -726,7 +728,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 			}else{
 				$this->assertEqual(count($transitionResult), 0);
 				$this->assertTrue($processExecutionService->isPaused($processInstance));
-			}
+fix			}
 			
 			//manage next activity index:
 			if($goto){
