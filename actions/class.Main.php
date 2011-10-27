@@ -36,8 +36,14 @@ class wfEngine_actions_Main extends wfEngine_actions_WfModule
 			
 			if(!is_null($processExecution) && $processExecution instanceof core_kernel_classes_Resource){
 				
+				try{
+					$processDefinition = $processExecutionService->getExecutionOf($processExecution);
+				}catch(wfEngine_models_classes_ProcessExecutionException $e){
+					$processDefinition = null;
+					$processExecutionService->deleteProcessExecution($processExecution);
+					continue;
+				}
 				$processStatus = $processExecutionService->getStatus($processExecution);
-				$processDefinition = $processExecutionService->getExecutionOf($processExecution);
 				if(is_null($processStatus) || !$processStatus instanceof core_kernel_classes_Resource){
 					continue;
 				}

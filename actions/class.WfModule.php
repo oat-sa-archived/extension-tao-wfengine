@@ -8,9 +8,20 @@ class wfEngine_actions_WfModule extends Module
 			//Authentication and API initialization
 			$userService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_UserService');
 			$userService->connectCurrentUser();
-		}
-		else{
-			$this->redirect(_url('index', 'Authentication', 'wfEngine', array('errorMessage' => urlencode(__('Access denied. Please renew your authentication!')))));
+		}else{
+			if($this->hasRequestParameter('processUri') && $this->hasRequestParameter('activityUri')){
+				$this->redirect(_url('index', 'Authentication', 'wfEngine', array(
+						'errorMessage' => urlencode(__('Please login to access the selected activity.')),
+						'processUri' => urlencode($this->getRequestParameter('processUri')),
+						'activityUri' => urlencode($this->getRequestParameter('activityUri'))
+						)
+					));
+			}else{
+				$this->redirect(_url('index', 'Authentication', 'wfEngine', array(
+						'errorMessage' => urlencode(__('Access denied. Please renew your authentication.'))
+					)));
+			}
+			
 		}
 		
 	}

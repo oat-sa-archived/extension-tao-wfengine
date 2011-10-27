@@ -13,14 +13,33 @@ class wfEngine_actions_Authentication extends Module
 		
 		$userService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_UserService');
 		
-		$myLoginFormContainer = new wfEngine_actions_form_Login();
+		
+		$processUri = urldecode($this->getRequestParameter('processUri'));
+		$processExecution = common_Utils::isUri($processUri)?new core_kernel_classes_Resource($processUri):null;
+		
+		$activityUri = urldecode($this->getRequestParameter('activityUri'));
+		$activityExecution = common_Utils::isUri($activityUri)?new core_kernel_classes_Resource($activityUri):null;
+		
+		//create the login for to the activity execution of a process execution:
+		$myLoginFormContainer = new wfEngine_actions_form_Login(array(
+			'processUri' => !is_null($processExecution)?$processExecution->uriResource:'',
+			'activityUri' => !is_null($activityExecution)?$activityExecution->uriResource:''
+		));
 		$myForm = $myLoginFormContainer->getForm();
 		
 		if($myForm->isSubmited()){
 			if($myForm->isValid()){
 				$values = $myForm->getValues();
 				if($userService->loginUser($values['login'], md5($values['password']))){
-					$this->redirect(_url('index', 'Main'));
+					if(!empty($values['processUri']) && !empty($values['activityUri'])){
+						$this->redirect(_url('index', 'ProcessBrowser', 'wfEngine', array(
+								'processUri' => urlencode($values['processUri']),
+								'activityUri' => urlencode($values['activityUri'])
+							)
+						));
+					}else{
+						$this->redirect(_url('index', 'Main'));
+					}
 				}
 				else{
 					$this->setData('errorMessage', __('No account match the given login / password'));

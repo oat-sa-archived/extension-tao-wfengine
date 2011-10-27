@@ -18,6 +18,7 @@ class wfEngine_actions_ProcessBrowser extends wfEngine_actions_WfModule{
 	protected $processExecutionService = null;
 	protected $activityExecutionService = null;
 	protected $activityExecutionNonce = false;
+	protected $autoRedirecting = false;
 	
 	public function __construct(){
 		
@@ -60,11 +61,32 @@ class wfEngine_actions_ProcessBrowser extends wfEngine_actions_WfModule{
 							$this->activityExecutionNonce = false;
 						}
 						
+					}else{
+						//the provided activity execution is no longer the current one (link may be outdated).
+						//the user is redirected to the current activity execution if allowed, 
+						//or redirected to "main" if there are more than one allowed current activity execution or none
+						$this->autoRedirecting = true;
 					}
 				}
 			}
 		}
 		
+	}
+	
+	protected function autoredirectToIndex(){
+		
+		if(is_null($this->processExecution)){
+			$this->redirectToMain();
+			return;
+		}
+		//user data for browser view
+		$userViewData = UsersHelper::buildCurrentUserForView(); 
+		$this->setData('userViewData', $userViewData);
+		$this->setData('processExecutionUri', urlencode($this->processExecution->uriResource));
+		
+		$this->setView('auto_redirecting.tpl');
+		
+		return;
 	}
 	
 	protected function redirectToIndex(){
@@ -92,6 +114,12 @@ class wfEngine_actions_ProcessBrowser extends wfEngine_actions_WfModule{
 			$this->redirectToMain();
 			return;
 		}
+		
+		if($this->autoRedirecting){
+			$this->autoredirectToIndex();
+			return;
+		}
+				
 		/*
 		 * known use of Session::setAttribute("processUri") in:
 		 * - taoDelivery_actions_ItemDelivery::runner()
@@ -137,7 +165,7 @@ class wfEngine_actions_ProcessBrowser extends wfEngine_actions_WfModule{
 					$this->activityExecution = null;
 //					$invalidActivity = new core_kernel_classes_Resource($activityUri);
 //					throw new wfEngine_models_classes_ProcessExecutionException("invalid choice of activity definition in process browser {$invalidActivity->getLabel()} ({$invalidActivity->uriResource}). \n<br/> The link may be outdated.");
-					$this->redirectToIndex();
+					$this->autoredirectToIndex();
 					return;
 				}
 			}else{

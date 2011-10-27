@@ -54,7 +54,7 @@ class wfEngine_actions_form_Login
     // --- ATTRIBUTES ---
 
     // --- OPERATIONS ---
-
+	
     /**
      * Short description of method initForm
      *
@@ -86,7 +86,6 @@ class wfEngine_actions_form_Login
     {
         // section 127-0-1-1-68f1e705:127f61c8a56:-8000:00000000000023C2 begin
         
-    	
     	$loginElt = tao_helpers_form_FormFactory::getElement('login', 'Textbox');
 		$loginElt->setDescription(__('Login'));
 		$loginElt->addValidator(tao_helpers_form_FormFactory::getValidator('NotEmpty'));
@@ -97,6 +96,19 @@ class wfEngine_actions_form_Login
 		$passElt->addValidator(tao_helpers_form_FormFactory::getValidator('NotEmpty'));
 		$this->form->addElement($passElt);
     	
+		//add 2 hidden inputs to post requested process and activity executions:
+		$processElt = tao_helpers_form_FormFactory::getElement('processUri', 'Hidden');
+//		if(!is_null($this->processExecution)){
+//			$processElt->setValue($this->processExecution->uriResource);
+//		}
+		$this->form->addElement($processElt);
+		
+		$activityElt = tao_helpers_form_FormFactory::getElement('activityUri', 'Hidden');
+//		if(!is_null($this->activityExecution)){
+//			$activityElt->setValue($this->activityExecution->uriResource);
+//		}
+		$this->form->addElement($activityElt);
+		
         // section 127-0-1-1-68f1e705:127f61c8a56:-8000:00000000000023C2 end
     }
 
