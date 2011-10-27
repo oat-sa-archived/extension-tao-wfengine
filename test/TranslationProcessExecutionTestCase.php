@@ -728,7 +728,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 			}else{
 				$this->assertEqual(count($transitionResult), 0);
 				$this->assertTrue($processExecutionService->isPaused($processInstance));
-fix			}
+			}
 			
 			//manage next activity index:
 			if($goto){
