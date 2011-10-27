@@ -364,18 +364,26 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		$activityFinalCheckBis = $authoringService->createSequenceActivity($connectorReviewCorrections, $activityFinalCheck);
 		$this->assertEqual($activityFinalCheck->uriResource, $activityFinalCheckBis->uriResource);
 		
+		//if still not ok, go to correct layout:
+		$connectorFinalCheckElseElse = $authoringService->createConditionalActivity($connectorFinalCheckElse, 'else', null, $connectorFinalCheckElse->getLabel().'_c', true);//if ^layoutCheck != 2
+		$transitionRule = $authoringService->createTransitionRule($connectorFinalCheckElseElse, '^layoutCheck == 3');
+		$this->assertNotNull($transitionRule);
+		
 		//else return to "correct verification":
-		$activityCorrectVerificationBis = $authoringService->createConditionalActivity($connectorFinalCheckElse, 'else', $activityCorrectVerification);//if ^layoutCheck != 2
+		$activityCorrectVerificationBis = $authoringService->createConditionalActivity($connectorFinalCheckElseElse, 'then', $activityCorrectVerification);//if ^layoutCheck == 3
 		$this->assertEqual($activityCorrectVerification->uriResource, $activityCorrectVerificationBis->uriResource);
-		//end of if(^layoutCheck == 1) elseif(^layoutCheck == 2) else
+			
+		$activityCorrectLayoutBis = $authoringService->createConditionalActivity($connectorFinalCheckElseElse, 'else', $activityCorrectLayout);//if ^layoutCheck != 3
+		$this->assertEqual($activityCorrectLayout->uriResource, $activityCorrectLayoutBis->uriResource);		
+		//end of if(^layoutCheck == 1) elseif(^layoutCheck == 2) elseif(^layoutCheck == 3)
 		
 		//check transition rules:
 		$thenActivity = $transitionRuleService->getThenActivity($transitionRule);
 		$this->assertNotNull($thenActivity);
-		$this->assertEqual($thenActivity->uriResource, $activityReviewCorrection->uriResource);
+		$this->assertEqual($thenActivity->uriResource, $activityCorrectVerification->uriResource);
 		$elseActivity = $transitionRuleService->getElseActivity($transitionRule);
 		$this->assertNotNull($elseActivity);
-		$this->assertEqual($elseActivity->uriResource, $activityCorrectVerification->uriResource);
+		$this->assertEqual($elseActivity->uriResource, $activityCorrectLayout->uriResource);
 		
 		//scoring verification:
 		$activityScoringVerification = $authoringService->createSequenceActivity($connectorScoringDefinition, null, 'Scoring verification');
@@ -676,13 +684,19 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 							$j++;
 						}
 						
-						if(!isset($loopsCounter['reviewCorrections'])){
+						$this->changeUser($developersLogins[array_rand($developersLogins)]);
+						
+						if(!isset($loopsCounter['correctLayout'])){
+							$loopsCounter['correctLayout'] = $nbLoops;
+							$this->assertTrue($this->executeServiceLayoutCheck(0));
+							$goto = $indexActivityTranslate + $nbTranslators +3;
+						}else if(!isset($loopsCounter['reviewCorrections'])){
 							$loopsCounter['reviewCorrections'] = $nbLoops;
 							$this->assertTrue($this->executeServiceLayoutCheck(2));
 							$goto = $indexActivityTranslate + $nbTranslators +5;
 						}else if(!isset($loopsCounter['correctVerification'])){
 							$loopsCounter['correctVerification'] = $nbLoops;
-							$this->assertTrue($this->executeServiceLayoutCheck(0));
+							$this->assertTrue($this->executeServiceLayoutCheck(3));
 							$goto = $indexActivityTranslate + $nbTranslators +2;
 						}else{
 							$this->assertTrue($this->executeServiceLayoutCheck(1));
@@ -701,6 +715,9 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 						$currentActivityExecution = $this->initCurrentActivityExecution($activityExecution);
 						
 						if(!isset($loopsCounter['finalCheck'])){
+							
+							$loopsCounter = array();//reinitialize the loops counter
+							
 							$loopsCounter['finalCheck'] = $nbLoops;
 							$this->assertTrue($this->executeServiceFinalSignOff(false));
 							$goto = $indexActivityTranslate + $nbTranslators +4;
@@ -891,7 +908,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		$this->out('executing service layout check with output code : '.$outputCode, true);
 		
 		$outputCode = intval($outputCode);
-		if(in_array($outputCode, array(0, 1, 2))){
+		if(in_array($outputCode, array(0, 1, 2, 3))){
 			$processVariableService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_VariableService');
 			$returnValue = $processVariableService->edit('layoutCheck', $outputCode);
 		}else{

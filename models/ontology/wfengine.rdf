@@ -192,11 +192,15 @@
     <rdf:type rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassTypeOfConnectors"/>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#InstanceTypeOfConnectorsParallel">
-    <rdfs:label xml:lang="EN"><![CDATA[Parallel]]></rdfs:label>
+    <rdfs:label xml:lang="EN"><![CDATA[Split]]></rdfs:label>
     <rdf:type rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassTypeOfConnectors"/>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#InstanceTypeOfConnectorsJoin">
     <rdfs:label xml:lang="EN"><![CDATA[Join]]></rdfs:label>
+    <rdf:type rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassTypeOfConnectors"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#InstanceTypeOfConnectorsSwitch">
+    <rdfs:label xml:lang="EN"><![CDATA[Switch]]></rdfs:label>
     <rdf:type rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassTypeOfConnectors"/>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#ClassConnectors">

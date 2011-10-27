@@ -73,6 +73,7 @@ $todefine = array(
 	'INSTANCE_TYPEOFCONNECTORS_SEQUENCE'			=> NS_WFENGINE . '#InstanceTypeOfConnectorsSequence',
 	'INSTANCE_TYPEOFCONNECTORS_PARALLEL'			=> NS_WFENGINE . '#InstanceTypeOfConnectorsParallel',
 	'INSTANCE_TYPEOFCONNECTORS_JOIN'				=> NS_WFENGINE . '#InstanceTypeOfConnectorsJoin',
+	'INSTANCE_TYPEOFCONNECTORS_SWITCH'				=> NS_WFENGINE . '#InstanceTypeOfConnectorsSwitch',
 	
 	'CLASS_TRANSITIONRULES'							=> NS_WFENGINE . '#ClassTransitionRules',
 	'PROPERTY_TRANSITIONRULES_THEN'					=> NS_WFENGINE . '#PropertyTransitionRulesThen',
