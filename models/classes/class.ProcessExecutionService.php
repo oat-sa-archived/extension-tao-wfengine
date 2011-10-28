@@ -1768,10 +1768,9 @@ class wfEngine_models_classes_ProcessExecutionService
 		$currentActivityExecutions = $this->getCurrentActivityExecutions($processExecution);
 		$followings = $this->activityExecutionService->getFollowing($activityExecution);
 		$restoringActivityExecutions = array();
+		$restoringActivityExecutions[$activityExecution->uriResource] = $activityExecution;
 		
-		if(count($followings) == count($currentActivityExecutions)){
-			
-			$restoringActivityExecutions[$activityExecution->uriResource] = $activityExecution;
+		if(count($followings)){
 			
 			foreach($followings as $followingActivityExecution){
 				
@@ -1787,21 +1786,27 @@ class wfEngine_models_classes_ProcessExecutionService
 				$allowed = false;
 				break;
 			}
+			
 		}
 		
 		if($allowed){
 			//move the current activity pointer:
-			if($this->removeCurrentActivityExecutions($processExecution)){
-				foreach($currentActivityExecutions as $currentActivityExecution){
-					$this->activityExecutionService->setStatus($currentActivityExecution, 'closed');//invalidate the path:
+			//of the branch uniquely:
+			if(!empty($followings)){
+				$this->removeCurrentActivityExecutions($processExecution, $followings);
+				foreach ($followings as $following) {
+					$this->activityExecutionService->setStatus($following, 'closed'); //invalidate the path:
 				}
-				$this->activityExecutionService->resume($activityExecution);
-				$activityExecution->removePropertyValues(new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_FOLLOWING));
-				
-				$returnValue = $this->setCurrentActivityExecutions($processExecution, $restoringActivityExecutions);
-			}else{
-				throw new wfEngine_models_classes_ProcessExecutionException('cannot remove the current activity executions pointers');
 			}
+			
+			//undo the following activity executions assignation to *all* activity exec to be restored:
+			foreach($restoringActivityExecutions as $restoringActivityExecution){
+				$restoringActivityExecution->removePropertyValues(new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_FOLLOWING));
+			}
+			
+			$this->activityExecutionService->resume($activityExecution);
+
+			$returnValue = $this->setCurrentActivityExecutions($processExecution, $restoringActivityExecutions);
 		}
 		
         // section 127-0-1-1-6e321c4d:13349bf5055:-8000:000000000000324A end

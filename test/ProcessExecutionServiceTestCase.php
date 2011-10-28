@@ -115,7 +115,7 @@ class ProcessExecutionServiceTestCase extends UnitTestCase{
 	/**
 	 * Test the sequential process execution:
 	 */
-	public function testVirtualSequencialProcess(){
+	public function _testVirtualSequencialProcess(){
 		
 		error_reporting(E_ALL);
 		
@@ -185,6 +185,7 @@ class ProcessExecutionServiceTestCase extends UnitTestCase{
 			
 			$this->out("<strong>Forward transitions:</strong>", true);
 			
+			$previousActivityExecution = null;//to test undoing the transitions
 			$iterationNumber = 5;
 			$i = 1;
 			while($i <= $iterationNumber){
@@ -210,6 +211,33 @@ class ProcessExecutionServiceTestCase extends UnitTestCase{
 				
 				//transition to next activity
 				$transitionResult = $this->service->performTransition($processInstance, $activityExecution);
+				
+				//try undoing the transition:
+				switch($i){
+					case 2:
+					case 4:{
+						$this->assertTrue($this->service->undoForwardTransition($processInstance, $activityExecution));
+					
+						$activitieExecs = $this->service->getCurrentActivityExecutions($processInstance);
+						$this->assertEqual(count($activitieExecs), 1);
+						$activity = $activityExecutionService->getExecutionOf(reset($activitieExecs));
+						$this->assertTrue($activity->getLabel() == 'activity'.$i);
+
+						$transitionResult = $this->service->performTransition($processInstance, $activityExecution);
+						
+						break;
+					}
+					case 3:{
+						$history = $this->service->getExecutionHistory($processInstance);
+						$this->assertEqual(count($history), 5);//activity 1, 2(closed), 2, 3 and 4
+						$this->assertFalse($this->service->undoForwardTransition($processInstance, $history[0]['activityExecution']));
+						
+						$this->assertNotNull($previousActivityExecution);
+						$this->assertFalse($this->service->undoForwardTransition($processInstance, $previousActivityExecution));
+						break;
+					}
+				}
+				
 				if($i < $iterationNumber){
 					$this->assertTrue(count($transitionResult));
 				}else{
@@ -219,11 +247,15 @@ class ProcessExecutionServiceTestCase extends UnitTestCase{
 				$this->out("process status: ".$this->service->getStatus($processInstance)->getLabel());
 				$this->assertFalse($this->service->isPaused($processInstance));
 				
+				$previousActivityExecution = $activityExecution;
+				
 				$i++;
 			}
+			
 			$this->assertTrue($this->service->isFinished($processInstance));
 			
 			$this->out("<strong>Backward transitions:</strong>", true);
+			
 			$j = 0;
 			while($j < $iterationNumber){
 				
@@ -261,6 +293,7 @@ class ProcessExecutionServiceTestCase extends UnitTestCase{
 			
 			$this->out("<strong>Forward transitions again:</strong>", true);
 			
+			$previousActivityExecution = null;
 			$i = 1;
 			while($i <= $iterationNumber){
 				if($i<$iterationNumber){
@@ -287,11 +320,35 @@ class ProcessExecutionServiceTestCase extends UnitTestCase{
 					$this->assertEqual($activityExecStatus->uriResource, INSTANCE_PROCESSSTATUS_STARTED);
 				}
 				
-				//check process content:
-//				var_dump($this->service->getAllActivityExecutions($processInstance));
-				
 				//transition to next activity
 				$transitionResult = $this->service->performTransition($processInstance, $activityExecution);
+				
+				//try undoing the transition:
+				switch($i){
+					case 2:
+					case 3:{
+						$this->assertTrue($this->service->undoForwardTransition($processInstance, $activityExecution));
+					
+						$activitieExecs = $this->service->getCurrentActivityExecutions($processInstance);
+						$this->assertEqual(count($activitieExecs), 1);
+						$activity = $activityExecutionService->getExecutionOf(reset($activitieExecs));
+						$this->assertTrue($activity->getLabel() == 'activity'.$i);
+
+						$transitionResult = $this->service->performTransition($processInstance, $activityExecution);
+						
+						break;
+					}
+					case 3:
+					case 4:{
+						$history = $this->service->getExecutionHistory($processInstance);
+						$this->assertFalse($this->service->undoForwardTransition($processInstance, $history[0]['activityExecution']));
+						
+						$this->assertNotNull($previousActivityExecution);
+						$this->assertFalse($this->service->undoForwardTransition($processInstance, $previousActivityExecution));
+						break;
+					}
+				}
+				
 				if($i<$iterationNumber){
 					$this->assertTrue(count($transitionResult));
 				}else{
@@ -301,6 +358,8 @@ class ProcessExecutionServiceTestCase extends UnitTestCase{
 				$this->out("process status: ".$this->service->getStatus($processInstance)->getLabel());
 				
 				$this->assertFalse($this->service->isPaused($processInstance));
+				
+				$previousActivityExecution = $activityExecution;
 				
 				$i++;
 			}
@@ -422,6 +481,7 @@ class ProcessExecutionServiceTestCase extends UnitTestCase{
 		$this->out(__METHOD__, true);
 		$this->out("<strong>Forward transitions:</strong>", true);
 		
+		$previousActivityExecution = null;
 		$numberActivities = 2 + $parallelCount1 + $parallelCount2;
 		$createdUsers = array();
 		$loginProperty = new core_kernel_classes_Property(PROPERTY_USER_LOGIN);
@@ -500,7 +560,47 @@ class ProcessExecutionServiceTestCase extends UnitTestCase{
 			$this->service->performTransition($processInstance, $activityExecution);
 			$this->out("activity status: ".$activityExecutionService->getStatus($activityExecution)->getLabel());
 			$this->out("process status: ".$this->service->getStatus($processInstance)->getLabel());
+			
+			//try undoing the transition:
+			switch($i){
+				case 1:{
+					$this->assertTrue($this->service->undoForwardTransition($processInstance, $activityExecution));
 
+					$activitieExecs = $this->service->getCurrentActivityExecutions($processInstance);
+					$this->assertEqual(count($activitieExecs), 1);
+					$activityBis = $activityExecutionService->getExecutionOf(reset($activitieExecs));
+					$this->assertTrue($activity->uriResource == $activityBis->uriResource);
+
+					$transitionResult = $this->service->performTransition($processInstance, $activityExecution);
+
+					break;
+				}
+				case 1 + $parallelCount1:{
+					
+					$this->assertFalse($this->service->undoForwardTransition($processInstance, $activityExecution));
+					
+					$history = $this->service->getExecutionHistory($processInstance);
+					$this->assertEqual(count($history), 2*($parallelCount1 + $parallelCount2) + 1);//activity 1, 2(closed), 2, 3 and 4
+					$this->assertFalse($this->service->undoForwardTransition($processInstance, $history[0]['activityExecution']));
+
+					$this->assertNotNull($previousActivityExecution);
+					$this->assertFalse($this->service->undoForwardTransition($processInstance, $previousActivityExecution));
+					break;
+				}
+				case 1 + $parallelCount1 + $parallelCount2:{
+					$this->assertTrue($this->service->undoForwardTransition($processInstance, $activityExecution));
+
+					$activitieExecs = $this->service->getCurrentActivityExecutions($processInstance);
+					$this->assertEqual(count($activitieExecs), $parallelCount1 + $parallelCount2);
+
+					$transitionResult = $this->service->performTransition($processInstance, $activityExecution);
+
+					break;
+				}
+			}
+				
+			$previousActivityExecution = $activityExecution;
+			
 			if($this->service->isPaused($processInstance)){
 
 				//Login another user to execute parallel branch
@@ -536,6 +636,8 @@ class ProcessExecutionServiceTestCase extends UnitTestCase{
 		$this->assertTrue($this->service->isFinished($processInstance));
 		
 		$this->out("<strong>Backward transitions:</strong>", true);
+		
+//		var_dump($this->service->getAllActivityExecutions($processInstance));
 		
 		$j = 0;
 		$iterationNumber = 2;
@@ -655,8 +757,21 @@ class ProcessExecutionServiceTestCase extends UnitTestCase{
 				$this->service->performTransition($processInstance, $activityExecution);
 				$this->out("activity status: ".$activityExecutionService->getStatus($activityExecution)->getLabel());
 				$this->out("process status: ".$this->service->getStatus($processInstance)->getLabel());
+				
+				//try undoing the transition:
+				if($i < $currentActivityExecutionsCount-1){
+					$this->assertFalse($this->service->undoForwardTransition($processInstance, $activityExecution));
+				}
 			}
 		}
+		
+		//try undoing the transition:
+		$this->assertTrue($this->service->undoForwardTransition($processInstance, $activityExecution));
+		$activitieExecs = $this->service->getCurrentActivityExecutions($processInstance);
+		$this->assertEqual(count($activitieExecs), $parallelCount1 + $parallelCount2);
+		$transitionResult = $this->service->performTransition($processInstance, $activityExecution);
+		$this->assertEqual(count($transitionResult), 1);
+		
 		
 		$activitieExecs = $this->service->getCurrentActivityExecutions($processInstance);
 		$this->assertEqual(count($activitieExecs), 1);
