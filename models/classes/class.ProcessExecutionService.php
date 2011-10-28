@@ -3,7 +3,7 @@
 error_reporting(E_ALL);
 
 /**
- * Manage the particular executions of a process definition
+ * Manage the particular executions of a process definition.
  *
  * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
  * @package wfEngine
@@ -39,7 +39,6 @@ require_once('tao/models/classes/interface.ServiceCacheInterface.php');
 
 /**
  * Manage the particular executions of a process definition.
- * Return the list of all activity executions, ordered by creation time.
  *
  * @access public
  * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
@@ -1369,9 +1368,10 @@ class wfEngine_models_classes_ProcessExecutionService
      * @param  Resource processExecution
      * @param  Resource activityExecution
      * @param  Resource user
+     * @param  boolean bypassACL
      * @return core_kernel_classes_Resource
      */
-    public function initCurrentActivityExecution( core_kernel_classes_Resource $processExecution,  core_kernel_classes_Resource $activityExecution,  core_kernel_classes_Resource $user)
+    public function initCurrentActivityExecution( core_kernel_classes_Resource $processExecution,  core_kernel_classes_Resource $activityExecution,  core_kernel_classes_Resource $user, $bypassACL = false)
     {
         $returnValue = null;
 
@@ -1385,7 +1385,7 @@ class wfEngine_models_classes_ProcessExecutionService
 				$this->activityExecutionService->setStatus($activityExecution, 'resumed');
 				$returnValue = $activityExecution;
 
-			}else if($this->activityExecutionService->checkAcl($activityExecution, $user, $processExecution)){
+			}else if($bypassACL || $this->activityExecutionService->checkAcl($activityExecution, $user, $processExecution)){
 				
 				//force assignation to the user:
 				if ($this->activityExecutionService->setActivityExecutionUser($activityExecution, $user, true)) {
@@ -1659,7 +1659,9 @@ class wfEngine_models_classes_ProcessExecutionService
     }
 
     /**
-     * To build the audit trail of a process execution
+     * To build the audit trail of a process execution.
+     * Return the list of all activity executions, ordered by creation time,
+     * with their row data.
      *
      * @access public
      * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
@@ -1744,6 +1746,67 @@ class wfEngine_models_classes_ProcessExecutionService
         // section 127-0-1-1--32040631:1334998261c:-8000:0000000000003246 end
 
         return (array) $returnValue;
+    }
+
+    /**
+     * Short description of method undoForwardTransition
+     *
+     * @access public
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @param  Resource processExecution
+     * @param  Resource activityExecution
+     * @return boolean
+     */
+    public function undoForwardTransition( core_kernel_classes_Resource $processExecution,  core_kernel_classes_Resource $activityExecution)
+    {
+        $returnValue = (bool) false;
+
+        // section 127-0-1-1-6e321c4d:13349bf5055:-8000:000000000000324A begin
+		
+		$allowed = false;
+		
+		$currentActivityExecutions = $this->getCurrentActivityExecutions($processExecution);
+		$followings = $this->activityExecutionService->getFollowing($activityExecution);
+		$restoringActivityExecutions = array();
+		
+		if(count($followings) == count($currentActivityExecutions)){
+			
+			$restoringActivityExecutions[$activityExecution->uriResource] = $activityExecution;
+			
+			foreach($followings as $followingActivityExecution){
+				
+				if(in_array($followingActivityExecution->uriResource, array_keys($currentActivityExecutions))){
+					//check that no following activity has been taken:
+					$user = $this->activityExecutionService->getActivityExecutionUser($followingActivityExecution);
+					if(is_null($user)){
+						$allowed = true;
+						$restoringActivityExecutions = array_merge($restoringActivityExecutions, $this->activityExecutionService->getPrevious($followingActivityExecution));
+						continue;
+					}
+				}
+				$allowed = false;
+				break;
+			}
+		}
+		
+		if($allowed){
+			//move the current activity pointer:
+			if($this->removeCurrentActivityExecutions($processExecution)){
+				foreach($currentActivityExecutions as $currentActivityExecution){
+					$this->activityExecutionService->setStatus($currentActivityExecution, 'closed');//invalidate the path:
+				}
+				$this->activityExecutionService->resume($activityExecution);
+				$activityExecution->removePropertyValues(new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_FOLLOWING));
+				
+				$returnValue = $this->setCurrentActivityExecutions($processExecution, $restoringActivityExecutions);
+			}else{
+				throw new wfEngine_models_classes_ProcessExecutionException('cannot remove the current activity executions pointers');
+			}
+		}
+		
+        // section 127-0-1-1-6e321c4d:13349bf5055:-8000:000000000000324A end
+
+        return (bool) $returnValue;
     }
 
 } /* end of class wfEngine_models_classes_ProcessExecutionService */

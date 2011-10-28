@@ -305,7 +305,9 @@ class wfEngine_models_classes_ActivityExecutionService
         $this->activityExecutionClass	= new core_kernel_classes_Class(CLASS_ACTIVITY_EXECUTION);
 		$this->activityExecutionStatusProperty = new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_STATUS);
 		$this->activityExecutionNonceProperty = new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_NONCE);
-			
+		$this->activityExecutionPreviousProperty = new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_PREVIOUS);
+		$this->activityExecutionFollowingProperty = new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_FOLLOWING);
+		
     	$this->processExecutionProperty = new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_PROCESSEXECUTION);
         $this->currentUserProperty		= new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_CURRENT_USER);
     	$this->activityProperty			= new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_ACTIVITY);
@@ -1692,7 +1694,7 @@ class wfEngine_models_classes_ActivityExecutionService
     }
 
     /**
-     * Short description of method getSplitVariables
+     * Return dispatched process variables values, by activity definiiton
      *
      * @access public
      * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
@@ -1752,6 +1754,60 @@ class wfEngine_models_classes_ActivityExecutionService
 		}
 
         // section 127-0-1-1-2c295278:132fc7ce41a:-8000:00000000000030BC end
+
+        return (array) $returnValue;
+    }
+
+    /**
+     * Short description of method getPrevious
+     *
+     * @access public
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @param  Resource activityExecution
+     * @return array
+     */
+    public function getPrevious( core_kernel_classes_Resource $activityExecution)
+    {
+        $returnValue = array();
+
+        // section 127-0-1-1-6e321c4d:13349bf5055:-8000:000000000000324E begin
+		
+		$previous = $activityExecution->getPropertyValues($this->activityExecutionPreviousProperty);
+		$countPrevious = count($previous);
+		for($j=0; $j<$countPrevious; $j++){
+			if(common_Utils::isUri($previous[$j])){
+				$returnValue[$previous[$j]] = new core_kernel_classes_Resource($previous[$j]);
+			}
+		}
+				
+        // section 127-0-1-1-6e321c4d:13349bf5055:-8000:000000000000324E end
+
+        return (array) $returnValue;
+    }
+
+    /**
+     * Short description of method getFollowing
+     *
+     * @access public
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @param  Resource activityExecution
+     * @return array
+     */
+    public function getFollowing( core_kernel_classes_Resource $activityExecution)
+    {
+        $returnValue = array();
+
+        // section 127-0-1-1-6e321c4d:13349bf5055:-8000:0000000000003251 begin
+		
+		$following = $activityExecution->getPropertyValues($this->activityExecutionFollowingProperty);
+		$countFollowing = count($following);
+		for($k=0; $k<$countFollowing; $k++){
+			if(common_Utils::isUri($following[$k])){
+				$returnValue[$following[$k]] = new core_kernel_classes_Resource($following[$k]);
+			}
+		}
+		
+        // section 127-0-1-1-6e321c4d:13349bf5055:-8000:0000000000003251 end
 
         return (array) $returnValue;
     }

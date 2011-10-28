@@ -132,6 +132,7 @@ $todefine = array(
 	'PROPERTY_ACTIVITY_EXECUTION_STATUS'			=> NS_WFENGINE  .'#PropertyActivityExecutionsStatus',
 	'PROPERTY_ACTIVITY_EXECUTION_TIME_CREATED'		=> NS_WFENGINE . '#PropertyActivityExecutionsTimeCreated',
 	'PROPERTY_ACTIVITY_EXECUTION_TIME_STARTED'		=> NS_WFENGINE . '#PropertyActivityExecutionsTimeStarted',
+	'PROPERTY_ACTIVITY_EXECUTION_TIME_LASTACCESS'	=> NS_WFENGINE . '#PropertyActivityExecutionsTimeLastAccess',
 	'PROPERTY_ACTIVITY_EXECUTION_NONCE'				=> NS_WFENGINE . '#PropertyActivityExecutionsNonce',
 	'PROPERTY_ACTIVITY_EXECUTION_ACL_MODE'			=> NS_WFENGINE . '#PropertyActivityExecutionsAccessControlMode',
 	'PROPERTY_ACTIVITY_EXECUTION_RESTRICTED_USER'	=> NS_WFENGINE . '#PropertyActivityExecutionsRestrictedUser',
