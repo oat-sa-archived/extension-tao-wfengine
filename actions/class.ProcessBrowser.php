@@ -29,7 +29,7 @@ class wfEngine_actions_ProcessBrowser extends wfEngine_actions_WfModule{
 		
 		//validate ALL posted values:
 		$processExecutionUri = urldecode($this->getRequestParameter('processUri'));
-		if(!empty($processExecutionUri)){
+		if(!empty($processExecutionUri) && common_Utils::isUri($processExecutionUri)){
 			$processExecution = new core_kernel_classes_Resource($processExecutionUri);
 			//check that the process execution is not finished or closed here:
 			if($this->processExecutionService->isFinished($processExecution)){
@@ -43,7 +43,7 @@ class wfEngine_actions_ProcessBrowser extends wfEngine_actions_WfModule{
 				
 				$activityExecutionUri = urldecode($this->getRequestParameter('activityUri'));
 				
-				if(!empty($activityExecutionUri)){
+				if(!empty($activityExecutionUri) && common_Utils::isUri($activityExecutionUri)){
 					
 					$activityExecution = new core_kernel_classes_Resource($activityExecutionUri);
 					$currentActivityExecutions = $this->processExecutionService->getCurrentActivityExecutions($this->processExecution);

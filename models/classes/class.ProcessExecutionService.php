@@ -38,7 +38,8 @@ require_once('tao/models/classes/interface.ServiceCacheInterface.php');
 // section 127-0-1-1--2bba7ca5:129262ff3bb:-8000:0000000000001FE7-constants end
 
 /**
- * Manage the particular executions of a process definition
+ * Manage the particular executions of a process definition.
+ * Return the list of all activity executions, ordered by creation time.
  *
  * @access public
  * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
@@ -1653,6 +1654,94 @@ class wfEngine_models_classes_ProcessExecutionService
 			}
 		}	
         // section 127-0-1-1--1b682bf3:132cdc3fef4:-8000:000000000000307A end
+
+        return (array) $returnValue;
+    }
+
+    /**
+     * To build the audit trail of a process execution
+     *
+     * @access public
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @param  Resource processExecution
+     * @return array
+     */
+    public function getExecutionHistory( core_kernel_classes_Resource $processExecution)
+    {
+        $returnValue = array();
+
+        // section 127-0-1-1--32040631:1334998261c:-8000:0000000000003246 begin
+		
+		$previousProperty = new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_PREVIOUS);
+		$followingProperty = new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_FOLLOWING);
+		$recoveryService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_RecoveryService');
+					
+		$currentActivityExecutions = $this->getCurrentActivityExecutions($processExecution);
+		
+		$creationTime = array();
+		$unorderedActivityExecutions = array();
+		
+		$allActivityExecutions = $processExecution->getPropertyValues($this->processInstancesActivityExecutionsProp);
+		$count = count($allActivityExecutions);
+		for($i=0;$i<$count;$i++){
+			
+			$uri = $allActivityExecutions[$i];
+			if(common_Utils::isUri($uri)){
+				
+				$activityExecution = new core_kernel_classes_Resource($uri);
+				$previousArray = array();
+				$followingArray = array();
+
+				$previous = $activityExecution->getPropertyValues($previousProperty);
+				$countPrevious = count($previous);
+				for($j=0; $j<$countPrevious; $j++){
+					if(common_Utils::isUri($previous[$j])){
+						$prevousActivityExecution = new core_kernel_classes_Resource($previous[$j]);
+						$previousArray[] = $prevousActivityExecution->uriResource;
+					}
+				}
+
+				$following = $activityExecution->getPropertyValues($followingProperty);
+				$countFollowing = count($following);
+				for($k=0; $k<$countFollowing; $k++){
+					if(common_Utils::isUri($following[$k])){
+						$followingActivityExecution = new core_kernel_classes_Resource($following[$k]);
+						$followingArray[] = $followingActivityExecution->uriResource;
+					}
+				}
+				
+				$createdOn = (string)$activityExecution->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_TIME_CREATED));
+				
+				$unorderedActivityExecutions[$uri] = array(
+					'activityExecution' => $activityExecution,
+					'executionOf' => $this->activityExecutionService->getExecutionOf($activityExecution),
+					'createdOn' => date('d-m-Y G:i:s', $createdOn),
+					'current' => array_key_exists($activityExecution->uriResource, $currentActivityExecutions),
+					'status' => $this->activityExecutionService->getStatus($activityExecution),
+					
+					'ACLmode' => $this->activityExecutionService->getAclMode($activityExecution),
+					'restrictedRole' => $this->activityExecutionService->getRestrictedRole($activityExecution),
+					'restrictedUser' => $this->activityExecutionService->getRestrictedUser($activityExecution),
+					'user' => $this->activityExecutionService->getActivityExecutionUser($activityExecution),
+					
+					'previous' => $previousArray,
+					'following' => $followingArray,
+					'nonce' => $this->activityExecutionService->getNonce($activityExecution),
+					
+					'context' => $recoveryService->getContext($activityExecution, ''),
+					'variables' => $this->activityExecutionService->getVariables($activityExecution)
+				);
+				
+				$creationTime[$uri] = $createdOn;
+			}
+		}
+		
+		asort($creationTime);
+		foreach($creationTime as $uri => $time){
+			$returnValue[] = $unorderedActivityExecutions[$uri];
+		}
+		
+        // section 127-0-1-1--32040631:1334998261c:-8000:0000000000003246 end
 
         return (array) $returnValue;
     }

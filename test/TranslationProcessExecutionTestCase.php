@@ -514,7 +514,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		 * sign off
 		 */
 		
-		$nbTranslators = (isset($simulationOptions['translations']) && intval($simulationOptions['translations'])>1 )?intval($simulationOptions['translations']):2;//>=1
+		$nbTranslators = (isset($simulationOptions['translations']) && intval($simulationOptions['translations'])>=1 )?intval($simulationOptions['translations']):2;//>=1
 		$nbLoops = isset($simulationOptions['repeatLoop'])?intval($simulationOptions['repeatLoop']):1;
 		$nbBacks = isset($simulationOptions['repeatBack'])?intval($simulationOptions['repeatBack']):0;
 		
@@ -536,7 +536,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 			$activityExecution = null;
 			$activity = null;
 			if($activityIndex >= $indexActivityTranslate && $activityIndex < $indexActivityTranslate+$nbTranslators){
-				$this->assertEqual(count($activityExecutions), 2);
+				$this->assertEqual(count($activityExecutions), $nbTranslators);
 				//parallel translation branch:
 				foreach($activityExecutions as $activityExec){
 					if(!$activityExecutionService->isFinished($activityExec)){
@@ -763,7 +763,10 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		
 		$activityExecutionsData = $processExecutionService->getAllActivityExecutions($processInstance);
 		var_dump($activityExecutionsData);
-			
+		
+		$executionHistory = $processExecutionService->getExecutionHistory($processInstance);
+		$this->assertEqual(count($executionHistory), $i-1);
+		
 		//delete process execution:
 		$this->assertTrue($processInstance->exists());
 		$this->assertTrue($processExecutionService->deleteProcessExecution($processInstance));
