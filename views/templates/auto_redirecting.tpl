@@ -11,7 +11,7 @@
 			
 		<script type="text/javascript">
 			$(function(){
-				var counter = 5;
+				var counter = 10;
 				var t = null;
 				var timer = null;
 				timer = function(){
@@ -31,7 +31,7 @@
 			@import url(<?=BASE_WWW?>css/process_browser.css);
 		</style>
 		
-		<meta http-equiv="refresh" content="5;url=<?php echo BASE_URL;?>/ProcessBrowser/index?processUri=<?=get_data('processExecutionUri')?>"/>
+		<meta http-equiv="refresh" content="10;url=<?php echo BASE_URL;?>/ProcessBrowser/index?processUri=<?=get_data('processExecutionUri')?>"/>
 			
 	</head>
 	
@@ -53,12 +53,13 @@
 
 		<div id="content">
 			<div id="business">
-				<?=__("The activity provided in the url is no longer the current one.")?><br/>
+				<?=__("The activity provided in the url is no longer the up-to-date.")?><br/>
 				<?=__("The link may be outdated.")?><br/><br/>
 				
-				<?=__("You will be redirected to the current activity if you are allowed to, in")?> <span id="counter"></span> <?=__("seconds")?>.<br/>
-				<?=__("If there is none activity available or there are more than one. You will be redirected to the process main page.")?><br/><br/>
+				<?=__("You will be redirected to the current activity if you are allowed to.")?><br/>
+				<?=__("If there is no available activity or there are more than one. You will be redirected to the process main page.")?><br/><br/>
 				
+				<?=__("Redirection in ")?><span id="counter"></span> <?=__("seconds")?>.<br/>
 				<a href="<?php echo BASE_URL;?>/ProcessBrowser/index?processUri=<?=get_data('processExecutionUri')?>"><?=__('Redirect immediately')?></a>
 			</div>
 			
