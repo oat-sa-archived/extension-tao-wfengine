@@ -24,9 +24,9 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 	 * @var core_kernel_classes_Resource
 	 */
 	protected $processDefinition = null;
-	
 	protected $processLabel = 'TranslationProcess';
-	
+
+	protected $defaultRepository = null;
 	/**
 	 * @var array()
 	 */
@@ -45,6 +45,10 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		$this->processLabel = 'TranslationProcess';
 		$this->createUsers = true;
 		$this->createProcess = true;
+		$this->langCountries = array(
+			'LU' => array('fr', 'de', 'lb'),
+			'DE' => array('de')
+		);
 		
 	}
 	
@@ -140,12 +144,6 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 			$this->roles['developer'] = $roleService->createInstance($roleClass, 'developers - '.$usec);
 			$this->roles['testDeveloper'] = $roleService->createInstance($roleClass, 'test developers - '.$usec);
 			
-			
-			$langCountries = array(
-				'LU' => array('fr', 'de', 'lb'),
-				'DE' => array('de')
-			);
-			
 			//generate users' logins:
 			$this->userLogins = array();
 			$this->roleLogins = array();
@@ -165,7 +163,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 			}
 			
 			$nbTranslatorsByCountryLang = 3;
-			foreach($langCountries as $countryCode => $languageCodes){
+			foreach($this->langCountries as $countryCode => $languageCodes){
 				$this->userLogins[$countryCode] = array();
 				
 				//one NPM by country
@@ -209,6 +207,94 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		}
 			
 	}
+	
+	private function getPropertyName($type, $countryCode, $langCode){
+		return 'Property_'.ucfirst($type).'_'.strtoupper($countryCode).'_'.strtoupper($langCode);
+	}
+	
+	private function getFileName($unitLabel, $countryCode, $langCode, $type){
+		return $unitLabel.'_'.$countryCode.'_'.$langCode.'.'.$type;
+	}
+	
+	// Get the default repository of the TAO instance
+	private function getDefaultRepository(){
+		
+		$repository = null;
+		
+		if(!is_null($this->defaultRepository) && $this->defaultRepository instanceof core_kernel_versioning_Repository){
+			$repository = $this->defaultRepository;
+		}else{
+			$versioningRepositoryClass = new core_kernel_classes_Class(CLASS_GENERIS_VERSIONEDREPOSITORY);
+			$repositories = $versioningRepositoryClass->getInstances();
+			$repository = null;
+
+			if (!count($repositories)) {
+				throw new Exception('no default repository exists in TAO');
+			}else {
+				$repository = array_pop($repositories);
+				$repository = new core_kernel_versioning_Repository($repository->uriResource);
+				$this->defaultRepository = $repository;
+			}
+		}
+		
+		
+		return $repository;
+	}
+	
+	public function testCreateUnits(){
+		
+		Bootstrap::loadConstants('taoItems');//included to use itemService:
+		
+		$unitNames = array('unit01', 'unit02', 'unit03');
+		$this->units = array();
+		$this->properties = array();
+		$this->files = array();
+		
+		$itemClass = new core_kernel_classes_Class(TAO_ITEM_CLASS);
+		$translationClass = $itemClass->createSubClass('Translation Items', 'created for translation process execution test case');
+		$this->assertIsA($translationClass, 'core_kernel_classes_Class');
+		$this->units[$translationClass->getLabel()] = $translationClass;
+		
+		$unitNames = array_unique($unitNames);
+		var_dump($this->langCountries);
+		
+		foreach($unitNames as $unitName){
+			
+			//create unit:
+			$this->units[$unitName] = $translationClass->createInstance($unitName, 'created for translation process execution test case');
+		
+			foreach ($this->langCountries as $countryCode => $languageCodes){
+				
+				foreach ($languageCodes as $langCode){
+					
+					var_dump($countryCode, $langCode);
+					
+					$this->properties[$this->getPropertyName('xliff', $countryCode, $langCode)] = $translationClass->createProperty($this->getPropertyName('xliff', $countryCode, $langCode), 'created for translation process execution test case');
+					$this->properties[$this->getPropertyName('xliff_working', $countryCode, $langCode)] = $translationClass->createProperty($this->getPropertyName('xliff_working', $countryCode, $langCode), 'created for translation process execution test case');
+					$this->properties[$this->getPropertyName('vff', $countryCode, $langCode)] = $translationClass->createProperty($this->getPropertyName('vff', $countryCode, $langCode), 'created for translation process execution test case');
+					$this->properties[$this->getPropertyName('vff_working', $countryCode, $langCode)] = $translationClass->createProperty($this->getPropertyName('vff_working', $countryCode, $langCode), 'created for translation process execution test case');
+			
+					foreach(array('xliff', 'vff') as $fileType){
+						$fileName = $this->getFileName($unitName, $countryCode, $langCode, $fileType);
+						$file = core_kernel_versioning_File::create($fileName, '/', $this->getDefaultRepository());
+						$this->assertIsA($file, 'core_kernel_versioning_File');
+						$this->assertTrue($file->setContent(strtoupper($fileType).' for country "' . $countryCode . '" and language "' . $langCode . '" : \n'));
+						$this->assertTrue($file->add());
+						
+						$file->setPropertyValue($this->properties[$this->getPropertyName($fileType, $countryCode, $langCode)], $file);
+						
+						$this->files[$fileName] = $file;
+					}
+				}
+				
+			}
+			
+		}
+		
+		var_dump($this->units, $this->properties, $this->files);
+		
+	}
+	
 	
 	public function testCreateTranslationProcess(){
 		
@@ -419,7 +505,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		
 	}
 	
-	public function testExecuteTranslationProcess(){
+	public function _testExecuteTranslationProcess(){
 		
 		$itemUri = 'myItemUri';
 		$countryCode = 'LU';
@@ -933,6 +1019,24 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 	}
 	
 	public function testDeleteCreatedResources(){
+		
+		if(!empty($this->properties)){
+			foreach($this->properties as $prop){
+				$this->assertTrue($prop->delete());
+			}
+		}
+		
+		if(!empty($this->units)){
+			foreach($this->units as $unit){
+				$this->assertTrue($unit->delete());
+			}
+		}
+		
+		if(!empty($this->files)){
+			foreach($this->files as $file){
+				$this->assertTrue($file->delete());
+			}
+		}
 		
 		if(!empty($this->users)){
 			foreach($this->users as $user){
