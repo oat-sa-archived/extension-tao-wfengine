@@ -487,7 +487,7 @@ class wfEngine_models_classes_ProcessExecutionService
 			$codes = array();
 			foreach($variablesValues as $uri => $value) {
 				// have to skip name because doesnt work like other variables
-				if($uri != RDFS_LABEL) {
+				if($uri != RDFS_LABEL && common_Utils::isUri($uri)) {
 
 					$property = new core_kernel_classes_Property($uri);
 

@@ -19,14 +19,19 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 	 * @var core_kernel_classes_Resource
 	 */
 	protected $currentUser = null;
-	
-	/**
-	 * @var core_kernel_classes_Resource
-	 */
 	protected $processDefinition = null;
 	protected $processLabel = 'TranslationProcess';
-
+	
+	/**
+	 * @var core_kernel_classes_Property
+	 */
+	protected $userProperty = null;
+	
+	/**
+	 * @var core_kernel_versioning_Repo
+	 */
 	protected $defaultRepository = null;
+	
 	/**
 	 * @var array()
 	 */
@@ -50,6 +55,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 			'DE' => array('de')
 		);
 		
+		$this->userProperty = new core_kernel_classes_Property(LOCAL_NAMESPACE.'#translationUser');
 	}
 	
 	public function tearDown() {
@@ -209,11 +215,104 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 	}
 	
 	private function getPropertyName($type, $countryCode, $langCode){
-		return 'Property_'.ucfirst($type).'_'.strtoupper($countryCode).'_'.strtoupper($langCode);
+		return 'Property_'.strtoupper($type).'_'.strtoupper($countryCode).'_'.strtolower($langCode);
 	}
 	
-	private function getFileName($unitLabel, $countryCode, $langCode, $type){
-		return $unitLabel.'_'.$countryCode.'_'.$langCode.'.'.$type;
+	private function getFileName($unitLabel, $countryCode, $langCode, $type, core_kernel_classes_Resource $user = null){
+		
+		$fileName = $unitLabel.'_'.strtoupper($countryCode).'_'.strtolower($langCode);
+		if(!is_null($user)){
+			$fileName .= '_'.$user->getLabel();
+		}
+		$fileName .= '.'.strtolower($type);
+		
+		return $fileName;
+	}
+	
+	private function createItemFile($type, $content = '', $user = null){
+		
+		$returnValue = null;
+		
+		$processVariableService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_VariableService');
+		$unit = $processVariableService->get('unitUri');
+		$countryCode = (string) $processVariableService->get('countryCode');
+		$languageCode = (string) $processVariableService->get('languageCode');
+		$this->assertFalse(empty($unit));
+		$this->assertFalse(empty($countryCode));
+		$this->assertFalse(empty($languageCode));
+		
+		if($unit instanceof core_kernel_classes_Resource && !empty($countryCode) && !empty($languageCode)){
+			
+			//create a working file for that user:
+			$fileName = $this->getFileName($unit->getLabel(), $countryCode, $languageCode, $type, $user);
+			$file = core_kernel_versioning_File::create($fileName, '/', $this->getDefaultRepository());
+			$this->assertIsA($file, 'core_kernel_versioning_File');
+			
+			//set file content:
+			if(!empty($content)){
+				$this->assertTrue($file->setContent($content));
+			}else{
+				$this->assertTrue($file->setContent(strtoupper($type) . '" for country "' . $countryCode . '" and language "' . $languageCode . '" : \n'));
+			}
+			
+			$this->assertTrue($file->add());
+			$this->assertTrue($file->commit());
+			
+			$unit->setPropertyValue($this->properties[$this->getPropertyName($type, $countryCode, $languageCode)], $file);
+			
+			if(!is_null($user)){
+				$file->setPropertyValue($this->userProperty, $user);
+			}
+			
+			$this->files[$fileName] = $file;
+			
+			$returnValue = $file;
+		}
+		
+		return $returnValue;
+	}
+	
+	private function getItemFile(core_kernel_classes_Resource $item, $type, $countryCode, $langCode, core_kernel_classes_Resource $user = null){
+		
+		$returnValue = null;
+		
+		if(!isset($this->properties[$this->getPropertyName($type, $countryCode, $langCode)])){
+			$this->fail("The item property does not exist for the item {$item->getLabel()} ({$item->uriResource}) : $type, $countryCode, $langCode ");
+			return $returnValue;
+		}
+		
+		$file = null;
+		if(in_array(strtolower($type), array('xliff_working', 'vff_working'))){
+			if(is_null($user)){
+				$this->fail('no user given');
+				return $returnValue;
+			}
+			
+			$values = $item->getPropertyValues($this->properties[$this->getPropertyName($type, $countryCode, $langCode)]);
+			foreach($values as $uri){
+				if(common_Utils::isUri($uri)){
+					$aFile = new core_kernel_versioning_File($uri);
+					$assignedUser = $aFile->getUniquePropertyValue($this->userProperty);
+					if($assignedUser->uriResource == $user->uriResource){
+						$file = $aFile;
+						break;
+					}
+				}
+			}
+			
+		}else{
+			$values = $item->getPropertyValues($this->properties[$this->getPropertyName($type, $countryCode, $langCode)]);
+			$this->assertEqual(count($values), 1);
+			$file = new core_kernel_versioning_File(reset($values));
+		}
+		
+		if(!is_null($file) && $file->isVersioned()){
+			$returnValue = $file;
+		}else{
+			$this->fail("Cannot get the versioned {$type} file in {$countryCode}_{$langCode} for the item {$item->getLabel()} ({$item->uriResource})");
+		}
+		
+		return $returnValue;
 	}
 	
 	// Get the default repository of the TAO instance
@@ -255,43 +354,44 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		$this->assertIsA($translationClass, 'core_kernel_classes_Class');
 		$this->units[$translationClass->getLabel()] = $translationClass;
 		
+		
 		$unitNames = array_unique($unitNames);
-		var_dump($this->langCountries);
 		
 		foreach($unitNames as $unitName){
 			
 			//create unit:
 			$this->units[$unitName] = $translationClass->createInstance($unitName, 'created for translation process execution test case');
-		
-			foreach ($this->langCountries as $countryCode => $languageCodes){
-				
-				foreach ($languageCodes as $langCode){
-					
-					var_dump($countryCode, $langCode);
-					
-					$this->properties[$this->getPropertyName('xliff', $countryCode, $langCode)] = $translationClass->createProperty($this->getPropertyName('xliff', $countryCode, $langCode), 'created for translation process execution test case');
-					$this->properties[$this->getPropertyName('xliff_working', $countryCode, $langCode)] = $translationClass->createProperty($this->getPropertyName('xliff_working', $countryCode, $langCode), 'created for translation process execution test case');
-					$this->properties[$this->getPropertyName('vff', $countryCode, $langCode)] = $translationClass->createProperty($this->getPropertyName('vff', $countryCode, $langCode), 'created for translation process execution test case');
-					$this->properties[$this->getPropertyName('vff_working', $countryCode, $langCode)] = $translationClass->createProperty($this->getPropertyName('vff_working', $countryCode, $langCode), 'created for translation process execution test case');
+			$this->assertNotNull($this->units[$unitName]);
 			
-					foreach(array('xliff', 'vff') as $fileType){
-						$fileName = $this->getFileName($unitName, $countryCode, $langCode, $fileType);
-						$file = core_kernel_versioning_File::create($fileName, '/', $this->getDefaultRepository());
-						$this->assertIsA($file, 'core_kernel_versioning_File');
-						$this->assertTrue($file->setContent(strtoupper($fileType).' for country "' . $countryCode . '" and language "' . $langCode . '" : \n'));
-						$this->assertTrue($file->add());
-						
-						$file->setPropertyValue($this->properties[$this->getPropertyName($fileType, $countryCode, $langCode)], $file);
-						
-						$this->files[$fileName] = $file;
+			if(GENERIS_VERSIONING_ENABLED){
+				foreach ($this->langCountries as $countryCode => $languageCodes){
+
+					foreach ($languageCodes as $langCode){
+
+						$this->properties[$this->getPropertyName('xliff', $countryCode, $langCode)] = $translationClass->createProperty($this->getPropertyName('xliff', $countryCode, $langCode), 'created for translation process execution test case');
+						$this->properties[$this->getPropertyName('xliff_working', $countryCode, $langCode)] = $translationClass->createProperty($this->getPropertyName('xliff_working', $countryCode, $langCode), 'created for translation process execution test case');
+						$this->properties[$this->getPropertyName('vff', $countryCode, $langCode)] = $translationClass->createProperty($this->getPropertyName('vff', $countryCode, $langCode), 'created for translation process execution test case');
+						$this->properties[$this->getPropertyName('vff_working', $countryCode, $langCode)] = $translationClass->createProperty($this->getPropertyName('vff_working', $countryCode, $langCode), 'created for translation process execution test case');
+
+						foreach(array('xliff', 'vff') as $fileType){
+							$fileName = $this->getFileName($unitName, $countryCode, $langCode, $fileType);
+							$file = core_kernel_versioning_File::create($fileName, '/', $this->getDefaultRepository());
+							$this->assertIsA($file, 'core_kernel_versioning_File');
+							$this->assertTrue($file->setContent(strtoupper($fileType).' for country "' . $countryCode . '" and language "' . $langCode . '" : \n'));
+							$this->assertTrue($file->add());
+							$this->assertTrue($file->commit());
+
+							$this->units[$unitName]->setPropertyValue($this->properties[$this->getPropertyName($fileType, $countryCode, $langCode)], $file);
+
+							$this->files[$fileName] = $file;
+						}
 					}
+
 				}
-				
 			}
-			
 		}
 		
-		var_dump($this->units, $this->properties, $this->files);
+//		var_dump($this->units, $this->properties, $this->files);
 		
 	}
 	
@@ -323,8 +423,13 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 			'translatorSelected',
 			'translationFinished',
 			'layoutCheck',
-			'finalCheck'
+			'finalCheck',
+			'xliff',//holds the current xliff svn revision number
+			'vff',//holds the current vff svn revision number
+			'workingFiles'//holds the working versions of the xliff and vff files, plus their revision number, in an serialized array()
 		);
+		//"workingFiles" holds the working versions of the xliff and vff files, plus their revision number, in an serialized array()
+		//during translation: workingFiles = array('user'=>#007, 'xliff' => array('uri' => #123456, 'revision'=>3), 'vff'=> array('uri' => #456789, 'revision'=>5))
 		
 		foreach($varCodes as $varCode){
 			$vars[$varCode] = $processVariableService->getProcessVariable($varCode, true);
@@ -505,9 +610,10 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		
 	}
 	
-	public function _testExecuteTranslationProcess(){
+	public function testExecuteTranslationProcess(){
 		
-		$itemUri = 'myItemUri';
+		$unit = end($this->units);
+		$this->assertIsA($unit, 'core_kernel_classes_Resource');
 		$countryCode = 'LU';
 		$languageCode = 'de';
 		
@@ -530,10 +636,10 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 			$this->fail('No process definition found to be executed');
 		}
 		
-		$this->executeTranslationProcess($this->processDefinition, $itemUri, $countryCode, $languageCode, $simulationOptions);
+		$this->executeTranslationProcess($this->processDefinition, $unit->uriResource, $countryCode, $languageCode, $simulationOptions);
 	}
 	
-	private function executeTranslationProcess($processDefinition, $itemUri, $countryCode, $languageCode, $simulationOptions){
+	private function executeTranslationProcess($processDefinition, $unitUri, $countryCode, $languageCode, $simulationOptions){
 		
 		$activityService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityService');
 		$activityExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityExecutionService');
@@ -547,17 +653,39 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		$users = $this->getAuthorizedUsersByCountryLanguage($countryCode, $languageCode);
 		
 		if(empty($users)){
-			$this->fail("cannot find authorized the npm, verifier and reconciler for this country-language : {$countryCode}/{$languageCode}");
+			$this->fail("cannot find the authorized npm, verifier and reconciler for this country-language : {$countryCode}/{$languageCode}");
 			return;
 		}
 		
+		//check that the xliff and vff exist for the given country-language:
+		$unit = new core_kernel_classes_Resource($unitUri);
+		
+		$vffRevision = 0;
+		$xliffRevision = 0;
+		if(GENERIS_VERSIONING_ENABLED){
+			
+			$xliffFile = $this->getItemFile($unit, 'xliff', $countryCode, $languageCode);
+			$this->assertNotNull($xliffFile);
+			
+//			$xliffRevision = $xliffFile->getVersion();
+			$xliffRevision = 1;
+			
+			$vffFile = $this->getItemFile($unit, 'vff', $countryCode, $languageCode);
+			$this->assertNotNull($vffFile);
+//			$vffRevision = $vffFile->getVersion();
+			$vffRevision = 1;
+			
+		}
+		
 		$initVariables = array(
-			$this->vars['unitUri']->uriResource => $itemUri,
+			$this->vars['unitUri']->uriResource => $unit->uriResource,
 			$this->vars['countryCode']->uriResource => $countryCode,
 			$this->vars['languageCode']->uriResource => $languageCode,
 			$this->vars['npm']->uriResource => $users['npm'],
 			$this->vars['reconciler']->uriResource => $users['reconciler'],
-			$this->vars['verifier']->uriResource => $users['verifier']
+			$this->vars['verifier']->uriResource => $users['verifier'],
+			$this->vars['xliff']->uriResource => $xliffRevision,
+			$this->vars['vff']->uriResource => $vffRevision,
 		);
 			
 		$processInstance = $processExecutionService->createProcessExecution($processDefinition, $processExecName, $processExecComment, $initVariables);
@@ -573,33 +701,6 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 
 		$this->out("<strong>Forward transitions:</strong>", true);
 		
-		/*
-		 * select translators
-		 * translator 1
-		 * replace translator 1
-		 * end translation 1
-		 * translator 2
-		 * end translation 2
-		 * reconciliation
-		 * verify translations
-		 * correct verification
-		 * correct layout
-		 * final check
-		 * correct verification
-		 * correct layout 
-		 * final check
-		 * verify layout correction
-		 * scoring definition
-		 * scoring verification
-		 * final sign off
-		 * final check
-		 * verify layout correction
-		 * scoring definition
-		 * scoring verification
-		 * final sign off
-		 * sign off
-		 */
-		
 		$nbTranslators = (isset($simulationOptions['translations']) && intval($simulationOptions['translations'])>=1 )?intval($simulationOptions['translations']):2;//>=1
 		$nbLoops = isset($simulationOptions['repeatLoop'])?intval($simulationOptions['repeatLoop']):1;
 		$nbBacks = isset($simulationOptions['repeatBack'])?intval($simulationOptions['repeatBack']):0;
@@ -614,9 +715,6 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		$i = 1;
 		$activityIndex = $i;
 		while($activityIndex <= $iterations){
-			
-			//for loop managements:
-			$goto = 0;
 			
 			$activityExecutions = $processExecutionService->getCurrentActivityExecutions($processInstance);
 			$activityExecution = null;
@@ -643,6 +741,9 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 			$this->checkAccessControl($activityExecution);
 			
 			$currentActivityExecution = null;
+			
+			//for loop managements:
+			$goto = 0;
 			
 			if($activityIndex >= $indexActivityTranslate && $activityIndex < $indexActivityTranslate+$nbTranslators){
 				
@@ -671,6 +772,15 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 					'translatorUri' => $theTranslator->uriResource
 				)));
 				
+				if(GENERIS_VERSIONING_ENABLED){
+					$xliffContent = $this->executeServiceDownloadFile('xliff_working', $this->currentUser);
+					$this->assertFalse(empty($xliffContent));
+					$vffContent = $this->executeServiceDownloadFile('vff_working', $this->currentUser);
+					$this->assertFalse(empty($vffContent));
+
+					$this->executeServiceUploadFile('xliff_working', $xliffContent.' \n translation by user '.$this->currentUser->getLabel().' \n', $this->currentUser);
+					$this->executeServiceUploadFile('vff_working', $vffContent.' \n vff by user '.$this->currentUser->getLabel().' \n', $this->currentUser);
+				}
 			}else{
 				
 				//switch to activity's specific check:
@@ -815,6 +925,16 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 					}
 				}
 				
+				//update xliff and vff:
+				if(GENERIS_VERSIONING_ENABLED){
+					$xliffContent = $this->executeServiceDownloadFile('xliff');
+					$this->assertFalse(empty($xliffContent));
+					$vffContent = $this->executeServiceDownloadFile('vff');
+					$this->assertFalse(empty($vffContent));
+
+					$this->executeServiceUploadFile('xliff', $xliffContent.' \n translation by user '.$this->currentUser->getLabel().' \n', $this->currentUser);
+					$this->executeServiceUploadFile('vff', $vffContent.' \n vff by user '.$this->currentUser->getLabel().' \n', $this->currentUser);
+				}
 			}
 			
 			//transition to next activity
@@ -930,33 +1050,66 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		
 		$this->out("execute service select translators :", true);
 		
-		//push values:
-		$pushedVars = array();
-		foreach($translators as $translator){
-			$translatorResource = null;
-			if($translator instanceof core_kernel_classes_Resource){
-				$pushedVars[] = $translator->uriResource;
-				$translatorResource = $translator;
-			}else if(is_string($translator) && common_Utils::isUri($translator)){
-				$pushedVars[] = $translator;
-				$translatorResource = new core_kernel_classes_Resource($translator);
-			}
-			$this->out("selected translator : {$translatorResource->getLabel()} ({$translatorResource->uriResource})");
-		}
-		$this->assertTrue(count($pushedVars) > 0);
-		
 		$processVariableService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_VariableService');
-		$this->assertTrue($processVariableService->push('translatorsCount', count($pushedVars)));
-		$returnValue = $processVariableService->push('translator', serialize($pushedVars));
+		$unit = $processVariableService->get('unitUri');
+		$countryCode = (string) $processVariableService->get('countryCode');
+		$languageCode = (string) $processVariableService->get('languageCode');
+		$this->assertFalse(empty($unit));
+		$this->assertFalse(empty($countryCode));
+		$this->assertFalse(empty($languageCode));
 		
+		if($unit instanceof core_kernel_classes_Resource && !empty($countryCode) && !empty($languageCode)){
+			
+			$xliffFileContent = '';
+			$vffFileContent = '';
+			if(GENERIS_VERSIONING_ENABLED){
+				$xliffFile = $this->getItemFile($unit, 'xliff', $countryCode, $languageCode);
+				$vffFile = $this->getItemFile($unit, 'vff', $countryCode, $languageCode);
+
+				$xliffFileContent = (string) $xliffFile->getFileContent();
+				$vffFileContent = (string) $vffFile->getFileContent();
+
+				if(empty($xliffFileContent)){
+					throw new Exception('the original xliff file is empty!');
+				}
+				if(empty($vffFileContent)){
+					throw new Exception('the original vff file is empty!');
+				}
+			}
+			
+			//push values:
+			$pushedVars = array();
+			foreach($translators as $translator){
+				$translatorResource = null;
+				if($translator instanceof core_kernel_classes_Resource){
+					$pushedVars[] = $translator->uriResource;
+					$translatorResource = $translator;
+				}else if(is_string($translator) && common_Utils::isUri($translator)){
+					$pushedVars[] = $translator;
+					$translatorResource = new core_kernel_classes_Resource($translator);
+				}
+				$this->out("selected translator : {$translatorResource->getLabel()} ({$translatorResource->uriResource})");
+
+				//creating working xliff and vff file for them for intial files:
+				if(GENERIS_VERSIONING_ENABLED){
+					$this->createItemFile('xliff_working', $xliffFileContent, $translatorResource);
+					$this->createItemFile('vff_working', $vffFileContent, $translatorResource);
+				}
+
+			}
+			$this->assertTrue(count($pushedVars) > 0);
+
+			$processVariableService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_VariableService');
+			$this->assertTrue($processVariableService->push('translatorsCount', count($pushedVars)));
+			$returnValue = $processVariableService->push('translator', serialize($pushedVars));
+
+		}
 		return $returnValue;
 	}
 	
 	private function executeServiceTranslate($options = array()){
 		
 		$returnValue = false;
-		
-		//check validity of xliff file and VFF
 		
 		$this->out('executing service translate ', true);
 		
@@ -969,6 +1122,71 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		
 		return $returnValue;
 		
+	}
+	
+	private function executeServiceDownloadFile($type, core_kernel_classes_Resource $user = null){
+		
+		$returnValue = '';
+		
+		$type = strtolower($type);
+		
+		$this->out("downloading {$type} file : ", true);
+		
+		$processVariableService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_VariableService');
+		$unit = $processVariableService->get('unitUri');
+		$countryCode = (string) $processVariableService->get('countryCode');
+		$languageCode = (string) $processVariableService->get('languageCode');
+		$this->assertFalse(empty($unit));
+		$this->assertFalse(empty($countryCode));
+		$this->assertFalse(empty($languageCode));
+		
+		if($unit instanceof core_kernel_classes_Resource && !empty($countryCode) && !empty($languageCode)){
+			
+			$file = $this->getItemFile($unit, $type, $countryCode, $languageCode, $user);
+			if(is_null($file)){
+				$this->fail("cannot find {$type} file of the unit {$unit->getLabel()}");
+			}else{
+				$returnValue = $file->getFileContent();
+			}
+
+			$this->out("downloaded {$type} file : \n ".$returnValue);
+		}
+		
+		return $returnValue;
+	}
+	
+	private function executeServiceUploadFile($type, $content, $user){
+		
+		$returnValue = false;
+		
+		$this->out("uploading {$type} file : ", true);
+		
+		$processVariableService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_VariableService');
+		$unit = $processVariableService->get('unitUri');
+		$countryCode = (string) $processVariableService->get('countryCode');
+		$languageCode = (string) $processVariableService->get('languageCode');
+		$this->assertFalse(empty($unit));
+		$this->assertFalse(empty($countryCode));
+		$this->assertFalse(empty($languageCode));
+		
+		if($unit instanceof core_kernel_classes_Resource && !empty($countryCode) && !empty($languageCode)){
+			
+			$file = $this->getItemFile($unit, $type, $countryCode, $languageCode, $user);
+			if(is_null($file)){
+				$this->fail("cannot find {$type} file of the unit {$unit->getLabel()}");
+			}else{
+				$this->out('inserting new content : '.$content);
+				
+				$this->assertTrue($file->setContent($content));
+				$returnValue = $file->commit();
+
+				//update the file revision number in the process context:
+
+				$this->out("{$type} file uploaded.");
+			}
+		}
+		
+		return $returnValue;
 	}
 	
 	//deprecated:
