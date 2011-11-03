@@ -1577,7 +1577,8 @@ class wfEngine_models_classes_ProcessExecutionService
 					'nonce' => $this->activityExecutionService->getNonce($activityExecution),
 					'ACLmode' => (is_null($aclMode))?'none':$aclMode->getLabel(),
 					'restrictedRole' => (is_null($restrictedRole))?'none':$restrictedRole->getLabel(),
-					'restrictedUser' => (is_null($restrictedUser))?'none':$restrictedUser->getLabel()
+					'restrictedUser' => (is_null($restrictedUser))?'none':$restrictedUser->getLabel(),
+					'variables' => $this->activityExecutionService->getVariables($activityExecution)
 				);
 			}
 		}

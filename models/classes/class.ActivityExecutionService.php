@@ -1097,8 +1097,8 @@ class wfEngine_models_classes_ActivityExecutionService
 					$newActivityExecution = $this->duplicateActivityExecutionVariables($activityExecution, $nextActivity, $processExecution);
 					if(!is_null($newActivityExecution)){
 						//set backward and forward property values:
-						$activityExecution->setPropertyValue(new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_FOLLOWING), $newActivityExecution->uriResource);
-						$newActivityExecution->setPropertyValue(new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_PREVIOUS), $activityExecution->uriResource);
+						$activityExecution->setPropertyValue($this->activityExecutionFollowingProperty, $newActivityExecution->uriResource);
+						$newActivityExecution->setPropertyValue($this->activityExecutionPreviousProperty, $activityExecution->uriResource);
 						$returnValue[$newActivityExecution->uriResource] = $newActivityExecution;
 						
 						$oldActivityExecutions = array($activityExecution->uriResource => $activityExecution);
@@ -1123,8 +1123,8 @@ class wfEngine_models_classes_ActivityExecutionService
 						$newActivityExecution = $this->createActivityExecution($nextActivity, $processExecution);
 						$variableMerged = $this->mergeActivityExecutionVariables($newActivityExecution, array($activityExecution->uriResource => $activityExecution), $processExecution, $splitVariables);
 						if($variableMerged){
-							$activityExecution->setPropertyValue(new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_FOLLOWING), $newActivityExecution->uriResource);
-							$newActivityExecution->setPropertyValue(new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_PREVIOUS), $activityExecution->uriResource);
+							$activityExecution->setPropertyValue($this->activityExecutionFollowingProperty, $newActivityExecution->uriResource);
+							$newActivityExecution->setPropertyValue($this->activityExecutionPreviousProperty, $activityExecution->uriResource);
 							$returnValue[$newActivityExecution->uriResource] = $newActivityExecution;
 						}
 					}
@@ -1177,8 +1177,8 @@ class wfEngine_models_classes_ActivityExecutionService
                     $variableMerged = $this->mergeActivityExecutionVariables($newActivityExecution, $oldActivityExecutions, $processExecution);
                     if($variableMerged){
 						foreach ($oldActivityExecutions as $oldActivityExecution){
-							$oldActivityExecution->setPropertyValue(new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_FOLLOWING), $newActivityExecution->uriResource);
-							$newActivityExecution->setPropertyValue(new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_PREVIOUS), $oldActivityExecution->uriResource);
+							$oldActivityExecution->setPropertyValue($this->activityExecutionFollowingProperty, $newActivityExecution->uriResource);
+							$newActivityExecution->setPropertyValue($this->activityExecutionPreviousProperty, $oldActivityExecution->uriResource);
 						}
 						$returnValue[$newActivityExecution->uriResource] = $newActivityExecution;
 					}
@@ -1244,16 +1244,13 @@ class wfEngine_models_classes_ActivityExecutionService
 		$notResumed = (isset($revertOptions['notResumed']) && is_array($revertOptions['notResumeds']))?$revertOptions['notResumed']:array();
 		
 		//check if the previous connector is not parallel:
-		$previousProperty = new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_PREVIOUS);
-		$followingProperty = new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_FOLLOWING);
-		
 		$previousActivityExecutions = array();
-		$previous = $activityExecution->getPropertyValues($previousProperty);
+		$previous = $activityExecution->getPropertyValues($this->activityExecutionPreviousProperty);
 		$count = count($previous);
 		for($i=0; $i<$count; $i++){
 			if(common_Utils::isUri($previous[$i])){
 				$prevousActivityExecution = new core_kernel_classes_Resource($previous[$i]);
-				if(count($prevousActivityExecution->getPropertyValues($followingProperty)) == 1){
+				if(count($prevousActivityExecution->getPropertyValues($this->activityExecutionFollowingProperty)) == 1){
 					$previousActivityExecutions[$prevousActivityExecution->uriResource] = $prevousActivityExecution;
 				}else{
 					return $returnValue;//forbidden to go backward of a parallel connector

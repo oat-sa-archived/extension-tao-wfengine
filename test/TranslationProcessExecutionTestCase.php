@@ -426,6 +426,8 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 			'finalCheck',
 			'xliff',//holds the current xliff svn revision number
 			'vff',//holds the current vff svn revision number
+			'xliff_working',//holds the current working xliff svn revision number
+			'vff_working',//holds the current working vff svn revision number
 			'workingFiles'//holds the working versions of the xliff and vff files, plus their revision number, in an serialized array()
 		);
 		//"workingFiles" holds the working versions of the xliff and vff files, plus their revision number, in an serialized array()
@@ -612,17 +614,12 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 	
 	public function testExecuteTranslationProcess(){
 		
-		$unit = end($this->units);
-		$this->assertIsA($unit, 'core_kernel_classes_Resource');
-		$countryCode = 'LU';
-		$languageCode = 'de';
-		
 		$simulationOptions = array(
 			'repeatBack' => 0,//O: do not back when possible
 			'repeatLoop' => 1,
 			'translations' => 2//must be >= 1
 		);
-		
+
 		if(!$this->processDefinition instanceof core_kernel_classes_Resource){
 			//try to find it:
 			$processClass = new core_kernel_classes_Class(CLASS_PROCESS);
@@ -631,12 +628,23 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 				$this->processDefinition = array_pop($translationProcesses);
 			}
 		}
-			
+
 		if(!$this->processDefinition instanceof core_kernel_classes_Resource){
 			$this->fail('No process definition found to be executed');
 		}
+					
+		$translationClass = reset($this->units);
+		foreach($translationClass->getInstances() as $unit){
+			foreach ($this->langCountries as $countryCode => $languageCodes){
+				foreach ($languageCodes as $langCode){
+					$this->out("executes translation process {$unit->getLabel()}/{$countryCode}/{$langCode}:");
+					$this->assertIsA($unit, 'core_kernel_classes_Resource');
+					$this->executeTranslationProcess($this->processDefinition, $unit->uriResource, $countryCode, $langCode, $simulationOptions);
+					break(3);
+				}
+			}		
+		}
 		
-		$this->executeTranslationProcess($this->processDefinition, $unit->uriResource, $countryCode, $languageCode, $simulationOptions);
 	}
 	
 	private function executeTranslationProcess($processDefinition, $unitUri, $countryCode, $languageCode, $simulationOptions){
@@ -772,15 +780,6 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 					'translatorUri' => $theTranslator->uriResource
 				)));
 				
-				if(GENERIS_VERSIONING_ENABLED){
-					$xliffContent = $this->executeServiceDownloadFile('xliff_working', $this->currentUser);
-					$this->assertFalse(empty($xliffContent));
-					$vffContent = $this->executeServiceDownloadFile('vff_working', $this->currentUser);
-					$this->assertFalse(empty($vffContent));
-
-					$this->executeServiceUploadFile('xliff_working', $xliffContent.' \n translation by user '.$this->currentUser->getLabel().' \n', $this->currentUser);
-					$this->executeServiceUploadFile('vff_working', $vffContent.' \n vff by user '.$this->currentUser->getLabel().' \n', $this->currentUser);
-				}
 			}else{
 				
 				//switch to activity's specific check:
@@ -932,8 +931,8 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 					$vffContent = $this->executeServiceDownloadFile('vff');
 					$this->assertFalse(empty($vffContent));
 
-					$this->executeServiceUploadFile('xliff', $xliffContent.' \n translation by user '.$this->currentUser->getLabel().' \n', $this->currentUser);
-					$this->executeServiceUploadFile('vff', $vffContent.' \n vff by user '.$this->currentUser->getLabel().' \n', $this->currentUser);
+					$this->executeServiceUploadFile('xliff', $xliffContent.' \n XLIFF by user '.$this->currentUser->getLabel().' \n', $this->currentUser);
+					$this->executeServiceUploadFile('vff', $vffContent.' \n VFF by user '.$this->currentUser->getLabel().' \n', $this->currentUser);
 				}
 			}
 			
@@ -1113,9 +1112,20 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		
 		$this->out('executing service translate ', true);
 		
+		$processVariableService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_VariableService');
+		
+		if(GENERIS_VERSIONING_ENABLED){
+			$xliffContent = $this->executeServiceDownloadFile('xliff_working', $this->currentUser);
+			$this->assertFalse(empty($xliffContent));
+			$vffContent = $this->executeServiceDownloadFile('vff_working', $this->currentUser);
+			$this->assertFalse(empty($vffContent));
+
+			$this->executeServiceUploadFile('xliff_working', $xliffContent.' \n translation by user '.$this->currentUser->getLabel().' \n', $this->currentUser);
+			$this->executeServiceUploadFile('vff_working', $vffContent.' \n vff by user '.$this->currentUser->getLabel().' \n', $this->currentUser);
+		}
+				
 		$valid = true;
 		if($valid){
-			$processVariableService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_VariableService');
 			$this->assertTrue($processVariableService->push('translationFinished', 1));
 			$returnValue = true;
 		}
@@ -1171,6 +1181,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		
 		if($unit instanceof core_kernel_classes_Resource && !empty($countryCode) && !empty($languageCode)){
 			
+			$type = strtolower($type);
 			$file = $this->getItemFile($unit, $type, $countryCode, $languageCode, $user);
 			if(is_null($file)){
 				$this->fail("cannot find {$type} file of the unit {$unit->getLabel()}");
@@ -1181,10 +1192,14 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 				$returnValue = $file->commit();
 
 				//update the file revision number in the process context:
-
+				//@TODO: use $file->getVersion() instead when implemented
+				$revisionNumber = intval($file->getVersion());
+				$processVariableService->edit($type, $revisionNumber);
+				
 				$this->out("{$type} file uploaded.");
 			}
 		}
+		
 		
 		return $returnValue;
 	}
@@ -1230,7 +1245,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		$this->out("execute service final sign off", true);
 		
 		$processVariableService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_VariableService');
-		$returnValue = $processVariableService->push('finalCheck', (bool)$ok?1:0);
+		$returnValue = $processVariableService->edit('finalCheck', (bool)$ok?1:0);
 		
 		return $returnValue;
 		
