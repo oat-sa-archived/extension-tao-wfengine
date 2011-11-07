@@ -27,7 +27,8 @@ $todefine = array(
 	'PROPERTY_PROCESSINSTANCES_STATUS'				=> NS_WFENGINE . '#PropertyProcessInstancesStatus',
 	'PROPERTY_PROCESSINSTANCES_EXECUTIONOF'			=> NS_WFENGINE . '#PropertyProcessInstancesExecutionOf',
 	'PROPERTY_PROCESSINSTANCES_CURRENTACTIVITYEXECUTIONS'=> NS_WFENGINE . '#PropertyProcessInstancesCurrentActivityExecutions',
-	'PROPERTY_PROCESSINSTANCES_ACTIVITYEXECUTIONS'=> NS_WFENGINE . '#PropertyProcessInstancesActivityExecutions',
+	'PROPERTY_PROCESSINSTANCES_ACTIVITYEXECUTIONS'	=> NS_WFENGINE . '#PropertyProcessInstancesActivityExecutions',
+	'PROPERTY_PROCESSINSTANCES_TIME_STARTED'		=> NS_WFENGINE . '#PropertyProcessInstancesTimeStarted',
 	
 	'INSTANCE_PROCESSSTATUS_RESUMED'				=> NS_WFENGINE . '#InstanceStatusResumed',
 	'INSTANCE_PROCESSSTATUS_STARTED'				=> NS_WFENGINE . '#InstanceStatusStarted',

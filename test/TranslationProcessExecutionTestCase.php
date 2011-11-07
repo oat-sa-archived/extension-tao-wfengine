@@ -381,7 +381,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 							$this->assertTrue($file->add());
 							$this->assertTrue($file->commit());
 
-							$this->units[$unitName]->setPropertyValue($this->properties[$this->getPropertyName($fileType, $countryCode, $langCode)], $file);
+							$this->assertTrue($this->units[$unitName]->setPropertyValue($this->properties[$this->getPropertyName($fileType, $countryCode, $langCode)], $file));
 
 							$this->files[$fileName] = $file;
 						}
@@ -640,7 +640,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 					$this->out("executes translation process {$unit->getLabel()}/{$countryCode}/{$langCode}:");
 					$this->assertIsA($unit, 'core_kernel_classes_Resource');
 					$this->executeTranslationProcess($this->processDefinition, $unit->uriResource, $countryCode, $langCode, $simulationOptions);
-					break(3);
+//					break(3);
 				}
 			}		
 		}
