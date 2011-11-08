@@ -106,7 +106,7 @@ class wfEngine_helpers_Monitoring_ProcessMonitoringGrid
 		$propertyUris = array();
 		
 		foreach($processProperties as $processPropertyUri => $label){
-			if(!is_array($excludedProperties[$processPropertyUri])){
+			if(!isset($excludedProperties[$processPropertyUri])){
 				$this->grid->addColumn($processPropertyUri, $label);
 				$propertyUris[] = $processPropertyUri;
 			}

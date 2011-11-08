@@ -69,6 +69,72 @@ class wfEngine_helpers_Monitoring_ActivityPropertiesAdapter
         $returnValue = null;
 
         // section 127-0-1-1-6c609706:1337d294662:-8000:000000000000334F begin
+		if (isset($this->data[$rowId])) {
+
+			//return values:
+			if (isset($this->data[$rowId][$columnId])) {
+				$returnValue = $this->data[$rowId][$columnId];
+			}
+		} else {
+
+//			'PROPERTY_ACTIVITY_EXECUTION_CTX_RECOVERY' => NS_WFENGINE . '#PropertyActivityExecutionsContextRecovery',
+//			'PROPERTY_ACTIVITY_EXECUTION_VARIABLES' => NS_WFENGINE .'#PropertyActivityExecutionsHasVariables',
+//			'PROPERTY_ACTIVITY_EXECUTION_PREVIOUS' => NS_WFENGINE .'#PropertyActivityExecutionsPreviousActivityExecutions',
+//			'PROPERTY_ACTIVITY_EXECUTION_FOLLOWING' => NS_WFENGINE .'#PropertyActivityExecutionsFollowingActivityExecutions',
+//			'PROPERTY_ACTIVITY_EXECUTION_NONCE' => NS_WFENGINE . '#PropertyActivityExecutionsNonce',
+
+			if (common_Utils::isUri($rowId)) {
+
+				$excludedProperties = (is_array($this->options) && isset($this->options['excludedProperties'])) ? $this->options['excludedProperties'] : array();
+				$activityExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityExecutionService');
+				$activityExecution = new core_kernel_classes_Resource($rowId);
+				
+				$this->data[$rowId] = array();
+
+				if (!in_array(PROPERTY_ACTIVITY_EXECUTION_ACTIVITY, $excludedProperties)) {
+					$activityExecutionOf = $activityExecutionService->getExecutionOf($activityExecution);
+					$this->data[$rowId][PROPERTY_ACTIVITY_EXECUTION_ACTIVITY] = $activityExecutionOf->getLabel();
+				}
+
+				if (!in_array(PROPERTY_ACTIVITY_EXECUTION_STATUS, $excludedProperties)) {
+					$status = $activityExecutionService->getStatus($activityExecution);
+					$this->data[$rowId][PROPERTY_ACTIVITY_EXECUTION_STATUS] = is_null($status) ? null : $status->getLabel();
+				}
+				
+				$timeProperties = array(
+					PROPERTY_ACTIVITY_EXECUTION_TIME_CREATED,
+					PROPERTY_ACTIVITY_EXECUTION_TIME_STARTED,
+					PROPERTY_ACTIVITY_EXECUTION_TIME_LASTACCESS
+				);
+				foreach($timeProperties as $timeProperty){
+					if (!in_array($timeProperty, $excludedProperties)) {
+						$time = (string) $activityExecution->getOnePropertyValue(new core_kernel_classes_Property($timeProperty));
+						$this->data[$rowId][$timeProperty] = !empty($time)?date('d-m-Y G:i:s', $time):'n/a';
+					}
+				}
+				
+				if (!in_array(PROPERTY_ACTIVITY_EXECUTION_CURRENT_USER, $excludedProperties)){
+					$user = $activityExecutionService->getActivityExecutionUser($activityExecution);
+					$this->data[$rowId][PROPERTY_ACTIVITY_EXECUTION_CURRENT_USER] = (is_null($user))?'n/a':$user->getLabel();
+				}
+				
+				if (!in_array(PROPERTY_ACTIVITY_EXECUTION_ACL_MODE, $excludedProperties)){
+					$aclMode = $activityExecutionService->getAclMode($activityExecution);
+					$this->data[$rowId][PROPERTY_ACTIVITY_EXECUTION_ACL_MODE] = (is_null($aclMode))?'n/a':$aclMode->getLabel();
+				}
+				
+				if (!in_array(PROPERTY_ACTIVITY_EXECUTION_RESTRICTED_USER, $excludedProperties)){
+					$restricedRole = $activityExecutionService->getRestrictedRole($activityExecution);
+					$restrictedTo = !is_null($restricedRole) ? $restricedRole : $activityExecutionService->getRestrictedUser($activityExecution);
+					$this->data[$rowId][PROPERTY_ACTIVITY_EXECUTION_RESTRICTED_USER] = (is_null($restrictedTo))?'n/a':$restrictedTo->getLabel();
+				}
+				
+				
+				if (isset($this->data[$rowId][$columnId])) {
+					$returnValue = $this->data[$rowId][$columnId];
+				}
+			}
+		}
         // section 127-0-1-1-6c609706:1337d294662:-8000:000000000000334F end
 
         return $returnValue;

@@ -1275,7 +1275,7 @@ class wfEngine_models_classes_ActivityExecutionService
 			
 			foreach($previousActivityExecutions as $previousActivityExecution) {
 				
-				$previousActivityExecution->removePropertyValues($followingProperty);
+				$previousActivityExecution->removePropertyValues($this->activityExecutionFollowingProperty);
 				
 				//manage the additional option to full revert (default behaviour), full merge or partial merge (i.e. redifine some process variable values)
 				if(!$revert){

@@ -39,7 +39,9 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 	protected $users = array();
 	protected $roles = array();
 	protected $vars = array();
-	
+	protected $units = array();
+	protected $processExecutions = array();
+
 	/**
 	 * initialize a test method
 	 */
@@ -704,7 +706,8 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		$this->assertTrue($processExecutionService->checkStatus($processInstance, 'started'));
 
 		$this->out(__METHOD__, true);
-
+		$this->processExecutions[$processInstance->uriResource] = $processInstance;
+			
 		$currentActivityExecutions = $processExecutionService->getCurrentActivityExecutions($processInstance);
 		$this->assertEqual(count($currentActivityExecutions), 1);
 
@@ -973,10 +976,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		$executionHistory = $processExecutionService->getExecutionHistory($processInstance);
 		$this->assertEqual(count($executionHistory), $i-1);
 		
-		//delete process execution:
-		$this->assertTrue($processInstance->exists());
-		$this->assertTrue($processExecutionService->deleteProcessExecution($processInstance));
-		$this->assertFalse($processInstance->exists());
+		
 	}
 	
 	private function initCurrentActivityExecution($activityExecution, $started = true){
@@ -1252,7 +1252,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		
 	}
 	
-	public function testDeleteCreatedResources(){
+	public function _testDeleteCreatedResources(){
 		
 		if(!empty($this->properties)){
 			foreach($this->properties as $prop){
@@ -1285,6 +1285,15 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		if(!empty($this->roles)){
 			foreach($this->roles as $role){
 				$this->assertTrue($role->delete());
+			}
+		}
+		
+		$processExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessExecutionService');
+		foreach($this->processExecutions as $processInstance){
+			if($processInstance instanceof core_kernel_classes_Resource){
+				$this->assertTrue($processInstance->exists());
+				$this->assertTrue($processExecutionService->deleteProcessExecution($processInstance));
+				$this->assertFalse($processInstance->exists());
 			}
 		}
 		

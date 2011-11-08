@@ -92,12 +92,12 @@ class wfEngine_helpers_Monitoring_ProcessPropertiesAdapter
 				
 				if(!in_array(PROPERTY_PROCESSINSTANCES_STATUS, $excludedProperties)){
 					$status = $processExecutionService->getStatus($processInstance);
-					$this->data[$rowId][PROPERTY_PROCESSINSTANCES_STATUS] = is_null($status)?null:$status->uriResource;
+					$this->data[$rowId][PROPERTY_PROCESSINSTANCES_STATUS] = is_null($status)?'n/a':$status->getLabel();
 				}
 				
 				if(!in_array(PROPERTY_PROCESSINSTANCES_EXECUTIONOF, $excludedProperties)){
 					$executionOf = $processExecutionService->getExecutionOf($processInstance);
-					$this->data[$rowId][PROPERTY_PROCESSINSTANCES_EXECUTIONOF] = is_null($executionOf)?null:$executionOf->uriResource;
+					$this->data[$rowId][PROPERTY_PROCESSINSTANCES_EXECUTIONOF] = is_null($executionOf)?'n/a':$executionOf->getLabel();
 				}
 				
 				if(!in_array(PROPERTY_PROCESSINSTANCES_CURRENTACTIVITYEXECUTIONS, $excludedProperties)){
@@ -106,8 +106,8 @@ class wfEngine_helpers_Monitoring_ProcessPropertiesAdapter
 				}
 				
 				if(!in_array(PROPERTY_PROCESSINSTANCES_TIME_STARTED, $excludedProperties)){
-					$startedTime = (string) $processExecutionService->getOnePropertyValue(PROPERTY_PROCESSINSTANCES_TIME_STARTED);
-					$this->data[$rowId][PROPERTY_PROCESSINSTANCES_TIME_STARTED] = $startedTime;
+					$time = (string) $processInstance->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_PROCESSINSTANCES_TIME_STARTED));
+					$this->data[$rowId][PROPERTY_PROCESSINSTANCES_TIME_STARTED] = !empty($time)?date('d-m-Y G:i:s', $time):'n/a';;
 				}
 
 				if(isset($this->data[$rowId][$columnId])){
