@@ -2,7 +2,7 @@
 require_once dirname(__FILE__) . '/wfEngineServiceTest.php';
 
 /**
- * Test the execution of the PISA translation process
+ * Test the execution of a complex translation process
  * 
  * @author Somsack Sipasseuth, <taosupport@tudor.lu>
  * @package wfEngine
@@ -345,6 +345,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		Bootstrap::loadConstants('taoItems');//included to use itemService:
 		
 		$unitNames = array('unit01', 'unit02', 'unit03');
+		$this->itemClass = null;
 		$this->units = array();
 		$this->properties = array();
 		$this->files = array();
@@ -352,7 +353,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		$itemClass = new core_kernel_classes_Class(TAO_ITEM_CLASS);
 		$translationClass = $itemClass->createSubClass('Translation Items', 'created for translation process execution test case');
 		$this->assertIsA($translationClass, 'core_kernel_classes_Class');
-		$this->units[$translationClass->getLabel()] = $translationClass;
+		$this->itemClass = $translationClass;
 		
 		
 		$unitNames = array_unique($unitNames);
@@ -382,7 +383,10 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 							$this->assertTrue($file->commit());
 
 							$this->assertTrue($this->units[$unitName]->setPropertyValue($this->properties[$this->getPropertyName($fileType, $countryCode, $langCode)], $file));
-
+							
+							$values = $this->units[$unitName]->getPropertyValues($this->properties[$this->getPropertyName($fileType, $countryCode, $langCode)]);
+							$this->assertEqual(count($values), 1);
+			
 							$this->files[$fileName] = $file;
 						}
 					}
@@ -633,8 +637,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 			$this->fail('No process definition found to be executed');
 		}
 					
-		$translationClass = reset($this->units);
-		foreach($translationClass->getInstances() as $unit){
+		foreach($this->units as $unit){
 			foreach ($this->langCountries as $countryCode => $languageCodes){
 				foreach ($languageCodes as $langCode){
 					$this->out("executes translation process {$unit->getLabel()}/{$countryCode}/{$langCode}:");
@@ -642,17 +645,15 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 					$this->executeTranslationProcess($this->processDefinition, $unit->uriResource, $countryCode, $langCode, $simulationOptions);
 //					break(3);
 				}
-			}		
+			}
 		}
 		
 	}
 	
 	private function executeTranslationProcess($processDefinition, $unitUri, $countryCode, $languageCode, $simulationOptions){
 		
-		$activityService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityService');
 		$activityExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityExecutionService');
 		$processExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessExecutionService');
-		$processVariableService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_VariableService');
 		$loginProperty = new core_kernel_classes_Property(PROPERTY_USER_LOGIN);
 		
 		$processExecName = 'Test Translation Process Execution';
@@ -1257,6 +1258,10 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 			foreach($this->properties as $prop){
 				$this->assertTrue($prop->delete());
 			}
+		}
+		
+		if(!is_null($this->itemClass)){
+			$this->itemClass->delete();
 		}
 		
 		if(!empty($this->units)){

@@ -96,20 +96,25 @@ class wfEngine_helpers_Monitoring_ProcessMonitoringGrid
 		$columnNames = (is_array($this->options) && isset($this->options['columnNames']))?$this->options['columnNames']:array();
 		
 		$processProperties = array(
-			PROPERTY_PROCESSINSTANCES_STATUS => __('status'),
-			PROPERTY_PROCESSINSTANCES_EXECUTIONOF => __('process definition'),
-			PROPERTY_PROCESSINSTANCES_CURRENTACTIVITYEXECUTIONS => __('current activity'),
-			PROPERTY_PROCESSINSTANCES_TIME_STARTED => __('process definition')
+			RDFS_LABEL => __('Label'),
+			PROPERTY_PROCESSINSTANCES_STATUS => __('Status'),
+			PROPERTY_PROCESSINSTANCES_EXECUTIONOF => __('Process Definition'),
+			PROPERTY_PROCESSINSTANCES_CURRENTACTIVITYEXECUTIONS => __('Current Activities'),
+			PROPERTY_PROCESSINSTANCES_TIME_STARTED => __('Started Time')
 		);
 		
-		$processProperties = array_diff($processProperties, $excludedProperties);
+		$propertyUris = array();
 		
 		foreach($processProperties as $processPropertyUri => $label){
-			$this->grid->addColumn($processPropertyUri, $label);
+			if(!is_array($excludedProperties[$processPropertyUri])){
+				$this->grid->addColumn($processPropertyUri, $label);
+				$propertyUris[] = $processPropertyUri;
+			}
+			
 		}
 		
 		$returnValue = $this->grid->setColumnsAdapter(
-			array_keys($processProperties),
+			$propertyUris,
 			new wfEngine_helpers_Monitoring_ProcessPropertiesAdapter(array('excludedProperties' => $excludedProperties))
 		);
 		

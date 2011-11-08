@@ -86,6 +86,10 @@ class wfEngine_helpers_Monitoring_ProcessPropertiesAdapter
 				$processInstance = new core_kernel_classes_Resource($rowId);
 				$this->data[$rowId] = array();
 				
+				if(!in_array(RDFS_LABEL, $excludedProperties)){
+					$this->data[$rowId][RDFS_LABEL] = $processInstance->getLabel();
+				}
+				
 				if(!in_array(PROPERTY_PROCESSINSTANCES_STATUS, $excludedProperties)){
 					$status = $processExecutionService->getStatus($processInstance);
 					$this->data[$rowId][PROPERTY_PROCESSINSTANCES_STATUS] = is_null($status)?null:$status->uriResource;
