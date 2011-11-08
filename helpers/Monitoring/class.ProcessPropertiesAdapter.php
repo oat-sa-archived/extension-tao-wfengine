@@ -9,7 +9,7 @@ error_reporting(E_ALL);
  *
  * This file is part of TAO.
  *
- * Automatically generated on 07.11.2011, 14:52:10 with ArgoUML PHP module 
+ * Automatically generated on 08.11.2011, 11:06:27 with ArgoUML PHP module 
  * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
  *
  * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
@@ -80,19 +80,31 @@ class wfEngine_helpers_Monitoring_ProcessPropertiesAdapter
 		}else{
 		
 			if(common_Utils::isUri($rowId)){
+				
+				$excludedProperties = (is_array($this->options) && isset($this->options['excludedProperties']))?$this->options['excludedProperties']:array();
 				$processExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessExecutionService');
 				$processInstance = new core_kernel_classes_Resource($rowId);
-				$status = $processExecutionService->getStatus($processInstance);
-				$executionOf = $processExecutionService->getExecutionOf($processInstance);
-				$currentActivityExecutions = $processExecutionService->getCurrentActivityExecutions($processInstance);
-				$startedTime = (string) $processExecutionService->getOnePropertyValue(PROPERTY_PROCESSINSTANCES_TIME_STARTED);
-
-				$this->data[$rowId] = array(
-					PROPERTY_PROCESSINSTANCES_STATUS => is_null($status)?null:$status->uriResource,
-					PROPERTY_PROCESSINSTANCES_EXECUTIONOF => is_null($executionOf)?null:$executionOf->uriResource,
-					PROPERTY_PROCESSINSTANCES_CURRENTACTIVITYEXECUTIONS => new wfEngine_helpers_Monitoring_ActivityMonitoringGrid($currentActivityExecutions),
-					PROPERTY_PROCESSINSTANCES_TIME_STARTED => $startedTime
-				);
+				$this->data[$rowId] = array();
+				
+				if(!in_array(PROPERTY_PROCESSINSTANCES_STATUS, $excludedProperties)){
+					$status = $processExecutionService->getStatus($processInstance);
+					$this->data[$rowId][PROPERTY_PROCESSINSTANCES_STATUS] = is_null($status)?null:$status->uriResource;
+				}
+				
+				if(!in_array(PROPERTY_PROCESSINSTANCES_EXECUTIONOF, $excludedProperties)){
+					$executionOf = $processExecutionService->getExecutionOf($processInstance);
+					$this->data[$rowId][PROPERTY_PROCESSINSTANCES_EXECUTIONOF] = is_null($executionOf)?null:$executionOf->uriResource;
+				}
+				
+				if(!in_array(PROPERTY_PROCESSINSTANCES_CURRENTACTIVITYEXECUTIONS, $excludedProperties)){
+					$currentActivityExecutions = $processExecutionService->getCurrentActivityExecutions($processInstance);
+					$this->data[$rowId][PROPERTY_PROCESSINSTANCES_CURRENTACTIVITYEXECUTIONS] = new wfEngine_helpers_Monitoring_ActivityMonitoringGrid(array_keys($currentActivityExecutions));
+				}
+				
+				if(!in_array(PROPERTY_PROCESSINSTANCES_TIME_STARTED, $excludedProperties)){
+					$startedTime = (string) $processExecutionService->getOnePropertyValue(PROPERTY_PROCESSINSTANCES_TIME_STARTED);
+					$this->data[$rowId][PROPERTY_PROCESSINSTANCES_TIME_STARTED] = $startedTime;
+				}
 
 				if(isset($this->data[$rowId][$columnId])){
 					$returnValue = $this->data[$rowId][$columnId];
