@@ -342,9 +342,45 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		return $repository;
 	}
 	
-	public function testCreateUnits(){
+	public function createTranslationProperty($type, $countryCode = '', $langCode = '', $class = null){
 		
-		Bootstrap::loadConstants('taoItems');//included to use itemService:
+		$property = null;
+		
+		if(is_null($class) && !is_null($this->itemClass)){
+			$class = $this->itemClass;
+		}
+		
+		if(!is_null($class)){
+			
+			if(!empty($countryCode) && !empty($langCode)){
+				$label = $this->getPropertyName($type, $countryCode, $langCode);
+			}else{
+				$label = $type;
+			}
+			
+			$uri = LOCAL_NAMESPACE.'#'.$label;
+			
+			$property = new core_kernel_classes_Property($uri);
+			
+			if(!$property->exists()){
+				$propertyClass = new core_kernel_classes_Class(RDF_PROPERTY,__METHOD__);
+				$propertyInstance = $propertyClass->createInstance($label, '', $uri);
+				$property = new core_kernel_classes_Property($propertyInstance->uriResource,__METHOD__);
+			}
+
+			if(!$class->setProperty($property)){
+				throw new common_Exception('problem creating property : cannot set property to class');
+			}
+			
+			$this->properties[$label] = $property;
+		}else{
+			throw new common_Exception('problem creating property : no target class given');
+		}
+		
+		return $property;
+	}
+	
+	public function testCreateUnits(){
 		
 		$unitNames = array('unit01', 'unit02', 'unit03');
 		$this->itemClass = null;
@@ -352,29 +388,30 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		$this->properties = array();
 		$this->files = array();
 		
-		$itemClass = new core_kernel_classes_Class(TAO_ITEM_CLASS);
-		$translationClass = $itemClass->createSubClass('Translation Items', 'created for translation process execution test case');
-		$this->assertIsA($translationClass, 'core_kernel_classes_Class');
+		$classUri = LOCAL_NAMESPACE.'#TranslationItemsClass';
+		$translationClass = new core_kernel_classes_Class($classUri);
+		if(!$translationClass->exists()){
+			$itemClass = new core_kernel_classes_Class(TAO_ITEM_CLASS);
+			$translationClass = $itemClass->createSubClass('Translation Items', 'created for translation process execution test case', $classUri);
+			$this->assertIsA($translationClass, 'core_kernel_classes_Class');
+		}
 		$this->itemClass = $translationClass;
 		
-		
 		$unitNames = array_unique($unitNames);
-		
 		foreach($unitNames as $unitName){
 			
 			//create unit:
 			$this->units[$unitName] = $translationClass->createInstance($unitName, 'created for translation process execution test case');
 			$this->assertNotNull($this->units[$unitName]);
-			
 			if(GENERIS_VERSIONING_ENABLED){
 				foreach ($this->langCountries as $countryCode => $languageCodes){
 
 					foreach ($languageCodes as $langCode){
-
-						$this->properties[$this->getPropertyName('xliff', $countryCode, $langCode)] = $translationClass->createProperty($this->getPropertyName('xliff', $countryCode, $langCode), 'created for translation process execution test case');
-						$this->properties[$this->getPropertyName('xliff_working', $countryCode, $langCode)] = $translationClass->createProperty($this->getPropertyName('xliff_working', $countryCode, $langCode), 'created for translation process execution test case');
-						$this->properties[$this->getPropertyName('vff', $countryCode, $langCode)] = $translationClass->createProperty($this->getPropertyName('vff', $countryCode, $langCode), 'created for translation process execution test case');
-						$this->properties[$this->getPropertyName('vff_working', $countryCode, $langCode)] = $translationClass->createProperty($this->getPropertyName('vff_working', $countryCode, $langCode), 'created for translation process execution test case');
+						
+						$this->assertIsA($this->createTranslationProperty('xliff', $countryCode, $langCode),'core_kernel_classes_Property');
+						$this->assertIsA($this->createTranslationProperty('xliff_working', $countryCode, $langCode),'core_kernel_classes_Property');
+						$this->assertIsA($this->createTranslationProperty('vff', $countryCode, $langCode),'core_kernel_classes_Property');
+						$this->assertIsA($this->createTranslationProperty('vff_working', $countryCode, $langCode),'core_kernel_classes_Property');
 
 						foreach(array('xliff', 'vff') as $fileType){
 							$fileName = $this->getFileName($unitName, $countryCode, $langCode, $fileType);
@@ -625,20 +662,23 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 			'repeatLoop' => 1,
 			'translations' => 2//must be >= 1
 		);
-
+		
+		$processClass = new core_kernel_classes_Class(CLASS_PROCESS);
+		
 		if(!$this->processDefinition instanceof core_kernel_classes_Resource){
-			//try to find it:
-			$processClass = new core_kernel_classes_Class(CLASS_PROCESS);
 			$translationProcesses = $processClass->searchInstances(array(RDFS_LABEL => (string) $this->processLabel), array('like'=>false));
 			if(!empty($translationProcesses)){
 				$this->processDefinition = array_pop($translationProcesses);
 			}
 		}
-
 		if(!$this->processDefinition instanceof core_kernel_classes_Resource){
 			$this->fail('No process definition found to be executed');
 		}
-					
+		
+		$this->assertIsA($this->createTranslationProperty('unitUri', '', '', $processClass), 'core_kernel_classes_Property');
+		$this->assertIsA($this->createTranslationProperty('countryCode', '', '', $processClass), 'core_kernel_classes_Property');
+		$this->assertIsA($this->createTranslationProperty('languageCode', '', '', $processClass), 'core_kernel_classes_Property');
+		
 		foreach($this->units as $unit){
 			foreach ($this->langCountries as $countryCode => $languageCodes){
 				foreach ($languageCodes as $langCode){
@@ -677,14 +717,11 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 			
 			$xliffFile = $this->getItemFile($unit, 'xliff', $countryCode, $languageCode);
 			$this->assertNotNull($xliffFile);
-			
-//			$xliffRevision = $xliffFile->getVersion();
-			$xliffRevision = 1;
+			$xliffRevision = $xliffFile->getVersion();
 			
 			$vffFile = $this->getItemFile($unit, 'vff', $countryCode, $languageCode);
 			$this->assertNotNull($vffFile);
-//			$vffRevision = $vffFile->getVersion();
-			$vffRevision = 1;
+			$vffRevision = $vffFile->getVersion();
 			
 		}
 		
@@ -701,8 +738,11 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 			
 		$processInstance = $processExecutionService->createProcessExecution($processDefinition, $processExecName, $processExecComment, $initVariables);
 		$this->assertEqual($processDefinition->uriResource, $processExecutionService->getExecutionOf($processInstance)->uriResource);
-		$this->assertEqual($processDefinition->uriResource, $processExecutionService->getExecutionOf($processInstance)->uriResource);
-
+		
+		$processInstance->setPropertyValue($this->properties['unitUri'], $unit);
+		$processInstance->setPropertyValue($this->properties['countryCode'], $countryCode);
+		$processInstance->setPropertyValue($this->properties['languageCode'], $languageCode);
+		
 		$this->assertTrue($processExecutionService->checkStatus($processInstance, 'started'));
 
 		$this->out(__METHOD__, true);
@@ -1252,7 +1292,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		
 	}
 	
-	public function _testDeleteCreatedResources(){
+	public function testDeleteCreatedResources(){
 		
 		if(!empty($this->properties)){
 			foreach($this->properties as $prop){

@@ -100,14 +100,14 @@ class wfEngine_helpers_Monitoring_ProcessPropertiesAdapter
 					$this->data[$rowId][PROPERTY_PROCESSINSTANCES_EXECUTIONOF] = is_null($executionOf)?'n/a':$executionOf->getLabel();
 				}
 				
-				if(!in_array(PROPERTY_PROCESSINSTANCES_CURRENTACTIVITYEXECUTIONS, $excludedProperties)){
-					$currentActivityExecutions = $processExecutionService->getCurrentActivityExecutions($processInstance);
-					$this->data[$rowId][PROPERTY_PROCESSINSTANCES_CURRENTACTIVITYEXECUTIONS] = new wfEngine_helpers_Monitoring_ActivityMonitoringGrid(array_keys($currentActivityExecutions));
-				}
-				
 				if(!in_array(PROPERTY_PROCESSINSTANCES_TIME_STARTED, $excludedProperties)){
 					$time = (string) $processInstance->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_PROCESSINSTANCES_TIME_STARTED));
 					$this->data[$rowId][PROPERTY_PROCESSINSTANCES_TIME_STARTED] = !empty($time)?date('d-m-Y G:i:s', $time):'n/a';;
+				}
+				
+				if(!in_array(PROPERTY_PROCESSINSTANCES_CURRENTACTIVITYEXECUTIONS, $excludedProperties)){
+					$currentActivityExecutions = $processExecutionService->getCurrentActivityExecutions($processInstance);
+					$this->data[$rowId][PROPERTY_PROCESSINSTANCES_CURRENTACTIVITYEXECUTIONS] = new wfEngine_helpers_Monitoring_ActivityMonitoringGrid(array_keys($currentActivityExecutions));
 				}
 
 				if(isset($this->data[$rowId][$columnId])){
