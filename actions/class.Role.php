@@ -17,7 +17,8 @@ class wfEngine_actions_Role extends tao_actions_TaoModule {
 	 * constructor: initialize the service and the default data
 	 * @return Role
 	 */
-	public function __construct(){
+	public function __construct()
+	{
 		
 		parent::__construct();
 		
@@ -36,7 +37,8 @@ class wfEngine_actions_Role extends tao_actions_TaoModule {
 	 * get the selected group from the current context (from the uri and classUri parameter in the request)
 	 * @return core_kernel_classes_Resource $group
 	 */
-	protected function getCurrentInstance(){
+	protected function getCurrentInstance()
+	{
 		$uri = tao_helpers_Uri::decode($this->getRequestParameter('uri'));
 		if(is_null($uri) || empty($uri)){
 			throw new Exception("No valid uri found");
@@ -55,7 +57,8 @@ class wfEngine_actions_Role extends tao_actions_TaoModule {
 	 * get the main class
 	 * @return core_kernel_classes_Classes
 	 */
-	protected function getRootClass(){
+	protected function getRootClass()
+	{
 		return $this->service->getRoleClass();
 	}
 	
@@ -70,7 +73,8 @@ class wfEngine_actions_Role extends tao_actions_TaoModule {
 	/**
 	*	index:
 	*/
-	public function index(){
+	public function index()
+	{
 		
 		unset($_SESSION[SESSION_NAMESPACE]['uri']);
 		unset($_SESSION[SESSION_NAMESPACE]['classUri']);
@@ -83,7 +87,8 @@ class wfEngine_actions_Role extends tao_actions_TaoModule {
 	 * Edit a group instance
 	 * @return void
 	 */
-	public function editRole(){
+	public function editRole()
+	{
 		$clazz = $this->getCurrentClass();
 		$role = $this->getCurrentInstance();
 		
@@ -115,7 +120,8 @@ class wfEngine_actions_Role extends tao_actions_TaoModule {
 	 * Delete a group or a group class
 	 * @return void
 	 */
-	public function delete(){
+	public function delete()
+	{
 		if(!tao_helpers_Request::isAjax()){
 			throw new Exception("wrong request mode");
 		}
@@ -145,7 +151,8 @@ class wfEngine_actions_Role extends tao_actions_TaoModule {
 		echo json_encode(array('deleted'	=> $deleted));
 	}
 	
-	public function getUsers(){
+	public function getUsers()
+	{
 		if(!tao_helpers_Request::isAjax()){
 			throw new Exception("wrong request mode");
 		}
@@ -157,7 +164,8 @@ class wfEngine_actions_Role extends tao_actions_TaoModule {
 	 * save from the checkbox tree the users to link with 
 	 * @return void
 	 */
-	public function saveUsers(){
+	public function saveUsers()
+	{
 		if(!tao_helpers_Request::isAjax()){
 			throw new Exception("wrong request mode");
 		}
@@ -179,7 +187,8 @@ class wfEngine_actions_Role extends tao_actions_TaoModule {
 		echo json_encode(array('saved'	=> $saved));
 	}
 	
-	public function addInstance(){
+	public function addInstance()
+	{
 		if(!tao_helpers_Request::isAjax()){
 			throw new Exception("wrong request mode");
 		}
@@ -192,7 +201,8 @@ class wfEngine_actions_Role extends tao_actions_TaoModule {
 		}
 	}
 	
-	public function editRoleClass(){
+	public function editRoleClass()
+	{
 		$this->removeSessionAttribute('uri');
 		parent::index();
 	}

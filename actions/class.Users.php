@@ -16,7 +16,8 @@ class wfEngine_actions_Users extends tao_actions_CommonModule {
 	 * Constructor performs initializations actions
 	 * @return void
 	 */
-	public function __construct(){		
+	public function __construct()
+	{		
 		
     	$this->userService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_UserService');
 		$this->defaultData();
@@ -26,7 +27,8 @@ class wfEngine_actions_Users extends tao_actions_CommonModule {
 	 * Show the list of users
 	 * @return void
 	 */
-	public function index(){
+	public function index()
+	{
 		$this->setData('data', __('list the users'));
 		$this->setView('user/list.tpl');
 	}
@@ -35,14 +37,17 @@ class wfEngine_actions_Users extends tao_actions_CommonModule {
 	 * provide the user list data via json
 	 * @return void
 	 */
-	public function data(){
+	public function data()
+	{
 		$page = $this->getRequestParameter('page'); 
 		$limit = $this->getRequestParameter('rows'); 
 		$sidx = $this->getRequestParameter('sidx');  
 		$sord = $this->getRequestParameter('sord'); 
 		$start = $limit * $page - $limit; 
 		
-		if(!$sidx) $sidx =1; 
+		if(!$sidx){
+			$sidx = 1; 
+		}
 		
 		$this->userService->feedAllowedRoles();
 		$users = $this->userService->getAllUsers(array(
@@ -80,7 +85,7 @@ class wfEngine_actions_Users extends tao_actions_CommonModule {
 			$cellData = array();
 			
 			try{
-				$cellData[0]		= (string)$user->getUniquePropertyValue($loginProperty);
+				$cellData[0] = (string) $user->getUniquePropertyValue($loginProperty);
 			}
 			catch(common_Exception $ce){
 				//Delete users without login!
@@ -88,11 +93,11 @@ class wfEngine_actions_Users extends tao_actions_CommonModule {
 				continue;
 			}
 			
-			$firstName 		= (string)$user->getOnePropertyValue($firstNameProperty);
-			$lastName 		= (string)$user->getOnePropertyValue($lastNameProperty);
+			$firstName 		= (string) $user->getOnePropertyValue($firstNameProperty);
+			$lastName 		= (string) $user->getOnePropertyValue($lastNameProperty);
 			$cellData[1]	= $firstName.' '.$lastName;
 			
-			$cellData[2] 	= (string)$user->getOnePropertyValue($mailProperty);
+			$cellData[2] 	= (string) $user->getOnePropertyValue($mailProperty);
 			
 			$defLg 			= $user->getOnePropertyValue($deflgProperty);
 			$cellData[3] 	= '';
@@ -115,7 +120,7 @@ class wfEngine_actions_Users extends tao_actions_CommonModule {
 				}
 			}
 			if(strlen($cellData[5])>2){
-				$cellData[5] = substr($cellData[5],0,-2);
+				$cellData[5] = substr($cellData[5], 0, -2);
 			}
 			
 			$cellData[6]	= '';
@@ -133,7 +138,8 @@ class wfEngine_actions_Users extends tao_actions_CommonModule {
 	 * The request must contains the user's login to remove
 	 * @return vois
 	 */
-	public function delete(){
+	public function delete()
+	{
 		$deleted = false;
 		$message = __('An error occured during user deletion');
 		if($this->hasRequestParameter('uri')){
@@ -154,7 +160,8 @@ class wfEngine_actions_Users extends tao_actions_CommonModule {
 	 * form to add a user
 	 * @return void
 	 */
-	public function add(){
+	public function add()
+	{
 		
 		$myFormContainer = new tao_actions_form_Users(new core_kernel_classes_Class(CLASS_ROLE_WORKFLOWUSERROLE));
 		$myForm = $myFormContainer->getForm();
@@ -182,7 +189,8 @@ class wfEngine_actions_Users extends tao_actions_CommonModule {
 	 * action used to check if a login can be used
 	 * @return void
 	 */
-	public function checkLogin(){
+	public function checkLogin()
+	{
 		if(!tao_helpers_Request::isAjax()){
 			throw new Exception("wrong request mode");
 		}
@@ -199,7 +207,8 @@ class wfEngine_actions_Users extends tao_actions_CommonModule {
 	 * User login must be set in parameter
 	 * @return  void
 	 */
-	public function edit(){
+	public function edit()
+	{
 		
 		if(!$this->hasRequestParameter('uri')){
 			throw new Exception('Please set the user uri in request parameter');
