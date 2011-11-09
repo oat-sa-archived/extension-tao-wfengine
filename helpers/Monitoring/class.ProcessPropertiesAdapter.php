@@ -105,10 +105,10 @@ class wfEngine_helpers_Monitoring_ProcessPropertiesAdapter
 					$this->data[$rowId][PROPERTY_PROCESSINSTANCES_TIME_STARTED] = !empty($time)?date('d-m-Y G:i:s', $time):'n/a';;
 				}
 				
-				if(!in_array(PROPERTY_PROCESSINSTANCES_CURRENTACTIVITYEXECUTIONS, $excludedProperties)){
-					$currentActivityExecutions = $processExecutionService->getCurrentActivityExecutions($processInstance);
-					$this->data[$rowId][PROPERTY_PROCESSINSTANCES_CURRENTACTIVITYEXECUTIONS] = new wfEngine_helpers_Monitoring_ActivityMonitoringGrid(array_keys($currentActivityExecutions));
-				}
+//				if(!in_array(PROPERTY_PROCESSINSTANCES_CURRENTACTIVITYEXECUTIONS, $excludedProperties)){
+//					$currentActivityExecutions = $processExecutionService->getCurrentActivityExecutions($processInstance);
+//					$this->data[$rowId][PROPERTY_PROCESSINSTANCES_CURRENTACTIVITYEXECUTIONS] = new wfEngine_helpers_Monitoring_ActivityMonitoringGrid(array_keys($currentActivityExecutions));
+//				}
 
 				if(isset($this->data[$rowId][$columnId])){
 					$returnValue = $this->data[$rowId][$columnId];

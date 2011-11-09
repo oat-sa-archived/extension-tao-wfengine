@@ -663,9 +663,8 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 			'translations' => 2//must be >= 1
 		);
 		
-		$processClass = new core_kernel_classes_Class(CLASS_PROCESS);
-		
 		if(!$this->processDefinition instanceof core_kernel_classes_Resource){
+			$processClass = new core_kernel_classes_Class(CLASS_PROCESS);
 			$translationProcesses = $processClass->searchInstances(array(RDFS_LABEL => (string) $this->processLabel), array('like'=>false));
 			if(!empty($translationProcesses)){
 				$this->processDefinition = array_pop($translationProcesses);
@@ -675,9 +674,10 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 			$this->fail('No process definition found to be executed');
 		}
 		
-		$this->assertIsA($this->createTranslationProperty('unitUri', '', '', $processClass), 'core_kernel_classes_Property');
-		$this->assertIsA($this->createTranslationProperty('countryCode', '', '', $processClass), 'core_kernel_classes_Property');
-		$this->assertIsA($this->createTranslationProperty('languageCode', '', '', $processClass), 'core_kernel_classes_Property');
+		$processInstancesClass = new core_kernel_classes_Class(CLASS_PROCESSINSTANCES);
+		$this->assertIsA($this->createTranslationProperty('unitUri', '', '', $processInstancesClass), 'core_kernel_classes_Property');
+		$this->assertIsA($this->createTranslationProperty('countryCode', '', '', $processInstancesClass), 'core_kernel_classes_Property');
+		$this->assertIsA($this->createTranslationProperty('languageCode', '', '', $processInstancesClass), 'core_kernel_classes_Property');
 		
 		foreach($this->units as $unit){
 			foreach ($this->langCountries as $countryCode => $languageCodes){
@@ -1293,6 +1293,8 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 	}
 	
 	public function testDeleteCreatedResources(){
+		
+		return;//prevent deletion
 		
 		if(!empty($this->properties)){
 			foreach($this->properties as $prop){

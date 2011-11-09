@@ -9,7 +9,7 @@ error_reporting(E_ALL);
  *
  * This file is part of TAO.
  *
- * Automatically generated on 08.11.2011, 10:19:43 with ArgoUML PHP module 
+ * Automatically generated on 09.11.2011, 11:51:38 with ArgoUML PHP module 
  * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
  *
  * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
@@ -55,21 +55,21 @@ class wfEngine_helpers_Monitoring_ProcessMonitoringGrid
     /**
      * Short description of attribute processExecutions
      *
-     * @access public
+     * @access protected
      * @var array
      */
-    public $processExecutions = array();
+    protected $processExecutions = array();
 
     // --- OPERATIONS ---
 
     /**
      * Short description of method initGrid
      *
-     * @access public
+     * @access protected
      * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @return boolean
      */
-    public function initGrid()
+    protected function initGrid()
     {
         $returnValue = (bool) false;
 
@@ -82,11 +82,11 @@ class wfEngine_helpers_Monitoring_ProcessMonitoringGrid
     /**
      * Short description of method initColumns
      *
-     * @access public
+     * @access protected
      * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @return boolean
      */
-    public function initColumns()
+    protected function initColumns()
     {
         $returnValue = (bool) false;
 
@@ -99,7 +99,6 @@ class wfEngine_helpers_Monitoring_ProcessMonitoringGrid
 			RDFS_LABEL => __('Label'),
 			PROPERTY_PROCESSINSTANCES_STATUS => __('Status'),
 			PROPERTY_PROCESSINSTANCES_EXECUTIONOF => __('Process Definition'),
-			PROPERTY_PROCESSINSTANCES_CURRENTACTIVITYEXECUTIONS => __('Current Activities'),
 			PROPERTY_PROCESSINSTANCES_TIME_STARTED => __('Started Time')
 		);
 		
@@ -110,7 +109,6 @@ class wfEngine_helpers_Monitoring_ProcessMonitoringGrid
 				$this->grid->addColumn($processPropertyUri, $label);
 				$propertyUris[] = $processPropertyUri;
 			}
-			
 		}
 		
 		$returnValue = $this->grid->setColumnsAdapter(
@@ -118,7 +116,31 @@ class wfEngine_helpers_Monitoring_ProcessMonitoringGrid
 			new wfEngine_helpers_Monitoring_ProcessPropertiesAdapter(array('excludedProperties' => $excludedProperties))
 		);
 		
+		$this->initCurrentActivityColumn();
+		
         // section 127-0-1-1--521607b6:1338265e839:-8000:000000000000335C end
+
+        return (bool) $returnValue;
+    }
+
+    /**
+     * Can be easily extended to adapt the current activity executions column
+     *
+     * @access protected
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @return boolean
+     */
+    protected function initCurrentActivityColumn()
+    {
+        $returnValue = (bool) false;
+
+        // section 127-0-1-1--715d45eb:13387d0ab1e:-8000:0000000000003364 begin
+		$this->grid->addColumn(PROPERTY_PROCESSINSTANCES_CURRENTACTIVITYEXECUTIONS, __('Current Activities'));
+		$returnValue = $this->grid->setColumnsAdapter(
+			PROPERTY_PROCESSINSTANCES_CURRENTACTIVITYEXECUTIONS,
+			new wfEngine_helpers_Monitoring_CurrentActivitiesAdapter(array('excludedProperties' => $this->excludedProperties))
+		);	
+        // section 127-0-1-1--715d45eb:13387d0ab1e:-8000:0000000000003364 end
 
         return (bool) $returnValue;
     }

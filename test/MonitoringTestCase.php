@@ -16,8 +16,8 @@ class MonitoringTestCase extends wfEngineServiceTest {
 		//wfEngine_helpers_Monitoring_TranslationProcessMonitoringGrid
 		$processInstancesClass = new core_kernel_classes_Class(CLASS_PROCESSINSTANCES);
 		$processExecutions = $processInstancesClass->getInstances();
-		$processMonitoringGrid = new wfEngine_helpers_Monitoring_ProcessMonitoringGrid(array_keys($processExecutions));
-		var_dump($processExecutions);
+		$processMonitoringGrid = new wfEngine_helpers_Monitoring_TranslationProcessMonitoringGrid(array_keys($processExecutions));
+//		var_dump($processExecutions);
 		var_dump($processMonitoringGrid->toArray());
 		
 	}

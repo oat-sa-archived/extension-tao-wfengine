@@ -75,6 +75,7 @@ class wfEngine_helpers_Monitoring_ActivityPropertiesAdapter
 			if (isset($this->data[$rowId][$columnId])) {
 				$returnValue = $this->data[$rowId][$columnId];
 			}
+			
 		} else {
 
 //			'PROPERTY_ACTIVITY_EXECUTION_CTX_RECOVERY' => NS_WFENGINE . '#PropertyActivityExecutionsContextRecovery',
@@ -85,7 +86,7 @@ class wfEngine_helpers_Monitoring_ActivityPropertiesAdapter
 
 			if (common_Utils::isUri($rowId)) {
 
-				$excludedProperties = (is_array($this->options) && isset($this->options['excludedProperties'])) ? $this->options['excludedProperties'] : array();
+				$excludedProperties = $this->excludedProperties;
 				$activityExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityExecutionService');
 				$activityExecution = new core_kernel_classes_Resource($rowId);
 				

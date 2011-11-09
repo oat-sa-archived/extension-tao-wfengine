@@ -264,7 +264,7 @@ class wfEngine_models_classes_VariableService
 		
 		if(!is_null($activityExecution)){
 			$vars = unserialize($activityExecution->getOnePropertyValue($this->variablesProperty));
-			if(in_array($key,$vars)){
+			if(is_array($vars) && in_array($key,$vars)){
 				$processVariable = $this->getProcessVariable($key);
 				if(!is_null($processVariable)){
 					$property = new core_kernel_classes_Property($processVariable->uriResource);
