@@ -17,8 +17,12 @@ class MonitoringTestCase extends wfEngineServiceTest {
 		$processInstancesClass = new core_kernel_classes_Class(CLASS_PROCESSINSTANCES);
 		$processExecutions = $processInstancesClass->getInstances();
 		$processMonitoringGrid = new wfEngine_helpers_Monitoring_TranslationProcessMonitoringGrid(array_keys($processExecutions));
-//		var_dump($processExecutions);
-		var_dump($processMonitoringGrid->toArray());
+
+//		var_dump($processMonitoringGrid->toArray());
+		$currentActivitiesColumn = $processMonitoringGrid->getGrid()->getColumn(PROPERTY_PROCESSINSTANCES_CURRENTACTIVITYEXECUTIONS);
+		$this->assertIsA($currentActivitiesColumn, 'tao_helpers_grid_Column');
+		$currentActivitiesAdapterData = $currentActivitiesColumn->getAdapterData();
+//		var_dump($currentActivitiesAdapterData);
 		
 	}
 	

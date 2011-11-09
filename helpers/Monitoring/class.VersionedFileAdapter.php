@@ -72,7 +72,6 @@ class wfEngine_helpers_Monitoring_VersionedFileAdapter
 		
 		if (isset($this->data[$rowId])) {
 
-			//return values:
 			if (isset($this->data[$rowId][$columnId])) {
 				$returnValue = $this->data[$rowId][$columnId];
 			}
@@ -131,6 +130,10 @@ class wfEngine_helpers_Monitoring_VersionedFileAdapter
 						'vff' => 'n/a',
 						'vff_version' => 'n/a'
 						);
+				}
+				
+				if (isset($this->data[$rowId][$columnId])) {
+					$returnValue = $this->data[$rowId][$columnId];
 				}
 			}
 			

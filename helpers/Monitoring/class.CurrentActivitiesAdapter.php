@@ -70,22 +70,30 @@ class wfEngine_helpers_Monitoring_CurrentActivitiesAdapter
 
         // section 127-0-1-1--715d45eb:13387d0ab1e:-8000:0000000000003357 begin
 		
-		$activityMonitoringGridClass = 'wfEngine_helpers_Monitoring_ActivityMonitoringGrid';
-		if(is_array($this->options) && isset($this->options['MonitoringGridClass']) && class_exists($this->options['MonitoringGridClass'])){
-			$activityMonitoringGridClass = $this->options['MonitoringGridClass'];
-		}
-		
-		$processExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessExecutionService');
-		$processInstance = new core_kernel_classes_Resource($rowId);
-		$currentActivityExecutions = $processExecutionService->getCurrentActivityExecutions($processInstance);
-		$activityMonitoringClass = new $activityMonitoringGridClass(array_keys($currentActivityExecutions));
-		if(is_a($activityMonitoringClass, 'wfEngine_helpers_Monitoring_ActivityMonitoringGrid')){
-			$returnValue = $activityMonitoringClass;
+		if(isset($this->data[$rowId]) && is_a($this->data[$rowId], 'wfEngine_helpers_Monitoring_ActivityMonitoringGrid')){
+			
+			$returnValue = $this->data[$rowId];
+			
 		}else{
-			$returnValue = new wfEngine_helpers_Monitoring_ActivityMonitoringGrid(array_keys($currentActivityExecutions), array('excludedProperties' => $this->excludedProperties));
+
+			$activityMonitoringGridClass = 'wfEngine_helpers_Monitoring_ActivityMonitoringGrid';
+			if(is_array($this->options) && isset($this->options['MonitoringGridClass']) && class_exists($this->options['MonitoringGridClass'])){
+				$activityMonitoringGridClass = $this->options['MonitoringGridClass'];
+			}
+
+			$processExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessExecutionService');
+			$processInstance = new core_kernel_classes_Resource($rowId);
+			$currentActivityExecutions = $processExecutionService->getCurrentActivityExecutions($processInstance);
+			$activityMonitoringClass = new $activityMonitoringGridClass(array_keys($currentActivityExecutions));
+			if(is_a($activityMonitoringClass, 'wfEngine_helpers_Monitoring_ActivityMonitoringGrid')){
+				$returnValue = $activityMonitoringClass;
+			}else{
+				$returnValue = new wfEngine_helpers_Monitoring_ActivityMonitoringGrid(array_keys($currentActivityExecutions), array('excludedProperties' => $this->excludedProperties));
+			}
+
+			$this->data[$rowId] = $returnValue;
+			
 		}
-		
-		
         // section 127-0-1-1--715d45eb:13387d0ab1e:-8000:0000000000003357 end
 
         return $returnValue;
