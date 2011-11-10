@@ -3,14 +3,7 @@
 error_reporting(E_ALL);
 
 /**
- * TAO - wfEngine/helpers/Monitoring/class.CurrentActivitiesAdapter.php
- *
- * $Id$
- *
- * This file is part of TAO.
- *
- * Automatically generated on 09.11.2011, 11:15:19 with ArgoUML PHP module 
- * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
+ * Gives the activity monitoring Grid
  *
  * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
  * @package wfEngine
@@ -22,11 +15,11 @@ if (0 > version_compare(PHP_VERSION, '5')) {
 }
 
 /**
- * include tao_helpers_grid_Cell_Adapter
+ * include tao_helpers_grid_Cell_SubgridAdapter
  *
  * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
  */
-require_once('tao/helpers/grid/Cell/class.Adapter.php');
+require_once('tao/helpers/grid/Cell/class.SubgridAdapter.php');
 
 /* user defined includes */
 // section 127-0-1-1--715d45eb:13387d0ab1e:-8000:0000000000003355-includes begin
@@ -37,7 +30,7 @@ require_once('tao/helpers/grid/Cell/class.Adapter.php');
 // section 127-0-1-1--715d45eb:13387d0ab1e:-8000:0000000000003355-constants end
 
 /**
- * Short description of class
+ * Gives the activity monitoring Grid
  *
  * @access public
  * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
@@ -45,7 +38,7 @@ require_once('tao/helpers/grid/Cell/class.Adapter.php');
  * @subpackage helpers_Monitoring
  */
 class wfEngine_helpers_Monitoring_CurrentActivitiesAdapter
-    extends tao_helpers_grid_Cell_Adapter
+    extends tao_helpers_grid_Cell_SubgridAdapter
 {
     // --- ASSOCIATIONS ---
 
@@ -55,48 +48,61 @@ class wfEngine_helpers_Monitoring_CurrentActivitiesAdapter
     // --- OPERATIONS ---
 
     /**
-     * Short description of method getValue
+     * Short description of method getSubgridRows
      *
      * @access public
      * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @param  string rowId
-     * @param  string columnId
-     * @param  string data
+     * @return array
+     */
+    public function getSubgridRows($rowId)
+    {
+        $returnValue = array();
+
+        // section 127-0-1-1-72bb438:1338cba5f73:-8000:000000000000339D begin
+		$processExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessExecutionService');
+		$processInstance = new core_kernel_classes_Resource($rowId);
+		$currentActivityExecutions = $processExecutionService->getCurrentActivityExecutions($processInstance);
+		$returnValue = array_keys($currentActivityExecutions);
+        // section 127-0-1-1-72bb438:1338cba5f73:-8000:000000000000339D end
+
+        return (array) $returnValue;
+    }
+
+    /**
+     * Short description of method initSubgridOptions
+     *
+     * @access public
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @return mixed
      */
-    public function getValue($rowId, $columnId, $data = null)
+    public function initSubgridOptions()
     {
-        $returnValue = null;
+        // section 127-0-1-1-72bb438:1338cba5f73:-8000:000000000000339F begin
+		$this->subgridOptions = array('excludedProperties' => $this->excludedProperties);
+        // section 127-0-1-1-72bb438:1338cba5f73:-8000:000000000000339F end
+    }
 
-        // section 127-0-1-1--715d45eb:13387d0ab1e:-8000:0000000000003357 begin
-		
-		if(isset($this->data[$rowId]) && is_a($this->data[$rowId], 'wfEngine_helpers_Monitoring_ActivityMonitoringGrid')){
-			
-			$returnValue = $this->data[$rowId];
-			
-		}else{
-
-			$activityMonitoringGridClass = 'wfEngine_helpers_Monitoring_ActivityMonitoringGrid';
-			if(is_array($this->options) && isset($this->options['MonitoringGridClass']) && class_exists($this->options['MonitoringGridClass'])){
-				$activityMonitoringGridClass = $this->options['MonitoringGridClass'];
-			}
-
-			$processExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessExecutionService');
-			$processInstance = new core_kernel_classes_Resource($rowId);
-			$currentActivityExecutions = $processExecutionService->getCurrentActivityExecutions($processInstance);
-			$activityMonitoringClass = new $activityMonitoringGridClass(array_keys($currentActivityExecutions));
-			if(is_a($activityMonitoringClass, 'wfEngine_helpers_Monitoring_ActivityMonitoringGrid')){
-				$returnValue = $activityMonitoringClass;
+    /**
+     * Short description of method initSubgridClass
+     *
+     * @access public
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @param  subgridClass
+     * @return mixed
+     */
+    public function initSubgridClass($subgridClass = '')
+    {
+        // section 127-0-1-1-72bb438:1338cba5f73:-8000:00000000000033A1 begin
+		$this->subgridClass = 'wfEngine_helpers_Monitoring_ActivityMonitoringGrid';
+		if(!empty($subgridClass)){
+			if(class_exists($subgridClass)){
+				$this->subgridClass = $subgridClass;
 			}else{
-				$returnValue = new wfEngine_helpers_Monitoring_ActivityMonitoringGrid(array_keys($currentActivityExecutions), array('excludedProperties' => $this->excludedProperties));
+				throw new common_Exception('The given subgrid class in argument is not valid : '.$subgridClass);
 			}
-
-			$this->data[$rowId] = $returnValue;
-			
 		}
-        // section 127-0-1-1--715d45eb:13387d0ab1e:-8000:0000000000003357 end
-
-        return $returnValue;
+        // section 127-0-1-1-72bb438:1338cba5f73:-8000:00000000000033A1 end
     }
 
 } /* end of class wfEngine_helpers_Monitoring_CurrentActivitiesAdapter */

@@ -82,10 +82,10 @@ class wfEngine_helpers_Monitoring_TranslationProcessMonitoringGrid
 		$this->grid->addColumn(PROPERTY_PROCESSINSTANCES_CURRENTACTIVITYEXECUTIONS, __('Current Activities'));
 		$returnValue = $this->grid->setColumnsAdapter(
 			PROPERTY_PROCESSINSTANCES_CURRENTACTIVITYEXECUTIONS,
-			new wfEngine_helpers_Monitoring_CurrentActivitiesAdapter(array(
-				'excludedProperties' => $this->excludedProperties,
-				'MonitoringGridClass' => 'wfEngine_helpers_Monitoring_TranslationActivityMonitoringGrid'
-			))
+			new wfEngine_helpers_Monitoring_CurrentActivitiesAdapter(
+				array('excludedProperties' => $this->excludedProperties),
+				'wfEngine_helpers_Monitoring_TranslationActivityMonitoringGrid'
+			)
 		);	
         // section 127-0-1-1--715d45eb:13387d0ab1e:-8000:0000000000003364 end
 
