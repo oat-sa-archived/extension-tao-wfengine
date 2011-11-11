@@ -108,7 +108,7 @@ class wfEngine_helpers_Monitoring_VersionedFileAdapter
 					if($xliff instanceof core_kernel_classes_Resource){
 						$xliff = new core_kernel_versioning_File($xliff->uriResource);
 						$this->data[$rowId]['xliff'] = $xliff->uriResource;
-						$this->data[$rowId]['xliff_version'] = $xliff->getVersion();
+						$this->data[$rowId]['xliff_version'] = (string) $processVariableService->get('xliff', $activityExecution);
 					}else{
 						$this->data[$rowId]['xliff'] = 'n/a';
 						$this->data[$rowId]['xliff_version'] = 'n/a';
@@ -117,7 +117,7 @@ class wfEngine_helpers_Monitoring_VersionedFileAdapter
 					if($vff instanceof core_kernel_classes_Resource){
 						$vff = new core_kernel_versioning_File($vff->uriResource);
 						$this->data[$rowId]['vff'] = $vff->uriResource;
-						$this->data[$rowId]['vff_version'] = $vff->getVersion();
+						$this->data[$rowId]['vff_version'] = (string) $processVariableService->get('vff', $activityExecution);
 					}
 					else{
 						$this->data[$rowId]['vff'] = 'n/a';

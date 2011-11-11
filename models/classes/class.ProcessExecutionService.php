@@ -1667,9 +1667,10 @@ class wfEngine_models_classes_ProcessExecutionService
      * @access public
      * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @param  Resource processExecution
+     * @param  boolean withData
      * @return array
      */
-    public function getExecutionHistory( core_kernel_classes_Resource $processExecution)
+    public function getExecutionHistory( core_kernel_classes_Resource $processExecution, $withData = false)
     {
         $returnValue = array();
 
@@ -1692,48 +1693,54 @@ class wfEngine_models_classes_ProcessExecutionService
 			if(common_Utils::isUri($uri)){
 				
 				$activityExecution = new core_kernel_classes_Resource($uri);
-				$previousArray = array();
-				$followingArray = array();
-
-				$previous = $activityExecution->getPropertyValues($previousProperty);
-				$countPrevious = count($previous);
-				for($j=0; $j<$countPrevious; $j++){
-					if(common_Utils::isUri($previous[$j])){
-						$prevousActivityExecution = new core_kernel_classes_Resource($previous[$j]);
-						$previousArray[] = $prevousActivityExecution->uriResource;
-					}
-				}
-
-				$following = $activityExecution->getPropertyValues($followingProperty);
-				$countFollowing = count($following);
-				for($k=0; $k<$countFollowing; $k++){
-					if(common_Utils::isUri($following[$k])){
-						$followingActivityExecution = new core_kernel_classes_Resource($following[$k]);
-						$followingArray[] = $followingActivityExecution->uriResource;
-					}
-				}
-				
 				$createdOn = (string)$activityExecution->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_TIME_CREATED));
 				
-				$unorderedActivityExecutions[$uri] = array(
-					'activityExecution' => $activityExecution,
-					'executionOf' => $this->activityExecutionService->getExecutionOf($activityExecution),
-					'createdOn' => date('d-m-Y G:i:s', $createdOn),
-					'current' => array_key_exists($activityExecution->uriResource, $currentActivityExecutions),
-					'status' => $this->activityExecutionService->getStatus($activityExecution),
+				if($withData){
 					
-					'ACLmode' => $this->activityExecutionService->getAclMode($activityExecution),
-					'restrictedRole' => $this->activityExecutionService->getRestrictedRole($activityExecution),
-					'restrictedUser' => $this->activityExecutionService->getRestrictedUser($activityExecution),
-					'user' => $this->activityExecutionService->getActivityExecutionUser($activityExecution),
+					$previousArray = array();
+					$followingArray = array();
+
+					$previous = $activityExecution->getPropertyValues($previousProperty);
+					$countPrevious = count($previous);
+					for($j=0; $j<$countPrevious; $j++){
+						if(common_Utils::isUri($previous[$j])){
+							$prevousActivityExecution = new core_kernel_classes_Resource($previous[$j]);
+							$previousArray[] = $prevousActivityExecution->uriResource;
+						}
+					}
+
+					$following = $activityExecution->getPropertyValues($followingProperty);
+					$countFollowing = count($following);
+					for($k=0; $k<$countFollowing; $k++){
+						if(common_Utils::isUri($following[$k])){
+							$followingActivityExecution = new core_kernel_classes_Resource($following[$k]);
+							$followingArray[] = $followingActivityExecution->uriResource;
+						}
+					}
+				
+					$unorderedActivityExecutions[$uri] = array(
+						'activityExecution' => $activityExecution,
+						'executionOf' => $this->activityExecutionService->getExecutionOf($activityExecution),
+						'createdOn' => date('d-m-Y G:i:s', $createdOn),
+						'current' => array_key_exists($activityExecution->uriResource, $currentActivityExecutions),
+						'status' => $this->activityExecutionService->getStatus($activityExecution),
+
+						'ACLmode' => $this->activityExecutionService->getAclMode($activityExecution),
+						'restrictedRole' => $this->activityExecutionService->getRestrictedRole($activityExecution),
+						'restrictedUser' => $this->activityExecutionService->getRestrictedUser($activityExecution),
+						'user' => $this->activityExecutionService->getActivityExecutionUser($activityExecution),
+
+						'previous' => $previousArray,
+						'following' => $followingArray,
+						'nonce' => $this->activityExecutionService->getNonce($activityExecution),
+
+						'context' => $recoveryService->getContext($activityExecution, ''),
+						'variables' => $this->activityExecutionService->getVariables($activityExecution)
+					);
 					
-					'previous' => $previousArray,
-					'following' => $followingArray,
-					'nonce' => $this->activityExecutionService->getNonce($activityExecution),
-					
-					'context' => $recoveryService->getContext($activityExecution, ''),
-					'variables' => $this->activityExecutionService->getVariables($activityExecution)
-				);
+				}else{
+					$unorderedActivityExecutions[$uri] = $activityExecution->uriResource;
+				}
 				
 				$creationTime[$uri] = $createdOn;
 			}

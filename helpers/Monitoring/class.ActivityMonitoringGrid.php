@@ -109,10 +109,12 @@ class wfEngine_helpers_Monitoring_ActivityMonitoringGrid
 		
 		foreach($activityProperties as $activityPropertyUri => $label){
 			if(!isset($excludedProperties[$activityPropertyUri])){
+				if(isset($columnNames[$activityPropertyUri]) && !empty($columnNames[$activityPropertyUri])){
+					$label = $columnNames[$activityPropertyUri];
+				}
 				$this->grid->addColumn($activityPropertyUri, $label);
 				$propertyUris[] = $activityPropertyUri;
 			}
-			
 		}
 		
 		$returnValue = $this->grid->setColumnsAdapter(

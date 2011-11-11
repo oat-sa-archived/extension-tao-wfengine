@@ -16,11 +16,15 @@ class MonitoringTestCase extends wfEngineServiceTest {
 		//wfEngine_helpers_Monitoring_TranslationProcessMonitoringGrid
 		$processInstancesClass = new core_kernel_classes_Class(CLASS_PROCESSINSTANCES);
 		$processExecutions = $processInstancesClass->getInstances();
-		$processMonitoringGrid = new wfEngine_helpers_Monitoring_TranslationProcessMonitoringGrid(array_keys($processExecutions));
-
-		var_dump($processMonitoringGrid->toArray());
-		var_dump($processMonitoringGrid->getGrid()->getColumnsModel());
 		
+//		$processMonitoringGrid = new wfEngine_helpers_Monitoring_TranslationProcessMonitoringGrid(array_keys($processExecutions));
+//		var_dump($processMonitoringGrid->toArray());
+//		var_dump($processMonitoringGrid->getGrid()->getColumnsModel());
+		
+		//wfEngine_helpers_Monitoring_ExecutionHistoryGrid
+		//wfEngine_helpers_Monitoring_TranslationExecutionHistoryGrid
+		$executionHistoryGrid = new wfEngine_helpers_Monitoring_TranslationExecutionHistoryGrid(reset($processExecutions));
+		var_dump($executionHistoryGrid->toArray());
 	}
 	
 }
