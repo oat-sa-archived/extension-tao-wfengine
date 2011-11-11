@@ -10,7 +10,8 @@ class wfEngine_actions_Main extends wfEngine_actions_WfModule
 	 * 
 	 * @return void
 	 */	
-	public function index(){
+	public function index()
+	{
 		
 		//init required services
 		$activityExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityExecutionService');
@@ -26,7 +27,7 @@ class wfEngine_actions_Main extends wfEngine_actions_WfModule
 		$this->setData('uiLanguages', $uiLanguages);
 		
 		$userViewData = UsersHelper::buildCurrentUserForView();
-		$this->setData('userViewData',$userViewData);
+		$this->setData('userViewData', $userViewData);
 		
 		//list of available process executions:
 		$processInstancesClass = new core_kernel_classes_Class(CLASS_PROCESSINSTANCES);

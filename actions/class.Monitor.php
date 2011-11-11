@@ -41,15 +41,33 @@ class wfEngine_actions_Monitor extends tao_actions_TaoModule {
 		$properties[] = new core_kernel_classes_Property(PROPERTY_PROCESSINSTANCES_STATUS);
 		
 		$processInstancesClass = new core_kernel_classes_Class(CLASS_PROCESSINSTANCES);
-		$processExecutions = $processInstancesClass->getInstances();
-		$processMonitoringGrid = new wfEngine_helpers_Monitoring_TranslationProcessMonitoringGrid();
+		//$processExecutions = $processInstancesClass->getInstances(array('limit'=>'1'));
+		$processMonitoringGrid = new wfEngine_helpers_Monitoring_TranslationProcessMonitoringGrid(/*array_keys($processExecutions)*/);
+		//$processMonitoringGrid->toArray();
 		$grid = $processMonitoringGrid->getGrid();
 		$columns = $grid->getColumns();
+		$model = $grid->getColumnsModel();
+		//echo'<pre>';print_r($processMonitoringGrid->toArray());echo'</pre>';
+		
+		$processHistoryGrid = new wfEngine_helpers_Monitoring_TranslationExecutionHistoryGrid(new core_kernel_classes_Resource('yeah'));
+		$historyProcessModel = $processHistoryGrid->getGrid()->getColumnsModel();
 		
 		$this->setData('clazz', $clazz);
 		$this->setData('properties', $properties);	
-		$this->setData('processExecutions', $processExecutions);
+		//$this->setData('processExecutions', $processExecutions);
 		$this->setData('columns', $columns);
+		foreach($model as $key=>$elt){
+			$model[$key]['weight'] = 1;
+			$model[$key]['widget'] = "Label";
+		}
+		
+		$model['http://www.w3.org/2000/01/rdf-schema#label']['weight'] = 3;
+		$model['http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessInstancesExecutionOf']['weight'] = 2;
+		$model['http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessInstancesCurrentActivityExecutions']['weight'] = 4;
+		$model['http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessInstancesCurrentActivityExecutions']['widget'] = "CurrentActivities";
+		
+		$this->setData('model', json_encode($model));
+		$this->setData('historyProcessModel', json_encode($historyProcessModel));
 		$this->setData('data', $processMonitoringGrid->toArray());
 		$this->setView('monitor/index.tpl');
 	}
@@ -57,49 +75,35 @@ class wfEngine_actions_Monitor extends tao_actions_TaoModule {
 	public function monitorProcess()
 	{
 		$returnValue = array();
+		$filter = null;
+		
+		if($this->hasRequestParameter('filter')){
+			$filter = $this->getRequestParameter('filter');
+			$filter = $filter == 'null' || empty($filter) ? null : $filter;
+		}
 		$processInstancesClass = new core_kernel_classes_Class(CLASS_PROCESSINSTANCES);
-		$processExecutions = $processInstancesClass->getInstances();
+		if(!is_null($filter)){
+			$processExecutions = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessService')
+				->searchInstances($filter, $processInstancesClass, array ('recursive'=>true));
+		}else{
+			$processExecutions = $processInstancesClass->getInstances();
+		}
 		
 		$processMonitoringGrid = new wfEngine_helpers_Monitoring_TranslationProcessMonitoringGrid(array_keys($processExecutions));
+		$data = $processMonitoringGrid->toArray();
 		
-		$grid = $processMonitoringGrid->getGrid();
-		$columns = $grid->getColumns();
-		$toArray = $processMonitoringGrid->toArray();
-		
-		echo json_encode($toArray);
-		return;
-		
-		//var_dump($toArray);
-		/*foreach($toArray as $elt){
-			$returnValue[] = $elt;
-		}
-		var_dump($returnValue);*/
-		//echo json_encode($returnValue);
-		$test = array(
-			"page"		=> 1
-			, "total"	=> 1
-			, "records"	=> 10
-			, "rows" 	=> array()
-		);
-		$i=0;
-		foreach($toArray as $process){
-			foreach($process as $propUri=>$propValue){
-				$test['rows'][$i][$propUri] = $propValue;
-			}
-			$i++;
-		} 
-		echo json_encode ((Object)$test);
+		echo json_encode($data);
 	}
 	
+	public function processHistory()
+	{
+		if($this->hasRequestParameter('uri')){
+			$uri = $this->getRequestParameter('uri');
+		}
+		
+		$processMonitoringGrid = new wfEngine_helpers_Monitoring_TranslationExecutionHistoryGrid(new core_kernel_classes_Resource($uri));
+		$data = $processMonitoringGrid->toArray();
+		
+		echo json_encode($data);
+	}
 }
-/*{
-   "page":"1",
-   "total":2,
-   "records":"13", 
-   "rows":[ 
-      {"id":"12345","name":"Desktop Computers","email":"josh@josh.com","item":{"price":"1000.72", "weight": "1.22" }, "note": "note", "stock": "0","ship": "1"}, 
-      {"id":"23456","name":"<var>laptop</var>","note":"Long text ","stock":"yes","item":{"price":"56.72", "weight":"1.22"},"ship": "2"},
-      {"id":"34567","name":"LCD Monitor","note":"note3","stock":"true","item":{"price":"99999.72", "weight":"1.22"},"ship":"3"},
-      {"id":"45678","name":"Speakers","note":"note","stock":"false","ship":"4"} 
-    ] 
-}*/

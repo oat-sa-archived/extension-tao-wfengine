@@ -1,8 +1,11 @@
 <!-- <script type="text/javascript" src="<?=ROOT_URL?>/taoItems/models/ext/itemAuthoring/waterphenix/lib/wuib/wuib.min.js"></script> -->
 <style> 
-	#filter-container {height:100%;}
+	#filter-container { width:19%;  height:584px; }
+	.main-container { height:584px; }
+	#monitoring-processes-container, #process-details-container { height:50%; }
+	#process-details-tabs { height:98%; }
 	.tabs-bottom { position: relative; } 
-	.tabs-bottom .ui-tabs-panel { height:450px; overflow: auto; }
+	.tabs-bottom .ui-tabs-panel { height:100%; overflow: auto; }
 	.tabs-bottom .ui-tabs-nav { position: absolute !important; left: 0; bottom: 0; right:0; padding: 0 0.2em 0.2em 0; } 
 	.tabs-bottom .ui-tabs-nav li { margin-top: -2px !important; margin-bottom: 1px !important; border-top: none; border-bottom-width: 1px; }
 	.ui-tabs-selected { margin-top: -3px !important; }
@@ -12,7 +15,7 @@
 	<div class="ui-widget ui-state-default ui-widget-header ui-corner-top container-title" >
 		<?=__('Filter')?>
 	</div>
-	<ul class="4ui-helper-hidden-accessible">
+	<ul class="4ui-helper-hidden-accessible">	
 		<li><a href="#tabs-1">Query</a></li>
 		<li><a href="#tabs-2">Text</a></li>
 		<li><a href="#tabs-3">Facet</a></li>
@@ -30,18 +33,43 @@
 	</div>
 </div>
 
-<div class="main-container" style="border:2px dashed gray">
-	<table id="monitoring-processes-grid">
-	</table>	
+<div class="main-container">
+	<div id="monitoring-processes-container">
+		<table id="monitoring-processes-grid">
+		</table>
+	</div>	
+	<div id="process-details-container">
+				<table id="current-activities-grid">
+				</table>
+				<table id="history-process-grid">
+				</table>
+				<!-- 
+		<div id="process-details-tabs">
+			<ul class="4ui-helper-hidden-accessible">	
+				<li><a href="#history-process-container">Current Activities</a></li>
+				<li><a href="#current-activities-container">History</a></li>
+			</ul>
+			<div id="current-activities-container">
+				<table id="current-activities-grid">
+				</table>
+			</div>
+			<div id="history-process-container">
+				<table id="history-process-grid">
+				</table>
+			</div>
+		</div> -->
+	</div>	
 </div>
 
 <script type="text/javascript">
 $(function(){
 
-	filterTabs = new TaoTabsClass('#filter-container');
+	var filterTabs = new TaoTabsClass('#filter-container', {'position':'bottom'});
+	var processDetailsTabs = new TaoTabsClass('#process-details-tabs', {'position':'bottom'});
+	var monitoringData = new Array();
 	
 	/*
-	 * instantiate the filter nodes widget
+	 * instantiate the facet based filter widget
 	 */
 
 	var getUrl = root_url + '/wfEngine/Monitor/getFilteredInstancesPropertiesValues';
@@ -49,10 +77,18 @@ $(function(){
 	var facetFilterOptions = {
 		'template' : 'accordion',
 		'callback' : {
-			'onFilter' : function(filter, filterNodesOptions){
-				console.log(filter, filterNodesOptions);
+			'onFilter' : function(filter, filterNodesOpt){
 				//refreshResult(filter, filterNodesOptions);
 				//console.log('yeah filter');
+				var formatedFilter = {};
+				for(var filterNodeId in filter){
+					var propertyUri = filterNodesOpt[filterNodeId]['propertyUri'];
+					typeof(formatedFilter[propertyUri])=='undefined'?formatedFilter[propertyUri]=new Array():null;
+					for(var i in filter[filterNodeId]){
+						formatedFilter[propertyUri].push(filter[filterNodeId][i]);
+					}
+				}
+				loadMonitoringGrid(formatedFilter);
 			}
 		}
 	};
@@ -79,49 +115,76 @@ $(function(){
 	 * instantiate the dynamic grid
 	 */
 
-	//define jqgrid column
-	var properties = [
-	<?foreach($columns as $column):?>
-		 '<?=$column->getTitle()?>',
-	<?endforeach?>
-		<?php //,__('Actions')?>
-	];
-	//properties = ['test'];
+	function loadMonitoringGrid(filter){
+		$.getJSON (root_url+'/wfEngine/Monitor/monitorProcess'
+			,{
+				'filter':filter
+			}
+			, function (DATA) {
+				monitoringData = DATA;
+				monitoringGrid.empty();
+				monitoringGrid.add(DATA);
+			}
+		);
+	}
+	 
+	//the grid model
+	var model = <?=$model?>;
+	//the monitoring grid options
+	var monitoringGridOptions = {
+		'height' : $('#monitoring-processes-grid').parent().height()
+		, 'callback' : {
+			'onSelectRow' : function(id){
+				console.log(id);
+				console.dir(monitoringData);
+				console.log(monitoringData[id]['http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessInstancesCurrentActivityExecutions']);
+				currentActivitiesGrid.empty();
+				currentActivitiesGrid.add(monitoringData[id]['http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessInstancesCurrentActivityExecutions']);
 
-    <?foreach($columns as $column):?>
-		 //console.log('<?= $column->getId()?>');
-	<?endforeach;?>
-	
-	//define jqgrid model
-	var model = [
-    <?foreach($columns as $column):?>
-		 {name:'<?=$column->getId()?>',index:'<?=$column->getId()?>'},
-	<?endforeach;?>
-		<?php //{name:'actions',index:'actions', align:"center", sortable: false}, ?>
-	];
-
-	//model = [{name:'test',index:'test'}];
-	//instantiate jqgrid
-	$("#monitoring-processes-grid").jqGrid({
-		//url			:'http://tao.local/wfEngine/Monitor/monitorProcess',
-	    datatype	: "json",
-	    mtype		: 'GET',
-		colNames	: properties, 
-		colModel	: model, 
-		//width		: parseInt($("#result-list").parent().width()) - 15, 
-		//sortname	: 'id', 
-		//sortorder	: "asc", 
-		caption		: __("Monitoring Processes"),
-		jsonReader: {
-			repeatitems : false,
-			id: "0"
+				$.getJSON (root_url+'/wfEngine/Monitor/processHistory'
+						,{
+							'uri':id
+						}
+						, function (DATA) {
+							historyProcessGrid.empty();
+							historyProcessGrid.add(DATA);
+						}
+					);
+				
+			}
 		}
-	});
+	};
+	//instantiate the grid widget
+	var monitoringGrid = new TaoGridClass('#monitoring-processes-grid', model, '', monitoringGridOptions);
 
-	$.ajax();
+	//load monitoring grid
+	loadMonitoringGrid(null);
+
+	/**
+	 * Instantiate the details area
+	 */
+	//the grid model
+	var currentActivitiesModel = model['http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessInstancesCurrentActivityExecutions']['subgrids'];
+	//the current activities grid options
+	
+	 var currentActivitiesOptions = {
+		'height' : $('#current-activities-grid').parent().height()
+	};
+	//instantiate the grid widget
+	var currentActivitiesGrid = new TaoGridClass('#current-activities-grid', currentActivitiesModel, '', currentActivitiesOptions);
+
+	
+	/**
+	 * Instantiate the history area
+	 */
+	//the grid model
+	var historyProcessModel = <?=$historyProcessModel?>;
+	//the history grid options	
+	 var historyProcessOptions = {
+		'height' : $('#history-process-grid').parent().height()
+	};
+	//instantiate the grid widget
+	var historyProcessGrid = new TaoGridClass('#history-process-grid', historyProcessModel, '', historyProcessOptions);
+	
 });
 </script>
-
-	 <? //var_dump($processExecutions) ?>
-	 <? //var_dump($data) ?>
-	 
