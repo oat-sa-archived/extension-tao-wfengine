@@ -17,7 +17,8 @@ class wfEngine_actions_Process extends tao_actions_TaoModule {
 	 * constructor: initialize the service and the default data
 	 * @return Groups
 	 */
-	public function __construct(){
+	public function __construct()
+	{
 		
 		parent::__construct();
 		
@@ -37,7 +38,8 @@ class wfEngine_actions_Process extends tao_actions_TaoModule {
 	 * get the selected group from the current context (from the uri and classUri parameter in the request)
 	 * @return core_kernel_classes_Resource $group
 	 */
-	protected function getCurrentInstance(){
+	protected function getCurrentInstance()
+	{
 		$uri = tao_helpers_Uri::decode($this->getRequestParameter('uri'));
 		if(is_null($uri) || empty($uri)){
 			throw new Exception("No valid uri found");
@@ -56,7 +58,8 @@ class wfEngine_actions_Process extends tao_actions_TaoModule {
 	 * get the main class
 	 * @return core_kernel_classes_Classes
 	 */
-	protected function getRootClass(){
+	protected function getRootClass()
+	{
 		return $this->service->getProcessClass();
 	}
 	
@@ -69,7 +72,8 @@ class wfEngine_actions_Process extends tao_actions_TaoModule {
 	 * and to prevent a wrong action state based on the resource.
 	 * @return void
 	 */
-	public function index(){
+	public function index()
+	{
 		
 		$this->removeSessionAttribute('uri');
 		$this->removeSessionAttribute('classUri');
@@ -82,7 +86,8 @@ class wfEngine_actions_Process extends tao_actions_TaoModule {
 	 * Edit a group instance
 	 * @return void
 	 */
-	public function editProcess(){
+	public function editProcess()
+	{
 		$clazz = $this->getCurrentClass();
 		$process = $this->getCurrentInstance();
 		
@@ -92,7 +97,7 @@ class wfEngine_actions_Process extends tao_actions_TaoModule {
 		);
 		
 		// $myForm = wfEngine_helpers_ProcessFormFactory::instanceEditor($clazz, $process, $excludedProperties);
-		$myForm = wfEngine_helpers_ProcessFormFactory::instanceEditor($clazz, $process, 'processEditor', array("noSubmit"=>true,"noRevert"=>true) , $excludedProperties);
+		$myForm = wfEngine_helpers_ProcessFormFactory::instanceEditor($clazz, $process, 'processEditor', array("noSubmit"=>true, "noRevert"=>true), $excludedProperties);
 		if($myForm->isSubmited()){
 			if($myForm->isValid()){
 				
@@ -115,7 +120,8 @@ class wfEngine_actions_Process extends tao_actions_TaoModule {
 	 * Delete a group or a group class
 	 * @return void
 	 */
-	public function delete(){
+	public function delete()
+	{
 		if(!tao_helpers_Request::isAjax()){
 			throw new Exception("wrong request mode");
 		}
@@ -131,7 +137,8 @@ class wfEngine_actions_Process extends tao_actions_TaoModule {
 		echo json_encode(array('deleted'	=> $deleted));
 	}
 	
-	public function authoring(){
+	public function authoring()
+	{
 		$this->setData('error', false);
 		try{
 			//get process instance to be authored
@@ -145,7 +152,8 @@ class wfEngine_actions_Process extends tao_actions_TaoModule {
 		$this->setView('authoring/process_authoring_tool.tpl');
 	}
 	
-	public function editProcessClass(){
+	public function editProcessClass()
+	{
 		$this->removeSessionAttribute('uri');
 		parent::index();
 	}
@@ -157,7 +165,8 @@ class wfEngine_actions_Process extends tao_actions_TaoModule {
      * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
 	 * @return void
 	 */
-	public function cloneProcess(){
+	public function cloneProcess()
+	{
 		if(!tao_helpers_Request::isAjax()){
 			throw new Exception("wrong request mode");
 		}
