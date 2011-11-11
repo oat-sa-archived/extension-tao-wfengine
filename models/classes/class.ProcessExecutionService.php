@@ -1397,6 +1397,15 @@ class wfEngine_models_classes_ProcessExecutionService
 					
 			//set in the session the current activity uri
 			if(!is_null($returnValue)){
+				//set time properties:
+				$propStartedTime = new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_TIME_STARTED);
+				$propLastTime = new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_TIME_LASTACCESS);
+				
+				if(is_null($activityExecution->getOnePropertyValue($propStartedTime))){
+					$activityExecution->setPropertyValue($propStartedTime, time());
+				}
+				$activityExecution->editPropertyValues($propLastTime, time());
+				
 				Session::setAttribute("activityExecutionUri", $returnValue->uriResource);//for variable service only?
 			}
 			
