@@ -9,7 +9,7 @@ error_reporting(E_ALL);
  *
  * This file is part of TAO.
  *
- * Automatically generated on 02.09.2011, 13:44:11 with ArgoUML PHP module 
+ * Automatically generated on 14.11.2011, 11:28:39 with ArgoUML PHP module 
  * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
  *
  * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
@@ -93,15 +93,9 @@ class wfEngine_models_classes_ProcessDefinitionService
 
         // section 127-0-1-1--6e15d8e:132297dc60d:-8000:0000000000002EEB begin
 		
+		//@TODO: use $this->processRootActivitiesProp property to optimize performance:
+		//@TODO: remove all call of the constant PROPERTY_ACTIVITIES_ISINITIAL
 		$activities = $processDefinition->getPropertyValuesCollection($this->processActivitiesProp);
-		
-		// Unfortunately at this time we have no other possibility than iterate on the
-		// activities because the association between PROCESSES (1) and ACTIVITIES (2) is directed
-		// from (1) to (2).
-		//solution:
-		//1 - could be replaced by a Class::searchInstance() by adding the asociation (2) to (1)
-		//2 - add a property to class PROCESSES: initialActivities (would then need to update all the related methods)
-		
 		foreach ($activities->getIterator() as $activity)
 		{
 			$isInitialCollection = $activity->getOnePropertyValue($this->activitiesIsInitialProp);
@@ -199,6 +193,7 @@ class wfEngine_models_classes_ProcessDefinitionService
 		$this->processVariablesProp = new core_kernel_classes_Property(PROPERTY_PROCESS_VARIABLES);
 		$this->processActivitiesProp = new core_kernel_classes_Property(PROPERTY_PROCESS_ACTIVITIES);
 		$this->activitiesIsInitialProp = new core_kernel_classes_Property(PROPERTY_ACTIVITIES_ISINITIAL);
+		$this->processRootActivitiesProp = new core_kernel_classes_Property(PROPERTY_ACTIVITIES_ISINITIAL);
 		
         // section 127-0-1-1--6e15d8e:132297dc60d:-8000:0000000000002F01 end
     }
@@ -231,6 +226,164 @@ class wfEngine_models_classes_ProcessDefinitionService
         // section 127-0-1-1--6e15d8e:132297dc60d:-8000:0000000000002F06 end
 
         return (bool) $returnValue;
+    }
+
+    /**
+     * Short description of method setRootActivities
+     *
+     * @access public
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @param  Resource processDefinition
+     * @param  array rootActivities
+     * @return boolean
+     */
+    public function setRootActivities( core_kernel_classes_Resource $processDefinition, $rootActivities)
+    {
+        $returnValue = (bool) false;
+
+        // section 127-0-1-1--db23604:133a151a3dc:-8000:00000000000033AC begin
+		//@TODO: use this method to set initial process activities
+		$processDefinition->editPropertyValues($this->processRootActivitiesProp, $rootActivities);
+        // section 127-0-1-1--db23604:133a151a3dc:-8000:00000000000033AC end
+
+        return (bool) $returnValue;
+    }
+
+    /**
+     * Short description of method setAcl
+     *
+     * @access public
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @param  Resource processDefinition
+     * @param  Resource mode
+     * @param  Resource target
+     * @return core_kernel_classes_Resource
+     */
+    public function setAcl( core_kernel_classes_Resource $processDefinition,  core_kernel_classes_Resource $mode,  core_kernel_classes_Resource $target = null)
+    {
+        $returnValue = null;
+
+        // section 127-0-1-1--db23604:133a151a3dc:-8000:00000000000033B0 begin
+		
+        if(!$processDefinition->hasType(new core_kernel_classes_Class(CLASS_PROCESS))){
+        	throw new Exception("Process must be an instance of the class Process");
+        }
+        if(!in_array($mode->uriResource, array_keys($this->getAclModes()))){
+        	throw new Exception("Unknow acl mode");
+        }
+        
+        //set the ACL mode
+        $properties = array(
+        	PROPERTY_PROCESS_INIT_ACL_MODE	=> $mode->uriResource
+        );
+        
+        switch($mode->uriResource){
+        	case INSTANCE_ACL_ROLE:{
+        		if(is_null($target)){
+        			throw new Exception("Target must reference a role resource");
+        		}
+        		$properties[PROPERTY_PROCESS_INIT_RESTRICTED_ROLE] = $target->uriResource;
+        		break;
+        	}	
+        	case INSTANCE_ACL_USER:{
+        		if(is_null($target)){
+        			throw new Exception("Target must reference a user resource");
+        		}
+        		$properties[PROPERTY_PROCESS_INIT_RESTRICTED_USER] = $target->uriResource;
+        		break;
+			}	
+        }
+        
+        //bind the mode and the target (user or role) to the activity
+        $returnValue = $this->bindProperties($processDefinition, $properties);
+		
+        // section 127-0-1-1--db23604:133a151a3dc:-8000:00000000000033B0 end
+
+        return $returnValue;
+    }
+
+    /**
+     * Short description of method checkAcl
+     *
+     * @access public
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @param  Resource processDefinition
+     * @param  Resource currentUser
+     * @return boolean
+     */
+    public function checkAcl( core_kernel_classes_Resource $processDefinition,  core_kernel_classes_Resource $currentUser)
+    {
+        $returnValue = (bool) false;
+
+        // section 127-0-1-1--db23604:133a151a3dc:-8000:00000000000033B9 begin
+		
+		if(!is_null($processDefinition)){
+
+            $processModeProp	= new core_kernel_classes_Property(PROPERTY_PROCESS_INIT_ACL_MODE);
+            $restrictedUserProp	= new core_kernel_classes_Property(PROPERTY_PROCESS_INIT_RESTRICTED_USER);
+            $restrictedRoleProp	= new core_kernel_classes_Property(PROPERTY_PROCESS_INIT_RESTRICTED_ROLE);
+
+            //process and current must be set to the activty execution otherwise a common Exception is thrown
+             
+            $modeUri = $processDefinition->getOnePropertyValue($processModeProp);
+            if(is_null($modeUri) || (string)$modeUri == ''){
+                $returnValue = true;	//if no mode defined, the process is allowed
+            }
+            else{
+                switch($modeUri->uriResource){
+                     
+                    //check if th current user is the restricted user
+                    case INSTANCE_ACL_USER:
+                        $processUser = $processDefinition->getOnePropertyValue($restrictedUserProp);
+                        if(!is_null($processUser)){
+                            if($processUser->uriResource == $currentUser->uriResource) {
+                                $returnValue = true;
+                            }
+                        }
+                        break;
+                         
+                        //check if the current user has the restricted role
+                    case INSTANCE_ACL_ROLE:
+                        $processRole 	= $processDefinition->getOnePropertyValue($restrictedRoleProp);
+                        $userRoles 		= $currentUser->getType();
+                        if(!is_null($processRole) && is_array($userRoles)){
+                        	foreach($userRoles as $userRole){
+                        		if($processRole->uriResource == $userRole->uriResource){
+                        			return true;
+                        		}
+                        	}
+                        }
+                        break;
+                    default:
+                        $returnValue = true;
+                }
+            }
+        }
+		
+        // section 127-0-1-1--db23604:133a151a3dc:-8000:00000000000033B9 end
+
+        return (bool) $returnValue;
+    }
+
+    /**
+     * Short description of method getAclModes
+     *
+     * @access public
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @return array
+     */
+    public function getAclModes()
+    {
+        $returnValue = array();
+
+        // section 127-0-1-1--db23604:133a151a3dc:-8000:00000000000033BE begin
+		$returnValue = array(
+			INSTANCE_ACL_ROLE => new core_kernel_classes_Resource(INSTANCE_ACL_ROLE),
+			INSTANCE_ACL_USER => new core_kernel_classes_Resource(INSTANCE_ACL_USER)
+		);
+        // section 127-0-1-1--db23604:133a151a3dc:-8000:00000000000033BE end
+
+        return (array) $returnValue;
     }
 
 } /* end of class wfEngine_models_classes_ProcessDefinitionService */

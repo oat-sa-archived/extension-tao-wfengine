@@ -17,6 +17,7 @@ $todefine = array(
 	'PROPERTY_PROCESS_VARIABLES'					=> NS_WFENGINE . '#PropertyProcessVariables',
 	'PROPERTY_PROCESS_DIAGRAMDATA'					=> NS_WFENGINE . '#PropertyProcessDiagramData',
 	'PROPERTY_PROCESS_ACTIVITIES'					=> NS_WFENGINE . '#PropertyProcessActivities',
+	'PROPERTY_PROCESS_ROOT_ACTIVITIES'				=> NS_WFENGINE . '#PropertyProcessRootActivities',
 	'PROPERTY_PROCESS_INIT_RESTRICTED_USER'			=> NS_WFENGINE . '#PropertyProcessInitRestrictedUser',
 	'PROPERTY_PROCESS_INIT_RESTRICTED_ROLE'			=> NS_WFENGINE . '#PropertyProcessInitRestrictedRole',
 	'PROPERTY_PROCESS_INIT_ACL_MODE'				=> NS_WFENGINE . '#PropertyProcessInitAccesControlMode',//!!!

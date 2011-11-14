@@ -16,6 +16,7 @@ class wfEngine_actions_Main extends wfEngine_actions_WfModule
 		//init required services
 		$activityExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityExecutionService');
 		$processExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessExecutionService');
+		$processDefinitionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessDefinitionService');
 		$userService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_UserService');
 		
 		//get current user:
@@ -106,7 +107,7 @@ class wfEngine_actions_Main extends wfEngine_actions_WfModule
 		//filter process that can be initialized by the current user (2nd check...)
 		$authorizedProcessDefinitions = array();
 		foreach($availableProcessDefinitions as $processDefinition){
-			if($processExecutionService->checkAcl($processDefinition, $currentUser)){
+			if($processDefinitionService->checkAcl($processDefinition, $currentUser)){
 				$authorizedProcessDefinitions[] = $processDefinition;
 			}
 		}

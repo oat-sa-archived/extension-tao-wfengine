@@ -206,69 +206,6 @@ class wfEngine_models_classes_ProcessExecutionService
     }
 
     /**
-     * Check the ACL of a user for the given process
-     *
-     * @access public
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
-     * @param  Resource process
-     * @param  Resource currentUser
-     * @return boolean
-     */
-    public function checkAcl( core_kernel_classes_Resource $process,  core_kernel_classes_Resource $currentUser)
-    {
-        $returnValue = (bool) false;
-
-        // section 127-0-1-1--2bba7ca5:129262ff3bb:-8000:0000000000001FE9 begin
-
-        if(!is_null($process)){
-
-            $processModeProp	= new core_kernel_classes_Property(PROPERTY_PROCESS_INIT_ACL_MODE);
-            $restrictedUserProp	= new core_kernel_classes_Property(PROPERTY_PROCESS_INIT_RESTRICTED_USER);
-            $restrictedRoleProp	= new core_kernel_classes_Property(PROPERTY_PROCESS_INIT_RESTRICTED_ROLE);
-
-            //process and current must be set to the activty execution otherwise a common Exception is thrown
-             
-            $modeUri = $process->getOnePropertyValue($processModeProp);
-            if(is_null($modeUri) || (string)$modeUri == ''){
-                $returnValue = true;	//if no mode defined, the process is allowed
-            }
-            else{
-                switch($modeUri->uriResource){
-                     
-                    //check if th current user is the restricted user
-                    case INSTANCE_ACL_USER:
-                        $processUser = $process->getOnePropertyValue($restrictedUserProp);
-                        if(!is_null($processUser)){
-                            if($processUser->uriResource == $currentUser->uriResource) {
-                                $returnValue = true;
-                            }
-                        }
-                        break;
-                         
-                        //check if the current user has the restricted role
-                    case INSTANCE_ACL_ROLE:
-                        $processRole 	= $process->getOnePropertyValue($restrictedRoleProp);
-                        $userRoles 		= $currentUser->getType();
-                        if(!is_null($processRole) && is_array($userRoles)){
-                        	foreach($userRoles as $userRole){
-                        		if($processRole->uriResource == $userRole->uriResource){
-                        			return true;
-                        		}
-                        	}
-                        }
-                        break;
-                    default:
-                        $returnValue = true;
-                }
-            }
-        }
-
-        // section 127-0-1-1--2bba7ca5:129262ff3bb:-8000:0000000000001FE9 end
-
-        return (bool) $returnValue;
-    }
-
-    /**
      * Short description of method deleteProcessExecution
      *
      * @access public

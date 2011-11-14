@@ -230,7 +230,7 @@ class ProcessExecutionServiceTestCase extends UnitTestCase{
 					case 3:{
 						$history = $this->service->getExecutionHistory($processInstance);
 						$this->assertEqual(count($history), 5);//activity 1, 2(closed), 2, 3 and 4
-						$this->assertFalse($this->service->undoForwardTransition($processInstance, $history[0]['activityExecution']));
+						$this->assertFalse($this->service->undoForwardTransition($processInstance, new core_kernel_classes_Resource(reset($history))));
 						
 						$this->assertNotNull($previousActivityExecution);
 						$this->assertFalse($this->service->undoForwardTransition($processInstance, $previousActivityExecution));
@@ -341,7 +341,7 @@ class ProcessExecutionServiceTestCase extends UnitTestCase{
 					case 3:
 					case 4:{
 						$history = $this->service->getExecutionHistory($processInstance);
-						$this->assertFalse($this->service->undoForwardTransition($processInstance, $history[0]['activityExecution']));
+						$this->assertFalse($this->service->undoForwardTransition($processInstance, new core_kernel_classes_Resource(new core_kernel_classes_Resource(reset($history)))));
 						
 						$this->assertNotNull($previousActivityExecution);
 						$this->assertFalse($this->service->undoForwardTransition($processInstance, $previousActivityExecution));
@@ -581,7 +581,7 @@ class ProcessExecutionServiceTestCase extends UnitTestCase{
 					
 					$history = $this->service->getExecutionHistory($processInstance);
 					$this->assertEqual(count($history), 2*($parallelCount1 + $parallelCount2) + 1);//activity 1, 2(closed), 2, 3 and 4
-					$this->assertFalse($this->service->undoForwardTransition($processInstance, $history[0]['activityExecution']));
+					$this->assertFalse($this->service->undoForwardTransition($processInstance, new core_kernel_classes_Resource(reset($history))));
 
 					$this->assertNotNull($previousActivityExecution);
 					$this->assertFalse($this->service->undoForwardTransition($processInstance, $previousActivityExecution));

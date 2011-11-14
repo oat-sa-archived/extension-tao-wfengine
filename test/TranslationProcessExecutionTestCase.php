@@ -156,6 +156,13 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 			$this->userLogins = array();
 			$this->roleLogins = array();
 			
+			$this->userLogins['consortium'] = array();
+			$memberConsortium = 1;
+			for($i = 1; $i <= $memberConsortium; $i++){
+				$this->userLogins['consortium'][$i] = 'consortium_'.$i.'_'.$usec;//the process admin
+				$this->roleLogins[$this->roles['consortium']->uriResource][] = $this->userLogins['consortium'][$i];
+			}
+			
 			$this->userLogins['developer'] = array();
 			$nbDevelopers = 6;
 			for($i = 1; $i <= $nbDevelopers; $i++){
@@ -382,7 +389,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 	
 	public function testCreateUnits(){
 		
-		$unitNames = array('unit01', 'unit02', 'unit03');
+		$unitNames = array('unit04');
 		$this->itemClass = null;
 		$this->units = array();
 		$this->properties = array();
@@ -486,6 +493,10 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		
 		$processDefinition = $authoringService->createProcess($this->processLabel, 'For Unit test');
 		$this->assertIsA($processDefinition, 'core_kernel_classes_Resource');
+		
+		//set process initialization rights:
+		$this->assertTrue($authoringService->setAcl($processDefinition, $aclRole, $this->roles['consortium']));
+		
 
 		//define activities and connectors
 
@@ -655,7 +666,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		
 	}
 	
-	public function testExecuteTranslationProcess(){
+	public function _testExecuteTranslationProcess(){
 		
 		$simulationOptions = array(
 			'repeatBack' => 0,//O: do not back when possible
@@ -685,7 +696,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 					$this->out("executes translation process {$unit->getLabel()}/{$countryCode}/{$langCode}:");
 					$this->assertIsA($unit, 'core_kernel_classes_Resource');
 					$this->executeTranslationProcess($this->processDefinition, $unit->uriResource, $countryCode, $langCode, $simulationOptions);
-//					break(3);
+					break(3);
 				}
 			}
 		}
@@ -696,6 +707,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		
 		$activityExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityExecutionService');
 		$processExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessExecutionService');
+		$processDefinitionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessDefinitionService');
 		$loginProperty = new core_kernel_classes_Property(PROPERTY_USER_LOGIN);
 		
 		$processExecName = 'Test Translation Process Execution';
@@ -735,7 +747,10 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 			$this->vars['xliff']->uriResource => $xliffRevision,
 			$this->vars['vff']->uriResource => $vffRevision,
 		);
-			
+		
+		$this->changeUser($this->userLogins['consortium'][1]);
+		$this->assertTrue($processDefinitionService->checkAcl($processDefinition, $this->currentUser));
+		
 		$processInstance = $processExecutionService->createProcessExecution($processDefinition, $processExecName, $processExecComment, $initVariables);
 		$this->assertEqual($processDefinition->uriResource, $processExecutionService->getExecutionOf($processInstance)->uriResource);
 		
@@ -1294,7 +1309,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 	
 	public function testDeleteCreatedResources(){
 		
-		return;//prevent deletion
+//		return;//prevent deletion
 		
 		if(!empty($this->properties)){
 			foreach($this->properties as $prop){
