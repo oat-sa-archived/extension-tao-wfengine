@@ -56,7 +56,7 @@ class wfEngine_helpers_Monitoring_TranslationActivityMonitoringGrid
 		parent::initColumns();
 		
 		$this->grid->addColumn('xliff_version', __('XLIFF version'));
-		$this->grid->addColumn('xliff', __('XLIFF'), array('widget'=>'Download'));
+		$this->grid->addColumn('xliff', __('XLIFF'));
 		
 		$this->grid->addColumn('vff_version', __('VFF version'));
 		$this->grid->addColumn('vff', __('VFF'));
@@ -69,13 +69,6 @@ class wfEngine_helpers_Monitoring_TranslationActivityMonitoringGrid
 				'vff_version'
 			),
 			new wfEngine_helpers_Monitoring_VersionedFileAdapter()
-		);
-		
-		$this->grid->setColumnsAdapter(
-			array(
-				'xliff'
-			),
-			new tao_helpers_grid_Cell_ResourceVersionedFileAdapter()
 		);
 		
         return (bool) $returnValue;

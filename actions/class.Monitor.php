@@ -11,6 +11,28 @@
 class wfEngine_actions_Monitor extends tao_actions_TaoModule {
 	
 	/**
+	 * Constructor
+	 */
+	public function __construct()
+	{
+		$this->processMonitoringGridOptions = array(
+			'columns' => array(
+				'http://www.w3.org/2000/01/rdf-schema#label' 													=> array('weight'=>3)
+				, 'http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessInstancesExecutionOf' 				=> array('weight'=>2)
+				, 'http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessInstancesCurrentActivityExecutions' => array(
+					'weight'=>4
+					, 'widget'=>'CurrentActivities'
+					, 'columns' => array(
+						'xliff' => array('widget'=>'DownloadFileResource')
+						//, 'vff_version' => array('weight' => 2)
+						, 'vff' => array('widget'=>'DownloadFileResource')
+					)
+				)
+			)
+		);
+	}
+	
+	/**
 	 * 
 	 */
 	public function getRootClass()
@@ -36,18 +58,18 @@ class wfEngine_actions_Monitor extends tao_actions_TaoModule {
 		$properties[] = new core_kernel_classes_Property(LOCAL_NAMESPACE."#languageCode");
 		$properties[] = new core_kernel_classes_Property(PROPERTY_PROCESSINSTANCES_STATUS);
 		
-		//Monitoring data
-		$processMonitoringGrid = new wfEngine_helpers_Monitoring_TranslationProcessMonitoringGrid(array(), array(
-			'columns' => array(
-				'http://www.w3.org/2000/01/rdf-schema#label' 													=> array('weight'=>3)
-				, 'http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessInstancesExecutionOf' 				=> array('weight'=>2)
-				, 'http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessInstancesCurrentActivityExecutions' => array('weight'=>4, 'widget'=>'CurrentActivities')
-			)
-		));
+		//Monitoring grid
+		$processMonitoringGrid = new wfEngine_helpers_Monitoring_TranslationProcessMonitoringGrid(array(), $this->processMonitoringGridOptions);
 		$grid = $processMonitoringGrid->getGrid();
 		$model = $grid->getColumnsModel();
 		
-		$processHistoryGrid = new wfEngine_helpers_Monitoring_TranslationExecutionHistoryGrid(new core_kernel_classes_Resource('yeah'));
+		//Process history grid
+		$processHistoryGrid = new wfEngine_helpers_Monitoring_TranslationExecutionHistoryGrid(new core_kernel_classes_Resource(' '), array(
+			'columns' => array(
+				'xliff'	=> array('widget'=>'DownloadFileResource')
+				, 'vff' => array('widget'=>'DownloadFileResource')
+			)
+		));
 		$historyProcessModel = $processHistoryGrid->getGrid()->getColumnsModel();
 		
 		//Filtering data
@@ -82,7 +104,7 @@ class wfEngine_actions_Monitor extends tao_actions_TaoModule {
 			$processExecutions = $processInstancesClass->getInstances();
 		}
 		
-		$processMonitoringGrid = new wfEngine_helpers_Monitoring_TranslationProcessMonitoringGrid(array_keys($processExecutions));
+		$processMonitoringGrid = new wfEngine_helpers_Monitoring_TranslationProcessMonitoringGrid(array_keys($processExecutions), $this->processMonitoringGridOptions);
 		$data = $processMonitoringGrid->toArray();
 		
 		echo json_encode($data);

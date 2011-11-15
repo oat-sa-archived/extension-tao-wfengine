@@ -117,7 +117,6 @@ class wfEngine_helpers_Monitoring_ProcessMonitoringGrid
 		);
 		
 		$this->initCurrentActivityColumn();
-		
         // section 127-0-1-1--521607b6:1338265e839:-8000:000000000000335C end
 
         return (bool) $returnValue;
@@ -135,10 +134,19 @@ class wfEngine_helpers_Monitoring_ProcessMonitoringGrid
         $returnValue = (bool) false;
 
         // section 127-0-1-1--715d45eb:13387d0ab1e:-8000:0000000000003364 begin
+
+        /*$subGridAdapterOptions = array('excludedProperties' => $this->excludedProperties);
+        if(isset($this->options['columns']) 
+        	&& isset($this->options['columns'][PROPERTY_PROCESSINSTANCES_CURRENTACTIVITYEXECUTIONS])
+        	&& isset($this->options['columns'][PROPERTY_PROCESSINSTANCES_CURRENTACTIVITYEXECUTIONS]['columns']))
+        {
+        	$subGridAdapterOptions = array_merge($subGridAdapterOptions, $this->options['columns'][PROPERTY_PROCESSINSTANCES_CURRENTACTIVITYEXECUTIONS]['columns']);	
+        }*/
+        
 		$this->grid->addColumn(PROPERTY_PROCESSINSTANCES_CURRENTACTIVITYEXECUTIONS, __('Current Activities'));
 		$returnValue = $this->grid->setColumnsAdapter(
 			PROPERTY_PROCESSINSTANCES_CURRENTACTIVITYEXECUTIONS,
-			new wfEngine_helpers_Monitoring_CurrentActivitiesAdapter(array('excludedProperties' => $this->excludedProperties))
+			new wfEngine_helpers_Monitoring_CurrentActivitiesAdapter($subGridAdapterOptions)
 		);	
         // section 127-0-1-1--715d45eb:13387d0ab1e:-8000:0000000000003364 end
 
