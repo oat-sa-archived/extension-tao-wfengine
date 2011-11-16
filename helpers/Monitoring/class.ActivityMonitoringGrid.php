@@ -121,6 +121,10 @@ class wfEngine_helpers_Monitoring_ActivityMonitoringGrid
 			$propertyUris,
 			new wfEngine_helpers_Monitoring_ActivityPropertiesAdapter(array('excludedProperties' => $excludedProperties))
 		);
+		
+		$this->grid->addColumn('variables', __('Variables'));
+		$returnValue = $this->grid->setColumnsAdapter('variables', new wfEngine_helpers_Monitoring_VariablesAdapter());
+		
         // section 127-0-1-1--521607b6:1338265e839:-8000:000000000000335E end
 
         return (bool) $returnValue;

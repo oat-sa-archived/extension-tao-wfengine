@@ -146,7 +146,7 @@ class wfEngine_helpers_Monitoring_ProcessMonitoringGrid
 		$this->grid->addColumn(PROPERTY_PROCESSINSTANCES_CURRENTACTIVITYEXECUTIONS, __('Current Activities'));
 		$returnValue = $this->grid->setColumnsAdapter(
 			PROPERTY_PROCESSINSTANCES_CURRENTACTIVITYEXECUTIONS,
-			new wfEngine_helpers_Monitoring_CurrentActivitiesAdapter($subGridAdapterOptions)
+			new wfEngine_helpers_Monitoring_CurrentActivitiesAdapter()
 		);	
         // section 127-0-1-1--715d45eb:13387d0ab1e:-8000:0000000000003364 end
 

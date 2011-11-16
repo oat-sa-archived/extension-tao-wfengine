@@ -389,7 +389,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 	
 	public function testCreateUnits(){
 		
-		$unitNames = array('unit04');
+		$unitNames = array('unit01', 'unit02', 'unit03');
 		$this->itemClass = null;
 		$this->units = array();
 		$this->properties = array();
@@ -666,7 +666,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		
 	}
 	
-	public function _testExecuteTranslationProcess(){
+	public function testExecuteTranslationProcess(){
 		
 		$simulationOptions = array(
 			'repeatBack' => 0,//O: do not back when possible
@@ -1309,7 +1309,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 	
 	public function testDeleteCreatedResources(){
 		
-//		return;//prevent deletion
+		return;//prevent deletion
 		
 		if(!empty($this->properties)){
 			foreach($this->properties as $prop){

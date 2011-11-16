@@ -324,7 +324,6 @@ class wfEngine_actions_ProcessAuthoring extends tao_actions_TaoModule {
 		$activity = $this->getCurrentActivity();
 		$excludedProperty = array(
 			PROPERTY_ACTIVITIES_INTERACTIVESERVICES,
-			PROPERTY_ACTIVITIES_ISINITIAL,
 			PROPERTY_GENERIS_ALLOWFREEVALUEOF
 		);
 		
