@@ -1,4 +1,9 @@
 <!-- <script type="text/javascript" src="<?=ROOT_URL?>/taoItems/models/ext/itemAuthoring/waterphenix/lib/wuib/wuib.min.js"></script> -->
+
+<script type="text/javascript" src="<?=BASE_URL?>/views/js/grid/wfengine.grid.currentActivities.js"></script>
+<script type="text/javascript" src="<?=BASE_URL?>/views/js/grid/wfengine.grid.activityVariables.js"></script>
+<script type="text/javascript" src="<?=BASE_URL?>/views/js/grid/wfengine.grid.activityVariable.js"></script>
+
 <style> 
 	#filter-container { width:19%;  height:561px; }
 	.main-container { height:584px; padding:0; margin:0; overflow:auto !important; }
@@ -10,6 +15,12 @@
 	.tabs-bottom .ui-tabs-nav { position: absolute !important; left: 0; bottom: 0; right:0; padding: 0 0.2em 0.2em 0; } 
 	.tabs-bottom .ui-tabs-nav li { margin-top: -2px !important; margin-bottom: 1px !important; border-top: none; border-bottom-width: 1px; }
 	.ui-tabs-selected { margin-top: -3px !important; }
+	
+	.activity-variable-edit-container { white-space:inherit; white-space:nowrap !important; }
+	.activity-variable-value { display:block; margin: 3px 0; }
+	.activity-variable-actions { white-space:inherit; white-space:nowrap !important; margin-bottom:7px; }
+	.activity-variable-actions img { margin-top:3px; } 
+	.activity-variable-actions a { border-color:#CCCCCC #AAAAAA #AAAAAA #CCCCCC; border-width:1px; border-style:solid; padding:3px 6px; cursor:pointer; margin-right:5px; text-decoration:none; }
 </style>
 
 <div id="filter-container" class="data-container tabs-bottom">
@@ -58,10 +69,23 @@
 <script type="text/javascript">
 $(function(){
 
+	//global scope for the following variables to be able to access these variables in grid adapters class
+	//monitoring data
+	monitoringData = new Array();
+	//the grid model
+	model = <?=$model?>;
+	//Selected process id
+	//quick hack to test, to replace quickly
+	selectedProcessId = null;
+	
+	/*
+	 * Instantiate the tabs
+	 */
+	 
 	var filterTabs = new TaoTabsClass('#filter-container', {'position':'bottom'});
 	var processDetailsTabs = new TaoTabsClass('#process-details-tabs', {'position':'bottom'});
-	var monitoringData = new Array();
 
+	
 	/*
 	 * instantiate the facet based filter widget
 	 */
@@ -82,7 +106,7 @@ $(function(){
 						formatedFilter[propertyUri].push(filter[filterNodeId][i]);
 					}
 				}
-				loadMonitoringGrid(formatedFilter);
+				loadMonitoring(formatedFilter);
 			}
 		}
 	};
@@ -106,24 +130,33 @@ $(function(){
 
 
 	/*
-	 * instantiate the dynamic grid
+	 * instantiate the monitoring grid
 	 */
 
-	function loadMonitoringGrid(filter){
+	//load the monitoring interface functions of the parameter filter
+	function loadMonitoring(filter)
+	{
 		$.getJSON (root_url+'/wfEngine/Monitor/monitorProcess'
 			,{
 				'filter':filter
 			}
 			, function (DATA) {
-				monitoringData = DATA;
 				monitoringGrid.empty();
+				currentActivitiesGrid.empty();
+				historyProcessGrid.empty();
+				
+				monitoringData = DATA;
 				monitoringGrid.add(DATA);
 			}
 		);
 	}
-	 
-	//the grid model
-	var model = <?=$model?>;
+
+	//show the activity variables popup
+	function showActivityVariables(activityUri)
+	{
+		
+	}
+	
 	//the monitoring grid options
 	var monitoringGridOptions = {
 		'height' : $('#monitoring-processes-grid').parent().height()
@@ -131,9 +164,14 @@ $(function(){
 		, 'callback' : {
 			'onSelectRow' : function(id)
 			{
+				selectedProcessId = id;
+				
+				//display the process' current activities
 				currentActivitiesGrid.empty();
+				console.log('gn1',monitoringData[id]['http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessInstancesCurrentActivityExecutions']);
 				currentActivitiesGrid.add(monitoringData[id]['http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessInstancesCurrentActivityExecutions']);
 
+				//display the process history
 				$.getJSON (root_url+'/wfEngine/Monitor/processHistory'
 					,{
 						'uri':id
@@ -150,8 +188,12 @@ $(function(){
 	//instantiate the grid widget
 	var monitoringGrid = new TaoGridClass('#monitoring-processes-grid', model, '', monitoringGridOptions);
 	//load monitoring grid
-	loadMonitoringGrid(null);
+	loadMonitoring(null);
 
+	//with of the subgrid
+	var subGridWith = $('#current_activities_container').width() - 12 /* padding */;
+	var subGridHeight = $('#current_activities_container').height() - 45;
+	
 	/**
 	 * Instantiate the details area
 	 */
@@ -160,8 +202,8 @@ $(function(){
 	//the current activities grid options
 	
 	 var currentActivitiesOptions = {
-		'height' : $('#current_activities_container').height()-50,
-		'width' 	: $('#process_history_container').width()-50,
+		'height' : subGridHeight,
+		'width'  : subGridWith,
 		'title'  : __('Current activities')
 	};
 	//instantiate the grid widget
@@ -175,8 +217,8 @@ $(function(){
 	var historyProcessModel = <?=$historyProcessModel?>;
 	//the history grid options	
 	 var historyProcessOptions = {
-		'height' 	: $('#current_activities_container').height()-50,
-		'width' 	: $('#process_history_container').width()-50,
+		'height' : subGridHeight,
+		'width'  : subGridWith,
 		'title' 	: __('Process History')
 	};
 	//instantiate the grid widget

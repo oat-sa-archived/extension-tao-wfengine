@@ -24,8 +24,13 @@ class wfEngine_actions_Monitor extends tao_actions_TaoModule {
 					, 'widget'=>'CurrentActivities'
 					, 'columns' => array(
 						'xliff' => array('widget'=>'DownloadFileResource')
-						//, 'vff_version' => array('weight' => 2)
 						, 'vff' => array('widget'=>'DownloadFileResource')
+						, 'variables' => array(
+							'widget'=>'ActivityVariables'
+							, 'columns' => array(
+								'value' => array('weight'=>3, 'widget'=>'ActivityVariable')
+							)
+						)
 					)
 				)
 			)
