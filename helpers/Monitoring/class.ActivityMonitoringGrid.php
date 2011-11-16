@@ -9,7 +9,7 @@ error_reporting(E_ALL);
  *
  * This file is part of TAO.
  *
- * Automatically generated on 08.11.2011, 10:19:43 with ArgoUML PHP module 
+ * Automatically generated on 16.11.2011, 10:31:40 with ArgoUML PHP module 
  * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
  *
  * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
@@ -55,38 +55,21 @@ class wfEngine_helpers_Monitoring_ActivityMonitoringGrid
     /**
      * Short description of attribute activityExecutions
      *
-     * @access public
+     * @access protected
      * @var array
      */
-    public $activityExecutions = array();
+    protected $activityExecutions = array();
 
     // --- OPERATIONS ---
 
     /**
-     * Short description of method initGrid
-     *
-     * @access public
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
-     * @return boolean
-     */
-    public function initGrid()
-    {
-        $returnValue = (bool) false;
-
-        // section 127-0-1-1-6c609706:1337d294662:-8000:000000000000335D begin
-        // section 127-0-1-1-6c609706:1337d294662:-8000:000000000000335D end
-
-        return (bool) $returnValue;
-    }
-
-    /**
      * Short description of method initColumns
      *
-     * @access public
+     * @access protected
      * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @return boolean
      */
-    public function initColumns()
+    protected function initColumns()
     {
         $returnValue = (bool) false;
 

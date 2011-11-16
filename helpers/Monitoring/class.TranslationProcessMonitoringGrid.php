@@ -30,19 +30,6 @@ class wfEngine_helpers_Monitoring_TranslationProcessMonitoringGrid
 {
 
     /**
-     * Short description of method initGrid
-     *
-     * @access public
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
-     * @return boolean
-     */
-    public function initGrid()
-    {
-        $returnValue = (bool) false;
-        return (bool) $returnValue;
-    }
-
-    /**
      * Short description of method initColumns
      *
      * @access public

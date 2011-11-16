@@ -9,7 +9,7 @@ error_reporting(E_ALL);
  *
  * This file is part of TAO.
  *
- * Automatically generated on 11.11.2011, 14:38:22 with ArgoUML PHP module 
+ * Automatically generated on 16.11.2011, 10:26:42 with ArgoUML PHP module 
  * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
  *
  * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
@@ -55,21 +55,28 @@ class wfEngine_helpers_Monitoring_ExecutionHistoryGrid
     // --- OPERATIONS ---
 
     /**
-     * Short description of method __construct
+     * Short description of method initGrid
      *
      * @access public
      * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
-     * @param  Resource processExecution
-     * @param  array options
-     * @return mixed
+     * @return boolean
      */
-    public function __construct( core_kernel_classes_Resource $processExecution, $options = array())
+    public function initGrid()
     {
+        $returnValue = (bool) false;
+
         // section 127-0-1-1-41d91020:13392d7ae4a:-8000:00000000000033A5 begin
-		$processExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessExecutionService');
-		$this->activityExecutions = $processExecutionService->getExecutionHistory($processExecution);
-		parent::__construct($this->activityExecutions, $options);
+		if($this->data instanceof core_kernel_classes_Resource && $this->data->hasType(new core_kernel_classes_Class(CLASS_PROCESSINSTANCES))){
+			$processExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessExecutionService');
+			$this->data = $processExecutionService->getExecutionHistory($this->data);
+			parent::initGrid();
+		}else{
+			throw new common_Exception('the data is not a process instance resource');
+		}
+		
         // section 127-0-1-1-41d91020:13392d7ae4a:-8000:00000000000033A5 end
+
+        return (bool) $returnValue;
     }
 
 } /* end of class wfEngine_helpers_Monitoring_ExecutionHistoryGrid */

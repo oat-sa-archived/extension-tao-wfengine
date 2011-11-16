@@ -9,7 +9,7 @@ error_reporting(E_ALL);
  *
  * This file is part of TAO.
  *
- * Automatically generated on 15.11.2011, 17:07:59 with ArgoUML PHP module 
+ * Automatically generated on 16.11.2011, 10:26:42 with ArgoUML PHP module 
  * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
  *
  * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
@@ -66,6 +66,23 @@ class wfEngine_helpers_Monitoring_ActivityVariablesGrid
         $returnValue = (bool) false;
 
         // section 127-0-1-1--5e069f0e:133a7dcfc6a:-8000:0000000000003406 begin
+		
+		if(is_array($this->data)){
+			
+			parent::initGrid();
+			
+		}else if($this->data instanceof core_kernel_classes_Resource && $this->data->hasType(new core_kernel_classes_Class(CLASS_ACTIVITY_EXECUTION))){
+			
+			$activityExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityExecutionService');
+			$variables = $activityExecutionService->getVariables($this->data);
+			foreach ($variables as $variableData) {
+				$returnValue[$variableData['propertyUri']] = $variableData;
+			}
+			
+		}else{
+			throw new common_Exception('the data is not an array of variables, nor an activity execution resource');
+		}
+		
         // section 127-0-1-1--5e069f0e:133a7dcfc6a:-8000:0000000000003406 end
 
         return (bool) $returnValue;
