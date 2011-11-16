@@ -42,10 +42,17 @@ TaoGridActivityVariablesAdapter.postCellFormat = function(grid, cell, rowId, col
 			, 'width'	: 400
 			, 'modal'	: true
 			, 'close': function(event, ui) {
-				$(cell).find('#activity-variables-grid').remove();
+				console.log('destroy');
+				//activityVariablesGrid.destroy();
+				$('#activity-variables-grid').jqGrid('GridUnload');
 				delete activityVariablesGrid;
+				$('#activity-variables-popup').remove();
 			}
 		});
+		
+		$( "#activity-variables-popup" ).bind( "dialogclose", function(event, ui) {
+			 console.log('close');
+			});
 		
 		//the grid model
 		var activityVariablesModel = model['http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessInstancesCurrentActivityExecutions']['subgrids']['variables']['subgrids'];

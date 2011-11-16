@@ -73,6 +73,12 @@ class wfEngine_actions_Monitor extends tao_actions_TaoModule {
 			'columns' => array(
 				'xliff'	=> array('widget'=>'DownloadFileResource')
 				, 'vff' => array('widget'=>'DownloadFileResource')
+				, 'variables' => array(
+					'widget'=>'ActivityVariables'
+					, 'columns' => array(
+						'value' => array('weight'=>3, 'widget'=>'ActivityVariable')
+					)
+				)
 			)
 		));
 		$historyProcessModel = $processHistoryGrid->getGrid()->getColumnsModel();
