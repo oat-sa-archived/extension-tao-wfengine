@@ -206,7 +206,7 @@ class wfEngine_models_classes_VariableService
      * @param  Resource activityExecution
      * @return boolean
      */
-    public function remove( mixed $params,  core_kernel_classes_Resource $activityExecution = null)
+    public function remove($params,  core_kernel_classes_Resource $activityExecution = null)
     {
         $returnValue = (bool) false;
 
@@ -253,7 +253,7 @@ class wfEngine_models_classes_VariableService
      * @param  Resource activityExecution
      * @return mixed
      */
-    public function get($key,  core_kernel_classes_Resource $activityExecution = null)
+    public function get($key, core_kernel_classes_Resource $activityExecution = null)
     {
         $returnValue = null;
 
