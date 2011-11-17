@@ -52,7 +52,12 @@ class wfEngine_actions_WfApiVariable extends wfEngine_actions_WfApi {
 	public function get(){
 		
 		if(!is_null($this->activityExecution) && !empty($this->code)){
-			$this->setSuccess($this->variableService->get($this->code, $this->activityExecution));
+			$value = $this->variableService->get($this->code, $this->activityExecution);
+			if(!empty($value)){
+				$this->setSuccess(true);
+				$this->output['data'] = $value;
+			}
+			
 		}
 		
 	}
