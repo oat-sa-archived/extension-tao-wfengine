@@ -4,7 +4,12 @@ include_once dirname(__FILE__) . '/../../includes/raw_start.php';
 
 class ProcessSampleCreator{
 	
+	//created resources:
 	protected static $processes = array();
+	protected static $variables = array();
+	protected static $roles = array();
+	protected static $users = array();
+	
 	protected $activityService = null;
 	protected $connectorService = null;
 	protected $processVariableService = null;
@@ -19,22 +24,63 @@ class ProcessSampleCreator{
 		$this->authoringService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessAuthoringService');
 		$this->activityExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityExecutionService');
 		$this->connectorService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ConnectorService');
+		$this->processVariablesClass = new core_kernel_classes_Class(CLASS_PROCESSVARIABLES);
 		
+			
 	}
 	
 	public static function getProcesses(){
-		
 		return self::$processes;
+	}
+	
+	public static function getVariables(){
+		return self::$variables;
+	}
+	
+	public static function getRoles(){
+		return self::$roles;
+	}
+	
+	public static function getUsers(){
+		return self::$users;
+	}
+	
+	public static function clean(){
 		
+		$returnValue = false;
+		
+		$returnValue = self::deleteProcesses();
+		
+		foreach(self::$variables as $code => $variable){
+			if($variable instanceof core_kernel_classes_Resource){
+				$returnValue = $variable->delete();
+			}
+			unset(self::$processes[$code]);
+		}
+		
+		foreach(self::$roles as $uri => $role){
+			if($role instanceof core_kernel_classes_Resource){
+				$returnValue = $role->delete();
+			}
+			unset(self::$roles[$uri]);
+		}
+		
+		foreach(self::$users as $uri => $user){
+			if($user instanceof core_kernel_classes_Resource){
+				$returnValue = $user->delete();
+			}
+			unset(self::$users[$uri]);
+		}
+		
+		return $returnValue;
 	}
 	
 	public static function deleteProcesses(){
 		
 		$returnValue = false;
 		
-		foreach(self::$processes as $processUri){
+		foreach(self::$processes as $processUri => $process){
 			
-			$process = new core_kernel_classes_Resource($processUri);
 			if($process->exists()){
 				$returnValue = $this->authoringService->deleteProcess($process);
 			}
@@ -61,6 +107,24 @@ class ProcessSampleCreator{
 		return $returnValue;
 	}
 	
+	protected function getVariable($code){
+		
+		$returnValue = null;
+		
+		$variables = $this->processVariablesClass->searchInstances(array(PROPERTY_PROCESSVARIABLES_CODE => $code), array('like' => false, 'recursive' => 0));
+		if (!empty($variables)) {
+			$returnValue = reset($variables);
+		}else{
+			$returnValue = $this->processVariableService->createProcessVariable($code, $code);
+			if (is_null($returnValue)) {
+				throw new Exception("the process variable ({$code}) cannot be created.");
+			}else{
+				self::$variables[$code] = $returnValue;
+			}
+		}
+		
+		return $returnValue;
+	}
 	
 	public function createSimpleSequenceProcess(){
 		
@@ -116,8 +180,8 @@ class ProcessSampleCreator{
 		//define parallel activities, first branch with constant cardinality value, while the second listens to a process variable:
 		$parallelCount1 = 3;
 		$parallelCount2 = 5;
-		$parallelCount2_processVar_key = 'unit_var_' . time();
-		$parallelCount2_processVar = $this->processVariableService->createProcessVariable('Var for unit test', $parallelCount2_processVar_key);
+		$parallelCount2_processVar_key = 'unit_var';
+		$parallelCount2_processVar = $this->getVariable($parallelCount2_processVar_key);
 		$prallelActivitiesArray = array(
 			$parallelActivity1->uriResource => $parallelCount1,
 			$parallelActivity2->uriResource => $parallelCount2_processVar
@@ -126,10 +190,10 @@ class ProcessSampleCreator{
 		$result = $this->authoringService->setParallelActivities($connector0, $prallelActivitiesArray);
 
 		//set several split variables:
-		$splitVariable1_key = 'unit_split_var1_' . time();
-		$splitVariable1 = $this->processVariableService->createProcessVariable('Split Var1 for unit test', $splitVariable1_key);
-		$splitVariable2_key = 'unit_split_var2_' . time();
-		$splitVariable2 = $this->processVariableService->createProcessVariable('Split Var2 for unit test', $splitVariable2_key);
+		$splitVariable1_key = 'unit_split_var1';
+		$splitVariable1 = $this->getVariable($splitVariable1_key);
+		$splitVariable2_key = 'unit_split_var2';
+		$splitVariable2 = $this->getVariable($splitVariable2_key);
 
 		$splitVariablesArray = array(
 			$parallelActivity1->uriResource => array($splitVariable1),
@@ -150,8 +214,5 @@ class ProcessSampleCreator{
 	}
 	
 }
-
-
-
 
 ?>
