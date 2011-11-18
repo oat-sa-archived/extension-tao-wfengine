@@ -11,41 +11,42 @@
 class wfEngine_actions_WfApiProcessExecution extends wfEngine_actions_WfApi {
     
 	
-	public function __construct(){
+	public function __construct()
+	{
 		parent::__construct();
 	}
 	
-	public function delete(){
-		
+	public function delete()
+	{
 		if(!is_null($this->processExecution)){
 			$this->setSuccess($this->processExecutionService->deleteProcessExecution($this->processExecution, true));
 		}
 		
 	}
 	
-	public function pause(){
-		
+	public function pause()
+	{
 		if(!is_null($this->processExecution)){
 			$this->setSuccess($this->processExecutionService->pause($this->processExecution));
 		}
 	}
 	
-	public function resume(){
-		
+	public function resume()
+	{
 		if(!is_null($this->processExecution)){
 			$this->setSuccess($this->processExecutionService->resume($this->processExecution));
 		}
 	}
 	
-	public function cancel(){
-		
+	public function cancel()
+	{
 		if(!is_null($this->processExecution)){
 			$this->setSuccess($this->processExecutionService->cancel($this->processExecution));
 		}
 	}
 	
-	public function next(){
-		
+	public function next()
+	{
 		if(!is_null($this->processExecution)){
 			$activityExecution = $this->getCurrentActivityExecution();
 			if(!is_null($activityExecution)){
@@ -54,8 +55,8 @@ class wfEngine_actions_WfApiProcessExecution extends wfEngine_actions_WfApi {
 		}
 	}
     
-	public function previous(){
-		
+	public function previous()
+	{
 		if(!is_null($this->processExecution)){
 			$activityExecution = $this->getCurrentActivityExecution();
 			if(!is_null($activityExecution)){

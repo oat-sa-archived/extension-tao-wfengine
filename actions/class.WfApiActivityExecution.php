@@ -10,15 +10,13 @@
  */
 class wfEngine_actions_WfApiActivityExecution extends wfEngine_actions_WfApi {
     
-	
-	public function __construct(){
-		
+	public function __construct()
+	{
 		parent::__construct();
-		
 	}
 	
-	public function assign(){
-		
+	public function assign()
+	{
 		if(!is_null($this->activityExecution)){
 			$userUri = urldecode($this->getRequestParameter('userUri'));
 			if (!empty($userUri) && common_Utils::isUri($userUri)) {

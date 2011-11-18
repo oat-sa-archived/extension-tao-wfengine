@@ -14,8 +14,8 @@ class wfEngine_actions_WfApiVariable extends wfEngine_actions_WfApi {
 	protected $code = '';
 	protected $value = '';
 	
-	public function __construct(){
-		
+	public function __construct()
+	{
 		parent::__construct();
 		$this->variableService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_VariableService');
 		
@@ -27,46 +27,42 @@ class wfEngine_actions_WfApiVariable extends wfEngine_actions_WfApi {
 		$value = urldecode($this->getRequestParameter('value'));
 		if(is_string($value)){
 			$this->value = $value;
-		}else if(is_array($value)){
+		}
+		else if(is_array($value)){
 			$this->value = $value;
 		}
-		
 	}
 	
-	public function push(){
-		
+	public function push()
+	{
 		if(!is_null($this->activityExecution) && !empty($this->code) && !empty($this->value)){
 			$this->setSuccess($this->variableService->push($this->code, $this->value, $this->activityExecution));
 		}
-		
 	}
 	
-	public function edit(){
-		
+	public function edit()
+	{
 		if(!is_null($this->activityExecution) && !empty($this->code) && !empty($this->value)){
 			$this->setSuccess($this->variableService->edit($this->code, $this->value, $this->activityExecution));
 		}
-		
 	}
 	
-	public function get(){
-		
+	public function get()
+	{
 		if(!is_null($this->activityExecution) && !empty($this->code)){
 			$value = $this->variableService->get($this->code, $this->activityExecution);
+			
 			if(!empty($value)){
 				$this->setSuccess(true);
 				$this->output['data'] = $value;
 			}
-			
 		}
-		
 	}
 	
-	public function remove(){
-		
+	public function remove()
+	{
 		if(!is_null($this->activityExecution) && !empty($this->code)){
 			$this->setSuccess($this->variableService->remove($this->code, $this->activityExecution));
 		}
-		
 	}
 }

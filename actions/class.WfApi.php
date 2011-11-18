@@ -15,8 +15,8 @@ class wfEngine_actions_WfApi extends tao_actions_Api {
 	protected $processExecution = null;
 	protected $activityExecution = null;
 	
-	public function __construct(){
-		
+	public function __construct()
+	{
 		parent::__construct();
 		$this->processExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessExecutionService');
 		$this->activityExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityExecutionService');
@@ -35,32 +35,33 @@ class wfEngine_actions_WfApi extends tao_actions_Api {
 		$this->setSuccess(false);
 	}
 	
-	public function __destruct(){
-		
-		echo json_encode($this->output);
-	
+	public function __destruct()
+	{
+		echo json_encode($this->output);	
 	}
 			
-	protected function setSuccess($success){
-		
+	protected function setSuccess($success)
+	{
 		$caller = array_shift(debug_backtrace());
 
 		$this->output['success'] = (bool) $success;
 		$this->output['caller'] = __CLASS__.'::'.$caller['function'];
 	}
 	
-	protected function setErrorMessage($message, $code = 0){
-		if(!isset($this->output['errorMessage'])){
-			$this->output['errorMessage'] = array();
+	protected function setErrorMessage($message, $code = 0)
+	{
+		if(!isset($this->output['error'])){
+			$this->output['error'] = array();
 		}
-		$this->output['errorMessage'][] = $message;
+		$this->output['error'][] = $message;
 	}
 	
-	protected function getCurrentActivityExecution(){
-		
+	public function getCurrentActivityExecution()
+	{
 		$returnValue = null;
 		
 		if(!is_null($this->processExecution)){
+			
 			$currentActivityExecutions = $this->processExecutionService->getCurrentActivityExecutions($this->processExecution);
 			if(is_null($this->activityExecution)){
 				if(count($currentActivityExecutions) == 1){
