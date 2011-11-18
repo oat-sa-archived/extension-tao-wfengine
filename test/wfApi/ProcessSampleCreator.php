@@ -81,7 +81,7 @@ class ProcessSampleCreator{
 		
 		foreach(self::$processes as $processUri => $process){
 			
-			if($process->exists()){
+			if($process instanceof core_kernel_classes_Resource && $process->exists()){
 				$returnValue = $this->authoringService->deleteProcess($process);
 			}
 			unset(self::$processes[$processUri]);
@@ -97,7 +97,7 @@ class ProcessSampleCreator{
 		$returnValue = null;
 		
 		$processDefinitionClass = new core_kernel_classes_Class(CLASS_PROCESS);
-		$returnValue = $processDefinitionClass->createInstance($label, 'created by the script CreateProcess.php on ' . date(DATE_ISO8601));
+		$returnValue = $processDefinitionClass->createInstance($label, empty($comment)?'created by the script CreateProcess.php on ' . date(DATE_ISO8601):$comment);
 		if(!is_null($returnValue) && $returnValue instanceof core_kernel_classes_Resource){
 			self::$processes[$returnValue->uriResource] = $returnValue;
 		}else{
@@ -111,25 +111,29 @@ class ProcessSampleCreator{
 		
 		$returnValue = null;
 		
-		$variables = $this->processVariablesClass->searchInstances(array(PROPERTY_PROCESSVARIABLES_CODE => $code), array('like' => false, 'recursive' => 0));
-		if (!empty($variables)) {
-			$returnValue = reset($variables);
+		if(isset(self::$variables[$code])){
+			$returnValue = self::$variables[$code];
 		}else{
-			$returnValue = $this->processVariableService->createProcessVariable($code, $code);
-			if (is_null($returnValue)) {
-				throw new Exception("the process variable ({$code}) cannot be created.");
-			}else{
-				self::$variables[$code] = $returnValue;
+			$variables = $this->processVariablesClass->searchInstances(array(PROPERTY_PROCESSVARIABLES_CODE => $code), array('like' => false, 'recursive' => 0));
+			if (!empty($variables)) {
+				$returnValue = reset($variables);
+			} else {
+				$returnValue = $this->processVariableService->createProcessVariable($code, $code);
+				if (is_null($returnValue)) {
+					throw new Exception("the process variable ({$code}) cannot be created.");
+				} else {
+					self::$variables[$code] = $returnValue;
+				}
 			}
 		}
 		
 		return $returnValue;
 	}
 	
-	public function createSimpleSequenceProcess(){
+	public function createSimpleSequenceProcess($label = 'Simple Sequence Process', $comment = ''){
 		
 		//create a new process def
-		$processDefinition = $this->createProcess('Simple Sequence Process');
+		$processDefinition = $this->createProcess($label, $comment);
 
 		//define activities and connectors
 		$activity1 = $this->authoringService->createActivity($processDefinition, 'activity1');
@@ -150,13 +154,13 @@ class ProcessSampleCreator{
 		return $processDefinition;
 	}
 	
-	public function createSimpleParallelProcess(){
+	public function createSimpleParallelProcess($label = 'Simple Parallel Process', $comment = ''){
 		
 		//set testUserRole
 		$this->testUserRole = new core_kernel_classes_Resource(CLASS_ROLE_WORKFLOWUSERROLE);
 		
 		//process definition
-		$processDefinition = $this->createProcess('Simple Parallel Process');
+		$processDefinition = $this->createProcess($label, $comment);
 			
 		//activities definitions
 		$activity0 = $this->authoringService->createActivity($processDefinition, 'activity0');
