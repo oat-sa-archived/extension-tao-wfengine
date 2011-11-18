@@ -1,6 +1,7 @@
 <?php
-require_once dirname(__FILE__) . '/../../../tao/test/TestRunner.php';
 include_once dirname(__FILE__) . '/../../includes/raw_start.php';
+
+define(PROPERTY_IS_SAMPLE, LOCAL_NAMESPACE.'#isSample');
 
 class ProcessSampleCreator{
 	
@@ -9,6 +10,7 @@ class ProcessSampleCreator{
 	protected static $variables = array();
 	protected static $roles = array();
 	protected static $users = array();
+	protected static $propertyIsSample = null;
 	
 	protected $activityService = null;
 	protected $connectorService = null;
@@ -26,7 +28,8 @@ class ProcessSampleCreator{
 		$this->connectorService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ConnectorService');
 		$this->processVariablesClass = new core_kernel_classes_Class(CLASS_PROCESSVARIABLES);
 		
-			
+		$this->propertyIsSample = new core_kernel_classes_Property(PROPERTY_IS_SAMPLE);
+		
 	}
 	
 	public static function getProcesses(){
@@ -48,6 +51,12 @@ class ProcessSampleCreator{
 	public static function clean(){
 		
 		$returnValue = false;
+		
+		//fetch sample resources:
+		
+		$classVariable = new core_kernel_classes_Class(CLASS_PROCESSVARIABLES);
+		
+		self::$variables = $classVariable->searchInstances(array(PROPERTY_IS_SAMPLE => GENERIS_TRUE), array('like' => false, 'recursive' => false));
 		
 		$returnValue = self::deleteProcesses();
 		
@@ -79,10 +88,21 @@ class ProcessSampleCreator{
 		
 		$returnValue = false;
 		
+		$classProcess = new core_kernel_classes_Class(CLASS_PROCESS);
+		$processAuthoringService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessAuthoringService');
+		
+		self::$processes = array_merge(
+			self::$processes, 
+			$classProcess->searchInstances(
+				array(PROPERTY_IS_SAMPLE => GENERIS_TRUE), 
+				array('like' => false, 'recursive' => false)
+			)
+		);
+		
 		foreach(self::$processes as $processUri => $process){
 			
 			if($process instanceof core_kernel_classes_Resource && $process->exists()){
-				$returnValue = $this->authoringService->deleteProcess($process);
+				$returnValue = $processAuthoringService->deleteProcess($process);
 			}
 			unset(self::$processes[$processUri]);
 			
@@ -91,7 +111,7 @@ class ProcessSampleCreator{
 		return $returnValue;
 	}
 
-
+	
 	protected function createProcess($label, $comment = ''){
 		
 		$returnValue = null;
@@ -99,6 +119,7 @@ class ProcessSampleCreator{
 		$processDefinitionClass = new core_kernel_classes_Class(CLASS_PROCESS);
 		$returnValue = $processDefinitionClass->createInstance($label, empty($comment)?'created by the script CreateProcess.php on ' . date(DATE_ISO8601):$comment);
 		if(!is_null($returnValue) && $returnValue instanceof core_kernel_classes_Resource){
+			$returnValue->setPropertyValue($this->propertyIsSample, GENERIS_TRUE);
 			self::$processes[$returnValue->uriResource] = $returnValue;
 		}else{
 			throw new Exception('cannot create process '.$label);
@@ -122,6 +143,7 @@ class ProcessSampleCreator{
 				if (is_null($returnValue)) {
 					throw new Exception("the process variable ({$code}) cannot be created.");
 				} else {
+					$returnValue->setPropertyValue($this->propertyIsSample, GENERIS_TRUE);
 					self::$variables[$code] = $returnValue;
 				}
 			}
@@ -161,7 +183,7 @@ class ProcessSampleCreator{
 		
 		//process definition
 		$processDefinition = $this->createProcess($label, $comment);
-			
+		
 		//activities definitions
 		$activity0 = $this->authoringService->createActivity($processDefinition, 'activity0');
 		$this->authoringService->setFirstActivity($processDefinition, $activity0);
