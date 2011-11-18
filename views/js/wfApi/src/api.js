@@ -7,6 +7,8 @@
  * 
  * This file provide functions to drive the workflow engine from a service
  * 
+ * @deprecated
+ * @see wfApi.js
  * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
  * @version 0.1
  */ 
