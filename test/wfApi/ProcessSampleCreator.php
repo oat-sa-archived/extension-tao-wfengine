@@ -83,6 +83,7 @@ class ProcessSampleCreator{
 
 		$activity5 = $this->authoringService->createSequenceActivity($connector4, null, 'activity5');
 		
+		return $processDefinition;
 	}
 	
 	public function createSimpleParallelProcess(){
@@ -145,7 +146,7 @@ class ProcessSampleCreator{
 		$this->authoringService->createJoinActivity($connector1, $joinActivity, '', $parallelActivity1);
 		$this->authoringService->createJoinActivity($connector2, $joinActivity, '', $parallelActivity2);
 		
-		return true;
+		return $processDefinition;
 	}
 	
 }
