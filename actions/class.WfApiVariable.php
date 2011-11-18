@@ -19,9 +19,20 @@ class wfEngine_actions_WfApiVariable extends wfEngine_actions_WfApi {
 		parent::__construct();
 		$this->variableService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_VariableService');
 		
+		if(!$this->activityExecution->hasType(new core_kernel_classes_Class(CLASS_ACTIVITY_EXECUTION))){
+			$this->activityExecution = null;
+			$this->setErrorMessage(__('The resource is not an activity execution'));
+		}
+		
 		$code = urldecode($this->getRequestParameter('code'));
 		if(!empty($code)){
-			$this->code = $code;
+			if(is_null($this->getProcessVariable($code))){
+				$this->setErrorMessage(__('The variable with the code '.$code.' does not exists'));
+			}else{
+				$this->code = $code;
+			}
+		}else{
+			$this->setErrorMessage(__('No variable code given'));
 		}
 		
 		$value = urldecode($this->getRequestParameter('value'));
@@ -54,7 +65,7 @@ class wfEngine_actions_WfApiVariable extends wfEngine_actions_WfApi {
 			
 			if(!empty($value)){
 				$this->setSuccess(true);
-				$this->output['data'] = $value;
+				$this->setData('values', $value);
 			}
 		}
 	}

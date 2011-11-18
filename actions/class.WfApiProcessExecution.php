@@ -13,7 +13,13 @@ class wfEngine_actions_WfApiProcessExecution extends wfEngine_actions_WfApi {
 	
 	public function __construct()
 	{
+		
 		parent::__construct();
+		
+		if(!$this->processExecution->hasType(new core_kernel_classes_Class(CLASS_PROCESSINSTANCES))){
+			$this->processExecution = null;
+			$this->setErrorMessage(__('The resource is not a process execution'));
+		}
 	}
 	
 	public function delete()

@@ -40,12 +40,25 @@ class wfEngine_actions_WfApi extends tao_actions_Api {
 		echo json_encode($this->output);	
 	}
 			
-	protected function setSuccess($success)
-	{
+
+	protected function setData($key, $value) {
+		
+//		parent::setData($key, $value);//no view needed for WfApi actions
+		if(!isset($this->output['data'])){
+			$this->output['data'] = array();
+		}
+		$this->output['data'][$key] = $value;
+		
+	}
+	
+
+	protected function setSuccess($success){
+
 		$caller = array_shift(debug_backtrace());
 
 		$this->output['success'] = (bool) $success;
 		$this->output['caller'] = __CLASS__.'::'.$caller['function'];
+		
 	}
 	
 	protected function setErrorMessage($message, $code = 0)

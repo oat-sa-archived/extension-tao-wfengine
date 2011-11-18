@@ -13,8 +13,13 @@ class wfEngine_actions_WfApiActivityExecution extends wfEngine_actions_WfApi {
 	public function __construct()
 	{
 		parent::__construct();
+		if(!$this->activityExecution->hasType(new core_kernel_classes_Class(CLASS_ACTIVITY_EXECUTION))){
+			$this->activityExecution = null;
+			$this->setErrorMessage(__('The resource is not an activity execution'));
+		}
+		
 	}
-	
+		
 	public function assign()
 	{
 		if(!is_null($this->activityExecution)){

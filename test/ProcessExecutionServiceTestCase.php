@@ -115,7 +115,7 @@ class ProcessExecutionServiceTestCase extends UnitTestCase{
 	/**
 	 * Test the sequential process execution:
 	 */
-	public function _testVirtualSequencialProcess(){
+	public function testVirtualSequencialProcess(){
 		
 		error_reporting(E_ALL);
 		
