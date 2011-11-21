@@ -26,9 +26,9 @@ wfApi.Variable = {};
  * @param {String} activityExecutionUri The target activity exectuion 
  * @param {String} code The code of the variable to get
  */
-wfApi.Variable.get = function(activityExecutionUri, code, successCallback, errorCallback)
+wfApi.Variable.get = function(activityExecutionUri, code, successCallback, errorCallback, options)
 {
-	return wfApi.request(wfApi.VariableControler, 'get', {activityExecutionUri:activityExecutionUri, code:code}, successCallback, errorCallback);
+	return wfApi.request(wfApi.VariableControler, 'get', {activityExecutionUri:activityExecutionUri, code:code}, successCallback, errorCallback, options);
 };
 
 /**
@@ -37,9 +37,9 @@ wfApi.Variable.get = function(activityExecutionUri, code, successCallback, error
  * @param {String} code The code of the variable to push
  * @param {String} value The value of the variable to push
  */
-wfApi.Variable.push = function(activityExecutionUri, code, value, successCallback, errorCallback)
+wfApi.Variable.push = function(activityExecutionUri, code, value, successCallback, errorCallback, options)
 {
-	return wfApi.request(wfApi.VariableControler, 'push', {activityExecutionUri:activityExecutionUri, code:code, value:value}, successCallback, errorCallback);
+	return wfApi.request(wfApi.VariableControler, 'push', {activityExecutionUri:activityExecutionUri, code:code, value:value}, successCallback, errorCallback, options);
 };
 
 /**
@@ -48,9 +48,9 @@ wfApi.Variable.push = function(activityExecutionUri, code, value, successCallbac
  * @param {String} code The code of the variable to set
  * @param {String} value The value of the variable to set
  */
-wfApi.Variable.edit = function(activityExecutionUri, code, value, successCallback, errorCallback)
+wfApi.Variable.edit = function(activityExecutionUri, code, value, successCallback, errorCallback, options)
 {
-	return wfApi.request(wfApi.VariableControler, 'edit', {activityExecutionUri:activityExecutionUri, code:code, value:value}, successCallback, errorCallback);
+	return wfApi.request(wfApi.VariableControler, 'edit', {activityExecutionUri:activityExecutionUri, code:code, value:value}, successCallback, errorCallback, options);
 };
 
 /**
@@ -58,7 +58,7 @@ wfApi.Variable.edit = function(activityExecutionUri, code, value, successCallbac
  * @param {String} activityExecutionUri The target activity exectuion 
  * @param {String} code The code of the variable to remove
  */
-wfApi.Variable.remove = function(activityExecutionUri, code, successCallback, errorCallback)
+wfApi.Variable.remove = function(activityExecutionUri, code, successCallback, errorCallback, options)
 {
-	return wfApi.request(wfApi.VariableControler, 'remove', {activityExecutionUri:activityExecutionUri, code:code}, successCallback, errorCallback);
+	return wfApi.request(wfApi.VariableControler, 'remove', {activityExecutionUri:activityExecutionUri, code:code}, successCallback, errorCallback, options);
 };

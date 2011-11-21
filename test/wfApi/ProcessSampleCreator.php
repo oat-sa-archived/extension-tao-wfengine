@@ -1,7 +1,7 @@
 <?php
 include_once dirname(__FILE__) . '/../../includes/raw_start.php';
 
-define(PROPERTY_IS_SAMPLE, LOCAL_NAMESPACE.'#isSample');
+define('PROPERTY_IS_SAMPLE', LOCAL_NAMESPACE.'#isSample');
 
 class ProcessSampleCreator{
 	

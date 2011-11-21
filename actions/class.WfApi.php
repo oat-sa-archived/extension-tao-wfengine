@@ -41,7 +41,7 @@ class wfEngine_actions_WfApi extends tao_actions_Api {
 	}
 			
 
-	protected function setData($key, $value) {
+	public function setData($key, $value) {
 		
 //		parent::setData($key, $value);//no view needed for WfApi actions
 		if(!isset($this->output['data'])){

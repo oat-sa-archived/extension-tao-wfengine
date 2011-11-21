@@ -13,8 +13,8 @@ class wfEngine_actions_WfApiProcessDefinition extends wfEngine_actions_WfApi {
 	protected $processDefinitionService = null;
 	protected $processDefinition = null;
 	
-	public function __construct(){
-		
+	public function __construct()
+	{
 		parent::__construct();
 		
 		$this->processDefinitionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessDefinitionService');
@@ -27,24 +27,23 @@ class wfEngine_actions_WfApiProcessDefinition extends wfEngine_actions_WfApi {
 			}else{
 				$this->setErrorMessage(__('The resource is not a process definition'));
 			}
-		}else{
+		}
+		else{
 			$this->setErrorMessage(__('No process definition uri given'));
 		}
-		
 	}
 	
-	public function getName(){
-		
+	public function getName()
+	{
 		if(!is_null($this->processDefinition)){
 			$label = $this->processDefinition->getLabel();
 			$this->setSuccess(true);
 			$this->setData('name', $label);
 		}
-		
 	}
 	
-	public function initExecution(){
-		
+	public function initExecution()
+	{
 		if(!is_null($this->processDefinition)){
 
 			$postName = urldecode($this->getRequestParameter('name'));
@@ -63,12 +62,11 @@ class wfEngine_actions_WfApiProcessDefinition extends wfEngine_actions_WfApi {
 			if(!is_null($processExecution)){
 				$this->setSuccess(true);
 				$this->setData('processExecutionUri', $processExecution->uriResource);
-			}else{
+			}
+			else{
 				$this->setErrorMessage(__('Cannot create process execution'));
 			}
-			
 		}
-		
 	}
 	
 }

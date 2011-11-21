@@ -26,6 +26,7 @@ if(typeof wfApi == 'undefined'){
 /**
  * The wfengine controlers name
  */
+wfApi.ProcessDefinitionControler 	= 'WfApiProcessDefinition';
 wfApi.ProcessExecutionControler 	= 'WfApiProcessExecution';
 wfApi.ActivityExecutionControler 	= 'WfApiActivityExecution';
 wfApi.VariableControler 			= 'WfApiVariable';
@@ -37,23 +38,33 @@ wfApi.RecoveryContextControler 		= 'RecoveryContext';
  * @param {String} action The action to request
  * @param {Array} options The options to send to the action
  */
-wfApi.request = function(controler, action, parameters, successCallback, errorCallback)
+wfApi.request = function(controler, action, parameters, successCallback, errorCallback, options)
 {
+	var options = typeof options != ('undefined') ? options : new Array();
+	var async = typeof options.async != ('undefined') ? options.async : true;
 	var url = root_url+'/wfEngine/'+controler+'/'+action;
+	console.log(url);
 	$.ajax({
 		'url'			: url
+		, 'type' 		: 'GET'
 		, 'dataType'	: 'json'
 		, 'data'		: parameters
+		, 'async'		: async
 		, 'success'		: function(response){
 			if(response.success){
 				if(typeof successCallback != 'undefined'){
 					successCallback(response.data);
 				}
-			}else{
+			}
+			else{
 				if(typeof errorCallback != 'undefined'){
 					errorCallback(response.data);
 				}
 			}
 		}
+		, 'error' 		: function(){
+			errorCallback();
+		}
 	});
 }
+

@@ -3,6 +3,11 @@
 <script type="text/javascript" src="<?=BASE_URL?>/views/js/grid/wfengine.grid.currentActivities.js"></script>
 <script type="text/javascript" src="<?=BASE_URL?>/views/js/grid/wfengine.grid.activityVariables.js"></script>
 <script type="text/javascript" src="<?=BASE_URL?>/views/js/grid/wfengine.grid.activityVariable.js"></script>
+<script type="text/javascript" src="<?=BASE_URL?>/views/js/grid/wfengine.grid.cancelProcess.js"></script>
+<script type="text/javascript" src="<?=BASE_URL?>/views/js/grid/wfengine.grid.deleteProcess.js"></script>
+<script type="text/javascript" src="<?=BASE_URL?>/views/js/grid/wfengine.grid.resumeProcess.js"></script>
+<script type="text/javascript" src="<?=BASE_URL?>/views/js/grid/wfengine.grid.pauseProcess.js"></script>
+<script type="text/javascript" src="<?=BASE_URL?>/views/js/wfApi/wfApi.min.js"></script>
 
 <style> 
 	#filter-container { width:19%;  height:561px; }
@@ -20,7 +25,7 @@
 	.activity-variable-value { display:block; margin: 3px 0; }
 	.activity-variable-actions { white-space:inherit; white-space:nowrap !important; margin-bottom:7px; }
 	.activity-variable-actions img { margin-top:3px; } 
-	.activity-variable-actions a { border-color:#CCCCCC #AAAAAA #AAAAAA #CCCCCC; border-width:1px; border-style:solid; padding:3px 6px; cursor:pointer; margin-right:5px; text-decoration:none; }
+	a.activity-variable-action { border-color:#CCCCCC #AAAAAA #AAAAAA #CCCCCC; border-width:1px; border-style:solid; padding:3px 6px; cursor:pointer; margin-right:5px; text-decoration:none; }
 </style>
 
 <div id="filter-container" class="data-container tabs-bottom">
@@ -97,7 +102,6 @@ $(function(){
 		'callback' : {
 			'onFilter' : function(filter, filterNodesOpt){
 				//refreshResult(filter, filterNodesOptions);
-				//console.log('yeah filter');
 				var formatedFilter = {};
 				for(var filterNodeId in filter){
 					var propertyUri = filterNodesOpt[filterNodeId]['propertyUri'];
@@ -150,31 +154,25 @@ $(function(){
 			}
 		);
 	}
-
-	//show the activity variables popup
-	function showActivityVariables(activityUri)
-	{
-		
-	}
 	
 	//the monitoring grid options
 	var monitoringGridOptions = {
 		'height' : $('#monitoring-processes-grid').parent().height()
 		, 'title' 	: __('Monitoring processes')
 		, 'callback' : {
-			'onSelectRow' : function(id)
+			'onSelectRow' : function(rowId)
 			{
-				selectedProcessId = id;
+				//$('#monitoring-processes-grid').jqGrid('editRow', rowId);
+				selectedProcessId = rowId;
 				
 				//display the process' current activities
 				currentActivitiesGrid.empty();
-				console.log('gn1',monitoringData[id]['http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessInstancesCurrentActivityExecutions']);
-				currentActivitiesGrid.add(monitoringData[id]['http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessInstancesCurrentActivityExecutions']);
+				currentActivitiesGrid.add(monitoringData[rowId]['http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessInstancesCurrentActivityExecutions']);
 
 				//display the process history
 				$.getJSON (root_url+'/wfEngine/Monitor/processHistory'
 					,{
-						'uri':id
+						'uri':rowId
 					}
 					, function (DATA) {
 						historyProcessGrid.empty();
@@ -184,6 +182,39 @@ $(function(){
 				
 			}
 		}
+	};
+	//Override the model
+	model['cancelProcess'] = {
+		'id' 			: 'cancelProcess'
+		, 'title' 		: 'Stop'
+		, 'name' 		: 'cancelProcess'
+		, 'widget' 		: 'CancelProcess'
+		, 'weight'		: 0.5
+		, 'align'		: 'center'
+	};
+	model['deleteProcess'] = {
+		'id' 			: 'deleteProcess'
+		, 'title' 		: 'Delete'
+		, 'name' 		: 'deleteProcess'
+		, 'widget' 		: 'DeleteProcess'
+		, 'weight'		: 0.5
+		, 'align'		: 'center'
+	};
+	model['resumeProcess'] = {
+		'id' 			: 'resumeProcess'
+		, 'title' 		: 'Resume'
+		, 'name' 		: 'resumeProcess'
+		, 'widget' 		: 'ResumeProcess'
+		, 'weight'		: 0.5
+		, 'align'		: 'center'
+	};
+	model['pauseProcess'] = {
+		'id' 			: 'pauseProcess'
+		, 'title' 		: 'Pause'
+		, 'name' 		: 'pauseProcess'
+		, 'widget' 		: 'PauseProcess'
+		, 'weight'		: 0.5
+		, 'align'		: 'center'
 	};
 	//instantiate the grid widget
 	var monitoringGrid = new TaoGridClass('#monitoring-processes-grid', model, '', monitoringGridOptions);
@@ -200,7 +231,6 @@ $(function(){
 	//the grid model
 	var currentActivitiesModel = model['http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessInstancesCurrentActivityExecutions']['subgrids'];
 	//the current activities grid options
-	
 	 var currentActivitiesOptions = {
 		'height' : subGridHeight,
 		'width'  : subGridWith,
