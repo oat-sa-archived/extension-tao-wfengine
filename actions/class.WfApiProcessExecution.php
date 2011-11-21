@@ -56,7 +56,12 @@ class wfEngine_actions_WfApiProcessExecution extends wfEngine_actions_WfApi {
 		if(!is_null($this->processExecution)){
 			$activityExecution = $this->getCurrentActivityExecution();
 			if(!is_null($activityExecution)){
-				$this->setSuccess($this->processExecutionService->performTransition($this->processExecution, $activityExecution));
+				$currentActivityExecutions = $this->processExecutionService->performTransition($this->processExecution, $activityExecution);
+				if(!empty($currentActivityExecutions)){
+					$this->setSuccess(true);
+					$this->setData('currentActivityExecutions', $currentActivityExecutions);
+				}
+				
 			}
 		}
 	}
@@ -66,7 +71,11 @@ class wfEngine_actions_WfApiProcessExecution extends wfEngine_actions_WfApi {
 		if(!is_null($this->processExecution)){
 			$activityExecution = $this->getCurrentActivityExecution();
 			if(!is_null($activityExecution)){
-				$this->setSuccess($this->processExecutionService->performBackwardTransition($this->processExecution, $activityExecution));
+				$currentActivityExecutions = $this->processExecutionService->performBackwardTransition($this->processExecution, $activityExecution);
+				if(!empty($currentActivityExecutions)){
+					$this->setSuccess(true);
+					$this->setData('currentActivityExecutions', $currentActivityExecutions);
+				}
 			}
 		}
 	}
