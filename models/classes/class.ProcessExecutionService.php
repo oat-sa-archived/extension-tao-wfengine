@@ -758,6 +758,11 @@ class wfEngine_models_classes_ProcessExecutionService
 		
 		Session::setAttribute("activityExecutionUri", $activityExecution->uriResource);
 		
+		//check if the transition is possible, e.g. process is not finished
+		if($this->isFinished($processExecution)){
+			return $returnValue;
+		}
+		
 		//init the services
 		$activityDefinitionService	= tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityService');
 		$connectorService			= tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ConnectorService');
@@ -781,7 +786,7 @@ class wfEngine_models_classes_ProcessExecutionService
 		}else{
 			//final activity:
 			$this->finish($processExecution);
-			return;
+			return $returnValue;
 		}
 		
 		if($newActivities === false){
@@ -913,6 +918,11 @@ class wfEngine_models_classes_ProcessExecutionService
         $returnValue = array();
 
         // section 127-0-1-1-7a69d871:1322a76df3c:-8000:0000000000002F88 begin
+		
+		//check if the transition is possible, e.g. process is not finished
+		if($this->isFinished($processExecution)){
+			return $returnValue;
+		}
 		
 		$activityService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityService');
 			

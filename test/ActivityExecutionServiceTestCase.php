@@ -383,6 +383,7 @@ class ActivityExecutionServiceTestCase extends wfEngineServiceTest {
 				$i++;
 			}
 			$this->assertTrue($processExecutionService->isFinished($processInstance));
+			$this->assertTrue($processExecutionService->resume($processInstance));
 			
 			$this->out("<strong>Backward transitions:</strong>", true);
 			$j = 0;

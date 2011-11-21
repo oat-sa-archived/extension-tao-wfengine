@@ -47,7 +47,7 @@ class wfEngine_actions_WfApiProcessExecution extends wfEngine_actions_WfApi {
 	public function cancel()
 	{
 		if(!is_null($this->processExecution)){
-			$this->setSuccess($this->processExecutionService->cancel($this->processExecution));
+			$this->setSuccess($this->processExecutionService->finish($this->processExecution));
 		}
 	}
 	

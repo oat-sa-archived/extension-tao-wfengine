@@ -253,6 +253,7 @@ class ProcessExecutionServiceTestCase extends UnitTestCase{
 			}
 			
 			$this->assertTrue($this->service->isFinished($processInstance));
+			$this->assertTrue($this->service->resume($processInstance));
 			
 			$this->out("<strong>Backward transitions:</strong>", true);
 			
@@ -341,7 +342,7 @@ class ProcessExecutionServiceTestCase extends UnitTestCase{
 					case 3:
 					case 4:{
 						$history = $this->service->getExecutionHistory($processInstance);
-						$this->assertFalse($this->service->undoForwardTransition($processInstance, new core_kernel_classes_Resource(new core_kernel_classes_Resource(reset($history)))));
+						$this->assertFalse($this->service->undoForwardTransition($processInstance, new core_kernel_classes_Resource(reset($history))));
 						
 						$this->assertNotNull($previousActivityExecution);
 						$this->assertFalse($this->service->undoForwardTransition($processInstance, $previousActivityExecution));
@@ -634,6 +635,7 @@ class ProcessExecutionServiceTestCase extends UnitTestCase{
 			}
 		}
 		$this->assertTrue($this->service->isFinished($processInstance));
+		$this->assertTrue($this->service->resume($processInstance));
 		
 		$this->out("<strong>Backward transitions:</strong>", true);
 		
