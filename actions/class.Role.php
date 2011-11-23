@@ -92,12 +92,8 @@ class wfEngine_actions_Role extends tao_actions_TaoModule {
 		$clazz = $this->getCurrentClass();
 		$role = $this->getCurrentInstance();
 		
-		$excludedProperties = array(
-			'http://www.tao.lu/middleware/Interview.rdf#i122354397139712'
-		);
-		
-		
-		$myForm = wfEngine_helpers_ProcessFormFactory::instanceEditor($clazz, $role, 'roleEditor', array("noSubmit"=>true,"noRevert"=>true), $excludedProperties);
+		$formContainer = new tao_actions_form_Instance($clazz, $role);
+		$myForm = $formContainer->getForm();
 		if($myForm->isSubmited()){
 			if($myForm->isValid()){
 				

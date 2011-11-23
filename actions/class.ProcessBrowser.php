@@ -272,9 +272,13 @@ class wfEngine_actions_ProcessBrowser extends wfEngine_actions_WfModule{
 		//reinitiate nonce:
 		$this->activityExecutionService->createNonce($this->activityExecution);
 		
-		if($this->processExecutionService->isPaused($this->processExecution)){
+		if($this->processExecutionService->isFinished($this->processExecution)){
+			$this->redirectToMain();
+		}
+		else if($this->processExecutionService->isPaused($this->processExecution)){
 			$this->pause();
-		}else{
+		}
+		else{
 			//look if the next activity execs are from the same definition:
 			if(count($previousActivityExecutions) == 1){
 				

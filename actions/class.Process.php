@@ -93,11 +93,12 @@ class wfEngine_actions_Process extends tao_actions_TaoModule {
 		
 		$excludedProperties = array(
 			PROPERTY_PROCESS_VARIABLES,
-			PROPERTY_PROCESS_ACTIVITIES
+			PROPERTY_PROCESS_ACTIVITIES,
+			PROPERTY_PROCESS_ROOT_ACTIVITIES
 		);
 		
-		// $myForm = wfEngine_helpers_ProcessFormFactory::instanceEditor($clazz, $process, $excludedProperties);
-		$myForm = wfEngine_helpers_ProcessFormFactory::instanceEditor($clazz, $process, 'processEditor', array("noSubmit"=>true, "noRevert"=>true), $excludedProperties);
+		$formContainer = new tao_actions_form_Instance($clazz, $process, array('excludedProperties' => $excludedProperties));
+		$myForm = $formContainer->getForm();
 		if($myForm->isSubmited()){
 			if($myForm->isValid()){
 				

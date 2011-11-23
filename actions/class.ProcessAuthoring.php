@@ -162,7 +162,7 @@ class wfEngine_actions_ProcessAuthoring extends tao_actions_TaoModule {
 	}
 	
 	public function getActivities(){
-		$currentProcess = null;
+		
 		$currentProcess = $this->getCurrentProcess();
 		if(!empty($currentProcess)){
 			$activityData = $this->processTreeService->activityTree($currentProcess);
@@ -259,70 +259,80 @@ class wfEngine_actions_ProcessAuthoring extends tao_actions_TaoModule {
 	public function editInstance(){
 		$clazz = $this->getCurrentClass();
 		$instance = $this->getCurrentInstance();
-		// var_dump($instance);
-		$excludedProperty = array();
-		$excludedProperty[] = 'http://www.tao.lu/middleware/Interview.rdf#i122354397139712';
 		
-		$formName="";
 		//define the type of instance to be edited:
+		$formName = '';
+		$formContainer = null;
 		if(strcasecmp($clazz->uriResource, CLASS_FORMALPARAMETER) == 0){
-			$formName = "formalParameter";
-		}elseif(strcasecmp($clazz->uriResource, CLASS_ROLE_WORKFLOWUSER) == 0){
-			$formName = "role";
-		}elseif( strcasecmp($clazz->uriResource, CLASS_WEBSERVICES) == 0
-                    || strcasecmp($clazz->uriResource, CLASS_SUPPORTSERVICES) == 0
-                    || $clazz->isSubClassOf(new core_kernel_classes_Class(CLASS_SUPPORTSERVICES))
-                    ){
-			//note: direct instanciating CLASS_SERVICEDEFINITION should be forbidden
-			$formName = "serviceDefinition";
 			
-			//unquote the following lines to disable the display of formal parameters fields
-			// $excludedProperty[] = PROPERTY_SERVICESDEFINITION_FORMALPARAMOUT;
-			// $excludedProperty[] = PROPERTY_SERVICESDEFINITION_FORMALPARAMIN;
+			$formName = 'parameter';
+			$formContainer =  new wfEngine_actions_form_InstanceFormalParameter($clazz, $instance);
+			
+		}elseif(strcasecmp($clazz->uriResource, CLASS_ROLE_WORKFLOWUSER) == 0){
+			
+			$formName = 'role';
+			$formContainer = new wfEngine_actions_form_InstanceRole($clazz, $instance);
+			
+		}elseif( strcasecmp($clazz->uriResource, CLASS_WEBSERVICES) == 0
+			|| strcasecmp($clazz->uriResource, CLASS_SUPPORTSERVICES) == 0
+			|| $clazz->isSubClassOf(new core_kernel_classes_Class(CLASS_SUPPORTSERVICES))
+			){
+			
+			//note: direct instanciating CLASS_SERVICEDEFINITION should be forbidden
+			$formName = 'serviceDefinition';
+//			$classProperties = tao_helpers_form_GenerisFormFactory::getClassProperties($clazz, new core_kernel_classes_Class(CLASS_SERVICESDEFINITION));
+			$formContainer = new wfEngine_actions_form_InstanceServiceDefinition($clazz, $instance);
+			
 		}elseif(strcasecmp($clazz->uriResource, CLASS_PROCESSVARIABLES) == 0){
-			$formName = "variable";
+			
+			$formName = 'variable';
+			$formContainer = new wfEngine_actions_form_InstanceProcessVariable($clazz, $instance);
+			
 		}else{
 			throw new Exception("attempt to editing an instance of an unsupported class");
 		}
-				
-		$myForm = null;
-		$myForm = wfEngine_helpers_ProcessFormFactory::instanceEditor($clazz, $instance, $formName, array("noSubmit"=>true,"noRevert"=>true) , $excludedProperty );
-		$myForm->setActions(array(), 'bottom');	
-		if($myForm->isSubmited()){
-			if($myForm->isValid()){
-				$propertyValues = $myForm->getValues();
-				
-				// if(empty($propertyValues[PROPERTY_SERVICESDEFINITION_FORMALPARAMOUT])){
-					// unset($propertyValues[PROPERTY_SERVICESDEFINITION_FORMALPARAMOUT]);
-					// $instance->removePropertyValues(new core_kernel_classes_Property(PROPERTY_SERVICESDEFINITION_FORMALPARAMOUT));
-				// }
-				// if(empty($propertyValues[PROPERTY_SERVICESDEFINITION_FORMALPARAMIN])){
-					// unset($propertyValues[PROPERTY_SERVICESDEFINITION_FORMALPARAMIN]);
-					// $instance->removePropertyValues(new core_kernel_classes_Property(PROPERTY_SERVICESDEFINITION_FORMALPARAMIN));
-				// }
-				
-				foreach($propertyValues as $key=>$value){
-					if(empty($value)){
-						$instance->removePropertyValues(new core_kernel_classes_Property($key));
-						unset($propertyValues[$key]);
+		
+		if(!is_null($formContainer)){
+			$myForm = $formContainer->getForm();
+			$myForm->setActions(array(), 'top');	
+			$myForm->setActions(array(), 'bottom');	
+			if($myForm->isSubmited()){
+				if($myForm->isValid()){
+					$propertyValues = $myForm->getValues();
+
+					// if(empty($propertyValues[PROPERTY_SERVICESDEFINITION_FORMALPARAMOUT])){
+						// unset($propertyValues[PROPERTY_SERVICESDEFINITION_FORMALPARAMOUT]);
+						// $instance->removePropertyValues(new core_kernel_classes_Property(PROPERTY_SERVICESDEFINITION_FORMALPARAMOUT));
+					// }
+					// if(empty($propertyValues[PROPERTY_SERVICESDEFINITION_FORMALPARAMIN])){
+						// unset($propertyValues[PROPERTY_SERVICESDEFINITION_FORMALPARAMIN]);
+						// $instance->removePropertyValues(new core_kernel_classes_Property(PROPERTY_SERVICESDEFINITION_FORMALPARAMIN));
+					// }
+
+					foreach($propertyValues as $key=>$value){
+						if(empty($value)){
+							$instance->removePropertyValues(new core_kernel_classes_Property($key));
+							unset($propertyValues[$key]);
+						}
 					}
+
+					$instance = $this->service->bindProperties($instance, $propertyValues);
+//					echo __("saved");
+//					return;
 				}
-				
-				$instance = $this->service->bindProperties($instance, $propertyValues);
-				echo __("saved");
-				return;
 			}
+			
+			$this->setData('section', $formName);
+			$this->setData('formPlus', $myForm->render());
 		}
 		
-		$this->setData('section', $formName);
-		$this->setData('formPlus', $myForm->render());
 		$this->setView('authoring/process_form_tree.tpl');
 	}
 	
 	public function editActivityProperty(){
-		$formName = "activityPropertyEditor";
+//		$formName = "activityPropertyEditor";
 		$activity = $this->getCurrentActivity();
-		$excludedProperty = array(
+		$excludedProperties = array(
 			PROPERTY_ACTIVITIES_INTERACTIVESERVICES,
 			PROPERTY_GENERIS_ALLOWFREEVALUEOF
 		);
@@ -331,10 +341,17 @@ class wfEngine_actions_ProcessAuthoring extends tao_actions_TaoModule {
 		$this->setData('saved', false);
 		$this->setData('sectionName', 'activity');
 		
-		$myForm = null;
-		$myForm = wfEngine_helpers_ProcessFormFactory::instanceEditor(new core_kernel_classes_Class(CLASS_ACTIVITIES), $activity, $formName, array("noSubmit"=>true,"noRevert"=>true), $excludedProperty);
+		$formContainer = new tao_actions_form_Instance(
+			new core_kernel_classes_Class(CLASS_ACTIVITIES), 
+			$activity, 
+			array(
+				'excludedProperties' => $excludedProperties,
+				'uniqueLabel' => false
+				)
+			);
+		$myForm = $formContainer->getForm();
 		$myForm->setActions(array(), 'bottom');	
-		
+		$myForm->setActions(array(), 'top');
 		if($myForm->isSubmited()){
 			if($myForm->isValid()){
 				
@@ -485,19 +502,20 @@ class wfEngine_actions_ProcessAuthoring extends tao_actions_TaoModule {
 	}
 	
 	public function editProcessProperty(){
-		$formName = "processPropertyEditor";
+//		$formName = "processPropertyEditor";
 		$process = $this->getCurrentProcess();
-		$excludedProperty = array(
+		$excludedProperties = array(
 			PROPERTY_PROCESS_ACTIVITIES,
-			'http://www.tao.lu/middleware/Interview.rdf#i122354397139712'
+			PROPERTY_PROCESS_ROOT_ACTIVITIES
 		);
 		
 		$this->setData('saved', false);
 		$this->setData('sectionName', 'process');
 		
-		$myForm = null;
-		$myForm = wfEngine_helpers_ProcessFormFactory::instanceEditor(new core_kernel_classes_Class(CLASS_PROCESS), $process, $formName, array("noSubmit"=>true,"noRevert"=>true), $excludedProperty, true);
+		$formContainer = new tao_actions_form_Instance(new core_kernel_classes_Class(CLASS_PROCESS), $process, array('excludedProperties' => $excludedProperties));
+		$myForm = $formContainer->getForm();
 		$myForm->setActions(array(), 'bottom');	
+		$myForm->setActions(array(), 'top');
 		if($myForm->isSubmited()){
 			if($myForm->isValid()){
 				$process = $this->service->bindProperties($process, $myForm->getValues());
