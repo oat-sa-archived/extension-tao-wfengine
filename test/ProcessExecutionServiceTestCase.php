@@ -241,7 +241,7 @@ class ProcessExecutionServiceTestCase extends UnitTestCase{
 				if($i < $iterationNumber){
 					$this->assertTrue(count($transitionResult));
 				}else{
-					$this->assertFalse(count($transitionResult));
+					$this->assertFalse($transitionResult);
 				}
 				$this->out("activity status: ".$activityExecutionService->getStatus($activityExecution)->getLabel());
 				$this->out("process status: ".$this->service->getStatus($processInstance)->getLabel());
@@ -284,7 +284,7 @@ class ProcessExecutionServiceTestCase extends UnitTestCase{
 				if($j < $iterationNumber-1){
 					$this->assertTrue(count($transitionResult));
 				}else{
-					$this->assertFalse(count($transitionResult));
+					$this->assertFalse($transitionResult);
 				}
 				
 				$this->out("activity status: ".$activityExecutionService->getStatus($activityExecution)->getLabel());
@@ -353,7 +353,7 @@ class ProcessExecutionServiceTestCase extends UnitTestCase{
 				if($i<$iterationNumber){
 					$this->assertTrue(count($transitionResult));
 				}else{
-					$this->assertFalse(count($transitionResult));
+					$this->assertFalse($transitionResult);
 				}
 				$this->out("activity status: ".$activityExecutionService->getStatus($activityExecution)->getLabel());
 				$this->out("process status: ".$this->service->getStatus($processInstance)->getLabel());
@@ -699,6 +699,7 @@ class ProcessExecutionServiceTestCase extends UnitTestCase{
 			if($j == 0){
 				$this->assertTrue($transitionResult);
 			}else if($j == $iterationNumber - 1){
+				var_dump($transitionResult);
 				$this->assertFalse($transitionResult);
 			}
 			

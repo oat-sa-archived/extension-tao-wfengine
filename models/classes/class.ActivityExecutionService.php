@@ -1253,7 +1253,7 @@ class wfEngine_models_classes_ActivityExecutionService
 				if(count($prevousActivityExecution->getPropertyValues($this->activityExecutionFollowingProperty)) == 1){
 					$previousActivityExecutions[$prevousActivityExecution->uriResource] = $prevousActivityExecution;
 				}else{
-					return $returnValue;//forbidden to go backward of a parallel connector
+					return false;//forbidden to go backward of a parallel connector
 				}
 			}
 		}

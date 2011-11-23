@@ -272,13 +272,16 @@ class wfEngine_actions_ProcessBrowser extends wfEngine_actions_WfModule{
 		//reinitiate nonce:
 		$this->activityExecutionService->createNonce($this->activityExecution);
 		
-		if($this->processExecutionService->isFinished($this->processExecution)){
-			$this->redirectToMain();
-		}
-		else if($this->processExecutionService->isPaused($this->processExecution)){
-			$this->pause();
-		}
-		else{
+		if($previousActivityExecutions === false || count($previousActivityExecutions) == 0 ){
+			
+			if ($this->processExecutionService->isFinished($this->processExecution)) {
+				$this->redirectToMain();
+			} else if ($this->processExecutionService->isPaused($this->processExecution)) {
+				$this->pause();
+			}
+			
+		}else{
+			
 			//look if the next activity execs are from the same definition:
 			if(count($previousActivityExecutions) == 1){
 				
@@ -316,13 +319,15 @@ class wfEngine_actions_ProcessBrowser extends wfEngine_actions_WfModule{
 		//reinitiate nonce:
 		$this->activityExecutionService->createNonce($this->activityExecution);
 		
-		if($this->processExecutionService->isFinished($this->processExecution)){
-			$this->redirectToMain();
-		}
-		elseif($this->processExecutionService->isPaused($this->processExecution)){
-			$this->pause();
-		}
-		else{
+		if($nextActivityExecutions === false || count($nextActivityExecutions) == 0 ){
+			
+			if ($this->processExecutionService->isFinished($this->processExecution)) {
+				$this->redirectToMain();
+			} elseif ($this->processExecutionService->isPaused($this->processExecution)) {
+				$this->pause();
+			}
+			
+		}else{
 			//look if the next activity execs are from the same definition:
 			if(count($nextActivityExecutions) == 1){
 				

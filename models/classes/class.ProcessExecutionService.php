@@ -748,11 +748,11 @@ class wfEngine_models_classes_ProcessExecutionService
      * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @param  Resource processExecution
      * @param  Resource activityExecution
-     * @return array
+     * @return mixed
      */
     public function performTransition( core_kernel_classes_Resource $processExecution,  core_kernel_classes_Resource $activityExecution)
     {
-        $returnValue = array();
+        $returnValue = null;
 
         // section 127-0-1-1-7a69d871:1322a76df3c:-8000:0000000000002F84 begin
 		
@@ -760,7 +760,7 @@ class wfEngine_models_classes_ProcessExecutionService
 		
 		//check if the transition is possible, e.g. process is not finished
 		if($this->isFinished($processExecution)){
-			return $returnValue;
+			return false;
 		}
 		
 		//init the services
@@ -786,13 +786,13 @@ class wfEngine_models_classes_ProcessExecutionService
 		}else{
 			//final activity:
 			$this->finish($processExecution);
-			return $returnValue;
+			return false;
 		}
 		
 		if($newActivities === false){
 			//means that the process must be paused before transition: transition condition not fullfilled
 			$this->pause($processExecution);
-			return $returnValue;
+			return false;
 		}
 		
 		// The actual transition starts here:
@@ -852,6 +852,7 @@ class wfEngine_models_classes_ProcessExecutionService
 			
 		}
 		
+		$returnValue = array();
 		//finish actions on the authorized acitivty definitions
 		foreach($authorizedActivityExecutions as $uri => $activityExecutionAfterTransition){
 			
@@ -879,8 +880,10 @@ class wfEngine_models_classes_ProcessExecutionService
 				if(!is_null($activityExecutionResource)){
 					$followingActivityExecutions = $this->performTransition($processExecution, $activityExecutionResource);
 					unset($authorizedActivityExecutions[$uri]);
-					foreach($followingActivityExecutions as $followingActivityExec){
-						$returnValue[$followingActivityExec->uriResource] = $followingActivityExec;
+					if(is_array($followingActivityExecutions)){
+						foreach ($followingActivityExecutions as $followingActivityExec) {
+							$returnValue[$followingActivityExec->uriResource] = $followingActivityExec;
+						}
 					}
 				}else{
 					throw new wfEngine_models_classes_ProcessExecutionException('the activity execution cannot be created for the hidden activity');
@@ -900,7 +903,7 @@ class wfEngine_models_classes_ProcessExecutionService
 		
         // section 127-0-1-1-7a69d871:1322a76df3c:-8000:0000000000002F84 end
 
-        return (array) $returnValue;
+        return $returnValue;
     }
 
     /**
@@ -911,17 +914,17 @@ class wfEngine_models_classes_ProcessExecutionService
      * @param  Resource processExecution
      * @param  Resource activityExecution
      * @param  revertOptions
-     * @return array
+     * @return mixed
      */
     public function performBackwardTransition( core_kernel_classes_Resource $processExecution,  core_kernel_classes_Resource $activityExecution, $revertOptions = array())
     {
-        $returnValue = array();
+        $returnValue = null;
 
         // section 127-0-1-1-7a69d871:1322a76df3c:-8000:0000000000002F88 begin
 		
 		//check if the transition is possible, e.g. process is not finished
 		if($this->isFinished($processExecution)){
-			return $returnValue;
+			return false;
 		}
 		
 		$activityService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityService');
@@ -929,7 +932,8 @@ class wfEngine_models_classes_ProcessExecutionService
 		$newActivityExecutions = $this->activityExecutionService->moveBackward($activityExecution, $processExecution, $revertOptions);
 		$count = count($newActivityExecutions);
 		
-		if($count){
+		$returnValue = array();
+		if(is_array($newActivityExecutions) && $count){
 			//see if needs to go back again
 			foreach($newActivityExecutions as $newActivityExecution){
 				$newActivityDefinition = $this->activityExecutionService->getExecutionOf($newActivityExecution);
@@ -949,11 +953,13 @@ class wfEngine_models_classes_ProcessExecutionService
 			}else{
 				$this->pause($processExecution);
 			}
+		}else{
+			$returnValue = false;
 		}
 		
         // section 127-0-1-1-7a69d871:1322a76df3c:-8000:0000000000002F88 end
 
-        return (array) $returnValue;
+        return $returnValue;
     }
 
     /**

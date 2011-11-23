@@ -360,7 +360,7 @@ class ActivityExecutionServiceTestCase extends wfEngineServiceTest {
 					case 3:
 					case 4:
 					case 5:{
-						$this->assertFalse(count($transitionResult));
+						$this->assertFalse($transitionResult);
 						$this->assertTrue($processExecutionService->isPaused($processInstance));
 						break;
 					}
@@ -370,7 +370,7 @@ class ActivityExecutionServiceTestCase extends wfEngineServiceTest {
 						break;
 					}
 					case 6:{
-						$this->assertFalse(count($transitionResult));
+						$this->assertFalse($transitionResult);
 						$this->assertTrue($processExecutionService->isFinished($processInstance));
 						break;
 					}
@@ -537,7 +537,7 @@ class ActivityExecutionServiceTestCase extends wfEngineServiceTest {
 				if($j < $iterationNumber-1){
 					$this->assertTrue(count($transitionResult));
 				}else{
-					$this->assertFalse(count($transitionResult));
+					$this->assertFalse($transitionResult);
 				}
 				
 				$this->out("activity status: ".$activityExecutionService->getStatus($activityExecution)->getLabel());
@@ -703,7 +703,7 @@ class ActivityExecutionServiceTestCase extends wfEngineServiceTest {
 					case 3:
 					case 4:
 					case 5:{
-						$this->assertFalse(count($transitionResult));
+						$this->assertFalse($transitionResult);
 						$this->assertTrue($processExecutionService->isPaused($processInstance));
 						break;
 					}
@@ -713,7 +713,7 @@ class ActivityExecutionServiceTestCase extends wfEngineServiceTest {
 						break;
 					}
 					case 6:{
-						$this->assertFalse(count($transitionResult));
+						$this->assertFalse($transitionResult);
 						$this->assertTrue($processExecutionService->isFinished($processInstance));
 						break;
 					}
