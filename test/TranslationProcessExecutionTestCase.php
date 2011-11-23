@@ -387,7 +387,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		return $property;
 	}
 	
-	public function testCreateUnits(){
+	public function _testCreateUnits(){
 		
 		$unitNames = array('unit01', 'unit02', 'unit03');
 		$this->itemClass = null;
@@ -666,7 +666,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		
 	}
 	
-	public function testExecuteTranslationProcess(){
+	public function _testExecuteTranslationProcess(){
 		
 		$simulationOptions = array(
 			'repeatBack' => 0,//O: do not back when possible

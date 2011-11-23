@@ -330,7 +330,7 @@ class wfEngine_actions_ProcessAuthoring extends tao_actions_TaoModule {
 	}
 	
 	public function editActivityProperty(){
-//		$formName = "activityPropertyEditor";
+
 		$activity = $this->getCurrentActivity();
 		$excludedProperties = array(
 			PROPERTY_ACTIVITIES_INTERACTIVESERVICES,
@@ -502,7 +502,7 @@ class wfEngine_actions_ProcessAuthoring extends tao_actions_TaoModule {
 	}
 	
 	public function editProcessProperty(){
-//		$formName = "processPropertyEditor";
+
 		$process = $this->getCurrentProcess();
 		$excludedProperties = array(
 			PROPERTY_PROCESS_ACTIVITIES,
