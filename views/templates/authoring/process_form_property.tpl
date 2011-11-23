@@ -19,7 +19,7 @@
 					restrictedRoleElt.hide();
 				}
 				else if(mode == '<?=tao_helpers_Uri::encode(INSTANCE_ACL_ROLE_RESTRICTED_USER_INHERITED)?>'){//mode "restricted user role inherited"
-					activityUri = $("#activityPropertyEditor :input[name='activityUri']").val();
+					var activityUri = $("#activityPropertyEditor :input[name='activityUri']").val();
 					if(activityUri){
 						$.postJson( "<?=_url('getActivityInheritableRoles', 'ProcessAuthoring', 'wfEngine')?>",
 							{
@@ -31,8 +31,8 @@
 									var roles = response.roles;
 									restrictedRoleElt.find('option').each(function(){
 										if(this.val != ''){
-											found = false;
-											for(roleUri in roles){
+											var found = false;
+											for(var roleUri in roles){
 												if(roleUri == this.value){
 													found = true; break;
 												}

@@ -392,7 +392,6 @@ class wfEngine_helpers_ProcessFormFactory extends tao_helpers_form_GenerisFormFa
 							//check the type of actual parameter:
 							$inParameterProcessVariable = $actualParam->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_ACTUALPARAMETER_PROCESSVARIABLE));//a resource
 							$inParameterConstant = $actualParam->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_ACTUALPARAMETER_CONSTANTVALUE));
-							// var_dump($actualParam, $inParameterProcessVariable, $inParameterConstant);
 							
 							if(!is_null($inParameterProcessVariable)){
 								//the type is a processvariable so must be a resource:
@@ -427,7 +426,6 @@ class wfEngine_helpers_ProcessFormFactory extends tao_helpers_form_GenerisFormFa
 					
 					$defaultConstantValue = $formalParam->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_FORMALPARAMETER_DEFAULTCONSTANTVALUE));
 					$defaultProcessVariable = $formalParam->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_FORMALPARAMETER_DEFAULTPROCESSVARIABLE));
-					// var_dump($formalParam, $defaultConstantValue, $defaultProcessVariable);
 					
 					$defaultValue = '';
 					if(!is_null($defaultProcessVariable)){
@@ -553,7 +551,6 @@ class wfEngine_helpers_ProcessFormFactory extends tao_helpers_form_GenerisFormFa
 		if(empty($connectorType)){
 			
 			//get the type of connector of the current connector
-			$collection = null;
 			$collection = $connector->getPropertyValuesCollection(new core_kernel_classes_Property(PROPERTY_CONNECTORS_TYPE));
 			if($collection->isEmpty()){
 				//if the type of connector is not set yet, simply return a dropdown menu of available type of connector
@@ -753,9 +750,9 @@ class wfEngine_helpers_ProcessFormFactory extends tao_helpers_form_GenerisFormFa
 			case 'parallel':{
 				$nextActivity = array();
 				$nextActivityCollection = $connector->getPropertyValuesCollection($propNextActivities);
-				foreach($nextActivityCollection->getIterator() as $activity){
-					if($activity instanceof core_kernel_classes_Resource){
-						$nextActivity[] = $activity;
+				foreach($nextActivityCollection->getIterator() as $cardinality){
+					if($cardinality instanceof core_kernel_classes_Resource){
+						$nextActivity[] = $cardinality;
 					}
 				}
 				$idPrefix = 'parallel';
@@ -790,7 +787,6 @@ class wfEngine_helpers_ProcessFormFactory extends tao_helpers_form_GenerisFormFa
 		}
 		
 		//the activity associated to the connector:
-		$parallelActivityCount = array();//used only in case of a parallel connector
 		$referencedActivity = $connector->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_ACTIVITYREFERENCE));//mandatory property value, initiated at the connector creation
 		if($referencedActivity instanceof core_kernel_classes_Resource){
 			$processDefClass = new core_kernel_classes_Class(CLASS_PROCESS);
@@ -806,12 +802,15 @@ class wfEngine_helpers_ProcessFormFactory extends tao_helpers_form_GenerisFormFa
 					foreach($activities as $activityTemp){
 						
 						//include activities options:
-						$activityOptions[ tao_helpers_Uri::encode($activityTemp->uriResource) ] = $activityTemp->getLabel();
-						$parallelActivityCount[$activityTemp->uriResource] = 0;//initialize the number of each activity to 0
+						$encodedUri = tao_helpers_Uri::encode($activityTemp->uriResource);
+						$activityOptions[$encodedUri] = $activityTemp->getLabel();
+						if(strtolower($type) == 'parallel'){
+							$elementHidden = tao_helpers_form_FormFactory::getElement("{$encodedUri}_num_hidden", 'Hidden');
+							$returnValue[$idPrefix . '_' . $activityTemp->uriResource] = $elementHidden;
+						}
 						
 						//include connectors options:
 						if($includeConnectors){
-							
 							$connectors = $connectorClass->searchInstances(array(PROPERTY_CONNECTORS_ACTIVITYREFERENCE => $activityTemp->uriResource), array('like'=>false));
 							foreach($connectors as $connectorTemp){
 								if( $connector->uriResource != $connectorTemp->uriResource){
@@ -856,16 +855,30 @@ class wfEngine_helpers_ProcessFormFactory extends tao_helpers_form_GenerisFormFa
 		
 			if(is_array($nextActivity) && $optionsWidget == 'Checkbox'){
 				
-				foreach($nextActivity as $activity){
-					$elementActivities->setValue($activity->uriResource);//no need for tao_helpers_Uri::encode
+				if(strtolower($type) == 'parallel'){
 					
-					//determine the number for each activity:
-					$parallelActivityCount[$activity->uriResource] += 1;
+					$cardinalityService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityCardinalityService');
+					foreach($nextActivity as $cardinality){
+
+						$activity = $cardinalityService->getActivity($cardinality);
+						$number = $cardinalityService->getCardinality($cardinality);
+						if(isset($returnValue[$idPrefix.'_'.$activity->uriResource])){
+							$returnValue[$idPrefix.'_'.$activity->uriResource]->setValue(($number instanceof core_kernel_classes_Resource)?tao_helpers_Uri::encode($number->uriResource):intval($number));
+						}
+						
+						$elementActivities->setValue($activity->uriResource);//no need for tao_helpers_Uri::encode
+					}
+					
+				}else{
+					
+					foreach($nextActivity as $activity){
+						$elementActivities->setValue($activity->uriResource);//no need for tao_helpers_Uri::encode
+					}
+					
 				}
 				
-				
-				
 			}elseif($nextActivity instanceof core_kernel_classes_Resource){
+				
 				$aService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityService');
 			    
 			    if($aService->isActivity($nextActivity)){
@@ -877,20 +890,6 @@ class wfEngine_helpers_ProcessFormFactory extends tao_helpers_form_GenerisFormFa
 					$elementChoice->setValue("connector");
 					$elementConnectors->setValue($nextActivity->uriResource);
 				}
-			}
-		}
-		
-		//if is parallel: TODO: clean that!!
-		if(strtolower($type)=='parallel'){
-			foreach($parallelActivityCount as $activityUri=>$number){
-				//create customized hidden field with the number for each activity
-				$encodedUri = tao_helpers_Uri::encode($activityUri);
-				
-				$elementHidden = null;
-				$elementHidden = tao_helpers_form_FormFactory::getElement("{$encodedUri}_num_hidden", 'Hidden');
-				$elementHidden->setValue($number);
-				
-				$returnValue[$idPrefix.'_'.$activityUri] = $elementHidden;
 			}
 		}
 		

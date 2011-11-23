@@ -1437,7 +1437,10 @@ class wfEngine_models_classes_ProcessAuthoringService
 				
 				//record the old split variables values in case it is needed (TODO: optimize this process)
 				$activity = $cardinalityService->getActivity($activityMultiplicityResource);
-				$oldSplitVariablesByActivity[$activity->uriResource] = $cardinalityService->getSplitVariables($activityMultiplicityResource);
+				$splitVars = $cardinalityService->getSplitVariables($activityMultiplicityResource);
+				if(!empty($splitVars)){
+					$oldSplitVariablesByActivity[$activity->uriResource] = $splitVars;
+				}
 				
 				//delete it
 				$activityMultiplicityResource->delete();
@@ -1454,12 +1457,13 @@ class wfEngine_models_classes_ProcessAuthoringService
 		$i = 0;
 		
 		foreach($newActivitiesArray as $activityUri => $count){
+			
 			$activity = new core_kernel_classes_Resource($activityUri);
 			
 			//set multiplicity to the parallel connector:
 			$cardinality = $cardinalityService->createCardinality($activity, $count);
 			if(isset($oldSplitVariablesByActivity[$activityUri])){
-				if(!$cardinalityService->setSplitVariables($cardinality, $oldSplitVariablesByActivity[$activityUri])) {
+				if(!empty($oldSplitVariablesByActivity[$activityUri]) && !$cardinalityService->editSplitVariables($cardinality, $oldSplitVariablesByActivity[$activityUri])) {
 					throw new Exception('cannot set split variables to new cardinality resources');
 				}
 			}

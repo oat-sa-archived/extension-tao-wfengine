@@ -77,6 +77,12 @@ $(function(){
 			for(var i=1;i<number+1;i++){
 				selectNumElt.append('<option value="'+i+'">'+i+'</option>');
 			}
+			
+			var variables = eval(<?=get_data('variables')?>);
+//			console.log(variables);
+			for(var variablesUri in variables){
+				selectNumElt.append('<option value="'+variablesUri+'">'+variables[variablesUri]+'</option>');
+			}
 			selectNumElt.val($("input[id='"+input_hidden_id+"']").val());
 			
 			selectNumElt.change(function(){

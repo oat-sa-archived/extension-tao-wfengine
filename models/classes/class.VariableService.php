@@ -206,7 +206,7 @@ class wfEngine_models_classes_VariableService
      * @param  Resource activityExecution
      * @return boolean
      */
-    public function remove($params,  core_kernel_classes_Resource $activityExecution = null)
+    public function remove( mixed $params,  core_kernel_classes_Resource $activityExecution = null)
     {
         $returnValue = (bool) false;
 
@@ -253,7 +253,7 @@ class wfEngine_models_classes_VariableService
      * @param  Resource activityExecution
      * @return mixed
      */
-    public function get($key, core_kernel_classes_Resource $activityExecution = null)
+    public function get($key,  core_kernel_classes_Resource $activityExecution = null)
     {
         $returnValue = null;
 
@@ -570,6 +570,25 @@ class wfEngine_models_classes_VariableService
         // section 127-0-1-1-1899355b:13312537157:-8000:00000000000030E7 end
 
         return (bool) $returnValue;
+    }
+
+    /**
+     * Short description of method getCode
+     *
+     * @access public
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @param  Resource variable
+     * @return string
+     */
+    public function getCode( core_kernel_classes_Resource $variable)
+    {
+        $returnValue = (string) '';
+
+        // section 127-0-1-1--193aa0be:133cfb90ad2:-8000:0000000000003431 begin
+		$returnValue = $variable->getOnePropertyValue($this->codeProperty);
+        // section 127-0-1-1--193aa0be:133cfb90ad2:-8000:0000000000003431 end
+
+        return (string) $returnValue;
     }
 
 } /* end of class wfEngine_models_classes_VariableService */

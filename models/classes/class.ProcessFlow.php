@@ -153,10 +153,11 @@ class wfEngine_models_classes_ProcessFlow{
 			//if the wanted join connector has not be found (i.e. no value returned so far):
 			//get the nextActivitiesCollection and recursively execute the same function ON ONLY ONE of the next parallel branch, but both banches in case of a conditionnal connector
 			$nextActivitiesCollection = $connector->getPropertyValuesCollection(new core_kernel_classes_Property(PROPERTY_CONNECTORS_NEXTACTIVITIES));
+			$cardinalityService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityCardinalityService');
 			foreach($nextActivitiesCollection->getIterator() as $nextActivity){
 				
-				if($nextActivity->hasType($classMultiplicity)){
-					$activity = $nextActivity->getPropertyValue();
+				if($cardinalityService->isCardinality($nextActivity)){
+					$nextActivity = $cardinalityService->getActivity($nextActivity);
 				}
 			
 				//if the nextActivity happens to have already been checked, jump it

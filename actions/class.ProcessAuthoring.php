@@ -852,9 +852,20 @@ class wfEngine_actions_ProcessAuthoring extends tao_actions_TaoModule {
 	
 	public function editConnector(){
 		$connectorUri = tao_helpers_Uri::decode($_POST['connectorUri']);
-		
+		$connector = new core_kernel_classes_Resource($connectorUri);
 		$formName=uniqid("connectorEditor_");
-		$myForm = wfEngine_helpers_ProcessFormFactory::connectorEditor(new core_kernel_classes_Resource($connectorUri), null, $formName, $this->getCurrentActivity());
+		$myForm = wfEngine_helpers_ProcessFormFactory::connectorEditor($connector, null, $formName, $this->getCurrentActivity());
+		
+		$connectorService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ConnectorService');
+		if($connectorService->getType($connector)->uriResource == INSTANCE_TYPEOFCONNECTORS_PARALLEL){
+			$variableService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_VariableService');
+			$variableClass = new core_kernel_classes_Class(CLASS_PROCESSVARIABLES);
+			$variables = array();
+			foreach($variableClass->getInstances() as $variable){
+				$variables[tao_helpers_Uri::encode($variable->uriResource)] = $variableService->getCode($variable);
+			}
+			$this->setData('variables', json_encode($variables));
+		}
 		
 		$this->setData('notifyUserUri', tao_helpers_Uri::encode(INSTANCE_NOTIFY_USER));
 		$this->setData('notifyRoleUri', tao_helpers_Uri::encode(INSTANCE_NOTIFY_ROLE));
@@ -904,6 +915,7 @@ class wfEngine_actions_ProcessAuthoring extends tao_actions_TaoModule {
 			$data[tao_helpers_Uri::decode($key)] = tao_helpers_Uri::decode($value);
 		}
 		
+		$connectorInstance = null;
 		if(!isset($data["connectorUri"])){
 			$saved = false;
 			throw new Exception("no connector uri found in POST");
@@ -1132,27 +1144,18 @@ class wfEngine_actions_ProcessAuthoring extends tao_actions_TaoModule {
 		}elseif($data[PROPERTY_CONNECTORS_TYPE] == INSTANCE_TYPEOFCONNECTORS_PARALLEL){
 			
 			$newActivityArray = array();
-			foreach($data as $key=>$activityUri){
-				if(strpos($key, 'parallel_')===0){//find the key-value related to selected activities
-					//old impl:
-					/*
-					//get the number of that activity:
-					$number = $data[$activityUri.'_num_hidden'];
-					
-					
-					//set property value as much as required
-					for($i=0;$i<$number;$i++){
-						$connectorInstance->setPropertyValue($propNextActivities, $activityUri);
-						
+			foreach($data as $key =>$activityUri){
+				if(strpos($key, 'parallel_')===0){
+					$cardinality = tao_helpers_Uri::decode($data[$activityUri.'_num_hidden']);
+					if(is_numeric($cardinality)){
+						$newActivityArray[$activityUri] = intval($cardinality);
+					}else if(common_Utils::isUri(tao_helpers_Uri::decode($cardinality))){
+						$newActivityArray[$activityUri] = $cardinality;
 					}
-					*/
-					
-					//new impl:
-					$newActivityArray[$activityUri] = intval($data[$activityUri.'_num_hidden']);
 				}
 			}
 			
-			$this->service->setParallelActivities($connectorInstance, $newActivityArray);
+			$result = $this->service->setParallelActivities($connectorInstance, $newActivityArray);
 			
 		}elseif($data[PROPERTY_CONNECTORS_TYPE] == INSTANCE_TYPEOFCONNECTORS_JOIN){
 		
