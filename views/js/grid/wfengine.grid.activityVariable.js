@@ -72,7 +72,7 @@ TaoGridActivityVariableAdapter.edit = function(grid, cell, rowId, columnId)
 	});
 	//bind the add action
 	$(cell).find('.activity-variable-save').click(function(){
-		//
+		//wfApi.Variable.edit(activityExecutionUri, 'countryCode', 'ouais mon gars');
 	});
 	//bind the add action
 	$(cell).find('.activity-variable-cancel').click(function(){

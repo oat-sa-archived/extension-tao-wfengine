@@ -20,7 +20,7 @@ class wfEngine_actions_Monitor extends tao_actions_TaoModule {
 				'http://www.w3.org/2000/01/rdf-schema#label' 													=> array('weight'=>3)
 				, 'http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessInstancesExecutionOf' 				=> array('weight'=>2)
 				, 'http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessInstancesCurrentActivityExecutions' => array(
-					'weight'=>4
+					'weight'=>6
 					, 'widget'=>'CurrentActivities'
 					, 'columns' => array(
 						'xliff' => array('widget'=>'DownloadFileResource')
@@ -103,15 +103,24 @@ class wfEngine_actions_Monitor extends tao_actions_TaoModule {
 		$returnValue = array();
 		$filter = null;
 		
+		//get the filter
 		if($this->hasRequestParameter('filter')){
 			$filter = $this->getRequestParameter('filter');
 			$filter = $filter == 'null' || empty($filter) ? null : $filter;
 		}
+		//get the processes uris
+		$processesUri = $this->hasRequestParameter('processesUri') ? $this->getRequestParameter('processesUri') : null;
+		
 		$processInstancesClass = new core_kernel_classes_Class(CLASS_PROCESSINSTANCES);
 		if(!is_null($filter)){
-			$processExecutions = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessService')
-				->searchInstances($filter, $processInstancesClass, array ('recursive'=>true));
-		}else{
+			$processExecutions = $processInstancesClass->searchInstances($filter, array ('recursive'=>true));
+		}
+		else if(!is_null($processesUri)){
+			foreach($processesUri as $processUri){
+				$processExecutions[$processUri] = new core_kernel_classes_resource($processUri);
+			}
+		}
+		else{
 			$processExecutions = $processInstancesClass->getInstances();
 		}
 		

@@ -23,7 +23,7 @@ TaoGridResumeProcessAdapter.preFormatter = function(grid, rowData, rowId, column
 
 TaoGridResumeProcessAdapter.formatter = function(cellvalue, options, rowObject)
 {
-	var returnValue = '<a href="#"><img src="/wfEngine/views/img/status_resumed.png"/></a>';
+	var returnValue = '<a href="#"><img src="/wfEngine/views/img/resume.png"/></a>';
 	return returnValue;
 }
 
@@ -32,9 +32,9 @@ TaoGridResumeProcessAdapter.postCellFormat = function(grid, cell, rowId, columnI
 	var processExecutionUri = grid.data[rowId][columnId];
 	$(cell).find('a').one('click', function(){
 		wfApi.ProcessExecution.resume(processExecutionUri, function(data){
-			console.log('resume the process execution '+processExecutionUri);
+			refreshMonitoring([rowId]);
 		}, function(){
-			console.log('unable to resume the process execution '+processExecutionUri);
+			alert('unable to resume the process execution '+processExecutionUri);
 		});
 	});
 }

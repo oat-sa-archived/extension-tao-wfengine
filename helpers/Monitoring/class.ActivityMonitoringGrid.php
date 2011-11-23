@@ -85,7 +85,8 @@ class wfEngine_helpers_Monitoring_ActivityMonitoringGrid
 			PROPERTY_ACTIVITY_EXECUTION_TIME_LASTACCESS => __('Started Time'),
 			PROPERTY_ACTIVITY_EXECUTION_ACL_MODE => __('Access Control Mode'),
 			PROPERTY_ACTIVITY_EXECUTION_RESTRICTED_USER => __('Restricted to'),
-			PROPERTY_ACTIVITY_EXECUTION_CURRENT_USER => __('Current User')
+			PROPERTY_ACTIVITY_EXECUTION_CURRENT_USER => __('Current User'),
+			PROPERTY_ACTIVITY_EXECUTION_PROCESSEXECUTION => __('Process Execution')
 		);
 		
 		$propertyUris = array();

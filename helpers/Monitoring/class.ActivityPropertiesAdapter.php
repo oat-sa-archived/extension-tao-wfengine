@@ -130,6 +130,11 @@ class wfEngine_helpers_Monitoring_ActivityPropertiesAdapter
 					$this->data[$rowId][PROPERTY_ACTIVITY_EXECUTION_RESTRICTED_USER] = (is_null($restrictedTo))?'n/a':$restrictedTo->getLabel();
 				}
 				
+				if (!in_array(PROPERTY_ACTIVITY_EXECUTION_PROCESSEXECUTION, $excludedProperties)){
+					$processExecution = $activityExecutionService->getRelatedProcessExecution($activityExecution);
+					$this->data[$rowId][PROPERTY_ACTIVITY_EXECUTION_PROCESSEXECUTION] = (is_null($processExecution))?'n/a':$processExecution->uriResource;
+				}
+				
 				
 				if (isset($this->data[$rowId][$columnId])) {
 					$returnValue = $this->data[$rowId][$columnId];

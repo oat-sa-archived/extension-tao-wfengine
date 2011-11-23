@@ -18,8 +18,9 @@ class wfEngine_actions_WfApiActivityExecution extends wfEngine_actions_WfApi {
 			$this->setErrorMessage(__('The resource is not an activity execution'));
 		}
 		
+		$this->activityExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityExecutionService');
 	}
-		
+	
 	public function assign()
 	{
 		if(!is_null($this->activityExecution)){
@@ -30,6 +31,30 @@ class wfEngine_actions_WfApiActivityExecution extends wfEngine_actions_WfApi {
 			}else{
 				$this->setErrorMessage('no user given');
 			}
+		}
+	}
+	
+	public function next()
+	{
+		if(is_null($this->processExecution)){
+			$this->processExecution = $this->activityExecutionService->getRelatedProcessExecution($this->activityExecution);
+		}
+		$currentActivityExecutions = $this->processExecutionService->performTransition($this->processExecution, $this->activityExecution);
+		if($currentActivityExecutions!==false){
+			$this->setSuccess(true);
+			$this->setData('currentActivityExecutions', $currentActivityExecutions);
+		}
+	}
+    
+	public function previous()
+	{
+		if(is_null($this->processExecution)){
+			$this->processExecution = $this->activityExecutionService->getRelatedProcessExecution($this->activityExecution);
+		}
+		$currentActivityExecutions = $this->processExecutionService->performBackwardTransition($this->processExecution, $this->activityExecution);
+		if($currentActivityExecutions!==false){
+			$this->setSuccess(true);
+			$this->setData('currentActivityExecutions', $currentActivityExecutions);
 		}
 	}
 	

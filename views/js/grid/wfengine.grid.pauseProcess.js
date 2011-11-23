@@ -32,9 +32,9 @@ TaoGridPauseProcessAdapter.postCellFormat = function(grid, cell, rowId, columnId
 	var processExecutionUri = grid.data[rowId][columnId];
 	$(cell).find('a').one('click', function(){
 		wfApi.ProcessExecution.pause(processExecutionUri, function(data){
-			console.log('pause the process execution '+processExecutionUri);
+			refreshMonitoring([rowId]);
 		}, function(){
-			console.log('unable to pause the process execution '+processExecutionUri);
+			alert('unable to pause the process execution '+processExecutionUri);
 		});
 	});
 }

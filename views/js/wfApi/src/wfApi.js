@@ -43,7 +43,6 @@ wfApi.request = function(controler, action, parameters, successCallback, errorCa
 	var options = typeof options != ('undefined') ? options : new Array();
 	var async = typeof options.async != ('undefined') ? options.async : true;
 	var url = root_url+'/wfEngine/'+controler+'/'+action;
-	console.log(url);
 	$.ajax({
 		'url'			: url
 		, 'type' 		: 'GET'

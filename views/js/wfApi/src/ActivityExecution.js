@@ -30,3 +30,21 @@ wfApi.ActivityExecution.assign = function(activityExecutionUri, userUri, success
 {
 	return wfApi.request(wfApi.ActivityExecutionControler, 'assign', {activityExecutionUri:activityExecutionUri, userUri:userUri}, successCallback, errorCallback);
 };
+
+/**
+ * Drive the process execution to the next activity
+ * @param {String} activityExecutionUri
+ */
+wfApi.ActivityExecution.next = function(activityExecutionUri, successCallback, errorCallback, options)
+{
+	wfApi.request(wfApi.ActivityExecutionControler, 'next', {activityExecutionUri:activityExecutionUri}, successCallback, errorCallback, options);
+};
+
+/**
+ * Drive the process execution to the previous activity
+ * @param {String} activityExecutionUri
+ */
+wfApi.ActivityExecution.previous = function(activityExecutionUri, successCallback, errorCallback, options)
+{
+	wfApi.request(wfApi.ActivityExecutionControler, 'previous', {activityExecutionUri:activityExecutionUri}, successCallback, errorCallback, options);
+};
