@@ -1098,7 +1098,7 @@ ActivityDiagramClass.drawConnector = function(connectorId, position, connectorTy
 		throw 'wrong type of connector';
 		return false;
 	}
-	
+		
 	//define id:
 	var elementActivityId = ActivityDiagramClass.getActivityId('activity', activityRefId);
 	var elementConnectorId = ActivityDiagramClass.getActivityId('connector', connectorId);
@@ -1203,7 +1203,8 @@ ActivityDiagramClass.getConnectorTypeDescription = function(connector){
 					typeUri = INSTANCE_TYPEOFCONNECTORS_CONDITIONAL;
 					break;
 				}
-				case 'parallel':{
+				case 'split':{
+					
 					portNumber = connector.port.length + 1;
 					
 					for(var i=0; i<portNumber; i++){
@@ -1299,10 +1300,6 @@ ActivityDiagramClass.setBorderPoint = function(targetId, type, position, offset,
 		collision: "none"
 	});
 	
-	//console.log(type,targetId);
-	//console.log('position',position);
-	//console.log('my',my);
-	//console.log('at',at);
 }
 
 ActivityDiagramClass.setFeedbackMenu = function(mode){

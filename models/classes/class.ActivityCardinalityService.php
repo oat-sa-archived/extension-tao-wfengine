@@ -148,10 +148,16 @@ class wfEngine_models_classes_ActivityCardinalityService
         // section 127-0-1-1-6eb1148b:132b4a0f8d0:-8000:000000000000305B begin
 		//TODO: to be cached
 		if(!is_null($activityCardinality)){
+			
+			$variableService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_VariableService');
+			
 			$cardinality = $activityCardinality->getUniquePropertyValue($this->propMultiplicityCardinality);
 			if($cardinality instanceof core_kernel_classes_Literal && is_numeric((string)$cardinality)){
+				
 				$returnValue = intval((string)$cardinality);
-			}else if($cardinality instanceof core_kernel_classes_Resource){
+				
+			}else if($cardinality instanceof core_kernel_classes_Resource && $variableService->isProcessVariable($cardinality)){
+				
 				//consider it as a process variable:
 				if(is_null($activityExecution)){
 					$returnValue = $cardinality;
@@ -165,6 +171,7 @@ class wfEngine_models_classes_ActivityCardinalityService
 						throw new wfEngine_models_classes_ProcessExecutionException('cardinality must be of a numeric type in a process variable');
 					}
 				}
+				
 			}else{
 				throw new wfEngine_models_classes_ProcessDefinitonException('cardinality must be a process variable of an integer');
 			}

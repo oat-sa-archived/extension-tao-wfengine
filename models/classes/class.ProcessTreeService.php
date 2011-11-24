@@ -256,7 +256,9 @@ class wfEngine_models_classes_ProcessTreeService
 		
 		$returnValue = array();
 		$connectorData = array();
-		$connectorService = new wfEngine_models_classes_ConnectorService();			
+		$connectorService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ConnectorService');			
+//		$activityService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityService');
+		
 		//type of connector:
 		//if not null, get the information on the next activities. Otherwise, return an "empty" connector node, indicating that the node has just been created, i.e. at the same time as an activity
 		$connectorType = $connector->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_TYPE), false);
@@ -266,8 +268,9 @@ class wfEngine_models_classes_ProcessTreeService
 			return $returnValue;
 		}
 		
-		//if it is a split type
+		//if it is a conditional type
 		if( $connectorType->uriResource == INSTANCE_TYPEOFCONNECTORS_CONDITIONAL){
+			
 			//get the rule
 			$connectorRule = $connector->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_TRANSITIONRULE), false);
 			if(!is_null($connectorRule)){
@@ -322,54 +325,48 @@ class wfEngine_models_classes_ProcessTreeService
 					}
 				}
 			}
-		}elseif($connectorType->uriResource == INSTANCE_TYPEOFCONNECTORS_SEQUENCE){
-			$next = $connector->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_NEXTACTIVITIES), false);
 			
+		}elseif($connectorType->uriResource == INSTANCE_TYPEOFCONNECTORS_SEQUENCE){
+			
+			$next = $connector->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_NEXTACTIVITIES), false);
 			if(!is_null($next)){
 				$connectorData[] = $this->activityNode($next, 'next', true);//the default portData array will do
 			}
+			
 		}elseif($connectorType->uriResource == INSTANCE_TYPEOFCONNECTORS_PARALLEL){
+			
+			$cardinalityService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityCardinalityService');
+			$variableService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_VariableService');
 			$nextActivitiesCollection = $connector->getPropertyValuesCollection(new core_kernel_classes_Property(PROPERTY_CONNECTORS_NEXTACTIVITIES));
-			//count the number of parallel activity:
-			$activityCount = array();
-			foreach($nextActivitiesCollection->getIterator() as $nextActivity){
-				if($nextActivity instanceof core_kernel_classes_Resource){
-					if(isset($activityCount[$nextActivity->uriResource])){
-						//increment:
-						$activityCount[$nextActivity->uriResource] += 1;
-					}else{
-						$activityCount[$nextActivity->uriResource] = 1;
-					}
-				}
-			}
-			
 			$portId = 0;
-			foreach($activityCount as $activityUri=>$number){
+			foreach($nextActivitiesCollection->getIterator() as $nextActivity){
 				
-				$activity = new core_kernel_classes_Resource($activityUri);
-				$connectorData[] = $this->activityNode(
-					$activity,
-					'next',
-					true,
-					array(
-						'id' => $portId,
-						'multiplicity' => $number,
-						'label' => $activity->getLabel()
-					),
-					"(count: $number)"
-				);
-				$portId ++;
+				if($cardinalityService->isCardinality($nextActivity)){
+					
+					$activity = $cardinalityService->getActivity($nextActivity);
+					$cardinality = $cardinalityService->getCardinality($nextActivity);
+					$number = ($cardinality instanceof core_kernel_classes_Resource)?'^'.$variableService->getCode($cardinality):$cardinality;
+					$connectorData[] = $this->activityNode(
+						$activity, 'next', true,
+						array(
+								'id' => $portId,
+								'multiplicity' => $number,
+								'label' => $activity->getLabel()
+							),
+						"(count : $number)"
+					);
+					$portId++;
+				}
+				
 			}
-			
-			//add one extra one, which is empty:
-			
 			
 		}elseif($connectorType->uriResource == INSTANCE_TYPEOFCONNECTORS_JOIN){
-			$next = $connector->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_NEXTACTIVITIES), false);
 			
+			$next = $connector->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_NEXTACTIVITIES), false);
 			if(!is_null($next)){
 				$connectorData[] = $this->activityNode($next, 'next', true);//the default portData array will do
 			}
+			
 		}else{
 			throw new Exception("unknown connector type: {$connectorType->getLabel()} for connector {$connector->uriResource}");
 		}
