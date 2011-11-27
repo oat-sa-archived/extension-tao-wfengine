@@ -35,6 +35,7 @@ TaoGridActivityVariablesAdapter.postCellFormat = function(grid, cell, rowId, col
 	{
 		var processId = selectedProcessId;
 		var activityId = rowId;
+		selectedActivityExecutionId = rowId;
 		
 		var dialogHtml = '<div id="activity-variables-popup" style="margin-top:5px;"> \
 			<div style="height:30px;"> \

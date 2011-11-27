@@ -91,6 +91,7 @@ var historyProcessGrid = null;
 //Selected process id
 //quick hack to test, to replace quickly
 var selectedProcessId = null;
+var selectedActivityExecutionId = null;
 
 //refresh the monitoring the target processes 
 function refreshMonitoring(processesUri)
@@ -101,7 +102,6 @@ function refreshMonitoring(processesUri)
 		}
 		, function(DATA){
 			monitoringGrid.refresh(DATA);
-			console.log(selectedProcessId);
 			if(selectedProcessId){
 				if(typeof DATA[selectedProcessId] != 'undefined'){
 					//refresh does not work here ... strange
@@ -206,7 +206,7 @@ $(function(){
 				currentActivitiesGrid.add(monitoringGrid.data[rowId]['http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessInstancesCurrentActivityExecutions']);
 
 				//display the process history
-				/*$.getJSON (root_url+'/wfEngine/Monitor/processHistory'
+				$.getJSON (root_url+'/wfEngine/Monitor/processHistory'
 					,{
 						'uri':rowId
 					}
@@ -214,7 +214,7 @@ $(function(){
 						historyProcessGrid.empty();
 						historyProcessGrid.add(DATA);
 					}
-				);*/
+				);
 				
 			}
 		}

@@ -13,10 +13,12 @@ class wfEngine_actions_WfApiVariable extends wfEngine_actions_WfApi {
 	protected $variableService = null;
 	protected $code = '';
 	protected $value = '';
+	protected $values;
 	
 	public function __construct()
 	{
 		parent::__construct();
+		$this->values = array();
 		$this->variableService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_VariableService');
 		
 		if(!$this->activityExecution->hasType(new core_kernel_classes_Class(CLASS_ACTIVITY_EXECUTION))){
@@ -26,7 +28,7 @@ class wfEngine_actions_WfApiVariable extends wfEngine_actions_WfApi {
 		
 		$code = urldecode($this->getRequestParameter('code'));
 		if(!empty($code)){
-			if(is_null($this->getProcessVariable($code))){
+			if(is_null($this->variableService->getProcessVariable($code))){
 				$this->setErrorMessage(__('The variable with the code '.$code.' does not exists'));
 			}else{
 				$this->code = $code;
@@ -35,26 +37,29 @@ class wfEngine_actions_WfApiVariable extends wfEngine_actions_WfApi {
 			$this->setErrorMessage(__('No variable code given'));
 		}
 		
-		$value = urldecode($this->getRequestParameter('value'));
-		if(is_string($value)){
-			$this->value = $value;
-		}
-		else if(is_array($value)){
-			$this->value = $value;
+		$values = $this->getRequestParameter('value');
+		if(is_array($values)){
+			foreach($values as $value){
+				$this->values[] = urldecode($value);
+			}
+		}else{
+			$this->values[] = urldecode($values);
 		}
 	}
 	
 	public function push()
 	{
-		if(!is_null($this->activityExecution) && !empty($this->code) && !empty($this->value)){
-			$this->setSuccess($this->variableService->push($this->code, $this->value, $this->activityExecution));
+		if(!is_null($this->activityExecution) && !empty($this->code) && !empty($this->values)){
+			foreach($this->values as $value){
+				$this->setSuccess($this->variableService->push($this->code, $value, $this->activityExecution));
+			}
 		}
 	}
 	
 	public function edit()
 	{
-		if(!is_null($this->activityExecution) && !empty($this->code) && !empty($this->value)){
-			$this->setSuccess($this->variableService->edit($this->code, $this->value, $this->activityExecution));
+		if(!is_null($this->activityExecution) && !empty($this->code) && !empty($this->values)){
+			$this->setSuccess($this->variableService->edit($this->code, $this->values, $this->activityExecution));
 		}
 	}
 	

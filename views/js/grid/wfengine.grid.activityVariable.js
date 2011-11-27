@@ -72,7 +72,22 @@ TaoGridActivityVariableAdapter.edit = function(grid, cell, rowId, columnId)
 	});
 	//bind the add action
 	$(cell).find('.activity-variable-save').click(function(){
-		//wfApi.Variable.edit(activityExecutionUri, 'countryCode', 'ouais mon gars');
+		var rowData = grid.getRowData(rowId, columnId);
+		var code = rowData['code'];
+		var values = [];
+		$(cell).find('.activity-variable-value input').each(function(){
+			values.push($(this).val());
+		});
+
+		wfApi.Variable.edit(selectedActivityExecutionId, code, values, function(){
+			grid.data[rowId][columnId] = values;
+			var formated = TaoGridActivityVariableAdapter.formatter(grid.getCellData(rowId, columnId));
+			$(cell).empty().append(formated);
+			TaoGridActivityVariableAdapter.postCellFormat(grid, cell, rowId, columnId);
+			//currentActivitiesGrid.refresh(selectedActivityExecutionId);
+		}, function(){
+			alert ('the variable has not been changed')
+		});
 	});
 	//bind the add action
 	$(cell).find('.activity-variable-cancel').click(function(){
