@@ -786,7 +786,7 @@ class wfEngine_models_classes_ProcessExecutionService
 		}else{
 			//final activity:
 			$this->finish($processExecution);
-			return false;
+			return array();
 		}
 		
 		if($newActivities === false){

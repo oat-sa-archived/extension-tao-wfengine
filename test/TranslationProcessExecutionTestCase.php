@@ -56,7 +56,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 			'LU' => array('fr', 'de', 'lb'),
 			'DE' => array('de')
 		);
-		
+		$this->unitNames = array('Unit01', 'Unit02', 'Unit03');
 		$this->userProperty = new core_kernel_classes_Property(LOCAL_NAMESPACE.'#translationUser');
 	}
 	
@@ -387,9 +387,8 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		return $property;
 	}
 	
-	public function _testCreateUnits(){
+	public function testCreateUnits(){
 		
-		$unitNames = array('unit01', 'unit02', 'unit03');
 		$this->itemClass = null;
 		$this->units = array();
 		$this->properties = array();
@@ -404,8 +403,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		}
 		$this->itemClass = $translationClass;
 		
-		$unitNames = array_unique($unitNames);
-		foreach($unitNames as $unitName){
+		foreach($this->unitNames as $unitName){
 			
 			//create unit:
 			$this->units[$unitName] = $translationClass->createInstance($unitName, 'created for translation process execution test case');
@@ -666,12 +664,13 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		
 	}
 	
-	public function _testExecuteTranslationProcess(){
+	public function testExecuteTranslationProcess(){
 		
 		$simulationOptions = array(
 			'repeatBack' => 0,//O: do not back when possible
 			'repeatLoop' => 1,
-			'translations' => 2//must be >= 1
+			'translations' => 2,//must be >= 1
+			'stopProbability' => 0
 		);
 		
 		if(!$this->processDefinition instanceof core_kernel_classes_Resource){
@@ -690,12 +689,18 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		$this->assertIsA($this->createTranslationProperty('countryCode', '', '', $processInstancesClass), 'core_kernel_classes_Property');
 		$this->assertIsA($this->createTranslationProperty('languageCode', '', '', $processInstancesClass), 'core_kernel_classes_Property');
 		
+		$i = 0;
 		foreach($this->units as $unit){
 			foreach ($this->langCountries as $countryCode => $languageCodes){
 				foreach ($languageCodes as $langCode){
+					
 					$this->out("executes translation process {$unit->getLabel()}/{$countryCode}/{$langCode}:");
 					$this->assertIsA($unit, 'core_kernel_classes_Resource');
+					
+//					$simulationOptions['stopProbability'] = 0.6 + $i*0.2;
 					$this->executeTranslationProcess($this->processDefinition, $unit->uriResource, $countryCode, $langCode, $simulationOptions);
+					
+					$i++;
 					break(3);
 				}
 			}
@@ -771,6 +776,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		$nbTranslators = (isset($simulationOptions['translations']) && intval($simulationOptions['translations'])>=1 )?intval($simulationOptions['translations']):2;//>=1
 		$nbLoops = isset($simulationOptions['repeatLoop'])?intval($simulationOptions['repeatLoop']):1;
 		$nbBacks = isset($simulationOptions['repeatBack'])?intval($simulationOptions['repeatBack']):0;
+		$stopProbability = isset($simulationOptions['stopProbability'])?floatval($simulationOptions['stopProbability']):0;
 		
 		$loopsCounter = array();
 		
@@ -1006,6 +1012,10 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 				//test finished:
 				$this->assertEqual(count($transitionResult), 0);
 				$this->assertTrue($processExecutionService->isFinished($processInstance));
+			}else if($activityIndex >= $indexActivityTranslate && $activityIndex < $indexActivityTranslate+$nbTranslators){
+				//translate activities:
+				$this->assertFalse($transitionResult);
+				$this->assertTrue($processExecutionService->isPaused($processInstance));
 			}else{
 				$this->assertEqual(count($transitionResult), 0);
 				$this->assertTrue($processExecutionService->isPaused($processInstance));
@@ -1023,6 +1033,14 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 			
 			$this->out("activity status : ".$activityExecutionService->getStatus($currentActivityExecution)->getLabel());
 			$this->out("process status : ".$processExecutionService->getStatus($processInstance)->getLabel());
+			
+			$rand = rand(0, $iterations);
+			$prob = $activityIndex * $stopProbability;
+			var_dump('stop prob', $rand, $prob);
+			if($rand < $prob){
+				$this->out("process instance stopped by probability");
+				break;
+			}
 		}
 		
 		$activityExecutionsData = $processExecutionService->getAllActivityExecutions($processInstance);
@@ -1080,7 +1098,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		}
 		
 		//relog initial user:
-		$currentLogin = $currentUser->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_USER_LOGIN));
+		$currentLogin = (string) $currentUser->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_USER_LOGIN));
 		$this->assertTrue($this->changeUser($currentLogin));
 	}
 	
