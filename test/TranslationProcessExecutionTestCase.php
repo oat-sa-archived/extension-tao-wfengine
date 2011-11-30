@@ -48,8 +48,15 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 	public function setUp(){
 		
 		parent::setUp();
+		
 		$this->userPassword = '123456';
-		$this->processLabel = 'TranslationProcess';
+		$this->processLabel = array(
+			'CBA'	=> 'CBA Translation Process',
+			'PBA'	=> 'PBA Translation Process',
+			'Booklet'=> 'Booklet Translation Process',
+			'BQ'	=> 'BQ Translation Process'
+		);
+		
 		$this->createUsers = true;
 		$this->createProcess = true;
 		$this->langCountries = array(
@@ -479,7 +486,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		$aclUser = new core_kernel_classes_Resource(INSTANCE_ACL_USER);
 		$aclRole = new core_kernel_classes_Resource(INSTANCE_ACL_ROLE);
 		
-		$processDefinition = $authoringService->createProcess($this->processLabel, 'For Unit test');
+		$processDefinition = $authoringService->createProcess($this->processLabel['PBA'], 'For Unit test');
 		$this->assertIsA($processDefinition, 'core_kernel_classes_Resource');
 		
 		//set process initialization rights:
@@ -580,6 +587,54 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 	
 	public function testCreateBookletProcess(){
 		
+		$authoringService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessAuthoringService');
+		$activityService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityService');
+		$connectorService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ConnectorService');
+		$processVariableService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_VariableService');
+		$cardinalityService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityCardinalityService');
+		
+		$varCodes = array(
+			'unitUri', //to be initialized
+			'countryCode', //to be initialized
+			'languageCode', //to be initialized
+			'reconciler',//define the *unique* reconciler that can access the activity
+			'verifier',
+			'layoutCorrection',
+			'translationFinished',
+			'finalCheck',
+			'pdf',//holds the current pdf svn revision number
+			'vff'
+		);
+		
+		foreach($varCodes as $varCode){
+			if(!isset($this->vars[$varCode])){
+				$this->vars[$varCode] = $processVariableService->getProcessVariable($varCode, true);
+			}
+		}
+		
+		$aclUser = new core_kernel_classes_Resource(INSTANCE_ACL_USER);
+		$aclRole = new core_kernel_classes_Resource(INSTANCE_ACL_ROLE);
+		
+		$processDefinition = $authoringService->createProcess($this->processLabel['Booklet'], 'For Unit test');
+		$this->assertIsA($processDefinition, 'core_kernel_classes_Resource');
+		
+		//set process initialization rights:
+		$this->assertTrue($authoringService->setAcl($processDefinition, $aclRole, $this->roles['consortium']));
+		
+
+		//define activities and connectors
+
+		//Select translators:
+		$activitySelectTranslators = $authoringService->createActivity($processDefinition, 'Review Assembled Booklets');
+		$this->assertNotNull($activitySelectTranslators);
+		$authoringService->setFirstActivity($processDefinition, $activitySelectTranslators);
+		$activityService->setAcl($activitySelectTranslators, $aclUser, $this->vars['reconciler']);
+		$activityService->setControls($activitySelectTranslators, array(INSTANCE_CONTROL_FORWARD));
+		
+		$connectorSelectTranslators = $authoringService->createConnector($activitySelectTranslators);
+		$this->assertNotNull($connectorSelectTranslators);
+		
+		
 	}
 	
 	public function testCreateCBAProcess(){
@@ -626,7 +681,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		$aclUser = new core_kernel_classes_Resource(INSTANCE_ACL_USER);
 		$aclRole = new core_kernel_classes_Resource(INSTANCE_ACL_ROLE);
 		
-		$processDefinition = $authoringService->createProcess($this->processLabel, 'For Unit test');
+		$processDefinition = $authoringService->createProcess($this->processLabel['CBA'], 'For Unit test');
 		$this->assertIsA($processDefinition, 'core_kernel_classes_Resource');
 		
 		//set process initialization rights:
@@ -812,7 +867,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		
 		if(!$this->processDefinition['CBA'] instanceof core_kernel_classes_Resource){
 			$processClass = new core_kernel_classes_Class(CLASS_PROCESS);
-			$translationProcesses = $processClass->searchInstances(array(RDFS_LABEL => (string) $this->processLabel), array('like'=>false));
+			$translationProcesses = $processClass->searchInstances(array(RDFS_LABEL => (string) $this->processLabel['CBA']), array('like'=>false));
 			if(!empty($translationProcesses)){
 				$this->processDefinition['CBA'] = array_pop($translationProcesses);
 			}
@@ -1464,7 +1519,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 	
 	public function testDeleteCreatedResources(){
 		
-		return;//prevent deletion
+//		return;//prevent deletion
 		
 		if(!empty($this->properties)){
 			foreach($this->properties as $prop){
@@ -1509,9 +1564,9 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 			}
 		}
 		
+		$authoringService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessAuthoringService');
 		foreach($this->processDefinition as $process){
 			if($process instanceof core_kernel_classes_Resource) {
-				$authoringService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessAuthoringService');
 				$this->assertTrue($authoringService->deleteProcess($process));
 				$this->assertFalse($process->exists());
 			}
