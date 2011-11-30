@@ -589,9 +589,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		
 		$authoringService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessAuthoringService');
 		$activityService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityService');
-		$connectorService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ConnectorService');
 		$processVariableService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_VariableService');
-		$cardinalityService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityCardinalityService');
 		
 		$varCodes = array(
 			'unitUri', //to be initialized
@@ -601,7 +599,10 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 			'verifier',
 			'layoutCorrection',
 			'translationFinished',
+			'layoutCheck',
 			'finalCheck',
+			'TDsignOff',
+			'CountrySignOff',
 			'pdf',//holds the current pdf svn revision number
 			'vff'
 		);
@@ -625,15 +626,81 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		//define activities and connectors
 
 		//Select translators:
-		$activitySelectTranslators = $authoringService->createActivity($processDefinition, 'Review Assembled Booklets');
-		$this->assertNotNull($activitySelectTranslators);
-		$authoringService->setFirstActivity($processDefinition, $activitySelectTranslators);
-		$activityService->setAcl($activitySelectTranslators, $aclUser, $this->vars['reconciler']);
-		$activityService->setControls($activitySelectTranslators, array(INSTANCE_CONTROL_FORWARD));
+		$activityReviewBooklets = $authoringService->createActivity($processDefinition, 'Review Assembled Booklets');
+		$this->assertNotNull($activityReviewBooklets);
+		$authoringService->setFirstActivity($processDefinition, $activityReviewBooklets);
+		$activityService->setAcl($activityReviewBooklets, $aclUser, $this->vars['reconciler']);
+		$activityService->setControls($activityReviewBooklets, array(INSTANCE_CONTROL_FORWARD));
 		
-		$connectorSelectTranslators = $authoringService->createConnector($activitySelectTranslators);
-		$this->assertNotNull($connectorSelectTranslators);
+		$connectorReviewBooklets = $authoringService->createConnector($activityReviewBooklets);
+		$this->assertNotNull($connectorReviewBooklets);
 		
+		//Layout corrections :
+		$activityLayoutCorrections = $authoringService->createSequenceActivity($connectorReviewBooklets, null, 'Layout Corrections');
+		$this->assertNotNull($activityLayoutCorrections);
+		$activityService->setAcl($activityLayoutCorrections, $aclRole, $this->roles['testDeveloper']);
+		$activityService->setControls($activityLayoutCorrections, array(INSTANCE_CONTROL_FORWARD));
+		
+		$connectorLayoutCorrections = $authoringService->createConnector($activityLayoutCorrections);
+		$this->assertNotNull($connectorLayoutCorrections);
+		
+		//final optical check:
+		$transitionRule = $authoringService->createTransitionRule($connectorLayoutCorrections, '^layoutCheck == 1');
+		$this->assertNotNull($transitionRule);
+		
+		$activityOpticalCheck = $authoringService->createConditionalActivity($connectorLayoutCorrections, 'then', null, 'Final Optical Check');//if ^layoutCheck == 1
+		$this->assertNotNull($activityOpticalCheck);
+		$activityService->setAcl($activityOpticalCheck, $aclUser, $this->vars['verifier']);
+		$activityService->setControls($activityOpticalCheck, array(INSTANCE_CONTROL_FORWARD));
+		$connectorOpticalCheck = $authoringService->createConnector($activityOpticalCheck);
+		$this->assertNotNull($connectorOpticalCheck);
+		
+		//if not ok, return to review assembled booklets:
+		$activityOpticalCheckElse = $authoringService->createConditionalActivity($connectorLayoutCorrections, 'else', $activityReviewBooklets);//if ^layoutCheck != 1
+		$this->assertNotNull($activityOpticalCheckElse);
+		$this->assertEqual($activityOpticalCheckElse->uriResource, $activityReviewBooklets->uriResource);
+		
+		//final sign off (TD):
+		$transitionRule = $authoringService->createTransitionRule($connectorOpticalCheck, '^finalCheck == 1');
+		$this->assertNotNull($transitionRule);
+		
+		$activityTDsignOff = $authoringService->createConditionalActivity($connectorOpticalCheck, 'then', null, 'Test Developer Sign off');//if ^TDsignOff == 1
+		$this->assertNotNull($activityTDsignOff);
+		$activityService->setAcl($activityTDsignOff, $aclRole, $this->roles['testDeveloper']);
+		$activityService->setControls($activityTDsignOff, array(INSTANCE_CONTROL_FORWARD));
+		$connectorTDsignOff = $authoringService->createConnector($activityTDsignOff);
+		$this->assertNotNull($connectorTDsignOff);
+		
+		//if not ok, return to optical check:
+		$activityOpticalCheckElse = $authoringService->createConditionalActivity($connectorOpticalCheck, 'else', $activityLayoutCorrections);//if ^finalCheck != 1
+		$this->assertNotNull($activityOpticalCheckElse);
+		$this->assertEqual($activityOpticalCheckElse->uriResource, $activityLayoutCorrections->uriResource);
+		
+		//country sign off:
+		$transitionRule = $authoringService->createTransitionRule($connectorTDsignOff, '^TDsignOff == 1');
+		$this->assertNotNull($transitionRule);
+		
+		$activityCountrySignOff = $authoringService->createConditionalActivity($connectorTDsignOff, 'then', null, 'Country Sign Off');//if ^TDsignOff == 1
+		$this->assertNotNull($activityCountrySignOff);
+		$activityService->setAcl($activityCountrySignOff, $aclUser, $this->vars['reconciler']);
+		$activityService->setControls($activityCountrySignOff, array(INSTANCE_CONTROL_FORWARD));
+		$connectorCountrySignOff = $authoringService->createConnector($activityCountrySignOff);
+		$this->assertNotNull($connectorCountrySignOff);
+		
+		//if not ok, return to optical check:
+		$activityTDsignOffElse = $authoringService->createConditionalActivity($connectorTDsignOff, 'else', $activityOpticalCheck);//if ^TDsignOff != 1
+		$this->assertNotNull($activityTDsignOffElse);
+		$this->assertEqual($activityTDsignOffElse->uriResource, $activityOpticalCheck->uriResource);
+		
+		//final activity :
+		$activityFinal = $authoringService->createSequenceActivity($connectorCountrySignOff, null, 'Final activity');
+		$this->assertNotNull($activityFinal);
+		$activityService->setAcl($activityFinal, $aclUser, $this->vars['reconciler']);
+		$activityService->setControls($activityFinal, array(INSTANCE_CONTROL_FORWARD));
+		
+	}
+	
+	public function testCreateBQProcess(){
 		
 	}
 	
