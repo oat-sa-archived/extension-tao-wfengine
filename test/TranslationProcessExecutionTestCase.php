@@ -444,21 +444,14 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 	}
 	
 	
-	public function testCreateTranslationProcess(){
-		
-		if(!$this->createProcess){
-			return;
-		}
+	public function testCreatePBAProcess(){
 		
 		$authoringService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessAuthoringService');
 		$activityService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityService');
 		$connectorService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ConnectorService');
 		$processVariableService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_VariableService');
 		$cardinalityService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityCardinalityService');
-		$transitionRuleService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_TransitionRuleService');
 		
-		//create some process variables:
-		$vars = array();
 		$varCodes = array(
 			'unitUri', //to be initialized
 			'countryCode', //to be initialized
@@ -470,21 +463,18 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 			'verifier',
 			'translatorSelected',
 			'translationFinished',
-			'layoutCheck',
 			'finalCheck',
-			'xliff',//holds the current xliff svn revision number
-			'vff',//holds the current vff svn revision number
-			'xliff_working',//holds the current working xliff svn revision number
-			'vff_working',//holds the current working vff svn revision number
-			'workingFiles'//holds the working versions of the xliff and vff files, plus their revision number, in an serialized array()
+			'doc',//holds the current doc svn revision number
+			'doc_working',//holds the current doc svn revision number
+			'vff',
+			'vff_working'
 		);
-		//"workingFiles" holds the working versions of the xliff and vff files, plus their revision number, in an serialized array()
-		//during translation: workingFiles = array('user'=>#007, 'xliff' => array('uri' => #123456, 'revision'=>3), 'vff'=> array('uri' => #456789, 'revision'=>5))
 		
 		foreach($varCodes as $varCode){
-			$vars[$varCode] = $processVariableService->getProcessVariable($varCode, true);
+			if(!isset($this->vars[$varCode])){
+				$this->vars[$varCode] = $processVariableService->getProcessVariable($varCode, true);
+			}
 		}
-		$this->vars = $vars;
 		
 		$aclUser = new core_kernel_classes_Resource(INSTANCE_ACL_USER);
 		$aclRole = new core_kernel_classes_Resource(INSTANCE_ACL_ROLE);
@@ -502,7 +492,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		$activitySelectTranslators = $authoringService->createActivity($processDefinition, 'Select Translator');
 		$this->assertNotNull($activitySelectTranslators);
 		$authoringService->setFirstActivity($processDefinition, $activitySelectTranslators);
-		$activityService->setAcl($activitySelectTranslators, $aclUser, $vars['npm']);
+		$activityService->setAcl($activitySelectTranslators, $aclUser, $this->vars['npm']);
 		$activityService->setControls($activitySelectTranslators, array(INSTANCE_CONTROL_FORWARD));
 		
 		$connectorSelectTranslators = $authoringService->createConnector($activitySelectTranslators);
@@ -511,12 +501,12 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		//translate:
 		$activityTranslate = $authoringService->createActivity($processDefinition, 'Translate');
 		$this->assertNotNull($activityTranslate);
-		$activityService->setAcl($activityTranslate, $aclUser, $vars['translator']);
+		$activityService->setAcl($activityTranslate, $aclUser, $this->vars['translator']);
 		$activityService->setControls($activityTranslate, array(INSTANCE_CONTROL_FORWARD));
 		
-		$result = $authoringService->setParallelActivities($connectorSelectTranslators, array($activityTranslate->uriResource => $vars['translatorsCount']));
+		$result = $authoringService->setParallelActivities($connectorSelectTranslators, array($activityTranslate->uriResource => $this->vars['translatorsCount']));
 		$this->assertTrue($result);
-		$this->assertTrue($connectorService->setSplitVariables($connectorSelectTranslators, array($activityTranslate->uriResource => $vars['translator'])));
+		$this->assertTrue($connectorService->setSplitVariables($connectorSelectTranslators, array($activityTranslate->uriResource => $this->vars['translator'])));
 		
 		$nextActivities = $connectorService->getNextActivities($connectorSelectTranslators);
 		$this->assertEqual(count($nextActivities), 1);
@@ -538,7 +528,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		$this->assertEqual($cardinalityService->getCardinality($cardinality)->uriResource, $this->vars['translatorsCount']->uriResource);
 		
 		$this->assertNotNull($activityReconciliation);
-		$activityService->setAcl($activityReconciliation, $aclUser, $vars['reconciler']);
+		$activityService->setAcl($activityReconciliation, $aclUser, $this->vars['reconciler']);
 		$activityService->setControls($activityReconciliation, array(INSTANCE_CONTROL_FORWARD));
 		
 		$connectorReconciliation = $authoringService->createConnector($activityReconciliation);
@@ -547,7 +537,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		//verify translations
 		$activityVerifyTranslations = $authoringService->createSequenceActivity($connectorReconciliation, null, 'Verify Translations');
 		$this->assertNotNull($activityVerifyTranslations);
-		$activityService->setAcl($activityVerifyTranslations, $aclUser, $vars['verifier']);
+		$activityService->setAcl($activityVerifyTranslations, $aclUser, $this->vars['verifier']);
 		$activityService->setControls($activityVerifyTranslations, array(INSTANCE_CONTROL_FORWARD));
 		
 		$connectorVerifyTranslations = $authoringService->createConnector($activityVerifyTranslations);
@@ -556,7 +546,154 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		//correct verification
 		$activityCorrectVerification = $authoringService->createSequenceActivity($connectorVerifyTranslations, null, 'Correct Verification Issues');
 		$this->assertNotNull($activityCorrectVerification);
-		$activityService->setAcl($activityCorrectVerification, $aclUser, $vars['reconciler']);
+		$activityService->setAcl($activityCorrectVerification, $aclUser, $this->vars['reconciler']);
+		$activityService->setControls($activityCorrectVerification, array(INSTANCE_CONTROL_FORWARD));
+		
+		$connectorCorrectVerification = $authoringService->createConnector($activityCorrectVerification);
+		$this->assertNotNull($connectorCorrectVerification);
+		
+		//final check :
+		$activityFinalCheck = $authoringService->createSequenceActivity($connectorCorrectVerification, null, 'Final Check');
+		$this->assertNotNull($activityFinalCheck);
+		$activityService->setAcl($activityFinalCheck, $aclRole, $this->roles['testDeveloper']);
+		$activityService->setControls($activityFinalCheck, array(INSTANCE_CONTROL_BACKWARD, INSTANCE_CONTROL_FORWARD));
+		
+		$connectorFinalCheck = $authoringService->createConnector($activityFinalCheck);
+		$this->assertNotNull($connectorFinalCheck);
+		
+		//if final check ok, go to scoring definition :
+		$transitionRule = $authoringService->createTransitionRule($connectorFinalCheck, '^finalCheck == 1');
+		$this->assertNotNull($transitionRule);
+		
+		$activityFinalize = $authoringService->createConditionalActivity($connectorFinalCheck, 'then', null, 'Scoring Definition and Testing');//if ^finalCheck == 1
+		$this->assertNotNull($activityFinalize);
+		$activityService->setAcl($activityFinalize, $aclRole, $this->roles['testDeveloper']);
+		$activityService->setControls($activityFinalize, array(INSTANCE_CONTROL_FORWARD));
+		
+		//if not ok, can go to optional activity to review corrections:
+		$activityFinalCheckElse = $authoringService->createConditionalActivity($connectorFinalCheck, 'else', $activityCorrectVerification);//if ^finalCheck != 1
+		$this->assertNotNull($activityFinalCheckElse);
+		$this->assertEqual($activityFinalCheckElse->uriResource, $activityCorrectVerification->uriResource);
+		
+		$this->processDefinition['PBA'] = $processDefinition;
+	}
+	
+	public function testCreateBookletProcess(){
+		
+	}
+	
+	public function testCreateCBAProcess(){
+		
+		if(!$this->createProcess){
+			return;
+		}
+		
+		$authoringService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessAuthoringService');
+		$activityService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityService');
+		$connectorService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ConnectorService');
+		$processVariableService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_VariableService');
+		$cardinalityService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityCardinalityService');
+		$transitionRuleService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_TransitionRuleService');
+		
+		//create some process variables:
+		$varCodes = array(
+			'unitUri', //to be initialized
+			'countryCode', //to be initialized
+			'languageCode', //to be initialized
+			'npm', //define the *unique* NPM that can access the activity
+			'translatorsCount',//the number of translator, used in split connector
+			'translator',//serialized array (the system variable) that will be split during parallel branch creation
+			'reconciler',//define the *unique* reconciler that can access the activity
+			'verifier',
+			'translatorSelected',
+			'translationFinished',
+			'layoutCheck',
+			'finalCheck',
+			'xliff',//holds the current xliff svn revision number
+			'vff',//holds the current vff svn revision number
+			'xliff_working',//holds the current working xliff svn revision number
+			'vff_working'//holds the current working vff svn revision number
+		);
+		//"workingFiles" holds the working versions of the xliff and vff files, plus their revision number, in an serialized array()
+		//during translation: workingFiles = array('user'=>#007, 'xliff' => array('uri' => #123456, 'revision'=>3), 'vff'=> array('uri' => #456789, 'revision'=>5))
+		
+		foreach($varCodes as $varCode){
+			if(!isset($this->vars[$varCode])){
+				$this->vars[$varCode] = $processVariableService->getProcessVariable($varCode, true);
+			}
+		}
+		
+		$aclUser = new core_kernel_classes_Resource(INSTANCE_ACL_USER);
+		$aclRole = new core_kernel_classes_Resource(INSTANCE_ACL_ROLE);
+		
+		$processDefinition = $authoringService->createProcess($this->processLabel, 'For Unit test');
+		$this->assertIsA($processDefinition, 'core_kernel_classes_Resource');
+		
+		//set process initialization rights:
+		$this->assertTrue($authoringService->setAcl($processDefinition, $aclRole, $this->roles['consortium']));
+		
+
+		//define activities and connectors
+
+		//Select translators:
+		$activitySelectTranslators = $authoringService->createActivity($processDefinition, 'Select Translator');
+		$this->assertNotNull($activitySelectTranslators);
+		$authoringService->setFirstActivity($processDefinition, $activitySelectTranslators);
+		$activityService->setAcl($activitySelectTranslators, $aclUser, $this->vars['npm']);
+		$activityService->setControls($activitySelectTranslators, array(INSTANCE_CONTROL_FORWARD));
+		
+		$connectorSelectTranslators = $authoringService->createConnector($activitySelectTranslators);
+		$this->assertNotNull($connectorSelectTranslators);
+		
+		//translate:
+		$activityTranslate = $authoringService->createActivity($processDefinition, 'Translate');
+		$this->assertNotNull($activityTranslate);
+		$activityService->setAcl($activityTranslate, $aclUser, $this->vars['translator']);
+		$activityService->setControls($activityTranslate, array(INSTANCE_CONTROL_FORWARD));
+		
+		$result = $authoringService->setParallelActivities($connectorSelectTranslators, array($activityTranslate->uriResource => $this->vars['translatorsCount']));
+		$this->assertTrue($result);
+		$this->assertTrue($connectorService->setSplitVariables($connectorSelectTranslators, array($activityTranslate->uriResource => $this->vars['translator'])));
+		
+		$nextActivities = $connectorService->getNextActivities($connectorSelectTranslators);
+		$this->assertEqual(count($nextActivities), 1);
+		$cardinality = reset($nextActivities);
+		$this->assertTrue($cardinalityService->isCardinality($cardinality));
+		$this->assertEqual($cardinalityService->getActivity($cardinality)->uriResource, $activityTranslate->uriResource);
+		$this->assertEqual($cardinalityService->getCardinality($cardinality)->uriResource, $this->vars['translatorsCount']->uriResource);
+		
+		$connectorTranslate = $authoringService->createConnector($activityTranslate);
+		$this->assertNotNull($connectorTranslate);
+		
+		//reconciliation:
+		$activityReconciliation = $authoringService->createJoinActivity($connectorTranslate, null, 'Reconciliation', $activityTranslate);
+		$prevActivities = $connectorService->getPreviousActivities($connectorTranslate);
+		$this->assertEqual(count($prevActivities), 1);
+		$cardinality = reset($prevActivities);
+		$this->assertTrue($cardinalityService->isCardinality($cardinality));
+		$this->assertEqual($cardinalityService->getActivity($cardinality)->uriResource, $activityTranslate->uriResource);
+		$this->assertEqual($cardinalityService->getCardinality($cardinality)->uriResource, $this->vars['translatorsCount']->uriResource);
+		
+		$this->assertNotNull($activityReconciliation);
+		$activityService->setAcl($activityReconciliation, $aclUser, $this->vars['reconciler']);
+		$activityService->setControls($activityReconciliation, array(INSTANCE_CONTROL_FORWARD));
+		
+		$connectorReconciliation = $authoringService->createConnector($activityReconciliation);
+		$this->assertNotNull($connectorReconciliation);
+		
+		//verify translations
+		$activityVerifyTranslations = $authoringService->createSequenceActivity($connectorReconciliation, null, 'Verify Translations');
+		$this->assertNotNull($activityVerifyTranslations);
+		$activityService->setAcl($activityVerifyTranslations, $aclUser, $this->vars['verifier']);
+		$activityService->setControls($activityVerifyTranslations, array(INSTANCE_CONTROL_FORWARD));
+		
+		$connectorVerifyTranslations = $authoringService->createConnector($activityVerifyTranslations);
+		$this->assertNotNull($connectorVerifyTranslations);
+
+		//correct verification
+		$activityCorrectVerification = $authoringService->createSequenceActivity($connectorVerifyTranslations, null, 'Correct Verification Issues');
+		$this->assertNotNull($activityCorrectVerification);
+		$activityService->setAcl($activityCorrectVerification, $aclUser, $this->vars['reconciler']);
 		$activityService->setControls($activityCorrectVerification, array(INSTANCE_CONTROL_FORWARD));
 		
 		$connectorCorrectVerification = $authoringService->createConnector($activityCorrectVerification);
@@ -586,7 +723,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		
 		$activityScoringDefinition = $authoringService->createConditionalActivity($connectorFinalCheck, 'then', null, 'Scoring Definition and Testing');//if ^layoutCheck == 1
 		$this->assertNotNull($activityScoringDefinition);
-		$activityService->setAcl($activityScoringDefinition, $aclUser, $vars['reconciler']);
+		$activityService->setAcl($activityScoringDefinition, $aclUser, $this->vars['reconciler']);
 		$activityService->setControls($activityScoringDefinition, array(INSTANCE_CONTROL_FORWARD));
 		
 		$connectorScoringDefinition = $authoringService->createConnector($activityScoringDefinition);
@@ -600,7 +737,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		
 		$activityReviewCorrection = $authoringService->createConditionalActivity($connectorFinalCheckElse, 'then', null, 'Review corrections');//if ^layoutCheck == 2
 		$this->assertNotNull($activityReviewCorrection);
-		$activityService->setAcl($activityReviewCorrection, $aclUser, $vars['verifier']);
+		$activityService->setAcl($activityReviewCorrection, $aclUser, $this->vars['verifier']);
 		$activityService->setControls($activityReviewCorrection, array(INSTANCE_CONTROL_FORWARD));
 		
 		//link review correction back to the final "check activity"
@@ -633,7 +770,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		//scoring verification:
 		$activityScoringVerification = $authoringService->createSequenceActivity($connectorScoringDefinition, null, 'Scoring verification');
 		$this->assertNotNull($activityScoringVerification);
-		$activityService->setAcl($activityScoringVerification, $aclUser, $vars['verifier']);
+		$activityService->setAcl($activityScoringVerification, $aclUser, $this->vars['verifier']);
 		$activityService->setControls($activityScoringVerification, array(INSTANCE_CONTROL_FORWARD));
 		
 		$connectorScoringVerification = $authoringService->createConnector($activityScoringVerification);
@@ -655,16 +792,16 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		
 		//sign off :
 		$activityCountrySignOff = $authoringService->createConditionalActivity($connectorTDSignOff, 'then', null, 'Country Sign Off');
-		$activityService->setAcl($activityCountrySignOff, $aclUser, $vars['reconciler']);
+		$activityService->setAcl($activityCountrySignOff, $aclUser, $this->vars['reconciler']);
 		$activityService->setControls($activityCountrySignOff, array(INSTANCE_CONTROL_FORWARD));
 		
 		//end of process definition
 		
-		$this->processDefinition = $processDefinition;
+		$this->processDefinition['CBA'] = $processDefinition;
 		
 	}
 	
-	public function testExecuteTranslationProcess(){
+	public function testExecuteCBAProcess(){
 		
 		$simulationOptions = array(
 			'repeatBack' => 0,//O: do not back when possible
@@ -673,14 +810,14 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 			'stopProbability' => 0
 		);
 		
-		if(!$this->processDefinition instanceof core_kernel_classes_Resource){
+		if(!$this->processDefinition['CBA'] instanceof core_kernel_classes_Resource){
 			$processClass = new core_kernel_classes_Class(CLASS_PROCESS);
 			$translationProcesses = $processClass->searchInstances(array(RDFS_LABEL => (string) $this->processLabel), array('like'=>false));
 			if(!empty($translationProcesses)){
-				$this->processDefinition = array_pop($translationProcesses);
+				$this->processDefinition['CBA'] = array_pop($translationProcesses);
 			}
 		}
-		if(!$this->processDefinition instanceof core_kernel_classes_Resource){
+		if(!$this->processDefinition['CBA'] instanceof core_kernel_classes_Resource){
 			$this->fail('No process definition found to be executed');
 		}
 		
@@ -698,7 +835,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 					$this->assertIsA($unit, 'core_kernel_classes_Resource');
 					
 //					$simulationOptions['stopProbability'] = 0.6 + $i*0.2;
-					$this->executeTranslationProcess($this->processDefinition, $unit->uriResource, $countryCode, $langCode, $simulationOptions);
+					$this->executeTranslationProcess($this->processDefinition['CBA'], $unit->uriResource, $countryCode, $langCode, $simulationOptions);
 					
 					$i++;
 					break(3);
@@ -1372,11 +1509,14 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 			}
 		}
 		
-		if($this->processDefinition instanceof core_kernel_classes_Resource){
-			$authoringService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessAuthoringService');
-			$this->assertTrue($authoringService->deleteProcess($this->processDefinition));
-			$this->assertFalse($this->processDefinition->exists());
+		foreach($this->processDefinition as $process){
+			if($process instanceof core_kernel_classes_Resource) {
+				$authoringService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessAuthoringService');
+				$this->assertTrue($authoringService->deleteProcess($process));
+				$this->assertFalse($process->exists());
+			}
 		}
+		
 		
 		if(!empty($this->vars)){
 			foreach($this->vars as $variable){
