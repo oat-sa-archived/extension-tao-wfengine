@@ -49,7 +49,13 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		
 		parent::setUp();
 		$this->userPassword = '123456';
-		$this->processLabel = 'TranslationProcess';
+		$this->processLabel = array(
+			'CBA'	=> 'CBA Translation Process',
+			'PBA'	=> 'PBA Translation Process',
+			'Booklet'=> 'Booklet Translation Process',
+			'BQ'	=> 'BQ Translation Process'
+		);
+		
 		$this->createUsers = true;
 		$this->createProcess = true;
 		$this->langCountries = array(
@@ -581,7 +587,254 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 	
 	public function testCreateBookletProcess(){
 		
+	$authoringService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessAuthoringService');
+		$activityService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityService');
+		$processVariableService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_VariableService');
+		
+		$varCodes = array(
+			'unitUri', //to be initialized
+			'countryCode', //to be initialized
+			'languageCode', //to be initialized
+			'reconciler',//define the *unique* reconciler that can access the activity
+			'verifier',
+			'layoutCorrection',
+			'translationFinished',
+			'layoutCheck',
+			'finalCheck',
+			'TDsignOff',
+			'CountrySignOff',
+			'pdf',//holds the current pdf svn revision number
+			'vff'
+		);
+		
+		foreach($varCodes as $varCode){
+			if(!isset($this->vars[$varCode])){
+				$this->vars[$varCode] = $processVariableService->getProcessVariable($varCode, true);
+			}
+		}
+		
+		$aclUser = new core_kernel_classes_Resource(INSTANCE_ACL_USER);
+		$aclRole = new core_kernel_classes_Resource(INSTANCE_ACL_ROLE);
+		
+		$processDefinition = $authoringService->createProcess($this->processLabel['Booklet'], 'For Unit test');
+		$this->assertIsA($processDefinition, 'core_kernel_classes_Resource');
+		
+		//set process initialization rights:
+		$this->assertTrue($authoringService->setAcl($processDefinition, $aclRole, $this->roles['consortium']));
+		
+
+		//define activities and connectors
+
+		//Select translators:
+		$activityReviewBooklets = $authoringService->createActivity($processDefinition, 'Review Assembled Booklets');
+		$this->assertNotNull($activityReviewBooklets);
+		$authoringService->setFirstActivity($processDefinition, $activityReviewBooklets);
+		$activityService->setAcl($activityReviewBooklets, $aclUser, $this->vars['reconciler']);
+		$activityService->setControls($activityReviewBooklets, array(INSTANCE_CONTROL_FORWARD));
+		
+		$connectorReviewBooklets = $authoringService->createConnector($activityReviewBooklets);
+		$this->assertNotNull($connectorReviewBooklets);
+		
+		//Layout corrections :
+		$activityLayoutCorrections = $authoringService->createSequenceActivity($connectorReviewBooklets, null, 'Layout Corrections');
+		$this->assertNotNull($activityLayoutCorrections);
+		$activityService->setAcl($activityLayoutCorrections, $aclRole, $this->roles['testDeveloper']);
+		$activityService->setControls($activityLayoutCorrections, array(INSTANCE_CONTROL_FORWARD));
+		
+		$connectorLayoutCorrections = $authoringService->createConnector($activityLayoutCorrections);
+		$this->assertNotNull($connectorLayoutCorrections);
+		
+		//final optical check:
+		$transitionRule = $authoringService->createTransitionRule($connectorLayoutCorrections, '^layoutCheck == 1');
+		$this->assertNotNull($transitionRule);
+		
+		$activityOpticalCheck = $authoringService->createConditionalActivity($connectorLayoutCorrections, 'then', null, 'Final Optical Check');//if ^layoutCheck == 1
+		$this->assertNotNull($activityOpticalCheck);
+		$activityService->setAcl($activityOpticalCheck, $aclUser, $this->vars['verifier']);
+		$activityService->setControls($activityOpticalCheck, array(INSTANCE_CONTROL_FORWARD));
+		$connectorOpticalCheck = $authoringService->createConnector($activityOpticalCheck);
+		$this->assertNotNull($connectorOpticalCheck);
+		
+		//if not ok, return to review assembled booklets:
+		$activityOpticalCheckElse = $authoringService->createConditionalActivity($connectorLayoutCorrections, 'else', $activityReviewBooklets);//if ^layoutCheck != 1
+		$this->assertNotNull($activityOpticalCheckElse);
+		$this->assertEqual($activityOpticalCheckElse->uriResource, $activityReviewBooklets->uriResource);
+		
+		//final sign off (TD):
+		$transitionRule = $authoringService->createTransitionRule($connectorOpticalCheck, '^finalCheck == 1');
+		$this->assertNotNull($transitionRule);
+		
+		$activityTDsignOff = $authoringService->createConditionalActivity($connectorOpticalCheck, 'then', null, 'Test Developer Sign off');//if ^TDsignOff == 1
+		$this->assertNotNull($activityTDsignOff);
+		$activityService->setAcl($activityTDsignOff, $aclRole, $this->roles['testDeveloper']);
+		$activityService->setControls($activityTDsignOff, array(INSTANCE_CONTROL_FORWARD));
+		$connectorTDsignOff = $authoringService->createConnector($activityTDsignOff);
+		$this->assertNotNull($connectorTDsignOff);
+		
+		//if not ok, return to optical check:
+		$activityOpticalCheckElse = $authoringService->createConditionalActivity($connectorOpticalCheck, 'else', $activityLayoutCorrections);//if ^finalCheck != 1
+		$this->assertNotNull($activityOpticalCheckElse);
+		$this->assertEqual($activityOpticalCheckElse->uriResource, $activityLayoutCorrections->uriResource);
+		
+		//country sign off:
+		$transitionRule = $authoringService->createTransitionRule($connectorTDsignOff, '^TDsignOff == 1');
+		$this->assertNotNull($transitionRule);
+		
+		$activityCountrySignOff = $authoringService->createConditionalActivity($connectorTDsignOff, 'then', null, 'Country Sign Off');//if ^TDsignOff == 1
+		$this->assertNotNull($activityCountrySignOff);
+		$activityService->setAcl($activityCountrySignOff, $aclUser, $this->vars['reconciler']);
+		$activityService->setControls($activityCountrySignOff, array(INSTANCE_CONTROL_FORWARD));
+		$connectorCountrySignOff = $authoringService->createConnector($activityCountrySignOff);
+		$this->assertNotNull($connectorCountrySignOff);
+		
+		//if not ok, return to optical check:
+		$activityTDsignOffElse = $authoringService->createConditionalActivity($connectorTDsignOff, 'else', $activityOpticalCheck);//if ^TDsignOff != 1
+		$this->assertNotNull($activityTDsignOffElse);
+		$this->assertEqual($activityTDsignOffElse->uriResource, $activityOpticalCheck->uriResource);
+		
+		//final activity :
+		$activityFinal = $authoringService->createSequenceActivity($connectorCountrySignOff, null, 'Final activity');
+		$this->assertNotNull($activityFinal);
+		$activityService->setAcl($activityFinal, $aclUser, $this->vars['reconciler']);
+		$activityService->setControls($activityFinal, array(INSTANCE_CONTROL_FORWARD));
+		
+		$this->processDefinition['Booklet'] = $processDefinition;
 	}
+	
+	public function testCreateBQProcess(){
+		
+		$authoringService = wfEngine_models_classes_ProcessAuthoringService::singleton();
+		$activityService = wfEngine_models_classes_ActivityService::singleton();
+		$connectorService = wfEngine_models_classes_ConnectorService::singleton();
+		$processVariableService = wfEngine_models_classes_VariableService::singleton();
+		$cardinalityService = wfEngine_models_classes_ActivityCardinalityService::singleton();
+
+		$varCodes = array(
+			'unitUri', //to be initialized
+			'countryCode', //to be initialized
+			'languageCode', //to be initialized
+			'npm', //define the *unique* NPM that can access the activity
+			'translatorsCount', //the number of translator, used in split connector
+			'translator', //serialized array (the system variable) that will be split during parallel branch creation
+			'reconciler', //define the *unique* reconciler that can access the activity
+			'verifier',
+			'translatorSelected',
+			'translationFinished',
+			'finalCheck',
+			'doc', //holds the current doc svn revision number
+			'doc_working', //holds the current doc svn revision number
+			'vff',
+			'vff_working'
+		);
+
+		foreach ($varCodes as $varCode) {
+			if (!isset($this->vars[$varCode])) {
+				$this->vars[$varCode] = $processVariableService->getProcessVariable($varCode, true);
+			}
+		}
+
+		$aclUser = new core_kernel_classes_Resource(INSTANCE_ACL_USER);
+		$aclRole = new core_kernel_classes_Resource(INSTANCE_ACL_ROLE);
+
+		$processDefinition = $authoringService->createProcess($this->processLabel, 'For Unit test');
+		$this->assertIsA($processDefinition, 'core_kernel_classes_Resource');
+
+		//set process initialization rights:
+		$this->assertTrue($authoringService->setAcl($processDefinition, $aclRole, $this->roles['consortium']));
+
+
+		//define activities and connectors
+		//Select translators:
+		$activitySelectTranslators = $authoringService->createActivity($processDefinition, 'Select Translator');
+		$this->assertNotNull($activitySelectTranslators);
+		$authoringService->setFirstActivity($processDefinition, $activitySelectTranslators);
+		$activityService->setAcl($activitySelectTranslators, $aclUser, $this->vars['npm']);
+		$activityService->setControls($activitySelectTranslators, array(INSTANCE_CONTROL_FORWARD));
+
+		$connectorSelectTranslators = $authoringService->createConnector($activitySelectTranslators);
+		$this->assertNotNull($connectorSelectTranslators);
+
+		//translate:
+		$activityTranslate = $authoringService->createActivity($processDefinition, 'Translate');
+		$this->assertNotNull($activityTranslate);
+		$activityService->setAcl($activityTranslate, $aclUser, $this->vars['translator']);
+		$activityService->setControls($activityTranslate, array(INSTANCE_CONTROL_FORWARD));
+
+		$result = $authoringService->setParallelActivities($connectorSelectTranslators, array($activityTranslate->uriResource => $this->vars['translatorsCount']));
+		$this->assertTrue($result);
+		$this->assertTrue($connectorService->setSplitVariables($connectorSelectTranslators, array($activityTranslate->uriResource => $this->vars['translator'])));
+
+		$nextActivities = $connectorService->getNextActivities($connectorSelectTranslators);
+		$this->assertEqual(count($nextActivities), 1);
+		$cardinality = reset($nextActivities);
+		$this->assertTrue($cardinalityService->isCardinality($cardinality));
+		$this->assertEqual($cardinalityService->getActivity($cardinality)->uriResource, $activityTranslate->uriResource);
+		$this->assertEqual($cardinalityService->getCardinality($cardinality)->uriResource, $this->vars['translatorsCount']->uriResource);
+
+		$connectorTranslate = $authoringService->createConnector($activityTranslate);
+		$this->assertNotNull($connectorTranslate);
+
+		//reconciliation:
+		$activityReconciliation = $authoringService->createJoinActivity($connectorTranslate, null, 'Reconciliation', $activityTranslate);
+		$prevActivities = $connectorService->getPreviousActivities($connectorTranslate);
+		$this->assertEqual(count($prevActivities), 1);
+		$cardinality = reset($prevActivities);
+		$this->assertTrue($cardinalityService->isCardinality($cardinality));
+		$this->assertEqual($cardinalityService->getActivity($cardinality)->uriResource, $activityTranslate->uriResource);
+		$this->assertEqual($cardinalityService->getCardinality($cardinality)->uriResource, $this->vars['translatorsCount']->uriResource);
+
+		$this->assertNotNull($activityReconciliation);
+		$activityService->setAcl($activityReconciliation, $aclUser, $this->vars['reconciler']);
+		$activityService->setControls($activityReconciliation, array(INSTANCE_CONTROL_FORWARD));
+
+		$connectorReconciliation = $authoringService->createConnector($activityReconciliation);
+		$this->assertNotNull($connectorReconciliation);
+
+		//verify translations
+		$activityVerifyTranslations = $authoringService->createSequenceActivity($connectorReconciliation, null, 'Verify Translations');
+		$this->assertNotNull($activityVerifyTranslations);
+		$activityService->setAcl($activityVerifyTranslations, $aclUser, $this->vars['verifier']);
+		$activityService->setControls($activityVerifyTranslations, array(INSTANCE_CONTROL_FORWARD));
+
+		$connectorVerifyTranslations = $authoringService->createConnector($activityVerifyTranslations);
+		$this->assertNotNull($connectorVerifyTranslations);
+
+		//correct verification
+		$activityCorrectVerification = $authoringService->createSequenceActivity($connectorVerifyTranslations, null, 'Correct Verification Issues');
+		$this->assertNotNull($activityCorrectVerification);
+		$activityService->setAcl($activityCorrectVerification, $aclUser, $this->vars['reconciler']);
+		$activityService->setControls($activityCorrectVerification, array(INSTANCE_CONTROL_FORWARD));
+
+		$connectorCorrectVerification = $authoringService->createConnector($activityCorrectVerification);
+		$this->assertNotNull($connectorCorrectVerification);
+
+		//final check :
+		$activityFinalCheck = $authoringService->createSequenceActivity($connectorCorrectVerification, null, 'Final Verification Check');
+		$this->assertNotNull($activityFinalCheck);
+		$activityService->setAcl($activityFinalCheck, $aclUser, $this->vars['verifier']);
+		$activityService->setControls($activityFinalCheck, array(INSTANCE_CONTROL_BACKWARD, INSTANCE_CONTROL_FORWARD));
+
+		$connectorFinalCheck = $authoringService->createConnector($activityFinalCheck);
+		$this->assertNotNull($connectorFinalCheck);
+
+		//if final check ok, go to scoring definition :
+		$transitionRule = $authoringService->createTransitionRule($connectorFinalCheck, '^finalCheck == 1');
+		$this->assertNotNull($transitionRule);
+
+		$activityFinalize = $authoringService->createConditionalActivity($connectorFinalCheck, 'then', null, 'Finalize BQ'); //if ^finalCheck == 1
+		$this->assertNotNull($activityFinalize);
+		$activityService->setAcl($activityFinalize, $aclRole, $this->roles['developer']);
+		$activityService->setControls($activityFinalize, array(INSTANCE_CONTROL_FORWARD));
+
+		//if not ok, can go to optional activity to review corrections:
+		$activityFinalCheckElse = $authoringService->createConditionalActivity($connectorFinalCheck, 'else', $activityCorrectVerification); //if ^finalCheck != 1
+		$this->assertNotNull($activityFinalCheckElse);
+		$this->assertEqual($activityFinalCheckElse->uriResource, $activityCorrectVerification->uriResource);
+
+		$this->processDefinition['BQ'] = $processDefinition;
+		
+	}
+	
 	
 	public function testCreateCBAProcess(){
 		
@@ -831,6 +1084,8 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		
 		$processCBA = $this->getProcessDefinition('CBA');
 		$processPBA = $this->getProcessDefinition('PBA');
+		$processBooklet = $this->getProcessDefinition('Booklet');
+		$processBQ = $this->getProcessDefinition('BQ');
 		
 		$processInstancesClass = new core_kernel_classes_Class(CLASS_PROCESSINSTANCES);
 		$this->assertIsA($this->createTranslationProperty('unitUri', '', '', $processInstancesClass), 'core_kernel_classes_Property');
@@ -847,12 +1102,20 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 					
 //					$simulationOptions['stopProbability'] = 0.6 + $i*0.2;
 					
-					//exec CBA process:
+					//exec PBA process:
 					if ($processPBA instanceof core_kernel_classes_Resource) {
 						$this->out("executes {$processPBA->getLabel()} for {$unit->getLabel()}/{$countryCode}/{$langCode}:", true);
-						$this->executePBAProcess($processPBA, $unit->uriResource, $countryCode, $langCode, $simulationOptions);
+//						$this->executePBAProcess($processPBA, $unit->uriResource, $countryCode, $langCode, $simulationOptions);
 					}else{
 						$this->fail('No PBA process definition found to be executed');
+					}
+					
+					//exec BQ process:
+					if ($processBQ instanceof core_kernel_classes_Resource) {
+						$this->out("executes {$processBQ->getLabel()} for {$unit->getLabel()}/{$countryCode}/{$langCode}:", true);
+						$this->executeBQProcess($processBQ, $unit->uriResource, $countryCode, $langCode, $simulationOptions);
+					}else{
+						$this->fail('No BQ process definition found to be executed');
 					}
 					
 					//exec CBA process:
@@ -1132,6 +1395,287 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		$this->assertEqual(count($executionHistory), $i);//there is one hidden activity
 	}
 	
+	private function executeBQProcess($processDefinition, $unitUri, $countryCode, $languageCode, $simulationOptions){
+		
+			
+		$activityExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityExecutionService');
+		$processExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessExecutionService');
+		$processDefinitionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessDefinitionService');
+		$loginProperty = new core_kernel_classes_Property(PROPERTY_USER_LOGIN);
+		
+		$processExecName = 'Test Translation Process Execution';
+		$processExecComment = 'created by '.__CLASS__.'::'.__METHOD__;
+		
+		$users = $this->getAuthorizedUsersByCountryLanguage($countryCode, $languageCode);
+		
+		if(empty($users)){
+			$this->fail("cannot find the authorized npm, verifier and reconciler for this country-language : {$countryCode}/{$languageCode}");
+			return;
+		}
+		
+		//check that the xliff and vff exist for the given country-language:
+		$unit = new core_kernel_classes_Resource($unitUri);
+		
+		$vffRevision = 0;
+		$xliffRevision = 0;
+		if(GENERIS_VERSIONING_ENABLED){
+			
+			$xliffFile = $this->getItemFile($unit, 'xliff', $countryCode, $languageCode);
+			$this->assertNotNull($xliffFile);
+			$xliffRevision = $xliffFile->getVersion();
+			
+			$vffFile = $this->getItemFile($unit, 'vff', $countryCode, $languageCode);
+			$this->assertNotNull($vffFile);
+			$vffRevision = $vffFile->getVersion();
+			
+		}
+		
+		$initVariables = array(
+			$this->vars['unitUri']->uriResource => $unit->uriResource,
+			$this->vars['countryCode']->uriResource => $countryCode,
+			$this->vars['languageCode']->uriResource => $languageCode,
+			$this->vars['npm']->uriResource => $users['npm'],
+			$this->vars['reconciler']->uriResource => $users['reconciler'],
+			$this->vars['verifier']->uriResource => $users['verifier'],
+			$this->vars['xliff']->uriResource => $xliffRevision,
+			$this->vars['vff']->uriResource => $vffRevision,
+		);
+		
+		$this->changeUser($this->userLogins['consortium'][1]);
+		$this->assertTrue($processDefinitionService->checkAcl($processDefinition, $this->currentUser));
+		
+		$processInstance = $processExecutionService->createProcessExecution($processDefinition, $processExecName, $processExecComment, $initVariables);
+		$this->assertEqual($processDefinition->uriResource, $processExecutionService->getExecutionOf($processInstance)->uriResource);
+		
+		$processInstance->setPropertyValue($this->properties['unitUri'], $unit);
+		$processInstance->setPropertyValue($this->properties['countryCode'], $countryCode);
+		$processInstance->setPropertyValue($this->properties['languageCode'], $languageCode);
+		
+		$this->assertTrue($processExecutionService->checkStatus($processInstance, 'started'));
+
+		$this->out(__METHOD__, true);
+		$this->processExecutions[$processInstance->uriResource] = $processInstance;
+			
+		$currentActivityExecutions = $processExecutionService->getCurrentActivityExecutions($processInstance);
+		$this->assertEqual(count($currentActivityExecutions), 1);
+
+		$this->out("<strong>Forward transitions:</strong>", true);
+		
+		$nbTranslators = (isset($simulationOptions['translations']) && intval($simulationOptions['translations'])>=1 )?intval($simulationOptions['translations']):2;//>=1
+		$nbLoops = isset($simulationOptions['repeatLoop'])?intval($simulationOptions['repeatLoop']):1;
+		$nbBacks = isset($simulationOptions['repeatBack'])?intval($simulationOptions['repeatBack']):0;
+		$stopProbability = isset($simulationOptions['stopProbability'])?floatval($simulationOptions['stopProbability']):0;
+		
+		$loopsCounter = array();
+		
+		$indexActivityTranslate = 2;//the index of the activity in the process definition
+		$iterations = $indexActivityTranslate + $nbTranslators +4	;
+		$this->changeUser($this->userLogins[$countryCode]['NPM']);
+		$selectedTranslators = array();
+		
+		$i = 1;
+		$activityIndex = $i;
+		while($activityIndex <= $iterations){
+			
+			$activityExecutions = $processExecutionService->getCurrentActivityExecutions($processInstance);
+			$activityExecution = null;
+			$activity = null;
+			if($activityIndex >= $indexActivityTranslate && $activityIndex < $indexActivityTranslate+$nbTranslators){
+				$this->assertEqual(count($activityExecutions), $nbTranslators);
+				//parallel translation branch:
+				foreach($activityExecutions as $activityExec){
+					if(!$activityExecutionService->isFinished($activityExec)){
+						$activityExecution = $activityExec;
+						break;
+					}
+				}
+			}else{
+				$this->assertEqual(count($activityExecutions), 1);
+				$activityExecution = reset($activityExecutions);
+			}
+			
+			$activity = $activityExecutionService->getExecutionOf($activityExecution);
+			
+			$this->out("<strong>Iteration {$i} : activity no{$activityIndex} : ".$activity->getLabel()."</strong>", true);
+			$this->out("current user : ".$this->currentUser->getOnePropertyValue($loginProperty).' "'.$this->currentUser->uriResource.'"', true);
+			
+			$this->checkAccessControl($activityExecution);
+			
+			$currentActivityExecution = null;
+			
+			//for loop managements:
+			$goto = 0;
+			
+			if($activityIndex >= $indexActivityTranslate && $activityIndex < $indexActivityTranslate+$nbTranslators){
+				
+				//we are executing the translation activity:
+				$this->assertFalse(empty($selectedTranslators));
+				$theTranslator = null;
+				foreach($selectedTranslators as $translatorUri){
+					$translator = new core_kernel_classes_Resource($translatorUri);
+					if($activityExecutionService->checkAcl($activityExecution, $translator)){
+						$theTranslator = $translator;
+						break;
+					}
+				}
+
+				$this->assertNotNull($theTranslator);
+				$login = (string) $theTranslator->getUniquePropertyValue($loginProperty);
+				$this->assertFalse(empty($login));
+
+				$this->bashCheckAcl($activityExecution, array($login));
+				$this->changeUser($login);
+
+				$currentActivityExecution = $this->initCurrentActivityExecution($activityExecution);
+				
+				//execute service:
+				$this->assertTrue($this->executeServiceTranslate(array(
+					'translatorUri' => $theTranslator->uriResource
+				)));
+				
+			}else{
+			
+				//switch to activity's specific check:
+				switch ($activityIndex) {
+					case 1: {
+						
+						$login = $this->userLogins[$countryCode]['NPM'];
+						$this->assertFalse(empty($login));
+						$this->bashCheckAcl($activityExecution, array($login));
+
+						$this->changeUser($login);
+						$currentActivityExecution = $this->initCurrentActivityExecution($activityExecution);
+						
+						//execute service:
+						$translators = $this->getAuthorizedUsersByCountryLanguage($countryCode, $languageCode, $nbTranslators);
+						$selectedTranslators = $translators['translators'];
+						$this->assertTrue($this->executeServiceSelectTranslators($selectedTranslators));
+
+						break;
+					}
+					case $indexActivityTranslate + $nbTranslators:
+					case $indexActivityTranslate + $nbTranslators +2:{
+						//reconciliation:
+						//correct verification issues:
+						$login = $this->userLogins[$countryCode][$languageCode]['reconciler'];
+						
+						$this->assertFalse(empty($login));
+						$this->bashCheckAcl($activityExecution, array($login), array_rand($this->users, 5));
+						$this->changeUser($login);
+						$currentActivityExecution = $this->initCurrentActivityExecution($activityExecution);
+						
+						break;
+					}
+					case $indexActivityTranslate + $nbTranslators +1:{
+						//verify translations :
+						$login = $this->userLogins[$countryCode][$languageCode]['verifier'];
+						
+						$this->assertFalse(empty($login));
+						$this->bashCheckAcl($activityExecution, array($login), array_rand($this->users, 5));
+						$this->changeUser($login);
+						$currentActivityExecution = $this->initCurrentActivityExecution($activityExecution);
+						
+						break;
+					}	
+					case $indexActivityTranslate + $nbTranslators +3:{
+						//final verificationc check :
+						$login = $this->userLogins[$countryCode][$languageCode]['verifier'];
+						
+						$this->assertFalse(empty($login));
+						$this->bashCheckAcl($activityExecution, array($login), array_rand($this->users, 5));
+						$this->changeUser($login);
+						$currentActivityExecution = $this->initCurrentActivityExecution($activityExecution);
+						
+						if(!isset($loopsCounter['finalCheck'])){
+							$loopsCounter = array();//reinitialize the loops counter
+							$loopsCounter['finalCheck'] = $nbLoops;
+							$this->assertTrue($this->executeServiceFinalSignOff(false));
+							$goto = $indexActivityTranslate + $nbTranslators +2;
+						}else{
+							$this->assertTrue($this->executeServiceFinalSignOff(true));
+						}
+						
+						break;
+					}
+					case $indexActivityTranslate + $nbTranslators +4:{
+						//finalize BQ :
+						$developersLogins = $this->userLogins['developer'];
+						$this->bashCheckAcl($activityExecution, $developersLogins);
+						
+						$j = 1;
+						foreach(array_rand($developersLogins, 3) as $k){
+							
+							$this->out("developer no$j ".$developersLogins[$k]." corrects layout", true);
+							$this->changeUser($developersLogins[$k]);
+							$currentActivityExecution = $this->initCurrentActivityExecution($activityExecution);
+							
+							//check if all developers can access the activity, even after it has been taken:
+							$this->bashCheckAcl($activityExecution, $developersLogins, array_rand($this->users, 8));
+							
+							$j++;
+						}
+						
+						$this->changeUser($developersLogins[array_rand($developersLogins)]);
+						
+						break;
+					}	
+				}
+				
+				//update xliff and vff:
+				if(GENERIS_VERSIONING_ENABLED){
+					$xliffContent = $this->executeServiceDownloadFile('xliff');
+					$this->assertFalse(empty($xliffContent));
+					$vffContent = $this->executeServiceDownloadFile('vff');
+					$this->assertFalse(empty($vffContent));
+
+					$this->executeServiceUploadFile('xliff', $xliffContent.' \n XLIFF by user '.$this->currentUser->getLabel().' \n', $this->currentUser);
+					$this->executeServiceUploadFile('vff', $vffContent.' \n VFF by user '.$this->currentUser->getLabel().' \n', $this->currentUser);
+				}
+			}
+			
+			//transition to next activity
+			$transitionResult = $processExecutionService->performTransition($processInstance, $currentActivityExecution);
+			$goto = intval($goto);
+			if($activityIndex == $iterations){
+				//process finished:
+				$this->assertEqual(count($transitionResult), 0);
+				$this->assertTrue($processExecutionService->isFinished($processInstance));
+			}else if($activityIndex >= $indexActivityTranslate && $activityIndex < $indexActivityTranslate+$nbTranslators){
+				//translate activities:
+				$this->assertFalse($transitionResult);
+				$this->assertTrue($processExecutionService->isPaused($processInstance));
+			}else{
+				$this->assertEqual(count($transitionResult), 0);
+				$this->assertTrue($processExecutionService->isPaused($processInstance));
+			}
+			
+			//manage next activity index:
+			if($goto){
+				$activityIndex = $goto;
+			}else{
+				$activityIndex++;
+			}
+			
+			//increment iteration counts:
+			$i++;
+			
+			$this->out("activity status : ".$activityExecutionService->getStatus($currentActivityExecution)->getLabel());
+			$this->out("process status : ".$processExecutionService->getStatus($processInstance)->getLabel());
+			
+			$rand = rand(0, $iterations);
+			$prob = $activityIndex * $stopProbability;
+			if($rand < $prob){
+				$this->out("process instance stopped by probability");
+				break;
+			}
+		}
+		
+		$activityExecutionsData = $processExecutionService->getAllActivityExecutions($processInstance);
+		var_dump($activityExecutionsData);
+		
+		$executionHistory = $processExecutionService->getExecutionHistory($processInstance);
+		$this->assertEqual(count($executionHistory), $i-1);//there is no hidden activity
+	}
 	
 	private function executeCBAProcess($processDefinition, $unitUri, $countryCode, $languageCode, $simulationOptions){
 		
