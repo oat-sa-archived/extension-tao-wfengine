@@ -99,6 +99,13 @@ class wfEngine_actions_Process extends tao_actions_TaoModule {
 		
 		$formContainer = new tao_actions_form_Instance($clazz, $process, array('excludedProperties' => $excludedProperties));
 		$myForm = $formContainer->getForm();
+		
+		//@TODO : put into the process definition service:
+		$aclModes = array(
+			tao_helpers_Uri::encode(INSTANCE_ACL_ROLE) => 'Role',
+			tao_helpers_Uri::encode(INSTANCE_ACL_ROLE_RESTRICTED_USER) => 'User'
+			);
+		$myForm->getElement(tao_helpers_Uri::encode(PROPERTY_PROCESS_INIT_ACL_MODE))->setOptions($aclModes);
 		if($myForm->isSubmited()){
 			if($myForm->isValid()){
 				

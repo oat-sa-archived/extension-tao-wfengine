@@ -709,30 +709,29 @@ class wfEngine_models_classes_ProcessExecutionService
 				}
 			} else if (is_string($status)) {
 				
-				
-				switch ($processStatus->uriResource) {
+				switch ($processStatus->uriResource){
 					case INSTANCE_PROCESSSTATUS_RESUMED: {
-							$returnValue = (strtolower($status) == 'resumed');
-							break;
-						}
+						$returnValue = (strtolower($status) == 'resumed');
+						break;
+					}
 					case INSTANCE_PROCESSSTATUS_STARTED: {
-						
-							$returnValue = (strtolower($status) == 'started');
-							break;
-						}
+						$returnValue = (strtolower($status) == 'started');
+						break;
+					}
 					case INSTANCE_PROCESSSTATUS_FINISHED: {
-							$returnValue = (strtolower($status) == 'finished');
-							break;
+						$returnValue = (strtolower($status) == 'finished');
+						break;
 						}
 					case INSTANCE_PROCESSSTATUS_PAUSED: {
-							$returnValue = (strtolower($status) == 'paused');
-							break;
-						}
+						$returnValue = (strtolower($status) == 'paused');
+						break;
+					}
 					case INSTANCE_PROCESSSTATUS_CLOSED: {
-							$returnValue = (strtolower($status) == 'closed');
-							break;
-						}
+						$returnValue = (strtolower($status) == 'closed');
+						break;
+					}
 				}
+				
 			}
 		}
 		
@@ -832,7 +831,7 @@ class wfEngine_models_classes_ProcessExecutionService
 		if (!count($newActivities) || $activityDefinitionService->isFinal($activityBeforeTransition)){
 			//there is no following activity so the process ends here:
 			$this->finish($processExecution);
-			return;
+			return array();
 		}elseif(!is_null($uniqueNextActivityExecution)){
 			//we are certain that the next activity would be for the user so return it:
 			$authorizedActivityExecutions[$uniqueNextActivityExecution->uriResource] = $uniqueNextActivityExecution;
@@ -875,11 +874,10 @@ class wfEngine_models_classes_ProcessExecutionService
 					// $this->redirect(_url('index', 'Main'));
 				// }//already performed above...
 				
-				$activityExecutionResource = $this->initCurrentActivityExecutions($activityExecutionAfterTransition, $currentUser, $processExecution);
+				$activityExecutionResource = $this->initCurrentActivityExecution($processExecution, $activityExecutionAfterTransition, $currentUser, true);//force execution of the ghost actiivty
 				//service not executed? use curl request?
 				if(!is_null($activityExecutionResource)){
 					$followingActivityExecutions = $this->performTransition($processExecution, $activityExecutionResource);
-					unset($authorizedActivityExecutions[$uri]);
 					if(is_array($followingActivityExecutions)){
 						foreach ($followingActivityExecutions as $followingActivityExec) {
 							$returnValue[$followingActivityExec->uriResource] = $followingActivityExec;
@@ -896,10 +894,9 @@ class wfEngine_models_classes_ProcessExecutionService
 		
 		if($setPause){
 			$this->pause($processExecution);
-		}else{
+		}else if(!$this->isFinished($processExecution)){
 			$this->resume($processExecution);
-		}
-		
+		}		
 		
         // section 127-0-1-1-7a69d871:1322a76df3c:-8000:0000000000002F84 end
 

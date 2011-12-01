@@ -499,7 +499,8 @@ class wfEngine_actions_ProcessAuthoring extends tao_actions_TaoModule {
 	}
 	
 	public function editProcessProperty(){
-
+		
+		//@TODO: put that ugly duplicated code into the ProcessEditor form container
 		$process = $this->getCurrentProcess();
 		$excludedProperties = array(
 			PROPERTY_PROCESS_ACTIVITIES,

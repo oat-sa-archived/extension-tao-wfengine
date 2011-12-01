@@ -565,11 +565,8 @@ class wfEngine_models_classes_ActivityService
         // section 127-0-1-1--1e09aee3:133358e11e1:-8000:0000000000003233 begin
 		
 		$propHidden = new core_kernel_classes_Property(PROPERTY_ACTIVITIES_ISHIDDEN);
-		$generisBoolean = GENERIS_FALSE;
-		if($hidden){
-			$generisBoolean = GENERIS_TRUE;
-		}
-		$returnValue = $activity->editPropertyValues($propHidden, $generisBoolean);
+		$hidden = (bool) $hidden;
+		$returnValue = $activity->editPropertyValues($propHidden, ($hidden)?GENERIS_TRUE:GENERIS_FALSE);
 		$this->setCache(__CLASS__.'::isHidden', array($activity), $hidden);
 		
         // section 127-0-1-1--1e09aee3:133358e11e1:-8000:0000000000003233 end
