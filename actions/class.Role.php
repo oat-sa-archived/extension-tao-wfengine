@@ -152,7 +152,7 @@ class wfEngine_actions_Role extends tao_actions_TaoModule {
 		if(!tao_helpers_Request::isAjax()){
 			throw new Exception("wrong request mode");
 		}
-		$userService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_UserService');
+		$userService = wfEngine_models_classes_UserService::singleton();
 		echo json_encode($userService->toTree());
 	}
 	

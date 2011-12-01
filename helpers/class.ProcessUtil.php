@@ -137,7 +137,7 @@ class wfEngine_helpers_ProcessUtil
         $returnValue = (bool) false;
 
         // section 10-13-1-39--284957ac:12e4ca5284a:-8000:0000000000002BF8 begin
-		$processAuthoringService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessAuthoringService');
+		$processAuthoringService = wfEngine_models_classes_ProcessAuthoringService::singleton();
 		$connectors = $processAuthoringService->getConnectorsByActivity($activity, array('next'));
 		if(isset($connectors['next'])){
 			$returnValue = empty($connectors['next']);

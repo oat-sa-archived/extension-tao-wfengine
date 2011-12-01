@@ -372,7 +372,7 @@ class wfEngine_models_classes_ProcessExecutionService
 		$this->activityExecutionsClass = new core_kernel_classes_Class(CLASS_ACTIVITY_EXECUTION);
 		$this->activityExecutionsProcessExecutionProp = new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_PROCESSEXECUTION);
 		
-		$this->activityExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityExecutionService');
+		$this->activityExecutionService = wfEngine_models_classes_ActivityExecutionService::singleton();
         // section 127-0-1-1-7c36bc99:13092a153cd:-8000:0000000000003B9A end
     }
 
@@ -400,7 +400,7 @@ class wfEngine_models_classes_ProcessExecutionService
 		$this->setStatus($processInstance, 'started');
 		$processInstance->setPropertyValue($this->processInstancesExecutionOfProp, $processDefinition);
 		
-		$processDefinitionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessDefinitionService');
+		$processDefinitionService = wfEngine_models_classes_ProcessDefinitionService::singleton();
 		$initialActivities = $processDefinitionService->getRootActivities($processDefinition);
 		
 		if(!count($initialActivities)){
@@ -764,10 +764,10 @@ class wfEngine_models_classes_ProcessExecutionService
 		}
 		
 		//init the services
-		$activityDefinitionService	= tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityService');
-		$connectorService			= tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ConnectorService');
-		$userService 				= tao_models_classes_ServiceFactory::get('wfEngine_models_classes_UserService');
-		$notificationService 		= tao_models_classes_ServiceFactory::get('wfEngine_models_classes_NotificationService');
+		$activityDefinitionService	= wfEngine_models_classes_ActivityService::singleton();
+		$connectorService			= wfEngine_models_classes_ConnectorService::singleton();
+		$userService 				= wfEngine_models_classes_UserService::singleton();
+		$notificationService 		= wfEngine_models_classes_NotificationService::singleton();
 		
 		$currentUser = $userService->getCurrentUser();
 		
@@ -927,7 +927,7 @@ class wfEngine_models_classes_ProcessExecutionService
 			return false;
 		}
 		
-		$activityService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityService');
+		$activityService = wfEngine_models_classes_ActivityService::singleton();
 			
 		$newActivityExecutions = $this->activityExecutionService->moveBackward($activityExecution, $processExecution, $revertOptions);
 		$count = count($newActivityExecutions);
@@ -978,8 +978,8 @@ class wfEngine_models_classes_ProcessExecutionService
 
         // section 127-0-1-1--4b38ca35:1323a4c748d:-8000:0000000000002F87 begin
 		
-		$connectorService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ConnectorService');
-		$activityService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityService');
+		$connectorService = wfEngine_models_classes_ConnectorService::singleton();
+		$activityService = wfEngine_models_classes_ActivityService::singleton();
 		
 		$returnValue = array();
 		if(is_null($currentConnector)){
@@ -1054,9 +1054,9 @@ class wfEngine_models_classes_ProcessExecutionService
 
         // section 127-0-1-1--4b38ca35:1323a4c748d:-8000:0000000000002F8B begin
 		
-		$activityService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityService');
-		$connectorService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ConnectorService');
-		$transitionRuleService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_TransitionRuleService');
+		$activityService = wfEngine_models_classes_ActivityService::singleton();
+		$connectorService = wfEngine_models_classes_ConnectorService::singleton();
+		$transitionRuleService = wfEngine_models_classes_TransitionRuleService::singleton();
 		
 		$transitionRule = $connectorService->getTransitionRule($conditionalConnector);
 		if(is_null($transitionRule)){
@@ -1117,8 +1117,8 @@ class wfEngine_models_classes_ProcessExecutionService
 
         // section 127-0-1-1--4b38ca35:1323a4c748d:-8000:0000000000002F8F begin
 		
-		$connectorService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ConnectorService');
-		$cardinalityService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityCardinalityService');
+		$connectorService = wfEngine_models_classes_ConnectorService::singleton();
+		$cardinalityService = wfEngine_models_classes_ActivityCardinalityService::singleton();
 		
 		$returnValue = false;
 		$completed = false;
@@ -1490,7 +1490,7 @@ class wfEngine_models_classes_ProcessExecutionService
 		
 		$previousProperty = new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_PREVIOUS);
 		$followingProperty = new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_FOLLOWING);
-		$recoveryService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_RecoveryService');
+		$recoveryService = wfEngine_models_classes_RecoveryService::singleton();
 					
 		$currentActivityExecutions = $this->getCurrentActivityExecutions($processInstance);
 		
@@ -1565,8 +1565,8 @@ class wfEngine_models_classes_ProcessExecutionService
         $returnValue = array();
 
         // section 127-0-1-1-6eb1148b:132b4a0f8d0:-8000:000000000000306D begin
-		$connectorService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ConnectorService');
-		$cardinalityService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityCardinalityService');
+		$connectorService = wfEngine_models_classes_ConnectorService::singleton();
+		$cardinalityService = wfEngine_models_classes_ActivityCardinalityService::singleton();
 		
 		foreach($connectorService->getNextActivities($currentConnector) as $cardinality){
 			if($cardinalityService->isCardinality($cardinality)){
@@ -1640,7 +1640,7 @@ class wfEngine_models_classes_ProcessExecutionService
 		
 		$previousProperty = new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_PREVIOUS);
 		$followingProperty = new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_FOLLOWING);
-		$recoveryService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_RecoveryService');
+		$recoveryService = wfEngine_models_classes_RecoveryService::singleton();
 					
 		$currentActivityExecutions = $this->getCurrentActivityExecutions($processExecution);
 		

@@ -11,7 +11,7 @@ set_time_limit(0);
 //connec to the api
 core_control_FrontController::connect(SYS_USER_LOGIN, SYS_USER_PASS, DATABASE_NAME);
 		
-$notificationService = tao_models_classes_ServiceFactory::get("wfEngine_models_classes_NotificationService");
+$notificationService = wfEngine_models_classes_NotificationService::singleton();
 $sent = $notificationService->sendNotifications(new tao_helpers_transfert_MailAdapter());
 
 print "\n$sent sent notifications\n";

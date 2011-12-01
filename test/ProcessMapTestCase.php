@@ -21,14 +21,14 @@ class ProcessMapTestCase extends UnitTestCase {
 			$this->proc = $processDefinition;
 		}
 		$this->apiModel = core_kernel_impl_ApiModelOO::singleton();
-		$this->authoringService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessAuthoringService');
+		$this->authoringService = wfEngine_models_classes_ProcessAuthoringService::singleton();
 	}
 	
 	public function testCreateSequenceActivity(){
 		
 		$processDefinition = $this->proc;
 		$authoringService = $this->authoringService;
-		$processVariableService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_VariableService');
+		$processVariableService = wfEngine_models_classes_VariableService::singleton();
 		
 		//set the required process variables subjectUri and wsdlContract
 		$var_map = $processVariableService->getProcessVariable("map", true);

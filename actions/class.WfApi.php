@@ -18,8 +18,8 @@ class wfEngine_actions_WfApi extends tao_actions_Api {
 	public function __construct()
 	{
 		parent::__construct();
-		$this->processExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessExecutionService');
-		$this->activityExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityExecutionService');
+		$this->processExecutionService = wfEngine_models_classes_ProcessExecutionService::singleton();
+		$this->activityExecutionService = wfEngine_models_classes_ActivityExecutionService::singleton();
 		
 		//validate ALL posted values:
 		$processExecutionUri = urldecode($this->getRequestParameter('processExecutionUri'));

@@ -49,8 +49,8 @@ class ConnectorServiceTestCase extends UnitTestCase {
     public function setUp(){
         TestRunner::initTest();
 
-        $this->authoringService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessAuthoringService');
-		$this->variableService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_VariableService');
+        $this->authoringService = wfEngine_models_classes_ProcessAuthoringService::singleton();
+		$this->variableService = wfEngine_models_classes_VariableService::singleton();
 		
         $processDefinitionClass = new core_kernel_classes_Class(CLASS_PROCESS);
         $this->processDefinition = $processDefinitionClass->createInstance('ProcessForUnitTest', 'Unit test');
@@ -73,7 +73,7 @@ class ConnectorServiceTestCase extends UnitTestCase {
      */
     public function testService(){
 
-        $aService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ConnectorService');
+        $aService = wfEngine_models_classes_ConnectorService::singleton();
         $this->assertIsA($aService, 'tao_models_classes_Service');
         $this->assertIsA($aService, 'wfEngine_models_classes_ConnectorService');
 
@@ -262,7 +262,7 @@ class ConnectorServiceTestCase extends UnitTestCase {
 		$this->assertFalse($connector4->exists());
 		$this->assertEqual($activity6->uriResource, $activity7->uriResource);
 		
-		$cardinalityService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityCardinalityService');
+		$cardinalityService = wfEngine_models_classes_ActivityCardinalityService::singleton();
         $activity3NextActi = $this->service->getNextActivities($connector2);
         $this->assertIsA($activity3NextActi,'array');
         $this->assertEqual(sizeof($activity3NextActi), 2);
@@ -382,7 +382,7 @@ class ConnectorServiceTestCase extends UnitTestCase {
         $activity4PrevActi = $this->service->getPreviousActivities($connector3);
         $this->assertIsA($activity4PrevActi,'array');
         $this->assertEqual(sizeof($activity4PrevActi), 2);
-        $cardinalityService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityCardinalityService');
+        $cardinalityService = wfEngine_models_classes_ActivityCardinalityService::singleton();
 		$prevActivitiesarrayCount = array();
         foreach ($activity4PrevActi as $cardinality){
 			$this->assertTrue($cardinalityService->isCardinality($cardinality));

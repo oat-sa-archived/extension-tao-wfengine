@@ -13,7 +13,7 @@ class wfDebugger{
         
         public function __construct($options = array()){
                 core_control_FrontController::connect(SYS_USER_LOGIN, SYS_USER_PASS, DATABASE_NAME);
-				$this->processExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessExecutionService');
+				$this->processExecutionService = wfEngine_models_classes_ProcessExecutionService::singleton();
                 $this->localNS = core_kernel_classes_Session::singleton()->getNameSpace();
                 $this->unserialize = (isset($options['unserialize']))? (int)$options['unserialize']:0;
         }

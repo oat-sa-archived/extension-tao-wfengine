@@ -23,7 +23,7 @@ class ProcessAuthoringServiceTestCase extends UnitTestCase {
 			$this->fail('fail to create a process definition resource');
 		}
 		$this->apiModel = core_kernel_impl_ApiModelOO::singleton();
-		$this->variableService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_VariableService');
+		$this->variableService = wfEngine_models_classes_VariableService::singleton();
 	}
 	
 	/**

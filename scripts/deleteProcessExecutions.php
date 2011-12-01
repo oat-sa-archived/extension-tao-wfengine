@@ -35,7 +35,7 @@ if(isset($_GET['deliveryHistory'])){
 	}
 }
 
-$processExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessExecutionService');
+$processExecutionService = wfEngine_models_classes_ProcessExecutionService::singleton();
 $result = false;
 if(!empty($processExecutionUri)){
 	if($processExecutionUri=='all' || $processExecutionUri='*'){

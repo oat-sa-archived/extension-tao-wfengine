@@ -69,7 +69,7 @@ class wfEngine_helpers_Monitoring_VariablesAdapter
         // section 127-0-1-1--5e069f0e:133a7dcfc6a:-8000:00000000000033F8 begin
 		
 		$activityExecution = new core_kernel_classes_Resource($rowId);
-		$activityExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityExecutionService');
+		$activityExecutionService = wfEngine_models_classes_ActivityExecutionService::singleton();
 		$variables = $activityExecutionService->getVariables($activityExecution);
 		foreach($variables as $variableData){
 			$returnValue[$variableData['propertyUri']] = $variableData;

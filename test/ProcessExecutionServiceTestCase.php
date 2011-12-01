@@ -48,7 +48,7 @@ class ProcessExecutionServiceTestCase extends UnitTestCase{
 		error_reporting(E_ALL);
 		
 		if(is_null($this->userService)){
-			$this->userService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_UserService');
+			$this->userService = wfEngine_models_classes_UserService::singleton();
 		}
 		
 		list($usec, $sec) = explode(" ", microtime());
@@ -106,7 +106,7 @@ class ProcessExecutionServiceTestCase extends UnitTestCase{
 	 * Test the service implementation
 	 */
 	public function testService(){
-		$processExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessExecutionService');
+		$processExecutionService = wfEngine_models_classes_ProcessExecutionService::singleton();
 		$this->assertIsA($processExecutionService, 'tao_models_classes_Service');
 		$this->service = $processExecutionService;
 		$processExecutionService->cache = (bool) self::SERVICE_CACHE;
@@ -122,10 +122,10 @@ class ProcessExecutionServiceTestCase extends UnitTestCase{
 		try{
 			$t_start = microtime(true);
 			
-			$authoringService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessAuthoringService');
-			$activityExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityExecutionService');
+			$authoringService = wfEngine_models_classes_ProcessAuthoringService::singleton();
+			$activityExecutionService = wfEngine_models_classes_ActivityExecutionService::singleton();
 			$activityExecutionService->cache = (bool) self::SERVICE_CACHE;
-			$this->service = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessExecutionService');
+			$this->service = wfEngine_models_classes_ProcessExecutionService::singleton();
 			
 			//create a new process def
 			$processDefinition = $authoringService->createProcess('ProcessForUnitTest', 'Unit test');
@@ -399,10 +399,10 @@ class ProcessExecutionServiceTestCase extends UnitTestCase{
 		$t_start = microtime(true);
 		
 		//init services
-		$activityService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityService');
-		$processVariableService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_VariableService');
-		$authoringService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessAuthoringService');
-		$activityExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityExecutionService');
+		$activityService = wfEngine_models_classes_ActivityService::singleton();
+		$processVariableService = wfEngine_models_classes_VariableService::singleton();
+		$authoringService = wfEngine_models_classes_ProcessAuthoringService::singleton();
+		$activityExecutionService = wfEngine_models_classes_ActivityExecutionService::singleton();
 		$activityExecutionService->cache = (bool) self::SERVICE_CACHE;
 		
 		//process definition
@@ -461,7 +461,7 @@ class ProcessExecutionServiceTestCase extends UnitTestCase{
 			$parallelActivity1->uriResource => array($splitVariable1),
 			$parallelActivity2->uriResource => array($splitVariable1, $splitVariable2)
 		);
-		$connectorService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ConnectorService');
+		$connectorService = wfEngine_models_classes_ConnectorService::singleton();
 		$connectorService->setSplitVariables($connector0, $splitVariablesArray);
 		
 		$prallelActivitiesArray[$parallelActivity2->uriResource] = $parallelCount2;

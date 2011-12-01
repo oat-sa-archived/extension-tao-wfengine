@@ -84,8 +84,8 @@ class wfEngine_helpers_Monitoring_VersionedFileAdapter
 				
 				$activityExecution = new core_kernel_classes_Resource($rowId);
 
-				$activityExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityExecutionService');
-				$processVariableService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_VariableService');
+				$activityExecutionService = wfEngine_models_classes_ActivityExecutionService::singleton();
+				$processVariableService = wfEngine_models_classes_VariableService::singleton();
 				$unit = $processVariableService->get('unitUri', $activityExecution);
 				$countryCode = (string) $processVariableService->get('countryCode', $activityExecution);
 				$languageCode = (string) $processVariableService->get('languageCode', $activityExecution);

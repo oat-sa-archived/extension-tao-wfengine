@@ -18,7 +18,7 @@ class wfEngine_actions_WfApiActivityExecution extends wfEngine_actions_WfApi {
 			$this->setErrorMessage(__('The resource is not an activity execution'));
 		}
 		
-		$this->activityExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityExecutionService');
+		$this->activityExecutionService = wfEngine_models_classes_ActivityExecutionService::singleton();
 	}
 	
 	public function assign()

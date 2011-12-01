@@ -11,7 +11,7 @@ class wfEngine_actions_Authentication extends Module
 			$this->setData('errorMessage',$this->getRequestParameter('errorMessage'));
 		}
 		
-		$userService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_UserService');
+		$userService = wfEngine_models_classes_UserService::singleton();
 		
 		
 		$processUri = urldecode($this->getRequestParameter('processUri'));

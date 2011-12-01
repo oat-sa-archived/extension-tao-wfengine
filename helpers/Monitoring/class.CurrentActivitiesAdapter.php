@@ -60,7 +60,7 @@ class wfEngine_helpers_Monitoring_CurrentActivitiesAdapter
         $returnValue = array();
 
         // section 127-0-1-1-72bb438:1338cba5f73:-8000:000000000000339D begin
-		$processExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessExecutionService');
+		$processExecutionService = wfEngine_models_classes_ProcessExecutionService::singleton();
 		$processInstance = new core_kernel_classes_Resource($rowId);
 		$currentActivityExecutions = $processExecutionService->getCurrentActivityExecutions($processInstance);
 		$returnValue = array_keys($currentActivityExecutions);

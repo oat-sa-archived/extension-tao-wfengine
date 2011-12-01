@@ -24,8 +24,8 @@ class wfEngine_actions_ProcessBrowser extends wfEngine_actions_WfModule{
 		
 		parent::__construct();
 		
-		$this->processExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessExecutionService');
-		$this->activityExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityExecutionService');
+		$this->processExecutionService = wfEngine_models_classes_ProcessExecutionService::singleton();
+		$this->activityExecutionService = wfEngine_models_classes_ActivityExecutionService::singleton();
 		
 		//validate ALL posted values:
 		$processExecutionUri = urldecode($this->getRequestParameter('processUri'));
@@ -134,9 +134,9 @@ class wfEngine_actions_ProcessBrowser extends wfEngine_actions_WfModule{
 		$browserViewData = array(); // general data for browser view.
 		
 		//init services:
-		$userService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_UserService');
-		$activityService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityService');
-		$interactiveServiceService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_InteractiveServiceService');
+		$userService = wfEngine_models_classes_UserService::singleton();
+		$activityService = wfEngine_models_classes_ActivityService::singleton();
+		$interactiveServiceService = wfEngine_models_classes_InteractiveServiceService::singleton();
 		
 		//get current user:
 		$currentUser = $userService->getCurrentUser();
@@ -245,7 +245,7 @@ class wfEngine_actions_ProcessBrowser extends wfEngine_actions_WfModule{
 						'output'	=> $interactiveServiceService->getOutputValues($interactiveService, $activityExecution)
 					);
 				}
-				$variableService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_VariableService');
+				$variableService = wfEngine_models_classes_VariableService::singleton();
 				$this->setData('debugData', array(
 						'Activity' => $activityDefinition,
 						'ActivityExecution' => $activityExecution,

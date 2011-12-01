@@ -67,7 +67,7 @@ class wfEngine_helpers_Monitoring_ExecutionHistoryGrid
 
         // section 127-0-1-1-41d91020:13392d7ae4a:-8000:00000000000033A5 begin
 		if($this->data instanceof core_kernel_classes_Resource && $this->data->hasType(new core_kernel_classes_Class(CLASS_PROCESSINSTANCES))){
-			$processExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessExecutionService');
+			$processExecutionService = wfEngine_models_classes_ProcessExecutionService::singleton();
 			$this->data = $processExecutionService->getExecutionHistory($this->data);
 			parent::initGrid();
 		}else{

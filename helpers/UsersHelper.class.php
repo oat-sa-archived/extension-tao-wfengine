@@ -11,7 +11,7 @@ class UsersHelper
 	 */
 	public static function authenticate($in_login, $in_password){
 
-		$userService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_UserService');
+		$userService = wfEngine_models_classes_UserService::singleton();
 		
 		//loggin into tao 
 		if($userService->loginUser($in_login, $in_password, false)){
@@ -39,8 +39,8 @@ class UsersHelper
 
 	public static function buildCurrentUserForView()
 	{
-		$userService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_UserService');
-		$roleService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_RoleService');
+		$userService = wfEngine_models_classes_UserService::singleton();
+		$roleService = wfEngine_models_classes_RoleService::singleton();
 		$currentUser = $userService->getCurrentUser();
 		
 		// username.

@@ -215,7 +215,7 @@ class wfEngine_models_classes_RecoveryService
 
         // section 127-0-1-1-53da607c:1328c576a23:-8000:000000000000303B begin
 		
-		$activityExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityExecutionService');
+		$activityExecutionService = wfEngine_models_classes_ActivityExecutionService::singleton();
 		if(is_null($user)){
 			$user = $activityExecutionService->getActivityExecutionUser($activityExecution);
 		}

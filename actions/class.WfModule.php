@@ -6,7 +6,7 @@ class wfEngine_actions_WfModule extends Module
 	{
 		if($this->_isAllowed()){
 			//Authentication and API initialization
-			$userService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_UserService');
+			$userService = wfEngine_models_classes_UserService::singleton();
 			$userService->connectCurrentUser();
 		}
 		else{

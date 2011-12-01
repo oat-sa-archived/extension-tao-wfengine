@@ -41,7 +41,7 @@ class ActivityExecutionServiceTestCase extends wfEngineServiceTest {
 			$this->currentUser0 = $this->currentUser;
 		}
 		
-		$this->service = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityExecutionService');
+		$this->service = wfEngine_models_classes_ActivityExecutionService::singleton();
 	}
 	
 	public function tearDown() {
@@ -53,7 +53,7 @@ class ActivityExecutionServiceTestCase extends wfEngineServiceTest {
 	 */
 	public function testService(){
 		
-		$aeService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityExecutionService');
+		$aeService = wfEngine_models_classes_ActivityExecutionService::singleton();
 		$this->assertIsA($aeService, 'tao_models_classes_Service');
 		$this->assertIsA($aeService, 'wfEngine_models_classes_ActivityExecutionService');
 
@@ -68,12 +68,12 @@ class ActivityExecutionServiceTestCase extends wfEngineServiceTest {
 		
 		try{
 			
-			$roleService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_RoleService');
-			$authoringService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessAuthoringService');
-			$activityService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityService');
-			$activityExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityExecutionService');
-			$processExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessExecutionService');
-			$processVariableService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_VariableService');
+			$roleService = wfEngine_models_classes_RoleService::singleton();
+			$authoringService = wfEngine_models_classes_ProcessAuthoringService::singleton();
+			$activityService = wfEngine_models_classes_ActivityService::singleton();
+			$activityExecutionService = wfEngine_models_classes_ActivityExecutionService::singleton();
+			$processExecutionService = wfEngine_models_classes_ProcessExecutionService::singleton();
+			$processVariableService = wfEngine_models_classes_VariableService::singleton();
 			
 			//TEST PLAN :
 			//INSTANCE_ACL_ROLE, $roleA

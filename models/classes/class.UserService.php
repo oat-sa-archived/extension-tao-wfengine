@@ -122,7 +122,7 @@ class wfEngine_models_classes_UserService
 
         // section 127-0-1-1-718243b3:12912642ee4:-8000:0000000000001F88 begin
         
-    	$roleService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_RoleService');
+    	$roleService = wfEngine_models_classes_RoleService::singleton();
     	
         $userClass = new core_kernel_classes_Class(CLASS_GENERIS_USER);
 		$users = array();

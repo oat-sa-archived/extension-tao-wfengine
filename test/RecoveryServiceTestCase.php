@@ -38,7 +38,7 @@ class RecoveryServiceTestCase extends UnitTestCase {
 	 */
 	public function testService(){
 		
-		$recoveryService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_RecoveryService');
+		$recoveryService = wfEngine_models_classes_RecoveryService::singleton();
 		$this->assertIsA($recoveryService, 'tao_models_classes_Service');
 		$this->assertIsA($recoveryService, 'wfEngine_models_classes_RecoveryService');
 

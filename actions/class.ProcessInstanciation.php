@@ -18,7 +18,7 @@ class wfEngine_actions_ProcessInstanciation extends wfEngine_actions_WfModule{
 		$processAuthoringData['variables']		= array();
 
 		// Process variables retrieving.
-		$processDefinitionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessDefinitionService');
+		$processDefinitionService = wfEngine_models_classes_ProcessDefinitionService::singleton();
 		$variables = $processDefinitionService->getProcessVars(new core_kernel_classes_Resource($processDefinitionUri));
 
 		foreach ($variables as $key => $variable){
@@ -40,8 +40,8 @@ class wfEngine_actions_ProcessInstanciation extends wfEngine_actions_WfModule{
 		
 		ini_set('max_execution_time', 200);
 			
-		$processExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessExecutionService');
-		$activityExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityExecutionService');
+		$processExecutionService = wfEngine_models_classes_ProcessExecutionService::singleton();
+		$activityExecutionService = wfEngine_models_classes_ActivityExecutionService::singleton();
 		
 		$processDefinitionUri = urldecode($posted['executionOf']);
 		$processDefinition = new core_kernel_classes_Resource($processDefinitionUri);

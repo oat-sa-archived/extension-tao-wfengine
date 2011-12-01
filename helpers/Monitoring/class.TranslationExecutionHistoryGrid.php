@@ -34,7 +34,7 @@ class wfEngine_helpers_Monitoring_TranslationExecutionHistoryGrid
     public function __construct( core_kernel_classes_Resource $processExecution, $options = array())
     {
         // section 127-0-1-1-41d91020:13392d7ae4a:-8000:00000000000033A5 begin
-		$processExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessExecutionService');
+		$processExecutionService = wfEngine_models_classes_ProcessExecutionService::singleton();
 		$this->activityExecutions = $processExecutionService->getExecutionHistory($processExecution);
 		parent::__construct($this->activityExecutions, $options);
         // section 127-0-1-1-41d91020:13392d7ae4a:-8000:00000000000033A5 end

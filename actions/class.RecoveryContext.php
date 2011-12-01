@@ -23,7 +23,7 @@ class wfEngine_actions_RecoveryContext extends tao_actions_Api {
 			
 			if($this->authenticate($token) && !empty($activityExecutionUri)){
 				$activityExecution = new core_kernel_classes_Resource($activityExecutionUri);
-				$recoveryService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_RecoveryService');
+				$recoveryService = wfEngine_models_classes_RecoveryService::singleton();
 				
 				$context = $recoveryService->getContext($activityExecution, 'any');//get the first, no null context!
 			}
@@ -45,7 +45,7 @@ class wfEngine_actions_RecoveryContext extends tao_actions_Api {
 			
 			if($this->authenticate($token) && !empty($activityExecutionUri)){
 				$activityExecution = new core_kernel_classes_Resource($activityExecutionUri);
-				$recoveryService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_RecoveryService');
+				$recoveryService = wfEngine_models_classes_RecoveryService::singleton();
 				
 				$context = $this->getRequestParameter('context');
 				if(is_array($context)){

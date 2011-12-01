@@ -420,8 +420,8 @@ class wfEngine_models_classes_ActivityService
 
         // section 127-0-1-1-8ae8e2e:132ba7fdd5a:-8000:0000000000003081 begin
 		
-		$connectorService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ConnectorService');
-		$interactiveServiceService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_InteractiveServiceService');
+		$connectorService = wfEngine_models_classes_ConnectorService::singleton();
+		$interactiveServiceService = wfEngine_models_classes_InteractiveServiceService::singleton();
 		$connectorClass = new core_kernel_classes_Class(CLASS_CONNECTORS);
 		$connectors = $connectorClass->searchInstances(array(PROPERTY_CONNECTORS_ACTIVITYREFERENCE => $activity->uriResource), array('like' => false, 'recursive' => 0));
 		foreach($connectors as $connector){

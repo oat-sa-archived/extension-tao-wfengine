@@ -154,9 +154,9 @@ class wfEngine_models_classes_NotificationService
         	$activityAclUserProp				= new core_kernel_classes_Property(PROPERTY_ACTIVITIES_RESTRICTED_USER);
         	$activityAclRoleProp				= new core_kernel_classes_Property(PROPERTY_ACTIVITIES_RESTRICTED_ROLE);
         	
-        	$roleService 				= tao_models_classes_ServiceFactory::get("wfEngine_models_classes_RoleService");
-        	$activityExecutionService 	= tao_models_classes_ServiceFactory::get("wfEngine_models_classes_ActivityExecutionService");
-        	$processExecutionService	= tao_models_classes_ServiceFactory::get("wfEngine_models_classes_ProcessExecutionService");
+        	$roleService 				= wfEngine_models_classes_RoleService::singleton();
+        	$activityExecutionService 	= wfEngine_models_classes_ActivityExecutionService::singleton();
+        	$processExecutionService	= wfEngine_models_classes_ProcessExecutionService::singleton();
 			
 			if(is_null($processExecution)){
 				$processExecution = $activityExecutionService->getRelatedProcessExecution($activityExecution);
@@ -379,7 +379,7 @@ class wfEngine_models_classes_NotificationService
 
         // section 127-0-1-1-278177bc:1333f1e99bb:-8000:0000000000003242 begin
 		
-		$activityExecutionService 	= tao_models_classes_ServiceFactory::get("wfEngine_models_classes_ActivityExecutionService");
+		$activityExecutionService 	= wfEngine_models_classes_ActivityExecutionService::singleton();
 
 		if(is_null($processExecution)){
 			$processExecution = $activityExecutionService->getRelatedProcessExecution($activityExecution);

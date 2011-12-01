@@ -39,7 +39,7 @@ class wfEngineServiceTest extends UnitTestCase {
 		$this->userPassword = '123456';
 			
 		if(is_null($this->userService)){
-			$this->userService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_UserService');
+			$this->userService = wfEngine_models_classes_UserService::singleton();
 		}
 		
 	}
@@ -118,7 +118,7 @@ class wfEngineServiceTest extends UnitTestCase {
 			$this->fail("unable to login user $login<br>");
 		}
 		
-		$activityExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityExecutionService');
+		$activityExecutionService = wfEngine_models_classes_ActivityExecutionService::singleton();
 		$activityExecutionService->clearCache('wfEngine_models_classes_ActivityExecutionService::checkAcl');
 		
 		return $returnValue;
@@ -126,7 +126,7 @@ class wfEngineServiceTest extends UnitTestCase {
 	
 	protected function checkAccessControl($activityExecution){
 		
-		$activityExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityExecutionService');
+		$activityExecutionService = wfEngine_models_classes_ActivityExecutionService::singleton();
 		
 		$aclMode = $activityExecutionService->getAclMode($activityExecution);
 		$restricedRole = $activityExecutionService->getRestrictedRole($activityExecution);

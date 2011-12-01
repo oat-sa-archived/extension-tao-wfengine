@@ -14,10 +14,10 @@ class wfEngine_actions_Main extends wfEngine_actions_WfModule
 	{
 		
 		//init required services
-		$activityExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityExecutionService');
-		$processExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessExecutionService');
-		$processDefinitionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessDefinitionService');
-		$userService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_UserService');
+		$activityExecutionService = wfEngine_models_classes_ActivityExecutionService::singleton();
+		$processExecutionService = wfEngine_models_classes_ProcessExecutionService::singleton();
+		$processDefinitionService = wfEngine_models_classes_ProcessDefinitionService::singleton();
+		$userService = wfEngine_models_classes_UserService::singleton();
 		
 		//get current user:
 		$currentUser = $userService->getCurrentUser();

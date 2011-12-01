@@ -17,7 +17,7 @@ class wfEngine_actions_WfApiProcessDefinition extends wfEngine_actions_WfApi {
 	{
 		parent::__construct();
 		
-		$this->processDefinitionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessDefinitionService');
+		$this->processDefinitionService = wfEngine_models_classes_ProcessDefinitionService::singleton();
 		
 		$processDefinitionUri = urldecode($this->getRequestParameter('processDefinitionUri'));
 		if(!empty($processDefinitionUri) && common_Utils::isUri($processDefinitionUri)){

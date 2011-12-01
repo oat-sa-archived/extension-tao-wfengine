@@ -91,7 +91,7 @@ class wfEngine_actions_form_validators_VariableCode
 		
 		$returnValue = true;
 		if(isset($this->options['uri'])){
-			$variableService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_VariableService');
+			$variableService = wfEngine_models_classes_VariableService::singleton();
 			$processVar = $variableService->getProcessVariable($this->getValue());
 			if(!is_null($processVar)) {
 				if ($this->options['uri'] != $processVar->uriResource) {

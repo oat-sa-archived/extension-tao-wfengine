@@ -266,8 +266,8 @@ class wfEngine_models_classes_ProcessAuthoringService
         $returnValue = null;
 
         // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004D73 begin
-		$activityService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityService');
-		$connectorService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ConnectorService');
+		$activityService = wfEngine_models_classes_ActivityService::singleton();
+		$connectorService = wfEngine_models_classes_ConnectorService::singleton();
 		
 		$connectorLabel = "";
 		if(empty($label)){
@@ -441,7 +441,7 @@ class wfEngine_models_classes_ProcessAuthoringService
 			
 			//check multiplicity  (according to the cardinality defined in the related parallel connector):
 			$processFlow = new wfEngine_models_classes_ProcessFlow();
-			$cardinalityService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityCardinalityService');
+			$cardinalityService = wfEngine_models_classes_ActivityCardinalityService::singleton();
 			
 			$multiplicity = 1;//default multiplicity, if no multiple parallel activity 
 			
@@ -653,7 +653,7 @@ class wfEngine_models_classes_ProcessAuthoringService
 
         // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004DDC begin
 		
-		$activityService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityService');
+		$activityService = wfEngine_models_classes_ActivityService::singleton();
 		$returnValue = $activityService->deleteActivity($activity);
 		
         // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004DDC end
@@ -716,7 +716,7 @@ class wfEngine_models_classes_ProcessAuthoringService
 
         // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004DF5 begin
 		
-		$interactiveServiceService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_InteractiveServiceService');
+		$interactiveServiceService = wfEngine_models_classes_InteractiveServiceService::singleton();
 		$returnValue = $interactiveServiceService->deleteInteractiveService($service);
 		
         // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004DF5 end
@@ -771,7 +771,7 @@ class wfEngine_models_classes_ProcessAuthoringService
 
         // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004DFC begin
 		
-		$connectorService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ConnectorService');
+		$connectorService = wfEngine_models_classes_ConnectorService::singleton();
 		$returnValue = $connectorService->deleteConnector($connector);
 		
         // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004DFC end
@@ -798,7 +798,7 @@ class wfEngine_models_classes_ProcessAuthoringService
 			// PROPERTY_TRANSITIONRULES_ELSE
 		// );
 		$nextActivitiesProp = new core_kernel_classes_Property(PROPERTY_CONNECTORS_NEXTACTIVITIES);
-		$connectorService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ConnectorService');
+		$connectorService = wfEngine_models_classes_ConnectorService::singleton();
 		
 		switch($connectionType){
 			case 'next':{
@@ -1427,7 +1427,7 @@ class wfEngine_models_classes_ProcessAuthoringService
 		
 		$propNextActivities = new core_kernel_classes_Property(PROPERTY_CONNECTORS_NEXTACTIVITIES);
 		$propPreviousActivities = new core_kernel_classes_Resource(PROPERTY_CONNECTORS_PREVIOUSACTIVITIES);
-		$cardinalityService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityCardinalityService');
+		$cardinalityService = wfEngine_models_classes_ActivityCardinalityService::singleton();
 		
 		//remove old property values:
 		$nextActivitiesCollection = $connectorInstance->getPropertyValuesCollection($propNextActivities);
@@ -1568,7 +1568,7 @@ class wfEngine_models_classes_ProcessAuthoringService
 			$propFormalParam = new core_kernel_classes_Property(PROPERTY_SERVICESDEFINITION_FORMALPARAMIN);
 			$classFormalParam = new core_kernel_classes_Class(CLASS_FORMALPARAMETER);
 			$classProcessVariables = new core_kernel_classes_Class(CLASS_PROCESSVARIABLES);
-			$variableService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_VariableService');
+			$variableService = wfEngine_models_classes_VariableService::singleton();
 			
 			foreach($inputParameters as $paramName => $value){
 			
@@ -1664,7 +1664,7 @@ class wfEngine_models_classes_ProcessAuthoringService
         $returnValue = (bool) false;
 
         // section 127-0-1-1--1e09aee3:133358e11e1:-8000:0000000000003251 begin
-		$connectorService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ConnectorService');
+		$connectorService = wfEngine_models_classes_ConnectorService::singleton();
 		$returnValue = $connectorService->setConnectorType($connector, $type);
         // section 127-0-1-1--1e09aee3:133358e11e1:-8000:0000000000003251 end
 

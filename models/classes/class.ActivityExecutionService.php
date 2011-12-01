@@ -317,7 +317,7 @@ class wfEngine_models_classes_ActivityExecutionService
 		
 		$this->processInstanceActivityExecutionsProperty = new core_kernel_classes_Property(PROPERTY_PROCESSINSTANCES_ACTIVITYEXECUTIONS); 
 		
-        $this->activityService          = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityService');
+        $this->activityService          = wfEngine_models_classes_ActivityService::singleton();
         // section 127-0-1-1--14d619a:12ce565682e:-8000:000000000000297B end
     }
 
@@ -628,7 +628,7 @@ class wfEngine_models_classes_ActivityExecutionService
 						}else{
 							$process = $processExecution->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_PROCESSINSTANCES_EXECUTIONOF));
 							if(!is_null($process)){
-								$processDefinitionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessDefinitionService');
+								$processDefinitionService = wfEngine_models_classes_ProcessDefinitionService::singleton();
 								foreach($processDefinitionService->getRootActivities($process) as $initialActivity){
 									if(!is_null($this->getExecution($initialActivity, $currentUser, $processExecution))){
 										$returnValue = true;
@@ -721,7 +721,7 @@ class wfEngine_models_classes_ActivityExecutionService
         $returnValue = array();
 
         // section 127-0-1-1--4b38ca35:1323a4c748d:-8000:0000000000002F9B begin
-		$variableService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_VariableService');
+		$variableService = wfEngine_models_classes_VariableService::singleton();
 		$activityExecutionVariables = $activityExecution->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_VARIABLES));
 		if(!is_null($activityExecutionVariables)){
 			$tokenVarKeys = @unserialize($activityExecutionVariables);
@@ -1076,8 +1076,8 @@ class wfEngine_models_classes_ActivityExecutionService
 		
 		if(!is_null($activityExecution) && !is_null($connector) && !is_null($processExecution)){
             
-			$processExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessExecutionService');
-			$connectorService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ConnectorService');
+			$processExecutionService = wfEngine_models_classes_ProcessExecutionService::singleton();
+			$connectorService = wfEngine_models_classes_ConnectorService::singleton();
 			
 			$oldActivityExecutions = array();//holds the old activity executions to be removed from the current process activity executions at the end of the function
             switch($connectorService->getType($connector)->uriResource){
@@ -1136,7 +1136,7 @@ class wfEngine_models_classes_ActivityExecutionService
 				/// JOIN ///
                 case INSTANCE_TYPEOFCONNECTORS_JOIN:{
 					
-					$cardinalityService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityCardinalityService');
+					$cardinalityService = wfEngine_models_classes_ActivityCardinalityService::singleton();
 					
                     if(count($nextActivities) == 0){
                         throw new wfEngine_models_classes_ProcessExecutionException("No next activity defined");
@@ -1236,7 +1236,7 @@ class wfEngine_models_classes_ActivityExecutionService
         $returnValue = array();
 
         // section 127-0-1-1-6bd62662:1324d269203:-8000:000000000000300A begin
-		$processExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessExecutionService');
+		$processExecutionService = wfEngine_models_classes_ProcessExecutionService::singleton();
 		
 		//fill options:
 		$revert = isset($revertOptions['revert'])?(bool)$revertOptions['revert']:true;
@@ -1429,7 +1429,7 @@ class wfEngine_models_classes_ActivityExecutionService
         //store merged values:
         if(count($mergedVars) > 0){
 			
-			$variableService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_VariableService');
+			$variableService = wfEngine_models_classes_VariableService::singleton();
             $keys = array();
 			//TODO: use Resource::setPropertyValues() here when implemented to improve performance:
             foreach($mergedVars as $code => $values){
@@ -1567,7 +1567,7 @@ class wfEngine_models_classes_ActivityExecutionService
 		$activityRole = $activityExecution->getOnePropertyValue($this->restrictedRoleProperty);
 		if($evaluateValue){
 			if($activityRole instanceof core_kernel_classes_Resource){
-				$variableService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_VariableService');
+				$variableService = wfEngine_models_classes_VariableService::singleton();
 				if($variableService->isProcessVariable($activityRole)){
 					$actualValue = $activityExecution->getOnePropertyValue(new core_kernel_classes_Property($activityRole->uriResource));
 					if(!is_null($actualValue) && $actualValue instanceof core_kernel_classes_Resource){
@@ -1603,7 +1603,7 @@ class wfEngine_models_classes_ActivityExecutionService
 		$activityUser = $activityExecution->getOnePropertyValue($this->restrictedUserProperty);
 		if($evaluateValue){
 			if($activityUser instanceof core_kernel_classes_Resource){
-				$variableService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_VariableService');
+				$variableService = wfEngine_models_classes_VariableService::singleton();
 				if($variableService->isProcessVariable($activityUser)){
 					$actualValue = $activityExecution->getOnePropertyValue(new core_kernel_classes_Property($activityUser->uriResource));
 					if(!is_null($actualValue) && $actualValue instanceof core_kernel_classes_Resource){
@@ -1637,7 +1637,7 @@ class wfEngine_models_classes_ActivityExecutionService
         // section 127-0-1-1--1b682bf3:132cdc3fef4:-8000:0000000000003093 begin
 		$aclMode = $activityExecution->getOnePropertyValue($this->ACLModeProperty);
 		if($aclMode instanceof core_kernel_classes_Resource){
-			$activityService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityService');
+			$activityService = wfEngine_models_classes_ActivityService::singleton();
 			if (array_key_exists($aclMode->uriResource, $activityService->getAclModes())) {
 				$returnValue = $aclMode;
 			}
@@ -1704,8 +1704,8 @@ class wfEngine_models_classes_ActivityExecutionService
         $returnValue = array();
 
         // section 127-0-1-1-2c295278:132fc7ce41a:-8000:00000000000030BC begin
-		$connectorService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ConnectorService');
-		$cardinalityService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityCardinalityService');
+		$connectorService = wfEngine_models_classes_ConnectorService::singleton();
+		$cardinalityService = wfEngine_models_classes_ActivityCardinalityService::singleton();
 		
 		$allSplitVariables = array();
 		foreach($connectorService->getNextActivities($connector) as $cardinality){

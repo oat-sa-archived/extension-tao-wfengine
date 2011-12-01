@@ -82,7 +82,7 @@ class wfEngine_helpers_Monitoring_ProcessPropertiesAdapter
 			if(common_Utils::isUri($rowId)){
 				
 				$excludedProperties = (is_array($this->options) && isset($this->options['excludedProperties']))?$this->options['excludedProperties']:array();
-				$processExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessExecutionService');
+				$processExecutionService = wfEngine_models_classes_ProcessExecutionService::singleton();
 				$processInstance = new core_kernel_classes_Resource($rowId);
 				$this->data[$rowId] = array();
 				

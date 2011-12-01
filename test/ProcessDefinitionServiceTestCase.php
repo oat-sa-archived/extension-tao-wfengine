@@ -22,7 +22,7 @@ class ProcessDefinitionServiceTestCase extends UnitTestCase {
 		}else{
 			$this->fail('fail to create a process definition resource');
 		}
-		$this->authoringService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessAuthoringService');
+		$this->authoringService = wfEngine_models_classes_ProcessAuthoringService::singleton();
 	}
 	
 	/**
@@ -30,7 +30,7 @@ class ProcessDefinitionServiceTestCase extends UnitTestCase {
 	 */
 	public function testService(){
 		
-		$service = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessDefinitionService');
+		$service = wfEngine_models_classes_ProcessDefinitionService::singleton();
 		
 		$this->assertIsA($service, 'tao_models_classes_Service');
 		$this->assertIsA($service, 'wfEngine_models_classes_ProcessDefinitionService');
@@ -66,7 +66,7 @@ class ProcessDefinitionServiceTestCase extends UnitTestCase {
 		$processVars = $this->service->getProcessVars($this->processDefinition);
 		$this->assertEqual(count($processVars), 1);
 		
-		$variableService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_VariableService');
+		$variableService = wfEngine_models_classes_VariableService::singleton();
 		$myProcessVarName1 = 'myProcDefVarName1';
 		$myProcessVar1 = $variableService->getProcessVariable($myProcessVarName1, true);
 		$this->service->setProcessVariable($this->processDefinition, $myProcessVarName1);

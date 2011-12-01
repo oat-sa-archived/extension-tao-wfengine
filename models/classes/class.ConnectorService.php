@@ -247,7 +247,7 @@ class wfEngine_models_classes_ConnectorService
 
         // section 127-0-1-1-8ae8e2e:132ba7fdd5a:-8000:000000000000307C begin
 		
-		$cardinalityService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityCardinalityService');
+		$cardinalityService = wfEngine_models_classes_ActivityCardinalityService::singleton();
 		
 		if(!$this->isConnector($connector)){
 			// throw new Exception("the resource in the parameter is not a connector: {$connector->getLabel()} ({$connector->uriResource})");
@@ -261,7 +261,7 @@ class wfEngine_models_classes_ConnectorService
 				//delete the related rule:
 				$relatedRule = $this->getTransitionRule($connector);
 				if(!is_null($relatedRule)){
-					$processAuthoringService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessAuthoringService');
+					$processAuthoringService = wfEngine_models_classes_ProcessAuthoringService::singleton();
 					$processAuthoringService->deleteRule($relatedRule);
 				}
 			}
@@ -336,7 +336,7 @@ class wfEngine_models_classes_ConnectorService
 
         // section 127-0-1-1-2c295278:132fc7ce41a:-8000:00000000000030E5 begin
 		if($this->getType($connector)->uriResource == INSTANCE_TYPEOFCONNECTORS_PARALLEL){
-			$cardinalityService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityCardinalityService');
+			$cardinalityService = wfEngine_models_classes_ActivityCardinalityService::singleton();
 			foreach($this->getNextActivities($connector) as $cardinality){
 				
 				if($cardinalityService->isCardinality($cardinality)){

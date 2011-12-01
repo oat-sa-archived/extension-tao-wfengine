@@ -161,9 +161,9 @@ class wfEngine_models_classes_ProcessCloner
     {
         // section 10-13-1-39--56440278:12d4c05ae3c:-8000:0000000000004FB5 begin
 		$this->cloneLabel = $cloneLabel;
-		$this->authoringService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessAuthoringService');
-		$this->activityService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityService');
-		$this->connectorService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ConnectorService');		
+		$this->authoringService = wfEngine_models_classes_ProcessAuthoringService::singleton();
+		$this->activityService = wfEngine_models_classes_ActivityService::singleton();
+		$this->connectorService = wfEngine_models_classes_ConnectorService::singleton();		
 		$this->initCloningVariables();
 		parent::__construct();
         // section 10-13-1-39--56440278:12d4c05ae3c:-8000:0000000000004FB5 end

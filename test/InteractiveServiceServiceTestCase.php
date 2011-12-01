@@ -23,7 +23,7 @@ class InteractiveServiceServiceTestCase extends UnitTestCase {
 	public function setUp(){
 		TestRunner::initTest();
 		
-		$this->authoringService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessAuthoringService');
+		$this->authoringService = wfEngine_models_classes_ProcessAuthoringService::singleton();
         $processDefinitionClass = new core_kernel_classes_Class(CLASS_PROCESS);
         $this->processDefinition = $processDefinitionClass->createInstance('ProcessForUnitTest', 'Unit test');
 
@@ -45,7 +45,7 @@ class InteractiveServiceServiceTestCase extends UnitTestCase {
      */
     public function testService(){
 
-        $aService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_InteractiveServiceService');
+        $aService = wfEngine_models_classes_InteractiveServiceService::singleton();
         $this->assertIsA($aService, 'tao_models_classes_Service');
         $this->assertIsA($aService, 'wfEngine_models_classes_InteractiveServiceService');
 
@@ -64,7 +64,7 @@ class InteractiveServiceServiceTestCase extends UnitTestCase {
 	public function testGetCallUrl(){
 		
 		//create unique process variables for this unit test only:
-		$variableService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_VariableService');
+		$variableService = wfEngine_models_classes_VariableService::singleton();
 		$myProcessVarCode1 = 'myProcessVarCode1'.time();
 		$myProcessVarCode2 = 'myProcessVarCode2'.time();
 		$myProcessVar1 = $variableService->getProcessVariable($myProcessVarCode1, true);
@@ -112,7 +112,7 @@ class InteractiveServiceServiceTestCase extends UnitTestCase {
 		}
 		
 		//a no-orthodox way to create a valid activity execution :
-		$userService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_UserService');
+		$userService = wfEngine_models_classes_UserService::singleton();
 		$currentUser = new core_kernel_classes_Resource(LOCAL_NAMESPACE.'#unitTestUser');
 		$this->assertNotNull($currentUser);
 		

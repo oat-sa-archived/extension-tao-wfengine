@@ -45,7 +45,7 @@ class ActivityServiceTestCase extends UnitTestCase {
      */
     public function testService(){
 
-        $aService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityService');
+        $aService = wfEngine_models_classes_ActivityService::singleton();
         $this->assertIsA($aService, 'tao_models_classes_Service');
         $this->assertIsA($aService, 'wfEngine_models_classes_ActivityService');
 
@@ -53,10 +53,10 @@ class ActivityServiceTestCase extends UnitTestCase {
     }
 
     public function testIsFinal(){
-         $processAuthoringService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessAuthoringService');
+         $processAuthoringService = wfEngine_models_classes_ProcessAuthoringService::singleton();
         $processDefinitionClass = new core_kernel_classes_Class(CLASS_PROCESS);
         $processDefinition = $processDefinitionClass->createInstance('ProcessForUnitTest', 'Unit test');
-        $authoringService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessAuthoringService');
+        $authoringService = wfEngine_models_classes_ProcessAuthoringService::singleton();
         
         //define activities and connectors
         $activity1 = $authoringService->createActivity($processDefinition, 'activity1');
@@ -81,10 +81,10 @@ class ActivityServiceTestCase extends UnitTestCase {
     }
     
     public function testIsInitial(){
-        $processAuthoringService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessAuthoringService');
+        $processAuthoringService = wfEngine_models_classes_ProcessAuthoringService::singleton();
         $processDefinitionClass = new core_kernel_classes_Class(CLASS_PROCESS);
         $processDefinition = $processDefinitionClass->createInstance('ProcessForUnitTest', 'Unit test');
-        $authoringService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessAuthoringService');
+        $authoringService = wfEngine_models_classes_ProcessAuthoringService::singleton();
         
         //define activities and connectors
         $activity1 = $authoringService->createActivity($processDefinition, 'activity1');
@@ -108,10 +108,10 @@ class ActivityServiceTestCase extends UnitTestCase {
     
     
     public function testGetNextConnectors(){
-        $processAuthoringService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessAuthoringService');
+        $processAuthoringService = wfEngine_models_classes_ProcessAuthoringService::singleton();
         $processDefinitionClass = new core_kernel_classes_Class(CLASS_PROCESS);
         $processDefinition = $processDefinitionClass->createInstance('ProcessForUnitTest', 'Unit test');
-        $authoringService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessAuthoringService');
+        $authoringService = wfEngine_models_classes_ProcessAuthoringService::singleton();
         
         //define activities and connectors
         $activity1 = $authoringService->createActivity($processDefinition, 'activity1');
@@ -161,11 +161,11 @@ class ActivityServiceTestCase extends UnitTestCase {
     }
     
     public function testIsActivity(){
-        $processAuthoringService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessAuthoringService');
+        $processAuthoringService = wfEngine_models_classes_ProcessAuthoringService::singleton();
         $processDefinitionClass = new core_kernel_classes_Class(CLASS_PROCESS);
         $processDefinition = $processDefinitionClass->createInstance('ProcessForUnitTest', 'Unit test');
         
-        $authoringService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessAuthoringService');
+        $authoringService = wfEngine_models_classes_ProcessAuthoringService::singleton();
         
         //define activities and connectors
         $activity1 = $authoringService->createActivity($processDefinition, 'activity1');
@@ -178,7 +178,7 @@ class ActivityServiceTestCase extends UnitTestCase {
     }
     
     public function testIsHidden(){
-		$authoringService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessAuthoringService');
+		$authoringService = wfEngine_models_classes_ProcessAuthoringService::singleton();
         $processDefinitionClass = new core_kernel_classes_Class(CLASS_PROCESS);
         $processDefinition = $processDefinitionClass->createInstance('ProcessForUnitTest', 'Unit test');
         $this->assertIsA($processDefinition, 'core_kernel_classes_Resource');
@@ -198,12 +198,12 @@ class ActivityServiceTestCase extends UnitTestCase {
     }
     
     public function testGetInteractiveServices(){
-        $processAuthoringService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessAuthoringService');
+        $processAuthoringService = wfEngine_models_classes_ProcessAuthoringService::singleton();
         $processDefinitionClass = new core_kernel_classes_Class(CLASS_PROCESS);
         $processDefinition = $processDefinitionClass->createInstance('ProcessForUnitTest', 'Unit test');
                     
-        $authoringService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessAuthoringService');
-        $interactiveService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_InteractiveServiceService');
+        $authoringService = wfEngine_models_classes_ProcessAuthoringService::singleton();
+        $interactiveService = wfEngine_models_classes_InteractiveServiceService::singleton();
         
         
         
@@ -221,12 +221,12 @@ class ActivityServiceTestCase extends UnitTestCase {
     }
     
     public function testGetConstrols(){
-        $processAuthoringService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessAuthoringService');
+        $processAuthoringService = wfEngine_models_classes_ProcessAuthoringService::singleton();
         $processDefinitionClass = new core_kernel_classes_Class(CLASS_PROCESS);
         $processDefinition = $processDefinitionClass->createInstance('ProcessForUnitTest', 'Unit test');
         $this->assertIsA($processDefinition, 'core_kernel_classes_Resource');
         
-        $authoringService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessAuthoringService');
+        $authoringService = wfEngine_models_classes_ProcessAuthoringService::singleton();
         
         //define activities and connectors
         $activity1 = $authoringService->createActivity($processDefinition, 'activity1');
@@ -252,12 +252,12 @@ class ActivityServiceTestCase extends UnitTestCase {
     }
     
     public function testVirtualProcess(){
-        $processAuthoringService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessAuthoringService');
+        $processAuthoringService = wfEngine_models_classes_ProcessAuthoringService::singleton();
         $processDefinitionClass = new core_kernel_classes_Class(CLASS_PROCESS);
         $processDefinition = $processDefinitionClass->createInstance('ProcessForUnitTest', 'Unit test');
         $this->assertIsA($processDefinition, 'core_kernel_classes_Resource');
         
-        $authoringService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessAuthoringService');
+        $authoringService = wfEngine_models_classes_ProcessAuthoringService::singleton();
         
         //define activities and connectors
         $activity1 = $authoringService->createActivity($processDefinition, 'activity1');

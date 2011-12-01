@@ -214,7 +214,7 @@ class wfEngine_models_classes_ProcessDefinitionService
         // section 127-0-1-1--6e15d8e:132297dc60d:-8000:0000000000002F06 begin
 		if(is_string($processVariable) && !empty ($processVariable)){
 			//is a code:
-			$variableService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_VariableService');
+			$variableService = wfEngine_models_classes_VariableService::singleton();
 			$processVariableResource = $variableService->getProcessVariable($processVariable);
 			if(!is_null($processVariableResource) && $processVariableResource instanceof core_kernel_classes_Resource){
 				$returnValue = $processDefinition->setPropertyValue($this->processVariablesProp, $processVariableResource->uriResource);

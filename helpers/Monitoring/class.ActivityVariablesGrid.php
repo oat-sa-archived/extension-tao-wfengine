@@ -73,7 +73,7 @@ class wfEngine_helpers_Monitoring_ActivityVariablesGrid
 			
 		}else if($this->data instanceof core_kernel_classes_Resource && $this->data->hasType(new core_kernel_classes_Class(CLASS_ACTIVITY_EXECUTION))){
 			
-			$activityExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityExecutionService');
+			$activityExecutionService = wfEngine_models_classes_ActivityExecutionService::singleton();
 			$variables = $activityExecutionService->getVariables($this->data);
 			foreach ($variables as $variableData) {
 				$returnValue[$variableData['propertyUri']] = $variableData;

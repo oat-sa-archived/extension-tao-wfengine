@@ -19,7 +19,7 @@ class wfEngine_actions_Users extends tao_actions_CommonModule {
 	public function __construct()
 	{		
 		
-    	$this->userService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_UserService');
+    	$this->userService = wfEngine_models_classes_UserService::singleton();
 		$this->defaultData();
 	}
 

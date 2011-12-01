@@ -42,7 +42,7 @@ class NotificationServiceTestCase extends UnitTestCase {
 		error_reporting(E_ALL);
 		
 		if(is_null($this->userService)){
-			$this->userService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_UserService');
+			$this->userService = wfEngine_models_classes_UserService::singleton();
 		}
 		
 		$login = 'wfTester';
@@ -100,7 +100,7 @@ class NotificationServiceTestCase extends UnitTestCase {
 	 */
 	public function testService(){
 		
-		$aeService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_NotificationService');
+		$aeService = wfEngine_models_classes_NotificationService::singleton();
 		$this->assertIsA($aeService, 'tao_models_classes_Service');
 		$this->assertIsA($aeService, 'wfEngine_models_classes_NotificationService');
 
@@ -114,10 +114,10 @@ class NotificationServiceTestCase extends UnitTestCase {
 		$activity2Label = 'activity2';
 		$notificationMessage = '';
 		
-		$processAuthoringService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessAuthoringService');
-		$processExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessExecutionService');
-		$activityExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityExecutionService');
-		$processVariableService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_VariableService');
+		$processAuthoringService = wfEngine_models_classes_ProcessAuthoringService::singleton();
+		$processExecutionService = wfEngine_models_classes_ProcessExecutionService::singleton();
+		$activityExecutionService = wfEngine_models_classes_ActivityExecutionService::singleton();
+		$processVariableService = wfEngine_models_classes_VariableService::singleton();
 		
 		//create some process variables:
 		$vars = array();
@@ -251,9 +251,9 @@ class NotificationServiceTestCase extends UnitTestCase {
 	public function testNotificationsInProcess(){
 		try{
 			
-			$processExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessExecutionService');
-			$authoringService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessAuthoringService');
-			$activityExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityExecutionService');
+			$processExecutionService = wfEngine_models_classes_ProcessExecutionService::singleton();
+			$authoringService = wfEngine_models_classes_ProcessAuthoringService::singleton();
+			$activityExecutionService = wfEngine_models_classes_ActivityExecutionService::singleton();
 			
 			//create a new process def
 			$processDefinitionClass = new core_kernel_classes_Class(CLASS_PROCESS);
@@ -265,7 +265,7 @@ class NotificationServiceTestCase extends UnitTestCase {
 			
 			$role1		 = new core_kernel_classes_Resource(CLASS_ROLE_WORKFLOWUSERROLE);
 			
-			$roleService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_RoleService');
+			$roleService = wfEngine_models_classes_RoleService::singleton();
 			$role2		 = $roleService->createInstance($roleService->getRoleClass(), 'test role 2');
 			$roleService->setRoleToUsers($role2, array($this->currentUser->uriResource));
 			

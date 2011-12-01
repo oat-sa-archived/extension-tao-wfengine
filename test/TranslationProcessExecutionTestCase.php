@@ -48,15 +48,8 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 	public function setUp(){
 		
 		parent::setUp();
-		
 		$this->userPassword = '123456';
-		$this->processLabel = array(
-			'CBA'	=> 'CBA Translation Process',
-			'PBA'	=> 'PBA Translation Process',
-			'Booklet'=> 'Booklet Translation Process',
-			'BQ'	=> 'BQ Translation Process'
-		);
-		
+		$this->processLabel = 'TranslationProcess';
 		$this->createUsers = true;
 		$this->createProcess = true;
 		$this->langCountries = array(
@@ -141,7 +134,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		
 		if($this->createUsers){
 			
-			$roleService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_RoleService');
+			$roleService = wfEngine_models_classes_RoleService::singleton();
 			
 			$usec = time();
 			
@@ -249,7 +242,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		
 		$returnValue = null;
 		
-		$processVariableService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_VariableService');
+		$processVariableService = wfEngine_models_classes_VariableService::singleton();
 		$unit = $processVariableService->get('unitUri');
 		$countryCode = (string) $processVariableService->get('countryCode');
 		$languageCode = (string) $processVariableService->get('languageCode');
@@ -453,11 +446,11 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 	
 	public function testCreatePBAProcess(){
 		
-		$authoringService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessAuthoringService');
-		$activityService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityService');
-		$connectorService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ConnectorService');
-		$processVariableService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_VariableService');
-		$cardinalityService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityCardinalityService');
+		$authoringService = wfEngine_models_classes_ProcessAuthoringService::singleton();
+		$activityService = wfEngine_models_classes_ActivityService::singleton();
+		$connectorService = wfEngine_models_classes_ConnectorService::singleton();
+		$processVariableService = wfEngine_models_classes_VariableService::singleton();
+		$cardinalityService = wfEngine_models_classes_ActivityCardinalityService::singleton();
 		
 		$varCodes = array(
 			'unitUri', //to be initialized
@@ -486,7 +479,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		$aclUser = new core_kernel_classes_Resource(INSTANCE_ACL_USER);
 		$aclRole = new core_kernel_classes_Resource(INSTANCE_ACL_ROLE);
 		
-		$processDefinition = $authoringService->createProcess($this->processLabel['PBA'], 'For Unit test');
+		$processDefinition = $authoringService->createProcess($this->processLabel, 'For Unit test');
 		$this->assertIsA($processDefinition, 'core_kernel_classes_Resource');
 		
 		//set process initialization rights:
@@ -587,121 +580,6 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 	
 	public function testCreateBookletProcess(){
 		
-		$authoringService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessAuthoringService');
-		$activityService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityService');
-		$processVariableService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_VariableService');
-		
-		$varCodes = array(
-			'unitUri', //to be initialized
-			'countryCode', //to be initialized
-			'languageCode', //to be initialized
-			'reconciler',//define the *unique* reconciler that can access the activity
-			'verifier',
-			'layoutCorrection',
-			'translationFinished',
-			'layoutCheck',
-			'finalCheck',
-			'TDsignOff',
-			'CountrySignOff',
-			'pdf',//holds the current pdf svn revision number
-			'vff'
-		);
-		
-		foreach($varCodes as $varCode){
-			if(!isset($this->vars[$varCode])){
-				$this->vars[$varCode] = $processVariableService->getProcessVariable($varCode, true);
-			}
-		}
-		
-		$aclUser = new core_kernel_classes_Resource(INSTANCE_ACL_USER);
-		$aclRole = new core_kernel_classes_Resource(INSTANCE_ACL_ROLE);
-		
-		$processDefinition = $authoringService->createProcess($this->processLabel['Booklet'], 'For Unit test');
-		$this->assertIsA($processDefinition, 'core_kernel_classes_Resource');
-		
-		//set process initialization rights:
-		$this->assertTrue($authoringService->setAcl($processDefinition, $aclRole, $this->roles['consortium']));
-		
-
-		//define activities and connectors
-
-		//Select translators:
-		$activityReviewBooklets = $authoringService->createActivity($processDefinition, 'Review Assembled Booklets');
-		$this->assertNotNull($activityReviewBooklets);
-		$authoringService->setFirstActivity($processDefinition, $activityReviewBooklets);
-		$activityService->setAcl($activityReviewBooklets, $aclUser, $this->vars['reconciler']);
-		$activityService->setControls($activityReviewBooklets, array(INSTANCE_CONTROL_FORWARD));
-		
-		$connectorReviewBooklets = $authoringService->createConnector($activityReviewBooklets);
-		$this->assertNotNull($connectorReviewBooklets);
-		
-		//Layout corrections :
-		$activityLayoutCorrections = $authoringService->createSequenceActivity($connectorReviewBooklets, null, 'Layout Corrections');
-		$this->assertNotNull($activityLayoutCorrections);
-		$activityService->setAcl($activityLayoutCorrections, $aclRole, $this->roles['testDeveloper']);
-		$activityService->setControls($activityLayoutCorrections, array(INSTANCE_CONTROL_FORWARD));
-		
-		$connectorLayoutCorrections = $authoringService->createConnector($activityLayoutCorrections);
-		$this->assertNotNull($connectorLayoutCorrections);
-		
-		//final optical check:
-		$transitionRule = $authoringService->createTransitionRule($connectorLayoutCorrections, '^layoutCheck == 1');
-		$this->assertNotNull($transitionRule);
-		
-		$activityOpticalCheck = $authoringService->createConditionalActivity($connectorLayoutCorrections, 'then', null, 'Final Optical Check');//if ^layoutCheck == 1
-		$this->assertNotNull($activityOpticalCheck);
-		$activityService->setAcl($activityOpticalCheck, $aclUser, $this->vars['verifier']);
-		$activityService->setControls($activityOpticalCheck, array(INSTANCE_CONTROL_FORWARD));
-		$connectorOpticalCheck = $authoringService->createConnector($activityOpticalCheck);
-		$this->assertNotNull($connectorOpticalCheck);
-		
-		//if not ok, return to review assembled booklets:
-		$activityOpticalCheckElse = $authoringService->createConditionalActivity($connectorLayoutCorrections, 'else', $activityReviewBooklets);//if ^layoutCheck != 1
-		$this->assertNotNull($activityOpticalCheckElse);
-		$this->assertEqual($activityOpticalCheckElse->uriResource, $activityReviewBooklets->uriResource);
-		
-		//final sign off (TD):
-		$transitionRule = $authoringService->createTransitionRule($connectorOpticalCheck, '^finalCheck == 1');
-		$this->assertNotNull($transitionRule);
-		
-		$activityTDsignOff = $authoringService->createConditionalActivity($connectorOpticalCheck, 'then', null, 'Test Developer Sign off');//if ^TDsignOff == 1
-		$this->assertNotNull($activityTDsignOff);
-		$activityService->setAcl($activityTDsignOff, $aclRole, $this->roles['testDeveloper']);
-		$activityService->setControls($activityTDsignOff, array(INSTANCE_CONTROL_FORWARD));
-		$connectorTDsignOff = $authoringService->createConnector($activityTDsignOff);
-		$this->assertNotNull($connectorTDsignOff);
-		
-		//if not ok, return to optical check:
-		$activityOpticalCheckElse = $authoringService->createConditionalActivity($connectorOpticalCheck, 'else', $activityLayoutCorrections);//if ^finalCheck != 1
-		$this->assertNotNull($activityOpticalCheckElse);
-		$this->assertEqual($activityOpticalCheckElse->uriResource, $activityLayoutCorrections->uriResource);
-		
-		//country sign off:
-		$transitionRule = $authoringService->createTransitionRule($connectorTDsignOff, '^TDsignOff == 1');
-		$this->assertNotNull($transitionRule);
-		
-		$activityCountrySignOff = $authoringService->createConditionalActivity($connectorTDsignOff, 'then', null, 'Country Sign Off');//if ^TDsignOff == 1
-		$this->assertNotNull($activityCountrySignOff);
-		$activityService->setAcl($activityCountrySignOff, $aclUser, $this->vars['reconciler']);
-		$activityService->setControls($activityCountrySignOff, array(INSTANCE_CONTROL_FORWARD));
-		$connectorCountrySignOff = $authoringService->createConnector($activityCountrySignOff);
-		$this->assertNotNull($connectorCountrySignOff);
-		
-		//if not ok, return to optical check:
-		$activityTDsignOffElse = $authoringService->createConditionalActivity($connectorTDsignOff, 'else', $activityOpticalCheck);//if ^TDsignOff != 1
-		$this->assertNotNull($activityTDsignOffElse);
-		$this->assertEqual($activityTDsignOffElse->uriResource, $activityOpticalCheck->uriResource);
-		
-		//final activity :
-		$activityFinal = $authoringService->createSequenceActivity($connectorCountrySignOff, null, 'Final activity');
-		$this->assertNotNull($activityFinal);
-		$activityService->setAcl($activityFinal, $aclUser, $this->vars['reconciler']);
-		$activityService->setControls($activityFinal, array(INSTANCE_CONTROL_FORWARD));
-		
-	}
-	
-	public function testCreateBQProcess(){
-		
 	}
 	
 	public function testCreateCBAProcess(){
@@ -710,12 +588,12 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 			return;
 		}
 		
-		$authoringService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessAuthoringService');
-		$activityService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityService');
-		$connectorService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ConnectorService');
-		$processVariableService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_VariableService');
-		$cardinalityService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityCardinalityService');
-		$transitionRuleService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_TransitionRuleService');
+		$authoringService = wfEngine_models_classes_ProcessAuthoringService::singleton();
+		$activityService = wfEngine_models_classes_ActivityService::singleton();
+		$connectorService = wfEngine_models_classes_ConnectorService::singleton();
+		$processVariableService = wfEngine_models_classes_VariableService::singleton();
+		$cardinalityService = wfEngine_models_classes_ActivityCardinalityService::singleton();
+		$transitionRuleService = wfEngine_models_classes_TransitionRuleService::singleton();
 		
 		//create some process variables:
 		$varCodes = array(
@@ -748,7 +626,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		$aclUser = new core_kernel_classes_Resource(INSTANCE_ACL_USER);
 		$aclRole = new core_kernel_classes_Resource(INSTANCE_ACL_ROLE);
 		
-		$processDefinition = $authoringService->createProcess($this->processLabel['CBA'], 'For Unit test');
+		$processDefinition = $authoringService->createProcess($this->processLabel, 'For Unit test');
 		$this->assertIsA($processDefinition, 'core_kernel_classes_Resource');
 		
 		//set process initialization rights:
@@ -934,7 +812,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		
 		if(!$this->processDefinition['CBA'] instanceof core_kernel_classes_Resource){
 			$processClass = new core_kernel_classes_Class(CLASS_PROCESS);
-			$translationProcesses = $processClass->searchInstances(array(RDFS_LABEL => (string) $this->processLabel['CBA']), array('like'=>false));
+			$translationProcesses = $processClass->searchInstances(array(RDFS_LABEL => (string) $this->processLabel), array('like'=>false));
 			if(!empty($translationProcesses)){
 				$this->processDefinition['CBA'] = array_pop($translationProcesses);
 			}
@@ -969,9 +847,9 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 	
 	private function executeTranslationProcess($processDefinition, $unitUri, $countryCode, $languageCode, $simulationOptions){
 		
-		$activityExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityExecutionService');
-		$processExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessExecutionService');
-		$processDefinitionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessDefinitionService');
+		$activityExecutionService = wfEngine_models_classes_ActivityExecutionService::singleton();
+		$processExecutionService = wfEngine_models_classes_ProcessExecutionService::singleton();
+		$processDefinitionService = wfEngine_models_classes_ProcessDefinitionService::singleton();
 		$loginProperty = new core_kernel_classes_Property(PROPERTY_USER_LOGIN);
 		
 		$processExecName = 'Test Translation Process Execution';
@@ -1313,8 +1191,8 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 	
 	private function initCurrentActivityExecution($activityExecution, $started = true){
 		
-		$processExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessExecutionService');
-		$activityExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityExecutionService');
+		$processExecutionService = wfEngine_models_classes_ProcessExecutionService::singleton();
+		$activityExecutionService = wfEngine_models_classes_ActivityExecutionService::singleton();
 		$processInstance = $activityExecutionService->getRelatedProcessExecution($activityExecution);
 		
 		//init execution
@@ -1343,7 +1221,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		}
 		
 		
-		$activityExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityExecutionService');
+		$activityExecutionService = wfEngine_models_classes_ActivityExecutionService::singleton();
 		$processInstance = $activityExecutionService->getRelatedProcessExecution($activityExecution);
 		
 		foreach($unauthorizedUsers as $login){
@@ -1382,7 +1260,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		
 		$this->out("execute service select translators :", true);
 		
-		$processVariableService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_VariableService');
+		$processVariableService = wfEngine_models_classes_VariableService::singleton();
 		$unit = $processVariableService->get('unitUri');
 		$countryCode = (string) $processVariableService->get('countryCode');
 		$languageCode = (string) $processVariableService->get('languageCode');
@@ -1431,7 +1309,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 			}
 			$this->assertTrue(count($pushedVars) > 0);
 
-			$processVariableService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_VariableService');
+			$processVariableService = wfEngine_models_classes_VariableService::singleton();
 			$this->assertTrue($processVariableService->push('translatorsCount', count($pushedVars)));
 			$returnValue = $processVariableService->push('translator', serialize($pushedVars));
 
@@ -1445,7 +1323,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		
 		$this->out('executing service translate ', true);
 		
-		$processVariableService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_VariableService');
+		$processVariableService = wfEngine_models_classes_VariableService::singleton();
 		
 		if(GENERIS_VERSIONING_ENABLED){
 			$xliffContent = $this->executeServiceDownloadFile('xliff_working', $this->currentUser);
@@ -1475,7 +1353,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		
 		$this->out("downloading {$type} file : ", true);
 		
-		$processVariableService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_VariableService');
+		$processVariableService = wfEngine_models_classes_VariableService::singleton();
 		$unit = $processVariableService->get('unitUri');
 		$countryCode = (string) $processVariableService->get('countryCode');
 		$languageCode = (string) $processVariableService->get('languageCode');
@@ -1504,7 +1382,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		
 		$this->out("uploading {$type} file : ", true);
 		
-		$processVariableService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_VariableService');
+		$processVariableService = wfEngine_models_classes_VariableService::singleton();
 		$unit = $processVariableService->get('unitUri');
 		$countryCode = (string) $processVariableService->get('countryCode');
 		$languageCode = (string) $processVariableService->get('languageCode');
@@ -1546,7 +1424,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		
 		if($replacement instanceof core_kernel_classes_Resource){
 			if($replacement->hasType(new core_kernel_classes_Class($translatorRole->uriResource))){
-				$processVariableService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_VariableService');
+				$processVariableService = wfEngine_models_classes_VariableService::singleton();
 				$returnValue = $processVariableService->edit('translator', $replacement->uriResource);
 			}
 		}
@@ -1564,7 +1442,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		
 		$outputCode = intval($outputCode);
 		if(in_array($outputCode, array(0, 1, 2, 3))){
-			$processVariableService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_VariableService');
+			$processVariableService = wfEngine_models_classes_VariableService::singleton();
 			$returnValue = $processVariableService->edit('layoutCheck', $outputCode);
 		}else{
 			$this->fail('wrong output code for layout check activity');
@@ -1577,7 +1455,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		
 		$this->out("execute service final sign off", true);
 		
-		$processVariableService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_VariableService');
+		$processVariableService = wfEngine_models_classes_VariableService::singleton();
 		$returnValue = $processVariableService->edit('finalCheck', (bool)$ok?1:0);
 		
 		return $returnValue;
@@ -1586,7 +1464,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 	
 	public function testDeleteCreatedResources(){
 		
-//		return;//prevent deletion
+		return;//prevent deletion
 		
 		if(!empty($this->properties)){
 			foreach($this->properties as $prop){
@@ -1622,7 +1500,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 			}
 		}
 		
-		$processExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessExecutionService');
+		$processExecutionService = wfEngine_models_classes_ProcessExecutionService::singleton();
 		foreach($this->processExecutions as $processInstance){
 			if($processInstance instanceof core_kernel_classes_Resource){
 				$this->assertTrue($processInstance->exists());
@@ -1631,9 +1509,9 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 			}
 		}
 		
-		$authoringService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessAuthoringService');
 		foreach($this->processDefinition as $process){
 			if($process instanceof core_kernel_classes_Resource) {
+				$authoringService = wfEngine_models_classes_ProcessAuthoringService::singleton();
 				$this->assertTrue($authoringService->deleteProcess($process));
 				$this->assertFalse($process->exists());
 			}

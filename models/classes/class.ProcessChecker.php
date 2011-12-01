@@ -123,9 +123,9 @@ class wfEngine_models_classes_ProcessChecker
     {
         // section 10-13-1-39--7378788e:12e4d9bbe63:-8000:0000000000004F9F begin
 		$this->process = $process;
-		$this->activityService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityService');
-		$this->connectorService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ConnectorService');
-		$this->authoringService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessAuthoringService');
+		$this->activityService = wfEngine_models_classes_ActivityService::singleton();
+		$this->connectorService = wfEngine_models_classes_ConnectorService::singleton();
+		$this->authoringService = wfEngine_models_classes_ProcessAuthoringService::singleton();
 		parent::__construct();
         // section 10-13-1-39--7378788e:12e4d9bbe63:-8000:0000000000004F9F end
     }

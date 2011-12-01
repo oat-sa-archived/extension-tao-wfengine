@@ -149,7 +149,7 @@ class wfEngine_models_classes_ActivityCardinalityService
 		//TODO: to be cached
 		if(!is_null($activityCardinality)){
 			
-			$variableService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_VariableService');
+			$variableService = wfEngine_models_classes_VariableService::singleton();
 			
 			$cardinality = $activityCardinality->getUniquePropertyValue($this->propMultiplicityCardinality);
 			if($cardinality instanceof core_kernel_classes_Literal && is_numeric((string)$cardinality)){

@@ -256,8 +256,8 @@ class wfEngine_models_classes_ProcessTreeService
 		
 		$returnValue = array();
 		$connectorData = array();
-		$connectorService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ConnectorService');			
-//		$activityService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityService');
+		$connectorService = wfEngine_models_classes_ConnectorService::singleton();			
+//		$activityService = wfEngine_models_classes_ActivityService::singleton();
 		
 		//type of connector:
 		//if not null, get the information on the next activities. Otherwise, return an "empty" connector node, indicating that the node has just been created, i.e. at the same time as an activity
@@ -335,8 +335,8 @@ class wfEngine_models_classes_ProcessTreeService
 			
 		}elseif($connectorType->uriResource == INSTANCE_TYPEOFCONNECTORS_PARALLEL){
 			
-			$cardinalityService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityCardinalityService');
-			$variableService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_VariableService');
+			$cardinalityService = wfEngine_models_classes_ActivityCardinalityService::singleton();
+			$variableService = wfEngine_models_classes_VariableService::singleton();
 			$nextActivitiesCollection = $connector->getPropertyValuesCollection(new core_kernel_classes_Property(PROPERTY_CONNECTORS_NEXTACTIVITIES));
 			$portId = 0;
 			foreach($nextActivitiesCollection->getIterator() as $nextActivity){
@@ -523,8 +523,8 @@ class wfEngine_models_classes_ProcessTreeService
 		$class = '';
 		$linkAttribute = 'id';
 		          
-		$activityService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityService');
-		$connectorService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ConnectorService');
+		$activityService = wfEngine_models_classes_ActivityService::singleton();
+		$connectorService = wfEngine_models_classes_ConnectorService::singleton();
 		
 		if($activityService->isActivity($activity)){
 			$class = 'node-activity';

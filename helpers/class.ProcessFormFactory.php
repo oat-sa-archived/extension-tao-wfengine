@@ -857,7 +857,7 @@ class wfEngine_helpers_ProcessFormFactory extends tao_helpers_form_GenerisFormFa
 				
 				if(strtolower($type) == 'parallel'){
 					
-					$cardinalityService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityCardinalityService');
+					$cardinalityService = wfEngine_models_classes_ActivityCardinalityService::singleton();
 					foreach($nextActivity as $cardinality){
 
 						$activity = $cardinalityService->getActivity($cardinality);
@@ -879,13 +879,13 @@ class wfEngine_helpers_ProcessFormFactory extends tao_helpers_form_GenerisFormFa
 				
 			}elseif($nextActivity instanceof core_kernel_classes_Resource){
 				
-				$aService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityService');
+				$aService = wfEngine_models_classes_ActivityService::singleton();
 			    
 			    if($aService->isActivity($nextActivity)){
 					if($includeConnectors) $elementChoice->setValue("activity");
 					$elementActivities->setValue($nextActivity->uriResource);//no need for tao_helpers_Uri::encode
 				}
-				$conmectorService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ConnectorService');
+				$conmectorService = wfEngine_models_classes_ConnectorService::singleton();
 				if($conmectorService->isConnector($nextActivity) && $includeConnectors){
 					$elementChoice->setValue("connector");
 					$elementConnectors->setValue($nextActivity->uriResource);

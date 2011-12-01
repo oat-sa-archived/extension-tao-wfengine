@@ -19,7 +19,7 @@ class wfEngine_actions_WfApiVariable extends wfEngine_actions_WfApi {
 	{
 		parent::__construct();
 		$this->values = array();
-		$this->variableService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_VariableService');
+		$this->variableService = wfEngine_models_classes_VariableService::singleton();
 		
 		if(!$this->activityExecution->hasType(new core_kernel_classes_Class(CLASS_ACTIVITY_EXECUTION))){
 			$this->activityExecution = null;

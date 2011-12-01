@@ -24,9 +24,9 @@ class wfEngine_actions_ProcessAuthoring extends tao_actions_TaoModule {
 		parent::__construct();
 		
 		//the service is initialized by default
-		$this->service = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessAuthoringService');
-		$this->activityService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityService');
-		$this->connectorService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ConnectorService');
+		$this->service = wfEngine_models_classes_ProcessAuthoringService::singleton();
+		$this->activityService = wfEngine_models_classes_ActivityService::singleton();
+		$this->connectorService = wfEngine_models_classes_ConnectorService::singleton();
 		$this->defaultData();
 		
 		//add the tree service
@@ -170,14 +170,11 @@ class wfEngine_actions_ProcessAuthoring extends tao_actions_TaoModule {
 			if(isset($_POST["diagramData"])){
 				if($_POST["diagramData"]) {
 					$diagramDataResource = $currentProcess->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_PROCESS_DIAGRAMDATA));//should get a literal
-					$diagramData = json_encode(array(
-						"arrowData" => array(),
-						"positionData" => array()
-					));
-					if($diagramDataResource instanceof core_kernel_classes_Literal){//TODO: use getUniqueProperty instead and remove the following lines
-						//no position data set: return empty array:
+					if ($diagramDataResource instanceof core_kernel_classes_Literal)
 						$diagramData = $diagramDataResource->literal;
-					}
+					else
+						$diagramData = wfEngine_helpers_ProcessDiagramFactory::buildDiagramData($currentProcess);
+		
 					//echo $diagramData;
 					//var_dump($diagramData, json_decode($diagramData));
 					$activityData["diagramData"] = json_decode($diagramData);
@@ -396,7 +393,7 @@ class wfEngine_actions_ProcessAuthoring extends tao_actions_TaoModule {
 		}
 		
 		//set ishidden:
-		$activityService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityService');
+		$activityService = wfEngine_models_classes_ActivityService::singleton();
 		if(isset($properties[PROPERTY_ACTIVITIES_ISHIDDEN])){
 			$activityService->setHidden($activity, true);
 		}else{
@@ -408,7 +405,7 @@ class wfEngine_actions_ProcessAuthoring extends tao_actions_TaoModule {
 			$mode = $properties[PROPERTY_ACTIVITIES_ACL_MODE];
 			
 			if(!empty($mode)){
-				$activityExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityExecutionService');
+				$activityExecutionService = wfEngine_models_classes_ActivityExecutionService::singleton();
 				$target = null;
 				switch($mode){
 					case INSTANCE_ACL_USER:
@@ -551,7 +548,7 @@ class wfEngine_actions_ProcessAuthoring extends tao_actions_TaoModule {
 		$clazz = $this->getCurrentClass();
 		//case when a process variable has been just added:
 		if($clazz->uriResource == CLASS_PROCESSVARIABLES){
-			$processVariableService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_VariableService');
+			$processVariableService = wfEngine_models_classes_VariableService::singleton();
 			$instance =  $processVariableService->createProcessVariable();
 			
 		}else{
@@ -856,9 +853,9 @@ class wfEngine_actions_ProcessAuthoring extends tao_actions_TaoModule {
 		$formName=uniqid("connectorEditor_");
 		$myForm = wfEngine_helpers_ProcessFormFactory::connectorEditor($connector, null, $formName, $this->getCurrentActivity());
 		
-		$connectorService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ConnectorService');
+		$connectorService = wfEngine_models_classes_ConnectorService::singleton();
 		if($connectorService->getType($connector)->uriResource == INSTANCE_TYPEOFCONNECTORS_PARALLEL){
-			$variableService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_VariableService');
+			$variableService = wfEngine_models_classes_VariableService::singleton();
 			$variableClass = new core_kernel_classes_Class(CLASS_PROCESSVARIABLES);
 			$variables = array();
 			foreach($variableClass->getInstances() as $variable){
@@ -954,7 +951,7 @@ class wfEngine_actions_ProcessAuthoring extends tao_actions_TaoModule {
 						//if the current type is still 'join' && target activity has changed || type of connector has changed:
 						if($oldNextActivity->uriResource != $data["join_activityUri"] || $data[PROPERTY_CONNECTORS_TYPE]!= INSTANCE_TYPEOFCONNECTORS_JOIN){
 							
-							$cardinalityService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityCardinalityService');
+							$cardinalityService = wfEngine_models_classes_ActivityCardinalityService::singleton();
 							
 							//check if another activities is joined with the same connector:
 							$previousActivityCollection = $connectorInstance->getPropertyValuesCollection(new core_kernel_classes_Property(PROPERTY_CONNECTORS_PREVIOUSACTIVITIES)); 
@@ -1248,7 +1245,7 @@ class wfEngine_actions_ProcessAuthoring extends tao_actions_TaoModule {
 		
 		$returnValue = array('exist' => false);
 		
-		$variableService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_VariableService');
+		$variableService = wfEngine_models_classes_VariableService::singleton();
 		$processVar = $variableService->getProcessVariable($code);
 		if(!is_null($processVar)){
 			if($processVarUri != $processVar->uriResource){
@@ -1280,7 +1277,7 @@ class wfEngine_actions_ProcessAuthoring extends tao_actions_TaoModule {
 		
 		$processClass = new core_kernel_classes_Class(CLASS_PROCESS);
 		$processVarProp = new core_kernel_classes_Property(PROPERTY_PROCESS_VARIABLES);
-		$variableService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_VariableService');
+		$variableService = wfEngine_models_classes_VariableService::singleton();
 		
 		foreach($codes as $code){
 			//get the variable resource: 

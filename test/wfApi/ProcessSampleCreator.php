@@ -21,11 +21,11 @@ class ProcessSampleCreator{
 	public function __construct(){
 		
 		//init services
-		$this->activityService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityService');
-		$this->processVariableService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_VariableService');
-		$this->authoringService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessAuthoringService');
-		$this->activityExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityExecutionService');
-		$this->connectorService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ConnectorService');
+		$this->activityService = wfEngine_models_classes_ActivityService::singleton();
+		$this->processVariableService = wfEngine_models_classes_VariableService::singleton();
+		$this->authoringService = wfEngine_models_classes_ProcessAuthoringService::singleton();
+		$this->activityExecutionService = wfEngine_models_classes_ActivityExecutionService::singleton();
+		$this->connectorService = wfEngine_models_classes_ConnectorService::singleton();
 		$this->processVariablesClass = new core_kernel_classes_Class(CLASS_PROCESSVARIABLES);
 		
 		$this->propertyIsSample = new core_kernel_classes_Property(PROPERTY_IS_SAMPLE);
@@ -89,7 +89,7 @@ class ProcessSampleCreator{
 		$returnValue = false;
 		
 		$classProcess = new core_kernel_classes_Class(CLASS_PROCESS);
-		$processAuthoringService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessAuthoringService');
+		$processAuthoringService = wfEngine_models_classes_ProcessAuthoringService::singleton();
 		
 		self::$processes = array_merge(
 			self::$processes, 
