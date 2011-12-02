@@ -692,11 +692,19 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		$this->assertNotNull($activityTDsignOffElse);
 		$this->assertEqual($activityTDsignOffElse->uriResource, $activityOpticalCheck->uriResource);
 		
-		//final activity :
-		$activityFinal = $authoringService->createSequenceActivity($connectorCountrySignOff, null, 'Final activity');
+		//final activity:
+		$transitionRule = $authoringService->createTransitionRule($connectorCountrySignOff, '^CountrySignOff == 1');
+		$this->assertNotNull($transitionRule);
+		
+		$activityFinal = $authoringService->createConditionalActivity($connectorCountrySignOff, 'then', null, 'Final activity');//if ^CountrySignOff == 1
 		$this->assertNotNull($activityFinal);
 		$activityService->setAcl($activityFinal, $aclUser, $this->vars['reconciler']);
 		$activityService->setControls($activityFinal, array(INSTANCE_CONTROL_FORWARD));
+		
+		//if not ok, return to optical check:
+		$activityCountrySignOffElse = $authoringService->createConditionalActivity($connectorCountrySignOff, 'else', $activityTDsignOff);//if ^CountrySignOff != 1
+		$this->assertNotNull($activityCountrySignOffElse);
+		$this->assertEqual($activityCountrySignOffElse->uriResource, $activityTDsignOff->uriResource);
 		
 		$this->processDefinition['Booklet'] = $processDefinition;
 	}
@@ -2176,6 +2184,217 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		
 	}
 	
+	private function executeBookletProcess($processDefinition, $unitUri, $countryCode, $languageCode, $simulationOptions){
+		
+		$activityExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityExecutionService');
+		$processExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessExecutionService');
+		$processDefinitionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessDefinitionService');
+		$loginProperty = new core_kernel_classes_Property(PROPERTY_USER_LOGIN);
+
+		$processExecName = 'Test Translation Process Execution';
+		$processExecComment = 'created by ' . __CLASS__ . '::' . __METHOD__;
+
+		$users = $this->getAuthorizedUsersByCountryLanguage($countryCode, $languageCode);
+
+		if (empty($users)) {
+			$this->fail("cannot find the authorized npm, verifier and reconciler for this country-language : {$countryCode}/{$languageCode}");
+			return;
+		}
+
+		//check that the xliff and vff exist for the given country-language:
+		$unit = new core_kernel_classes_Resource($unitUri);
+
+		$vffRevision = 0;
+		$xliffRevision = 0;
+		if (GENERIS_VERSIONING_ENABLED) {
+
+			$xliffFile = $this->getItemFile($unit, 'xliff', $countryCode, $languageCode);
+			$this->assertNotNull($xliffFile);
+			$xliffRevision = $xliffFile->getVersion();
+
+			$vffFile = $this->getItemFile($unit, 'vff', $countryCode, $languageCode);
+			$this->assertNotNull($vffFile);
+			$vffRevision = $vffFile->getVersion();
+		}
+
+		$initVariables = array(
+			$this->vars['unitUri']->uriResource => $unit->uriResource,
+			$this->vars['countryCode']->uriResource => $countryCode,
+			$this->vars['languageCode']->uriResource => $languageCode,
+			$this->vars['npm']->uriResource => $users['npm'],
+			$this->vars['reconciler']->uriResource => $users['reconciler'],
+			$this->vars['verifier']->uriResource => $users['verifier'],
+			$this->vars['xliff']->uriResource => $xliffRevision,
+			$this->vars['vff']->uriResource => $vffRevision,
+		);
+
+		$this->changeUser($this->userLogins['consortium'][1]);
+		$this->assertTrue($processDefinitionService->checkAcl($processDefinition, $this->currentUser));
+
+		$processInstance = $processExecutionService->createProcessExecution($processDefinition, $processExecName, $processExecComment, $initVariables);
+		$this->assertEqual($processDefinition->uriResource, $processExecutionService->getExecutionOf($processInstance)->uriResource);
+
+		$processInstance->setPropertyValue($this->properties['unitUri'], $unit);
+		$processInstance->setPropertyValue($this->properties['countryCode'], $countryCode);
+		$processInstance->setPropertyValue($this->properties['languageCode'], $languageCode);
+
+		$this->assertTrue($processExecutionService->checkStatus($processInstance, 'started'));
+
+		$this->out(__METHOD__, true);
+		$this->processExecutions[$processInstance->uriResource] = $processInstance;
+
+		$currentActivityExecutions = $processExecutionService->getCurrentActivityExecutions($processInstance);
+		$this->assertEqual(count($currentActivityExecutions), 1);
+
+		$this->out("<strong>Forward transitions:</strong>", true);
+
+//		$nbTranslators = (isset($simulationOptions['translations']) && intval($simulationOptions['translations']) >= 1 ) ? intval($simulationOptions['translations']) : 2; //>=1
+		$nbLoops = isset($simulationOptions['repeatLoop']) ? intval($simulationOptions['repeatLoop']) : 1;
+		$nbBacks = isset($simulationOptions['repeatBack']) ? intval($simulationOptions['repeatBack']) : 0;
+		$stopProbability = isset($simulationOptions['stopProbability']) ? floatval($simulationOptions['stopProbability']) : 0;
+
+		$loopsCounter = array();
+
+		$iterations = 5;
+		$this->changeUser($this->userLogins[$countryCode]['NPM']);
+
+		$i = 1;
+		$activityIndex = $i;
+		while ($activityIndex <= $iterations) {
+			
+			$activityExecution = null;
+			$activity = null;
+			
+			$activityExecutions = $processExecutionService->getCurrentActivityExecutions($processInstance);
+			$this->assertEqual(count($activityExecutions), 1);
+			$activityExecution = reset($activityExecutions);
+			$activity = $activityExecutionService->getExecutionOf($activityExecution);
+
+			$this->out("<strong>Iteration {$i} : activity no{$activityIndex} : " . $activity->getLabel() . "</strong>", true);
+			$this->out("current user : " . $this->currentUser->getOnePropertyValue($loginProperty) . ' "' . $this->currentUser->uriResource . '"', true);
+
+			$this->checkAccessControl($activityExecution);
+
+			$currentActivityExecution = null;
+
+			//for loop managements:
+			$goto = 0;
+			
+			$login = '';
+			//access control checking:
+			switch ($activityIndex) {
+				case 1:
+				case 5: {
+						//reconciliation:
+						//correct verification issues:
+						$login = $this->userLogins[$countryCode][$languageCode]['reconciler'];
+					}
+				case 3: {
+						//verify translations :
+						if(empty($login)) $login = $this->userLogins[$countryCode][$languageCode]['verifier'];
+
+						$this->assertFalse(empty($login));
+						$this->bashCheckAcl($activityExecution, array($login), array_rand($this->users, 5));
+						$this->changeUser($login);
+						$currentActivityExecution = $this->initCurrentActivityExecution($activityExecution);
+
+						break;
+					}
+				case 2:
+				case 4:{
+						//final check by TD: TD sign off:
+						$developersLogins = $this->userLogins['testDeveloper'];
+						$this->bashCheckAcl($activityExecution, $developersLogins);
+						$this->changeUser($developersLogins[array_rand($developersLogins)]);
+						$currentActivityExecution = $this->initCurrentActivityExecution($activityExecution);
+
+						break;
+					}
+			}
+			
+			//execute services:
+			$loopName = '';
+			switch ($activityIndex) {
+				case 1:{
+					//let it be
+					break;
+				}
+				case 2:{
+					if(empty($loopName)) $loopName = 'layoutCheck';
+				}
+				case 3:{
+					if(empty($loopName)) $loopName = 'finalCheck';
+				}
+				case 4:{
+					if(empty($loopName)) $loopName = 'TDsignOff';
+				}
+				case 5:{
+					if(empty($loopName)) $loopName = 'countrySignOff';
+					
+					if (!isset($loopsCounter['$loopName'])) {
+						$loopsCounter = array(); //reinitialize the loops counter
+						$loopsCounter['$loopName'] = $nbLoops;
+						$this->assertTrue($this->executeServiceFinalSignOff(false));
+						$goto = $activityIndex -1;//go back
+					} else {
+						$this->assertTrue($this->executeServiceFinalSignOff(true));
+					}
+					break;
+				}
+			}
+			
+			//update xliff and vff:
+			if (GENERIS_VERSIONING_ENABLED) {
+				$xliffContent = $this->executeServiceDownloadFile('xliff');
+				$this->assertFalse(empty($xliffContent));
+				$vffContent = $this->executeServiceDownloadFile('vff');
+				$this->assertFalse(empty($vffContent));
+
+				$this->executeServiceUploadFile('xliff', $xliffContent . ' \n XLIFF by user ' . $this->currentUser->getLabel() . ' \n', $this->currentUser);
+				$this->executeServiceUploadFile('vff', $vffContent . ' \n VFF by user ' . $this->currentUser->getLabel() . ' \n', $this->currentUser);
+			}
+
+			//transition to next activity
+			$transitionResult = $processExecutionService->performTransition($processInstance, $currentActivityExecution);
+			$goto = intval($goto);
+			if($activityIndex == $iterations && !$goto){
+				//process finished:
+				$this->assertEqual(count($transitionResult), 0);
+				$this->assertTrue($processExecutionService->isFinished($processInstance));
+			}else{
+				$this->assertEqual(count($transitionResult), 0);
+				$this->assertTrue($processExecutionService->isPaused($processInstance));
+			}
+
+			//manage next activity index:
+			if ($goto) {
+				$activityIndex = $goto;
+			} else {
+				$activityIndex++;
+			}
+
+			//increment iteration counts:
+			$i++;
+
+			$this->out("activity status : " . $activityExecutionService->getStatus($currentActivityExecution)->getLabel());
+			$this->out("process status : " . $processExecutionService->getStatus($processInstance)->getLabel());
+
+			$rand = rand(0, $iterations);
+			$prob = $activityIndex * $stopProbability;
+			if ($rand < $prob) {
+				$this->out("process instance stopped by probability");
+				break;
+			}
+		}
+
+		$activityExecutionsData = $processExecutionService->getAllActivityExecutions($processInstance);
+		var_dump($activityExecutionsData);
+
+		$executionHistory = $processExecutionService->getExecutionHistory($processInstance);
+		$this->assertEqual(count($executionHistory), $i); //there is one hidden activity
+		
+	}
+	
 	private function executeServiceDownloadFile($type, core_kernel_classes_Resource $user = null){
 		
 		$returnValue = '';
@@ -2295,7 +2514,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 	
 	public function testDeleteCreatedResources(){
 		
-		return;//prevent deletion
+//		return;//prevent deletion
 		
 		if(!empty($this->properties)){
 			foreach($this->properties as $prop){
