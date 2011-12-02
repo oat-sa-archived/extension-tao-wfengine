@@ -872,19 +872,18 @@ class DescriptorFactory{
 
 		// section 10-13-1--99--220c702e:11df82e7d86:-8000:0000000000000F16 begin
 
-		$logger = new Logger('ImportCapi',Logger::debug_level);
 		$myDocument = new DomDocument();
 		if (!$myDocument->load($this->filepath)) {
-			$logger->error('Error Loading Document',__FILE__,__LINE__);
+			common_Logger::d('Error Loading Document', array('ImportCapi'));
 			return false;
 		}
 		libxml_use_internal_errors(true);
 
 		if (!$myDocument->schemaValidate($schema)) {
 			$errors = libxml_get_last_error();
-			$logger->error('Error Parsing Document',__FILE__,__LINE__);
+			common_Logger::d('Error Parsing Document', array('ImportCapi'));
 			$returnValue = false;
-			$logger->error($errors->message,__FILE__,__LINE__);
+			common_Logger::d($errors->message, array('ImportCapi'));
 			print_r($errors);
 			$this->validationError = $errors->message; 
 
