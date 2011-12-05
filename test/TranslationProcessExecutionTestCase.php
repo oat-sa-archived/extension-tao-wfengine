@@ -571,7 +571,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		$transitionRule = $authoringService->createTransitionRule($connectorFinalCheck, '^finalCheck == 1');
 		$this->assertNotNull($transitionRule);
 		
-		$activityFinalize = $authoringService->createConditionalActivity($connectorFinalCheck, 'then', null, 'Finalize PBA Units');//if ^finalCheck == 1
+		$activityFinalize = $authoringService->createConditionalActivity($connectorFinalCheck, 'then', null, 'Completed');//if ^finalCheck == 1
 		$this->assertNotNull($activityFinalize);
 		$activityService->setAcl($activityFinalize, $aclRole, $this->roles['testDeveloper']);
 		$activityService->setControls($activityFinalize, array(INSTANCE_CONTROL_FORWARD));
@@ -696,10 +696,11 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		$transitionRule = $authoringService->createTransitionRule($connectorCountrySignOff, '^CountrySignOff == 1');
 		$this->assertNotNull($transitionRule);
 		
-		$activityFinal = $authoringService->createConditionalActivity($connectorCountrySignOff, 'then', null, 'Final activity');//if ^CountrySignOff == 1
+		$activityFinal = $authoringService->createConditionalActivity($connectorCountrySignOff, 'then', null, 'Completed');//if ^CountrySignOff == 1
 		$this->assertNotNull($activityFinal);
 		$activityService->setAcl($activityFinal, $aclUser, $this->vars['reconciler']);
 		$activityService->setControls($activityFinal, array(INSTANCE_CONTROL_FORWARD));
+		$activityService->setHidden($activityFinal, true);
 		
 		//if not ok, return to optical check:
 		$activityCountrySignOffElse = $authoringService->createConditionalActivity($connectorCountrySignOff, 'else', $activityTDsignOff);//if ^CountrySignOff != 1
@@ -829,7 +830,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		$transitionRule = $authoringService->createTransitionRule($connectorFinalCheck, '^finalCheck == 1');
 		$this->assertNotNull($transitionRule);
 
-		$activityFinalize = $authoringService->createConditionalActivity($connectorFinalCheck, 'then', null, 'Finalize BQ'); //if ^finalCheck == 1
+		$activityFinalize = $authoringService->createConditionalActivity($connectorFinalCheck, 'then', null, 'Completed'); //if ^finalCheck == 1
 		$this->assertNotNull($activityFinalize);
 		$activityService->setAcl($activityFinalize, $aclRole, $this->roles['developer']);
 		$activityService->setControls($activityFinalize, array(INSTANCE_CONTROL_FORWARD));
@@ -1112,26 +1113,34 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 					
 					//exec PBA process:
 					if ($processPBA instanceof core_kernel_classes_Resource) {
-						$this->out("executes {$processPBA->getLabel()} for {$unit->getLabel()}/{$countryCode}/{$langCode}:", true);
-//						$this->executePBAProcess($processPBA, $unit->uriResource, $countryCode, $langCode, $simulationOptions);
+//						$this->out("executes {$processPBA->getLabel()} for {$unit->getLabel()}/{$countryCode}/{$langCode}:", true);
+//						$this->executeProcessPBA($processPBA, $unit->uriResource, $countryCode, $langCode, $simulationOptions);
 					}else{
 						$this->fail('No PBA process definition found to be executed');
 					}
 					
-					//exec BQ process:
-					if ($processBQ instanceof core_kernel_classes_Resource) {
-						$this->out("executes {$processBQ->getLabel()} for {$unit->getLabel()}/{$countryCode}/{$langCode}:", true);
-						$this->executeBQProcess($processBQ, $unit->uriResource, $countryCode, $langCode, $simulationOptions);
+					//exec Booklet process:
+					if ($processBooklet instanceof core_kernel_classes_Resource) {
+						$this->out("executes {$processBooklet->getLabel()} for {$unit->getLabel()}/{$countryCode}/{$langCode}:", true);
+						$this->executeProcessBooklet($processBooklet, $unit->uriResource, $countryCode, $langCode, $simulationOptions);
 					}else{
-						$this->fail('No BQ process definition found to be executed');
+						$this->fail('No Booklet process definition found to be executed');
 					}
 					
 					//exec CBA process:
 					if ($processCBA instanceof core_kernel_classes_Resource) {
 //						$this->out("executes {$processCBA->getLabel()} for {$unit->getLabel()}/{$countryCode}/{$langCode}:", true);
-//						$this->executeCBAProcess($processCBA, $unit->uriResource, $countryCode, $langCode, $simulationOptions);
+//						$this->executeProcessCBA($processCBA, $unit->uriResource, $countryCode, $langCode, $simulationOptions);
 					}else{
 						$this->fail('No process definition found to be executed');
+					}
+
+					//exec BQ process:
+					if ($processBQ instanceof core_kernel_classes_Resource) {
+//						$this->out("executes {$processBQ->getLabel()} for {$unit->getLabel()}/{$countryCode}/{$langCode}:", true);
+//						$this->executeProcessBQ($processBQ, $unit->uriResource, $countryCode, $langCode, $simulationOptions);
+					}else{
+						$this->fail('No BQ process definition found to be executed');
 					}
 					
 					$i++;
@@ -1142,9 +1151,8 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		
 	}
 	
-	private function executePBAProcess($processDefinition, $unitUri, $countryCode, $languageCode, $simulationOptions){
+	private function executeProcessPBA($processDefinition, $unitUri, $countryCode, $languageCode, $simulationOptions){
 		
-			
 		$activityExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityExecutionService');
 		$processExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessExecutionService');
 		$processDefinitionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessDefinitionService');
@@ -1403,7 +1411,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		$this->assertEqual(count($executionHistory), $i);//there is one hidden activity
 	}
 	
-	private function executeBQProcess($processDefinition, $unitUri, $countryCode, $languageCode, $simulationOptions){
+	private function executeProcessBQ($processDefinition, $unitUri, $countryCode, $languageCode, $simulationOptions){
 		
 			
 		$activityExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityExecutionService');
@@ -1685,7 +1693,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		$this->assertEqual(count($executionHistory), $i-1);//there is no hidden activity
 	}
 	
-	private function executeCBAProcess($processDefinition, $unitUri, $countryCode, $languageCode, $simulationOptions){
+	private function executeProcessCBA($processDefinition, $unitUri, $countryCode, $languageCode, $simulationOptions){
 		
 		$activityExecutionService = wfEngine_models_classes_ActivityExecutionService::singleton();
 		$processExecutionService = wfEngine_models_classes_ProcessExecutionService::singleton();
@@ -2184,7 +2192,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		
 	}
 	
-	private function executeBookletProcess($processDefinition, $unitUri, $countryCode, $languageCode, $simulationOptions){
+	private function executeProcessBooklet($processDefinition, $unitUri, $countryCode, $languageCode, $simulationOptions){
 		
 		$activityExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityExecutionService');
 		$processExecutionService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessExecutionService');
@@ -2314,30 +2322,37 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 			
 			//execute services:
 			$loopName = '';
+			
 			switch ($activityIndex) {
 				case 1:{
 					//let it be
 					break;
 				}
 				case 2:{
-					if(empty($loopName)) $loopName = 'layoutCheck';
+					if(empty($loopName)) $loopName = 'LayoutCheck';
 				}
 				case 3:{
-					if(empty($loopName)) $loopName = 'finalCheck';
+					if(empty($loopName)) $loopName = 'FinalCheck';
 				}
 				case 4:{
 					if(empty($loopName)) $loopName = 'TDsignOff';
 				}
 				case 5:{
-					if(empty($loopName)) $loopName = 'countrySignOff';
+					if(empty($loopName)) $loopName = 'CountrySignOff';
 					
-					if (!isset($loopsCounter['$loopName'])) {
-						$loopsCounter = array(); //reinitialize the loops counter
-						$loopsCounter['$loopName'] = $nbLoops;
-						$this->assertTrue($this->executeServiceFinalSignOff(false));
+					$serviceName = 'executeServiceBooklet'.$loopName;
+					if(!method_exists($this, $serviceName)){
+						throw new Exception('the method does not exist : '.$serviceName);
+						break;
+					}
+					
+					if (!isset($loopsCounter[$loopName])) {
+//						$loopsCounter = array(); //reinitialize the loops counter
+						$loopsCounter[$loopName] = $nbLoops;
+						$this->assertTrue($this->$serviceName(false));
 						$goto = $activityIndex -1;//go back
 					} else {
-						$this->assertTrue($this->executeServiceFinalSignOff(true));
+						$this->assertTrue($this->$serviceName(true));
 					}
 					break;
 				}
@@ -2503,10 +2518,48 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 	
 	private function executeServiceFinalSignOff($ok = false){
 		
-		$this->out("execute service final sign off", true);
+		return $this->executeServicePositionVariable('finalCheck', $ok, "execute service final sign off");
+		
+	}
+	
+	private function executeServiceBookletLayoutCheck($ok = false){
+		
+		return $this->executeServicePositionVariable('layoutCheck', $ok, "execute service final sign off");
+		
+	}
+	
+	private function executeServiceBookletFinalCheck($ok = false){
+		
+		return $this->executeServicePositionVariable('finalCheck', $ok, "execute service final sign off");
+		
+	}
+	
+	private function executeServiceBookletTDsignOff($ok = false){
+		
+		return $this->executeServicePositionVariable('TDsignOff', $ok, "execute service final sign off");
+		
+	}
+	
+	private function executeServiceBookletCountrySignOff($ok = false){
+		
+		return $this->executeServicePositionVariable('countrySignOff', $ok, "execute service final sign off");
+		
+	}
+	
+	private function executeServicePositionVariable($variableCode, $ok, $msg){
+		
+		$returnValue = false;
+		
+		$this->out($msg, true);
 		
 		$processVariableService = wfEngine_models_classes_VariableService::singleton();
-		$returnValue = $processVariableService->edit('finalCheck', (bool)$ok?1:0);
+		$variable = $processVariableService->getProcessVariable($variableCode);
+		if(!is_null($variable)){
+			$returnValue = $processVariableService->edit($variableCode, (bool) $ok ? 1 : 0);
+		}else{
+			throw new Exception("the process variable with the code {$variableCode} does not exist");
+		}
+		
 		
 		return $returnValue;
 		
