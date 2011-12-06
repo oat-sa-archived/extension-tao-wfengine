@@ -169,6 +169,7 @@ class wfEngine_actions_ProcessAuthoring extends tao_actions_TaoModule {
 			$_POST["diagramData"] = true;
 			if(isset($_POST["diagramData"])){
 				if($_POST["diagramData"]) {
+					common_Logger::d('loading: '.$currentProcess);
 					$diagramDataResource = $currentProcess->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_PROCESS_DIAGRAMDATA));//should get a literal
 					if ($diagramDataResource instanceof core_kernel_classes_Literal)
 						$diagramData = $diagramDataResource->literal;
