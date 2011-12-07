@@ -449,13 +449,22 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		
 	}
 	
+	private function populateVariables($varCodes){
+		
+		$processVariableService = wfEngine_models_classes_VariableService::singleton();
+		foreach ($varCodes as $varCode) {
+			if (!isset($this->vars[$varCode])) {
+				$this->vars[$varCode] = $processVariableService->getProcessVariable($varCode, true);
+			}
+		}
+		
+	}
 	
 	public function testCreatePBAProcess(){
 		
 		$authoringService = wfEngine_models_classes_ProcessAuthoringService::singleton();
 		$activityService = wfEngine_models_classes_ActivityService::singleton();
 		$connectorService = wfEngine_models_classes_ConnectorService::singleton();
-		$processVariableService = wfEngine_models_classes_VariableService::singleton();
 		$cardinalityService = wfEngine_models_classes_ActivityCardinalityService::singleton();
 		
 		$varCodes = array(
@@ -476,11 +485,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 			'vff_working'
 		);
 		
-		foreach($varCodes as $varCode){
-			if(!isset($this->vars[$varCode])){
-				$this->vars[$varCode] = $processVariableService->getProcessVariable($varCode, true);
-			}
-		}
+		$this->populateVariables($varCodes);
 		
 		$aclUser = new core_kernel_classes_Resource(INSTANCE_ACL_USER);
 		$aclRole = new core_kernel_classes_Resource(INSTANCE_ACL_ROLE);
@@ -602,16 +607,12 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 			'layoutCheck',
 			'finalCheck',
 			'TDsignOff',
-			'CountrySignOff',
+			'countrySignOff',
 			'pdf',//holds the current pdf svn revision number
 			'vff'
 		);
 		
-		foreach($varCodes as $varCode){
-			if(!isset($this->vars[$varCode])){
-				$this->vars[$varCode] = $processVariableService->getProcessVariable($varCode, true);
-			}
-		}
+		$this->populateVariables($varCodes);
 		
 		$aclUser = new core_kernel_classes_Resource(INSTANCE_ACL_USER);
 		$aclRole = new core_kernel_classes_Resource(INSTANCE_ACL_ROLE);
@@ -693,17 +694,17 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		$this->assertEqual($activityTDsignOffElse->uriResource, $activityOpticalCheck->uriResource);
 		
 		//final activity:
-		$transitionRule = $authoringService->createTransitionRule($connectorCountrySignOff, '^CountrySignOff == 1');
+		$transitionRule = $authoringService->createTransitionRule($connectorCountrySignOff, '^countrySignOff == 1');
 		$this->assertNotNull($transitionRule);
 		
-		$activityFinal = $authoringService->createConditionalActivity($connectorCountrySignOff, 'then', null, 'Completed');//if ^CountrySignOff == 1
+		$activityFinal = $authoringService->createConditionalActivity($connectorCountrySignOff, 'then', null, 'Completed');//if ^countrySignOff == 1
 		$this->assertNotNull($activityFinal);
 		$activityService->setAcl($activityFinal, $aclUser, $this->vars['reconciler']);
 		$activityService->setControls($activityFinal, array(INSTANCE_CONTROL_FORWARD));
 		$activityService->setHidden($activityFinal, true);
 		
 		//if not ok, return to optical check:
-		$activityCountrySignOffElse = $authoringService->createConditionalActivity($connectorCountrySignOff, 'else', $activityTDsignOff);//if ^CountrySignOff != 1
+		$activityCountrySignOffElse = $authoringService->createConditionalActivity($connectorCountrySignOff, 'else', $activityTDsignOff);//if ^countrySignOff != 1
 		$this->assertNotNull($activityCountrySignOffElse);
 		$this->assertEqual($activityCountrySignOffElse->uriResource, $activityTDsignOff->uriResource);
 		
@@ -736,11 +737,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 			'vff_working'
 		);
 
-		foreach ($varCodes as $varCode) {
-			if (!isset($this->vars[$varCode])) {
-				$this->vars[$varCode] = $processVariableService->getProcessVariable($varCode, true);
-			}
-		}
+		$this->populateVariables($varCodes);
 
 		$aclUser = new core_kernel_classes_Resource(INSTANCE_ACL_USER);
 		$aclRole = new core_kernel_classes_Resource(INSTANCE_ACL_ROLE);
@@ -883,11 +880,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		//"workingFiles" holds the working versions of the xliff and vff files, plus their revision number, in an serialized array()
 		//during translation: workingFiles = array('user'=>#007, 'xliff' => array('uri' => #123456, 'revision'=>3), 'vff'=> array('uri' => #456789, 'revision'=>5))
 		
-		foreach($varCodes as $varCode){
-			if(!isset($this->vars[$varCode])){
-				$this->vars[$varCode] = $processVariableService->getProcessVariable($varCode, true);
-			}
-		}
+		$this->populateVariables($varCodes);
 		
 		$aclUser = new core_kernel_classes_Resource(INSTANCE_ACL_USER);
 		$aclRole = new core_kernel_classes_Resource(INSTANCE_ACL_ROLE);
@@ -1130,39 +1123,49 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 //					$simulationOptions['stopProbability'] = 0.6 + $i*0.2;
 					
 					//exec PBA process:
-					if ($processPBA instanceof core_kernel_classes_Resource) {
-						$this->out("executes {$processPBA->getLabel()} for {$unit->getLabel()}/{$countryCode}/{$langCode}:", true);
-						$this->executeProcessPBA($processPBA, $unit->uriResource, $countryCode, $langCode, $simulationOptions);
-					}else{
-						$this->fail('No PBA process definition found to be executed');
+					if($i%4 == 0){
+						if ($processPBA instanceof core_kernel_classes_Resource) {
+							$this->out("executes {$processPBA->getLabel()} for {$unit->getLabel()}/{$countryCode}/{$langCode}:", true);
+							$this->executeProcessPBA($processPBA, $unit->uriResource, $countryCode, $langCode, $simulationOptions);
+						}else{
+							$this->fail('No PBA process definition found to be executed');
+						}
 					}
 					
 					//exec Booklet process:
-					if ($processBooklet instanceof core_kernel_classes_Resource) {
-						$this->out("executes {$processBooklet->getLabel()} for {$unit->getLabel()}/{$countryCode}/{$langCode}:", true);
-						$this->executeProcessBooklet($processBooklet, $unit->uriResource, $countryCode, $langCode, $simulationOptions);
-					}else{
-						$this->fail('No Booklet process definition found to be executed');
+					if($i%4 == 1){
+						if ($processBooklet instanceof core_kernel_classes_Resource) {
+							$this->out("executes {$processBooklet->getLabel()} for {$unit->getLabel()}/{$countryCode}/{$langCode}:", true);
+							$this->executeProcessBooklet($processBooklet, $unit->uriResource, $countryCode, $langCode, $simulationOptions);
+						}else{
+							$this->fail('No Booklet process definition found to be executed');
+						}
 					}
 					
 					//exec CBA process:
-					if ($processCBA instanceof core_kernel_classes_Resource) {
-						$this->out("executes {$processCBA->getLabel()} for {$unit->getLabel()}/{$countryCode}/{$langCode}:", true);
-						$this->executeProcessCBA($processCBA, $unit->uriResource, $countryCode, $langCode, $simulationOptions);
-					}else{
-						$this->fail('No process definition found to be executed');
+					if($i%4 == 2){
+						if ($processCBA instanceof core_kernel_classes_Resource) {
+							$this->out("executes {$processCBA->getLabel()} for {$unit->getLabel()}/{$countryCode}/{$langCode}:", true);
+							$this->executeProcessCBA($processCBA, $unit->uriResource, $countryCode, $langCode, $simulationOptions);
+						}else{
+							$this->fail('No process definition found to be executed');
+						}
 					}
-
 					//exec BQ process:
-					if ($processBQ instanceof core_kernel_classes_Resource) {
-						$this->out("executes {$processBQ->getLabel()} for {$unit->getLabel()}/{$countryCode}/{$langCode}:", true);
-						$this->executeProcessBQ($processBQ, $unit->uriResource, $countryCode, $langCode, $simulationOptions);
-					}else{
-						$this->fail('No BQ process definition found to be executed');
+					if($i%4 == 3){
+						if ($processBQ instanceof core_kernel_classes_Resource) {
+							$this->out("executes {$processBQ->getLabel()} for {$unit->getLabel()}/{$countryCode}/{$langCode}:", true);
+							$this->executeProcessBQ($processBQ, $unit->uriResource, $countryCode, $langCode, $simulationOptions);
+						}else{
+							$this->fail('No BQ process definition found to be executed');
+						}
 					}
 					
 					$i++;
-					break(3);
+					
+					if($i>4){
+						break(3);
+					}
 				}
 			}
 		}
@@ -2647,8 +2650,10 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		
 		
 		if(!empty($this->vars)){
-			foreach($this->vars as $variable){
-				$this->assertTrue($variable->delete());
+			foreach($this->vars as $code => $variable){
+				$deleted = $variable->delete();
+				$this->assertTrue($deleted);
+				if(!$deleted) var_dump($code);
 			}
 		}
 		
