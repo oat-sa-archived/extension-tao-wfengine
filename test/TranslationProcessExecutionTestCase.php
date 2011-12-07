@@ -485,7 +485,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		$aclUser = new core_kernel_classes_Resource(INSTANCE_ACL_USER);
 		$aclRole = new core_kernel_classes_Resource(INSTANCE_ACL_ROLE);
 		
-		$processDefinition = $authoringService->createProcess($this->processLabel, 'For Unit test');
+		$processDefinition = $authoringService->createProcess($this->processLabel['PBA'], 'For Unit test');
 		$this->assertIsA($processDefinition, 'core_kernel_classes_Resource');
 		
 		//set process initialization rights:
@@ -745,7 +745,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		$aclUser = new core_kernel_classes_Resource(INSTANCE_ACL_USER);
 		$aclRole = new core_kernel_classes_Resource(INSTANCE_ACL_ROLE);
 
-		$processDefinition = $authoringService->createProcess($this->processLabel, 'For Unit test');
+		$processDefinition = $authoringService->createProcess($this->processLabel['BQ'], 'For Unit test');
 		$this->assertIsA($processDefinition, 'core_kernel_classes_Resource');
 
 		//set process initialization rights:
@@ -830,7 +830,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		$transitionRule = $authoringService->createTransitionRule($connectorFinalCheck, '^finalCheck == 1');
 		$this->assertNotNull($transitionRule);
 
-		$activityFinalize = $authoringService->createConditionalActivity($connectorFinalCheck, 'then', null, 'Completed'); //if ^finalCheck == 1
+		$activityFinalize = $authoringService->createConditionalActivity($connectorFinalCheck, 'then', null, 'Finalize BQ'); //if ^finalCheck == 1
 		$this->assertNotNull($activityFinalize);
 		$activityService->setAcl($activityFinalize, $aclRole, $this->roles['developer']);
 		$activityService->setControls($activityFinalize, array(INSTANCE_CONTROL_FORWARD));
@@ -856,7 +856,6 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		$connectorService = wfEngine_models_classes_ConnectorService::singleton();
 		$processVariableService = wfEngine_models_classes_VariableService::singleton();
 		$cardinalityService = wfEngine_models_classes_ActivityCardinalityService::singleton();
-		$transitionRuleService = wfEngine_models_classes_TransitionRuleService::singleton();
 		
 		//create some process variables:
 		$varCodes = array(
@@ -870,8 +869,12 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 			'verifier',
 			'translatorSelected',
 			'translationFinished',
+			'TDreview',
 			'layoutCheck',
 			'finalCheck',
+			'opticalCheck',
+			'TDsignOff',
+			'countrySignOff',
 			'xliff',//holds the current xliff svn revision number
 			'vff',//holds the current vff svn revision number
 			'xliff_working',//holds the current working xliff svn revision number
@@ -889,7 +892,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		$aclUser = new core_kernel_classes_Resource(INSTANCE_ACL_USER);
 		$aclRole = new core_kernel_classes_Resource(INSTANCE_ACL_ROLE);
 		
-		$processDefinition = $authoringService->createProcess($this->processLabel, 'For Unit test');
+		$processDefinition = $authoringService->createProcess($this->processLabel['CBA'], 'For Unit test');
 		$this->assertIsA($processDefinition, 'core_kernel_classes_Resource');
 		
 		//set process initialization rights:
@@ -961,9 +964,24 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		
 		$connectorCorrectVerification = $authoringService->createConnector($activityCorrectVerification);
 		$this->assertNotNull($connectorCorrectVerification);
-
+		
+		//TD review : 
+		$activityTDreview = $authoringService->createSequenceActivity($connectorCorrectVerification, null, 'TD review');
+		$this->assertNotNull($activityTDreview);
+		$activityService->setAcl($activityTDreview, $aclRole, $this->roles['testDeveloper']);
+		$activityService->setControls($activityTDreview, array(INSTANCE_CONTROL_FORWARD));
+		$connectorTDreview = $authoringService->createConnector($activityTDreview);
+		$this->assertNotNull($connectorTDreview);
+		
+		//if TD review not ok, return to correct verification issues:
+		$transitionRule = $authoringService->createTransitionRule($connectorTDreview, '^TDreview == 1');
+		$this->assertNotNull($transitionRule);
+		
+		$activityCorrectVerificationBis = $authoringService->createConditionalActivity($connectorTDreview, 'else', $activityCorrectVerification);//if ^TDreview != 1
+		$this->assertEqual($activityCorrectVerification->uriResource, $activityCorrectVerificationBis->uriResource);
+		
 		//correct layout :
-		$activityCorrectLayout = $authoringService->createSequenceActivity($connectorCorrectVerification, null, 'Correct Layout Issues');
+		$activityCorrectLayout = $authoringService->createConditionalActivity($connectorTDreview, 'then', null, 'Correct Layout Issues');//if ^TDreview == 1
 		$this->assertNotNull($activityCorrectLayout);
 		$activityService->setAcl($activityCorrectLayout, $aclRole, $this->roles['developer']);
 		$activityService->setControls($activityCorrectLayout, array(INSTANCE_CONTROL_FORWARD));
@@ -971,20 +989,31 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		$connectorCorrectLayout = $authoringService->createConnector($activityCorrectLayout);
 		$this->assertNotNull($connectorCorrectLayout);
 		
+		//if correct layout needs verification :
+		$transitionRule = $authoringService->createTransitionRule($connectorCorrectLayout, '^layoutCheck == 1');
+		$this->assertNotNull($transitionRule);
+		
+		$activityVerification = $authoringService->createConditionalActivity($connectorCorrectLayout, 'else', null, 'Verification Followup');//if ^layoutCheck != 1
+		$this->assertNotNull($activityVerification);
+		$activityService->setAcl($activityVerification, $aclUser, $this->vars['verifier']);
+		$activityService->setControls($activityVerification, array(INSTANCE_CONTROL_FORWARD));
+		$connectorVerification = $authoringService->createConnector($activityVerification);
+		$this->assertNotNull($connectorVerification);
+		
 		//final check :
-		$activityFinalCheck = $authoringService->createSequenceActivity($connectorCorrectLayout, null, 'Final Check');
+		$activityFinalCheck = $authoringService->createConditionalActivity($connectorCorrectLayout, 'then', null, 'Final Check');//if ^layoutCheck == 1
 		$this->assertNotNull($activityFinalCheck);
 		$activityService->setAcl($activityFinalCheck, $aclRole, $this->roles['testDeveloper']);
-		$activityService->setControls($activityFinalCheck, array(INSTANCE_CONTROL_BACKWARD, INSTANCE_CONTROL_FORWARD));
+		$activityService->setControls($activityFinalCheck, array(INSTANCE_CONTROL_FORWARD));
 		
 		$connectorFinalCheck = $authoringService->createConnector($activityFinalCheck);
 		$this->assertNotNull($connectorFinalCheck);
 		
 		//if final check ok, go to scoring definition :
-		$transitionRule = $authoringService->createTransitionRule($connectorFinalCheck, '^layoutCheck == 1');
+		$transitionRule = $authoringService->createTransitionRule($connectorFinalCheck, '^finalCheck == 1');
 		$this->assertNotNull($transitionRule);
 		
-		$activityScoringDefinition = $authoringService->createConditionalActivity($connectorFinalCheck, 'then', null, 'Scoring Definition and Testing');//if ^layoutCheck == 1
+		$activityScoringDefinition = $authoringService->createConditionalActivity($connectorFinalCheck, 'then', null, 'Scoring Definition and Testing');//if ^finalCheck == 1
 		$this->assertNotNull($activityScoringDefinition);
 		$activityService->setAcl($activityScoringDefinition, $aclUser, $this->vars['reconciler']);
 		$activityService->setControls($activityScoringDefinition, array(INSTANCE_CONTROL_FORWARD));
@@ -992,46 +1021,20 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		$connectorScoringDefinition = $authoringService->createConnector($activityScoringDefinition);
 		$this->assertNotNull($connectorScoringDefinition);
 		
+		//if not ok, return to correct layout : 
+		$activityCorrectLayoutBis = $authoringService->createConditionalActivity($connectorFinalCheck, 'else', $activityCorrectLayout);//if ^finalCheck != 1
+		$this->assertEqual($activityCorrectLayout->uriResource, $activityCorrectLayoutBis->uriResource);
 		
-		//if not ok, can go to optional activity to review corrections:
-		$connectorFinalCheckElse = $authoringService->createConditionalActivity($connectorFinalCheck, 'else', null, $connectorFinalCheck->getLabel().'_c', true);//if ^layoutCheck != 1
-		$transitionRule = $authoringService->createTransitionRule($connectorFinalCheckElse, '^layoutCheck == 2');
+		//verification : 
+		$transitionRule = $authoringService->createTransitionRule($connectorVerification, '^opticalCheck == 1');
 		$this->assertNotNull($transitionRule);
-		
-		$activityReviewCorrection = $authoringService->createConditionalActivity($connectorFinalCheckElse, 'then', null, 'Review corrections');//if ^layoutCheck == 2
-		$this->assertNotNull($activityReviewCorrection);
-		$activityService->setAcl($activityReviewCorrection, $aclUser, $this->vars['verifier']);
-		$activityService->setControls($activityReviewCorrection, array(INSTANCE_CONTROL_FORWARD));
-		
-		//link review correction back to the final "check activity"
-		$connectorReviewCorrections = $authoringService->createConnector($activityReviewCorrection);
-		$this->assertNotNull($connectorReviewCorrections);
-		$activityFinalCheckBis = $authoringService->createSequenceActivity($connectorReviewCorrections, $activityFinalCheck);
-		$this->assertEqual($activityFinalCheck->uriResource, $activityFinalCheckBis->uriResource);
-		
-		//if still not ok, go to correct layout:
-		$connectorFinalCheckElseElse = $authoringService->createConditionalActivity($connectorFinalCheckElse, 'else', null, $connectorFinalCheckElse->getLabel().'_c', true);//if ^layoutCheck != 2
-		$transitionRule = $authoringService->createTransitionRule($connectorFinalCheckElseElse, '^layoutCheck == 3');
-		$this->assertNotNull($transitionRule);
-		
-		//else return to "correct verification":
-		$activityCorrectVerificationBis = $authoringService->createConditionalActivity($connectorFinalCheckElseElse, 'then', $activityCorrectVerification);//if ^layoutCheck == 3
-		$this->assertEqual($activityCorrectVerification->uriResource, $activityCorrectVerificationBis->uriResource);
-			
-		$activityCorrectLayoutBis = $authoringService->createConditionalActivity($connectorFinalCheckElseElse, 'else', $activityCorrectLayout);//if ^layoutCheck != 3
-		$this->assertEqual($activityCorrectLayout->uriResource, $activityCorrectLayoutBis->uriResource);		
-		//end of if(^layoutCheck == 1) elseif(^layoutCheck == 2) elseif(^layoutCheck == 3)
-		
-		//check transition rules:
-		$thenActivity = $transitionRuleService->getThenActivity($transitionRule);
-		$this->assertNotNull($thenActivity);
-		$this->assertEqual($thenActivity->uriResource, $activityCorrectVerification->uriResource);
-		$elseActivity = $transitionRuleService->getElseActivity($transitionRule);
-		$this->assertNotNull($elseActivity);
-		$this->assertEqual($elseActivity->uriResource, $activityCorrectLayout->uriResource);
+		$activityFinalCheckBis = $authoringService->createConditionalActivity($connectorVerification, 'then', $activityFinalCheck);//if ^opticalCheck == 1
+		$this->assertEqual($activityFinalCheckBis->uriResource, $activityFinalCheck->uriResource);
+		$activityCorrectLayoutBis = $authoringService->createConditionalActivity($connectorVerification, 'else', $activityCorrectLayout);//if ^opticalCheck != 1
+		$this->assertEqual($activityCorrectLayoutBis->uriResource, $activityCorrectLayout->uriResource);
 		
 		//scoring verification:
-		$activityScoringVerification = $authoringService->createSequenceActivity($connectorScoringDefinition, null, 'Scoring verification');
+		$activityScoringVerification = $authoringService->createSequenceActivity($connectorScoringDefinition, null, 'Scoring Verification');
 		$this->assertNotNull($activityScoringVerification);
 		$activityService->setAcl($activityScoringVerification, $aclUser, $this->vars['verifier']);
 		$activityService->setControls($activityScoringVerification, array(INSTANCE_CONTROL_FORWARD));
@@ -1049,14 +1052,29 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		$this->assertNotNull($connectorTDSignOff);
 		
 		//link back to final check:
-		$authoringService->createConditionalActivity($connectorTDSignOff, 'else', $activityFinalCheck);
-		$transitionRule = $authoringService->createTransitionRule($connectorTDSignOff, '^finalCheck == 1');
+		$transitionRule = $authoringService->createTransitionRule($connectorTDSignOff, '^TDsignOff == 1');
 		$this->assertNotNull($transitionRule);
+		$authoringService->createConditionalActivity($connectorTDSignOff, 'else', $activityFinalCheck);
 		
 		//sign off :
 		$activityCountrySignOff = $authoringService->createConditionalActivity($connectorTDSignOff, 'then', null, 'Country Sign Off');
 		$activityService->setAcl($activityCountrySignOff, $aclUser, $this->vars['reconciler']);
 		$activityService->setControls($activityCountrySignOff, array(INSTANCE_CONTROL_FORWARD));
+		
+		//complete the process:
+		$connectorCountrySignOff = $authoringService->createConnector($activityCountrySignOff);
+		$this->assertNotNull($connectorCountrySignOff);
+		
+		$transitionRule = $authoringService->createTransitionRule($connectorCountrySignOff, '^countrySignOff == 1');
+		$this->assertNotNull($transitionRule);
+		
+		$activityFinal = $authoringService->createConditionalActivity($connectorCountrySignOff, 'then', null, 'Completed');
+		$activityService->setAcl($activityFinal, $aclUser, $this->vars['reconciler']);
+		$activityService->setControls($activityFinal, array(INSTANCE_CONTROL_FORWARD));
+		$activityService->setHidden($activityFinal, true);
+		
+		$activityTDSignOffBis = $authoringService->createConditionalActivity($connectorCountrySignOff, 'else', $activityTDSignOff);
+		$this->assertEqual($activityTDSignOff->uriResource, $activityTDSignOffBis->uriResource);
 		
 		//end of process definition
 		
@@ -1113,8 +1131,8 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 					
 					//exec PBA process:
 					if ($processPBA instanceof core_kernel_classes_Resource) {
-//						$this->out("executes {$processPBA->getLabel()} for {$unit->getLabel()}/{$countryCode}/{$langCode}:", true);
-//						$this->executeProcessPBA($processPBA, $unit->uriResource, $countryCode, $langCode, $simulationOptions);
+						$this->out("executes {$processPBA->getLabel()} for {$unit->getLabel()}/{$countryCode}/{$langCode}:", true);
+						$this->executeProcessPBA($processPBA, $unit->uriResource, $countryCode, $langCode, $simulationOptions);
 					}else{
 						$this->fail('No PBA process definition found to be executed');
 					}
@@ -1129,16 +1147,16 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 					
 					//exec CBA process:
 					if ($processCBA instanceof core_kernel_classes_Resource) {
-//						$this->out("executes {$processCBA->getLabel()} for {$unit->getLabel()}/{$countryCode}/{$langCode}:", true);
-//						$this->executeProcessCBA($processCBA, $unit->uriResource, $countryCode, $langCode, $simulationOptions);
+						$this->out("executes {$processCBA->getLabel()} for {$unit->getLabel()}/{$countryCode}/{$langCode}:", true);
+						$this->executeProcessCBA($processCBA, $unit->uriResource, $countryCode, $langCode, $simulationOptions);
 					}else{
 						$this->fail('No process definition found to be executed');
 					}
 
 					//exec BQ process:
 					if ($processBQ instanceof core_kernel_classes_Resource) {
-//						$this->out("executes {$processBQ->getLabel()} for {$unit->getLabel()}/{$countryCode}/{$langCode}:", true);
-//						$this->executeProcessBQ($processBQ, $unit->uriResource, $countryCode, $langCode, $simulationOptions);
+						$this->out("executes {$processBQ->getLabel()} for {$unit->getLabel()}/{$countryCode}/{$langCode}:", true);
+						$this->executeProcessBQ($processBQ, $unit->uriResource, $countryCode, $langCode, $simulationOptions);
 					}else{
 						$this->fail('No BQ process definition found to be executed');
 					}
@@ -1766,7 +1784,17 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		$loopsCounter = array();
 		
 		$indexActivityTranslate = 2;//the index of the activity in the process definition
-		$iterations = $indexActivityTranslate + $nbTranslators +9;
+		$indexActivityOffset = $indexActivityTranslate + $nbTranslators;
+		$iterations = $indexActivityOffset +10;
+		$gotoManifest = array(
+			$indexActivityOffset +3 => array($indexActivityOffset+2, $indexActivityOffset+4),
+			$indexActivityOffset +4 => array($indexActivityOffset+5, $indexActivityOffset+6),
+			$indexActivityOffset +5 => array($indexActivityOffset+4, $indexActivityOffset+6),
+			$indexActivityOffset +6 => array($indexActivityOffset+4, $indexActivityOffset+7),
+			$indexActivityOffset +9 => array($indexActivityOffset+6, $indexActivityOffset+10),
+			$indexActivityOffset +10 => array($indexActivityOffset+9, $indexActivityOffset+11)
+		);
+		
 		$this->changeUser($this->userLogins[$countryCode]['NPM']);
 		$selectedTranslators = array();
 		
@@ -1777,7 +1805,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 			$activityExecutions = $processExecutionService->getCurrentActivityExecutions($processInstance);
 			$activityExecution = null;
 			$activity = null;
-			if($activityIndex >= $indexActivityTranslate && $activityIndex < $indexActivityTranslate+$nbTranslators){
+			if($activityIndex >= $indexActivityTranslate && $activityIndex < $indexActivityOffset){
 				$this->assertEqual(count($activityExecutions), $nbTranslators);
 				//parallel translation branch:
 				foreach($activityExecutions as $activityExec){
@@ -1803,7 +1831,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 			//for loop managements:
 			$goto = 0;
 			
-			if($activityIndex >= $indexActivityTranslate && $activityIndex < $indexActivityTranslate+$nbTranslators){
+			if($activityIndex >= $indexActivityTranslate && $activityIndex < $indexActivityOffset){
 				
 				//we are executing the translation activity:
 				$this->assertFalse(empty($selectedTranslators));
@@ -1832,7 +1860,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 				
 			}else{
 				
-				//switch to activity's specific check:
+				//check ACL:
 				switch ($activityIndex) {
 					case 1: {
 						
@@ -1850,12 +1878,11 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 
 						break;
 					}
-					case $indexActivityTranslate + $nbTranslators:
-					case $indexActivityTranslate + $nbTranslators +2:
-					case $indexActivityTranslate + $nbTranslators +6:
-					case $indexActivityTranslate + $nbTranslators +9:{
+					case $indexActivityOffset:
+					case $indexActivityOffset +2:
+					case $indexActivityOffset +7:
+					case $indexActivityOffset +10:{
 						//reconciliation:
-						//correct verification issues:
 						//correct verification issues:
 						//scoring definition and testing:
 						//country sign off:
@@ -1868,15 +1895,12 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 						
 						break;
 					}
-					case $indexActivityTranslate + $nbTranslators +5:{
-						//review corrections:
-						//the next activity is "final check":
-						$goto = $indexActivityTranslate + $nbTranslators +4;
-					}
-					case $indexActivityTranslate + $nbTranslators +1:
-					case $indexActivityTranslate + $nbTranslators +7:{
+					case $indexActivityOffset +1:
+					case $indexActivityOffset +5:
+					case $indexActivityOffset +8:{
 						//verify translations :
-						//scoring verification
+						////verification followup :
+						//scoring verification :
 						$login = $this->userLogins[$countryCode][$languageCode]['verifier'];
 						
 						$this->assertFalse(empty($login));
@@ -1886,7 +1910,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 						
 						break;
 					}	
-					case $indexActivityTranslate + $nbTranslators +3:{
+					case $indexActivityOffset +4:{
 						
 						//correct layout, by developers:
 						
@@ -1910,7 +1934,9 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 						
 						break;
 					}
-					case $indexActivityTranslate + $nbTranslators +4:{
+					case $indexActivityOffset +3:
+					case $indexActivityOffset +6:
+					case $indexActivityOffset +9:{
 						
 						//final check:
 						$developersLogins = $this->userLogins['testDeveloper'];
@@ -1931,49 +1957,44 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 						
 						$this->changeUser($developersLogins[array_rand($developersLogins)]);
 						
-						if(!isset($loopsCounter['correctLayout'])){
-							$loopsCounter['correctLayout'] = $nbLoops;
-							$this->assertTrue($this->executeServiceLayoutCheck(0));
-							$goto = $indexActivityTranslate + $nbTranslators +3;
-						}else if(!isset($loopsCounter['reviewCorrections'])){
-							$loopsCounter['reviewCorrections'] = $nbLoops;
-							$this->assertTrue($this->executeServiceLayoutCheck(2));
-							$goto = $indexActivityTranslate + $nbTranslators +5;
-						}else if(!isset($loopsCounter['correctVerification'])){
-							$loopsCounter['correctVerification'] = $nbLoops;
-							$this->assertTrue($this->executeServiceLayoutCheck(3));
-							$goto = $indexActivityTranslate + $nbTranslators +2;
-						}else{
-							$this->assertTrue($this->executeServiceLayoutCheck(1));
-							$goto = $indexActivityTranslate + $nbTranslators +6;
-						}
-						
-						break;
-					}
-					case $indexActivityTranslate + $nbTranslators +8:{
-						
-						//TD sign off:
-						$developersLogins = $this->userLogins['testDeveloper'];
-						$this->bashCheckAcl($activityExecution, $developersLogins);
-						
-						$this->changeUser($developersLogins[array_rand($developersLogins)]);
-						$currentActivityExecution = $this->initCurrentActivityExecution($activityExecution);
-						
-						if(!isset($loopsCounter['finalCheck'])){
-							
-							$loopsCounter = array();//reinitialize the loops counter
-							
-							$loopsCounter['finalCheck'] = $nbLoops;
-							$this->assertTrue($this->executeServiceFinalSignOff(false));
-							$goto = $indexActivityTranslate + $nbTranslators +4;
-						}else{
-							$this->assertTrue($this->executeServiceFinalSignOff(true));
-						}
-						
 						break;
 					}
 				}
 				
+				$loopName = '';
+				switch ($activityIndex) {
+					case $indexActivityOffset +3: {
+						if(empty($loopName)) $loopName = 'TDreview';
+					}
+					case $indexActivityOffset +4: {
+						if(empty($loopName)) $loopName = 'layoutCheck';
+					}
+					case $indexActivityOffset +5: {
+						if(empty($loopName)) $loopName = 'opticalCheck';
+					}
+					case $indexActivityOffset +6: {
+						if(empty($loopName)) $loopName = 'finalCheck';
+					}
+					case $indexActivityOffset +9: {
+						if(empty($loopName)) $loopName = 'TDsignOff';
+					}
+					case $indexActivityOffset +10: {
+						if(empty($loopName)) $loopName = 'countrySignOff';
+
+						if (!isset($loopsCounter[$loopName])) {
+	//						$loopsCounter = array(); //reinitialize the loops counter
+							$loopsCounter[$loopName] = $nbLoops;
+							$goto = $gotoManifest[$activityIndex][0];//go backward
+							$this->executeServicePositionVariable($loopName, false, "execute service {$activity->getLabel()}");
+						} else {
+							$goto = $gotoManifest[$activityIndex][1];//go forward
+							$this->executeServicePositionVariable($loopName, true, "execute service {$activity->getLabel()}");
+						}
+						
+						break;
+					}
+					
+				}
 				//update xliff and vff:
 				if(GENERIS_VERSIONING_ENABLED){
 					$xliffContent = $this->executeServiceDownloadFile('xliff');
@@ -1989,11 +2010,11 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 			//transition to next activity
 			$transitionResult = $processExecutionService->performTransition($processInstance, $currentActivityExecution);
 			$goto = intval($goto);
-			if($activityIndex == $indexActivityTranslate + $nbTranslators +8 && $goto == $indexActivityTranslate + $nbTranslators +4){
+			if($activityIndex == $indexActivityTranslate + $nbTranslators +9 && $goto == $indexActivityTranslate + $nbTranslators +6){
 				//the same users are authorized to execute the current and the next activity (final check and correct layout)
 				$this->assertEqual(count($transitionResult), 1);
 				$this->assertTrue($processExecutionService->checkStatus($processInstance, 'resumed'));
-			}else if($activityIndex == $iterations){
+			}else if($activityIndex == $iterations && $goto == $iterations + 1){
 				//test finished:
 				$this->assertEqual(count($transitionResult), 0);
 				$this->assertTrue($processExecutionService->isFinished($processInstance));
@@ -2025,13 +2046,17 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 				$this->out("process instance stopped by probability");
 				break;
 			}
+			
+			if($i>30){
+				break;
+			}
 		}
 		
 		$activityExecutionsData = $processExecutionService->getAllActivityExecutions($processInstance);
 		var_dump($activityExecutionsData);
 		
 		$executionHistory = $processExecutionService->getExecutionHistory($processInstance);
-		$this->assertEqual(count($executionHistory), $i-1);
+		$this->assertEqual(count($executionHistory), $i);//one hidden activity
 		
 		
 	}
@@ -2524,25 +2549,25 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 	
 	private function executeServiceBookletLayoutCheck($ok = false){
 		
-		return $this->executeServicePositionVariable('layoutCheck', $ok, "execute service final sign off");
+		return $this->executeServicePositionVariable('layoutCheck', $ok, "execute service layout check");
 		
 	}
 	
 	private function executeServiceBookletFinalCheck($ok = false){
 		
-		return $this->executeServicePositionVariable('finalCheck', $ok, "execute service final sign off");
+		return $this->executeServicePositionVariable('finalCheck', $ok, "execute service final check");
 		
 	}
 	
 	private function executeServiceBookletTDsignOff($ok = false){
 		
-		return $this->executeServicePositionVariable('TDsignOff', $ok, "execute service final sign off");
+		return $this->executeServicePositionVariable('TDsignOff', $ok, "execute service TD sign off");
 		
 	}
 	
 	private function executeServiceBookletCountrySignOff($ok = false){
 		
-		return $this->executeServicePositionVariable('countrySignOff', $ok, "execute service final sign off");
+		return $this->executeServicePositionVariable('countrySignOff', $ok, "execute service country sign off");
 		
 	}
 	
