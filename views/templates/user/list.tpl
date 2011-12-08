@@ -72,7 +72,6 @@ $(function(){
 		caption: __("Workflow Users"),
 		gridComplete: function(){
 			$.each(myGrid.getDataIDs(), function(index, elt){
-				console.log('elt', elt)
 				if(myGrid.getRowData(elt).role != 'TaoManager'){
 					myGrid.setRowData(elt, {
 						actions: "<a id='user_editor_"+elt+"' href='#' class='user_editor nd' ><img class='icon' src='<?=BASE_WWW?>img/pencil.png' alt='<?=__('Edit user')?>' /><?=__('Edit')?></a>&nbsp;|&nbsp;" +

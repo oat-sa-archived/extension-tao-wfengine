@@ -123,14 +123,39 @@ class wfEngine_models_classes_UserService
         // section 127-0-1-1-718243b3:12912642ee4:-8000:0000000000001F88 begin
         
     	$roleService = wfEngine_models_classes_RoleService::singleton();
-    	
+    	$fields = array('login' => PROPERTY_USER_LOGIN,
+						'password' => PROPERTY_USER_PASSWORD,
+						'uilg' => PROPERTY_USER_UILG,
+						'deflg' => PROPERTY_USER_DEFLG,
+						'mail' => PROPERTY_USER_MAIL,
+						'firstname' => PROPERTY_USER_FIRTNAME,
+						'lastname' => PROPERTY_USER_LASTNAME,
+						'name' => PROPERTY_USER_FIRTNAME);
+		$ops = array('eq' => "%s",
+					 'bw' => "%s*",
+					 'ew' => "*%s",
+					 'cn' => "*%s*");
         $userClass = new core_kernel_classes_Class(CLASS_GENERIS_USER);
 		$users = array();
-        foreach($userClass->getInstances(true) as $user){
-           	if($roleService->checkUserRole($user, new core_kernel_classes_Class(CLASS_ROLE_BACKOFFICE))){
-           		$users[$user->uriResource] = $user;
-           	}
-        }
+
+		$backoffice = new core_kernel_classes_Class(CLASS_ROLE_BACKOFFICE);
+		$types = array();
+		$bos = $backoffice->getInstances(true, array());
+		foreach ($bos as $i => $e) {
+			$types[] = $i;
+		}
+
+		$opts = array('recursive' => 0, 'like' => false);
+		if (isset($options['start'])) $opts['limit_start'] = $options['start'];
+		if (isset($options['end'])) $opts['limit_length'] = $options['end'];
+
+		$crits = array(RDF_TYPE => $types, PROPERTY_USER_LOGIN => '*');
+		if (isset($options['search']) && !is_null($options['search']) && isset($options['search']['string']) && isset($ops[$options['search']['op']])) {
+			$crits[$fields[$options['search']['field']]] = sprintf($ops[$options['search']['op']], $options['search']['string']);
+		}
+		foreach ($userClass->searchInstances($crits, $opts) as $user) {
+			$users[$user->uriResource] = $user;
+		}
         
 		$keyProp = null;
        	if(isset($options['order'])){
@@ -187,8 +212,8 @@ class wfEngine_models_classes_UserService
 	   			}  
    			}
         }
-        (isset($options['start'])) 	? $start = $options['start'] 	: $start = 0;
-        (isset($options['end']))	? $end	= $options['end']		: $end	= count($returnValue);
+        //(isset($options['start'])) 	? $start = $options['start'] 	: $start = 0;
+        //(isset($options['end']))	? $end	= $options['end']		: $end	= count($returnValue);
 		
         // section 127-0-1-1-718243b3:12912642ee4:-8000:0000000000001F88 end
 
