@@ -60,7 +60,8 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		$this->createProcess = true;
 		$this->langCountries = array(
 			'LU' => array('fr', 'de', 'lb'),
-			'DE' => array('de')
+			'DE' => array('de'),
+			'CA' => array('fr', 'en')
 		);
 		$this->unitNames = array('Unit01', 'Unit02', 'Unit03');
 		$this->userProperty = new core_kernel_classes_Property(LOCAL_NAMESPACE.'#translationUser');
@@ -1164,7 +1165,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 					$i++;
 					
 					if($i>4){
-						break(3);
+//						break(3);
 					}
 				}
 			}
@@ -2595,7 +2596,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 	
 	public function testDeleteCreatedResources(){
 		
-//		return;//prevent deletion
+		return;//prevent deletion
 		
 		if(!empty($this->properties)){
 			foreach($this->properties as $prop){
