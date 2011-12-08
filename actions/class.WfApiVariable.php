@@ -81,4 +81,14 @@ class wfEngine_actions_WfApiVariable extends wfEngine_actions_WfApi {
 			$this->setSuccess($this->variableService->remove($this->code, $this->activityExecution));
 		}
 	}
+	
+	public function getAllVariables()
+	{
+		$variables = $this->variableService->getAllVariables();
+		if(!empty($variables)){
+			$this->setSuccess(true);
+			$this->setData('variables', $variables);
+		}
+		
+	}
 }

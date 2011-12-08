@@ -591,6 +591,30 @@ class wfEngine_models_classes_VariableService
         return (string) $returnValue;
     }
 
+    /**
+     * Short description of method getAllVariables
+     *
+     * @access public
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @return array
+     */
+    public function getAllVariables()
+    {
+        $returnValue = array();
+
+        // section 127-0-1-1--9be58b4:1341d29fb0d:-8000:0000000000003468 begin
+		foreach($this->processVariablesClass->getInstances(false) as $variable){
+			$returnValue[$variable->uriResource] = array(
+				'code' => $this->getCode($variable),
+				'label' => $variable->getLabel()
+			);
+		}
+		
+        // section 127-0-1-1--9be58b4:1341d29fb0d:-8000:0000000000003468 end
+
+        return (array) $returnValue;
+    }
+
 } /* end of class wfEngine_models_classes_VariableService */
 
 ?>
