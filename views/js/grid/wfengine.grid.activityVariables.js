@@ -66,34 +66,70 @@ TaoGridActivityVariablesAdapter.postCellFormat = function(grid, cell, rowId, col
 		//the grid model
 		//var activityVariablesModel = model['http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessInstancesCurrentActivityExecutions']['subgrids']['variables']['subgrids'];
 		var activityVariablesModel = [
-			{'id' : 'code' , 'name' : 'code', type:'text', editable: true, edittype:'text'}
-			, {'id' : 'value' , 'name' : 'value', 'weight':3, 'widget':'ActivityVariable',  type:'text', editable: true, edittype:'text' }
+			{'id' : 'code' , 'name' : 'code', 'widget':'ActivityVariableLabel'}
+			, {'id' : 'value' , 'name' : 'value', 'weight':3, 'widget':'ActivityVariable' }
 		];
 		//the current activities grid options
 		var activityVariablesGridOptions = {
 			'title'  : __('Activity Variables')
+			, 'callback' : {
+				'saveNewRow' : function(rowId, rowData){
+					var code = rowData['code'];
+					var value = rowData['value'];
+					
+					//delete the temp row
+					activityVariablesGrid.delete(rowId);
+					
+					wfApi.Variable.edit(selectedActivityExecutionId, code, value, function(){
+						var varUri = null;
+						var rowToAdd = [];
+						
+						//find uri of the variable type
+						for(var crtVarUri in wfVariables){
+							if(wfVariables['code'] == code){
+								varUri = crtVarUri;
+							}
+						}
+						//format variable for the grid
+						rowToAdd[varUri] = {
+							'code' :	code
+							,'value' :	value
+						};
+						//add the variable to the grid
+						activityVariablesGrid.add(rowToAdd);
+					}, function(){
+						alert ('the variable has not been modified')
+					});
+				}
+				, 'saveEditedRow' : function(rowId, rowData){
+					var code = rowData['code'];
+					var value = rowData['value'];
+					
+					wfApi.Variable.edit(selectedActivityExecutionId, code, value, function(){
+						var varUri = rowId;
+						//format variable for the grid
+						var rowToEdit = [];
+						rowToEdit[varUri] = {
+							'code' :	code
+							,'value' :	value
+						};
+						//add the variable to the grid
+						activityVariablesGrid.refresh(rowToEdit);
+					}, function(){
+						alert ('the variable has not been modified')
+					});
+				}
+			}
 		};
 		//instantiate the grid widget
 		var activityVariablesGrid = new TaoGridClass('#activity-variables-grid', activityVariablesModel, '', activityVariablesGridOptions);
 		//display the data
-		var rowData = grid.getRowData(rowId);
+		var rowData = grid.getRowData(activityId);
 		activityVariablesGrid.add(rowData['variables']);
 		
 		//bind actions
 		$('#activity-variables-popup').find('.activity-variable-add').click(function(){
-			
-			var codeSelectBox = 'label';
-			
-			activityVariablesGrid.add({'newRowId':{
-				'code'		: 'label'
-				, 'value'	: ['yes']
-			}});
-			console.log($(activityVariablesGrid.selector));
-			//$(activityVariablesGrid.selector).jqGrid('editRow', 'newRowId', true, oneditfunc, succesfunc, url, extraparam, aftersavefunc,errorfunc, afterrestorefunc);
-			//$('#activity-variables-grid').jqGrid('editRow', 'newRowId');
-			//var cell = activityVariablesGrid.jqGrid.getCell('newRowId', 'value');
-			//console.log(activityVariablesGrid.jqGrid.getInd('newRowId'));
-			//TaoGridActivityVariableAdapter.edit(activityVariablesGrid, this, cell, 'value');
+			activityVariablesGrid.newRow();
 		});
 	});
 }

@@ -10,6 +10,8 @@
  */
 class wfEngine_actions_Monitor extends tao_actions_TaoModule {
 	
+	protected $variableService = null;
+	
 	/**
 	 * Constructor
 	 */
@@ -35,6 +37,8 @@ class wfEngine_actions_Monitor extends tao_actions_TaoModule {
 				)
 			)
 		);
+		
+		$this->variableService = wfEngine_models_classes_VariableService::singleton();
 	}
 	
 	/**
@@ -91,6 +95,9 @@ class wfEngine_actions_Monitor extends tao_actions_TaoModule {
 		$this->setData('model', json_encode($model));
 		$this->setData('historyProcessModel', json_encode($historyProcessModel));
 		$this->setData('data', $processMonitoringGrid->toArray());
+		
+		//WF Variables
+		$this->setData('wfVariables', json_encode($this->variableService->getAllVariables()));
 		
 		$this->setView('monitor/index.tpl');
 	}

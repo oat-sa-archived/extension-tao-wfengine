@@ -24,15 +24,15 @@ TaoGridActivityVariableAdapter.formatter = function(cellvalue, options, rowObjec
 	}
 	
 	return returnValue;
-}
+};
 
 TaoGridActivityVariableAdapter.postCellFormat = function(grid, cell, rowId, columnId)
-{
+{/*
 	$(cell).one('dblclick', function(){
 		//$(grid.selector).jqGrid('editRow', rowId);
 		TaoGridActivityVariableAdapter.edit(grid, cell, rowId, columnId, {'editCode':false});
-	});
-}
+	});*/
+};
 
 TaoGridActivityVariableAdapter.cancelEdit = function(grid, cell, rowId, columnId)
 {
@@ -40,16 +40,23 @@ TaoGridActivityVariableAdapter.cancelEdit = function(grid, cell, rowId, columnId
 	var formated = TaoGridActivityVariableAdapter.formatter(cellData);
 	$(cell).empty().append(formated);
 	TaoGridActivityVariableAdapter.postCellFormat(grid, cell, rowId, columnId);
-}
+};
 
-TaoGridActivityVariableAdapter.edit = function(grid, cell, rowId, columnId)
+TaoGridActivityVariableAdapter.getEditedValue = function(grid, cell, rowId, columnId)
+{
+	var values = [];
+	$(cell).find('.activity-variable-value input').each(function(){
+		values.push($(this).val());
+	});
+	return values;
+};
+	
+TaoGridActivityVariableAdapter.editFormatter = function(grid, cell, rowId, columnId)
 {
 	//TaoGridActivityVariableAdapter.addVariableRow(grid);
 	var editHtml = '<div class="activity-variable-edit-container"></div>'
 		+'<div class="activity-variable-actions"> \
-			<a href="#" class="activity-variable-action activity-variable-addValue"><img src="/tao/views/img/add.png"/> Add</a> \
-			<a href="#" class="activity-variable-action activity-variable-save"><img src="/tao/views/img/save.png"/> Save</a> \
-			<a href="#" class="activity-variable-action activity-variable-cancel"><img src="/tao/views/img/revert.png"/> Cancel</a> \
+			<a href="#" class="activity-variable-action activity-variable-addValue"><img src="/tao/views/img/add.png"/> Add</a>\
 		</div>';
 	
 	//get the variables values
@@ -70,16 +77,14 @@ TaoGridActivityVariableAdapter.edit = function(grid, cell, rowId, columnId)
 	$(cell).find('.activity-variable-addValue').click(function(){
 		TaoGridActivityVariableAdapter.addValue(cell, '');
 	});
+	/*
 	//bind the add action
 	$(cell).find('.activity-variable-save').click(function(){
 		var rowData = grid.getRowData(rowId, columnId);
 		var code = rowData['code'];
-		var values = [];
-		$(cell).find('.activity-variable-value input').each(function(){
-			values.push($(this).val());
-		});
+		var values = TaoGridActivityVariableAdapter.getEditedValue();
 
-		wfApi.Variable.edit(selectedActivityExecutionId, code, values, function(){
+		wfApi.Variable.edit(selectedActivityExecutionId, code, values, function(grid, cell, rowId, columnId){
 			grid.data[rowId][columnId] = values;
 			var formated = TaoGridActivityVariableAdapter.formatter(grid.getCellData(rowId, columnId));
 			$(cell).empty().append(formated);
@@ -92,8 +97,8 @@ TaoGridActivityVariableAdapter.edit = function(grid, cell, rowId, columnId)
 	//bind the add action
 	$(cell).find('.activity-variable-cancel').click(function(){
 		TaoGridActivityVariableAdapter.cancelEdit(grid, cell, rowId, columnId);
-	});
-}
+	});*/
+};
 
 TaoGridActivityVariableAdapter.addValue = function(cell, value)
 {
@@ -102,5 +107,5 @@ TaoGridActivityVariableAdapter.addValue = function(cell, value)
 			<img class="activity-variable-deleteValue" src="/tao/views/img/delete.png"/> \
 	</span>';
 	$(cell).find('.activity-variable-edit-container').append(editCellValueHtml);
-}
+};
 

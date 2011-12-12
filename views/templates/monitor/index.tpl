@@ -11,6 +11,7 @@
 
 <script type="text/javascript" src="<?=BASE_URL?>/views/js/grid/wfengine.grid.activityVariables.js"></script>
 <script type="text/javascript" src="<?=BASE_URL?>/views/js/grid/wfengine.grid.activityVariable.js"></script>
+<script type="text/javascript" src="<?=BASE_URL?>/views/js/grid/wfengine.grid.activityVariableLabel.js"></script>
 
 <script type="text/javascript" src="<?=BASE_URL?>/views/js/grid/wfengine.grid.activityPreviousActivity.js"></script>
 <script type="text/javascript" src="<?=BASE_URL?>/views/js/grid/wfengine.grid.activityNextActivity.js"></script>
@@ -92,6 +93,8 @@ var historyProcessGrid = null;
 //quick hack to test, to replace quickly
 var selectedProcessId = null;
 var selectedActivityExecutionId = null;
+//Workflow variables
+var wfVariables = [];
 
 //refresh the monitoring the target processes 
 function refreshMonitoring(processesUri)
@@ -136,6 +139,8 @@ $(function(){
 
 	//the grid model
 	model = <?=$model?>;
+	//workflow variables
+	wfVariables = <?=$wfVariables?>;
 	
 	/*
 	 * Instantiate the tabs

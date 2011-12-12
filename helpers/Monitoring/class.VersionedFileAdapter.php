@@ -98,11 +98,23 @@ class wfEngine_helpers_Monitoring_VersionedFileAdapter
 					$xliff = null;
 					$vff = null;
 					if($activity->getLabel() == 'Translate'){
-						$xliff = $unit->getOnePropertyValue($this->getTranslationFileProperty('xliff_working', $countryCode, $languageCode));
-						$vff = $unit->getOnePropertyValue($this->getTranslationFileProperty('vff_working', $countryCode, $languageCode));
+						$xliffWorkingProperty = $this->getTranslationFileProperty('xliff_working', $countryCode, $languageCode);
+						if(!is_null($xliffWorkingProperty)){
+							$xliff = $unit->getOnePropertyValue($xliffWorkingProperty);
+						}
+						$vffWorkingProperty = $this->getTranslationFileProperty('vff_working', $countryCode, $languageCode);
+						if(!is_null($vffWorkingProperty)){
+							$vff = $unit->getOnePropertyValue($vffWorkingProperty);
+						}
 					}else{
-						$xliff = $unit->getOnePropertyValue($this->getTranslationFileProperty('xliff', $countryCode, $languageCode));
-						$vff = $unit->getOnePropertyValue($this->getTranslationFileProperty('vff', $countryCode, $languageCode));
+						$xliffProperty = $this->getTranslationFileProperty('xliff', $countryCode, $languageCode);
+						if(!is_null($xliffProperty)){
+							$xliff = $unit->getOnePropertyValue($xliffProperty);
+						}
+						$vffProperty = $this->getTranslationFileProperty('vff', $countryCode, $languageCode);
+						if(!is_null($vffProperty)){
+							$vff = $unit->getOnePropertyValue($vffProperty);
+						}
 					}
 					
 					if($xliff instanceof core_kernel_classes_Resource){
