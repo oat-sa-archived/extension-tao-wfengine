@@ -34,6 +34,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 	/**
 	 * @var array()
 	 */
+	protected $config = array();
 	protected $processLabel = array();
 	protected $userLogins = array();
 	protected $users = array();
@@ -41,21 +42,24 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 	protected $vars = array();
 	protected $units = array();
 	protected $processExecutions = array();
-
-	/**
-	 * initialize a test method
-	 */
-	public function setUp(){
+	
+	public function __construct(){
 		
-		parent::setUp();
+		parent::__construct();
+		
+		$this->config = array(
+			'execute' => false,
+			'delete' => false
+		);
+
 		$this->userPassword = '123456';
 		$this->processLabel = array(
-			'CBA'	=> 'CBA Translation Process',
-			'PBA'	=> 'PBA Translation Process',
-			'Booklet'=> 'Booklet Translation Process',
-			'BQ'	=> 'BQ Translation Process'
+			'CBA' => 'CBA Translation Process',
+			'PBA' => 'PBA Translation Process',
+			'Booklet' => 'Booklet Translation Process',
+			'BQ' => 'BQ Translation Process'
 		);
-		
+
 		$this->createUsers = true;
 		$this->createProcess = true;
 		$this->langCountries = array(
@@ -63,8 +67,16 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 			'DE' => array('de'),
 			'CA' => array('fr', 'en')
 		);
-		$this->unitNames = array('Unit01', 'Unit02', 'Unit03');
-		$this->userProperty = new core_kernel_classes_Property(LOCAL_NAMESPACE.'#translationUser');
+		$this->unitNames = array('Unit06');
+		$this->userProperty = new core_kernel_classes_Property(LOCAL_NAMESPACE . '#translationUser');
+		
+	}
+
+	/**
+	 * initialize a test method
+	 */
+	public function setUp(){
+		parent::setUp();
 	}
 	
 	public function tearDown() {
@@ -395,6 +407,8 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 	}
 	
 	public function testCreateUnits(){
+		
+		set_time_limit(300);
 		
 		$this->itemClass = null;
 		$this->units = array();
@@ -1096,11 +1110,14 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 	
 	public function testExecuteProcesses(){
 		
+		set_time_limit(300);
+		
 		$simulationOptions = array(
 			'repeatBack' => 0,//O: do not back when possible
 			'repeatLoop' => 1,
 			'translations' => 2,//must be >= 1
-			'stopProbability' => 0
+			'stopProbability' => 0,
+			'execute' => isset($this->config['execute'])?(bool)$this->config['execute']:false
 		);
 		
 		$processCBA = $this->getProcessDefinition('CBA');
@@ -1165,7 +1182,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 					$i++;
 					
 					if($i>4){
-//						break(3);
+						break(3);
 					}
 				}
 			}
@@ -1235,7 +1252,9 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 			
 		$currentActivityExecutions = $processExecutionService->getCurrentActivityExecutions($processInstance);
 		$this->assertEqual(count($currentActivityExecutions), 1);
-
+		
+		if(isset($simulationOptions['execute']) && $simulationOptions['execute'] === false) return;
+		
 		$this->out("<strong>Forward transitions:</strong>", true);
 		
 		$nbTranslators = (isset($simulationOptions['translations']) && intval($simulationOptions['translations'])>=1 )?intval($simulationOptions['translations']):2;//>=1
@@ -1496,7 +1515,9 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 			
 		$currentActivityExecutions = $processExecutionService->getCurrentActivityExecutions($processInstance);
 		$this->assertEqual(count($currentActivityExecutions), 1);
-
+		
+		if(isset($simulationOptions['execute']) && $simulationOptions['execute'] === false) return;
+		
 		$this->out("<strong>Forward transitions:</strong>", true);
 		
 		$nbTranslators = (isset($simulationOptions['translations']) && intval($simulationOptions['translations'])>=1 )?intval($simulationOptions['translations']):2;//>=1
@@ -1777,7 +1798,9 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 			
 		$currentActivityExecutions = $processExecutionService->getCurrentActivityExecutions($processInstance);
 		$this->assertEqual(count($currentActivityExecutions), 1);
-
+		
+		if(isset($simulationOptions['execute']) && $simulationOptions['execute'] === false) return;
+		
 		$this->out("<strong>Forward transitions:</strong>", true);
 		
 		$nbTranslators = (isset($simulationOptions['translations']) && intval($simulationOptions['translations'])>=1 )?intval($simulationOptions['translations']):2;//>=1
@@ -2282,7 +2305,9 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 
 		$currentActivityExecutions = $processExecutionService->getCurrentActivityExecutions($processInstance);
 		$this->assertEqual(count($currentActivityExecutions), 1);
-
+		
+		if(isset($simulationOptions['execute']) && $simulationOptions['execute'] === false) return;
+		
 		$this->out("<strong>Forward transitions:</strong>", true);
 
 //		$nbTranslators = (isset($simulationOptions['translations']) && intval($simulationOptions['translations']) >= 1 ) ? intval($simulationOptions['translations']) : 2; //>=1
@@ -2596,7 +2621,18 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 	
 	public function testDeleteCreatedResources(){
 		
-		return;//prevent deletion
+		if(isset($this->config['execute']) && $this->config['execute'] === false){
+			
+			var_dump($this->roles);
+			var_dump($this->roleLogins);
+			
+			var_dump($this->users);
+			var_dump($this->userLogins);
+			
+			return;
+		}
+		
+		if(isset($this->config['delete']) && $this->config['delete'] === false) return;//prevent deletion
 		
 		if(!empty($this->properties)){
 			foreach($this->properties as $prop){
