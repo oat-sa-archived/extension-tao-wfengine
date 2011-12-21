@@ -68,7 +68,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 			'DE' => array('de'),
 			'CA' => array('fr', 'en')
 		);
-		$this->unitNames = array('Unit02');
+		$this->unitNames = array('Unit03');
 		$this->userProperty = new core_kernel_classes_Property(LOCAL_NAMESPACE . '#translationUser');
 		
 	}
@@ -247,6 +247,8 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 				}
 				$this->assertTrue($roleService->setRoleToUsers($role, $userUris));
 			}
+			
+			
 			
 //			var_dump($this->userLogins, $this->roleLogins, $this->users);
 //			exit;

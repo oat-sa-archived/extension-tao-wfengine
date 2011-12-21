@@ -30,6 +30,13 @@ class TranslationProcessHelper{
 		return $fileName;
 	}
 	
+	public static function getProperty($type, $countryCode = '', $langCode = ''){
+		
+		$returnValue = new core_kernel_classes_Property(LOCAL_NAMESPACE.'#'.self::getPropertyName($type, $countryCode, $langCode));
+		
+		return $returnValue;
+	}
+	
 }
 	
 ?>
