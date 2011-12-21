@@ -1,5 +1,6 @@
 <?php
 require_once dirname(__FILE__) . '/wfEngineServiceTest.php';
+require_once dirname(__FILE__) . '/TranslationProcess/TranslationProcessHelper.php';
 
 /**
  * Test the execution of a complex translation process
@@ -49,7 +50,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		
 		$this->config = array(
 			'execute' => false,
-			'delete' => false
+			'delete' => true
 		);
 
 		$this->userPassword = '123456';
@@ -67,7 +68,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 			'DE' => array('de'),
 			'CA' => array('fr', 'en')
 		);
-		$this->unitNames = array('Unit06');
+		$this->unitNames = array('Unit02');
 		$this->userProperty = new core_kernel_classes_Property(LOCAL_NAMESPACE . '#translationUser');
 		
 	}
@@ -171,6 +172,10 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 			$this->roles['developer'] = $roleService->createInstance($roleClass, 'developers - '.$usec);
 			$this->roles['testDeveloper'] = $roleService->createInstance($roleClass, 'test developers - '.$usec);
 			
+			//create the country code and language code properties to the wf user class:
+			$propUserCountryCode = $this->createTranslationProperty('CountryCode', '', '', $roleClass);
+			$propUserLangCode = $this->createTranslationProperty('LanguageCode', '', '', $roleClass);
+			
 			//generate users' logins:
 			$this->userLogins = array();
 			$this->roleLogins = array();
@@ -230,6 +235,13 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 				$userUris = array();
 				foreach($usrs as $login){
 					if(isset($this->users[$login])){
+						$matchesarray = array();
+						if(preg_match_all('/translator_(.[^_]*)_(.[^_]*)_/', $login, $matchesarray)>0){
+							$countryCode = $matchesarray[1][0];
+							$langCode = $matchesarray[2][0];
+							$this->assertTrue($this->users[$login]->setPropertyValue($propUserCountryCode, $countryCode));
+							$this->assertTrue($this->users[$login]->setPropertyValue($propUserLangCode, $langCode));
+						}
 						$userUris[] = $this->users[$login]->uriResource;
 					}
 				}
@@ -240,10 +252,6 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 //			exit;
 		}
 			
-	}
-	
-	private function getPropertyName($type, $countryCode, $langCode){
-		return 'Property_'.strtoupper($type).'_'.strtoupper($countryCode).'_'.strtolower($langCode);
 	}
 	
 	private function getFileName($unitLabel, $countryCode, $langCode, $type, core_kernel_classes_Resource $user = null){
@@ -286,7 +294,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 			$this->assertTrue($file->add());
 			$this->assertTrue($file->commit());
 			
-			$unit->setPropertyValue($this->properties[$this->getPropertyName($type, $countryCode, $languageCode)], $file);
+			$unit->setPropertyValue($this->properties[TranslationProcessHelper::getPropertyName($type, $countryCode, $languageCode)], $file);
 			
 			if(!is_null($user)){
 				$file->setPropertyValue($this->userProperty, $user);
@@ -304,7 +312,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		
 		$returnValue = null;
 		
-		if(!isset($this->properties[$this->getPropertyName($type, $countryCode, $langCode)])){
+		if(!isset($this->properties[TranslationProcessHelper::getPropertyName($type, $countryCode, $langCode)])){
 			$this->fail("The item property does not exist for the item {$item->getLabel()} ({$item->uriResource}) : $type, $countryCode, $langCode ");
 			return $returnValue;
 		}
@@ -316,7 +324,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 				return $returnValue;
 			}
 			
-			$values = $item->getPropertyValues($this->properties[$this->getPropertyName($type, $countryCode, $langCode)]);
+			$values = $item->getPropertyValues($this->properties[TranslationProcessHelper::getPropertyName($type, $countryCode, $langCode)]);
 			foreach($values as $uri){
 				if(common_Utils::isUri($uri)){
 					$aFile = new core_kernel_versioning_File($uri);
@@ -329,7 +337,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 			}
 			
 		}else{
-			$values = $item->getPropertyValues($this->properties[$this->getPropertyName($type, $countryCode, $langCode)]);
+			$values = $item->getPropertyValues($this->properties[TranslationProcessHelper::getPropertyName($type, $countryCode, $langCode)]);
 			$this->assertEqual(count($values), 1);
 			$file = new core_kernel_versioning_File(reset($values));
 		}
@@ -378,14 +386,8 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		
 		if(!is_null($class)){
 			
-			if(!empty($countryCode) && !empty($langCode)){
-				$label = $this->getPropertyName($type, $countryCode, $langCode);
-			}else{
-				$label = $type;
-			}
-			
+			$label = TranslationProcessHelper::getPropertyName($type, $countryCode, $langCode);
 			$uri = LOCAL_NAMESPACE.'#'.$label;
-			
 			$property = new core_kernel_classes_Property($uri);
 			
 			if(!$property->exists()){
@@ -447,9 +449,9 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 							$this->assertTrue($file->add());
 							$this->assertTrue($file->commit());
 
-							$this->assertTrue($this->units[$unitName]->setPropertyValue($this->properties[$this->getPropertyName($fileType, $countryCode, $langCode)], $file));
+							$this->assertTrue($this->units[$unitName]->setPropertyValue($this->properties[TranslationProcessHelper::getPropertyName($fileType, $countryCode, $langCode)], $file));
 							
-							$values = $this->units[$unitName]->getPropertyValues($this->properties[$this->getPropertyName($fileType, $countryCode, $langCode)]);
+							$values = $this->units[$unitName]->getPropertyValues($this->properties[TranslationProcessHelper::getPropertyName($fileType, $countryCode, $langCode)]);
 							$this->assertEqual(count($values), 1);
 			
 							$this->files[$fileName] = $file;
@@ -1241,9 +1243,9 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		$processInstance = $processExecutionService->createProcessExecution($processDefinition, $processExecName, $processExecComment, $initVariables);
 		$this->assertEqual($processDefinition->uriResource, $processExecutionService->getExecutionOf($processInstance)->uriResource);
 		
-		$processInstance->setPropertyValue($this->properties['unitUri'], $unit);
-		$processInstance->setPropertyValue($this->properties['countryCode'], $countryCode);
-		$processInstance->setPropertyValue($this->properties['languageCode'], $languageCode);
+		$processInstance->setPropertyValue($this->properties[TranslationProcessHelper::getPropertyName('unitUri')], $unit);
+		$processInstance->setPropertyValue($this->properties[TranslationProcessHelper::getPropertyName('countryCode')], $countryCode);
+		$processInstance->setPropertyValue($this->properties[TranslationProcessHelper::getPropertyName('languageCode')], $languageCode);
 		
 		$this->assertTrue($processExecutionService->checkStatus($processInstance, 'started'));
 
@@ -1504,9 +1506,9 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		$processInstance = $processExecutionService->createProcessExecution($processDefinition, $processExecName, $processExecComment, $initVariables);
 		$this->assertEqual($processDefinition->uriResource, $processExecutionService->getExecutionOf($processInstance)->uriResource);
 		
-		$processInstance->setPropertyValue($this->properties['unitUri'], $unit);
-		$processInstance->setPropertyValue($this->properties['countryCode'], $countryCode);
-		$processInstance->setPropertyValue($this->properties['languageCode'], $languageCode);
+		$processInstance->setPropertyValue($this->properties[TranslationProcessHelper::getPropertyName('unitUri')], $unit);
+		$processInstance->setPropertyValue($this->properties[TranslationProcessHelper::getPropertyName('countryCode')], $countryCode);
+		$processInstance->setPropertyValue($this->properties[TranslationProcessHelper::getPropertyName('languageCode')], $languageCode);
 		
 		$this->assertTrue($processExecutionService->checkStatus($processInstance, 'started'));
 
@@ -1787,9 +1789,9 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		$processInstance = $processExecutionService->createProcessExecution($processDefinition, $processExecName, $processExecComment, $initVariables);
 		$this->assertEqual($processDefinition->uriResource, $processExecutionService->getExecutionOf($processInstance)->uriResource);
 		
-		$processInstance->setPropertyValue($this->properties['unitUri'], $unit);
-		$processInstance->setPropertyValue($this->properties['countryCode'], $countryCode);
-		$processInstance->setPropertyValue($this->properties['languageCode'], $languageCode);
+		$processInstance->setPropertyValue($this->properties[TranslationProcessHelper::getPropertyName('unitUri')], $unit);
+		$processInstance->setPropertyValue($this->properties[TranslationProcessHelper::getPropertyName('countryCode')], $countryCode);
+		$processInstance->setPropertyValue($this->properties[TranslationProcessHelper::getPropertyName('languageCode')], $languageCode);
 		
 		$this->assertTrue($processExecutionService->checkStatus($processInstance, 'started'));
 
@@ -2294,9 +2296,9 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		$processInstance = $processExecutionService->createProcessExecution($processDefinition, $processExecName, $processExecComment, $initVariables);
 		$this->assertEqual($processDefinition->uriResource, $processExecutionService->getExecutionOf($processInstance)->uriResource);
 
-		$processInstance->setPropertyValue($this->properties['unitUri'], $unit);
-		$processInstance->setPropertyValue($this->properties['countryCode'], $countryCode);
-		$processInstance->setPropertyValue($this->properties['languageCode'], $languageCode);
+		$processInstance->setPropertyValue($this->properties[TranslationProcessHelper::getPropertyName('unitUri')], $unit);
+		$processInstance->setPropertyValue($this->properties[TranslationProcessHelper::getPropertyName('countryCode')], $countryCode);
+		$processInstance->setPropertyValue($this->properties[TranslationProcessHelper::getPropertyName('languageCode')], $languageCode);
 
 		$this->assertTrue($processExecutionService->checkStatus($processInstance, 'started'));
 
@@ -2629,10 +2631,12 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 			var_dump($this->users);
 			var_dump($this->userLogins);
 			
-			return;
 		}
 		
-		if(isset($this->config['delete']) && $this->config['delete'] === false) return;//prevent deletion
+		if(isset($this->config['delete']) && $this->config['delete'] === false){
+			$this->out('Skip resources deletion');
+			return;
+		}
 		
 		if(!empty($this->properties)){
 			foreach($this->properties as $prop){
