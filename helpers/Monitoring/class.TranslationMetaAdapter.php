@@ -5,6 +5,7 @@ if (0 > version_compare(PHP_VERSION, '5')) {
     die('This file was generated for PHP 5');
 }
 require_once('tao/helpers/grid/class.GridContainer.php');
+require_once('wfEngine/test/TranslationProcess/TranslationProcessHelper.php');
 
 /**
  * @access public
@@ -33,9 +34,9 @@ class wfEngine_helpers_Monitoring_TranslationMetaAdapter
 				$processInstance = new core_kernel_classes_Resource($rowId);
 				
 				//TODO: property uris need to be set in the constant files:
-				$unit = $processInstance->getOnePropertyValue(new core_kernel_classes_Property(LOCAL_NAMESPACE.'#unitUri'));
-				$countryCode = $processInstance->getOnePropertyValue(new core_kernel_classes_Property(LOCAL_NAMESPACE.'#countryCode'));
-				$langCode = $processInstance->getOnePropertyValue(new core_kernel_classes_Property(LOCAL_NAMESPACE.'#languageCode'));
+				$unit = $processInstance->getOnePropertyValue(TranslationProcessHelper::getProperty('unitUri'));
+				$countryCode = $processInstance->getOnePropertyValue(TranslationProcessHelper::getProperty('CountryCOde'));
+				$langCode = $processInstance->getOnePropertyValue(TranslationProcessHelper::getProperty('LanguageCode'));
 				
 				$this->data[$rowId] = array(
 					'unit' => is_null($unit)?'n/a':$unit->getLabel(),

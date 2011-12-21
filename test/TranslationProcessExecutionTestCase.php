@@ -50,7 +50,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		
 		$this->config = array(
 			'execute' => false,
-			'delete' => true
+			'delete' => false
 		);
 
 		$this->userPassword = '123456';
