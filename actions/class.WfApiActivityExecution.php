@@ -36,25 +36,29 @@ class wfEngine_actions_WfApiActivityExecution extends wfEngine_actions_WfApi {
 	
 	public function next()
 	{
-		if(is_null($this->processExecution)){
-			$this->processExecution = $this->activityExecutionService->getRelatedProcessExecution($this->activityExecution);
-		}
-		$currentActivityExecutions = $this->processExecutionService->performTransition($this->processExecution, $this->activityExecution);
-		if($currentActivityExecutions!==false){
-			$this->setSuccess(true);
-			$this->setData('currentActivityExecutions', $currentActivityExecutions);
+		if(!is_null($this->activityExecution)){
+			if(is_null($this->processExecution)){
+				$this->processExecution = $this->activityExecutionService->getRelatedProcessExecution($this->activityExecution);
+			}
+			$currentActivityExecutions = $this->processExecutionService->performTransition($this->processExecution, $this->activityExecution);
+			if($currentActivityExecutions!==false){
+				$this->setSuccess(true);
+				$this->setData('currentActivityExecutions', $currentActivityExecutions);
+			}
 		}
 	}
     
 	public function previous()
 	{
-		if(is_null($this->processExecution)){
-			$this->processExecution = $this->activityExecutionService->getRelatedProcessExecution($this->activityExecution);
-		}
-		$currentActivityExecutions = $this->processExecutionService->performBackwardTransition($this->processExecution, $this->activityExecution);
-		if($currentActivityExecutions!==false){
-			$this->setSuccess(true);
-			$this->setData('currentActivityExecutions', $currentActivityExecutions);
+		if(!is_null($this->activityExecution)){
+			if(is_null($this->processExecution)){
+				$this->processExecution = $this->activityExecutionService->getRelatedProcessExecution($this->activityExecution);
+			}
+			$currentActivityExecutions = $this->processExecutionService->performBackwardTransition($this->processExecution, $this->activityExecution);
+			if($currentActivityExecutions!==false){
+				$this->setSuccess(true);
+				$this->setData('currentActivityExecutions', $currentActivityExecutions);
+			}
 		}
 	}
 	

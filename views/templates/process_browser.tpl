@@ -14,6 +14,8 @@
 			window.processUri = '<?=urlencode($browserViewData['processUri'])?>';
 			window.activityUri = '<?=urlencode($activity->uriResource)?>';
 			window.activeResources = <?=$browserViewData['active_Resource']?>;
+			window.activityExecutionUri = '<?=urlencode($browserViewData['activityExecutionUri'])?>';
+			window.processExecutionUri = '<?=urlencode($browserViewData['processExecutionUri'])?>';
 			
 			function goToPage(page_str){
 				$("#loader").css('display', 'block');
