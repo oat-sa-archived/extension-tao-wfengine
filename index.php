@@ -13,7 +13,11 @@ $modules = array(
 	'ProcessInstanciation',
 	'ItemDelivery', 
 	'ResultDelivery',
-	'RecoveryContext'
+	'RecoveryContext',
+	'WfApiActivityExecution',
+	'WfApiProcessExecution',
+	'WfApiProcessDefinition',
+	'WfApiVariable'
 );
 $options = array();
 foreach($modules as $module){
