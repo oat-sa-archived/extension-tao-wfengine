@@ -23,7 +23,7 @@ TaoGridResumeProcessAdapter.preFormatter = function(grid, rowData, rowId, column
 
 TaoGridResumeProcessAdapter.formatter = function(cellvalue, options, rowObject)
 {
-	var returnValue = '<a href="#"><img src="/wfEngine/views/img/resume.png"/></a>';
+	var returnValue = '<a href="#"><img src="'+root_url+'/wfEngine/views/img/resume.png"/></a>';
 	return returnValue;
 }
 

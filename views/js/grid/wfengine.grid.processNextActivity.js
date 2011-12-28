@@ -17,7 +17,7 @@ function TaoGridProcessNextActivityAdapter(){}
 
 TaoGridProcessNextActivityAdapter.formatter = function(cellvalue, options, rowObject)
 {
-	var returnValue = '<a href="#"><img src="/wfEngine/views/img/next.png"/></a>';
+	var returnValue = '<a href="#"><img src="'+root_url+'/wfEngine/views/img/next.png"/></a>';
 	return returnValue;
 }
 

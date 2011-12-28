@@ -23,7 +23,7 @@ TaoGridCancelProcessAdapter.preFormatter = function(grid, rowData, rowId, column
 
 TaoGridCancelProcessAdapter.formatter = function(cellvalue, options, rowObject)
 {
-	var returnValue = '<a href="#"><img src="/wfEngine/views/img/stop.png"/></a>';
+	var returnValue = '<a href="#"><img src="'+root_url+'/wfEngine/views/img/stop.png"/></a>';
 	return returnValue;
 }
 

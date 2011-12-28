@@ -23,7 +23,7 @@ TaoGridActivityPreviousActivityAdapter.preFormatter = function(grid, rowData, ro
 
 TaoGridActivityPreviousActivityAdapter.formatter = function(cellvalue, options, rowObject)
 {
-	var returnValue = '<a href="#"><img src="/wfEngine/views/img/previous.png"/></a>';
+	var returnValue = '<a href="#"><img src="'+root_url+'/wfEngine/views/img/previous.png"/></a>';
 	return returnValue;
 }
 

@@ -23,7 +23,7 @@ TaoGridDeleteProcessAdapter.preFormatter = function(grid, rowData, rowId, column
 
 TaoGridDeleteProcessAdapter.formatter = function(cellvalue, options, rowObject)
 {
-	var returnValue = '<a href="#"><img src="/tao/views/img/delete.png"/></a>';
+	var returnValue = '<a href="#"><img src="'+root_url+'/tao/views/img/delete.png"/></a>';
 	return returnValue;
 }
 

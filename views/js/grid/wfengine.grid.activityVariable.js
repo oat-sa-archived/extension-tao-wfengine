@@ -56,7 +56,7 @@ TaoGridActivityVariableAdapter.editFormatter = function(grid, cell, rowId, colum
 	//TaoGridActivityVariableAdapter.addVariableRow(grid);
 	var editHtml = '<div class="activity-variable-edit-container"></div>'
 		+'<div class="activity-variable-actions"> \
-			<a href="#" class="activity-variable-action activity-variable-addValue"><img src="/tao/views/img/add.png"/> Add</a>\
+			<a href="#" class="activity-variable-action activity-variable-addValue"><img src="'+root_url+'/tao/views/img/add.png"/> Add</a>\
 		</div>';
 	
 	//get the variables values
@@ -104,7 +104,7 @@ TaoGridActivityVariableAdapter.addValue = function(cell, value)
 {
 	var editCellValueHtml = '<span class="activity-variable-value"> \
 			<input type="text" value="'+value+'"/> \
-			<img class="activity-variable-deleteValue" src="/tao/views/img/delete.png"/> \
+			<img class="activity-variable-deleteValue" src="'+root_url+'/tao/views/img/delete.png"/> \
 	</span>';
 	$(cell).find('.activity-variable-edit-container').append(editCellValueHtml);
 };
