@@ -1,5 +1,7 @@
 <?php
 
+require_once dirname(__FILE__) . '/../test/TranslationProcess/TranslationProcessHelper.php';
+
 /**
  *  Montitor Controler provide actions to manage processes
  * 
@@ -63,8 +65,8 @@ class wfEngine_actions_Monitor extends tao_actions_TaoModule {
 
 		//Properties to filter on
 		$properties[] = new core_kernel_classes_Property(PROPERTY_PROCESSINSTANCES_EXECUTIONOF);
-		$properties[] = new core_kernel_classes_Property(LOCAL_NAMESPACE."#countryCode");
-		$properties[] = new core_kernel_classes_Property(LOCAL_NAMESPACE."#languageCode");
+		$properties[] = TranslationProcessHelper::getProperty('countryCode');
+		$properties[] = TranslationProcessHelper::getProperty('languageCode');
 		$properties[] = new core_kernel_classes_Property(PROPERTY_PROCESSINSTANCES_STATUS);
 		
 		//Monitoring grid

@@ -184,6 +184,7 @@ $(function(){
 			{ 
 				'propertyUri' 	: '<?= $property->uriResource ?>'
 				, 'classUri' 	: '<?= $clazz->uriResource ?>'
+                , 'filterItself': false
 			}
 		},
 		<?endforeach;?>
