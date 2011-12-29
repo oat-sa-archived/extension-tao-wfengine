@@ -76,7 +76,10 @@ class wfEngine_actions_Authentication extends Module
                 $message = __('User logged in successfully');
             }
         }
-        new common_AjaxResponse($success, $message);
+        new common_AjaxResponse(array(
+            'success'   => $success
+            , 'message' => $message
+        ));
     }
     
     /**
