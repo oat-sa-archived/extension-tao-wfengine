@@ -1,6 +1,21 @@
 <?php
 class wfEngine_actions_Authentication extends Module
 {
+    
+    /**
+     * Users Service
+     * @var type wfEngine_models_classes_UserService
+     */
+    protected $userService;
+    
+    /**
+     * Action constructor
+     */
+    public function __construct()
+    {
+         $this->userService = wfEngine_models_classes_UserService::singleton();
+    }
+    
 	/**
 	 * WfEngine Login controler
 	 */
@@ -9,10 +24,7 @@ class wfEngine_actions_Authentication extends Module
 
 		if($this->hasRequestParameter('errorMessage')){
 			$this->setData('errorMessage',$this->getRequestParameter('errorMessage'));
-		}
-		
-		$userService = wfEngine_models_classes_UserService::singleton();
-		
+		}		
 		
 		$processUri = urldecode($this->getRequestParameter('processUri'));
 		$processExecution = common_Utils::isUri($processUri)?new core_kernel_classes_Resource($processUri):null;
@@ -30,7 +42,7 @@ class wfEngine_actions_Authentication extends Module
 		if($myForm->isSubmited()){
 			if($myForm->isValid()){
 				$values = $myForm->getValues();
-				if($userService->loginUser($values['login'], md5($values['password']))){
+				if($this->userService->loginUser($values['login'], md5($values['password']))){
 					if(!empty($values['processUri']) && !empty($values['activityUri'])){
 						$this->redirect(_url('index', 'ProcessBrowser', 'wfEngine', array(
 								'processUri' => urlencode($values['processUri']),
@@ -51,7 +63,25 @@ class wfEngine_actions_Authentication extends Module
 		$this->setView('login.tpl');
 	}
 
-
+    /**
+     * Login a user to the workflow engine through an ajax request
+     */
+    public function login()
+    {
+        $success = false;
+        $message = __('Unable to log in the user');
+        if($this->hasRequestParameter('login') && $this->hasRequestParameter('password')){
+            if ($this->userService->loginUser($this->getRequestParameter('login'), md5($this->getRequestParameter('password')))){
+                $success = true;
+                $message = __('User logged in successfully');
+            }
+        }
+        new common_AjaxResponse($success, $message);
+    }
+    
+    /**
+     * Logout a user
+     */
 	public function logout()
 	{
 		// Humpa Lumpa motion twin session destroy .
