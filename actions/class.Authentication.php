@@ -13,7 +13,7 @@ class wfEngine_actions_Authentication extends Module
      */
     public function __construct()
     {
-         $this->userService = wfEngine_models_classes_UserService::singleton();
+         $this->userService = taoDelivery_models_classes_UserService::singleton();
     }
     
 	/**
@@ -70,15 +70,62 @@ class wfEngine_actions_Authentication extends Module
     {
         $success = false;
         $message = __('Unable to log in the user');
+        //log the user
         if($this->hasRequestParameter('login') && $this->hasRequestParameter('password')){
             if ($this->userService->loginUser($this->getRequestParameter('login'), md5($this->getRequestParameter('password')))){
                 $success = true;
                 $message = __('User logged in successfully');
             }
         }
+        
+        $currentUser = $this->userService->getCurrentUser();
+        var_dump($currentUser);
+        return;
+        //write the response
         new common_AjaxResponse(array(
             'success'   => $success
             , 'message' => $message
+        ));
+    }
+    
+    /**
+     * Get information about the current user
+     */
+    public function info()
+    {
+        $data = array();
+        $success = false;
+        $currentUser = $this->userService->getCurrentUser();
+        if(!is_null($currentUser)){
+            
+            $success = true;
+            //properties to get
+            $properties = array(
+                'login' => PROPERTY_USER_LOGIN,
+                'uilg' => PROPERTY_USER_UILG,
+                'deflg' => PROPERTY_USER_DEFLG,
+                'mail' => PROPERTY_USER_MAIL,
+                'firstname' => PROPERTY_USER_FIRTNAME,
+                'lastname' => PROPERTY_USER_LASTNAME,
+            );
+            foreach($properties as $label=>$propertyUri){
+                $value = $currentUser->getOnePropertyValue(new core_kernel_classes_Property($propertyUri));
+                if($value instanceof core_kernel_classes_Resource){
+                    $data[$label] = $value->uriResource;
+                }else if($value instanceof core_kernel_classes_Literal){
+                    $data[$label] = (string)$value;
+                }
+            }
+            //add roles
+            $data['roles'] = array();
+            foreach($currentUser->getAllPropertyValues(new core_kernel_classes_Property(RDFS_TYPE)) as $type){                
+                $data['roles'][] = $type->uriResource;
+            }
+        }
+        //write the response
+        new common_AjaxResponse(array(
+            'success'   => $success
+            , 'data'    => $data
         ));
     }
     
