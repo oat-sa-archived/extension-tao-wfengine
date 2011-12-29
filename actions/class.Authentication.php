@@ -13,7 +13,7 @@ class wfEngine_actions_Authentication extends Module
      */
     public function __construct()
     {
-         $this->userService = taoDelivery_models_classes_UserService::singleton();
+         $this->userService = wfEngine_models_classes_UserService::singleton();
     }
     
 	/**
