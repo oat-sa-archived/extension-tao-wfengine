@@ -77,10 +77,6 @@ class wfEngine_actions_Authentication extends Module
                 $message = __('User logged in successfully');
             }
         }
-        
-        $currentUser = $this->userService->getCurrentUser();
-        var_dump($currentUser);
-        return;
         //write the response
         new common_AjaxResponse(array(
             'success'   => $success
