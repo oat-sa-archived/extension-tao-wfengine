@@ -699,7 +699,7 @@ class ProcessExecutionServiceTestCase extends UnitTestCase{
 			if($j == 0){
 				$this->assertTrue($transitionResult);
 			}else if($j == $iterationNumber - 1){
-				var_dump($transitionResult);
+				//var_dump($transitionResult);
 				$this->assertFalse($transitionResult);
 			}
 			
