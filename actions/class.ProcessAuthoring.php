@@ -396,14 +396,14 @@ class wfEngine_actions_ProcessAuthoring extends tao_actions_TaoModule {
 		//set ishidden:
 		$activityService = wfEngine_models_classes_ActivityService::singleton();
 		if(isset($properties[PROPERTY_ACTIVITIES_ISHIDDEN])){
-			$activityService->setHidden($activity, true);
+			$activityService->setHidden($activity, ($properties[PROPERTY_ACTIVITIES_ISHIDDEN] == GENERIS_TRUE)?true:false);
 		}else{
 			$activityService->setHidden($activity, false);
 		}
 		
 		//save ACL mode:
 		if(isset($properties[PROPERTY_ACTIVITIES_ACL_MODE])){
-			$mode = $properties[PROPERTY_ACTIVITIES_ACL_MODE];
+			$mode = trim($properties[PROPERTY_ACTIVITIES_ACL_MODE]);
 			
 			if(!empty($mode)){
 				$activityExecutionService = wfEngine_models_classes_ActivityExecutionService::singleton();
