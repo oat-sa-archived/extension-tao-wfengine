@@ -23,7 +23,7 @@ class wfEngine_actions_Role extends tao_actions_TaoModule {
 		parent::__construct();
 		
 		//the service is initialized by default
-		$this->service = new wfEngine_models_classes_RoleService();
+		$this->service = wfEngine_models_classes_RoleService::singleton();
 		$this->defaultData();
 		
 		Session::setAttribute('currentSection', 'role');
