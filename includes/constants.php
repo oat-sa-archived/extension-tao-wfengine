@@ -84,6 +84,8 @@ $todefine = array(
 	'CLASS_NOTIFICATION_MODE' 						=> NS_WFENGINE  .'#ClassNotificationMode',
 	'INSTANCE_NOTIFY_USER' 							=> NS_WFENGINE  .'#InstanceNotifyUser',
 	'INSTANCE_NOTIFY_NEXT'	 						=> NS_WFENGINE  .'#InstanceNotifyNextActivityUsers',
+	'INSTANCE_NOTIFY_THEN'							=> NS_WFENGINE  .'#InstanceNotifyThenActivityUsers',
+	'INSTANCE_NOTIFY_ELSE'							=> NS_WFENGINE  .'#InstanceNotifyElseActivityUsers',
 	'INSTANCE_NOTIFY_PREVIOUS' 						=> NS_WFENGINE  .'#InstanceNotifyPreviousActivityUsers',
 	'INSTANCE_NOTIFY_ROLE' 							=> NS_WFENGINE  .'#InstanceNotifyRole',
 

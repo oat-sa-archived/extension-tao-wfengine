@@ -154,6 +154,8 @@ class wfEngine_models_classes_NotificationService
         	$activityAclUserProp				= new core_kernel_classes_Property(PROPERTY_ACTIVITIES_RESTRICTED_USER);
         	$activityAclRoleProp				= new core_kernel_classes_Property(PROPERTY_ACTIVITIES_RESTRICTED_ROLE);
         	
+			$connectorService			= wfEngine_models_classes_ConnectorService::singleton();
+			$transitionRuleService		= wfEngine_models_classes_TransitionRuleService::singleton();
         	$roleService 				= wfEngine_models_classes_RoleService::singleton();
         	$activityExecutionService 	= wfEngine_models_classes_ActivityExecutionService::singleton();
         	$processExecutionService	= wfEngine_models_classes_ProcessExecutionService::singleton();
@@ -168,6 +170,7 @@ class wfEngine_models_classes_NotificationService
         	$notifyModes = $connector->getPropertyValuesCollection(new core_kernel_classes_Property(PROPERTY_CONNECTORS_NOTIFY));
 	        foreach($notifyModes->getIterator() as $notify){
 	        	
+				$nextActivities = array();
 	        	//get the users regarding the notification mode
 	        	switch($notify->uriResource){
 	        		
@@ -193,47 +196,115 @@ class wfEngine_models_classes_NotificationService
 	        			
 	        		//get the users who have executed the previous activity
 	        		case INSTANCE_NOTIFY_PREVIOUS:
-	        			$previousActivities = $connector->getPropertyValuesCollection($connectorPreviousActivitiesProp);
-	        			foreach($previousActivities->getIterator() as $activity){
-	        				foreach($activityExecutionService->getExecutions($activity, $processExecution) as $activityExec){
-								$activityExecutionUser = $activityExecutionService->getActivityExecutionUser($activityExec);
-								if(!is_null($activityExecutionUser)){
-									if(!in_array($activityExecutionUser->uriResource, $users)){
-										$users[] = $activityExecutionUser->uriResource;
-									}
-								}				
-	        				}
-	        			}
+						
+						$previousActivities = array();
+						$cardinalityService = wfEngine_models_classes_ActivityCardinalityService::singleton();
+						foreach($connectorService->getPreviousActivities($connector) as $prevActivity){
+							if($cardinalityService->isCardinality($prevActivity)){
+								$previousActivities[] = $cardinalityService->getActivity($prevActivity)->uriResource;
+							}else{
+								$previousActivities[] = $prevActivity->uriResource;
+							}
+						}
+						
+						$activity = $activityExecutionService->getExecutionOf($activityExecution);
+						
+						//check activity execution against connector
+						if(in_array($activity->uriResource, $previousActivities)){
+							$activityExecutionUser = $activityExecutionService->getActivityExecutionUser($activityExecution);
+							if (!is_null($activityExecutionUser)) {
+								if (!in_array($activityExecutionUser->uriResource, $users)) {
+									$users[] = $activityExecutionUser->uriResource;
+								}
+							}
+						}
+										
 	        			break;
 	        			
 	        		//get the users 
+					case INSTANCE_NOTIFY_THEN:{
+						if($connectorService->getType($connector)->uriResource == INSTANCE_TYPEOFCONNECTORS_CONDITIONAL){
+							$transitionRule = $connectorService->getTransitionRule($connector);
+							if($transitionRule instanceof core_kernel_classes_Resource) {
+								$then = $transitionRuleService->getThenActivity($transitionRule);
+								if($then instanceof core_kernel_classes_Resource){
+									$nextActivities[] = $then->uriResource;
+								}
+							}
+						}else{
+							//wrong connector type!
+							break;
+						}
+						//do not break, continue to the INSTANCE_NOTIFY_NEXT case
+					}
+					case INSTANCE_NOTIFY_ELSE:{
+						if(empty($nextActivities)){
+							if ($connectorService->getType($connector)->uriResource == INSTANCE_TYPEOFCONNECTORS_CONDITIONAL) {
+								$transitionRule = $connectorService->getTransitionRule($connector);
+								if ($transitionRule instanceof core_kernel_classes_Resource) {
+									$else = $transitionRuleService->getElseActivity($transitionRule);
+									if ($else instanceof core_kernel_classes_Resource) {
+										$nextActivities[] = $else->uriResource;
+									}
+								}
+							} else {
+								//wrong connector type!
+								break;
+							}
+						}
+						//do not break, continue to the INSTANCE_NOTIFY_NEXT case
+					}
 	        		case INSTANCE_NOTIFY_NEXT:
-	        			$nextActivities = $connector->getPropertyValuesCollection($connectorNextActivitiesProp);
-	        			foreach($nextActivities->getIterator() as $activity){
-	        				$mode = $activity->getOnePropertyValue($activityAclModeProp);
-	        				if($mode instanceof core_kernel_classes_Resource){
-	        					switch($mode->uriResource){
-	        						case INSTANCE_ACL_USER:
-	        							foreach($activity->getPropertyValues($activityAclUserProp) as $userInstanceUri){
-	        								if(!in_array($userInstanceUri, $users)){
-												$users[] = $userInstanceUri;
+						
+						if(empty($nextActivities)){
+							$cardinalityService = wfEngine_models_classes_ActivityCardinalityService::singleton();
+							foreach($connectorService->getNextActivities($connector) as $nextActivity){
+								if($cardinalityService->isCardinality($nextActivity)){
+									$nextActivities[] = $cardinalityService->getActivity($nextActivity)->uriResource;
+								}else{
+									$nextActivities[] = $nextActivity->uriResource;
+								}
+							}
+						}
+						
+						$nextActivityExecutions = $activityExecutionService->getFollowing($activityExecution);
+						foreach($nextActivityExecutions as $activityExec){
+							
+							$activity = $activityExecutionService->getExecutionOf($activityExec);
+							if(!in_array($activity->uriResource, $nextActivities)){
+								//invalid activity exec
+								continue;
+							}
+							
+							//check if it is among the next activity of the connector:
+							$mode = $activityExecutionService->getAclMode($activityExec);
+							if ($mode instanceof core_kernel_classes_Resource) {
+								switch ($mode->uriResource) {
+									case INSTANCE_ACL_USER:
+										$restrictedUser = $activityExecutionService->getRestrictedUser($activityExec);//@TODO: implemente multiple restricted users?
+										if(!is_null($restrictedUser)){
+											if (!in_array($restrictedUser->uriResource, $users)) {
+												$users[] = $restrictedUser->uriResource;
 											}
-	        							}
-	        							break;
-	        						case INSTANCE_ACL_ROLE:
-	        						case INSTANCE_ACL_ROLE_RESTRICTED_USER:
-	        						case INSTANCE_ACL_ROLE_RESTRICTED_USER_INHERITED:
-	        							foreach($activity->getPropertyValues($activityAclRoleProp) as $roleUri){
-				        					foreach($roleService->getUsers(new core_kernel_classes_Resource($roleUri)) as $userUri){
-				        						if(!in_array($userUri, $users)){
-				        							$users[] = $userUri;
-				        						}
-				        					}
-	        							}
-	        							break;
-	        					}
-	        				}
-	        			}
+										}
+										break;
+									case INSTANCE_ACL_ROLE:
+									case INSTANCE_ACL_ROLE_RESTRICTED_USER:
+									case INSTANCE_ACL_ROLE_RESTRICTED_USER_INHERITED:
+										$restrictedRole = $activityExecutionService->getRestrictedRole($activityExec);//@TODO: implemente multiple restricted roles?
+										if(!is_null($restrictedRole)){
+											foreach ($roleService->getUsers($restrictedRole) as $userUri) {
+												if (!in_array($userUri, $users)) {
+													$users[] = $userUri;
+												}
+											}
+										}
+										break;
+								}
+							}
+							
+						}
+						
 	        			break;
 	        	}
 	        }
@@ -333,10 +404,10 @@ class wfEngine_models_classes_NotificationService
         		
         		if(!empty($toEmail) && !empty($content)){
         			$message = new tao_helpers_transfert_Message();
-        			$message->setTitle(__("[TAO Notification System] Process").' : '.$processName);
+        			$message->setTitle(__("[TAO Notification System] Workflow").' : '.$processName);
         			$message->setBody($content);
         			$message->setTo($toEmail);
-        			$message->setFrom("notifications@tao.lu");
+        			$message->setFrom("tao.notification.system@tao.lu");
         			
         			$messages[$notificationResource->uriResource] = $message;
         		}
@@ -379,7 +450,7 @@ class wfEngine_models_classes_NotificationService
 
         // section 127-0-1-1-278177bc:1333f1e99bb:-8000:0000000000003242 begin
 		
-		$activityExecutionService 	= wfEngine_models_classes_ActivityExecutionService::singleton();
+		$activityExecutionService = wfEngine_models_classes_ActivityExecutionService::singleton();
 
 		if(is_null($processExecution)){
 			$processExecution = $activityExecutionService->getRelatedProcessExecution($activityExecution);

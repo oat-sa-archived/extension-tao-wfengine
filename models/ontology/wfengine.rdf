@@ -631,6 +631,16 @@
     <rdf:type rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassNotificationMode"/>
     <rdfs:label xml:lang="EN"><![CDATA[Notify Next Activity Users]]></rdfs:label>
   </rdf:Description>
+	<rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#InstanceNotifyThenActivityUsers">
+		<rdf:type rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassNotificationMode"/>
+		<rdfs:label xml:lang="EN"><![CDATA[Notify Then Activity Users]]></rdfs:label>
+		<rdfs:comment xml:lang="EN"><![CDATA[For connector of conditional type only]]></rdfs:comment>
+	</rdf:Description>
+	<rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#InstanceNotifyElseActivityUsers">
+		<rdf:type rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassNotificationMode"/>
+		<rdfs:label xml:lang="EN"><![CDATA[Notify Else Activity Users]]></rdfs:label>
+		<rdfs:comment xml:lang="EN"><![CDATA[For connector of conditional type only]]></rdfs:comment>
+	</rdf:Description>  
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#InstanceNotifyPreviousActivityUsers">
     <rdf:type rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassNotificationMode"/>
     <rdfs:label xml:lang="EN"><![CDATA[Notify Previous Activity Users]]></rdfs:label>
