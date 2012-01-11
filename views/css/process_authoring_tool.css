@@ -21,7 +21,7 @@
 	height:25px;
 	width:98%;
 	background-color:#FAF7E3;
-	margin:1px 1%;
+	margin: 0 1%;
 }
 #process_diagram_container {
 	position:relative;
@@ -34,8 +34,8 @@
 	overflow:auto;
 }
 
-#demo {position:absolute;left:27%;top:1%;width:50%;height=auto;}
-#process {position:absolute;left:78%;top:1%;width:21%;height=auto;}
+#demo {position:absolute;left:27%;top:1%;width:50%;height:auto;}
+#process {position:absolute;left:78%;top:1%;width:21%;height:auto;}
 #main {width:1000px;height:700px;}
 
 .diagram_arrow_tip {width:8px;height:8px;border:1px solid red;background-color:#CF0606;cursor:pointer;}
@@ -79,7 +79,7 @@
 #feedback_message_container{position:absolute; top:0px; left:0px;height:100%;width:70%;}
 #feedback_message{margin:5px;}
 #feedback_menu_list_container{
-	position:absolute; 
+	position:absolute;
 	top:0px; right:0px;
 	height:100%;width:30%;
 }
