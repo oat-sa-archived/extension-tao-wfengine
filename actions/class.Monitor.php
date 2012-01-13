@@ -116,6 +116,16 @@ class wfEngine_actions_Monitor extends tao_actions_TaoModule {
 		if($this->hasRequestParameter('filter')){
 			$filter = $this->getRequestParameter('filter');
 			$filter = $filter == 'null' || empty($filter) ? null : $filter;
+            if(is_array($filter)){
+                foreach($filter as $propertyUri=>$propertyValues){
+                    foreach($propertyValues as $i=>$propertyValue){
+                        $propertyDecoded = tao_helpers_Uri::decode($propertyValue);
+                        if(common_Utils::isUri($propertyDecoded)){
+                            $filter[$propertyUri][$i] = $propertyDecoded;
+                        }
+                    }
+                }
+            }
 		}
 		//get the processes uris
 		$processesUri = $this->hasRequestParameter('processesUri') ? $this->getRequestParameter('processesUri') : null;
