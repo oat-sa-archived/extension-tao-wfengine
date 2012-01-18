@@ -1,10 +1,26 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: TAO v2.2-alpha\n"
+"PO-Revision-Date: 2012-01-18T15:52:16\n"
+"Last-Translator: TAO Translation Team <translation@tao.lu>\n"
+"MIME-Version: 1.0\n"
+"Language: LU\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
 msgid "(Ctrl-C)"
 msgstr ""
 
 msgid "(still undefined)"
 msgstr ""
 
-msgid "Access denied. Please renew your authentication!"
+msgid "[TAO Notification System] Workflow"
+msgstr ""
+
+msgid "Access Control Mode"
+msgstr ""
+
+msgid "Access denied. Please renew your authentication."
 msgstr ""
 
 msgid "Actions"
@@ -22,13 +38,13 @@ msgstr ""
 msgid "Activity or Connector"
 msgstr ""
 
+msgid "Activity Variables"
+msgstr ""
+
 msgid "Add (Ctrl-A)"
 msgstr ""
 
 msgid "Add a user"
-msgstr ""
-
-msgid "All items"
 msgstr ""
 
 msgid "An error occured during request processing"
@@ -37,13 +53,7 @@ msgstr ""
 msgid "An error occured during user deletion"
 msgstr ""
 
-msgid "Another Inference Rule"
-msgstr ""
-
 msgid "Assign User to role"
-msgstr ""
-
-msgid "Assignment"
 msgstr ""
 
 msgid "Back"
@@ -52,10 +62,31 @@ msgstr ""
 msgid "Browse Tests"
 msgstr ""
 
+msgid "Build processes to drive activities into a workflow."
+msgstr ""
+
+msgid "cancel"
+msgstr ""
+
+msgid "Cannot create process execution"
+msgstr ""
+
+msgid "check code"
+msgstr ""
+
+msgid "checking the code..."
+msgstr ""
+
 msgid "Close (Esc)"
 msgstr ""
 
 msgid "Close all"
+msgstr ""
+
+msgid "Code"
+msgstr ""
+
+msgid "Code already used"
 msgstr ""
 
 msgid "Compilation"
@@ -73,10 +104,28 @@ msgstr ""
 msgid "Constant"
 msgstr ""
 
-msgid "Country Adapted items and extensions"
+msgid "Country"
 msgstr ""
 
-msgid "Create New Interview"
+msgid "create new activity"
+msgstr ""
+
+msgid "create new connector"
+msgstr ""
+
+msgid "create table"
+msgstr ""
+
+msgid "created by"
+msgstr ""
+
+msgid "Current activities"
+msgstr ""
+
+msgid "Current Activities"
+msgstr ""
+
+msgid "Current User"
 msgstr ""
 
 msgid "Data Language"
@@ -85,26 +134,20 @@ msgstr ""
 msgid "Delete"
 msgstr ""
 
+msgid "delete"
+msgstr ""
+
 msgid "Delete user"
 msgstr ""
 
-msgid "Do you want to change the connector type? 
- THe child connectors will be deleted."
-msgstr ""
-
-msgid "Do you want to change the connector type? \n THe child connectors will be deleted."
-msgstr ""
-
-msgid "ELSE"
+msgid "Do you want to change the connector type? \n"
+" THe child connectors will be deleted."
 msgstr ""
 
 msgid "Edit"
 msgstr ""
 
 msgid "Edit a user"
-msgstr ""
-
-msgid "Edit error"
 msgstr ""
 
 msgid "Edit user"
@@ -119,6 +162,12 @@ msgstr ""
 msgid "Enter remark text here"
 msgstr ""
 
+msgid "execution of"
+msgstr ""
+
+msgid "export"
+msgstr ""
+
 msgid "Export - Debug only (Ctrl-E)"
 msgstr ""
 
@@ -131,12 +180,6 @@ msgstr ""
 msgid "Formal Parameter"
 msgstr ""
 
-msgid "Formal Parameter IN"
-msgstr ""
-
-msgid "Formal Parameter OUT"
-msgstr ""
-
 msgid "Forward"
 msgstr ""
 
@@ -146,13 +189,13 @@ msgstr ""
 msgid "Home"
 msgstr ""
 
-msgid "IF"
-msgstr ""
-
 msgid "If"
 msgstr ""
 
-msgid "Import Interview"
+msgid "IF"
+msgstr ""
+
+msgid "If there is no available activity or there are more than one. You will be redirected to the process main page."
 msgstr ""
 
 msgid "Initialize new Process"
@@ -161,22 +204,28 @@ msgstr ""
 msgid "Input Parameters"
 msgstr ""
 
-msgid "Interface Language"
+msgid "interactive service saved"
 msgstr ""
 
-msgid "Interview initialization"
+msgid "Interface Language"
 msgstr ""
 
 msgid "Label"
 msgstr ""
 
-msgid "Languages"
+msgid "Language"
 msgstr ""
 
 msgid "Launch Process"
 msgstr ""
 
+msgid "list the users"
+msgstr ""
+
 msgid "Loading next activity..."
+msgstr ""
+
+msgid "loading..."
 msgstr ""
 
 msgid "Login"
@@ -185,10 +234,10 @@ msgstr ""
 msgid "Login not available"
 msgstr ""
 
-msgid "Logout"
+msgid "login: "
 msgstr ""
 
-msgid "Manage Roles and associate roles to workflow users"
+msgid "Logout"
 msgstr ""
 
 msgid "Manage processes"
@@ -197,10 +246,22 @@ msgstr ""
 msgid "Manage roles"
 msgstr ""
 
+msgid "Manage Roles and associate roles to workflow users"
+msgstr ""
+
 msgid "Manage users"
 msgstr ""
 
-msgid "Modify"
+msgid "Merge to "
+msgstr ""
+
+msgid "meta data"
+msgstr ""
+
+msgid "Monitor processes"
+msgstr ""
+
+msgid "Monitoring processes"
 msgstr ""
 
 msgid "More detailed description here."
@@ -212,10 +273,25 @@ msgstr ""
 msgid "Name"
 msgstr ""
 
+msgid "new process"
+msgstr ""
+
+msgid "new role"
+msgstr ""
+
+msgid "newly edited"
+msgstr ""
+
 msgid "No account match the given login / password"
 msgstr ""
 
-msgid "No thanks"
+msgid "No process definition uri given"
+msgstr ""
+
+msgid "No variable code given"
+msgstr ""
+
+msgid "ok"
 msgstr ""
 
 msgid "Open all"
@@ -224,39 +300,36 @@ msgstr ""
 msgid "Output Parameters"
 msgstr ""
 
-msgid "PIAAC Background Questionnaire"
-msgstr ""
-
 msgid "Password"
 msgstr ""
 
 msgid "Pause"
 msgstr ""
 
+msgid "please choose another one"
+msgstr ""
+
 msgid "Please confirm deletion"
 msgstr ""
 
-msgid "Please confirm deletion.
- Warning: related resources might be affected."
-msgstr ""
-
-msgid "Please confirm deletion.\n Warning: related resources might be affected."
+msgid "Please confirm deletion.\n"
+" Warning: related resources might be affected."
 msgstr ""
 
 msgid "Please confirm the deletion of the activity"
 msgstr ""
 
-msgid "Please confirm the deletion of the connector: 
- child connectors will be delete at the same time"
-msgstr ""
-
-msgid "Please confirm the deletion of the connector: \n child connectors will be delete at the same time"
+msgid "Please confirm the deletion of the connector: \n"
+" child connectors will be delete at the same time"
 msgstr ""
 
 msgid "Please confirm user deletion"
 msgstr ""
 
 msgid "Please login"
+msgstr ""
+
+msgid "Please login to access the selected activity."
 msgstr ""
 
 msgid "Please select a delivery before authoring it"
@@ -271,10 +344,28 @@ msgstr ""
 msgid "Process"
 msgstr ""
 
-msgid "Process Class saved"
+msgid "Process authoring"
+msgstr ""
+
+msgid "Process Definition"
+msgstr ""
+
+msgid "Process Execution"
+msgstr ""
+
+msgid "Process History"
+msgstr ""
+
+msgid "Process initialization"
+msgstr ""
+
+msgid "Process library"
 msgstr ""
 
 msgid "Process Property"
+msgstr ""
+
+msgid "Process saved"
 msgstr ""
 
 msgid "Process Tree:"
@@ -286,34 +377,28 @@ msgstr ""
 msgid "Process Variables"
 msgstr ""
 
-msgid "Process authoring"
-msgstr ""
-
-msgid "Process class"
-msgstr ""
-
-msgid "Process initialization"
-msgstr ""
-
-msgid "Process library"
-msgstr ""
-
-msgid "Process saved"
-msgstr ""
-
 msgid "Processes"
 msgstr ""
 
 msgid "Question (Ctrl-Q)"
 msgstr ""
 
+msgid "Redirect immediately"
+msgstr ""
+
+msgid "Redirection in "
+msgstr ""
+
+msgid "reload"
+msgstr ""
+
+msgid "reloading form..."
+msgstr ""
+
+msgid "Restricted to"
+msgstr ""
+
 msgid "Role"
-msgstr ""
-
-msgid "Role Class saved"
-msgstr ""
-
-msgid "Role class"
 msgstr ""
 
 msgid "Role library"
@@ -325,7 +410,19 @@ msgstr ""
 msgid "Role(s)"
 msgstr ""
 
+msgid "save"
+msgstr ""
+
 msgid "Save"
+msgstr ""
+
+msgid "saved"
+msgstr ""
+
+msgid "search"
+msgstr ""
+
+msgid "seconds"
 msgstr ""
 
 msgid "Select a test"
@@ -334,14 +431,14 @@ msgstr ""
 msgid "Service Definition"
 msgstr ""
 
-msgid "Set the activity as a final one will delete its following connector. 
- Are you sure?"
-msgstr ""
-
-msgid "Set the activity as a final one will delete its following connector. \n Are you sure?"
+msgid "Set the activity as a final one will delete its following connector. \n"
+" Are you sure?"
 msgstr ""
 
 msgid "Start/Resume the case"
+msgstr ""
+
+msgid "Started Time"
 msgstr ""
 
 msgid "Status"
@@ -359,13 +456,31 @@ msgstr ""
 msgid "TAO Process Engine"
 msgstr ""
 
-msgid "THEN"
+msgid "The activity provided in the url is no longer the up-to-date."
+msgstr ""
+
+msgid "the chosen code has already been used for the process variable"
+msgstr ""
+
+msgid "The link may be outdated."
 msgstr ""
 
 msgid "The Process module allows to create Process"
 msgstr ""
 
+msgid "The resource is not a process definition"
+msgstr ""
+
+msgid "The resource is not a process execution"
+msgstr ""
+
+msgid "The resource is not an activity execution"
+msgstr ""
+
 msgid "The role is using by one or several users. Please remove the role to these users first."
+msgstr ""
+
+msgid "The variable with the code '.$code.' does not exists"
 msgstr ""
 
 msgid "Then"
@@ -374,10 +489,19 @@ msgstr ""
 msgid "Type (Ctrl-T)"
 msgstr ""
 
-msgid "Use the * character to replace any string"
+msgid "type??"
 msgstr ""
 
-msgid "User Id."
+msgid "Unable to log in the user"
+msgstr ""
+
+msgid "undefined"
+msgstr ""
+
+msgid "Unit"
+msgstr ""
+
+msgid "Use the * character to replace any string"
 msgstr ""
 
 msgid "User added"
@@ -386,10 +510,28 @@ msgstr ""
 msgid "User deleted successfully"
 msgstr ""
 
+msgid "User Id."
+msgstr ""
+
+msgid "User logged in successfully"
+msgstr ""
+
 msgid "User name:"
 msgstr ""
 
 msgid "User saved"
+msgstr ""
+
+msgid "Value"
+msgstr ""
+
+msgid "Variables"
+msgstr ""
+
+msgid "VFF"
+msgstr ""
+
+msgid "VFF version"
 msgstr ""
 
 msgid "Welcome to TAO Process Engine"
@@ -401,105 +543,15 @@ msgstr ""
 msgid "Workflow Users"
 msgstr ""
 
-msgid "WorkflowEngine Process Browser"
-msgstr ""
-
 msgid "WorkflowEngine Process Browser "
 msgstr ""
 
-msgid "[TAO Notification System] Process"
+msgid "XLIFF"
 msgstr ""
 
-msgid "cancel"
+msgid "XLIFF version"
 msgstr ""
 
-msgid "check code"
-msgstr ""
-
-msgid "checking the code..."
-msgstr ""
-
-msgid "create new activity"
-msgstr ""
-
-msgid "create new connector"
-msgstr ""
-
-msgid "create table"
-msgstr ""
-
-msgid "delete"
-msgstr ""
-
-msgid "export"
-msgstr ""
-
-msgid "import"
-msgstr ""
-
-msgid "interactive service saved"
-msgstr ""
-
-msgid "list the users"
-msgstr ""
-
-msgid "loading..."
-msgstr ""
-
-msgid "login:"
-msgstr ""
-
-msgid "login: "
-msgstr ""
-
-msgid "merge to"
-msgstr ""
-
-msgid "merge to "
-msgstr ""
-
-msgid "meta data"
-msgstr ""
-
-msgid "new process"
-msgstr ""
-
-msgid "new role"
-msgstr ""
-
-msgid "newly edited"
-msgstr ""
-
-msgid "ok"
-msgstr ""
-
-msgid "please choose another one"
-msgstr ""
-
-msgid "rdf"
-msgstr ""
-
-msgid "reload"
-msgstr ""
-
-msgid "reloading form..."
-msgstr ""
-
-msgid "save"
-msgstr ""
-
-msgid "saved"
-msgstr ""
-
-msgid "search"
-msgstr ""
-
-msgid "the chosen code has already been used for the process variable"
-msgstr ""
-
-msgid "type??"
-msgstr ""
-
-msgid "undefined"
+msgid "You will be redirected to the current activity if you are allowed to."
 msgstr ""
 
