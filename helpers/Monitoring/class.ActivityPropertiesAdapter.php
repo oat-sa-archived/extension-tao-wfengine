@@ -89,6 +89,7 @@ class wfEngine_helpers_Monitoring_ActivityPropertiesAdapter
 				$excludedProperties = $this->excludedProperties;
 				$activityExecutionService = wfEngine_models_classes_ActivityExecutionService::singleton();
 				$activityExecution = new core_kernel_classes_Resource($rowId);
+                $status = $activityExecutionService->getStatus($activityExecution);
 				
 				$this->data[$rowId] = array();
 
@@ -98,7 +99,6 @@ class wfEngine_helpers_Monitoring_ActivityPropertiesAdapter
 				}
 
 				if (!in_array(PROPERTY_ACTIVITY_EXECUTION_STATUS, $excludedProperties)) {
-					$status = $activityExecutionService->getStatus($activityExecution);
 					$this->data[$rowId][PROPERTY_ACTIVITY_EXECUTION_STATUS] = is_null($status) ? null : $status->getLabel();
 				}
 				
@@ -135,7 +135,23 @@ class wfEngine_helpers_Monitoring_ActivityPropertiesAdapter
 					$this->data[$rowId][PROPERTY_ACTIVITY_EXECUTION_PROCESSEXECUTION] = (is_null($processExecution))?'n/a':$processExecution->uriResource;
 				}
 				
-				
+				if (!in_array('runnable', $excludedProperties)){
+                    $runnable = false;
+                    $crtUser = wfEngine_models_classes_UserService::singleton()->getCurrentUser();
+                    if(!is_null($crtUser)){
+                        /**
+                         * @todo the null status should not exist
+                         * @see Sam when a change will occur
+                         */
+                        $runnable = is_null($status) 
+                            || ($status->uriResource != INSTANCE_PROCESSSTATUS_FINISHED
+                            && $status->uriResource != INSTANCE_PROCESSSTATUS_CLOSED
+                            && $status->uriResource != INSTANCE_PROCESSSTATUS_STOPPED
+                            && $activityExecutionService->checkAcl($activityExecution, $crtUser));
+                    }
+                    $this->data[$rowId]['runnable'] = $runnable;
+                }
+                
 				if (isset($this->data[$rowId][$columnId])) {
 					$returnValue = $this->data[$rowId][$columnId];
 				}
