@@ -16,7 +16,7 @@ div#content{
 	border: solid 1px #ccc;
 	border-top-width: 0px;
 	padding: 3px 3px 50px 3px;
-	min-height:670px;
+	min-height:640px;
 }
 
 /* The control area contains a list of various actions/items that are always reachable
