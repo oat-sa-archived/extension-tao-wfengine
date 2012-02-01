@@ -31,7 +31,7 @@ TaoGridDeleteProcessAdapter.postCellFormat = function(grid, cell, rowId, columnI
 {
 	var processExecutionUri = grid.data[rowId][columnId];
 	$(cell).find('a').one('click', function(){
-		wfApi.ProcessExecution.delete(processExecutionUri, function(data){
+		wfApi.ProcessExecution.remove(processExecutionUri, function(data){
 			grid.delete(rowId);
 		}, function(){
 			alert('unable to delete the process execution '+processExecutionUri);

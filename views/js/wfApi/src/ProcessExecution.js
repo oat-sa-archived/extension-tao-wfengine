@@ -25,7 +25,7 @@ wfApi.ProcessExecution = {};
  * Delete a process execution
  * @param {String} processExecutionUri The process execution to delete
  */
-wfApi.ProcessExecution.delete = function(processExecutionUri, successCallback, errorCallback, options)
+wfApi.ProcessExecution.remove = function(processExecutionUri, successCallback, errorCallback, options)
 {
 	wfApi.request(wfApi.ProcessExecutionControler, 'delete', {processExecutionUri:processExecutionUri}, successCallback, errorCallback, options);
 };
