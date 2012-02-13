@@ -132,7 +132,8 @@ class wfEngine_models_classes_ActivityExecutionService
 			switch($methodName){
 				case __CLASS__.'::getExecutionOf':
 				case __CLASS__.'::getStatus':
-				case __CLASS__.'::getActivityExecutionUser':{
+				case __CLASS__.'::getActivityExecutionUser':
+				case __CLASS__.'::getNonce':{
 					if(isset($args[0]) && $args[0] instanceof core_kernel_classes_Resource){
 						$activityExecution = $args[0];
 						if(!isset($this->instancesCache[$activityExecution->uriResource])){
@@ -189,7 +190,8 @@ class wfEngine_models_classes_ActivityExecutionService
 			switch($methodName):
 				case __CLASS__.'::getExecutionOf':
 				case __CLASS__.'::getStatus':
-				case __CLASS__.'::getActivityExecutionUser':{
+				case __CLASS__.'::getActivityExecutionUser':
+				case __CLASS__.'::getNonce':{
 					if(isset($args[0]) && $args[0] instanceof core_kernel_classes_Resource){
 						$activityExecution = $args[0];
 						if(isset($this->instancesCache[$activityExecution->uriResource])
@@ -1499,6 +1501,7 @@ class wfEngine_models_classes_ActivityExecutionService
 		
 		if($activityExecution->editPropertyValues($this->activityExecutionNonceProperty, $nonce)){
 			$returnValue = $nonce;
+			$this->setCache(__CLASS__.'::getNonce', array($activityExecution), (string) $returnValue);
 		}
         // section 127-0-1-1-f0f5ff2:1329704a0db:-8000:0000000000003048 end
 
@@ -1541,9 +1544,19 @@ class wfEngine_models_classes_ActivityExecutionService
         $returnValue = (string) '';
 
         // section 127-0-1-1-6b5af0cd:132a49d9579:-8000:0000000000003051 begin
+		
+		$cachedValue = $this->getCache(__METHOD__, array($activityExecution));
+		if(!is_null($cachedValue) && is_bool($cachedValue)){
+			$returnValue = $cachedValue;
+			return $returnValue;
+		}
+			
 		$nonce = $activityExecution->getOnePropertyValue($this->activityExecutionNonceProperty);
 		if(!is_null($nonce) && $nonce instanceof core_kernel_classes_Literal){
 			$returnValue = $nonce->literal;
+			if(!empty($returnValue)){
+				$this->setCache(__METHOD__, array($activityExecution), $returnValue);
+			}
 		}
         // section 127-0-1-1-6b5af0cd:132a49d9579:-8000:0000000000003051 end
 
