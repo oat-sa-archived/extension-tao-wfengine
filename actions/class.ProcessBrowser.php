@@ -189,10 +189,10 @@ class wfEngine_actions_ProcessBrowser extends wfEngine_actions_WfModule{
 			
 			$browserViewData[''] = $this->processExecution->uriResource;
 			$browserViewData['activityExecutionUri'] = $activityExecution->uriResource;
+			$this->activityExecutionService->createNonce($this->activityExecution);
 			$browserViewData['activityExecutionNonce'] = $this->activityExecutionService->getNonce($activityExecution);
 			
 			//get interactive services (call of services):
-			$this->activityExecutionService->createNonce($this->activityExecution);
 			$activityDefinition = $this->activityExecutionService->getExecutionOf($activityExecution);
 			$interactiveServices = $activityService->getInteractiveServices($activityDefinition);
 			$services = array();
