@@ -3,7 +3,6 @@
 <extension name="Processes" url="/wfEngine/Process/index" level="6">
 	<description>Build processes to drive activities into a workflow.</description>
 	<sections>
-		<section id="monitor_process" name="Monitor processes" url="/wfEngine/Monitor/index" />
 		<section id="manage_process" name="Manage processes" url="/wfEngine/Process/index">
 			<trees>
 				<tree name="Process library" 
