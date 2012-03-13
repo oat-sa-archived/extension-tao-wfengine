@@ -1,5 +1,3 @@
-<!-- <script type="text/javascript" src="<?=ROOT_URL?>/taoItems/models/ext/itemAuthoring/waterphenix/lib/wuib/wuib.min.js"></script> -->
-
 <script type="text/javascript" src="<?=BASE_URL?>/views/js/grid/wfengine.grid.cancelProcess.js"></script>
 <script type="text/javascript" src="<?=BASE_URL?>/views/js/grid/wfengine.grid.deleteProcess.js"></script>
 <script type="text/javascript" src="<?=BASE_URL?>/views/js/grid/wfengine.grid.resumeProcess.js"></script>
@@ -60,7 +58,7 @@
 	</div>
 </div>
 
-<div class="main-container">
+<div>
 	<div id="monitoring-processes-container">
 		<table id="monitoring-processes-grid">
 		</table>

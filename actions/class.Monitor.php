@@ -1,7 +1,4 @@
 <?php
-
-require_once dirname(__FILE__) . '/../test/TranslationProcess/TranslationProcessHelper.php';
-
 /**
  *  Montitor Controler provide actions to manage processes
  * 
@@ -27,9 +24,7 @@ class wfEngine_actions_Monitor extends tao_actions_TaoModule {
 					'weight'=>6
 					, 'widget'=>'CurrentActivities'
 					, 'columns' => array(
-						'xliff' => array('widget'=>'DownloadFileResource')
-						, 'vff' => array('widget'=>'DownloadFileResource')
-						, 'variables' => array(
+						'variables' => array(
 							'widget'=>'ActivityVariables'
 							, 'columns' => array(
 								'value' => array('weight'=>3, 'widget'=>'ActivityVariable')
@@ -61,25 +56,21 @@ class wfEngine_actions_Monitor extends tao_actions_TaoModule {
 	{
 		//Class to filter on
 		$clazz = new core_kernel_classes_Class(CLASS_PROCESSINSTANCES);
-		$properties = array();
-
+		
 		//Properties to filter on
+		$properties = array();
 		$properties[] = new core_kernel_classes_Property(PROPERTY_PROCESSINSTANCES_EXECUTIONOF);
-		$properties[] = TranslationProcessHelper::getProperty('countryCode');
-		$properties[] = TranslationProcessHelper::getProperty('languageCode');
 		$properties[] = new core_kernel_classes_Property(PROPERTY_PROCESSINSTANCES_STATUS);
 		
 		//Monitoring grid
-		$processMonitoringGrid = new wfEngine_helpers_Monitoring_TranslationProcessMonitoringGrid(array(), $this->processMonitoringGridOptions);
+		$processMonitoringGrid = new wfEngine_helpers_Monitoring_ProcessMonitoringGrid(array(), $this->processMonitoringGridOptions);
 		$grid = $processMonitoringGrid->getGrid();
 		$model = $grid->getColumnsModel();
 		
 		//Process history grid
-		$processHistoryGrid = new wfEngine_helpers_Monitoring_TranslationExecutionHistoryGrid(new core_kernel_classes_Resource(' '), array(
+		$processHistoryGrid = new wfEngine_helpers_Monitoring_ExecutionHistoryGrid(new core_kernel_classes_Resource(' '), array(
 			'columns' => array(
-				'xliff'	=> array('widget'=>'DownloadFileResource')
-				, 'vff' => array('widget'=>'DownloadFileResource')
-				, 'variables' => array(
+				'variables' => array(
 					'widget'=>'ActivityVariables'
 					, 'columns' => array(
 						'value' => array('weight'=>3, 'widget'=>'ActivityVariable')
@@ -143,7 +134,7 @@ class wfEngine_actions_Monitor extends tao_actions_TaoModule {
 			$processExecutions = $processInstancesClass->getInstances();
 		}
 		
-		$processMonitoringGrid = new wfEngine_helpers_Monitoring_TranslationProcessMonitoringGrid(array_keys($processExecutions), $this->processMonitoringGridOptions);
+		$processMonitoringGrid = new wfEngine_helpers_Monitoring_ExecutionHistoryGrid(array_keys($processExecutions), $this->processMonitoringGridOptions);
 		$data = $processMonitoringGrid->toArray();
 		
 		echo json_encode($data);
