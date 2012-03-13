@@ -396,7 +396,7 @@ class wfEngine_helpers_ProcessFormFactory extends tao_helpers_form_GenerisFormFa
 							if(!is_null($inParameterProcessVariable)){
 								//the type is a processvariable so must be a resource:
 								if(!($inParameterProcessVariable instanceof core_kernel_classes_Resource)){
-									throw new Exception("the process variable set as the value of the actual parameter is not a resource");
+									throw new common_Exception("the process variable set as the value of the parameter '".$actualParam->getLabel()."' is not a resource");
 								}
 								
 								$paramType = 'processvariable';

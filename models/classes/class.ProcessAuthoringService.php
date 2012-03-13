@@ -212,7 +212,7 @@ class wfEngine_models_classes_ProcessAuthoringService
 		if(!empty($processes)){
 			$returnValue = $this->createActivity(array_shift($processes), $newActivityLabel);
 		}else{
-			throw new Exception("no related process instance found to create an activity");
+			throw new common_exception_Error("No process instance found for activity ".$relatedActivity." to create an activity from");
 		}
 		
         // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004D69 end
@@ -608,7 +608,7 @@ class wfEngine_models_classes_ProcessAuthoringService
 				if(!empty($processes)){
 					$followingActivity = $this->createActivity(array_shift($processes), $newActivityLabel);
 				}else{
-					throw new Exception("no related process instance found to create an activity");
+					throw new common_exception_Error("No process instance found for activity ".$relatedActivity." to create an conditional activity from");
 				}
 			}
 		}
