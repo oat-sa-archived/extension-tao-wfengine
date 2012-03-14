@@ -39,4 +39,5 @@ class wfEngine_actions_SASMonitor extends wfEngine_actions_Monitor {
 		}
 		return parent::setView('sas.tpl', true);
     }
+	
 }

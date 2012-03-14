@@ -48,7 +48,8 @@
 		<li><a href="#tabs-3">Facet</a></li>
 	</ul>
 	<div id="tabs-1">
-		<div id="facet-filter"/>
+		<div id="facet-filter">
+		</div>
 	</div>
 	<div id="tabs-2">tabs-2
 		<? //include() ?>
@@ -58,7 +59,7 @@
 	</div>
 </div>
 
-<div>
+<div class="main-container">
 	<div id="monitoring-processes-container">
 		<table id="monitoring-processes-grid">
 		</table>
@@ -94,27 +95,6 @@ var selectedActivityExecutionId = null;
 //Workflow variables
 var wfVariables = [];
 
-//refresh the monitoring the target processes 
-function refreshMonitoring(processesUri)
-{
-	$.getJSON(root_url+'/wfEngine/Monitor/monitorProcess'
-		,{
-			'processesUri':processesUri
-		}
-		, function(DATA){
-			monitoringGrid.refresh(DATA);
-			if(selectedProcessId){
-				if(typeof DATA[selectedProcessId] != 'undefined'){
-					//refresh does not work here ... strange
-					//currentActivitiesGrid.refresh(DATA[selectedProcessId]['http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessInstancesCurrentActivityExecutions']);
-					currentActivitiesGrid.empty();
-					currentActivitiesGrid.add(DATA[selectedProcessId]['http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessInstancesCurrentActivityExecutions']);
-				}
-			}
-		}
-	);
-}
- 
 //load the monitoring interface functions of the parameter filter
 function loadMonitoring(filter)
 {
@@ -143,22 +123,18 @@ $(function(){
 	/*
 	 * Instantiate the tabs
 	 */
-	 
 	var filterTabs = new TaoTabsClass('#filter-container', {'position':'bottom'});
 	var processDetailsTabs = new TaoTabsClass('#process-details-tabs', {'position':'bottom'});
-
 	
 	/*
 	 * instantiate the facet based filter widget
 	 */
-
 	var getUrl = root_url + '/wfEngine/Monitor/getFilteredInstancesPropertiesValues';
 	//the facet filter options
 	var facetFilterOptions = {
 		'template' : 'accordion',
 		'callback' : {
 			'onFilter' : function(filter, filterNodesOpt){
-				//refreshResult(filter, filterNodesOptions);
 				var formatedFilter = {};
 				for(var filterNodeId in filter){
 					var propertyUri = filterNodesOpt[filterNodeId]['propertyUri'];
@@ -194,7 +170,6 @@ $(function(){
 	/*
 	 * instantiate the monitoring grid
 	 */
-	
 	//the monitoring grid options
 	var monitoringGridOptions = {
 		'height' : $('#monitoring-processes-grid').parent().height()
@@ -265,7 +240,7 @@ $(function(){
 	//load monitoring grid
 	loadMonitoring(null);
 	
-	//with of the subgrid
+	//width/height of the subgrids
 	var subGridWith = $('#current_activities_container').width() - 12 /* padding */;
 	var subGridHeight = $('#current_activities_container').height() - 45;
 	

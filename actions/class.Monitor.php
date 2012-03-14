@@ -134,7 +134,7 @@ class wfEngine_actions_Monitor extends tao_actions_TaoModule {
 			$processExecutions = $processInstancesClass->getInstances();
 		}
 		
-		$processMonitoringGrid = new wfEngine_helpers_Monitoring_ExecutionHistoryGrid(array_keys($processExecutions), $this->processMonitoringGridOptions);
+		$processMonitoringGrid = new wfEngine_helpers_Monitoring_ProcessMonitoringGrid(array_keys($processExecutions), $this->processMonitoringGridOptions);
 		$data = $processMonitoringGrid->toArray();
 		
 		echo json_encode($data);
@@ -149,7 +149,7 @@ class wfEngine_actions_Monitor extends tao_actions_TaoModule {
 			$uri = $this->getRequestParameter('uri');
 		}
 		
-		$processMonitoringGrid = new wfEngine_helpers_Monitoring_TranslationExecutionHistoryGrid(new core_kernel_classes_Resource($uri));
+		$processMonitoringGrid = new wfEngine_helpers_Monitoring_ExecutionHistoryGrid(new core_kernel_classes_Resource($uri));
 		$data = $processMonitoringGrid->toArray();
 		
 		echo json_encode($data);
