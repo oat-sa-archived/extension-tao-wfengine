@@ -9,10 +9,10 @@ error_reporting(E_ALL);
  *
  * This file is part of TAO.
  *
- * Automatically generated on 29.08.2011, 14:59:16 with ArgoUML PHP module 
+ * Automatically generated on 16.03.2012, 11:56:26 with ArgoUML PHP module 
  * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
  *
- * @author Lionel Lecaque, <lionel.lecaque@tudor.lu>
+ * @author Joel Bout, <joel.bout@tudor.lu>
  * @package wfEngine
  * @subpackage helpers
  */
@@ -33,7 +33,7 @@ if (0 > version_compare(PHP_VERSION, '5')) {
  * Short description of class wfEngine_helpers_ProcessUtil
  *
  * @access public
- * @author Lionel Lecaque, <lionel.lecaque@tudor.lu>
+ * @author Joel Bout, <joel.bout@tudor.lu>
  * @package wfEngine
  * @subpackage helpers
  */
@@ -47,40 +47,10 @@ class wfEngine_helpers_ProcessUtil
     // --- OPERATIONS ---
 
     /**
-     * Short description of method checkType
-     *
-     * @access public
-     * @author Lionel Lecaque, <lionel.lecaque@tudor.lu>
-     * @param  Resource resource
-     * @param  Class clazz
-     * @return boolean
-     */
-    public static function checkType( core_kernel_classes_Resource $resource,  core_kernel_classes_Class $clazz)
-    {
-        $returnValue = (bool) false;
-
-        // section 10-13-1-39--284957ac:12e4ca5284a:-8000:0000000000002BEB begin
-		if(!is_null($resource) && !is_null($clazz)){	
-			foreach($resource->getType() as $type){
-				if($type instanceof core_kernel_classes_Class){
-					if( $type->uriResource == $clazz->uriResource){
-						$returnValue = true;
-						break;
-					}
-				}
-			}
-			
-		}
-        // section 10-13-1-39--284957ac:12e4ca5284a:-8000:0000000000002BEB end
-
-        return (bool) $returnValue;
-    }
-
-    /**
      * Short description of method getServiceDefinition
      *
      * @access public
-     * @author Lionel Lecaque, <lionel.lecaque@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  string url
      * @return core_kernel_classes_Resource
      */
@@ -107,7 +77,7 @@ class wfEngine_helpers_ProcessUtil
      * Short description of method isActivity
      *
      * @access public
-     * @author Lionel Lecaque, <lionel.lecaque@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  Resource resource
      * @return boolean
      */
@@ -125,51 +95,10 @@ class wfEngine_helpers_ProcessUtil
     }
 
     /**
-     * Short description of method isActivityFinal
-     *
-     * @access public
-     * @author Lionel Lecaque, <lionel.lecaque@tudor.lu>
-     * @param  Resource activity
-     * @return boolean
-     */
-    public static function isActivityFinal( core_kernel_classes_Resource $activity)
-    {
-        $returnValue = (bool) false;
-
-        // section 10-13-1-39--284957ac:12e4ca5284a:-8000:0000000000002BF8 begin
-		$processAuthoringService = wfEngine_models_classes_ProcessAuthoringService::singleton();
-		$connectors = $processAuthoringService->getConnectorsByActivity($activity, array('next'));
-		if(isset($connectors['next'])){
-			$returnValue = empty($connectors['next']);
-		}
-        // section 10-13-1-39--284957ac:12e4ca5284a:-8000:0000000000002BF8 end
-
-        return (bool) $returnValue;
-    }
-
-    /**
-     * Short description of method isActivityInitial
-     *
-     * @access public
-     * @author Lionel Lecaque, <lionel.lecaque@tudor.lu>
-     * @param  Resource activity
-     * @return boolean
-     */
-    public static function isActivityInitial( core_kernel_classes_Resource $activity)
-    {
-        $returnValue = (bool) false;
-
-        // section 10-13-1-39--284957ac:12e4ca5284a:-8000:0000000000002BFB begin
-        // section 10-13-1-39--284957ac:12e4ca5284a:-8000:0000000000002BFB end
-
-        return (bool) $returnValue;
-    }
-
-    /**
      * Short description of method isConnector
      *
      * @access public
-     * @author Lionel Lecaque, <lionel.lecaque@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  Resource resource
      * @return boolean
      */
@@ -190,7 +119,7 @@ class wfEngine_helpers_ProcessUtil
      * Organize Process Variable into an array
      *
      * @access public
-     * @author Lionel Lecaque, <lionel.lecaque@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  array variables
      * @return array
      */
@@ -205,6 +134,97 @@ class wfEngine_helpers_ProcessUtil
         // section 127-0-1-1--7eb5a1dd:13214d5811e:-8000:0000000000002E9E end
 
         return (array) $returnValue;
+    }
+
+    /**
+     * Returns the activityExecutions of a ProcessInstance
+     * in order of execution
+     *
+     * @access public
+     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @param  Resource process
+     * @return array
+     */
+    public static function getActivityExecutions( core_kernel_classes_Resource $process)
+    {
+        $returnValue = array();
+
+        // section 127-0-1-1-3efeec8d:1361b13fcc8:-8000:00000000000038A6 begin
+        // section 127-0-1-1-3efeec8d:1361b13fcc8:-8000:00000000000038A6 end
+
+        return (array) $returnValue;
+    }
+
+    /**
+     * Short description of method checkType
+     *
+     * @access public
+     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @param  Resource resource
+     * @param  Class clazz
+     * @return mixed
+     */
+    public static function checkType( core_kernel_classes_Resource $resource,  core_kernel_classes_Class $clazz)
+    {
+        // section 127-0-1-1-3efeec8d:1361b13fcc8:-8000:00000000000038AC begin
+    	if(!is_null($resource) && !is_null($clazz)){	
+			foreach($resource->getTypes() as $type){
+				if($type instanceof core_kernel_classes_Class){
+					if( $type->uriResource == $clazz->uriResource){
+						$returnValue = true;
+						break;
+					}
+				}
+			}
+			
+		}
+        // section 127-0-1-1-3efeec8d:1361b13fcc8:-8000:00000000000038AC end
+    }
+
+    /**
+     * Short description of method isActivityFinal
+     *
+     * @access public
+     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @param  Resource activity
+     * @return boolean
+     */
+    public static function isActivityFinal( core_kernel_classes_Resource $activity)
+    {
+        $returnValue = (bool) false;
+
+        // section 127-0-1-1-3efeec8d:1361b13fcc8:-8000:00000000000038AE begin
+    	$processAuthoringService = wfEngine_models_classes_ProcessAuthoringService::singleton();
+		$connectors = $processAuthoringService->getConnectorsByActivity($activity, array('next'));
+		if(isset($connectors['next'])){
+			$returnValue = empty($connectors['next']);
+		}
+        // section 127-0-1-1-3efeec8d:1361b13fcc8:-8000:00000000000038AE end
+
+        return (bool) $returnValue;
+    }
+
+    /**
+     * Short description of method isActivityInitial
+     *
+     * @access public
+     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @param  Resource activity
+     * @return boolean
+     */
+    public static function isActivityInitial( core_kernel_classes_Resource $activity)
+    {
+        $returnValue = (bool) false;
+
+        // section 127-0-1-1-3efeec8d:1361b13fcc8:-8000:00000000000038B0 begin
+    	$processAuthoringService = wfEngine_models_classes_ProcessAuthoringService::singleton();
+		$connectors = $processAuthoringService->getConnectorsByActivity($activity, array('previous'));
+		if(isset($connectors['previous'])){
+			$returnValue = empty($connectors['previous']);
+		}
+        // section 127-0-1-1-3efeec8d:1361b13fcc8:-8000:00000000000038B0 end
+
+        return (bool) $returnValue;
     }
 
 } /* end of class wfEngine_helpers_ProcessUtil */
