@@ -150,6 +150,29 @@ class wfEngine_helpers_ProcessUtil
         $returnValue = array();
 
         // section 127-0-1-1-3efeec8d:1361b13fcc8:-8000:00000000000038A6 begin
+        $prop = new core_kernel_classes_Property(PROPERTY_PROCESSINSTANCES_ACTIVITYEXECUTIONS);
+        $activities = $process->getPropertyValues($prop);
+        
+        $nextmap = array();
+        $previous = new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_PREVIOUS);
+        $ordered = array();
+        foreach ($activities as $activity) {
+        	$activityRessource = new core_kernel_classes_Resource($activity);
+        	$predecessor = $activityRessource->getOnePropertyValue($previous);
+        	if (is_null($predecessor)) {
+        		$currenturi = $activity;
+        		$returnValue[] = new core_kernel_classes_Resource($activity);
+        	} else {
+        		$nextmap[$predecessor->getUri()] = $activity; 
+        	} 
+        }
+        
+        while (!empty($nextmap)) {
+        	$nexturi = $nextmap[$currenturi];
+        	$returnValue[] = new core_kernel_classes_Resource($nexturi);
+        	unset($nextmap[$currenturi]);
+        	$currenturi = $nexturi;
+        }
         // section 127-0-1-1-3efeec8d:1361b13fcc8:-8000:00000000000038A6 end
 
         return (array) $returnValue;
@@ -176,7 +199,6 @@ class wfEngine_helpers_ProcessUtil
 					}
 				}
 			}
-			
 		}
         // section 127-0-1-1-3efeec8d:1361b13fcc8:-8000:00000000000038AC end
     }
