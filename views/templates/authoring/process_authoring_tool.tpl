@@ -264,4 +264,4 @@
 	
 <?endif;?>
 
-<?include(BASE_PATH.'/'.DIR_VIEWS.$GLOBALS['dir_theme'].'footer.tpl')?>
+<?include(DIR_VIEWS.$GLOBALS['dir_theme'].'footer.tpl')?>
