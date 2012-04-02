@@ -327,7 +327,7 @@ msgid "Please confirm user deletion"
 msgstr "Veuillez confirmer la suppression d'utilisateur"
 
 msgid "Please login"
-msgstr "Veuilez vous identifier"
+msgstr "Veuillez vous identifier"
 
 msgid "Please login to access the selected activity."
 msgstr ""
