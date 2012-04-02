@@ -8,4 +8,4 @@
 	</div>
 </div>
 
-<?include(DIR_VIEWS.$GLOBALS['dir_theme'].'footer.tpl')?>
+<?include(BASE_PATH.'/views/templates/footer.tpl');?>

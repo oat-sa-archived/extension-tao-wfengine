@@ -96,3 +96,5 @@ $(function(){
 	_autoFx();
 });
 </script>
+
+<?include(BASE_PATH.'/views/templates/footer.tpl');?>

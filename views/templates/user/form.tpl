@@ -62,3 +62,5 @@
 	});
 	</script>
 <?endif?>
+
+<?include(BASE_PATH.'/views/templates/footer.tpl');?>

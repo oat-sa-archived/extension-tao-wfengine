@@ -18,13 +18,14 @@ $(document).ready(function(){
 	if(ctx_extension){
 		url = root_url + '/' + ctx_extension + '/' + ctx_module + '/';
 	}
-	getUrl = url + 'getUsers';
-	setUrl = url + 'saveUsers';
+	var getUrl = url + 'getUsers';
+	var setUrl = url + 'saveUsers';
 	new GenerisTreeFormClass('#user-tree', getUrl, {
 		actionId: 'user',
 		saveUrl : setUrl,
 		checkedNodes : <?=get_data('users')?>,
-		relatedFormId : 'roleEditor'
+		relatedFormId : 'form_1'
 	});
+	
 });
 </script>
