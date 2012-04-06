@@ -546,7 +546,7 @@ class wfEngine_models_classes_ActivityExecutionService
 						//from the process definition get the number of allowed activity executions for this activity definition (normally only 1 but can be more, for a parallel connector)
 						
         				$activityRole 	= $this->getRestrictedRole($activityExecution);
-						$userRoles 		= $currentUser->getType();
+						$userRoles 		= $currentUser->getTypes();
         				if(!is_null($activityRole) && is_array($userRoles)){
         					foreach($userRoles as $userRole){
 		        				if($activityRole->uriResource == $userRole->uriResource){
