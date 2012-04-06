@@ -647,7 +647,7 @@
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#InstanceNotifyRole">
     <rdf:type rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassNotificationMode"/>
-    <rdfs:label xml:lang="EN"><![CDATA[Notifiy Role]]></rdfs:label>
+    <rdfs:label xml:lang="EN"><![CDATA[Notify Role]]></rdfs:label>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyConnectorsNotificationModes">
     <rdfs:range rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassNotificationMode"/>
