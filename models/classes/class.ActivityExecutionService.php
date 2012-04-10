@@ -643,12 +643,12 @@ class wfEngine_models_classes_ActivityExecutionService
 					}
         		}
         	}
+			
+			//set cached value:
+			if (is_null($cachedValue) || !is_bool($cachedValue)) {
+				$this->setCache(__METHOD__, array($activityExecution, $currentUser, $processExecution), $returnValue);
+			}
         }
-		
-		//set cached value:
-		if(is_null($cachedValue) || !is_bool($cachedValue)){
-			$this->setCache(__METHOD__, array($activityExecution, $currentUser, $processExecution), $returnValue);
-		}
 			
         // section 127-0-1-1--10e47d9e:128d54bbb0d:-8000:0000000000001F62 end
 
