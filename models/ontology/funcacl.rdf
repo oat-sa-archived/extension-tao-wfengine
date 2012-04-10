@@ -540,14 +540,6 @@
 		<funcacl:actionMemberOf rdf:resource="http://www.tao.lu/Ontologies/taoFuncACL.rdf#m_wfEngine_SASMonitor" />
   </rdf:Description>
 
-	<rdf:Description rdf:about="http://www.tao.lu/Ontologies/taoFuncACL.rdf#m_wfEngine_Settings">
-    <rdf:type rdf:resource="http://www.tao.lu/Ontologies/taoFuncACL.rdf#Module"/>
-    <rdfs:label xml:lang="EN"><![CDATA[module Settings]]></rdfs:label>
-		<rdfs:comment xml:lang="EN"><![CDATA[module Settings]]></rdfs:comment>
-		<funcacl:moduleIdentifier xml:lang="EN"><![CDATA[Settings]]></funcacl:moduleIdentifier>
-		<funcacl:moduleExtension xml:lang="EN"><![CDATA[wfEngine]]></funcacl:moduleExtension>
-  </rdf:Description>
-
 
 	<rdf:Description rdf:about="http://www.tao.lu/Ontologies/taoFuncACL.rdf#m_wfEngine_Users">
     <rdf:type rdf:resource="http://www.tao.lu/Ontologies/taoFuncACL.rdf#Module"/>
@@ -769,14 +761,6 @@
 		<rdfs:comment xml:lang="EN"><![CDATA[action getAllVariables]]></rdfs:comment>
 		<funcacl:actionIdentifier xml:lang="EN"><![CDATA[getAllVariables]]></funcacl:actionIdentifier>
 		<funcacl:actionMemberOf rdf:resource="http://www.tao.lu/Ontologies/taoFuncACL.rdf#m_wfEngine_WfApiVariable" />
-  </rdf:Description>
-
-	<rdf:Description rdf:about="http://www.tao.lu/Ontologies/taoFuncACL.rdf#m_wfEngine_WfModule">
-    <rdf:type rdf:resource="http://www.tao.lu/Ontologies/taoFuncACL.rdf#Module"/>
-    <rdfs:label xml:lang="EN"><![CDATA[module WfModule]]></rdfs:label>
-		<rdfs:comment xml:lang="EN"><![CDATA[module WfModule]]></rdfs:comment>
-		<funcacl:moduleIdentifier xml:lang="EN"><![CDATA[WfModule]]></funcacl:moduleIdentifier>
-		<funcacl:moduleExtension xml:lang="EN"><![CDATA[wfEngine]]></funcacl:moduleExtension>
   </rdf:Description>
 
 
