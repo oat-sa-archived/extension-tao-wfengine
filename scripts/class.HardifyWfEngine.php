@@ -286,7 +286,7 @@ extends tao_scripts_Runner
 		// section 127-0-1-1-22592813:12fbf8723a0:-8000:0000000000002FD8 begin
 
 		$referencer = core_kernel_persistence_hardapi_ResourceReferencer::singleton();
-		$referencer->resetCache();
+		$referencer->clearCaches();
 		 
 		if(isset($this->parameters['indexes']) && $this->parameters['indexes'] == true){
 
@@ -314,43 +314,41 @@ extends tao_scripts_Runner
 	    		'http://www.tao.lu/Ontologies/TAOResult.rdf#TAO_TEST_ID',
 	    		'http://www.tao.lu/Ontologies/TAOResult.rdf#TAO_ITEM_ID',
 	    		'http://www.tao.lu/Ontologies/TAOResult.rdf#TAO_SUBJECT_ID'
-	    		);
+    		);
 
-	    		foreach($indexProperties as $indexProperty){
-	    			$property = new core_kernel_classes_Property($indexProperty);
-	    			$propertyAlias = core_kernel_persistence_hardapi_Utils::getShortName($property);
-	    			foreach($referencer->propertyLocation($property) as $table){
-	    				if(!preg_match("/Props$/", $table) && preg_match("/^_[0-9]{2,}/", $table)){
-	    					$dbWrapper->execSql("ALTER TABLE `{$table}` ADD INDEX `idx_{$propertyAlias}` (`{$propertyAlias}`( 255 ))");
-	    				}
-	    			}
-	    		}
+    		foreach($indexProperties as $indexProperty){
+    			$property = new core_kernel_classes_Property($indexProperty);
+    			$propertyAlias = core_kernel_persistence_hardapi_Utils::getShortName($property);
+    			foreach($referencer->propertyLocation($property) as $table){
+    				if(!preg_match("/Props$/", $table) && preg_match("/^_[0-9]{2,}/", $table)){
+    					$dbWrapper->execSql("ALTER TABLE `{$table}` ADD INDEX `idx_{$propertyAlias}` (`{$propertyAlias}`( 255 ))");
+    				}
+    			}
+    		}
 
-	    		self::out("\nRebuild table indexes, it can take a while...");
+    		self::out("\nRebuild table indexes, it can take a while...");
 
+    		//Need to OPTIMIZE / FLUSH the tables in order to rebuild the indexes
+    		$tables = $dbWrapper->dbConnector->MetaTables('TABLES');
 
-	    		//Need to OPTIMIZE / FLUSH the tables in order to rebuild the indexes
-	    		$tables = $dbWrapper->dbConnector->MetaTables('TABLES');
-
-	    		$size = count($tables);
-	    		$i = 0;
-	    		while($i < $size){
-	    			 
-	    			$percent = round(($i / $size) * 100);
-	    			if($percent < 10){
-	    				$percent = '0'.$percent;
-	    			}
-	    			self::out(" $percent %", array('color' => 'light_green', 'inline' => true, 'prefix' => "\r"));
-	    			 
-	    			$dbWrapper->execSql("OPTIMIZE TABLE `{$tables[$i]}`");
-	    			$dbWrapper->execSql("FLUSH TABLE `{$tables[$i]}`");
-	    			 
-	    			$i++;
-	    		}
+    		$size = count($tables);
+    		$i = 0;
+    		while($i < $size){
+    			 
+    			$percent = round(($i / $size) * 100);
+    			if($percent < 10){
+    				$percent = '0'.$percent;
+    			}
+    			self::out(" $percent %", array('color' => 'light_green', 'inline' => true, 'prefix' => "\r"));
+    			 
+    			$dbWrapper->execSql("OPTIMIZE TABLE `{$tables[$i]}`");
+    			$dbWrapper->execSql("FLUSH TABLE `{$tables[$i]}`");
+    			 
+    			$i++;
+    		}
 		}
 		 
 		self::out("\nFinished !\n", array('color' => 'light_blue'));
-		 
 		// section 127-0-1-1-22592813:12fbf8723a0:-8000:0000000000002FD8 end
 	}
 
