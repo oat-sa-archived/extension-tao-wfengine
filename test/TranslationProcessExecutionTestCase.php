@@ -1450,7 +1450,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		}
 		
 		$activityExecutionsData = $processExecutionService->getAllActivityExecutions($processInstance);
-		var_dump($activityExecutionsData);
+//		var_dump($activityExecutionsData);
 		
 		$executionHistory = $processExecutionService->getExecutionHistory($processInstance);
 		$this->assertEqual(count($executionHistory), $i);//there is one hidden activity
@@ -1734,7 +1734,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		}
 		
 		$activityExecutionsData = $processExecutionService->getAllActivityExecutions($processInstance);
-		var_dump($activityExecutionsData);
+//		var_dump($activityExecutionsData);
 		
 		$executionHistory = $processExecutionService->getExecutionHistory($processInstance);
 		$this->assertEqual(count($executionHistory), $i-1);//there is no hidden activity
@@ -2084,7 +2084,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		}
 		
 		$activityExecutionsData = $processExecutionService->getAllActivityExecutions($processInstance);
-		var_dump($activityExecutionsData);
+//		var_dump($activityExecutionsData);
 		
 		$executionHistory = $processExecutionService->getExecutionHistory($processInstance);
 		$this->assertEqual(count($executionHistory), $i);//one hidden activity
@@ -2461,7 +2461,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		}
 
 		$activityExecutionsData = $processExecutionService->getAllActivityExecutions($processInstance);
-		var_dump($activityExecutionsData);
+//		var_dump($activityExecutionsData);
 
 		$executionHistory = $processExecutionService->getExecutionHistory($processInstance);
 		$this->assertEqual(count($executionHistory), $i); //there is one hidden activity
@@ -2624,16 +2624,6 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 	}
 	
 	public function testDeleteCreatedResources(){
-		
-		if(isset($this->config['execute']) && $this->config['execute'] === false){
-			
-			var_dump($this->roles);
-			var_dump($this->roleLogins);
-			
-			var_dump($this->users);
-			var_dump($this->userLogins);
-			
-		}
 		
 		if(isset($this->config['delete']) && $this->config['delete'] === false){
 			$this->out('Skip resources deletion');
