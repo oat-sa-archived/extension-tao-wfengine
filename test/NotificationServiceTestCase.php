@@ -69,7 +69,9 @@ class NotificationServiceTestCase extends UnitTestCase {
 	}
 	
 	public function tearDown() {
-		$this->currentUser->delete();
+		if (!is_null($this->currentUser)){
+			$this->currentUser->delete();
+		}
     }
 	
 	/**
