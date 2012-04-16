@@ -38,6 +38,8 @@ class ProcessExecutionServiceTestCase extends UnitTestCase{
 	 */
 	protected $currentUser = null;
 	
+	protected $currentUser0 = null;
+	
 	/**
 	 * initialize a test method
 	 */
@@ -75,7 +77,9 @@ class ProcessExecutionServiceTestCase extends UnitTestCase{
 	}
 	
 	public function tearDown() {
-		$this->currentUser0->delete();
+		if (!is_null($this->$currentUser0)){
+			$this->currentUser0->delete();
+		}
     }
 	
 	/**
