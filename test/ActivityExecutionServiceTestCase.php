@@ -15,6 +15,8 @@ class ActivityExecutionServiceTestCase extends wfEngineServiceTest {
 	 */
 	protected $service = null;
 	
+	private $currentUser0 = null;
+	
 	/**
 	 * initialize a test method
 	 */
@@ -45,7 +47,9 @@ class ActivityExecutionServiceTestCase extends wfEngineServiceTest {
 	}
 	
 	public function tearDown() {
-		$this->currentUser0->delete();
+		if (!is_null($this->currentUser0)){
+			$this->currentUser0->delete();
+		}
     }
 	
 	/**
