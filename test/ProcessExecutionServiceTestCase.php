@@ -77,7 +77,7 @@ class ProcessExecutionServiceTestCase extends UnitTestCase{
 	}
 	
 	public function tearDown() {
-		if (!is_null($this->$currentUser0)){
+		if (!is_null($this->currentUser0)){
 			$this->currentUser0->delete();
 		}
     }
