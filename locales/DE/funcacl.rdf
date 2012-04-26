@@ -1,0 +1,1861 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    @sourceLanguage EN
+    @targetLanguage DE
+-->
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xml:base="http://www.tao.lu/Ontologies/taoFuncACL.rdf">
+  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/taoFuncACL.rdf#m_wfEngine_Authentication">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source module Authentication
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#m_wfEngine_Authentication
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="DE"><![CDATA[module Authentication]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source module Authentication
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#m_wfEngine_Authentication
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="DE"><![CDATA[module Authentication]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_Authentication_index">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action index
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_Authentication_index
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="DE"><![CDATA[action index]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action index
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_Authentication_index
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="DE"><![CDATA[action index]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_Authentication_login">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action login
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_Authentication_login
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="DE"><![CDATA[action login]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action login
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_Authentication_login
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="DE"><![CDATA[action login]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_Authentication_info">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action info
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_Authentication_info
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="DE"><![CDATA[action info]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action info
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_Authentication_info
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="DE"><![CDATA[action info]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_Authentication_logout">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action logout
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_Authentication_logout
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="DE"><![CDATA[action logout]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action logout
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_Authentication_logout
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="DE"><![CDATA[action logout]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/taoFuncACL.rdf#m_wfEngine_Main">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source module Main
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#m_wfEngine_Main
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="DE"><![CDATA[module Main]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source module Main
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#m_wfEngine_Main
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="DE"><![CDATA[module Main]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_Main_index">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action index
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_Main_index
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="DE"><![CDATA[action index]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action index
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_Main_index
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="DE"><![CDATA[action index]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/taoFuncACL.rdf#m_wfEngine_Monitor">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source module Monitor
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#m_wfEngine_Monitor
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="DE"><![CDATA[module Monitor]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source module Monitor
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#m_wfEngine_Monitor
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="DE"><![CDATA[module Monitor]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_Monitor_getRootClass">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action getRootClass
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_Monitor_getRootClass
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="DE"><![CDATA[action getRootClass]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action getRootClass
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_Monitor_getRootClass
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="DE"><![CDATA[action getRootClass]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_Monitor_index">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action index
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_Monitor_index
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="DE"><![CDATA[action index]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action index
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_Monitor_index
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="DE"><![CDATA[action index]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_Monitor_monitorProcess">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action monitorProcess
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_Monitor_monitorProcess
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="DE"><![CDATA[action monitorProcess]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action monitorProcess
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_Monitor_monitorProcess
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="DE"><![CDATA[action monitorProcess]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_Monitor_processHistory">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action processHistory
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_Monitor_processHistory
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="DE"><![CDATA[action processHistory]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action processHistory
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_Monitor_processHistory
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="DE"><![CDATA[action processHistory]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/taoFuncACL.rdf#m_wfEngine_Process">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source module Process
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#m_wfEngine_Process
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="DE"><![CDATA[module Process]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source module Process
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#m_wfEngine_Process
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="DE"><![CDATA[module Process]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_Process_index">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action index
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_Process_index
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="DE"><![CDATA[action index]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action index
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_Process_index
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="DE"><![CDATA[action index]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_Process_editProcess">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action editProcess
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_Process_editProcess
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="DE"><![CDATA[action editProcess]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action editProcess
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_Process_editProcess
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="DE"><![CDATA[action editProcess]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_Process_delete">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action delete
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_Process_delete
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="DE"><![CDATA[action delete]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action delete
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_Process_delete
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="DE"><![CDATA[action delete]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_Process_authoring">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action authoring
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_Process_authoring
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="DE"><![CDATA[action authoring]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action authoring
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_Process_authoring
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="DE"><![CDATA[action authoring]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_Process_editProcessClass">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action editProcessClass
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_Process_editProcessClass
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="DE"><![CDATA[action editProcessClass]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action editProcessClass
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_Process_editProcessClass
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="DE"><![CDATA[action editProcessClass]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_Process_cloneProcess">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action cloneProcess
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_Process_cloneProcess
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="DE"><![CDATA[action cloneProcess]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action cloneProcess
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_Process_cloneProcess
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="DE"><![CDATA[action cloneProcess]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/taoFuncACL.rdf#m_wfEngine_ProcessAuthoring">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source module ProcessAuthoring
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#m_wfEngine_ProcessAuthoring
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="DE"><![CDATA[module ProcessAuthoring]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source module ProcessAuthoring
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#m_wfEngine_ProcessAuthoring
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="DE"><![CDATA[module ProcessAuthoring]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_ProcessAuthoring_getInstancesOf">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action getInstancesOf
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_ProcessAuthoring_getInstancesOf
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="DE"><![CDATA[action getInstancesOf]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action getInstancesOf
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_ProcessAuthoring_getInstancesOf
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="DE"><![CDATA[action getInstancesOf]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_ProcessAuthoring_getActivities">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action getActivities
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_ProcessAuthoring_getActivities
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="DE"><![CDATA[action getActivities]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action getActivities
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_ProcessAuthoring_getActivities
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="DE"><![CDATA[action getActivities]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_ProcessAuthoring_getActivityTree">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action getActivityTree
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_ProcessAuthoring_getActivityTree
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="DE"><![CDATA[action getActivityTree]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action getActivityTree
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_ProcessAuthoring_getActivityTree
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="DE"><![CDATA[action getActivityTree]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_ProcessAuthoring_addActivity">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action addActivity
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_ProcessAuthoring_addActivity
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="DE"><![CDATA[action addActivity]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action addActivity
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_ProcessAuthoring_addActivity
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="DE"><![CDATA[action addActivity]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_ProcessAuthoring_addInteractiveService">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action addInteractiveService
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_ProcessAuthoring_addInteractiveService
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="DE"><![CDATA[action addInteractiveService]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action addInteractiveService
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_ProcessAuthoring_addInteractiveService
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="DE"><![CDATA[action addInteractiveService]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_ProcessAuthoring_getSectionTrees">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action getSectionTrees
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_ProcessAuthoring_getSectionTrees
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="DE"><![CDATA[action getSectionTrees]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action getSectionTrees
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_ProcessAuthoring_getSectionTrees
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="DE"><![CDATA[action getSectionTrees]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_ProcessAuthoring_editInstance">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action editInstance
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_ProcessAuthoring_editInstance
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="DE"><![CDATA[action editInstance]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action editInstance
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_ProcessAuthoring_editInstance
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="DE"><![CDATA[action editInstance]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_ProcessAuthoring_editActivityProperty">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action editActivityProperty
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_ProcessAuthoring_editActivityProperty
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="DE"><![CDATA[action editActivityProperty]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action editActivityProperty
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_ProcessAuthoring_editActivityProperty
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="DE"><![CDATA[action editActivityProperty]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_ProcessAuthoring_saveActivityProperty">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action saveActivityProperty
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_ProcessAuthoring_saveActivityProperty
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="DE"><![CDATA[action saveActivityProperty]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action saveActivityProperty
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_ProcessAuthoring_saveActivityProperty
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="DE"><![CDATA[action saveActivityProperty]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_ProcessAuthoring_getActivityInheritableRoles">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action getActivityInheritableRoles
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_ProcessAuthoring_getActivityInheritableRoles
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="DE"><![CDATA[action getActivityInheritableRoles]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action getActivityInheritableRoles
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_ProcessAuthoring_getActivityInheritableRoles
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="DE"><![CDATA[action getActivityInheritableRoles]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_ProcessAuthoring_editProcessProperty">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action editProcessProperty
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_ProcessAuthoring_editProcessProperty
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="DE"><![CDATA[action editProcessProperty]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action editProcessProperty
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_ProcessAuthoring_editProcessProperty
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="DE"><![CDATA[action editProcessProperty]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_ProcessAuthoring_editConsistencyRule">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action editConsistencyRule
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_ProcessAuthoring_editConsistencyRule
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="DE"><![CDATA[action editConsistencyRule]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action editConsistencyRule
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_ProcessAuthoring_editConsistencyRule
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="DE"><![CDATA[action editConsistencyRule]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_ProcessAuthoring_addInstance">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action addInstance
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_ProcessAuthoring_addInstance
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="DE"><![CDATA[action addInstance]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action addInstance
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_ProcessAuthoring_addInstance
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="DE"><![CDATA[action addInstance]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_ProcessAuthoring_delete">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action delete
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_ProcessAuthoring_delete
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="DE"><![CDATA[action delete]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action delete
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_ProcessAuthoring_delete
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="DE"><![CDATA[action delete]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_ProcessAuthoring_deleteCallOfService">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action deleteCallOfService
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_ProcessAuthoring_deleteCallOfService
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="DE"><![CDATA[action deleteCallOfService]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action deleteCallOfService
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_ProcessAuthoring_deleteCallOfService
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="DE"><![CDATA[action deleteCallOfService]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_ProcessAuthoring_deleteConnector">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action deleteConnector
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_ProcessAuthoring_deleteConnector
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="DE"><![CDATA[action deleteConnector]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action deleteConnector
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_ProcessAuthoring_deleteConnector
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="DE"><![CDATA[action deleteConnector]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_ProcessAuthoring_deleteActivity">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action deleteActivity
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_ProcessAuthoring_deleteActivity
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="DE"><![CDATA[action deleteActivity]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action deleteActivity
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_ProcessAuthoring_deleteActivity
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="DE"><![CDATA[action deleteActivity]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_ProcessAuthoring_editCallOfService">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action editCallOfService
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_ProcessAuthoring_editCallOfService
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="DE"><![CDATA[action editCallOfService]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action editCallOfService
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_ProcessAuthoring_editCallOfService
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="DE"><![CDATA[action editCallOfService]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_ProcessAuthoring_saveCallOfService">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action saveCallOfService
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_ProcessAuthoring_saveCallOfService
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="DE"><![CDATA[action saveCallOfService]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action saveCallOfService
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_ProcessAuthoring_saveCallOfService
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="DE"><![CDATA[action saveCallOfService]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_ProcessAuthoring_editConnector">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action editConnector
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_ProcessAuthoring_editConnector
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="DE"><![CDATA[action editConnector]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action editConnector
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_ProcessAuthoring_editConnector
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="DE"><![CDATA[action editConnector]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_ProcessAuthoring_editInferenceRule">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action editInferenceRule
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_ProcessAuthoring_editInferenceRule
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="DE"><![CDATA[action editInferenceRule]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action editInferenceRule
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_ProcessAuthoring_editInferenceRule
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="DE"><![CDATA[action editInferenceRule]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_ProcessAuthoring_saveConnector">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action saveConnector
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_ProcessAuthoring_saveConnector
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="DE"><![CDATA[action saveConnector]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action saveConnector
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_ProcessAuthoring_saveConnector
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="DE"><![CDATA[action saveConnector]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_ProcessAuthoring_checkCode">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action checkCode
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_ProcessAuthoring_checkCode
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="DE"><![CDATA[action checkCode]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action checkCode
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_ProcessAuthoring_checkCode
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="DE"><![CDATA[action checkCode]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_ProcessAuthoring_checkExpressionVariables">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action checkExpressionVariables
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_ProcessAuthoring_checkExpressionVariables
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="DE"><![CDATA[action checkExpressionVariables]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action checkExpressionVariables
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_ProcessAuthoring_checkExpressionVariables
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="DE"><![CDATA[action checkExpressionVariables]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_ProcessAuthoring_preview">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action preview
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_ProcessAuthoring_preview
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="DE"><![CDATA[action preview]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action preview
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_ProcessAuthoring_preview
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="DE"><![CDATA[action preview]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_ProcessAuthoring_setFirstActivity">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action setFirstActivity
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_ProcessAuthoring_setFirstActivity
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="DE"><![CDATA[action setFirstActivity]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action setFirstActivity
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_ProcessAuthoring_setFirstActivity
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="DE"><![CDATA[action setFirstActivity]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_ProcessAuthoring_unsetLastActivity">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action unsetLastActivity
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_ProcessAuthoring_unsetLastActivity
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="DE"><![CDATA[action unsetLastActivity]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action unsetLastActivity
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_ProcessAuthoring_unsetLastActivity
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="DE"><![CDATA[action unsetLastActivity]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_ProcessAuthoring_addConnector">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action addConnector
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_ProcessAuthoring_addConnector
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="DE"><![CDATA[action addConnector]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action addConnector
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_ProcessAuthoring_addConnector
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="DE"><![CDATA[action addConnector]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_ProcessAuthoring_saveDiagram">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action saveDiagram
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_ProcessAuthoring_saveDiagram
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="DE"><![CDATA[action saveDiagram]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action saveDiagram
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_ProcessAuthoring_saveDiagram
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="DE"><![CDATA[action saveDiagram]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_ProcessAuthoring_getMetaData">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action getMetaData
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_ProcessAuthoring_getMetaData
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="DE"><![CDATA[action getMetaData]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action getMetaData
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_ProcessAuthoring_getMetaData
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="DE"><![CDATA[action getMetaData]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_ProcessAuthoring_saveComment">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action saveComment
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_ProcessAuthoring_saveComment
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="DE"><![CDATA[action saveComment]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action saveComment
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_ProcessAuthoring_saveComment
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="DE"><![CDATA[action saveComment]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/taoFuncACL.rdf#m_wfEngine_ProcessBrowser">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source module ProcessBrowser
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#m_wfEngine_ProcessBrowser
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="DE"><![CDATA[module ProcessBrowser]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source module ProcessBrowser
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#m_wfEngine_ProcessBrowser
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="DE"><![CDATA[module ProcessBrowser]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_ProcessBrowser_index">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action index
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_ProcessBrowser_index
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="DE"><![CDATA[action index]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action index
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_ProcessBrowser_index
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="DE"><![CDATA[action index]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_ProcessBrowser_back">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action back
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_ProcessBrowser_back
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="DE"><![CDATA[action back]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action back
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_ProcessBrowser_back
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="DE"><![CDATA[action back]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_ProcessBrowser_next">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action next
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_ProcessBrowser_next
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="DE"><![CDATA[action next]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action next
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_ProcessBrowser_next
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="DE"><![CDATA[action next]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_ProcessBrowser_pause">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action pause
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_ProcessBrowser_pause
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="DE"><![CDATA[action pause]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action pause
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_ProcessBrowser_pause
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="DE"><![CDATA[action pause]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_ProcessBrowser_loading">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action loading
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_ProcessBrowser_loading
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="DE"><![CDATA[action loading]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action loading
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_ProcessBrowser_loading
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="DE"><![CDATA[action loading]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/taoFuncACL.rdf#m_wfEngine_ProcessInstanciation">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source module ProcessInstanciation
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#m_wfEngine_ProcessInstanciation
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="DE"><![CDATA[module ProcessInstanciation]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source module ProcessInstanciation
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#m_wfEngine_ProcessInstanciation
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="DE"><![CDATA[module ProcessInstanciation]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_ProcessInstanciation_authoring">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action authoring
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_ProcessInstanciation_authoring
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="DE"><![CDATA[action authoring]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action authoring
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_ProcessInstanciation_authoring
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="DE"><![CDATA[action authoring]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_ProcessInstanciation_initProcessExecution">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action initProcessExecution
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_ProcessInstanciation_initProcessExecution
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="DE"><![CDATA[action initProcessExecution]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action initProcessExecution
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_ProcessInstanciation_initProcessExecution
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="DE"><![CDATA[action initProcessExecution]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/taoFuncACL.rdf#m_wfEngine_RecoveryContext">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source module RecoveryContext
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#m_wfEngine_RecoveryContext
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="DE"><![CDATA[module RecoveryContext]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source module RecoveryContext
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#m_wfEngine_RecoveryContext
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="DE"><![CDATA[module RecoveryContext]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_RecoveryContext_retrieve">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action retrieve
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_RecoveryContext_retrieve
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="DE"><![CDATA[action retrieve]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action retrieve
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_RecoveryContext_retrieve
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="DE"><![CDATA[action retrieve]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_RecoveryContext_save">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action save
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_RecoveryContext_save
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="DE"><![CDATA[action save]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action save
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_RecoveryContext_save
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="DE"><![CDATA[action save]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/taoFuncACL.rdf#m_wfEngine_Role">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source module Role
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#m_wfEngine_Role
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="DE"><![CDATA[module Role]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source module Role
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#m_wfEngine_Role
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="DE"><![CDATA[module Role]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_Role_index">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action index
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_Role_index
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="DE"><![CDATA[action index]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action index
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_Role_index
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="DE"><![CDATA[action index]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_Role_editRole">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action editRole
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_Role_editRole
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="DE"><![CDATA[action editRole]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action editRole
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_Role_editRole
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="DE"><![CDATA[action editRole]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_Role_delete">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action delete
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_Role_delete
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="DE"><![CDATA[action delete]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action delete
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_Role_delete
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="DE"><![CDATA[action delete]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_Role_getUsers">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action getUsers
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_Role_getUsers
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="DE"><![CDATA[action getUsers]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action getUsers
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_Role_getUsers
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="DE"><![CDATA[action getUsers]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_Role_saveUsers">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action saveUsers
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_Role_saveUsers
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="DE"><![CDATA[action saveUsers]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action saveUsers
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_Role_saveUsers
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="DE"><![CDATA[action saveUsers]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_Role_addInstance">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action addInstance
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_Role_addInstance
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="DE"><![CDATA[action addInstance]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action addInstance
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_Role_addInstance
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="DE"><![CDATA[action addInstance]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_Role_editRoleClass">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action editRoleClass
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_Role_editRoleClass
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="DE"><![CDATA[action editRoleClass]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action editRoleClass
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_Role_editRoleClass
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="DE"><![CDATA[action editRoleClass]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/taoFuncACL.rdf#m_wfEngine_SASMonitor">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source module SASMonitor
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#m_wfEngine_SASMonitor
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="DE"><![CDATA[module SASMonitor]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source module SASMonitor
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#m_wfEngine_SASMonitor
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="DE"><![CDATA[module SASMonitor]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_SASMonitor_setView">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action setView
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_SASMonitor_setView
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="DE"><![CDATA[action setView]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action setView
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_SASMonitor_setView
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="DE"><![CDATA[action setView]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/taoFuncACL.rdf#m_wfEngine_Users">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source module Users
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#m_wfEngine_Users
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="DE"><![CDATA[module Users]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source module Users
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#m_wfEngine_Users
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="DE"><![CDATA[module Users]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_Users_index">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action index
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_Users_index
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="DE"><![CDATA[action index]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action index
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_Users_index
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="DE"><![CDATA[action index]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_Users_data">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action data
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_Users_data
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="DE"><![CDATA[action data]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action data
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_Users_data
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="DE"><![CDATA[action data]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_Users_delete">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action delete
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_Users_delete
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="DE"><![CDATA[action delete]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action delete
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_Users_delete
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="DE"><![CDATA[action delete]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_Users_add">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action add
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_Users_add
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="DE"><![CDATA[action add]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action add
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_Users_add
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="DE"><![CDATA[action add]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_Users_checkLogin">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action checkLogin
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_Users_checkLogin
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="DE"><![CDATA[action checkLogin]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action checkLogin
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_Users_checkLogin
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="DE"><![CDATA[action checkLogin]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_Users_edit">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action edit
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_Users_edit
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="DE"><![CDATA[action edit]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action edit
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_Users_edit
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="DE"><![CDATA[action edit]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/taoFuncACL.rdf#m_wfEngine_WfApi">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source module WfApi
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#m_wfEngine_WfApi
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="DE"><![CDATA[module WfApi]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source module WfApi
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#m_wfEngine_WfApi
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="DE"><![CDATA[module WfApi]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_WfApi_setData">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action setData
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_WfApi_setData
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="DE"><![CDATA[action setData]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action setData
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_WfApi_setData
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="DE"><![CDATA[action setData]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_WfApi_getCurrentActivityExecution">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action getCurrentActivityExecution
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_WfApi_getCurrentActivityExecution
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="DE"><![CDATA[action getCurrentActivityExecution]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action getCurrentActivityExecution
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_WfApi_getCurrentActivityExecution
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="DE"><![CDATA[action getCurrentActivityExecution]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/taoFuncACL.rdf#m_wfEngine_WfApiActivityExecution">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source module WfApiActivityExecution
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#m_wfEngine_WfApiActivityExecution
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="DE"><![CDATA[module WfApiActivityExecution]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source module WfApiActivityExecution
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#m_wfEngine_WfApiActivityExecution
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="DE"><![CDATA[module WfApiActivityExecution]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_WfApiActivityExecution_assign">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action assign
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_WfApiActivityExecution_assign
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="DE"><![CDATA[action assign]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action assign
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_WfApiActivityExecution_assign
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="DE"><![CDATA[action assign]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_WfApiActivityExecution_next">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action next
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_WfApiActivityExecution_next
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="DE"><![CDATA[action next]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action next
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_WfApiActivityExecution_next
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="DE"><![CDATA[action next]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_WfApiActivityExecution_previous">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action previous
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_WfApiActivityExecution_previous
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="DE"><![CDATA[action previous]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action previous
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_WfApiActivityExecution_previous
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="DE"><![CDATA[action previous]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/taoFuncACL.rdf#m_wfEngine_WfApiProcessDefinition">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source module WfApiProcessDefinition
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#m_wfEngine_WfApiProcessDefinition
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="DE"><![CDATA[module WfApiProcessDefinition]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source module WfApiProcessDefinition
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#m_wfEngine_WfApiProcessDefinition
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="DE"><![CDATA[module WfApiProcessDefinition]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_WfApiProcessDefinition_getName">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action getName
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_WfApiProcessDefinition_getName
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="DE"><![CDATA[action getName]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action getName
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_WfApiProcessDefinition_getName
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="DE"><![CDATA[action getName]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_WfApiProcessDefinition_initExecution">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action initExecution
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_WfApiProcessDefinition_initExecution
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="DE"><![CDATA[action initExecution]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action initExecution
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_WfApiProcessDefinition_initExecution
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="DE"><![CDATA[action initExecution]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/taoFuncACL.rdf#m_wfEngine_WfApiProcessExecution">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source module WfApiProcessExecution
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#m_wfEngine_WfApiProcessExecution
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="DE"><![CDATA[module WfApiProcessExecution]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source module WfApiProcessExecution
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#m_wfEngine_WfApiProcessExecution
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="DE"><![CDATA[module WfApiProcessExecution]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_WfApiProcessExecution_delete">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action delete
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_WfApiProcessExecution_delete
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="DE"><![CDATA[action delete]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action delete
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_WfApiProcessExecution_delete
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="DE"><![CDATA[action delete]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_WfApiProcessExecution_pause">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action pause
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_WfApiProcessExecution_pause
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="DE"><![CDATA[action pause]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action pause
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_WfApiProcessExecution_pause
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="DE"><![CDATA[action pause]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_WfApiProcessExecution_resume">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action resume
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_WfApiProcessExecution_resume
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="DE"><![CDATA[action resume]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action resume
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_WfApiProcessExecution_resume
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="DE"><![CDATA[action resume]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_WfApiProcessExecution_cancel">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action cancel
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_WfApiProcessExecution_cancel
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="DE"><![CDATA[action cancel]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action cancel
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_WfApiProcessExecution_cancel
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="DE"><![CDATA[action cancel]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_WfApiProcessExecution_next">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action next
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_WfApiProcessExecution_next
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="DE"><![CDATA[action next]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action next
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_WfApiProcessExecution_next
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="DE"><![CDATA[action next]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_WfApiProcessExecution_previous">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action previous
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_WfApiProcessExecution_previous
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="DE"><![CDATA[action previous]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action previous
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_WfApiProcessExecution_previous
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="DE"><![CDATA[action previous]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/taoFuncACL.rdf#m_wfEngine_WfApiVariable">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source module WfApiVariable
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#m_wfEngine_WfApiVariable
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="DE"><![CDATA[module WfApiVariable]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source module WfApiVariable
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#m_wfEngine_WfApiVariable
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="DE"><![CDATA[module WfApiVariable]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_WfApiVariable_push">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action push
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_WfApiVariable_push
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="DE"><![CDATA[action push]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action push
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_WfApiVariable_push
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="DE"><![CDATA[action push]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_WfApiVariable_edit">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action edit
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_WfApiVariable_edit
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="DE"><![CDATA[action edit]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action edit
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_WfApiVariable_edit
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="DE"><![CDATA[action edit]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_WfApiVariable_get">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action get
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_WfApiVariable_get
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="DE"><![CDATA[action get]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action get
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_WfApiVariable_get
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="DE"><![CDATA[action get]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_WfApiVariable_remove">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action remove
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_WfApiVariable_remove
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="DE"><![CDATA[action remove]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action remove
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_WfApiVariable_remove
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="DE"><![CDATA[action remove]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_WfApiVariable_getAllVariables">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action getAllVariables
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_WfApiVariable_getAllVariables
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="DE"><![CDATA[action getAllVariables]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source action getAllVariables
+    @subject http://www.tao.lu/Ontologies/taoFuncACL.rdf#a_wfEngine_WfApiVariable_getAllVariables
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="DE"><![CDATA[action getAllVariables]]></rdfs:comment>
+  </rdf:Description>
+</rdf:RDF>
