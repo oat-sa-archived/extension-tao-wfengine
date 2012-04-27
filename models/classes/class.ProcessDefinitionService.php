@@ -345,7 +345,7 @@ class wfEngine_models_classes_ProcessDefinitionService
                         //check if the current user has the restricted role
                     case INSTANCE_ACL_ROLE:
                         $processRole 	= $processDefinition->getOnePropertyValue($restrictedRoleProp);
-                        $userRoles 		= $currentUser->getType();
+                        $userRoles 		= $currentUser->getTypes();
                         if(!is_null($processRole) && is_array($userRoles)){
                         	foreach($userRoles as $userRole){
                         		if($processRole->uriResource == $userRole->uriResource){
