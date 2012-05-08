@@ -101,7 +101,7 @@ class wfEngine_actions_Users extends tao_actions_CommonModule {
 			
 			//add role:
 			$cellData[5]	= '';
-			foreach($user->getType() as $role){
+			foreach($user->getTypes() as $role){
 				if($role instanceof core_kernel_classes_Resource){
 					$cellData[5] .= $role->getLabel().', ';
 				}
@@ -119,14 +119,20 @@ class wfEngine_actions_Users extends tao_actions_CommonModule {
 		}
 
 		//Like class.UserService.php:130 (getAllUsers)
+		$userClass = new core_kernel_classes_Class(CLASS_GENERIS_USER);
 		$backoffice = new core_kernel_classes_Class(CLASS_ROLE_BACKOFFICE);
+		$types = array();
 		$bos = $backoffice->getInstances(true, array());
-		$counti = 0;
-		foreach ($bos as $typeRes) {
-			$typeClass = new core_kernel_classes_Class($typeRes->getUri());
-			$counti += $typeClass->countInstances();
+		foreach ($bos as $i => $e) {
+			$types[] = $i;
 		}
-		
+
+		$opts = array('recursive' => 0, 'like' => false);
+		$opts['offset'] = $start;
+		$opts['limit'] = $limit;
+		$opts['additionalClasses'] = $types;
+		$counti = $userClass->countInstances(array(PROPERTY_USER_LOGIN => '*'), $opts);
+
 		$response->page = $page;
 		$response->total = ceil($counti / $limit);//$total_pages;
 		$response->records = count($users);
