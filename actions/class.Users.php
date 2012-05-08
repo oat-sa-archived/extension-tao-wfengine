@@ -119,19 +119,14 @@ class wfEngine_actions_Users extends tao_actions_CommonModule {
 		}
 
 		//Like class.UserService.php:130 (getAllUsers)
-		$userClass = new core_kernel_classes_Class(CLASS_GENERIS_USER);
 		$backoffice = new core_kernel_classes_Class(CLASS_ROLE_BACKOFFICE);
-		$types = array();
 		$bos = $backoffice->getInstances(true, array());
-		foreach ($bos as $i => $e) {
-			$types[] = $i;
+		$counti = 0;
+		foreach ($bos as $typeRes) {
+			$typeClass = new core_kernel_classes_Class($typeRes->getUri());
+			$counti += $typeClass->countInstances();
 		}
-
-		$opts = array('recursive' => 0, 'like' => false);
-		$opts['offset'] = $start;
-		$opts['limit'] = $limit;
-		$counti = $userClass->countInstances(array(RDF_TYPE => $types, PROPERTY_USER_LOGIN => '*'), $opts);
-
+		
 		$response->page = $page;
 		$response->total = ceil($counti / $limit);//$total_pages;
 		$response->records = count($users);
