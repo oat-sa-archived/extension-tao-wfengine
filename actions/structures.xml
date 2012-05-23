@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE extension SYSTEM "../../tao/doc/structures.dtd">
+<structures>
+	<structure id="wfengine" name="Processes" url="/wfEngine/Process/index" level="6" visible="true">
+		<description>Build processes to drive activities into a workflow.</description>
+		<sections>
+			<section id="monitor_process" name="Monitor processes" url="/wfEngine/Monitor/index" />
+			<section id="manage_process" name="Manage processes" url="/wfEngine/Process/index">
+				<trees>
+					<tree name="Process library" 
+						dataUrl="/wfEngine/Process/getOntologyData" 
+						editInstanceUrl="/wfEngine/Process/editProcess"
+						addInstanceUrl="/wfEngine/Process/addInstance"
+						deleteUrl="/wfEngine/Process/delete"
+						editClassUrl="/wfEngine/Process/editProcessClass"
+						duplicateUrl="/wfEngine/Process/cloneInstance"
+					/>
+				</trees>
+				<actions>
+					<action name="search" url="/wfEngine/Process/search" context="*" />
+					<action name="new process" js="GenerisAction.instanciate" url="/wfEngine/Process/addInstance" context="class" />
+					<action name="delete" js="GenerisAction.removeNode" url="/wfEngine/Process/delete" context="resource" />
+					<action name="meta data" js="GenerisAction.loadMetaData" url="/wfEngine/Process/getMetaData"  context="instance" />
+					<action name="create table" js="GenerisAction.resultTable" url="/taoResults/Results/createTable"  context="class" />
+					<action name="export" url="/tao/Export/index"  context="*" /> 
+				</actions>
+			</section>
+			
+			<section id="process_authoring" name="Process authoring" url="/wfEngine/Process/authoring" />
+			
+			<section id="manage_roles" name="Manage roles" url="/wfEngine/Role/index">
+				<trees>
+					<tree name="Role library" 
+						dataUrl="/wfEngine/Role/getOntologyData" 
+						editInstanceUrl="/wfEngine/Role/editRole"
+						addInstanceUrl="/wfEngine/Role/addInstance"
+						deleteUrl="/wfEngine/Role/delete"
+						editClassUrl="/wfEngine/Role/editRoleClass"
+					/>
+				</trees>
+				<actions>
+					<action name="search" url="/wfEngine/Role/search" context="*" />
+					<action name="new role" js="GenerisAction.instanciate" url="/wfEngine/Role/addInstance" context="class" />
+					<action name="delete" js="GenerisAction.removeNode" url="/wfEngine/Role/delete" context="resource" />
+					<action name="meta data" js="GenerisAction.loadMetaData" url="/wfEngine/Role/getMetaData"  context="instance" />
+					<action name="create table" js="GenerisAction.resultTable" url="/taoResults/Results/createTable"  context="class" />
+					<action name="export" url="/tao/Export/index"  context="*" />
+				</actions>
+			</section>
+			
+			<section id="list_users" name="Manage users" url="/wfEngine/Users/index" />
+			<section  id="add_user" name="Add a user" url="/wfEngine/Users/add" />
+			<section  id="edit_user" name="Edit a user" url="/wfEngine/Users/edit" />
+		</sections>
+	</structure>
+</structures>
