@@ -50,7 +50,7 @@ class wfEngine_actions_Authentication extends Module
 							)
 						));
 					}else{
-						$this->redirect(_url('index', 'Main'));
+						$this->redirect(_url('index', 'WfHome'));
 					}
 				}
 				else{

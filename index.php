@@ -8,7 +8,7 @@ require_once dirname(__FILE__). '/../tao/includes/class.Bootstrap.php';
 //use a different session name when we execute a wf process
 $modules = array(
 	'Authentication', 
-	'Main', 
+	'WfHome', 
 	'ProcessBrowser',
 	'ProcessInstanciation',
 	'ItemDelivery', 
