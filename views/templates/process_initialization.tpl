@@ -2,11 +2,11 @@
 <html xmlns="http://www.w3.org/1999/xhtml" >
 	<head>
 		<title><?=__("Workflow Engine")?></title>
-	
+
 		<style media="screen">
 			@import url(<?=BASE_WWW?>/css/process_authoring.css);
 		</style>
-		
+
 		<script type="text/javascript" src="<?=BASE_WWW?>js/jquery-1.4.2.min.js"></script>
 		<script type="text/javascript" src="<?=BASE_WWW?>/js/process_authoring.js"></script>
 		<script type="text/javascript" src="<?=BASE_WWW?>/js/gateway/ProcessAuthoring.js"></script>
@@ -14,19 +14,19 @@
 	<body>
 		<ul id="control">
         	<li>
-        		<span id="connecteduser" class="icon"><?=__("User Id.")?> <span id="username"><?=$userViewData['username']?></span> </span><span class="separator" />
+        		<span id="connecteduser" class="icon"><?=__("User Id.")?> <span id="username"><?=$userViewData['username']?></span> </span><span class="separator"></span>
         	</li>
          	<li>
-         		<a class="action icon" id="home" href="<?=BASE_URL?>/Main/index"><?=__("Home")?></a> <span class="separator" />
+         		<a class="action icon" id="home" href="<?=BASE_URL?>/Main/index"><?=__("Home")?></a> <span class="separator"></span>
          	</li>
          	<li>
          		<a class="action icon" id="logout" href="<?=BASE_URL?>/Authentication/logout"><?=__("Logout")?></a>
          	</li>
 		</ul>
-		
+
 		<div id="content">
-			<h1 id="authoring_title"><?=__("Process initialization")?></h1>	
-			
+			<h1 id="authoring_title"><?=__("Process initialization")?></h1>
+
 			<div id="business">
 				<h2 id="authoring_subtitle"><?=$processAuthoringData['processLabel']?></h2>
 				<form id="authoring_form" action="<?=BASE_URL;?>/ProcessInstanciation/initProcessExecution" method="post" >
@@ -46,9 +46,9 @@
 							</tr>
 						</tfoot>
 					</table>
-					
+
 				</form>
 			</div>
-			
+
 		</div>
 <? include TAO_TPL_PATH .'footer/layout_footer_'.TAO_RELEASE_STATUS.'.tpl' ?>

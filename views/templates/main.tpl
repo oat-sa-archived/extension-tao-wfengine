@@ -9,20 +9,20 @@
 			@import url(<?=BASE_WWW?>/css/main.css);
 		</style>
 	</head>
-	
+
 	<body>
 		<div id="process_view"></div>
 		<ul id="control">
         	<li>
-        		<span id="connecteduser" class="icon"><?=__("User name:")?> <span id="username"><?=$userViewData['username']?></span> </span><span class="separator" />
+        		<span id="connecteduser" class="icon"><?=__("User name:")?> <span id="username"><?=$userViewData['username']?></span> </span><span class="separator"></span>
         	</li>
          	<li>
          		<a class="action icon" id="logout" href="<?=BASE_URL?>/Authentication/logout"><?=__("Logout")?></a>
          	</li>
 		</ul>
-		
+
 		<div id="content" class='ui-corner-bottom'>
-			<h1 id="welcome_message"><img src="<?=BASE_WWW?>/img/wf_engine_logo.png" /><?=__("Welcome to TAO Process Engine")?></h1>	
+			<h1 id="welcome_message"><img src="<?=BASE_WWW?>/img/wf_engine_logo.png" /><?=__("Welcome to TAO Process Engine")?></h1>
 			<div id="business">
 				<h2 class="section_title"><?=__("Active Process")?></h2>
 				<table id="active_processes">
@@ -37,10 +37,10 @@
 						<?foreach($processViewData as $procData): ?>
 						<tr>
 							<td class="status"><img src="<?=BASE_WWW?>/<?=wfEngine_helpers_GUIHelper::buildStatusImageURI($procData['status'])?>"/></td>
-							
-							
+
+
 							<td class="label"><?=wfEngine_helpers_GUIHelper::sanitizeGenerisString($procData['label'])?></td>
-			
+
 							<td class="join">
 								<?if($procData['status'] != 'Finished'): ?>
 									<?foreach ($procData['activities'] as $activity): ?>
@@ -59,8 +59,8 @@
 					</tbody>
 				</table>
 				<!-- End of Active Processes -->
-				
-				
+
+
 				<h2 class="section_title"><?=__("Initialize new Process")?></h2>
 				<div id="new_process">
 					<?foreach($availableProcessDefinition as $procDef):?>
@@ -69,19 +69,19 @@
 							<?=wfEngine_helpers_GUIHelper::sanitizeGenerisString($procDef->getLabel())?></a>
 						</li>
 					<?endforeach; ?>
-				</div>	
-				
-					
+				</div>
+
+
 				<h2 class="section_title"><?=__("My roles")?></h2>
 				<ul id="roles">
 					<?foreach ($userViewData['roles'] as $role):?>
 						<li><?=$role['label']?></li>
 					<?endforeach;?>
-		
+
 				</ul>
 				<!-- End of Roles -->
 				</div>
-			
+
 		</div>
 		<!-- End of content -->
 		<? include TAO_TPL_PATH .'footer/layout_footer_'.TAO_RELEASE_STATUS.'.tpl' ?>
