@@ -1,5 +1,5 @@
 <?php
-class wfEngine_actions_Authentication extends Module
+class wfEngine_actions_Authentication extends wfEngine_actions_WfModule
 {
     
     /**
@@ -13,7 +13,8 @@ class wfEngine_actions_Authentication extends Module
      */
     public function __construct()
     {
-         $this->userService = wfEngine_models_classes_UserService::singleton();
+    	parent::__construct();
+		$this->userService = wfEngine_models_classes_UserService::singleton();
     }
     
 	/**

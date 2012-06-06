@@ -16,6 +16,7 @@ class wfEngine_actions_Monitor extends tao_actions_TaoModule {
 	 */
 	public function __construct()
 	{
+		parent::__construct();
 		$this->processMonitoringGridOptions = array(
 			'columns' => array(
 				'http://www.w3.org/2000/01/rdf-schema#label' 													=> array('weight'=>3)
