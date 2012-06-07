@@ -54,11 +54,11 @@ class wfEngine_models_classes_UserService
      * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
      * @return mixed
      */
-    public function initRoles()
+    protected function initRoles()
     {
         // section 127-0-1-1-951b66:128b0d3ece8:-8000:0000000000001F55 begin
         
-		$this->allowedRoles = array(CLASS_ROLE_BACKOFFICE);
+		$this->allowedRoles = array(CLASS_ROLE_WORKFLOWUSER);
 		
         // section 127-0-1-1-951b66:128b0d3ece8:-8000:0000000000001F55 end
     }
