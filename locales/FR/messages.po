@@ -499,7 +499,7 @@ msgstr "La variable avec le code ' .$code.' n'existe pas\n"
 "msgid "
 
 msgid "Then"
-msgstr ""
+msgstr "Alors"
 
 msgid "Type (Ctrl-T)"
 msgstr "Tapez (Ctrl-T)"
@@ -562,10 +562,10 @@ msgid "WorkflowEngine Process Browser "
 msgstr "Navigateur de processus"
 
 msgid "XLIFF"
-msgstr ""
+msgstr "XLIFF"
 
 msgid "XLIFF version"
-msgstr ""
+msgstr "Version XLIFF"
 
 msgid "You will be redirected to the current activity if you are allowed to."
 msgstr "Vous serez redirigé vers l'activité courante si vous en avez la permission."
