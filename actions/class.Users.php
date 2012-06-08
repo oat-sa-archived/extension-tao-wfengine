@@ -180,7 +180,7 @@ class wfEngine_actions_Users extends tao_actions_CommonModule {
 				unset($values['password1']);
 				unset($values['password2']);
 				
-				if($this->userService->saveUser($myFormContainer->getUser(), $values)){
+				if($this->userService->bindProperties($myFormContainer->getUser(), $values)){
 					$this->setData('message', __('User added'));
 					$this->setData('exit', true);
 				}
@@ -236,7 +236,7 @@ class wfEngine_actions_Users extends tao_actions_CommonModule {
 				unset($values['password2']);
 				unset($values['password3']);
 				
-				if($this->userService->saveUser($user, $values)){
+				if($this->userService->bindProperties($user, $values)){
 					$this->setData('message', __('User saved'));
 					$this->setData('exit', true);
 				}

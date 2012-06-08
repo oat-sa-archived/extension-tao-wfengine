@@ -65,7 +65,7 @@ class ProcessExecutionServiceTestCase extends UnitTestCase{
 		$this->testUserRole = new core_kernel_classes_Resource(CLASS_ROLE_WORKFLOWUSERROLE);
 		$this->currentUser = $this->userService->getOneUser($login);
 		if(is_null($this->currentUser)){
-			$this->userService->saveUser($this->currentUser, $userData, $this->testUserRole);
+			$this->userService->bindProperties($this->currentUser, $userData, $this->testUserRole);
 		}
 		
 		core_kernel_users_Service::logout();
@@ -622,7 +622,7 @@ class ProcessExecutionServiceTestCase extends UnitTestCase{
 
 				$otherUser = $this->userService->getOneUser($login);
 				if(is_null($otherUser)){
-					$this->assertTrue($this->userService->saveUser(null, $userData, $this->testUserRole));
+					$this->assertTrue($this->userService->bindProperties(null, $userData, $this->testUserRole));
 					$otherUser = $this->userService->getOneUser($login);
 					$otherUser->setLabel($login);
 				}

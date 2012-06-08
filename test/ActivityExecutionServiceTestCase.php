@@ -33,7 +33,7 @@ class ActivityExecutionServiceTestCase extends wfEngineServiceTest {
 		
 		$this->currentUser = $this->userService->getOneUser($login);
 		if(is_null($this->currentUser)){
-			$this->userService->saveUser($this->currentUser, $userData, new core_kernel_classes_Resource(CLASS_ROLE_WORKFLOWUSERROLE));
+			$this->userService->bindProperties($this->currentUser, $userData, new core_kernel_classes_Resource(CLASS_ROLE_WORKFLOWUSERROLE));
 		}
 		
 		core_kernel_users_Service::logout();

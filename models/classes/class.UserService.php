@@ -5,7 +5,7 @@ error_reporting(E_ALL);
 /**
  * Manage the user in the workflow engine
  *
- * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+ * @author Joel Bout, <joel.bout@tudor.lu>
  * @package wfEngine
  * @subpackage models_classes
  */
@@ -17,7 +17,7 @@ if (0 > version_compare(PHP_VERSION, '5')) {
 /**
  * This class provide service on user management
  *
- * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+ * @author Joel Bout, <joel.bout@tudor.lu>
  */
 require_once('tao/models/classes/class.UserService.php');
 
@@ -33,7 +33,7 @@ require_once('tao/models/classes/class.UserService.php');
  * Manage the user in the workflow engine
  *
  * @access public
- * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+ * @author Joel Bout, <joel.bout@tudor.lu>
  * @package wfEngine
  * @subpackage models_classes
  */
@@ -51,10 +51,10 @@ class wfEngine_models_classes_UserService
      * initialize the roles
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @return mixed
      */
-    protected function initRoles()
+    public function initRoles()
     {
         // section 127-0-1-1-951b66:128b0d3ece8:-8000:0000000000001F55 begin
 
@@ -67,7 +67,7 @@ class wfEngine_models_classes_UserService
      * login a user
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  string login
      * @param  string password
      * @return boolean
@@ -101,7 +101,7 @@ class wfEngine_models_classes_UserService
      * get all the users
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  array options
      * @return array
      */
@@ -212,43 +212,10 @@ class wfEngine_models_classes_UserService
     }
 
     /**
-     * save a user (the role is managed in addition)
-     *
-     * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
-     * @param  Resource user
-     * @param  array properties
-     * @param  Resource role
-     * @return boolean
-     */
-    public function saveUser( core_kernel_classes_Resource $user = null, $properties = array(),  core_kernel_classes_Resource $role = null)
-    {
-        $returnValue = (bool) false;
-
-        // section 127-0-1-1-718243b3:12912642ee4:-8000:0000000000001F8B begin
-
-        if(is_null($user)){
-			//Create user here:
-			if(is_null($role)){
-				$role = new core_kernel_classes_Resource(CLASS_ROLE_WORKFLOWUSERROLE);
-			}
-			$user = $this->createInstance(new core_kernel_classes_Class($role->uriResource));
-		}
-
-    	if(!is_null($user)){
-			$returnValue = $this->bindProperties($user, $properties);
-		}
-
-        // section 127-0-1-1-718243b3:12912642ee4:-8000:0000000000001F8B end
-
-        return (bool) $returnValue;
-    }
-
-    /**
      * Short description of method feedAllowedRoles
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  Class roleClass
      * @return mixed
      */
@@ -268,7 +235,7 @@ class wfEngine_models_classes_UserService
      * method to format the data
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @return array
      */
     public function toTree()

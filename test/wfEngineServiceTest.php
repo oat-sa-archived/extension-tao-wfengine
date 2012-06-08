@@ -83,7 +83,7 @@ class wfEngineServiceTest extends UnitTestCase {
 		
 		$user = $this->userService->getOneUser($login);
 		if(is_null($user)){
-			$this->userService->saveUser(null, $userData, new core_kernel_classes_Resource(CLASS_ROLE_WORKFLOWUSERROLE));
+			$this->userService->bindProperties(null, $userData, new core_kernel_classes_Resource(CLASS_ROLE_WORKFLOWUSERROLE));
 			$returnValue = $this->userService->getOneUser($login);
 		}else{
 			$returnValue = $user;
