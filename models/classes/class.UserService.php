@@ -80,26 +80,15 @@ class wfEngine_models_classes_UserService
 
         if(parent::loginUser($login, $password)){
 
-        	if($this->connectCurrentUser()){
-	        	$currentUser = $this->getCurrentUser();
-	        	if(!is_null($currentUser)){
-
-	        		$login 			= (string)$currentUser->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_USER_LOGIN));
-	        		$password 		= (string)$currentUser->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_USER_PASSWORD));
-					try{
-	        			$dataLang 	= (string)$currentUser->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_USER_DEFLG));
-					}
-					catch(common_Exception $ce){
-						$dataLang 	= 'EN';
-					}
-
-					$_SESSION['taoqual.authenticated'] 		= true;
-					$_SESSION['taoqual.lang']				= $dataLang;
-					$_SESSION['taoqual.serviceContentLang'] = $dataLang;
-					$_SESSION['taoqual.userId']				= $login;
-
-					$returnValue = true;
-	        	}
+        	$currentUser = $this->getCurrentUser();
+        	if(!is_null($currentUser)){
+        		
+				$_SESSION['taoqual.authenticated'] 		= true;
+				$_SESSION['taoqual.lang']				= core_kernel_classes_Session::singleton()->getInterfaceLanguage();
+				$_SESSION['taoqual.serviceContentLang'] = core_kernel_classes_Session::singleton()->getInterfaceLanguage();
+				$_SESSION['taoqual.userId']				= $login;
+				
+				$returnValue = true;
         	}
         }
 

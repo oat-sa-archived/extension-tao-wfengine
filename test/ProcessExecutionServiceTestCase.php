@@ -70,7 +70,6 @@ class ProcessExecutionServiceTestCase extends UnitTestCase{
 		
 		core_kernel_users_Service::logout();
 		if($this->userService->loginUser($login, md5($pass))){
-			$this->userService->connectCurrentUser();
 			$this->currentUser = $this->userService->getCurrentUser();
 			$this->currentUser0 = $this->currentUser;
 		}
@@ -630,7 +629,6 @@ class ProcessExecutionServiceTestCase extends UnitTestCase{
 				$createdUsers[$otherUser->uriResource] = $otherUser; 
 
 				if($this->userService->loginUser($login, md5($pass))){
-					$this->userService->connectCurrentUser();
 					$this->currentUser = $this->userService->getCurrentUser();
 					$this->out("new user logged in: ".$this->currentUser->getOnePropertyValue($loginProperty).' "'.$this->currentUser->uriResource.'"');
 				}else{
@@ -739,7 +737,6 @@ class ProcessExecutionServiceTestCase extends UnitTestCase{
 				$login = (string) $user->getUniquePropertyValue($loginProperty);
 				$pass = 'test123';
 				if ($this->userService->loginUser($login, md5($pass))) {
-					$this->userService->connectCurrentUser();
 					$this->currentUser = $this->userService->getCurrentUser();
 					$this->out("new user logged in: " . $this->currentUser->getOnePropertyValue($loginProperty) . ' "' . $this->currentUser->uriResource . '"');
 				} else {

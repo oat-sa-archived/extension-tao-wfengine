@@ -110,7 +110,6 @@ class wfEngineServiceTest extends UnitTestCase {
 		}
 		
 		if($this->userService->loginUser($login, md5($this->userPassword))){
-			$this->userService->connectCurrentUser();
 			$this->currentUser = $this->userService->getCurrentUser();
 			$returnValue = true;
 			$this->out("new user logged in: ".$this->currentUser->getOnePropertyValue($loginProperty).' "'.$this->currentUser->uriResource.'"');

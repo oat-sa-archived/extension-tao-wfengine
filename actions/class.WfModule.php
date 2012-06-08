@@ -4,12 +4,7 @@ class wfEngine_actions_WfModule extends tao_actions_CommonModule
 	
 	public function __construct()
 	{
-		if($this->_isAllowed()){
-			//Authentication and API initialization
-			$userService = wfEngine_models_classes_UserService::singleton();
-			$userService->connectCurrentUser();
-		}
-		else{
+		if(!$this->_isAllowed()){
 			$this->notAllowedRedirection();
 		}
 		
