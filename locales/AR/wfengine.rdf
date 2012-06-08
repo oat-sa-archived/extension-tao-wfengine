@@ -906,24 +906,6 @@
     -->
     <rdfs:comment xml:lang="AR"><![CDATA[wsdl location]]></rdfs:comment>
   </rdf:Description>
-  <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#ClassRole">
-    <!--
-    @sourceLanguage EN
-    @targetLanguage AR
-    @source Role
-    @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassRole
-    @predicate http://www.w3.org/2000/01/rdf-schema#label
-    -->
-    <rdfs:label xml:lang="AR"><![CDATA[Role]]></rdfs:label>
-    <!--
-    @sourceLanguage EN
-    @targetLanguage AR
-    @source Role
-    @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassRole
-    @predicate http://www.w3.org/2000/01/rdf-schema#comment
-    -->
-    <rdfs:comment xml:lang="AR"><![CDATA[Role]]></rdfs:comment>
-  </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyFormalParameterName">
     <!--
     @sourceLanguage EN

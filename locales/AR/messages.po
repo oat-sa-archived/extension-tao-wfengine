@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: TAO v2.2-beta\n"
-"PO-Revision-Date: 2012-05-24T16:18:42\n"
+"Project-Id-Version: TAO v2.2-beta2\n"
+"PO-Revision-Date: 2012-06-08T13:42:27\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: AR\n"
@@ -44,6 +44,7 @@ msgstr ""
 msgid "Add (Ctrl-A)"
 msgstr "(Ctrl-A)إضافة"
 
+#, tao-public
 msgid "Add a user"
 msgstr "إضافة مستخدم"
 
@@ -62,6 +63,7 @@ msgstr "رجوع"
 msgid "Browse Tests"
 msgstr "تصفح الاختبارات"
 
+#, tao-public
 msgid "Build processes to drive activities into a workflow."
 msgstr ""
 
@@ -147,6 +149,7 @@ msgstr ""
 msgid "Edit"
 msgstr "تحرير"
 
+#, tao-public
 msgid "Edit a user"
 msgstr "تحرير المستخم"
 
@@ -240,15 +243,18 @@ msgstr ""
 msgid "Logout"
 msgstr "الخروج"
 
+#, tao-public
 msgid "Manage processes"
 msgstr "إدارة العمليات"
 
+#, tao-public
 msgid "Manage roles"
 msgstr "إدارة الأدوار"
 
 msgid "Manage Roles and associate roles to workflow users"
 msgstr "إدارة الأدوار والأدوار المنتسبة لعمل المستخدمين"
 
+#, tao-public
 msgid "Manage users"
 msgstr "إدارة المستخدمين"
 
@@ -258,6 +264,7 @@ msgstr ""
 msgid "meta data"
 msgstr ""
 
+#, tao-public
 msgid "Monitor processes"
 msgstr ""
 
@@ -344,6 +351,7 @@ msgstr "Positionnement"
 msgid "Process"
 msgstr "Processus"
 
+#, tao-public
 msgid "Process authoring"
 msgstr "Processus de création"
 
@@ -377,6 +385,7 @@ msgstr "Processus variable"
 msgid "Process Variables"
 msgstr "Variables de processus"
 
+#, tao-public
 msgid "Processes"
 msgstr "Processus"
 
