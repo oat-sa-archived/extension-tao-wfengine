@@ -57,9 +57,9 @@ class wfEngine_models_classes_UserService
     protected function initRoles()
     {
         // section 127-0-1-1-951b66:128b0d3ece8:-8000:0000000000001F55 begin
-        
+
 		$this->allowedRoles = array(CLASS_ROLE_WORKFLOWUSER);
-		
+
         // section 127-0-1-1-951b66:128b0d3ece8:-8000:0000000000001F55 end
     }
 
@@ -77,13 +77,13 @@ class wfEngine_models_classes_UserService
         $returnValue = (bool) false;
 
         // section 127-0-1-1-951b66:128b0d3ece8:-8000:0000000000001F59 begin
-        
+
         if(parent::loginUser($login, $password)){
-        	
+
         	if($this->connectCurrentUser()){
 	        	$currentUser = $this->getCurrentUser();
 	        	if(!is_null($currentUser)){
-	        		
+
 	        		$login 			= (string)$currentUser->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_USER_LOGIN));
 	        		$password 		= (string)$currentUser->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_USER_PASSWORD));
 					try{
@@ -92,17 +92,17 @@ class wfEngine_models_classes_UserService
 					catch(common_Exception $ce){
 						$dataLang 	= 'EN';
 					}
-							
+
 					$_SESSION['taoqual.authenticated'] 		= true;
 					$_SESSION['taoqual.lang']				= $dataLang;
 					$_SESSION['taoqual.serviceContentLang'] = $dataLang;
 					$_SESSION['taoqual.userId']				= $login;
-					
+
 					$returnValue = true;
 	        	}
         	}
         }
-        
+
         // section 127-0-1-1-951b66:128b0d3ece8:-8000:0000000000001F59 end
 
         return (bool) $returnValue;
@@ -121,7 +121,7 @@ class wfEngine_models_classes_UserService
         $returnValue = array();
 
         // section 127-0-1-1-718243b3:12912642ee4:-8000:0000000000001F88 begin
-        
+
     	$roleService = wfEngine_models_classes_RoleService::singleton();
     	$fields = array('login' => PROPERTY_USER_LOGIN,
 						'password' => PROPERTY_USER_PASSWORD,
@@ -154,9 +154,11 @@ class wfEngine_models_classes_UserService
 			$crits[$fields[$options['search']['field']]] = sprintf($ops[$options['search']['op']], $options['search']['string']);
 		}
 		foreach ($userClass->searchInstances($crits, $opts) as $user) {
-			$users[$user->uriResource] = $user;
+			if ($user->uriResource != 'http://www.tao.lu/Ontologies/TAO.rdf#installator') {
+				$users[$user->uriResource] = $user;
+			}
 		}
-		
+
 		$keyProp = null;
        	if(isset($options['order'])){
         	switch($options['order']){
@@ -171,7 +173,7 @@ class wfEngine_models_classes_UserService
         	}
         	$keyProp = new core_kernel_classes_Property($prop);
         }
-       
+
         $index = 0;
         foreach($users as $user){
         	$key = $index;
@@ -193,7 +195,7 @@ class wfEngine_models_classes_UserService
         	$returnValue[$key] = $user;
         	$index++;
         }
-      	
+
     	if(isset($options['orderDir'])){
     		if(isset($options['order'])){
     			if(strtolower($options['orderDir']) == 'asc'){
@@ -206,15 +208,15 @@ class wfEngine_models_classes_UserService
    			else{
    				if(strtolower($options['orderDir']) == 'asc'){
 	   				sort($returnValue);
-	   			}   
+	   			}
 	   			else{
 	   				rsort($returnValue);
-	   			}  
+	   			}
    			}
         }
         //(isset($options['start'])) 	? $start = $options['start'] 	: $start = 0;
         //(isset($options['end']))	? $end	= $options['end']		: $end	= count($returnValue);
-		
+
         // section 127-0-1-1-718243b3:12912642ee4:-8000:0000000000001F88 end
 
         return (array) $returnValue;
@@ -235,19 +237,19 @@ class wfEngine_models_classes_UserService
         $returnValue = (bool) false;
 
         // section 127-0-1-1-718243b3:12912642ee4:-8000:0000000000001F8B begin
-        
-        if(is_null($user)){		
+
+        if(is_null($user)){
 			//Create user here:
 			if(is_null($role)){
 				$role = new core_kernel_classes_Resource(CLASS_ROLE_WORKFLOWUSERROLE);
 			}
 			$user = $this->createInstance(new core_kernel_classes_Class($role->uriResource));
 		}
-		
+
     	if(!is_null($user)){
 			$returnValue = $this->bindProperties($user, $properties);
 		}
-        
+
         // section 127-0-1-1-718243b3:12912642ee4:-8000:0000000000001F8B end
 
         return (bool) $returnValue;
@@ -264,12 +266,12 @@ class wfEngine_models_classes_UserService
     public function feedAllowedRoles( core_kernel_classes_Class $roleClass = null)
     {
         // section 127-0-1-1--2c34ff07:1291273bd7e:-8000:0000000000001F94 begin
-        
-    	if(empty($roleClass)){
-			$roleClass = new core_kernel_classes_Class(CLASS_ROLE_BACKOFFICE);	
-		}	
-    	$this->allowedRoles = array_keys($roleClass->getInstances(true));
-    	
+
+			if (empty($roleClass)) {
+				$roleClass = new core_kernel_classes_Class(CLASS_ROLE_BACKOFFICE);
+			}
+			$this->allowedRoles = array_keys($roleClass->getInstances(true));
+
         // section 127-0-1-1--2c34ff07:1291273bd7e:-8000:0000000000001F94 end
     }
 
@@ -285,7 +287,7 @@ class wfEngine_models_classes_UserService
         $returnValue = array();
 
         // section 127-0-1-1-718243b3:12912642ee4:-8000:0000000000001F92 begin
-        
+
         $users = $this->getAllUsers(array('order'=>'login'));
 		foreach($users as $user){
 			$login = (string) $user->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_USER_LABEL));
@@ -297,9 +299,9 @@ class wfEngine_models_classes_UserService
 						'title' => __('login: ').$login
 					)
 				);
-			
+
 		}
-        
+
         // section 127-0-1-1-718243b3:12912642ee4:-8000:0000000000001F92 end
 
         return (array) $returnValue;
