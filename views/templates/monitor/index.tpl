@@ -16,7 +16,7 @@
 
 <script type="text/javascript" src="<?=BASE_URL?>/views/js/wfApi/wfApi.min.js"></script>
 
-<style> 
+<style>
 	#filter-container { width:19%;  height:561px; }
 	.main-container { height:584px; padding:0; margin:0; overflow:auto !important; }
 	#monitoring-processes-container, #process-details-container { padding:0; height:50%; overflow:auto; }
@@ -24,17 +24,17 @@
 	.currentActivities-subgrid .ui-jqgrid, .currentActivities-subgrid .jqgrow, .currentActivities-subgrid td { border: 0 none !important; border-right:1px solid #AAA !important; }
 	.currentActivities-subgrid .ui-jqgrid-hdiv, .currentActivities-subgrid .ui-jqgrid-titlebar { display:none; }
 	#process-details-tabs { height:269px; }
-	
-	.tabs-bottom { position: relative; } 
+
+	.tabs-bottom { position: relative; }
 	.tabs-bottom .ui-tabs-panel { height:100%; overflow: auto; }
-	.tabs-bottom .ui-tabs-nav { position: absolute !important; left: 0; bottom: 0; right:0; padding: 0 0.2em 0.2em 0; } 
+	.tabs-bottom .ui-tabs-nav { position: absolute !important; left: 0; bottom: 0; right:0; padding: 0 0.2em 0.2em 0; }
 	.tabs-bottom .ui-tabs-nav li { margin-top: -2px !important; margin-bottom: 1px !important; border-top: none; border-bottom-width: 1px; }
-	.ui-tabs-selected { margin-top: -3px !important; }
-	
+	#Monitor_processes .ui-tabs-selected { margin-bottom: inherit; padding-bottom: 0 }
+
 	.activity-variable-edit-container { white-space:inherit; white-space:nowrap !important; }
 	.activity-variable-value { display:block; margin: 3px 0; }
 	.activity-variable-actions { white-space:inherit; white-space:nowrap !important; margin-bottom:7px; }
-	.activity-variable-actions img { margin-top:3px; } 
+	.activity-variable-actions img { margin-top:3px; }
 	a.activity-variable-action { border-color:#CCCCCC #AAAAAA #AAAAAA #CCCCCC; border-width:1px; border-style:solid; padding:3px 6px; cursor:pointer; margin-right:5px; text-decoration:none; }
 </style>
 
@@ -42,7 +42,7 @@
 	<div class="ui-widget ui-state-default ui-widget-header ui-corner-top container-title" >
 		<?=__('Filter')?>
 	</div>
-	<ul class="4ui-helper-hidden-accessible">	
+	<ul class="4ui-helper-hidden-accessible">
 		<li><a href="#tabs-1">Query</a></li>
 		<li><a href="#tabs-2">Text</a></li>
 		<li><a href="#tabs-3">Facet</a></li>
@@ -66,7 +66,7 @@
 	</div>
 	<div id="process-details-container" class="tabs-bottom">
 		<div id="process-details-tabs">
-			<ul class="4ui-helper-hidden-accessible">	
+			<ul class="4ui-helper-hidden-accessible">
 				<li><a href="#current_activities_container">Current Activities</a></li>
 				<li><a href="#history_process_container">History</a></li>
 			</ul>
@@ -79,7 +79,7 @@
 				</table>
 			</div>
 		</div>
-	</div>	
+	</div>
 </div>
 
 <script type="text/javascript">
@@ -106,7 +106,7 @@ function loadMonitoring(filter)
 			monitoringGrid.empty();
 			currentActivitiesGrid.empty();
 			historyProcessGrid.empty();
-			
+
 			monitoringGrid.add(DATA);
 			selectedProcessId = null;
 		}
@@ -119,13 +119,13 @@ $(function(){
 	model = <?=$model?>;
 	//workflow variables
 	wfVariables = <?=$wfVariables?>;
-	
+
 	/*
 	 * Instantiate the tabs
 	 */
 	var filterTabs = new TaoTabsClass('#filter-container', {'position':'bottom'});
 	var processDetailsTabs = new TaoTabsClass('#process-details-tabs', {'position':'bottom'});
-	
+
 	/*
 	 * instantiate the facet based filter widget
 	 */
@@ -150,12 +150,12 @@ $(function(){
 	//set the filter nodes
 	var filterNodes = [
 		<?foreach($properties as $property):?>
-		{ 
+		{
 			id					: '<?=md5($property->uriResource)?>'
 			, label				: '<?=$property->getLabel()?>'
 			, url				: getUrl
-			, options 			: 
-			{ 
+			, options 			:
+			{
 				'propertyUri' 	: '<?= $property->uriResource ?>'
 				, 'classUri' 	: '<?= $clazz->uriResource ?>'
                 , 'filterItself': false
@@ -179,7 +179,7 @@ $(function(){
 			{
 				//$('#monitoring-processes-grid').jqGrid('editRow', rowId);
 				selectedProcessId = rowId;
-				
+
 				//display the process' current activities
 				currentActivitiesGrid.empty();
 				currentActivitiesGrid.add(monitoringGrid.data[rowId]['http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessInstancesCurrentActivityExecutions']);
@@ -194,11 +194,11 @@ $(function(){
 						historyProcessGrid.add(DATA);
 					}
 				);
-				
+
 			}
 		}
 	};
-	//Override the monitoring model with the model of actions 
+	//Override the monitoring model with the model of actions
 	model['cancelProcess'] = {
 		'id' 			: 'cancelProcess'
 		, 'title' 		: 'Stop'
@@ -239,17 +239,17 @@ $(function(){
 	monitoringGrid = new TaoGridClass('#monitoring-processes-grid', model, '', monitoringGridOptions);
 	//load monitoring grid
 	loadMonitoring(null);
-	
+
 	//width/height of the subgrids
 	var subGridWith = $('#current_activities_container').width() - 12 /* padding */;
 	var subGridHeight = $('#current_activities_container').height() - 45;
-	
+
 	/**
 	 * Instantiate the details area
 	 */
 	//the grid model
 	var currentActivitiesModel = model['http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessInstancesCurrentActivityExecutions']['subgrids'];
-	//Override the current activities model with the model of actions 
+	//Override the current activities model with the model of actions
 	currentActivitiesModel['previousActivity'] = {
 		'id' 			: 'previousActivity'
 		, 'title' 		: 'Previous'
@@ -277,13 +277,13 @@ $(function(){
 	//instantiate the grid widget
 	currentActivitiesGrid = new TaoGridClass('#current-activities-grid', currentActivitiesModel, '', currentActivitiesOptions);
 
-	
+
 	/**
 	 * Instantiate the history area
 	 */
 	//the grid model
 	var historyProcessModel = <?=$historyProcessModel?>;
-	//the history grid options	
+	//the history grid options
 	 var historyProcessOptions = {
 		'height' : subGridHeight,
 		'width'  : subGridWith,
@@ -291,7 +291,7 @@ $(function(){
 	};
 	//instantiate the grid widget
 	historyProcessGrid = new TaoGridClass('#history-process-grid', historyProcessModel, '', historyProcessOptions);
-	
+
 });
 </script>
 
