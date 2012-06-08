@@ -143,9 +143,8 @@ class wfEngine_models_classes_UserService
 			$crits[$fields[$options['search']['field']]] = sprintf($ops[$options['search']['op']], $options['search']['string']);
 		}
 		foreach ($userClass->searchInstances($crits, $opts) as $user) {
-			if ($user->uriResource != 'http://www.tao.lu/Ontologies/TAO.rdf#installator') {
-				$users[$user->uriResource] = $user;
-			}
+			$users[$user->uriResource] = $user;
+			
 		}
 
 		$keyProp = null;
