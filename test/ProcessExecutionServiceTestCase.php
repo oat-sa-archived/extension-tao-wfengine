@@ -62,10 +62,11 @@ class ProcessExecutionServiceTestCase extends UnitTestCase{
 			PROPERTY_USER_DEFLG		=>	'EN'
 		);
 		
-		$this->testUserRole = new core_kernel_classes_Resource(CLASS_ROLE_WORKFLOWUSERROLE);
+		$this->testUserRole = new core_kernel_classes_Class(CLASS_ROLE_WORKFLOWUSERROLE);
 		$this->currentUser = $this->userService->getOneUser($login);
 		if(is_null($this->currentUser)){
-			$this->userService->bindProperties($this->currentUser, $userData, $this->testUserRole);
+			$this->currentUser = $this->testUserRole->createInstance();
+			$this->userService->bindProperties($this->currentUser, $userData);
 		}
 		
 		core_kernel_users_Service::logout();

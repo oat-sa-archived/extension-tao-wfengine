@@ -58,7 +58,9 @@ class NotificationServiceTestCase extends UnitTestCase {
 		
 		$this->currentUser = $this->userService->getOneUser($login);
 		if(is_null($this->currentUser)){
-			$this->userService->bindProperties($this->currentUser, $userData, new core_kernel_classes_Resource(CLASS_ROLE_WORKFLOWUSERROLE));
+			$wfrole = new core_kernel_classes_Class(CLASS_ROLE_WORKFLOWUSERROLE);
+			$this->currentUser = $wfrole->createInstance();
+			$this->userService->bindProperties($this->currentUser, $userData);
 		}
 		
 		core_kernel_users_Service::logout();
