@@ -111,6 +111,7 @@ class wfEngine_actions_ProcessBrowser extends wfEngine_actions_WfModule{
 	public function index(){
 		
 		if(is_null($this->processExecution)){
+			common_Logger::w('ProcessBrowser invoked without processExecution');
 			$this->redirectToMain();
 			return;
 		}
@@ -148,6 +149,7 @@ class wfEngine_actions_ProcessBrowser extends wfEngine_actions_WfModule{
 		$currentlyAvailableActivityExecutions = $this->processExecutionService->getAvailableCurrentActivityExecutions($this->processExecution, $currentUser, true);
 		
 		$activityExecution = null;
+			
 		if(count($currentlyAvailableActivityExecutions) == 0){
 			//no available current activity exec found: no permission or issue in process execution:
 			$this->pause();
@@ -230,8 +232,7 @@ class wfEngine_actions_ProcessBrowser extends wfEngine_actions_WfModule{
 			$this->setData('browserViewData', $browserViewData);
 					
 			$this->setData('activity', $activityDefinition);
-		
-		
+			
 			/* <DEBUG> :populate the debug widget */
 			if(DEBUG_MODE){
 				
@@ -257,7 +258,7 @@ class wfEngine_actions_ProcessBrowser extends wfEngine_actions_WfModule{
 				));
 			}
 			/* </DEBUG> */
-
+			
 			$this->setView('process_browser.tpl');
 		}
 	}
