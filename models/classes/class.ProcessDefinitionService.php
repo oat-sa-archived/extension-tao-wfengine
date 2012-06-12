@@ -344,22 +344,15 @@ class wfEngine_models_classes_ProcessDefinitionService
                          
                         //check if the current user has the restricted role
                     case INSTANCE_ACL_ROLE:
-                        $processRole 	= $processDefinition->getOnePropertyValue($restrictedRoleProp);
-                        $userRoles 		= $currentUser->getTypes();
-                        if(!is_null($processRole) && is_array($userRoles)){
-                        	foreach($userRoles as $userRole){
-                        		if($processRole->uriResource == $userRole->uriResource){
-                        			return true;
-                        		}
-                        	}
-                        }
+                    	$processRole 		= $processDefinition->getOnePropertyValue($restrictedRoleProp);
+                        $processRoleClass 	= new core_kernel_classes_Class($processRole->getUri());
+                    	$returnValue		= $currentUser->isInstanceOf($processRoleClass);
                         break;
                     default:
                         $returnValue = true;
                 }
             }
         }
-		
         // section 127-0-1-1--db23604:133a151a3dc:-8000:00000000000033B9 end
 
         return (bool) $returnValue;
