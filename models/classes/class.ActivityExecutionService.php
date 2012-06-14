@@ -546,21 +546,7 @@ class wfEngine_models_classes_ActivityExecutionService
 								$returnValue = true;
 							}
 						}
-/*        				 
-        				$activityRole 	= $this->getRestrictedRole($activityExecution);
-						$userRoles 		= $currentUser->getTypes();
-        				if(!is_null($activityRole) && is_array($userRoles)){
-        					foreach($userRoles as $userRole){
-		        				if($activityRole->uriResource == $userRole->uriResource){
-									$assignedUser = $this->getActivityExecutionUser($activityExecution);
-									if(is_null($assignedUser)|| $assignedUser->uriResource == $currentUser->uriResource){
-										$returnValue = true;
-									}
-									break;
-								}
-        					}
-						}
-*/
+
         				break;	
         			}	
         			//check if the current user has the restricted role and is the restricted user based on the previous activity with the given role
