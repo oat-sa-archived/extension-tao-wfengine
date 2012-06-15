@@ -42,20 +42,9 @@
 	<div class="ui-widget ui-state-default ui-widget-header ui-corner-top container-title" >
 		<?=__('Filter')?>
 	</div>
-	<ul class="4ui-helper-hidden-accessible">
-		<li><a href="#tabs-1">Query</a></li>
-		<li><a href="#tabs-2">Text</a></li>
-		<li><a href="#tabs-3">Facet</a></li>
-	</ul>
 	<div id="tabs-1">
 		<div id="facet-filter">
 		</div>
-	</div>
-	<div id="tabs-2">tabs-2
-		<? //include() ?>
-	</div>
-	<div id="tabs-3">tabs-3
-		<? //include() ?>
 	</div>
 </div>
 
@@ -67,8 +56,8 @@
 	<div id="process-details-container" class="tabs-bottom">
 		<div id="process-details-tabs">
 			<ul class="4ui-helper-hidden-accessible">
-				<li><a href="#current_activities_container">Current Activities</a></li>
-				<li><a href="#history_process_container">History</a></li>
+				<li><a href="#current_activities_container"><?=__("Current Activities")?></a></li>
+				<li><a href="#history_process_container"><?=__("History")?></a></li>
 			</ul>
 			<div id="current_activities_container">
 				<table id="current-activities-grid">
