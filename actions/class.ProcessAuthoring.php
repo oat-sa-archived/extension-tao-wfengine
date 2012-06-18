@@ -344,7 +344,6 @@ class wfEngine_actions_ProcessAuthoring extends tao_actions_TaoModule {
 			$activity, 
 			array(
 				'excludedProperties' => $excludedProperties,
-				'uniqueLabel' => false
 				)
 			);
 		$myForm = $formContainer->getForm();
