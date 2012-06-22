@@ -70,7 +70,6 @@ define('PROCESS_SCRIPT_URL', PROCESS_BASE_WWW  . 'js/authoring/');
 
 #export resources path
 define('EXPORT_PATH', 	BASE_PATH . '/views/export');
-define('EXPORT_URL', 	BASE_URL  . '/views/export');
 
 #TAO extension Paths
 define('TAOBASE_WWW',  ROOT_URL  . '/tao/views/');
