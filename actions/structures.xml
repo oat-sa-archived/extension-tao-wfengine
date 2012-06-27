@@ -7,7 +7,8 @@
 			<section id="monitor_process" name="Monitor processes" url="/wfEngine/Monitor/index" />
 			<section id="manage_process" name="Manage processes" url="/wfEngine/Process/index">
 				<trees>
-					<tree name="Process library" 
+					<tree name="Process library"
+						className="Process" 
 						dataUrl="/wfEngine/Process/getOntologyData" 
 						editInstanceUrl="/wfEngine/Process/editProcess"
 						addInstanceUrl="/wfEngine/Process/addInstance"
@@ -30,7 +31,8 @@
 			
 			<section id="manage_roles" name="Manage roles" url="/wfEngine/Role/index">
 				<trees>
-					<tree name="Role library" 
+					<tree name="Role library"
+						className="Role" 
 						dataUrl="/wfEngine/Role/getOntologyData" 
 						editInstanceUrl="/wfEngine/Role/editRole"
 						addInstanceUrl="/wfEngine/Role/addInstance"
