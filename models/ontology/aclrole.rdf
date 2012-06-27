@@ -17,5 +17,6 @@
 		<funcacl:grantAccessModule rdf:resource="http://www.tao.lu/Ontologies/taoFuncACL.rdf#m_taoItems_SaSDelivery" />
 		<funcacl:grantAccessModule rdf:resource="http://www.tao.lu/Ontologies/taoFuncACL.rdf#m_taoItems_SaSResults" />
 		<funcacl:grantAccessModule rdf:resource="http://www.tao.lu/Ontologies/taoFuncACL.rdf#m_taoItems_SaSUsers" />
+		<funcacl:grantAccessModule rdf:resource="http://www.tao.lu/Ontologies/taoFuncACL.rdf#m_taoItems_WfApiProcessExecution" />
   </rdf:Description>
 </rdf:RDF>
