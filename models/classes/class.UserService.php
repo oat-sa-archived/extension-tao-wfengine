@@ -58,7 +58,7 @@ class wfEngine_models_classes_UserService
     {
         // section 127-0-1-1-951b66:128b0d3ece8:-8000:0000000000001F55 begin
 
-		$this->allowedRoles = array(CLASS_ROLE_WORKFLOWUSER);
+		$this->allowedRoles = array(CLASS_ROLE_BACKOFFICE);
 
         // section 127-0-1-1-951b66:128b0d3ece8:-8000:0000000000001F55 end
     }
