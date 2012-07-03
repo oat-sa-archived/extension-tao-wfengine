@@ -5,7 +5,7 @@
  */
 require_once dirname(__FILE__). '/../tao/includes/class.Bootstrap.php';
 
-$bootStrap = new BootStrap('wfEngine', $options);
+$bootStrap = new BootStrap('wfEngine');
 $bootStrap->start();
 $bootStrap->dispatch();
 ?>
