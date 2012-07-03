@@ -5,28 +5,6 @@
  */
 require_once dirname(__FILE__). '/../tao/includes/class.Bootstrap.php';
 
-//use a different session name when we execute a wf process
-$modules = array(
-	'Authentication', 
-	'WfHome', 
-	'ProcessBrowser',
-	'ProcessInstanciation',
-	'ItemDelivery', 
-	'ResultDelivery',
-	'RecoveryContext',
-	'WfApiActivityExecution',
-	'WfApiProcessExecution',
-	'WfApiProcessDefinition',
-	'WfApiVariable'
-);
-$options = array();
-foreach($modules as $module){
-	if(tao_helpers_Request::contains('module', $module)){
-		$options['session_name'] = 'TAO_WORKFLOW_SESSION';
-		break;
-	}
-}
-
 $bootStrap = new BootStrap('wfEngine', $options);
 $bootStrap->start();
 $bootStrap->dispatch();
