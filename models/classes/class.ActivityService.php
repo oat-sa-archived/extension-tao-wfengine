@@ -292,7 +292,7 @@ class wfEngine_models_classes_ActivityService
 			$cardinalityClass = new core_kernel_classes_Class(CLASS_ACTIVITYCARDINALITY);
 			$activityCardinalities = $cardinalityClass->searchInstances(array(PROPERTY_ACTIVITYCARDINALITY_ACTIVITY => $activity->uriResource), array('like' => false)); //note: count()>1 only 
 			$previousActivities = array_merge(array($activity->uriResource), array_keys($activityCardinalities));
-			$nextConnectors = $connectorClass->searchInstances(array(PROPERTY_CONNECTORS_PREVIOUSACTIVITIES => $previousActivities), array('like' => true, 'recursive' => 0));
+			$nextConnectors = $connectorClass->searchInstances(array(PROPERTY_CONNECTORS_PREVIOUSACTIVITIES => $previousActivities), array('like' => false, 'recursive' => 0));
 			foreach ($nextConnectors as $nextConnector) {
 				$returnValue[$nextConnector->uriResource] = $nextConnector;
 			}
