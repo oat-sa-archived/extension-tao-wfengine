@@ -20,7 +20,7 @@ else{
 require_once  PHPCOVERAGE_HOME. "/CoverageRecorder.php";
 require_once PHPCOVERAGE_HOME . "/reporter/HtmlCoverageReporter.php";
 //run the unit test suite
-$includePaths = array(ROOT_PATH."wfEngine/actions", ROOT_PATH.'wfEngine/models',ROOT_PATH.'wfEngine/helpers');
+$includePaths = array(ROOT_PATH.'wfEngine/models',ROOT_PATH.'wfEngine/helpers');
 
 $excludePaths = array();
 $covReporter = new HtmlCoverageReporter("Code Coverage Report wfEngine", "", PHPCOVERAGE_REPORTS."/wfEngine");
