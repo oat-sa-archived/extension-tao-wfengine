@@ -1,13 +1,13 @@
 <?php
 class wfEngine_actions_Authentication extends wfEngine_actions_WfModule
 {
-    
+
     /**
      * Users Service
      * @var type wfEngine_models_classes_UserService
      */
     protected $userService;
-    
+
     /**
      * Action constructor
      */
@@ -16,7 +16,7 @@ class wfEngine_actions_Authentication extends wfEngine_actions_WfModule
     	parent::__construct();
 		$this->userService = wfEngine_models_classes_UserService::singleton();
     }
-    
+
 	/**
 	 * WfEngine Login controler
 	 */
@@ -25,21 +25,21 @@ class wfEngine_actions_Authentication extends wfEngine_actions_WfModule
 
 		if($this->hasRequestParameter('errorMessage')){
 			$this->setData('errorMessage',$this->getRequestParameter('errorMessage'));
-		}		
-		
+		}
+
 		$processUri = urldecode($this->getRequestParameter('processUri'));
 		$processExecution = common_Utils::isUri($processUri)?new core_kernel_classes_Resource($processUri):null;
-		
+
 		$activityUri = urldecode($this->getRequestParameter('activityUri'));
 		$activityExecution = common_Utils::isUri($activityUri)?new core_kernel_classes_Resource($activityUri):null;
-		
+
 		//create the login for to the activity execution of a process execution:
 		$myLoginFormContainer = new wfEngine_actions_form_Login(array(
 			'processUri' => !is_null($processExecution)?$processExecution->uriResource:'',
 			'activityUri' => !is_null($activityExecution)?$activityExecution->uriResource:''
 		));
 		$myForm = $myLoginFormContainer->getForm();
-		
+
 		if($myForm->isSubmited()){
 			if($myForm->isValid()){
 				$values = $myForm->getValues();
@@ -59,7 +59,7 @@ class wfEngine_actions_Authentication extends wfEngine_actions_WfModule
 				}
 			}
 		}
-		
+
 		$this->setData('form', $myForm->render());
 		$this->setView('login.tpl');
 	}
@@ -84,7 +84,7 @@ class wfEngine_actions_Authentication extends wfEngine_actions_WfModule
             , 'message' => $message
         ));
     }
-    
+
     /**
      * Get information about the current user
      */
@@ -94,7 +94,7 @@ class wfEngine_actions_Authentication extends wfEngine_actions_WfModule
         $success = false;
         $currentUser = $this->userService->getCurrentUser();
         if(!is_null($currentUser)){
-            
+
             $success = true;
             //properties to get
             $properties = array(
@@ -115,7 +115,7 @@ class wfEngine_actions_Authentication extends wfEngine_actions_WfModule
             }
             //add roles
             $data['roles'] = array();
-            foreach($currentUser->getAllPropertyValues(new core_kernel_classes_Property(RDFS_TYPE)) as $type){                
+            foreach($currentUser->getAllPropertyValues(new core_kernel_classes_Property(RDFS_TYPE)) as $type){
                 $data['roles'][] = $type->uriResource;
             }
         }
@@ -125,7 +125,7 @@ class wfEngine_actions_Authentication extends wfEngine_actions_WfModule
             , 'data'    => $data
         ));
     }
-    
+
     /**
      * Logout a user
      */
@@ -139,7 +139,11 @@ class wfEngine_actions_Authentication extends wfEngine_actions_WfModule
 		// Finally, destroy the session.
 		session_unset();
 
-		$this->redirect(_url('index', 'Authentication'));
+		if (!tao_helpers_Request::isAjax()) {
+			$this->redirect(_url('index', 'Authentication'));
+		} else {
+			echo json_encode(array('success' => true));
+		}
 	}
 }
 ?>
