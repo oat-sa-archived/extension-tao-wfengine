@@ -7,7 +7,7 @@
 			@import url(<?=BASE_WWW?>/css/process_authoring.css);
 		</style>
 
-		<script type="text/javascript" src="<?=BASE_WWW?>js/jquery-1.4.2.min.js"></script>
+		<script type="text/javascript" src="<?=TAOBASE_WWW?>js/jquery-1.7.2.min.js"></script>
 		<script type="text/javascript" src="<?=BASE_WWW?>/js/process_authoring.js"></script>
 		<script type="text/javascript" src="<?=BASE_WWW?>/js/gateway/ProcessAuthoring.js"></script>
 	</head>

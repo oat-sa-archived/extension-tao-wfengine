@@ -11,9 +11,9 @@ define ('PATH_SAMPLE', dirname(__FILE__).'/samples/');
 	<title>QUnit Test Suite</title>
 	<link rel="stylesheet" href="../../tao/test/qunit/qunit.css" type="text/css" media="screen">
 	<!--<script type="text/javascript" src="https://getfirebug.com/firebug-lite.js"></script>-->
-	<script type="application/javascript" src='../../tao/views/js/jquery-1.4.2.min.js'></script>
+	<script type="application/javascript" src='../../tao/views/js/jquery-1.7.2.min.js'></script>
     <script type="application/javascript" src="../../tao/test/qunit/qunit.js"></script>
-    
+
     <script type="application/javascript" src="../views/js/wfApi/src/constants.js"></script>
     <script type="application/javascript" src="../views/js/wfApi/src/context.js"></script>
     <script type="application/javascript" src="../views/js/wfApi/src/api.js"></script>
@@ -27,14 +27,14 @@ define ('PATH_SAMPLE', dirname(__FILE__).'/samples/');
 	<!-- -------------------------------------------------------------------------
 	QTI DATA
 	--------------------------------------------------------------------------->
-	
+
 	<script type="application/javascript">
 	$(function(){
 		var processDefinitionUri = null;
 		var processExecutionUri = null;
         var testToRun = '*';
         //var testToRun = "Remote Parsing / Client Matching : Select Point";
-        
+
         var testUnitFct = test;
         var asynctestUnitFct = asyncTest;
         test = function (label, func) {
@@ -508,7 +508,7 @@ define ('PATH_SAMPLE', dirname(__FILE__).'/samples/');
 
 	});
 	</script>
-	
+
 </head>
 <body>
 	<h1 id="qunit-header">QUnit Test Suite</h1>

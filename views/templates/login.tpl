@@ -8,13 +8,13 @@
 		<style media="screen">
 			@import url(<?echo BASE_WWW; ?>/css/login.css);
 		</style>
-		
-		<script type="text/javascript" src="<?=BASE_WWW?>js/jquery-1.4.2.min.js"></script>
+
+		<script type="text/javascript" src="<?=TAOBASE_WWW?>js/jquery-1.7.2.min.js"></script>
 		<script type="text/javascript" src="<?=BASE_WWW ?>js/login.js"></script>
 	</head>
-	
+
 	<body>
-		<ul id="control">    
+		<ul id="control">
 			<li></li>
 		</ul>
 		<div id="content" class='ui-corner-bottom'>
@@ -34,11 +34,11 @@
 						<?=get_data('form')?>
 					</div>
 				</div>
-	
+
 
 			</div>
 		</div>
 
 		<? include TAO_TPL_PATH .'footer/layout_footer_'.TAO_RELEASE_STATUS.'.tpl' ?>
-		
+
 
