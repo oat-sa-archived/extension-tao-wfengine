@@ -223,7 +223,7 @@ class wfEngine_actions_Users extends tao_actions_CommonModule {
 		
 		$user = new core_kernel_classes_Resource(tao_helpers_Uri::decode($this->getRequestParameter('uri')));
 		
-		$myFormContainer = new tao_actions_form_Users(new core_kernel_classes_Class(CLASS_ROLE_WORKFLOWUSERROLE), $user, false, false);
+		$myFormContainer = new tao_actions_form_Users(new core_kernel_classes_Class(CLASS_ROLE_WORKFLOWUSERROLE), $user, false);
 		$myForm = $myFormContainer->getForm();
 		
 		if($myForm->isSubmited()){
