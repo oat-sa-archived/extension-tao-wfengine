@@ -98,119 +98,6 @@ class wfEngine_models_classes_UserService
     }
 
     /**
-     * get all the users
-     *
-     * @access public
-     * @author Joel Bout, <joel.bout@tudor.lu>
-     * @param  array options
-     * @return array
-     */
-    public function getAllUsers($options)
-    {
-        $returnValue = array();
-
-        // section 127-0-1-1-718243b3:12912642ee4:-8000:0000000000001F88 begin
-
-    	$roleService = wfEngine_models_classes_RoleService::singleton();
-    	$fields = array('login' => PROPERTY_USER_LOGIN,
-						'password' => PROPERTY_USER_PASSWORD,
-						'uilg' => PROPERTY_USER_UILG,
-						'deflg' => PROPERTY_USER_DEFLG,
-						'mail' => PROPERTY_USER_MAIL,
-						'firstname' => PROPERTY_USER_FIRTNAME,
-						'lastname' => PROPERTY_USER_LASTNAME,
-						'name' => PROPERTY_USER_FIRTNAME);
-		$ops = array('eq' => "%s",
-					 'bw' => "%s*",
-					 'ew' => "*%s",
-					 'cn' => "*%s*");
-        $userClass = new core_kernel_classes_Class(CLASS_GENERIS_USER);
-		$users = array();
-
-		$backoffice = new core_kernel_classes_Class(CLASS_ROLE_BACKOFFICE);
-		$types = array();
-		$bos = $backoffice->getInstances(true, array());
-		foreach ($bos as $i => $e) {
-			$types[] = $i;
-		}
-
-		$opts = array('recursive' => 0, 'like' => false, 'additionalClasses' => $types);
-		if (isset($options['start'])) $opts['offset'] = $options['start'];
-		if (isset($options['end'])) $opts['limit'] = $options['end'];
-
-		$crits = array(PROPERTY_USER_LOGIN => '*');
-		if (isset($options['search']) && !is_null($options['search']) && isset($options['search']['string']) && isset($ops[$options['search']['op']])) {
-			$crits[$fields[$options['search']['field']]] = sprintf($ops[$options['search']['op']], $options['search']['string']);
-		}
-		foreach ($userClass->searchInstances($crits, $opts) as $user) {
-			$users[$user->uriResource] = $user;
-			
-		}
-
-		$keyProp = null;
-       	if(isset($options['order'])){
-        	switch($options['order']){
-        		case 'login'		: $prop = PROPERTY_USER_LOGIN; break;
-        		case 'password'		: $prop = PROPERTY_USER_PASSWORD; break;
-        		case 'uilg'			: $prop = PROPERTY_USER_UILG; break;
-        		case 'deflg'		: $prop = PROPERTY_USER_DEFLG; break;
-        		case 'mail'			: $prop = PROPERTY_USER_MAIL; break;
-        		case 'firstname'	: $prop = PROPERTY_USER_FIRTNAME; break;
-        		case 'lastname'		: $prop = PROPERTY_USER_LASTNAME; break;
-        		case 'name'			: $prop = PROPERTY_USER_FIRTNAME; break;
-        	}
-        	$keyProp = new core_kernel_classes_Property($prop);
-        }
-
-        $index = 0;
-        foreach($users as $user){
-        	$key = $index;
-        	if(!is_null($keyProp)){
-        		try{
-        			$key = $user->getUniquePropertyValue($keyProp);
-        			if(!is_null($key)){
-        				if($key instanceof core_kernel_classes_Literal){
-        					$returnValue[(string)$key] = $user;
-        				}
-        				if($key instanceof core_kernel_classes_Resource){
-        					$returnValue[$key->getLabel()] = $user;
-        				}
-        				continue;
-        			}
-        		}
-        		catch(common_Exception $ce){}
-        	}
-        	$returnValue[$key] = $user;
-        	$index++;
-        }
-
-    	if(isset($options['orderDir'])){
-    		if(isset($options['order'])){
-    			if(strtolower($options['orderDir']) == 'asc'){
-   					ksort($returnValue, SORT_STRING);
-    			}
-    			else{
-    				krsort($returnValue, SORT_STRING);
-    			}
-   			}
-   			else{
-   				if(strtolower($options['orderDir']) == 'asc'){
-	   				sort($returnValue);
-	   			}
-	   			else{
-	   				rsort($returnValue);
-	   			}
-   			}
-        }
-        //(isset($options['start'])) 	? $start = $options['start'] 	: $start = 0;
-        //(isset($options['end']))	? $end	= $options['end']		: $end	= count($returnValue);
-
-        // section 127-0-1-1-718243b3:12912642ee4:-8000:0000000000001F88 end
-
-        return (array) $returnValue;
-    }
-
-    /**
      * Short description of method feedAllowedRoles
      *
      * @access public
@@ -223,9 +110,9 @@ class wfEngine_models_classes_UserService
         // section 127-0-1-1--2c34ff07:1291273bd7e:-8000:0000000000001F94 begin
 
 			if (empty($roleClass)) {
-				$roleClass = new core_kernel_classes_Class(CLASS_ROLE_BACKOFFICE);
+				$roleClass = new core_kernel_classes_Class(CLASS_ROLE_WORKFLOWUSER);
 			}
-			$this->allowedRoles = array_keys($roleClass->getInstances(true));
+			$this->allowedRoles = array($roleClass->getUri());
 
         // section 127-0-1-1--2c34ff07:1291273bd7e:-8000:0000000000001F94 end
     }
