@@ -55,7 +55,7 @@ class wfEngine_actions_Users extends tao_actions_CommonModule {
 			'order' 	=> $sidx,
 			'orderDir'	=> $sord,
 			'start'		=> $start,
-			'end'		=> $limit
+			'limit'		=> $limit
 		);
 		if (!is_null($searchField)) {
 		  $gau['search'] = array(
@@ -65,6 +65,7 @@ class wfEngine_actions_Users extends tao_actions_CommonModule {
 		  );
 		}
 		$users = $this->userService->getAllUsers($gau);
+		$counti =  $this->userService->getUserCount($this->userService->getAllowedConcreteRoles(), $gau);
 		
 		$loginProperty 		= new core_kernel_classes_Property(PROPERTY_USER_LOGIN);
 		$firstNameProperty 	= new core_kernel_classes_Property(PROPERTY_USER_FIRTNAME);
@@ -126,12 +127,6 @@ class wfEngine_actions_Users extends tao_actions_CommonModule {
 		foreach ($bos as $i => $e) {
 			$types[] = $i;
 		}
-
-		$opts = array('recursive' => 0, 'like' => false);
-		$opts['offset'] = $start;
-		$opts['limit'] = $limit;
-		$opts['additionalClasses'] = $types;
-		$counti = $userClass->countInstances(array(PROPERTY_USER_LOGIN => '*'), $opts);
 
 		$response->page = $page;
 		$response->total = ceil($counti / $limit);//$total_pages;
