@@ -9,23 +9,23 @@ GatewayProcessAuthoring.addActivity = function(url, processUri){
 		dataType: 'json',
 		success: function(response){
 			if (response.uri) {
-				EventMgr.trigger('activityAdded', response);
+				eventMgr.trigger('activityAdded', response);
 			}else{
 				CL('error in adding an activity');
 			}
 		}
 	});
-	
+
 }
 
 GatewayProcessAuthoring.addInteractiveService = function(url, activityUri, serviceDefinitionUri){
-	// console.log('url', url);	
+	// console.log('url', url);
 	// console.log('processUri', processUri);
 	data = {activityUri: activityUri, type: 'interactive-service'};
 	if(serviceDefinitionUri){
 		data.serviceDefinitionUri = serviceDefinitionUri;
 	}
-	
+
 	$.ajax({
 		url: url,
 		type: "POST",
@@ -33,17 +33,17 @@ GatewayProcessAuthoring.addInteractiveService = function(url, activityUri, servi
 		dataType: 'json',
 		success: function(response){
 			if (response.uri) {
-				EventMgr.trigger('interactiveServiceAdded', response);
+				eventMgr.trigger('interactiveServiceAdded', response);
 			}
 		}
 	});
-	
+
 }
 
 GatewayProcessAuthoring.addConnector = function(url, prevActivityUri,typeOfConnector){
-	
+
 	// prevActivityUri of either a connector or an activity
-	
+
 	$.ajax({
 		url: url,
 		type: "POST",
@@ -51,20 +51,20 @@ GatewayProcessAuthoring.addConnector = function(url, prevActivityUri,typeOfConne
 		dataType: 'json',
 		success: function(response){
 			if (response.uri) {
-				EventMgr.trigger('connectorAdded', response);
+				eventMgr.trigger('connectorAdded', response);
 			}else{
 				throw 'error in adding a connector';
 			}
 		}
 	});
-	
+
 }
 
 GatewayProcessAuthoring.saveActivityProperties = function(url, activityUri, propertiesValues){
-	
+
 	var data = propertiesValues;
 	data.activityUri = activityUri;
-	
+
 	$.ajax({
 		url: url,
 		type: "POST",
@@ -72,13 +72,13 @@ GatewayProcessAuthoring.saveActivityProperties = function(url, activityUri, prop
 		dataType: 'json',
 		success: function(response){
 			if (response.saved) {
-				EventMgr.trigger('activityPropertiesSaved', response);
+				eventMgr.trigger('activityPropertiesSaved', response);
 			}else{
 				throw 'error in saving activity properties';
 			}
 		}
 	});
-	
+
 }
 
 GatewayProcessAuthoring.deleteActivity = function(url, activityUri){
@@ -90,7 +90,7 @@ GatewayProcessAuthoring.deleteActivity = function(url, activityUri){
 			dataType: 'json',
 			success: function(response){
 				if(response.deleted){
-					EventMgr.trigger('activityDeleted', response);
+					eventMgr.trigger('activityDeleted', response);
 				}else{
 					throw 'error in deleteing the activity';
 				}
@@ -100,7 +100,7 @@ GatewayProcessAuthoring.deleteActivity = function(url, activityUri){
 }
 
 GatewayProcessAuthoring.deleteConnector = function(url, connectorUri){
-	
+
 	$.ajax({
 		url: url,
 		type: "POST",
@@ -108,21 +108,21 @@ GatewayProcessAuthoring.deleteConnector = function(url, connectorUri){
 		dataType: 'json',
 		success: function(response){
 			if(response.deleted){
-				EventMgr.trigger('connectorDeleted', response);
+				eventMgr.trigger('connectorDeleted', response);
 			}else{
 				throw 'error in deleteing the connector';
 			}
 		}
 	});
-	
+
 }
 
 GatewayProcessAuthoring.saveConnector = function(url, connectorUri, prevActivityUri, propertiesValues){
-	
+
 	var data = propertiesValues;
 	data.connectorUri = connectorUri;
 	data.activityUri = prevActivityUri;
-	
+
 	$.ajax({
 		url: url,
 		type: "POST",
@@ -130,15 +130,15 @@ GatewayProcessAuthoring.saveConnector = function(url, connectorUri, prevActivity
 		dataType: 'json',
 		success: function(response){
 			if (response.saved){
-				EventMgr.trigger('connectorSaved', response);
+				eventMgr.trigger('connectorSaved', response);
 			}else{
 				throw 'error in saving connector';
 			}
 		}
 	});
-	
+
 }
 
 GatewayProcessAuthoring.selectElement = function(elementUri){
-	EventMgr.trigger('elementSelected', response);
+	eventMgr.trigger('elementSelected', response);
 }

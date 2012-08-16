@@ -8,10 +8,10 @@
 		<input type="button" id="cancel-<?=$sectionName?>-property" value="<?=__("cancel")?>"/>
 		<script type="text/javascript">
 			function switchACLmode(){
-				
-				var restrictedUserElt = $('select[id=<?=tao_helpers_Uri::encode(PROPERTY_ACTIVITIES_RESTRICTED_USER)?>]').parent();
-				var restrictedRoleElt = $('select[id=<?=tao_helpers_Uri::encode(PROPERTY_ACTIVITIES_RESTRICTED_ROLE)?>]').parent();
-				var mode = $('select[id=<?=tao_helpers_Uri::encode(PROPERTY_ACTIVITIES_ACL_MODE)?>]').val();
+
+				var restrictedUserElt = $('select[id=\'<?=tao_helpers_Uri::encode(PROPERTY_ACTIVITIES_RESTRICTED_USER)?>\']').parent();
+				var restrictedRoleElt = $('select[id=\'<?=tao_helpers_Uri::encode(PROPERTY_ACTIVITIES_RESTRICTED_ROLE)?>\']').parent();
+				var mode = $('select[id=\'<?=tao_helpers_Uri::encode(PROPERTY_ACTIVITIES_ACL_MODE)?>\']').val();
 
 				if(mode == '<?=tao_helpers_Uri::encode(INSTANCE_ACL_USER)?>'){//mode "user"
 					restrictedUserElt.show();//restricted user prop
@@ -42,7 +42,7 @@
 											}
 										}
 									});
-									
+
 									restrictedRoleElt.show();
 									restrictedUserElt.hide();
 								}
@@ -64,20 +64,20 @@
 					restrictedUserElt.hide();
 				}
 			}
-			
+
 			$(document).ready(function(){
-				
-				
+
+
 				switchACLmode();
-				$('select[id=<?=tao_helpers_Uri::encode(PROPERTY_ACTIVITIES_ACL_MODE)?>]').change(switchACLmode);
-				
-					
+				$('select[id=\'<?=tao_helpers_Uri::encode(PROPERTY_ACTIVITIES_ACL_MODE)?>\']').change(switchACLmode);
+
+
 				//edit the id of the tag of uri:
 				$("#<?=$sectionName?>-property-form input[id=uri]").attr("name","<?=$sectionName?>Uri");
 
 				//change to submit event interception would be "cleaner" than adding a button
 				$("#submit-<?=$sectionName?>-property").click(function(){
-					
+
 					// $.ajax({
 						// url: authoringControllerPath+'edit<?=ucfirst($sectionName)?>Property',
 						// type: "POST",
@@ -85,52 +85,52 @@
 						// dataType: 'html',
 						// success: function(response){
 							// $("#<?=$sectionName?>-property-form").html(response);
-							
+
 							// <?if($sectionName=="process"):?>
 							// processProperty();
 							// <?endif;?>
-							
+
 							// <?if($sectionName=="activity"):?>
 							// refreshActivityTree();
 							// <?endif;?>
-							
+
 						// }
 					// });
-					
+
 					GatewayProcessAuthoring.saveActivityProperties(
 						authoringControllerPath + "saveActivityProperty",
 						activityUri,
 						$("#<?=$sectionName?>-property-form :input").serialize()
 					);
-					
+
 				});
-				
+
 				$("#reload-<?=$sectionName?>-property").click(function(){
-					
+
 						//reselect the node
 						ActivityTreeClass.selectTreeNode($("#<?=$sectionName?>-property-form input[id=uri]").val());
-					
+
 				});
-				
+
 				$("#cancel-<?=$sectionName?>-property").click(function(){
 					$("#<?=$sectionName?>-property-form").html('');
 				});
-				
+
 			});
 		</script>
 	<?else:?>
-	
+
 		<?if(get_data('newLabel')):?>
 			<script type="text/javascript">
 				//TODO: check if the label has been updated then replace it in the activity diagram object anyway:
-				
+
 				//for the time being, simply reload the whole diagram (not resource efficient):
 				ActivityDiagramClass.reloadDiagram();
 			</script>
 		<?endif;?>
-		
+
 		<p><?=ucfirst($sectionName)?> property saved</p>
-		
+
 	<?endif;?>
 </div>
 

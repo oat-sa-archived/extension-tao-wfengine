@@ -11,7 +11,7 @@
 		</div>
 	<?endif?>
 	<div class="main-container">
-	
+
 		<div id="form-title" class="ui-widget-header ui-corner-top ui-state-default">
 			<?=get_data('formTitle')?>
 		</div>
@@ -25,9 +25,9 @@
 	var ctx_module 		= "<?=get_data('module')?>";
 	var ctx_action 		= "<?=get_data('action')?>";
 	$(document).ready(function(){
-	
+
 		<?if(get_data('action') == 'add'):?>
-			UiBootstrap.tabs.tabs('disable', getTabIndexByName('edit_user'));
+			uiBootstrap.tabs.tabs('disable', helpers.getTabIndexByName('edit_user'));
 
 			if($("input[id='<?=get_data('loginUri')?>']")){
 				$("input[id='<?=get_data('loginUri')?>']").blur(function(){
@@ -53,12 +53,12 @@
 					}
 				});
 			}
-			
+
 		<?endif?>
-		
-		
-	
-		
+
+
+
+
 	});
 	</script>
 <?endif?>

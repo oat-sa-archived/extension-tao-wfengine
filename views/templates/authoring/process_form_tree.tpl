@@ -10,8 +10,8 @@
 <script type="text/javascript">
 $(function(){
 	//bloc specific to delivery authoring tool:
-	
-	var supportServiceUrlInput = "input[id=<?=tao_helpers_Uri::encode(PROPERTY_SUPPORTSERVICES_URL)?>]";
+
+	var supportServiceUrlInput = "input[id=\'<?=tao_helpers_Uri::encode(PROPERTY_SUPPORTSERVICES_URL)?>\']";
 	if($(supportServiceUrlInput).length){
 		textBoxControl = $('<a href="#">'+__("Browse Tests")+'</a>');
 		textBoxControl.click(function(){
@@ -25,20 +25,20 @@ $(function(){
 
 
 <script type="text/javascript">
-$(function(){	
+$(function(){
 	//bloc to check if an identical code already exists
-	var processVarCodeInput = "input[id=<?=tao_helpers_Uri::encode(PROPERTY_PROCESSVARIABLES_CODE)?>]";
+	var processVarCodeInput = "input[id=\'<?=tao_helpers_Uri::encode(PROPERTY_PROCESSVARIABLES_CODE)?>\']";
 	if($(processVarCodeInput).length){
 		$("#submit-<?=$sectionName?>").attr('disabled','disabled');
 		$(processVarCodeInput).parent("div").append('<a id="codeCheckTrigger" href="#">'+__('check code')+'</a><br/>');
-		
+
 		$("#codeCheckTrigger").click(function(){
 			$(this).parent("div").append('<span id="codeCheckMsg"/>');
 			$("#codeCheckMsg").html(__("checking the code..."));
-			
+
 			var code = $(processVarCodeInput).val();
 			var varUri = $("input[name=uri]:last").val();
-			
+
 			$.ajax({
 				type: "POST",
 				url: authoringControllerPath+"checkCode",
@@ -59,13 +59,13 @@ $(function(){
 				}
 			});
 		});
-		
+
 	}
-			
+
 
 	//change to submit event interception would be "cleaner" than adding a button
 	$("#submit-<?=$sectionName?>").click(function(){
-		
+
 		$.ajax({
 			url: authoringControllerPath+'editInstance',
 			type: "POST",

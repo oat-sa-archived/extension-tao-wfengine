@@ -15,17 +15,17 @@
 <?endif?>
 <script type="text/javascript">
 $(document).ready(function(){
-	if(ctx_extension){
+	if (ctx_extension) {
 		url = root_url + '/' + ctx_extension + '/' + ctx_module + '/';
 	}
-	var getUrl = url + 'getUsers';
-	var setUrl = url + 'saveUsers';
-	new GenerisTreeFormClass('#user-tree', getUrl, {
-		actionId: 'user',
-		saveUrl : setUrl,
-		checkedNodes : <?=get_data('users')?>,
-		relatedFormId : 'form_1'
+
+	require(['require', 'jquery', 'generis.tree.select'], function(req, $, GenerisTreeSelectClass) {
+		new GenerisTreeSelectClass('#user-tree', url + 'getUsers', {
+			actionId: 'user',
+			saveUrl : url + 'saveUsers',
+			checkedNodes : <?=get_data('users')?>,
+			relatedFormId : 'form_1'
+		});
 	});
-	
 });
 </script>

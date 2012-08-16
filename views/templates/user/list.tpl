@@ -5,7 +5,7 @@
 <?endif?>
 <div class="main-container">
 	<table id="user-list"></table>
-	<div id="user-list-pager"></div> 
+	<div id="user-list-pager"></div>
 	<br />
 	<span class="ui-state-default ui-corner-all">
 		<a href="#" onclick="selectTabByName('add_user');">
@@ -17,11 +17,11 @@
 </div>
 <script type="text/javascript">
 function editUser(uri){
-	index = getTabIndexByName('edit_user');
+	index = helpers.getTabIndexByName('edit_user');
 	if(index && uri){
 		editUrl = "<?=_url('edit', 'Users', 'wfEngine')?>" + '?uri=' + uri;
-		UiBootstrap.tabs.tabs('url', index, editUrl);
-		UiBootstrap.tabs.tabs('enable', index);
+		uiBootstrap.tabs.tabs('url', index, editUrl);
+		uiBootstrap.tabs.tabs('enable', index);
 		selectTabByName('edit_user');
 	}
 }
@@ -48,27 +48,27 @@ function removeUser(uri){
 	}
 }
 $(function(){
-	
+
 	var myGrid = $("#user-list").jqGrid({
-		url: "<?=_url('data', 'Users', 'wfEngine')?>", 
-		datatype: "json", 
-		colNames:[ __('Login'), __('Name'), __('Email'), __('Data Language'), __('Interface Language'), __('Role(s)'),__('Actions')], 
-		colModel:[ 
-			{name:'login',index:'login'}, 
-			{name:'name',index:'name'}, 
-			{name:'email',index:'email', width: '200'}, 
+		url: "<?=_url('data', 'Users', 'wfEngine')?>",
+		datatype: "json",
+		colNames:[ __('Login'), __('Name'), __('Email'), __('Data Language'), __('Interface Language'), __('Role(s)'),__('Actions')],
+		colModel:[
+			{name:'login',index:'login'},
+			{name:'name',index:'name'},
+			{name:'email',index:'email', width: '200'},
 			{name:'deflg',index:'deflg', align:"center", width: '100'},
 			{name:'uilg',index:'uilg', align:"center", width: '100'},
 			{name:'role',index:'role', align:"center"},
 			{name:'actions',index:'actions', align:"center", sortable: false}
-		], 
-		rowNum:20, 
-		height:300, 
+		],
+		rowNum:20,
+		height:300,
 		width: (parseInt($("#user-list").width()) - 2),
-		pager: '#user-list-pager', 
-		sortname: 'login', 
-		viewrecords: false, 
-		sortorder: "asc", 
+		pager: '#user-list-pager',
+		sortname: 'login',
+		viewrecords: false,
+		sortorder: "asc",
 		caption: __("Workflow Users"),
 		gridComplete: function(){
 			$.each(myGrid.getDataIDs(), function(index, elt){
@@ -85,15 +85,15 @@ $(function(){
 			$(".user_deletor").click(function(){
 				removeUser(this.id.replace('user_deletor_', ''));
 			});
-			
+
 			$(window).unbind('resize').bind('resize', function(){
 				myGrid.jqGrid('setGridWidth', (parseInt($("#user-list").width()) - 2));
 			});
 		}
 	});
 	myGrid.navGrid('#user-list-pager',{edit:false, add:false, del:false});
-	
-	_autoFx();
+
+	helpers_autoFx();
 });
 </script>
 

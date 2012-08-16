@@ -1,5 +1,5 @@
 <div id="connector-form">
-	
+
 	<?=get_data("formConnector")?>
 	<input type="button" name="submit-connector" id="submit-connector-<?=get_data("formId")?>" value="save"/>
 </div>
@@ -8,18 +8,18 @@
 
 $(function(){
 
-	//get the initial selected value, if exists: 
-	var selectElement = $("select[id=<?=tao_helpers_Uri::encode(PROPERTY_CONNECTORS_TYPE)?>]");
+	//get the initial selected value, if exists:
+	var selectElement = $("select[id=\'<?=tao_helpers_Uri::encode(PROPERTY_CONNECTORS_TYPE)?>\']");
 	var initalSelectedValue = selectElement.val();
-	
+
 	if(initalSelectedValue != 'none' && selectElement.length){
 		selectElement.change(function(e){
 			if(confirm(__("Do you want to change the connector type? \n THe child connectors will be deleted."))){
-				
+
 				// $("#<?=get_data("formId")?> :INPUT :gt(3)").attr("disabled","disabled");
-				$("select[id=<?=tao_helpers_Uri::encode(PROPERTY_CONNECTORS_TYPE)?>]").removeAttr("disabled");
+				$("select[id=\'<?=tao_helpers_Uri::encode(PROPERTY_CONNECTORS_TYPE)?>\']").removeAttr("disabled");
 				$("#<?=get_data("formId")?>").append("<p>reloading form...</p>");
-				
+
 				//send the form
 				$.ajax({
 					url: authoringControllerPath+'saveConnector',
@@ -33,7 +33,7 @@ $(function(){
 							// initActivityTree();
 							refreshActivityTree();
 							ActivityTreeClass.selectTreeNode(selectedNode);
-							
+
 							ActivityDiagramClass.loadDiagram();
 						}else{
 							$("#connector-form").html("save failed:" + response);
@@ -46,9 +46,9 @@ $(function(){
 			}
 		});
 	}
-	
-	
-	
+
+
+
 	if( $("#if").length ){
 		//split connector:
 		initActivitySwitch('then');
@@ -57,50 +57,50 @@ $(function(){
 		initActivitySwitch('next');
 		initActivitySwitch('join');
 	}
-	
+
 	//add listener to check box (only if the type of connector is parallel):
 	if(initalSelectedValue == '<?=tao_helpers_Uri::encode(INSTANCE_TYPEOFCONNECTORS_PARALLEL)?>'){
 
 		checkboxeSelector = $("#<?=get_data('formId')?> input:checkbox[name^='parallel_activityUri']");
 		checkboxeSelector.css({ 'position' : 'relative', 'top' : '3.5px'});
 		checkboxeSelector.each(function(){
-			
+
 			var number = 9;
 			var checked = $(this).attr('checked');
 			var id = $(this).val();
 			var input_id = id+'_num';
 			var input_hidden_id = id+'_num_hidden';
-			
+
 			var selectNumElt = $('<select id="'+input_id+'"/>').insertAfter($(this));
 			selectNumElt.css('margin',0);
-			
+
 			for(var i=1;i<number+1;i++){
 				selectNumElt.append('<option value="'+i+'">'+i+'</option>');
 			}
-			
+
 			var variables = eval(<?=get_data('variables')?>);
 //			console.log(variables);
 			for(var variablesUri in variables){
 				selectNumElt.append('<option value="'+variablesUri+'">'+variables[variablesUri]+'</option>');
 			}
 			selectNumElt.val($("input[id='"+input_hidden_id+"']").val());
-			
+
 			selectNumElt.change(function(){
 				$("input[id='"+$(this).attr('id')+"_hidden']").val( $(this).val() );
 			});
-			
+
 			if(!checked){
 				$("select[id='"+input_id+"']").hide();
 			}
-			
+
 		});
-		
+
 		checkboxeSelector.click(function(){
 			var checked = $(this).attr('checked');
 			var id = $(this).val();
 			var input_id = id+'_num';
 			var input_hidden_id = id+'_num_hidden';
-			
+
 			if(checked){
 				$("select[id='"+input_id+"']").val(1);
 				$("select[id='"+input_id+"']").show();
@@ -108,15 +108,15 @@ $(function(){
 			}else{
 				//hide the input:
 				$("select[id='"+input_id+"']").hide();
-				
+
 				//set hidden input to 0:
 				$("input[id='"+input_hidden_id+"']").val(0);
 			}
 		});
-		
+
 	}
-	
-	
+
+
 	$("#submit-connector-<?=get_data('formId')?>").click(function(){
 		$.ajax({
 			url: authoringControllerPath+'saveConnector',
@@ -127,23 +127,23 @@ $(function(){
 				if(response.saved){
 					var selectedNode = $("#connectorUri").val();
 					$("#connector-form").html("connector saved");
-					
+
 					ActivityDiagramClass.loadDiagram();
-					
+
 					refreshActivityTree();
-					
+
 					ActivityTreeClass.selectTreeNode(selectedNode);
-					
+
 				}else{
 					$("#connector-form").html("connector save failed:" + response);
 				}
 			}
 		});
-		
+
 	});
-	
+
 	switchNotify();
-	
+
 });
 
 function switchNotify(){
@@ -182,7 +182,7 @@ function switchNotify(){
 			checkNotifiedElement(this);
 		});
 	}
-	
+
 }
 
 

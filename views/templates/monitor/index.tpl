@@ -72,216 +72,223 @@
 </div>
 
 <script type="text/javascript">
+	//Global variable
+	var monitoringGrid = null;
+	var currentActivitiesGrid = null;
+	var historyProcessGrid = null;
 
-//Global variable
-var monitoringGrid = null;
-var currentActivitiesGrid = null;
-var historyProcessGrid = null;
-//Selected process id
-//quick hack to test, to replace quickly
-var selectedProcessId = null;
-var selectedActivityExecutionId = null;
-//Workflow variables
-var wfVariables = [];
+	//Selected process id
+	//quick hack to test, to replace quickly
+	var selectedProcessId = null;
+	var selectedActivityExecutionId = null;
 
-//load the monitoring interface functions of the parameter filter
-function loadMonitoring(filter)
-{
-	$.getJSON(root_url+'/wfEngine/Monitor/monitorProcess'
-		,{
-			'filter':filter
-		}
-		, function (DATA) {
-			monitoringGrid.empty();
-			currentActivitiesGrid.empty();
-			historyProcessGrid.empty();
+	//Workflow variables
+	var wfVariables = [];
 
-			monitoringGrid.add(DATA);
-			selectedProcessId = null;
-		}
-	);
-}
+	//load the monitoring interface functions of the parameter filter
+	function loadMonitoring(filter)
+	{
+		$.getJSON(root_url+'/wfEngine/Monitor/monitorProcess'
+			,{
+				'filter':filter
+			}
+			, function (DATA) {
+				monitoringGrid.empty();
+				currentActivitiesGrid.empty();
+				historyProcessGrid.empty();
 
-$(function(){
+				monitoringGrid.add(DATA);
+				selectedProcessId = null;
+			}
+		);
+	}
 
-	//the grid model
-	model = <?=$model?>;
-	//workflow variables
-	wfVariables = <?=$wfVariables?>;
+	$(function(){
+		require(['require', 'jquery', 'generis.facetFilter', 'grid/tao.grid'], function(req, $, GenerisFacetFilterClass) {
+			//the grid model
+			model = <?=$model?>;
 
-	/*
-	 * Instantiate the tabs
-	 */
-	var filterTabs = new TaoTabsClass('#filter-container', {'position':'bottom'});
-	var processDetailsTabs = new TaoTabsClass('#process-details-tabs', {'position':'bottom'});
+			//workflow variables
+			wfVariables = <?=$wfVariables?>;
 
-	/*
-	 * instantiate the facet based filter widget
-	 */
-	var getUrl = root_url + '/wfEngine/Monitor/getFilteredInstancesPropertiesValues';
-	//the facet filter options
-	var facetFilterOptions = {
-		'template' : 'accordion',
-		'callback' : {
-			'onFilter' : function(filter, filterNodesOpt){
-				var formatedFilter = {};
-				for(var filterNodeId in filter){
-					var propertyUri = filterNodesOpt[filterNodeId]['propertyUri'];
-					typeof(formatedFilter[propertyUri])=='undefined'?formatedFilter[propertyUri]=new Array():null;
-					for(var i in filter[filterNodeId]){
-						formatedFilter[propertyUri].push(filter[filterNodeId][i]);
+			/*
+			 * Instantiate the tabs
+			 */
+			var filterTabs = new TaoTabsClass('#filter-container', {'position':'bottom'});
+			var processDetailsTabs = new TaoTabsClass('#process-details-tabs', {'position':'bottom'});
+
+			/*
+			 * instantiate the facet based filter widget
+			 */
+			var getUrl = root_url + '/wfEngine/Monitor/getFilteredInstancesPropertiesValues';
+			//the facet filter options
+			var facetFilterOptions = {
+				'template' : 'accordion',
+				'callback' : {
+					'onFilter' : function(filter, filterNodesOpt){
+						var formatedFilter = {};
+						for (var filterNodeId in filter) {
+							var propertyUri = filterNodesOpt[filterNodeId]['propertyUri'];
+							typeof(formatedFilter[propertyUri])=='undefined'?formatedFilter[propertyUri]=new Array():null;
+							for (var i in filter[filterNodeId]) {
+								formatedFilter[propertyUri].push(filter[filterNodeId][i]);
+							}
+						}
+						loadMonitoring(formatedFilter);
 					}
 				}
-				loadMonitoring(formatedFilter);
-			}
-		}
-	};
-	//set the filter nodes
-	var filterNodes = [
-		<?foreach($properties as $property):?>
-		{
-			id					: '<?=md5($property->uriResource)?>'
-			, label				: '<?=$property->getLabel()?>'
-			, url				: getUrl
-			, options 			:
-			{
-				'propertyUri' 	: '<?= $property->uriResource ?>'
-				, 'classUri' 	: '<?= $clazz->uriResource ?>'
-                , 'filterItself': false
-			}
-		},
-		<?endforeach;?>
-	];
-	//instantiate the facet filter
-	var facetFilter = new GenerisFacetFilterClass('#facet-filter', filterNodes, facetFilterOptions);
-
-
-	/*
-	 * instantiate the monitoring grid
-	 */
-	//the monitoring grid options
-	var monitoringGridOptions = {
-		'height' : $('#monitoring-processes-grid').parent().height()
-		, 'title' 	: __('Monitoring processes')
-		, 'callback' : {
-			'onSelectRow' : function(rowId)
-			{
-				//$('#monitoring-processes-grid').jqGrid('editRow', rowId);
-				selectedProcessId = rowId;
-
-				//display the process' current activities
-				currentActivitiesGrid.empty();
-				currentActivitiesGrid.add(monitoringGrid.data[rowId]['http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessInstancesCurrentActivityExecutions']);
-
-				//display the process history
-				$.getJSON (root_url+'/wfEngine/Monitor/processHistory'
-					,{
-						'uri':rowId
+			};
+			//set the filter nodes
+			var filterNodes = [
+<?
+	$empty = true;
+	foreach ($properties as $property):
+		if (!$empty) echo ','; ?>
+				{
+					id: '<?=md5($property->uriResource)?>',
+					label : '<?=$property->getLabel()?>',
+					url : getUrl,
+					options: {
+						'propertyUri' 	: '<?= $property->uriResource ?>',
+						'classUri' 	: '<?= $clazz->uriResource ?>',
+						'filterItself': false
 					}
-					, function (DATA) {
-						historyProcessGrid.empty();
-						historyProcessGrid.add(DATA);
+				}
+<?
+		$empty = false;
+	endforeach;
+?>
+			];
+			//instantiate the facet filter
+			var facetFilter = new GenerisFacetFilterClass('#facet-filter', filterNodes, facetFilterOptions);
+
+
+			/*
+			 * instantiate the monitoring grid
+			 */
+			//the monitoring grid options
+			var monitoringGridOptions = {
+				'height' : $('#monitoring-processes-grid').parent().height()
+				, 'title' 	: __('Monitoring processes')
+				, 'callback' : {
+					'onSelectRow' : function(rowId)
+					{
+						//$('#monitoring-processes-grid').jqGrid('editRow', rowId);
+						selectedProcessId = rowId;
+
+						//display the process' current activities
+						currentActivitiesGrid.empty();
+						currentActivitiesGrid.add(monitoringGrid.data[rowId]['http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessInstancesCurrentActivityExecutions']);
+
+						//display the process history
+						$.getJSON (root_url+'/wfEngine/Monitor/processHistory'
+							,{
+								'uri':rowId
+							}
+							, function (DATA) {
+								historyProcessGrid.empty();
+								historyProcessGrid.add(DATA);
+							}
+						);
+
 					}
-				);
+				}
+			};
+			//Override the monitoring model with the model of actions
+			model['cancelProcess'] = {
+				'id' 			: 'cancelProcess'
+				, 'title' 		: 'Stop'
+				, 'name' 		: 'cancelProcess'
+				, 'widget' 		: 'CancelProcess'
+				, 'weight'		: 0.5
+				, 'align'		: 'center'
+				, 'position'	: 5
+			};
+			model['deleteProcess'] = {
+				'id' 			: 'deleteProcess'
+				, 'title' 		: 'Delete'
+				, 'name' 		: 'deleteProcess'
+				, 'widget' 		: 'DeleteProcess'
+				, 'weight'		: 0.5
+				, 'align'		: 'center'
+				, 'position'	: 6
+			};
+			model['resumeProcess'] = {
+				'id' 			: 'resumeProcess'
+				, 'title' 		: 'Resume'
+				, 'name' 		: 'resumeProcess'
+				, 'widget' 		: 'ResumeProcess'
+				, 'weight'		: 0.5
+				, 'align'		: 'center'
+				, 'position'	: 7
+			};
+			model['pauseProcess'] = {
+				'id' 			: 'pauseProcess'
+				, 'title' 		: 'Pause'
+				, 'name' 		: 'pauseProcess'
+				, 'widget' 		: 'PauseProcess'
+				, 'weight'		: 0.5
+				, 'align'		: 'center'
+				, 'position'	: 8
+			};
+			//instantiate the grid widget
+			monitoringGrid = new TaoGridClass('#monitoring-processes-grid', model, '', monitoringGridOptions);
+			//load monitoring grid
+			loadMonitoring(null);
 
-			}
-		}
-	};
-	//Override the monitoring model with the model of actions
-	model['cancelProcess'] = {
-		'id' 			: 'cancelProcess'
-		, 'title' 		: 'Stop'
-		, 'name' 		: 'cancelProcess'
-		, 'widget' 		: 'CancelProcess'
-		, 'weight'		: 0.5
-		, 'align'		: 'center'
-		, 'position'	: 5
-	};
-	model['deleteProcess'] = {
-		'id' 			: 'deleteProcess'
-		, 'title' 		: 'Delete'
-		, 'name' 		: 'deleteProcess'
-		, 'widget' 		: 'DeleteProcess'
-		, 'weight'		: 0.5
-		, 'align'		: 'center'
-		, 'position'	: 6
-	};
-	model['resumeProcess'] = {
-		'id' 			: 'resumeProcess'
-		, 'title' 		: 'Resume'
-		, 'name' 		: 'resumeProcess'
-		, 'widget' 		: 'ResumeProcess'
-		, 'weight'		: 0.5
-		, 'align'		: 'center'
-		, 'position'	: 7
-	};
-	model['pauseProcess'] = {
-		'id' 			: 'pauseProcess'
-		, 'title' 		: 'Pause'
-		, 'name' 		: 'pauseProcess'
-		, 'widget' 		: 'PauseProcess'
-		, 'weight'		: 0.5
-		, 'align'		: 'center'
-		, 'position'	: 8
-	};
-	//instantiate the grid widget
-	monitoringGrid = new TaoGridClass('#monitoring-processes-grid', model, '', monitoringGridOptions);
-	//load monitoring grid
-	loadMonitoring(null);
+			//width/height of the subgrids
+			var subGridWith = $('#current_activities_container').width() - 12 /* padding */;
+			var subGridHeight = $('#current_activities_container').height() - 45;
 
-	//width/height of the subgrids
-	var subGridWith = $('#current_activities_container').width() - 12 /* padding */;
-	var subGridHeight = $('#current_activities_container').height() - 45;
-
-	/**
-	 * Instantiate the details area
-	 */
-	//the grid model
-	var currentActivitiesModel = model['http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessInstancesCurrentActivityExecutions']['subgrids'];
-	//Override the current activities model with the model of actions
-	currentActivitiesModel['previousActivity'] = {
-		'id' 			: 'previousActivity'
-		, 'title' 		: 'Previous'
-		, 'name' 		: 'previousActivity'
-		, 'widget' 		: 'ActivityPreviousActivity'
-		, 'weight'		: 0.5
-		, 'align'		: 'center'
-		, 'position'	: 5
-	};
-	currentActivitiesModel['nextActivity'] = {
-			'id' 			: 'nextActivity'
-			, 'title' 		: 'Next'
-			, 'name' 		: 'nextActivity'
-			, 'widget' 		: 'ActivityNextActivity'
-			, 'weight'		: 0.5
-			, 'align'		: 'center'
-			, 'position'	: 6
-		};
-	//the current activities grid options
-	 var currentActivitiesOptions = {
-		'height' : subGridHeight,
-		'width'  : subGridWith,
-		'title'  : __('Current activities')
-	};
-	//instantiate the grid widget
-	currentActivitiesGrid = new TaoGridClass('#current-activities-grid', currentActivitiesModel, '', currentActivitiesOptions);
+			/**
+			 * Instantiate the details area
+			 */
+			//the grid model
+			var currentActivitiesModel = model['http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessInstancesCurrentActivityExecutions']['subgrids'];
+			//Override the current activities model with the model of actions
+			currentActivitiesModel['previousActivity'] = {
+				'id' 			: 'previousActivity'
+				, 'title' 		: 'Previous'
+				, 'name' 		: 'previousActivity'
+				, 'widget' 		: 'ActivityPreviousActivity'
+				, 'weight'		: 0.5
+				, 'align'		: 'center'
+				, 'position'	: 5
+			};
+			currentActivitiesModel['nextActivity'] = {
+					'id' 			: 'nextActivity'
+					, 'title' 		: 'Next'
+					, 'name' 		: 'nextActivity'
+					, 'widget' 		: 'ActivityNextActivity'
+					, 'weight'		: 0.5
+					, 'align'		: 'center'
+					, 'position'	: 6
+				};
+			//the current activities grid options
+			 var currentActivitiesOptions = {
+				'height' : subGridHeight,
+				'width'  : subGridWith,
+				'title'  : __('Current activities')
+			};
+			//instantiate the grid widget
+			currentActivitiesGrid = new TaoGridClass('#current-activities-grid', currentActivitiesModel, '', currentActivitiesOptions);
 
 
-	/**
-	 * Instantiate the history area
-	 */
-	//the grid model
-	var historyProcessModel = <?=$historyProcessModel?>;
-	//the history grid options
-	 var historyProcessOptions = {
-		'height' : subGridHeight,
-		'width'  : subGridWith,
-		'title' 	: __('Process History')
-	};
-	//instantiate the grid widget
-	historyProcessGrid = new TaoGridClass('#history-process-grid', historyProcessModel, '', historyProcessOptions);
-
-});
+			/**
+			 * Instantiate the history area
+			 */
+			//the grid model
+			var historyProcessModel = <?=$historyProcessModel?>;
+			//the history grid options
+			 var historyProcessOptions = {
+				'height' : subGridHeight,
+				'width'  : subGridWith,
+				'title' 	: __('Process History')
+			};
+			//instantiate the grid widget
+			historyProcessGrid = new TaoGridClass('#history-process-grid', historyProcessModel, '', historyProcessOptions);
+		});
+	});
 </script>
 
 <?include(BASE_PATH.'/views/templates/footer.tpl');?>

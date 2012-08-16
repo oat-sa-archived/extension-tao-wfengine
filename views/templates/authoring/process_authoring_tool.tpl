@@ -21,7 +21,7 @@
 			<?endif;?>
 		</span>
 	</div>
-	
+
 <?else:?>
 	<style type="text/css">
 		/*need to be loaded fast*/
@@ -31,13 +31,13 @@
 		#processAuthoring_loading_message{position:relative; top:45%; left:45%; width:150px;}
 	</style>
 	<link rel="stylesheet" type="text/css" href="<?=PROCESS_BASE_WWW?>css/process_authoring_tool.css" />
-	
+
 	<div id="processAuthoring_loading">
 		<div id="processAuthoring_loading_message">
 			<img src="<?=ROOT_URL?>/tao/views/img/ajax-loader.gif" alt="loading" />
 		</div>
 	</div>
-	
+
 	<script type="text/javascript">
 		//constants:
 		RDFS_LABEL = "<?=tao_helpers_Uri::encode(RDFS_LABEL)?>";
@@ -46,14 +46,14 @@
 		INSTANCE_TYPEOFCONNECTORS_CONDITIONAL = "<?=tao_helpers_Uri::encode(INSTANCE_TYPEOFCONNECTORS_CONDITIONAL)?>";
 		INSTANCE_TYPEOFCONNECTORS_PARALLEL = "<?=tao_helpers_Uri::encode(INSTANCE_TYPEOFCONNECTORS_PARALLEL)?>";
 		INSTANCE_TYPEOFCONNECTORS_JOIN = "<?=tao_helpers_Uri::encode(INSTANCE_TYPEOFCONNECTORS_JOIN)?>";
-		
+
 		//unbind events:
-		EventMgr.unbind();
-		
+		eventMgr.unbind();
+
 		//init values:
 		var processUri = "<?=get_data("processUri")?>";
 	</script>
-	
+
 	<!--<script type="text/javascript" src="https://getfirebug.com/firebug-lite.js"></script>-->
 	<script type="text/javascript" src="<?=PROCESS_SCRIPT_URL?>lib/json2.js"></script>
 	<script type="text/javascript" src="<?=PROCESS_SCRIPT_URL?>util.js"></script>
@@ -70,18 +70,18 @@
 	<script type="text/javascript" src="<?=PROCESS_SCRIPT_URL?>modeActivityMove.js"></script>
 	<script type="text/javascript" src="<?=PROCESS_SCRIPT_URL?>modeConnectorMove.js"></script>
 	<script type="text/javascript" src="<?=PROCESS_SCRIPT_URL?>modeArrowEdit.js"></script><!---->
-	
+
 	<script type="text/javascript">
 	function processProperty(){
-		_load("#process_form", 
-			authoringControllerPath+"editProcessProperty", 
+		_load("#process_form",
+			authoringControllerPath+"editProcessProperty",
 			{processUri: processUri}
 		);
 	}
-	
+
 	function loadSectionTree(section){
 	//section in [serviceDefinition, formalParameter, role]
-		
+
 		$.ajax({
 			url: authoringControllerPath+'getSectionTrees',
 			type: "POST",
@@ -92,7 +92,7 @@
 			}
 		});
 	}
-	
+
 	function loadActivityTree(){
 		$.ajax({
 			url: authoringControllerPath+'getActivityTree',
@@ -104,7 +104,7 @@
 			}
 		});
 	}
-	
+
 	function loadCompilationForm(){
 		$.ajax({
 			url: authoringControllerPath+'compileView',
@@ -116,7 +116,7 @@
 			}
 		});
 	}
-	
+
 	$(function(){
 		$("#accordion1").accordion({
 			fillSpace: true,
@@ -125,14 +125,14 @@
 			active: 0,
 			icons: { 'header': 'ui-icon-circle-triangle-s', 'headerSelected': 'ui-icon-circle-triangle-e' }
 		});
-		
+
 		$("#accordion2").accordion({
 			fillSpace: true,
 			autoHeight: false,
 			collapsible: false,
 			icons: { 'header': 'ui-icon-circle-triangle-s', 'headerSelected': 'ui-icon-circle-triangle-e' }
 		});
-		
+
                 //resizeable containers:
                 var $centerPanel = $('#process_center_panel');
                 $("#accordion_container_1").resizable({
@@ -152,36 +152,36 @@
                                 $(this).css('left',0);
                         }
                 });
-                
+
 		//load activity tree:
 		loadActivityTree();
-		
+
 		//load the trees:
 		loadSectionTree("serviceDefinition");//use get_value instead to get the uriResource of the service definition class and make
 		loadSectionTree("formalParameter");
 		loadSectionTree("role");
 		loadSectionTree("variable");
-		
+
 		//load process property form
 		processProperty();
-		
+
 		<?if(get_data('extension')=='taoDelivery'):?>
 		loadCompilationForm();
 		<?endif;?>
 	});
-	
+
 	$(function(){
-	
+
 		ActivityDiagramClass.canvas = "#process_diagram_container";
 		ActivityDiagramClass.localNameSpace = "<?=tao_helpers_Uri::encode(core_kernel_classes_Session::singleton()->getNameSpace().'#')?>";
-		
+
 		//draw diagram:
 		$(ActivityDiagramClass.canvas).scroll(function(){
 			// TODO: set a more cross-browser way to retrieve scroll left and top values:
 			ActivityDiagramClass.scrollLeft = this.scrollLeft;
 			ActivityDiagramClass.scrollTop = this.scrollTop;
 		});
-		
+
 		//bind events to activity diagram:
 		$.getScript('<?=PROCESS_SCRIPT_URL?>ActivityDiagramEventBinding.js', function(){
                         $(ActivityDiagramClass.canvas).click(function(evt){
@@ -189,7 +189,7 @@
                                         ModeController.setMode('ModeInitial');
                                 }
                         });
-                        
+
                         //load activity diagram:
                         try{
                                 ActivityDiagramClass.loadDiagram();
@@ -198,14 +198,14 @@
                                 console.log('feed&draw diagram exception', err);
                         }
                 });
-                
+
 	});
-	
+
 	</script>
 
 	<div class="main-container" style="display:none;"></div>
 	<div id="authoring-container" class="ui-helper-reset">
-		
+
 		<div id="accordion_container_1">
 			<div id="accordion1" style="font-size:0.8em;">
 				<h3><a href="#"><?=__('Service Definition')?></a></h3>
@@ -230,14 +230,14 @@
 				</div>
 			</div>
 		</div><!--end accordion -->
-		
+
 		<div id="process_center_panel">
 			<div id="process_diagram_feedback" class="ui-corner-top"></div>
 			<div id="process_diagram_container" class="ui-corner-bottom">
 				<div id="status"/>
 			</div>
 		</div>
-		
+
 		<div id="accordion_container_2">
 			<div id="accordion2" style="font-size:0.8em;">
 				<h3><a href="#"><?=__('Activity Editor')?></a></h3>
@@ -258,10 +258,10 @@
 				<?endif;?>
 			</div><!--end accordion -->
 		</div><!--end accordion_container_2 -->
-		
+
 		<div style="clear:both"/>
 	</div><!--end authoring-container -->
-	
+
 <?endif;?>
 
 <?include(DIR_VIEWS.$GLOBALS['dir_theme'].'footer.tpl')?>

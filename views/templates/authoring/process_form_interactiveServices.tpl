@@ -3,7 +3,7 @@
 		width: 5px;
 		height: 3px;
 	}
-	
+
 	.service-box{
 		position:absolute;
 		border:1px solid green;
@@ -11,14 +11,14 @@
 		background-color:#A6FA87;
 		cursor:pointer;
 	}
-	
+
 	.service-box-highlight {
 		border:1px solid green;
 		overflow:visible;
 		z-index:20;
 		background-color:#82FF54;
 	}
-	
+
 	span.service-box-highlight {
 		border:3px solid green;
 	}
@@ -27,14 +27,14 @@
 		z-index:10;
 		background-color:#FA8794;
 	}
-	
+
 	#servicePositionningPreview{
 		top:20px;
 		width:256px;
 		height:200px;
 		border:1px solid black;
 	}
-	
+
 	#slider_container{
 		width: 300px;
 	}
@@ -44,38 +44,38 @@
 
 	<!--the form here:-->
 	<?=get_data("formInteractionService")?>
-	
+
 	<div id="servicePositionningEditor" style="display:none">
 		<div id="slider_container">
 			<div id="slider_top_container">
 				<label id="slider_top_label">Top shifting</label>
 				<div id="slider_top"/>
 			</div>
-			
+
 			<div id="slider_left_container">
 				<label id="slider_left_label">Left shifting</label>
 				<div id="slider_left"/>
 			</div>
-			
+
 			<div id="slider_height_container">
 				<label id="slider_height_label">Height</label>
 				<div id="slider_height"/>
 			</div>
-			
+
 			<div id="slider_width_container">
 				<label id="slider_width_label">Width</label>
 				<div id="slider_width"/>
 			</div>
 		</div>
-		
+
 		<div id="servicePositionningPreview" style="position:relative">
 			<!--<div id='preview_truc1' style="left: 25%; top: 59%; width: 70%; height: 100%;">truc</div>-->
 		</div>
 	</div>
-	
+
 	<br/><br/>
 	<input type="button" name="submit-interactiveService" id="submit-interactiveService" value="save"/>
-	
+
 </div>
 
 
@@ -87,7 +87,7 @@ function drawServiceBox(serviceId, serviceLabel, style, eltClass){
 	var prefix = 'preview_';
 	var eltId = prefix+serviceId;
 	var eltLabelId = eltId+'_label';
-	
+
 	if($('#'+eltId).length){
 		//if element exists, delete it
 		$('#'+eltId).remove();
@@ -106,37 +106,37 @@ function drawServiceBox(serviceId, serviceLabel, style, eltClass){
 	}
 	elt.attr('title', serviceLabel);
 	elt.appendTo($("#servicePositionningPreview"));
-	
+
 	eltLabel = $('<span id="'+eltLabelId+'"/>').appendTo('#'+eltId);
 	eltLabel.html(serviceLabel).position({
 		my: "center center",
 		at: "center center",
 		of: '#'+eltId
 	});
-	
+
 	return $('#'+eltId);
-	
+
 }
 
 $(function(){
-	
-	
+
+
 	var services = <?=json_encode(get_data("servicesData"))?>;
-	var eltHeight = $("input[id=<?=tao_helpers_Uri::encode(PROPERTY_CALLOFSERVICES_HEIGHT)?>]");
-	var eltWidth = $("input[id=<?=tao_helpers_Uri::encode(PROPERTY_CALLOFSERVICES_WIDTH)?>]");
-	var eltTop = $("input[id=<?=tao_helpers_Uri::encode(PROPERTY_CALLOFSERVICES_TOP)?>]");
-	var eltLeft = $("input[id=<?=tao_helpers_Uri::encode(PROPERTY_CALLOFSERVICES_LEFT)?>]");
-	
-	
+	var eltHeight = $("input[id=\'<?=tao_helpers_Uri::encode(PROPERTY_CALLOFSERVICES_HEIGHT)?>\']");
+	var eltWidth = $("input[id=\'<?=tao_helpers_Uri::encode(PROPERTY_CALLOFSERVICES_WIDTH)?>\']");
+	var eltTop = $("input[id=\'<?=tao_helpers_Uri::encode(PROPERTY_CALLOFSERVICES_TOP)?>\']");
+	var eltLeft = $("input[id=\'<?=tao_helpers_Uri::encode(PROPERTY_CALLOFSERVICES_LEFT)?>\']");
+
+
 	//continue only if the four elements exists
 	if(eltHeight.length && eltWidth.length && eltTop.length && eltLeft.length && services.other){
 		eltHeight.parent().hide();
 		eltWidth.parent().hide();
 		eltTop.parent().hide();
 		eltLeft.parent().hide();
-		
+
 		$('#servicePositionningEditor').show();
-		
+
 		$("#slider_height, #slider_width, #slider_top, #slider_left").slider({
 			orientation: 'horizontal',
 			range: "min",
@@ -154,15 +154,15 @@ $(function(){
 		$("#slider_width").slider("value", eltWidth.val());
 		$("#slider_top").slider("value", eltTop.val());
 		$("#slider_left").slider("value", eltLeft.val());
-		
+
 		refreshPositionPreview();
-		
+
 		// draw other services:
 		for(serviceId in services.other){
 			elt = drawServiceBox(serviceId, services.other[serviceId].label, services.other[serviceId], 'service-box-others');
-			
+
 			// console.log('elt id: ', elt.attr('id'));
-			
+
 			elt.hover(function(){
 				// console.log('added class for', $(this).attr('id'));
 				$(this).addClass('service-box-highlight');
@@ -172,7 +172,7 @@ $(function(){
 				$(this).removeClass('service-box-highlight');
 				$(this).find('span').removeClass('service-box-highlight');
 			});
-			
+
 			elt.click(function(){
 				//TODO: goto to the other service:
 				//get the uri of the the service:
@@ -180,21 +180,21 @@ $(function(){
 				// console.log(id);
 				// console.dir(services);
 				if(services.other[id].uri){
-					
+
 					ActivityTreeClass.selectTreeNode(services.other[id].uri);
 				}
 			});
-		
+
 		}
 
 	}
-	
+
 	function refreshPositionPreview(currentHandleId){
 		var height = parseInt($("#slider_height").slider("value"));
 		var width = parseInt($("#slider_width").slider("value"));
 		var top = parseInt($("#slider_top").slider("value"));
 		var left = parseInt($("#slider_left").slider("value"));
-		
+
 		if(currentHandleId){
 			if((height+top)>100) {
 				// console.log('height',height);
@@ -221,12 +221,12 @@ $(function(){
 				}
 			}
 		}
-		
+
 		eltHeight.val(height);
 		eltWidth.val(width);
 		eltTop.val(top);
 		eltLeft.val(left);
-		
+
 		drawServiceBox(
 			services.current.id,
 			services.current.label,
@@ -240,18 +240,18 @@ $(function(){
 		);
 	}
 
-	//get the initial selected value, if exists: 
-	var selectElement = $("select[id=<?=tao_helpers_Uri::encode(PROPERTY_CALLOFSERVICES_SERVICEDEFINITION)?>]");
+	//get the initial selected value, if exists:
+	var selectElement = $("select[id=\'<?=tao_helpers_Uri::encode(PROPERTY_CALLOFSERVICES_SERVICEDEFINITION)?>\']");
 	var initalSelectedValue = selectElement.val();
-	
-	// alert($("select[id=<?=tao_helpers_Uri::encode(PROPERTY_CALLOFSERVICES_SERVICEDEFINITION)?>]").html());
+
+	// alert($("select[id=\'<?=tao_helpers_Uri::encode(PROPERTY_CALLOFSERVICES_SERVICEDEFINITION)?>\']").html());
 	selectElement.change(function(e){
 		if(confirm(__("Sure?"))){
-			
+
 			// $("#<?=get_data("formId")?> :INPUT :gt(3)").attr("disabled","disabled");
 			// selectElement.removeAttr("disabled");
 			$("#<?=get_data("formId")?>").append("<p>"+__('reloading form...')+"</p>");
-			
+
 			//send the form
 			$.ajax({
 				url: authoringControllerPath+'saveCallOfService',
@@ -271,9 +271,9 @@ $(function(){
 			//reset the option:
 			$("#<?=get_data("formId")?> option[value="+initalSelectedValue+"]").attr("selected","selected");
 		}
-		
+
 	});
-	
+
 	$("#submit-interactiveService").click(function(){
 		$.ajax({
 			url: authoringControllerPath+'saveCallOfService',
@@ -290,29 +290,29 @@ $(function(){
 			}
 		});
 	});
-	
+
 	//init switches:
 	$(":input").each(function(i){
 		var startIndex = $(this).attr('id').indexOf('_choice_0');
 		if(startIndex>0){
 			var clazz = $(this).attr('id').substring(0,startIndex);
 			initParameterSwitch(clazz);
-			
+
 		}
-	});	
+	});
 });
 
 function initParameterSwitch(clazz){
-	
+
 	switchParameterType(clazz);
 	$("input:radio[name="+clazz+"_choice]").change(function(){switchParameterType(clazz);});
 	$("#"+clazz+"_var").change(function(){switchParameterType(clazz);});
 }
 
 function switchParameterType(clazz){
-	
+
 	var value = $("input:radio[name="+clazz+"_choice]:checked").val();
-	
+
 	if(value == 'constant'){
 		enable($("[id="+clazz+"_constant]"));
 		disable($("[id="+clazz+"_var]"));
