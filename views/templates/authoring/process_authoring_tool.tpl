@@ -15,9 +15,9 @@
 		<br />
 		<span class="ui-widget ui-state-default ui-corner-all" style="padding:5px;">
 			<?if(get_data('extension')=='taoDelivery'):?>
-				<a href="#" onclick="selectTabByName('manage_deliveries');"><?=__('Back')?></a>
+				<a href="#" onclick="helpers.selectTabByName('manage_deliveries');"><?=__('Back')?></a>
 			<?else://==wfEngine?>
-				<a href="#" onclick="selectTabByName('manage_process');"><?=__('Back')?></a>
+				<a href="#" onclick="helpers.selectTabByName('manage_process');"><?=__('Back')?></a>
 			<?endif;?>
 		</span>
 	</div>
