@@ -14,21 +14,21 @@
 
 <script type="text/javascript">
 	$(function(){
-		new GenerisTreeBrowserClass('#tree-<?=$sectionName?>', authoringControllerPath+"getInstancesOf?instanceof=<?=$sectionName?>", {
-			formContainer: 			"#<?=$sectionName?>_form",
-			actionId: 				"<?=$sectionName?>",
-			editInstanceAction: 	authoringControllerPath+"editInstance",
-			createInstanceAction: 	authoringControllerPath+"addInstance",
-			deleteAction: 			authoringControllerPath+"delete",
-			duplicateAction: 		authoringControllerPath+"cloneInstance",
-			instanceName:			"<?=$sectionName?>"
-		});
-	});
+		require(['require', 'jquery', 'generis.tree.browser'], function(req, $, GenerisTreeBrowserClass) {
+			new GenerisTreeBrowserClass('#tree-<?=$sectionName?>', authoringControllerPath+"getInstancesOf?instanceof=<?=$sectionName?>", {
+				formContainer: 			"#<?=$sectionName?>_form",
+				actionId: 				"<?=$sectionName?>",
+				editInstanceAction: 	authoringControllerPath+"editInstance",
+				createInstanceAction: 	authoringControllerPath+"addInstance",
+				deleteAction: 			authoringControllerPath+"delete",
+				duplicateAction: 		authoringControllerPath+"cloneInstance",
+				instanceName:			"<?=$sectionName?>"
+			});
+<?if($sectionName == "serviceDefinition"):?>
 
-	$(function(){
-	<?if($sectionName == "serviceDefinition"):?>
-		//add a callback function to disable instantiating servicedefinition class directly
-		$("#tree-serviceDefinition > ul > li:first").removeClass("node-class");
-	<?endif;?>
+			//add a callback function to disable instantiating servicedefinition class directly
+			$("#tree-serviceDefinition > ul > li:first").removeClass("node-class");
+<?endif;?>
+		});
 	});
 </script>
