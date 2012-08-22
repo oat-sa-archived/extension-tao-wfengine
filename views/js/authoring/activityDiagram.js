@@ -795,12 +795,12 @@ ActivityDiagramClass.createTempActivity = function(position){
 
 ActivityDiagramClass.getIdFromUri = function(uri){
 	var returnValue = 'invalidUri';
-	if(uri){
-		var startIndex = uri.lastIndexOf('%23');//look for the encoded "#" in the uri
-		if(startIndex>0){
+	if (uri) {
+		var startIndex = uri.lastIndexOf('_3_'); //look for the encoded "#" in the uri
+		if (startIndex>0) {
 			returnValue = uri.substr(startIndex+3);
 		}
-	}else{
+	} else {
 		// throw 'invalid uri given';
 	}
 
