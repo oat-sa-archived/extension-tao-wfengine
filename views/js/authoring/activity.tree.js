@@ -94,14 +94,14 @@ function ActivityTreeClass(selector, dataUrl, options){
 						}else{
 							activityUri = $(NODE).attr('id');
 						}
-						_load(instance.options.formContainer,
+						helpers._load(instance.options.formContainer,
 							instance.options.editActivityPropertyAction,
 							{ activityUri: activityUri}//put encoded uri as the id of the activity node
 						);
 					}else if( $(NODE).hasClass('node-activity-goto') && instance.options.editActivityPropertyAction){
 						//hightlight the target node
 						var activityUri = $(NODE).attr('rel');
-						_load(instance.options.formContainer,
+						helpers._load(instance.options.formContainer,
 							instance.options.editActivityPropertyAction,
 							{ activityUri: activityUri}
 						);
@@ -117,7 +117,7 @@ function ActivityTreeClass(selector, dataUrl, options){
 							currentNode = TREE_OBJ.parent(currentNode);
 						}while(!activityUri && currentNode);
 
-						_load(instance.options.formContainer,
+						helpers._load(instance.options.formContainer,
 							instance.options.editConnectorAction,
 							{connectorUri:$(NODE).attr('id'), activityUri:activityUri}
 						);
@@ -126,22 +126,22 @@ function ActivityTreeClass(selector, dataUrl, options){
 						//hightlight the target node
 						// TREE_OBJ.select_branch(NODE);
 						var connectorUri = $(NODE).attr('rel');
-						_load(instance.options.formContainer,
+						helpers._load(instance.options.formContainer,
 							instance.options.editConnectorAction,
 							{connectorUri: connectorUri}
 						);
 					}else if( $(NODE).hasClass('node-interactive-service') && instance.options.editInteractiveServiceAction){
-						_load(instance.options.formContainer,
+						helpers._load(instance.options.formContainer,
 							instance.options.editInteractiveServiceAction,
 							{uri:$(NODE).attr('id')}
 						);
 					}else if( ($(NODE).hasClass('node-inferenceRule-onBefore')||$(NODE).hasClass('node-inferenceRule-onAfter')) && instance.options.editInferenceRuleAction){
-						_load(instance.options.formContainer,
+						helpers._load(instance.options.formContainer,
 							instance.options.editInferenceRuleAction,
 							{inferenceRuleUri:$(NODE).attr('id')}
 						);
 					}else if( $(NODE).hasClass('node-consistencyRule') && instance.options.editConsistencyRuleAction){
-						_load(instance.options.formContainer,
+						helpers._load(instance.options.formContainer,
 							instance.options.editConsistencyRuleAction,
 							{consistencyRuleUri:$(NODE).attr('id')}
 						);

@@ -73,7 +73,7 @@
 
 	<script type="text/javascript">
 	function processProperty(){
-		_load("#process_form",
+		helpers._load("#process_form",
 			authoringControllerPath+"editProcessProperty",
 			{processUri: processUri}
 		);
