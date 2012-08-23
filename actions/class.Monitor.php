@@ -19,9 +19,9 @@ class wfEngine_actions_Monitor extends tao_actions_TaoModule {
 		parent::__construct();
 		$this->processMonitoringGridOptions = array(
 			'columns' => array(
-				'http://www.w3.org/2000/01/rdf-schema#label' 													=> array('weight'=>3)
-				, 'http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessInstancesExecutionOf' 				=> array('weight'=>2)
-				, 'http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessInstancesCurrentActivityExecutions' => array(
+				RDFS_LABEL 												=> array('weight'=>3)
+				, PROPERTY_PROCESSINSTANCES_EXECUTIONOF 				=> array('weight'=>2)
+				, PROPERTY_PROCESSINSTANCES_CURRENTACTIVITYEXECUTIONS	=> array(
 					'weight'=>6
 					, 'widget'=>'CurrentActivities'
 					, 'columns' => array(
