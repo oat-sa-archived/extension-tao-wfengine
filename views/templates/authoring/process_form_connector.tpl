@@ -42,7 +42,7 @@ $(function(){
 				});
 			}else{
 				//reset the option:
-				$("#<?=get_data("formId")?> option[value="+initalSelectedValue+"]").attr("selected","selected");
+				$("#<?=get_data("formId")?> option[value='"+initalSelectedValue+"']").attr("selected","selected");
 			}
 		});
 	}
