@@ -125,16 +125,8 @@
 			var facetFilterOptions = {
 				'template' : 'accordion',
 				'callback' : {
-					'onFilter' : function(filter, filterNodesOpt){
-						var formatedFilter = {};
-						for (var filterNodeId in filter) {
-							var propertyUri = filterNodesOpt[filterNodeId]['propertyUri'];
-							typeof(formatedFilter[propertyUri])=='undefined'?formatedFilter[propertyUri]=new Array():null;
-							for (var i in filter[filterNodeId]) {
-								formatedFilter[propertyUri].push(filter[filterNodeId][i]);
-							}
-						}
-						loadMonitoring(formatedFilter);
+					'onFilter' : function(facetFilter){
+						loadMonitoring(facetFilter.getFormatedFilterSelection());
 					}
 				}
 			};
