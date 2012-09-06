@@ -14,12 +14,12 @@
 	<input type='hidden' name='classUri' value="<?=get_data('classUri')?>" />
 <?endif?>
 <script type="text/javascript">
-$(document).ready(function(){
-	if (ctx_extension) {
-		url = root_url + '/' + ctx_extension + '/' + ctx_module + '/';
-	}
-
+$(function(){
 	require(['require', 'jquery', 'generis.tree.select'], function(req, $, GenerisTreeSelectClass) {
+		if (ctx_extension) {
+			url = root_url + '/' + ctx_extension + '/' + ctx_module + '/';
+		}
+
 		new GenerisTreeSelectClass('#user-tree', url + 'getUsers', {
 			actionId: 'user',
 			saveUrl : url + 'saveUsers',
