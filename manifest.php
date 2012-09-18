@@ -12,7 +12,7 @@ return array(
 	'description' => 'Workflow Engine extension',
 	'version' => '2.3',
 	'author' => 'CRP Henri Tudor',
-	'dependances' => array('tao'),
+	'dependencies' => array('tao'),
 	'models' => array('http://www.tao.lu/middleware/wfEngine.rdf',
 		'http://www.tao.lu/Ontologies/taoFuncACL.rdf'),
 	'install' => array(
