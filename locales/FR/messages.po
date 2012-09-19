@@ -185,7 +185,7 @@ msgid "Formal Parameter"
 msgstr "Paramètre formel"
 
 msgid "Forward"
-msgstr "Transférer"
+msgstr "Suivant"
 
 msgid "Go to"
 msgstr "Allez à"
