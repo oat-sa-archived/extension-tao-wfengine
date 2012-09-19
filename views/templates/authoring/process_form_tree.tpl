@@ -3,7 +3,7 @@
 
 <div id="<?=$sectionName?>-form">
 	<?=get_data("formPlus")?>
-	<input type="button" name="submit-<?=$sectionName?>" id="submit-<?=$sectionName?>" value="save" disabled="disabled"/>
+	<input type="button" name="submit-<?=$sectionName?>" id="submit-<?=$sectionName?>" value="save" />
 </div>
 
 <script type="text/javascript" src="<?=PROCESS_SCRIPT_URL?>../processResourceSelector.js"></script>
@@ -38,7 +38,6 @@ $(function(){
 
 			var code = $(processVarCodeInput).val();
 			var varUri = $("input[name=uri]:last").val();
-
 			$.ajax({
 				type: "POST",
 				url: authoringControllerPath+"checkCode",
