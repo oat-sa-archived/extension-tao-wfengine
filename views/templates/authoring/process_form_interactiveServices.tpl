@@ -293,11 +293,12 @@ $(function(){
 
 	//init switches:
 	$(":input").each(function(i){
-		var startIndex = $(this).attr('id').indexOf('_choice_0');
-		if(startIndex>0){
-			var clazz = $(this).attr('id').substring(0,startIndex);
-			initParameterSwitch(clazz);
-
+		if ($(this).attr('id')) {
+			var startIndex = $(this).attr('id').indexOf('_choice_0');
+			if (startIndex > 0) {
+				var clazz = $(this).attr('id').substring(0,startIndex);
+				initParameterSwitch(clazz);
+			}
 		}
 	});
 });
