@@ -105,7 +105,7 @@ class wfEngine_actions_ProcessBrowser extends wfEngine_actions_WfModule{
 	
 	protected function redirectToMain(){
 		Session::removeAttribute("processUri");
-		$this->redirect(tao_helpers_Uri::url('index', 'Main'));
+		$this->redirect(tao_helpers_Uri::url('index', 'WfHome'));
 	}
 	
 	public function index(){
