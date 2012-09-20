@@ -13,8 +13,6 @@
 						editInstanceUrl="/wfEngine/Process/editProcess"
 						addInstanceUrl="/wfEngine/Process/addInstance"
 						deleteUrl="/wfEngine/Process/delete"
-						editClassUrl="/wfEngine/Process/editProcessClass"
-						duplicateUrl="/wfEngine/Process/cloneInstance"
 					/>
 				</trees>
 				<actions>
@@ -31,7 +29,7 @@
 
 			<section id="manage_roles" name="Manage roles" url="/wfEngine/Role/index">
 				<trees>
-					<tree name="Role library"
+					<tree name="Roles library"
 						className="Role"
 						dataUrl="/wfEngine/Role/getOntologyData"
 						editInstanceUrl="/wfEngine/Role/editRole"
