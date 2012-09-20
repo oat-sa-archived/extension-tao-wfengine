@@ -9,10 +9,10 @@ error_reporting(E_ALL);
  *
  * This file is part of TAO.
  *
- * Automatically generated on 24.10.2011, 13:28:19 with ArgoUML PHP module 
+ * Automatically generated on 20.09.2012, 17:39:45 with ArgoUML PHP module 
  * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
  *
- * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+ * @author Joel Bout, <joel.bout@tudor.lu>
  * @package wfEngine
  * @subpackage models_classes
  */
@@ -24,14 +24,14 @@ if (0 > version_compare(PHP_VERSION, '5')) {
 /**
  * include wfEngine_models_classes_ProcessCloner
  *
- * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+ * @author Joel Bout, <joel.bout@tudor.lu>
  */
 require_once('wfEngine/models/classes/class.ProcessCloner.php');
 
 /**
  * include wfEngine_models_classes_ProcessDefinitionService
  *
- * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+ * @author Joel Bout, <joel.bout@tudor.lu>
  */
 require_once('wfEngine/models/classes/class.ProcessDefinitionService.php');
 
@@ -51,7 +51,7 @@ require_once('wfEngine/plugins/CapiImport/models/class.DescriptorFactory.php');
  * Short description of class wfEngine_models_classes_ProcessAuthoringService
  *
  * @access public
- * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+ * @author Joel Bout, <joel.bout@tudor.lu>
  * @package wfEngine
  * @subpackage models_classes
  */
@@ -69,7 +69,7 @@ class wfEngine_models_classes_ProcessAuthoringService
      * Short description of method __construct
      *
      * @access public
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @return mixed
      */
     public function __construct()
@@ -85,7 +85,7 @@ class wfEngine_models_classes_ProcessAuthoringService
      * Short description of method analyseExpression
      *
      * @access public
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  string expressionInput
      * @param  boolean isCondition
      * @return DomDocument
@@ -140,7 +140,7 @@ class wfEngine_models_classes_ProcessAuthoringService
      * Short description of method createActivity
      *
      * @access public
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  Resource process
      * @param  string label
      * @return core_kernel_classes_Resource
@@ -194,7 +194,7 @@ class wfEngine_models_classes_ProcessAuthoringService
      * Short description of method createActivityFromConnector
      *
      * @access public
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  Resource connector
      * @param  string newActivityLabel
      * @return core_kernel_classes_Resource
@@ -224,7 +224,7 @@ class wfEngine_models_classes_ProcessAuthoringService
      * Short description of method createCondition
      *
      * @access public
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  DomDocument xmlDom
      * @return core_kernel_classes_Resource
      */
@@ -256,7 +256,7 @@ class wfEngine_models_classes_ProcessAuthoringService
      * Short description of method createConnector
      *
      * @access public
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  Resource activity
      * @param  string label
      * @return core_kernel_classes_Resource
@@ -305,7 +305,7 @@ class wfEngine_models_classes_ProcessAuthoringService
      * Short description of method createFormalParameter
      *
      * @access public
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  string name
      * @param  string type
      * @param  string defaultValue
@@ -343,7 +343,7 @@ class wfEngine_models_classes_ProcessAuthoringService
      * Short description of method createInteractiveService
      *
      * @access public
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  Resource activity
      * @return core_kernel_classes_Resource
      */
@@ -382,7 +382,7 @@ class wfEngine_models_classes_ProcessAuthoringService
      * Short description of method createJoinActivity
      *
      * @access public
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  Resource connectorInstance
      * @param  Resource followingActivity
      * @param  string newActivityLabel
@@ -498,7 +498,7 @@ class wfEngine_models_classes_ProcessAuthoringService
      * Short description of method createTransitionRule
      *
      * @access public
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  Resource connector
      * @param  string question
      * @return core_kernel_classes_Resource
@@ -544,7 +544,7 @@ class wfEngine_models_classes_ProcessAuthoringService
      * Short description of method createSequenceActivity
      *
      * @access public
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  Resource connector
      * @param  Resource followingActivity
      * @param  string newActivityLabel
@@ -578,7 +578,7 @@ class wfEngine_models_classes_ProcessAuthoringService
      * Short description of method createConditionalActivity
      *
      * @access public
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  Resource connector
      * @param  string connectionType
      * @param  Resource followingActivity
@@ -643,7 +643,7 @@ class wfEngine_models_classes_ProcessAuthoringService
      * Short description of method deleteActivity
      *
      * @access public
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  Resource activity
      * @return boolean
      */
@@ -665,7 +665,7 @@ class wfEngine_models_classes_ProcessAuthoringService
      * Short description of method deleteActualParameters
      *
      * @access public
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  Resource callOfService
      * @return boolean
      */
@@ -706,7 +706,7 @@ class wfEngine_models_classes_ProcessAuthoringService
      * Short description of method deleteCallOfService
      *
      * @access public
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  Resource service
      * @return boolean
      */
@@ -728,7 +728,7 @@ class wfEngine_models_classes_ProcessAuthoringService
      * Short description of method deleteCondition
      *
      * @access public
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  Resource rule
      * @return boolean
      */
@@ -761,7 +761,7 @@ class wfEngine_models_classes_ProcessAuthoringService
      * Short description of method deleteConnector
      *
      * @access public
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  Resource connector
      * @return boolean
      */
@@ -783,7 +783,7 @@ class wfEngine_models_classes_ProcessAuthoringService
      * Short description of method deleteConnectorNextActivity
      *
      * @access public
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  Resource connector
      * @param  string connectionType
      * @return mixed
@@ -858,7 +858,7 @@ class wfEngine_models_classes_ProcessAuthoringService
      * Short description of method deleteExpression
      *
      * @access public
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  Resource expression
      * @return boolean
      */
@@ -893,7 +893,7 @@ class wfEngine_models_classes_ProcessAuthoringService
      * Short description of method deleteInstance
      *
      * @access public
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  Resource instance
      * @return boolean
      */
@@ -914,7 +914,7 @@ class wfEngine_models_classes_ProcessAuthoringService
      * Short description of method deleteOperation
      *
      * @access public
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  Resource operation
      * @return boolean
      */
@@ -943,7 +943,7 @@ class wfEngine_models_classes_ProcessAuthoringService
      * Short description of method deleteProcess
      *
      * @access public
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  Resource process
      * @return boolean
      */
@@ -973,7 +973,7 @@ class wfEngine_models_classes_ProcessAuthoringService
      * Short description of method deleteRule
      *
      * @access public
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  Resource rule
      * @return boolean
      */
@@ -1000,7 +1000,7 @@ class wfEngine_models_classes_ProcessAuthoringService
      * Short description of method deleteTerm
      *
      * @access public
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  Resource term
      * @return boolean
      */
@@ -1051,7 +1051,7 @@ class wfEngine_models_classes_ProcessAuthoringService
      * Short description of method editCondition
      *
      * @access public
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  Resource rule
      * @param  string conditionString
      * @return boolean
@@ -1085,7 +1085,7 @@ class wfEngine_models_classes_ProcessAuthoringService
      * Short description of method getActivitiesByProcess
      *
      * @access public
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  Resource process
      * @return array
      */
@@ -1105,7 +1105,7 @@ class wfEngine_models_classes_ProcessAuthoringService
      * Short description of method getConnectorsByActivity
      *
      * @access public
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  Resource activity
      * @param  array option
      * @param  boolean isConnector
@@ -1170,7 +1170,7 @@ class wfEngine_models_classes_ProcessAuthoringService
      * Short description of method getFormalParameter
      *
      * @access public
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  string name
      * @param  string defaultValue
      * @return core_kernel_classes_Resource
@@ -1243,36 +1243,10 @@ class wfEngine_models_classes_ProcessAuthoringService
     }
 
     /**
-     * Short description of method getInstance
-     *
-     * @access public
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
-     * @param  string identifier
-     * @param  string mode
-     * @param  Class clazz
-     * @return core_kernel_classes_Resource
-     */
-    public function getInstance($identifier, $mode = 'uri',  core_kernel_classes_Class $clazz = null)
-    {
-        $returnValue = null;
-
-        // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004E53 begin
-		
-		if(is_null($clazz) || !$this->isAuthorizedClass($clazz)){
-			return $returnValue;
-		}
-		$returnValue = $this->getOneInstanceBy( $clazz, $identifier, $mode);
-		
-        // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004E53 end
-
-        return $returnValue;
-    }
-
-    /**
      * Short description of method getServicesByActivity
      *
      * @access public
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  Resource activity
      * @return array
      */
@@ -1298,7 +1272,7 @@ class wfEngine_models_classes_ProcessAuthoringService
      * Short description of method isAuthorizedClass
      *
      * @access public
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  Class clazz
      * @return boolean
      */
@@ -1320,7 +1294,7 @@ class wfEngine_models_classes_ProcessAuthoringService
      * Short description of method setActualParameter
      *
      * @access public
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  Resource callOfService
      * @param  Resource formalParam
      * @param  string value
@@ -1362,7 +1336,7 @@ class wfEngine_models_classes_ProcessAuthoringService
      * Short description of method setCallOfServiceDefinition
      *
      * @access public
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  Resource callOfService
      * @param  Resource serviceDefinition
      * @return boolean
@@ -1382,7 +1356,7 @@ class wfEngine_models_classes_ProcessAuthoringService
      * Short description of method setFirstActivity
      *
      * @access public
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  Resource process
      * @param  Resource activity
      * @return boolean
@@ -1412,7 +1386,7 @@ class wfEngine_models_classes_ProcessAuthoringService
      * Short description of method setParallelActivities
      *
      * @access public
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  Resource connectorInstance
      * @param  array newActivitiesArray
      * @return boolean
@@ -1520,7 +1494,7 @@ class wfEngine_models_classes_ProcessAuthoringService
      * Short description of method createProcess
      *
      * @access public
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  string label
      * @param  string comment
      * @return core_kernel_classes_Resource
@@ -1546,7 +1520,7 @@ class wfEngine_models_classes_ProcessAuthoringService
      * Short description of method createServiceDefinition
      *
      * @access public
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  string label
      * @param  string serviceUrl
      * @param  array inputParameters
@@ -1626,7 +1600,7 @@ class wfEngine_models_classes_ProcessAuthoringService
      * Find and destroy the service with the given serviceUrl
      *
      * @access public
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  string serviceUrl
      * @return boolean
      */
@@ -1654,7 +1628,7 @@ class wfEngine_models_classes_ProcessAuthoringService
      * Short description of method setConnectorType
      *
      * @access public
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  Resource connector
      * @param  Resource type
      * @return boolean

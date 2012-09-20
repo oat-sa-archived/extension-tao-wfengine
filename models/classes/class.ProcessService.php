@@ -3,16 +3,16 @@
 error_reporting(E_ALL);
 
 /**
- * TAO - wfEngine\models\classes\class.ProcessService.php
+ * TAO - wfEngine/models/classes/class.ProcessService.php
  *
  * $Id$
  *
  * This file is part of TAO.
  *
- * Automatically generated on 23.03.2011, 16:01:29 with ArgoUML PHP module 
+ * Automatically generated on 20.09.2012, 17:39:45 with ArgoUML PHP module 
  * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
  *
- * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+ * @author Joel Bout, <joel.bout@tudor.lu>
  * @package wfEngine
  * @subpackage models_classes
  */
@@ -24,7 +24,7 @@ if (0 > version_compare(PHP_VERSION, '5')) {
 /**
  * include wfEngine_models_classes_ProcessAuthoringService
  *
- * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+ * @author Joel Bout, <joel.bout@tudor.lu>
  */
 require_once('wfEngine/models/classes/class.ProcessAuthoringService.php');
 
@@ -40,7 +40,7 @@ require_once('wfEngine/models/classes/class.ProcessAuthoringService.php');
  * Short description of class wfEngine_models_classes_ProcessService
  *
  * @access public
- * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+ * @author Joel Bout, <joel.bout@tudor.lu>
  * @package wfEngine
  * @subpackage models_classes
  */
@@ -66,7 +66,7 @@ class wfEngine_models_classes_ProcessService
      * Short description of method __construct
      *
      * @access public
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @return mixed
      */
     public function __construct()
@@ -78,46 +78,10 @@ class wfEngine_models_classes_ProcessService
     }
 
     /**
-     * Short description of method getProcess
-     *
-     * @access public
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
-     * @param  string identifier
-     * @param  string mode
-     * @param  Class clazz
-     * @return core_kernel_classes_Resource
-     */
-    public function getProcess($identifier, $mode = 'uri',  core_kernel_classes_Class $clazz = null)
-    {
-        $returnValue = null;
-
-        // section 10-13-1-39-1f91722d:12e9641f6ad:-8000:0000000000002C5C begin
-		if(is_null($clazz) && $mode == 'uri'){
-			try{
-				$resource = new core_kernel_classes_Resource($identifier);
-				foreach($resource->getType() as $type){
-					$clazz = $type;
-					break;
-				}
-			}
-			catch(Exception $e){}
-		}
-		if(is_null($clazz)){
-			$clazz = $this->processClass;
-		}
-		if($this->isProcessClass($clazz)){
-			$returnValue = $this->getOneInstanceBy( $clazz, $identifier, $mode);
-		}
-        // section 10-13-1-39-1f91722d:12e9641f6ad:-8000:0000000000002C5C end
-
-        return $returnValue;
-    }
-
-    /**
      * Short description of method getProcessClass
      *
      * @access public
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  string uri
      * @return core_kernel_classes_Class
      */
@@ -144,7 +108,7 @@ class wfEngine_models_classes_ProcessService
      * Short description of method isProcessClass
      *
      * @access public
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  Class clazz
      * @return boolean
      */
@@ -173,7 +137,7 @@ class wfEngine_models_classes_ProcessService
      * Short description of method cloneProcess
      *
      * @access public
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  Resource instance
      * @param  Class clazz
      * @return core_kernel_classes_Resource

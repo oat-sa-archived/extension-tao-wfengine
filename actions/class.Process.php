@@ -35,26 +35,6 @@ class wfEngine_actions_Process extends tao_actions_TaoModule {
  */
 	
 	/**
-	 * get the selected group from the current context (from the uri and classUri parameter in the request)
-	 * @return core_kernel_classes_Resource $group
-	 */
-	protected function getCurrentInstance()
-	{
-		$uri = tao_helpers_Uri::decode($this->getRequestParameter('uri'));
-		if(is_null($uri) || empty($uri)){
-			throw new Exception("No valid uri found");
-		}
-		
-		$clazz = $this->getCurrentClass();
-		$process = $this->service->getProcess($uri, 'uri', $clazz);
-		if(is_null($process)){
-			throw new Exception("No process found for the uri {$uri}");
-		}
-		
-		return $process;
-	}
-	
-	/**
 	 * get the main class
 	 * @return core_kernel_classes_Classes
 	 */

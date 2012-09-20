@@ -38,25 +38,6 @@ class wfEngine_actions_ProcessAuthoring extends tao_actions_TaoModule {
  */
 	
 	/**
-	 * get the selected instance from the current context (from the uri and classUri parameter in the request)
-	 * @return core_kernel_classes_Resource $instance
-	 */
-	protected function getCurrentInstance(){
-		$uri = tao_helpers_Uri::decode($this->getRequestParameter('uri'));
-		if(is_null($uri) || empty($uri)){
-			throw new Exception("No valid uri found");
-		}
-		
-		$clazz = $this->getCurrentClass();
-		$instance = $this->service->getInstance($uri, 'uri', $clazz);
-		if(is_null($instance)){
-			throw new Exception("No instance of the class {$clazz->getLabel()} found for the uri {$uri}");
-		}
-		
-		return $instance;
-	}
-	
-	/**
 	 * @see TaoModule::getRootClass
 	 * @return core_kernel_classes_Classes
 	 */
@@ -69,14 +50,7 @@ class wfEngine_actions_ProcessAuthoring extends tao_actions_TaoModule {
 		if(is_null($uri) || empty($uri)){
 			throw new Exception("No valid activity uri found");
 		}
-		
-		$instance = $this->service->getInstance($uri, 'uri', new core_kernel_classes_Class(CLASS_ACTIVITIES));
-		if(is_null($instance)){
-			//var_dump($uri, $instance);
-			throw new Exception("No instance of the class Activities found for the uri {$uri}");
-		}
-		
-		return $instance;
+		return new core_kernel_classes_Resource($uri);
 	}
 	
 	protected function getCurrentConnector(){
@@ -85,13 +59,7 @@ class wfEngine_actions_ProcessAuthoring extends tao_actions_TaoModule {
 			throw new Exception("No valid activity uri found");
 		}
 		
-		$instance = $this->service->getInstance($uri, 'uri', new core_kernel_classes_Class(CLASS_CONNECTORS));
-		if(is_null($instance)){
-			//var_dump($uri, $instance);
-			throw new Exception("No instance of the class Connectors found for the uri {$uri}");
-		}
-		
-		return $instance;
+		return new core_kernel_classes_Resource($uri);
 	}
 	
 	protected function getCurrentProcess(){
@@ -100,12 +68,7 @@ class wfEngine_actions_ProcessAuthoring extends tao_actions_TaoModule {
 			throw new Exception("No valid process uri found");
 		}
 		
-		$instance = $this->service->getInstance($uri, 'uri', new core_kernel_classes_Class(CLASS_PROCESS));
-		if(is_null($instance)){
-			throw new Exception("No instance of the class Process found for the uri {$uri}");
-		}
-		
-		return $instance;
+		return new core_kernel_classes_Resource($uri);
 	}
 
 /*
