@@ -7,7 +7,7 @@
 			<section id="monitor_process" name="Monitor processes" url="/wfEngine/Monitor/index" />
 			<section id="manage_process" name="Manage processes" url="/wfEngine/Process/index">
 				<trees>
-					<tree name="Process library"
+					<tree name="Processes library"
 						className="Process"
 						dataUrl="/wfEngine/Process/getOntologyData"
 						editInstanceUrl="/wfEngine/Process/editProcess"
