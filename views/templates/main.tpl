@@ -1,3 +1,4 @@
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
@@ -44,10 +45,12 @@
 							<td class="join">
 								<?if($procData['status'] != 'Finished'): ?>
 									<?foreach ($procData['activities'] as $activity): ?>
-										<?if($activity['may_participate']):?>
+                                        <?if($activity['may_participate']):?>
 											<a href="<?=BASE_URL?>/ProcessBrowser/index?processUri=<?=urlencode($procData['uri'])?>&activityUri=<?=urlencode($activity['uri'])?>"><?=$activity['label']?></a>
-										<?elseif (!$activity['allowed'] || $activity['activityEnded']):?>
+										<?elseif (!$activity['allowed'] && !$activity['finished']):?>
 											<span class="activity-denied"><?=$activity['label']?></span>
+                                        <?elseif ( $activity['finished']):?>
+                                             <span class=""><?=__("Process Finished")?></span>
 										<?endif;?>
 									<?endforeach;?>
 								<?else:?>
