@@ -85,14 +85,33 @@
 	//Workflow variables
 	var wfVariables = [];
 
-	//load the monitoring interface functions of the parameter filter
-	function loadMonitoring(filter)
-	{
-		$.getJSON(root_url+'/wfEngine/Monitor/monitorProcess'
-			,{
-				'filter':filter
+	//refresh the monitoring the target processes
+	function refreshMonitoring(processesUri) {
+		$.getJSON(root_url+'/wfEngine/Monitor/monitorProcess',
+			{
+				'processesUri': processesUri
+			},
+			function(DATA) {
+				monitoringGrid.refresh(DATA);
+				if (selectedProcessId) {
+					if (typeof DATA[selectedProcessId] != 'undefined') {
+						//refresh does not work here ... strange
+						//currentActivitiesGrid.refresh(DATA[selectedProcessId]['http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessInstancesCurrentActivityExecutions']);
+						currentActivitiesGrid.empty();
+						currentActivitiesGrid.add(DATA[selectedProcessId]['http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessInstancesCurrentActivityExecutions']);
+					}
+				}
 			}
-			, function (DATA) {
+		);
+	}
+
+	//load the monitoring interface functions of the parameter filter
+	function loadMonitoring(filter) {
+		$.getJSON(root_url+'/wfEngine/Monitor/monitorProcess',
+			{
+				'filter': filter
+			},
+			function (DATA) {
 				monitoringGrid.empty();
 				currentActivitiesGrid.empty();
 				historyProcessGrid.empty();

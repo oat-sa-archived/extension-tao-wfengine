@@ -3,9 +3,9 @@
  * Adapt cell to delete processes
 
  * @see TaoGridClass
- * 
+ *
  * @require jquery >= 1.3.2 [http://jquery.com/]
- * 
+ *
  * @author Alfonsi Cédric, <taosupport@tudor.lu>
  */
 
@@ -34,7 +34,8 @@ TaoGridDeleteProcessAdapter.postCellFormat = function(grid, cell, rowId, columnI
 		wfApi.ProcessExecution.remove(processExecutionUri, function(data){
 			grid.deleteRow(rowId);
 		}, function(){
-			alert('unable to delete the process execution '+processExecutionUri);
+			helpers.createErrorMessage(__('Unable to delete the process execution.\nClose process before delete it.'));
+			//+processExecutionUri
 		});
 	});
 }
