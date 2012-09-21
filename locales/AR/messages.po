@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: TAO v2.2-rc01\n"
-"PO-Revision-Date: 2012-06-15T15:46:29\n"
+"Project-Id-Version: TAO v2.3-beta\n"
+"PO-Revision-Date: 2012-09-21T15:08:44\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: AR\n"
@@ -364,14 +364,14 @@ msgstr ""
 msgid "Process Execution"
 msgstr ""
 
+msgid "Process Finished"
+msgstr ""
+
 msgid "Process History"
 msgstr ""
 
 msgid "Process initialization"
 msgstr "بدء العملية"
-
-msgid "Process library"
-msgstr "مكتبة العملية"
 
 msgid "Process Property"
 msgstr "Processus de propriété"
@@ -391,6 +391,9 @@ msgstr "Variables de processus"
 #, tao-public
 msgid "Processes"
 msgstr "Processus"
+
+msgid "Processes library"
+msgstr ""
 
 msgid "Question (Ctrl-Q)"
 msgstr "(Ctrl-Q)سؤال"
@@ -413,14 +416,14 @@ msgstr ""
 msgid "Role"
 msgstr "دور"
 
-msgid "Role library"
-msgstr "مكتبة الدور"
-
 msgid "Role saved"
 msgstr "حفظ الدور"
 
 msgid "Role(s)"
 msgstr "الدور"
+
+msgid "Roles library"
+msgstr ""
 
 msgid "save"
 msgstr ""
@@ -502,6 +505,10 @@ msgid "Type (Ctrl-T)"
 msgstr "(Ctrl-T) اضغط"
 
 msgid "type??"
+msgstr ""
+
+msgid "Unable to delete the process execution.\n"
+"Close process before delete it."
 msgstr ""
 
 msgid "Unable to log in the user"

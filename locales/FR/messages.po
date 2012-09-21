@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: TAO v2.2-rc01\n"
-"PO-Revision-Date: 2012-06-15T15:46:52\n"
+"Project-Id-Version: TAO v2.3-beta\n"
+"PO-Revision-Date: 2012-09-21T15:09:00\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: FR\n"
@@ -367,14 +367,14 @@ msgstr "Définition de processus"
 msgid "Process Execution"
 msgstr "Exécution de processus"
 
+msgid "Process Finished"
+msgstr ""
+
 msgid "Process History"
 msgstr "Historique de processus"
 
 msgid "Process initialization"
 msgstr "Initialisation du processus"
-
-msgid "Process library"
-msgstr "Bibliothèque de processus"
 
 msgid "Process Property"
 msgstr "Processus de propriété"
@@ -394,6 +394,9 @@ msgstr "Variables de processus"
 #, tao-public
 msgid "Processes"
 msgstr "Processus"
+
+msgid "Processes library"
+msgstr ""
 
 msgid "Question (Ctrl-Q)"
 msgstr "Question (Ctrl-Q)"
@@ -416,14 +419,14 @@ msgstr "Restreint à"
 msgid "Role"
 msgstr "Rôle"
 
-msgid "Role library"
-msgstr "Bibliothèque de Rôle"
-
 msgid "Role saved"
 msgstr "Rôle sauvegardé"
 
 msgid "Role(s)"
 msgstr "Rôle (s)"
+
+msgid "Roles library"
+msgstr ""
 
 msgid "save"
 msgstr "enregistrer"
@@ -509,6 +512,10 @@ msgstr "Tapez (Ctrl-T)"
 
 msgid "type??"
 msgstr "type??"
+
+msgid "Unable to delete the process execution.\n"
+"Close process before delete it."
+msgstr ""
 
 msgid "Unable to log in the user"
 msgstr "Impossible d'identifer l'utilisateur"

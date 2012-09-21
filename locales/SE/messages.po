@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: TAO v2.2-rc01\n"
-"PO-Revision-Date: 2012-06-15T15:47:12\n"
+"Project-Id-Version: TAO v2.3-beta\n"
+"PO-Revision-Date: 2012-09-21T15:09:11\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: SE\n"
@@ -364,14 +364,14 @@ msgstr ""
 msgid "Process Execution"
 msgstr ""
 
+msgid "Process Finished"
+msgstr ""
+
 msgid "Process History"
 msgstr ""
 
 msgid "Process initialization"
 msgstr "Processinitialiserande"
-
-msgid "Process library"
-msgstr "Processarkiv"
 
 msgid "Process Property"
 msgstr "Processegenskap"
@@ -391,6 +391,9 @@ msgstr "Processvariabler"
 #, tao-public
 msgid "Processes"
 msgstr "Processes"
+
+msgid "Processes library"
+msgstr ""
 
 msgid "Question (Ctrl-Q)"
 msgstr "Fråga (Ctrl-Q)"
@@ -413,14 +416,14 @@ msgstr ""
 msgid "Role"
 msgstr "Roll"
 
-msgid "Role library"
-msgstr "Rollarkiv"
-
 msgid "Role saved"
 msgstr "Roll sparad"
 
 msgid "Role(s)"
 msgstr "Roll(er)"
+
+msgid "Roles library"
+msgstr ""
 
 msgid "save"
 msgstr "spara"
@@ -503,6 +506,10 @@ msgstr "Skriv ((Ctrl-T)"
 
 msgid "type??"
 msgstr "skriv??"
+
+msgid "Unable to delete the process execution.\n"
+"Close process before delete it."
+msgstr ""
 
 msgid "Unable to log in the user"
 msgstr ""
