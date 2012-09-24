@@ -29,7 +29,7 @@
 
 			<div id="business">
 				<h2 id="authoring_subtitle"><?=$processAuthoringData['processLabel']?></h2>
-				<form id="authoring_form" action="<?=BASE_URL;?>/ProcessInstanciation/initProcessExecution" method="post" >
+				<form id="authoring_form" action="<?=_url('initProcessExecution','ProcessInstanciation')?>" method="post" >
 				<input type="hidden" name="posted[executionOf]" value="<?=urlencode($processAuthoringData['processUri']); ?>"/>
 					<table id="authoring_table">
 						<tbody>

@@ -31,7 +31,7 @@
 			@import url(<?=BASE_WWW?>css/process_browser.css);
 		</style>
 
-		<meta http-equiv="refresh" content="10;url=<?php echo BASE_URL;?>/ProcessBrowser/index?processUri=<?=get_data('processExecutionUri')?>"/>
+		<meta http-equiv="refresh" content="10;url==?=_url('index','ProcessBrowser', null, array('processUri' => get_data('processExecutionUri')))?>"/>
 
 	</head>
 
@@ -46,7 +46,7 @@
         	</li>
 
          	<li>
-         		<a id="logout" class="action icon" href="<?php echo BASE_URL;?>/Authentication/logout"><?php echo __("Logout"); ?></a>
+         		<a id="logout" class="action icon" href="<?=_url('logout','Authentication')?>"><?php echo __("Logout"); ?></a>
          	</li>
 
 		</ul>
@@ -60,7 +60,7 @@
 				<?=__("If there is no available activity or there are more than one. You will be redirected to the process main page.")?><br/><br/>
 
 				<?=__("Redirection in ")?><span id="counter"></span> <?=__("seconds")?>.<br/>
-				<a href="<?php echo BASE_URL;?>/ProcessBrowser/index?processUri=<?=get_data('processExecutionUri')?>"><?=__('Redirect immediately')?></a>
+				<a href="<?=_url('index','ProcessBrowser', null, array('processUri' => get_data('processExecutionUri')))?>"><?=__('Redirect immediately')?></a>
 			</div>
 
 			<br class="clear" />

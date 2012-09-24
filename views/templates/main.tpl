@@ -68,7 +68,7 @@
 				<div id="new_process">
 					<?foreach($availableProcessDefinition as $procDef):?>
 						<li>
-							<a href="<?=BASE_URL;?>/ProcessInstanciation/authoring?processDefinitionUri=<?=urlencode($procDef->uriResource)?>">
+							<a href="<?=_url('authoring', 'ProcessInstanciation', null, array('processDefinitionUri' => $procDef->getUri()))?>">
 							<?=wfEngine_helpers_GUIHelper::sanitizeGenerisString($procDef->getLabel())?></a>
 						</li>
 					<?endforeach; ?>

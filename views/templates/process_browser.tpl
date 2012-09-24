@@ -80,7 +80,7 @@
 
 
          	<li>
-         		<a id="pause" class="action icon" href="<?php echo BASE_URL;?>/ProcessBrowser/pause?processUri=<?php echo urlencode($browserViewData['processUri']); ?>"><?php echo __("Pause"); ?></a> <span class="separator"></span>
+         		<a id="pause" class="action icon" href="<?=_url('pause', 'ProcessBrowser', null, array('processUri' => $browserViewData['processUri']))?>"><?php echo __("Pause"); ?></a> <span class="separator"></span>
          	</li>
 
 
@@ -92,7 +92,7 @@
 
 
          	<li>
-         		<a id="logout" class="action icon" href="<?php echo BASE_URL;?>/Authentication/logout"><?php echo __("Logout"); ?></a>
+         		<a id="logout" class="action icon" href="<?=_url('logout', 'Authentication')?>"><?php echo __("Logout"); ?></a>
          	</li>
 
 		</ul>
