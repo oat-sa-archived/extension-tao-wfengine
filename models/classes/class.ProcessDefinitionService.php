@@ -326,7 +326,7 @@ class wfEngine_models_classes_ProcessDefinitionService
             //process and current must be set to the activty execution otherwise a common Exception is thrown
              
             $modeUri = $processDefinition->getOnePropertyValue($processModeProp);
-            if(is_null($modeUri) || (string)$modeUri == ''){
+            if (is_null($modeUri) || $modeUri instanceof core_kernel_classes_Literal) {
                 $returnValue = true;	//if no mode defined, the process is allowed
             }
             else{
