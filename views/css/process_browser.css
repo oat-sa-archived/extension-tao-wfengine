@@ -1,9 +1,9 @@
 @import url(frontend_user.css);
-@import url(dialogs.css);
+/*@import url(dialogs.css);*/
 
 div#content{
 	width: 960px;
-  	min-height :600px;	
+  	min-height :600px;
   	padding: 3px;
 }
 #control{
@@ -17,7 +17,7 @@ div#content{
 {
 	list-style-type: none;
 	margin: 0;
-	padding: 0;	
+	padding: 0;
 	position: absolute;
 	margin-top: 6px;
 	margin-left: 4px;
@@ -53,14 +53,14 @@ div#content{
 }
 
 /* The Back action button within the Navigation area. */
-#navigation #back 
+#navigation #back
 {
 	width: 100px;
 	right: 5px;
 }
 
 /* The Next action button within the Navigation area. */
-#navigation #next 
+#navigation #next
 {
 	width: 100px;
 	right: 2px;
@@ -74,7 +74,7 @@ div#content{
 }
 
 /* The Back button within the Floating Navigation area. */
-#back_floating 
+#back_floating
 {
 	position: absolute;
 	top: 0px;
@@ -83,7 +83,7 @@ div#content{
 }
 
 /* The Next button within the Floating Navigation area. */
-#next_floating 
+#next_floating
 {
 	position: absolute;
 	top: 0px;
@@ -99,14 +99,14 @@ div#content{
   margin: 0px auto 0px auto;
   position: relative;
 }
-	
+
 #tools #xul_info
 {
 	margin: 10px 0px 0px 0px;
 	width: 320px;
 	height: 100px ;
-}	
-	
+}
+
 #tools #xul_question
 {
 	width: 100%;
@@ -119,7 +119,7 @@ div#content{
 	position: absolute;
 	display: none;
 	margin: 0px auto 0px auto;
-	
+
 	z-index: 9999;
 }
 
@@ -160,7 +160,7 @@ div#content{
 {
 	padding: 3px 3px 3px 3px;
 	margin: 0px 0px 1px 0px;
-	
+
 	background-color: #FFFFFF;
 }
 
@@ -215,30 +215,30 @@ font-weight: normal;
 
 #ranges, #errors
 {
-	display: none;	
+	display: none;
 }
 
 #ranges p, #errors p
 {
 	font-size: 12px;
 	font-weight: bold;
-	color: #000;	
+	color: #000;
 }
 
 #calendar
 {
-	display: none;	
+	display: none;
 }
 
 #watch
 {
-	display: none;	
+	display: none;
 }
 
 
 #calendar iframe
 {
-	width: 740px;	
+	width: 740px;
 	height: 220px;
 }
 
@@ -265,7 +265,7 @@ height:170px;
 
 .soft_text
 {
-	color: #003399;	
+	color: #003399;
 }
 
 .hard_text
