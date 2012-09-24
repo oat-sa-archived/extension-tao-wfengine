@@ -107,7 +107,7 @@
 
 	//load the monitoring interface functions of the parameter filter
 	function loadMonitoring(filter) {
-		$.getJSON(root_url+'/wfEngine/Monitor/monitorProcess',
+		$.getJSON(root_url + 'wfEngine/Monitor/monitorProcess',
 			{
 				'filter': filter
 			},
@@ -139,7 +139,7 @@
 			/*
 			 * instantiate the facet based filter widget
 			 */
-			var getUrl = root_url + '/wfEngine/Monitor/getFilteredInstancesPropertiesValues';
+			var getUrl = root_url + 'wfEngine/Monitor/getFilteredInstancesPropertiesValues';
 			//the facet filter options
 			var facetFilterOptions = {
 				'template' : 'accordion',
