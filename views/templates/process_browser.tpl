@@ -29,21 +29,21 @@
 
 		       // Back and next function bindings for the ProcessBrowser.
 		       $("#back").click(function(){
-					goToPage('<?=BASE_URL?>/ProcessBrowser/back?processUri=<?=urlencode($browserViewData['processUri'])?>&activityUri=<?=urlencode($browserViewData['activityExecutionUri'])?>&nc=<?=$browserViewData['activityExecutionNonce']?>');
+					goToPage('<?=BASE_URL?>ProcessBrowser/back?processUri=<?=urlencode($browserViewData['processUri'])?>&activityUri=<?=urlencode($browserViewData['activityExecutionUri'])?>&nc=<?=$browserViewData['activityExecutionNonce']?>');
 					$(this).unbind('click');
 					$("#next").unbind('click');
 				});
 
 
 			   $("#next").click(function(){
-			       	goToPage('<?=BASE_URL?>/ProcessBrowser/next?processUri=<?=urlencode($browserViewData['processUri'])?>&activityUri=<?=urlencode($browserViewData['activityExecutionUri'])?>&nc=<?=$browserViewData['activityExecutionNonce']?>');
+			       	goToPage('<?=BASE_URL?>ProcessBrowser/next?processUri=<?=urlencode($browserViewData['processUri'])?>&activityUri=<?=urlencode($browserViewData['activityExecutionUri'])?>&nc=<?=$browserViewData['activityExecutionNonce']?>');
 			       	$(this).unbind('click');
 			       	$("#back").unbind('click');
 				});
 
 				//buil services iframes
 				<?foreach($services as $service):?>
-				var $aFrame = $('<iframe class="toolframe" frameborder="0" style="<?=$service['style']?>" src="<?=BASE_URL?>/ProcessBrowser/loading"></iframe>').appendTo('#tools');
+				var $aFrame = $('<iframe class="toolframe" frameborder="0" style="<?=$service['style']?>" src="<?=BASE_URL?>ProcessBrowser/loading"></iframe>').appendTo('#tools');
 				$aFrame.unbind('load').load(function(){
 					$(this).attr('src', "<?=$service['callUrl']?>");
 					$(this).unbind('load');

@@ -50,7 +50,7 @@ return array(
 		'BASE_PATH'				=> $extpath ,
 	
 		#BASE URL (usually the domain root)
-		'BASE_URL'				=> ROOT_URL	.'wfEngine',
+		'BASE_URL'				=> ROOT_URL	.'wfEngine/',
 	
 		#BASE WWW the web resources path
 		'BASE_WWW'				=> ROOT_URL	.'wfEngine/views/',
