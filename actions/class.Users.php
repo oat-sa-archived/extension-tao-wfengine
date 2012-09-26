@@ -155,7 +155,6 @@ class wfEngine_actions_Users extends tao_actions_CommonModule {
 			'deleted' => $deleted,
 			'message' => $message
 		));
-		// $this->redirect(_url('index', 'Users', 'wfEngine', array('message' => $message)));
 	}
 	
 	/**

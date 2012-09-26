@@ -28,21 +28,15 @@ require(['require', 'jquery', 'grid/tao.grid'], function(req, $) {
 	}
 	function removeUser(uri){
 		if(confirm("<?=__('Please confirm user deletion')?>")){
-			// window.location = "<?=_url('delete', 'Users', 'wfEngine')?>" + '?uri=' + uri;
 			$.ajax({
 				url: "<?=_url('delete', 'Users', 'wfEngine')?>",
 				type: "POST",
 				data: {uri:uri},
 				dataType: 'json',
 				success: function(response){
+					helpers.createMessage(response.message);
 					if(response.deleted){
-						alert(response.message);
-						$("#list_users").click();
-						$("#list_users").click();
-					}else{
-						alert(response.message);
-						$("#list_users").click();
-						$("#list_users").click();
+						$("#user-list").trigger('reloadGrid');
 					}
 				}
 			});
