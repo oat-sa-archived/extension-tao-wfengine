@@ -43,7 +43,7 @@
 							function(data){
 								$('.login-info').remove();
 								if(data.available){
-									elt.after("<span class='login-info'><img src='<?=BASE_WWW?>img/tick.png' /></span>");
+									elt.after("<span class='login-info'><img src='<?=BASE_WWW?>img/tick.png' />" + __('Login available') + "</span>");
 								}
 								else{
 									elt.after("<span class='login-info ui-state-error'><img src='<?=BASE_WWW?>img/exclamation.png' class='icon' /><?=__('Login not available')?></span>");
