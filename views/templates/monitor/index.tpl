@@ -179,11 +179,10 @@
 			 */
 			//the monitoring grid options
 			var monitoringGridOptions = {
-				'height' : $('#monitoring-processes-grid').parent().height()
-				, 'title' 	: __('Monitoring processes')
-				, 'callback' : {
-					'onSelectRow' : function(rowId)
-					{
+				'height': $('#monitoring-processes-grid').parent().height(),
+				'title': __('Monitoring processes'),
+				'callback': {
+					'onSelectRow': function(rowId) {
 						//$('#monitoring-processes-grid').jqGrid('editRow', rowId);
 						selectedProcessId = rowId;
 
@@ -192,16 +191,15 @@
 						currentActivitiesGrid.add(monitoringGrid.data[rowId]['http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessInstancesCurrentActivityExecutions']);
 
 						//display the process history
-						$.getJSON (root_url+'/wfEngine/Monitor/processHistory'
-							,{
+						$.getJSON(root_url+'/wfEngine/Monitor/processHistory',
+							{
 								'uri':rowId
-							}
-							, function (DATA) {
+							},
+							function (DATA) {
 								historyProcessGrid.empty();
 								historyProcessGrid.add(DATA);
 							}
 						);
-
 					}
 				}
 			};

@@ -3,9 +3,9 @@
  * Adapt activity variables content
 
  * @see TaoGridClass
- * 
+ *
  * @require jquery >= 1.3.2 [http://jquery.com/]
- * 
+ *
  * @author Alfonsi Cédric, <taosupport@tudor.lu>
  */
 
@@ -15,40 +15,38 @@
 
 function TaoGridActivityVariablesAdapter(){}
 
-TaoGridActivityVariablesAdapter.formatter = function(cellvalue, options, rowObject){
+TaoGridActivityVariablesAdapter.formatter = function(cellvalue, options, rowObject) {
 
 	var returnValue = '';
 
 	returnValue = '<a href="#" disabled="false" tyle="cursor: pointer;">'
 			+'<span class="ui-icon ui-icon-flag" style="float:left; cursor:pointer;"></span><span>'+__('Edit')+'</span>'
 		+'</a>';
-	
+
 	return returnValue;
 }
 
-TaoGridActivityVariablesAdapter.postCellFormat = function(grid, cell, rowId, columnId)
-{
+TaoGridActivityVariablesAdapter.postCellFormat = function(grid, cell, rowId, columnId) {
 	/**
 	 * Instantiate the variables grid
 	 */
-	$(cell).find('a').click(function()
-	{
+	$(cell).find('a').click(function(){
 		var processId = selectedProcessId;
 		var activityId = rowId;
 		selectedActivityExecutionId = rowId;
-		
+
 		var dialogHtml = '<div id="activity-variables-popup" style="margin-top:5px;"> \
 			<div style="height:30px;"> \
-				<a href="#" class="activity-variable-action activity-variable-add"><img src="/tao/views/img/add.png"/> Add a variable</a> \
+				<a href="#" class="activity-variable-action activity-variable-add"><img src="'+root_url+'tao/views/img/add.png"/> Add a variable</a> \
 			</div> \
 			<div style="height:405px;"> \
 				<table id="activity-variables-grid"></table> \
 			</div> \
 			<div style="height:30px; margin-top:10px;"> \
-				<a href="#" class="activity-variable-action activity-variable-add"><img src="/tao/views/img/add.png"/> Add a variable</a> \
+				<a href="#" class="activity-variable-action activity-variable-add"><img src="'+root_url+'tao/views/img/add.png"/> Add a variable</a> \
 			</div> \
 		</div>';
-		
+
 		//instantiate the dialog box
 		$(dialogHtml).dialog({
 			'height'	: 500
@@ -62,7 +60,7 @@ TaoGridActivityVariablesAdapter.postCellFormat = function(grid, cell, rowId, col
 			, editurl: "server.php"
 			, viewrecords: true
 		});
-		
+
 		//the grid model
 		//var activityVariablesModel = model['http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessInstancesCurrentActivityExecutions']['subgrids']['variables']['subgrids'];
 		var activityVariablesModel = [
@@ -71,22 +69,22 @@ TaoGridActivityVariablesAdapter.postCellFormat = function(grid, cell, rowId, col
 		];
 		//the current activities grid options
 		var activityVariablesGridOptions = {
-			'title'  : __('Activity Variables')
-			, 'callback' : {
+			'title'  : __('Activity Variables'),
+			'callback' : {
 				'saveNewRow' : function(rowId, rowData){
 					var code = rowData['code'];
 					var value = rowData['value'];
-					
+
 					//delete the temp row
-					activityVariablesGrid.delete(rowId);
-					
+					activityVariablesGrid.deleteRow(rowId);
+
 					wfApi.Variable.edit(selectedActivityExecutionId, code, value, function(){
 						var varUri = null;
 						var rowToAdd = [];
-						
+
 						//find uri of the variable type
-						for(var crtVarUri in wfVariables){
-							if(wfVariables['code'] == code){
+						for (var crtVarUri in wfVariables) {
+							if (wfVariables['code'] == code) {
 								varUri = crtVarUri;
 							}
 						}
@@ -104,7 +102,7 @@ TaoGridActivityVariablesAdapter.postCellFormat = function(grid, cell, rowId, col
 				, 'saveEditedRow' : function(rowId, rowData){
 					var code = rowData['code'];
 					var value = rowData['value'];
-					
+
 					wfApi.Variable.edit(selectedActivityExecutionId, code, value, function(){
 						var varUri = rowId;
 						//format variable for the grid
@@ -126,7 +124,7 @@ TaoGridActivityVariablesAdapter.postCellFormat = function(grid, cell, rowId, col
 		//display the data
 		var rowData = grid.getRowData(activityId);
 		activityVariablesGrid.add(rowData['variables']);
-		
+
 		//bind actions
 		$('#activity-variables-popup').find('.activity-variable-add').click(function(){
 			activityVariablesGrid.newRow();

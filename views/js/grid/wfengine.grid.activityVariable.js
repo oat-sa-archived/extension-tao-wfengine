@@ -3,9 +3,9 @@
  * Adapt activity variable content
 
  * @see TaoGridClass
- * 
+ *
  * @require jquery >= 1.3.2 [http://jquery.com/]
- * 
+ *
  * @author Alfonsi Cédric, <taosupport@tudor.lu>
  */
 
@@ -22,7 +22,7 @@ TaoGridActivityVariableAdapter.formatter = function(cellvalue, options, rowObjec
 	for(var i in cellvalue){
 		returnValue += '<span class="activity-variable-value">'+cellvalue[i]+'</span>';
 	}
-	
+
 	return returnValue;
 };
 
@@ -50,20 +50,20 @@ TaoGridActivityVariableAdapter.getEditedValue = function(grid, cell, rowId, colu
 	});
 	return values;
 };
-	
+
 TaoGridActivityVariableAdapter.editFormatter = function(grid, cell, rowId, columnId)
 {
 	//TaoGridActivityVariableAdapter.addVariableRow(grid);
 	var editHtml = '<div class="activity-variable-edit-container"></div>'
 		+'<div class="activity-variable-actions"> \
-			<a href="#" class="activity-variable-action activity-variable-addValue"><img src="'+root_url+'/tao/views/img/add.png"/> Add</a>\
+			<a href="#" class="activity-variable-action activity-variable-addValue"><img src="'+root_url+'tao/views/img/add.png"/> Add</a>\
 		</div>';
-	
+
 	//get the variables values
 	var cellData = grid.getCellData(rowId, columnId);
 	//empty the block
 	$(cell).empty().html(editHtml);
-	
+
 	//foreach values add an edit box
 	for(var i in cellData){
 		TaoGridActivityVariableAdapter.addValue(cell, cellData[i]);
@@ -104,7 +104,7 @@ TaoGridActivityVariableAdapter.addValue = function(cell, value)
 {
 	var editCellValueHtml = '<span class="activity-variable-value"> \
 			<input type="text" value="'+value+'"/> \
-			<img class="activity-variable-deleteValue" src="'+root_url+'/tao/views/img/delete.png"/> \
+			<img class="activity-variable-deleteValue" src="'+root_url+'tao/views/img/delete.png"/> \
 	</span>';
 	$(cell).find('.activity-variable-edit-container').append(editCellValueHtml);
 };
