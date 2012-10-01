@@ -120,6 +120,7 @@ class wfEngine_models_classes_ProcessAuthoringService
 			}	
 			try{
 				$analyser = new Analyser();
+				common_Logger::i('analysing expression \''.$question.'\'');
 				$tokens = $analyser->analyse($question);
 
 				// $xml = htmlspecialchars($tokens->getXmlString(true));
@@ -128,7 +129,7 @@ class wfEngine_models_classes_ProcessAuthoringService
 				$returnValue = $tokens->getXml();
 				
 			}catch(Exception $e){
-				throw new Exception("CapiXML error: {$e->getMessage()}");
+				throw new common_Exception("CapiXML error: {$e->getMessage()}");
 			}
 		}
         // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004D58 end

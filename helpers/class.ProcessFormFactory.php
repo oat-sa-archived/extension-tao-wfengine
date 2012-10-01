@@ -510,7 +510,7 @@ class wfEngine_helpers_ProcessFormFactory extends tao_helpers_form_GenerisFormFa
 		
 	}
 	
-	public function connectorEditor(core_kernel_classes_Resource $connector, core_kernel_classes_Resource $connectorType=null, $formName='', core_kernel_classes_Resource $activity){
+	public static function connectorEditor(core_kernel_classes_Resource $connector, core_kernel_classes_Resource $connectorType=null, $formName='', core_kernel_classes_Resource $activity){
 		if(empty($formName)){
 			$formName = 'connectorForm';
 		}
@@ -695,7 +695,7 @@ class wfEngine_helpers_ProcessFormFactory extends tao_helpers_form_GenerisFormFa
         return $myForm;
 	}
 	
-	public function nextActivityElements(core_kernel_classes_Resource $connector, $type, $allowCreation = true, $includeConnectors = true, $optionsWidget = 'Combobox'){
+	public static function nextActivityElements(core_kernel_classes_Resource $connector, $type, $allowCreation = true, $includeConnectors = true, $optionsWidget = 'Combobox'){
 		
 		$returnValue = array();
 		
