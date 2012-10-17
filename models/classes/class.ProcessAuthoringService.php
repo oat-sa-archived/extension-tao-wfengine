@@ -9,7 +9,7 @@ error_reporting(E_ALL);
  *
  * This file is part of TAO.
  *
- * Automatically generated on 20.09.2012, 17:39:45 with ArgoUML PHP module 
+ * Automatically generated on 20.09.2012, 17:39:45 with ArgoUML PHP module
  * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
  *
  * @author Joel Bout, <joel.bout@tudor.lu>
@@ -59,7 +59,7 @@ class wfEngine_models_classes_ProcessAuthoringService
     extends wfEngine_models_classes_ProcessDefinitionService
 {
     // --- ASSOCIATIONS ---
-    // generateAssociationEnd : 
+    // generateAssociationEnd :
 
     // --- ATTRIBUTES ---
 
@@ -75,9 +75,9 @@ class wfEngine_models_classes_ProcessAuthoringService
     public function __construct()
     {
         // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004D56 begin
-		
+
 		parent::__construct();
-		
+
         // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004D56 end
     }
 
@@ -100,14 +100,14 @@ class wfEngine_models_classes_ProcessAuthoringService
 			$question = $expressionInput;
 		else
 			$question = "";
-		
+
 		//question test:
 		//$question = "IF    (11+B_Q01a*3)>=2 AND (B_Q01c=2 OR B_Q01c=7)    	THEN ^variable := 2*(B_Q01a+7)-^variable";
-		
+
 		//analyse the expressionInput string and convert to an XML document:
 		if (get_magic_quotes_gpc()) $question = stripslashes($question);// Magic quotes are deprecated
-		//TODO: check if the variables exists and are associated to the process definition 
-		
+		//TODO: check if the variables exists and are associated to the process definition
+
 		$returnValue = null;
 		if (!empty($question)){ // something to parse
 			// str_replace taken from the MsReader class
@@ -115,20 +115,20 @@ class wfEngine_models_classes_ProcessAuthoringService
 			$question = str_replace("�", "'", $question); // utf8...
 			$question = str_replace("�", "\"", $question);
 			$question = str_replace("�", "\"", $question);
-			if($isCondition){
+			if ($isCondition) {
 				$question = "if ".$question;
-			}	
-			try{
+			}
+			try {
 				$analyser = new Analyser();
 				common_Logger::i('analysing expression \''.$question.'\'');
 				$tokens = $analyser->analyse($question);
 
 				// $xml = htmlspecialchars($tokens->getXmlString(true));
 				// $xml = $tokens->getXmlString(true);
-				
+
 				$returnValue = $tokens->getXml();
-				
-			}catch(Exception $e){
+
+			} catch(Exception $e) {
 				throw new common_Exception("CapiXML error: {$e->getMessage()}");
 			}
 		}
@@ -153,7 +153,7 @@ class wfEngine_models_classes_ProcessAuthoringService
         // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004D62 begin
 		$activityLabel = "";
 		$number = 0;
-		
+
 		if(empty($label)){
 			$number = $process->getPropertyValuesCollection(new core_kernel_classes_Property(PROPERTY_PROCESS_ACTIVITIES))->count();
 			$number += 1;
@@ -161,27 +161,27 @@ class wfEngine_models_classes_ProcessAuthoringService
 		}else{
 			$activityLabel = $label;
 		}
-		
+
 		$activityClass = new core_kernel_classes_Class(CLASS_ACTIVITIES);
 		$activity = $activityClass->createInstance($activityLabel, "created by ProcessAuthoringService.Class");
-		
+
 		if(!empty($activity)){
 			//associate the new instance to the process instance
 			$process->setPropertyValue(new core_kernel_classes_Property(PROPERTY_PROCESS_ACTIVITIES), $activity->uriResource);
-		
+
 			//set if it is the first or not:
 			if($number == 1){
 				$activity->editPropertyValues(new core_kernel_classes_Property(PROPERTY_ACTIVITIES_ISINITIAL), GENERIS_TRUE);
 			}else{
 				$activity->editPropertyValues(new core_kernel_classes_Property(PROPERTY_ACTIVITIES_ISINITIAL), GENERIS_FALSE);
 			}
-			
+
 			//by default, set the 'isHidden' property value to false:
 			$activity->editPropertyValues(new core_kernel_classes_Property(PROPERTY_ACTIVITIES_ISHIDDEN), GENERIS_FALSE);
-			
-			//by default we add the back and forward controls to the activity 		
+
+			//by default we add the back and forward controls to the activity
 			$activity->editPropertyValues(new core_kernel_classes_Property(PROPERTY_ACTIVITIES_CONTROLS), array(INSTANCE_CONTROL_BACKWARD, INSTANCE_CONTROL_FORWARD));
-			
+
 			$returnValue = $activity;
 		}else{
 			throw new Exception("the activity cannot be created for the process {$process->uriResource}");
@@ -205,7 +205,7 @@ class wfEngine_models_classes_ProcessAuthoringService
         $returnValue = null;
 
         // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004D69 begin
-		
+
 		//get the process associate to the connector to create a new instance of activity
 		$relatedActivity = $connector->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_ACTIVITYREFERENCE));
 		$processClass =  new core_kernel_classes_Class(CLASS_PROCESS);
@@ -215,7 +215,7 @@ class wfEngine_models_classes_ProcessAuthoringService
 		}else{
 			throw new common_exception_Error("No process instance found for activity ".$relatedActivity." to create an activity from");
 		}
-		
+
         // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004D69 end
 
         return $returnValue;
@@ -234,20 +234,20 @@ class wfEngine_models_classes_ProcessAuthoringService
         $returnValue = null;
 
         // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004D70 begin
-		
+
 		//create the expression instance:
 		foreach ($xmlDom->childNodes as $childNode) {
 			foreach ($childNode->childNodes as $childOfChildNode) {
 				if ($childOfChildNode->nodeName == "condition"){
-					
+
 					$conditionDescriptor = DescriptorFactory::getConditionDescriptor($childOfChildNode);
 					$returnValue = $conditionDescriptor->import();//(3*(^var +  1) = 2 or ^var > 7) AND ^RRR
 					break 2;//once is enough...
-				
+
 				}
 			}
 		}
-		
+
         // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004D70 end
 
         return $returnValue;
@@ -269,21 +269,21 @@ class wfEngine_models_classes_ProcessAuthoringService
         // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004D73 begin
 		$activityService = wfEngine_models_classes_ActivityService::singleton();
 		$connectorService = wfEngine_models_classes_ConnectorService::singleton();
-		
+
 		$connectorLabel = "";
 		if(empty($label)){
 			$connectorLabel = $activity->getLabel()."_c";//warning: could exist duplicate for children of a split connector
 		}else{
 			$connectorLabel = $label;
 		}
-		
+
 		$connectorClass = new core_kernel_classes_Class(CLASS_CONNECTORS);
 		$returnValue = $connectorClass->createInstance($connectorLabel, "created by ProcessAuthoringService.Class");
-		
+
 		if(!empty($returnValue)){
 			//associate the connector to the activity
 			$returnValue->setPropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_PREVIOUSACTIVITIES), $activity->uriResource);
-			
+
 			//set the activity reference of the connector:
 			$activityRefProp = new core_kernel_classes_Property(PROPERTY_CONNECTORS_ACTIVITYREFERENCE);
 			if($activityService->isActivity($activity)){
@@ -296,7 +296,7 @@ class wfEngine_models_classes_ProcessAuthoringService
 		}else{
 			throw new Exception("the connector cannot be created for the activity {$activity->uriResource}");
 		}
-		
+
         // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004D73 end
 
         return $returnValue;
@@ -326,7 +326,7 @@ class wfEngine_models_classes_ProcessAuthoringService
 		}else{
 			return null;
 		}
-		
+
 		$classFormalParam = new core_kernel_classes_Class(CLASS_FORMALPARAMETER);
 		if(empty($label)){
 			$label = $name;
@@ -334,7 +334,7 @@ class wfEngine_models_classes_ProcessAuthoringService
 		$returnValue = $classFormalParam->createInstance($label, 'created by process authoring service');
 		$returnValue->setPropertyValue(new core_kernel_classes_Property(PROPERTY_FORMALPARAMETER_NAME), $name);
 		$returnValue->setPropertyValue($defaultValueProp, $defaultValue);
-		
+
         // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004D80 end
 
         return $returnValue;
@@ -355,17 +355,17 @@ class wfEngine_models_classes_ProcessAuthoringService
         // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004D91 begin
 		$number = $activity->getPropertyValuesCollection(new core_kernel_classes_Property(PROPERTY_ACTIVITIES_INTERACTIVESERVICES))->count();
 		$number += 1;
-		
+
 		//an interactive service of an activity is a call of service:
 		$callOfServiceClass = new core_kernel_classes_Class(CLASS_CALLOFSERVICES);
-		
+
 		//create new resource for the property value of the current call of service PROPERTY_CALLOFSERVICES_ACTUALPARAMETERIN or PROPERTY_CALLOFSERVICES_ACTUALPARAMETEROUT
 		$returnValue = $callOfServiceClass->createInstance($activity->getLabel()."_service_".$number, "created by ProcessAuthoringService.Class");
-		
+
 		if(!empty($returnValue)){
 			//associate the new instance to the activity instance
 			$activity->setPropertyValue(new core_kernel_classes_Property(PROPERTY_ACTIVITIES_INTERACTIVESERVICES), $returnValue->uriResource);
-			
+
 			//set default position and size value:
 			$returnValue->setPropertyValue(new core_kernel_classes_Property(PROPERTY_CALLOFSERVICES_WIDTH), 100);
 			$returnValue->setPropertyValue(new core_kernel_classes_Property(PROPERTY_CALLOFSERVICES_HEIGHT), 100);
@@ -395,16 +395,16 @@ class wfEngine_models_classes_ProcessAuthoringService
         $returnValue = null;
 
         // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004D9E begin
-		
+
 		$this->setConnectorType($connectorInstance, new core_kernel_classes_Resource(INSTANCE_TYPEOFCONNECTORS_JOIN));
-		
+
 		$propNextActivity = new core_kernel_classes_Property(PROPERTY_CONNECTORS_NEXTACTIVITIES);
 		$propPreviousActivities = new core_kernel_classes_Property(PROPERTY_CONNECTORS_PREVIOUSACTIVITIES);
-		
+
 		if(is_null($previousActivity)){
 			throw new wfEngine_models_classes_ProcessDefinitonException('no previous activity found to be connected to the next activity');
 		}
-		
+
 		if(is_null($followingActivity)){
 			$followingActivity = $this->createActivityFromConnector($connectorInstance, $newActivityLabel);
 			$connectorInstance->removePropertyValues($propPreviousActivities);
@@ -415,12 +415,12 @@ class wfEngine_models_classes_ProcessAuthoringService
 				PROPERTY_CONNECTORS_NEXTACTIVITIES => $followingActivity->uriResource,
 				PROPERTY_CONNECTORS_TYPE =>INSTANCE_TYPEOFCONNECTORS_JOIN
 				), array('like' => false, 'recursive' => 0));
-		
+
 			$found = false;
 			foreach($connectors as $connector){
 				//important: check that the connector found is NOT the same as the current one:
 				if($connectorInstance->uriResource != $connector->uriResource){
-					//delete old connector, 
+					//delete old connector,
 					$this->deleteConnector($connectorInstance);
 					//and associate the activity to that one the existing one via a set property value to the "previous activities" property
 					$connectorInstance = $connector;
@@ -428,31 +428,31 @@ class wfEngine_models_classes_ProcessAuthoringService
 
 					break;//one join connector allowed for a next activity
 				}else{
-					//nothing to do, since the connector is already 
+					//nothing to do, since the connector is already
 					//it would be the case when one re-save the join connector with the same following activity
 					return 'same activity';
 				}
 			}
 		}
-		
+
 		if($followingActivity instanceof core_kernel_classes_Resource){
-			
+
 			$connectorInstance->editPropertyValues($propNextActivity, $followingActivity->uriResource);
 			$connectorInstance->setLabel(__("Merge to ").$followingActivity->getLabel());
-			
+
 			//check multiplicity  (according to the cardinality defined in the related parallel connector):
 			$processFlow = new wfEngine_models_classes_ProcessFlow();
 			$cardinalityService = wfEngine_models_classes_ActivityCardinalityService::singleton();
-			
-			$multiplicity = 1;//default multiplicity, if no multiple parallel activity 
-			
+
+			$multiplicity = 1;//default multiplicity, if no multiple parallel activity
+
 			$parallelConnector = null;
 			$parallelConnector = $processFlow->findParallelFromActivityBackward($previousActivity);
 			if(!is_null($parallelConnector)){
-				
+
 				//count the number of time theprevious activity must be set as the previous activity of the join connector
 				$nextActivitiesCollection = $parallelConnector->getPropertyValuesCollection(new core_kernel_classes_Property(PROPERTY_CONNECTORS_NEXTACTIVITIES));
-				
+
 				foreach($nextActivitiesCollection->getIterator() as $nextActivityCardinality){
 					if(in_array($cardinalityService->getActivity($nextActivityCardinality)->uriResource, $processFlow->getCheckedActivities())){
 						$multiplicity = $cardinalityService->getCardinality($nextActivityCardinality);
@@ -460,12 +460,12 @@ class wfEngine_models_classes_ProcessAuthoringService
 					}
 				}
 			}
-			
+
 			if($multiplicity){
-				
+
 				$oldPreviousActivityCardinality = null;
-				
-				
+
+
 				//update the cardinality of the corresponding previous activity if exists
 				$prevActivitiesCollection = $connectorInstance->getPropertyValuesCollection($propPreviousActivities);
 				foreach($prevActivitiesCollection->getIterator() as $cardinality){
@@ -477,7 +477,7 @@ class wfEngine_models_classes_ProcessAuthoringService
 						}
 					}
 				}
-				
+
 				//if it does not exists, create a new cardinality resource and assign it to the join connector:
 				if(is_null($oldPreviousActivityCardinality)){
 					$cardinality = $cardinalityService->createCardinality($previousActivity, $multiplicity);
@@ -486,10 +486,10 @@ class wfEngine_models_classes_ProcessAuthoringService
 			}else{
 				throw new wfEngine_models_classes_ProcessDefinitonException('unexpected null multiplicity in join connector');
 			}
-			
+
 			$returnValue = $followingActivity;
 		}
-		
+
         // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004D9E end
 
         return $returnValue;
@@ -504,38 +504,39 @@ class wfEngine_models_classes_ProcessAuthoringService
      * @param  string question
      * @return core_kernel_classes_Resource
      */
-    public function createTransitionRule( core_kernel_classes_Resource $connector, $question = '')
+    public function createTransitionRule( core_kernel_classes_Resource $connector, $question = '', $isXML = false)
     {
         $returnValue = null;
 
         // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004DB0 begin
-		
+
 		//associate the newly create expression with the transition rule of the connector
 		$transitionRule = $connector->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_TRANSITIONRULE));
 
-		if(empty($transitionRule) || $transitionRule == null){
+		if (empty($transitionRule) || $transitionRule == null) {
 			//create an instance of transition rule:
-
 			$transitionRuleClass = new core_kernel_classes_Class(CLASS_TRANSITIONRULES);
-			$transitionRule = $transitionRuleClass->createInstance('TransitionRule : '  . $question);
+			$label = 'TransitionRule : ' . ($isXML) ? $question->saveXML() : $question;
+			$transitionRule = $transitionRuleClass->createInstance($label);
 			//Associate the newly created transition rule to the connector:
 			$connector->editPropertyValues(new core_kernel_classes_Property(PROPERTY_CONNECTORS_TRANSITIONRULE), $transitionRule->uriResource);
 		}
-		
-		if(!empty($question)){
-			$condition = $this->createCondition( $this->analyseExpression($question, true) );
-			if($condition instanceof core_kernel_classes_Resource){
+
+		if (!empty($question)) {
+			$xml = ($isXML) ? $question : $this->analyseExpression($question, true);
+			$condition = $this->createCondition($xml);
+			if ($condition instanceof core_kernel_classes_Resource) {
 				//delete old condition:
 				$oldCondition = $transitionRule->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_RULE_IF));
-				if(!is_null($oldCondition)){
+				if (!is_null($oldCondition)) {
 					$this->deleteCondition($oldCondition);
 				}
-				$transitionRule->editPropertyValues(new core_kernel_classes_Property(PROPERTY_RULE_IF), $condition->uriResource);
-			}
-		}
-		
+				$transitionRule->editPropertyValues(new core_kernel_classes_Property(PROPERTY_RULE_IF), $condition->getUri());
+			} else common_Logger::e('condition is not an instance of ressource : '.$condition);
+		} else common_Logger::e('condition is not a ressource : '.$condition->getUri());
+
 		$returnValue = $transitionRule;
-		
+
         // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004DB0 end
 
         return $returnValue;
@@ -559,7 +560,7 @@ class wfEngine_models_classes_ProcessAuthoringService
 		//TODO: should be renamed to setSequenceActivity
 		//TODO: should add a check, see if a connector merge is attached to the connector, if so, do not allow it!! display a warning
 		$this->setConnectorType($connector, new core_kernel_classes_Resource(INSTANCE_TYPEOFCONNECTORS_SEQUENCE));
-		
+
 		if(is_null($followingActivity)){
 			$followingActivity = $this->createActivityFromConnector($connector, $newActivityLabel);
 		}
@@ -594,10 +595,10 @@ class wfEngine_models_classes_ProcessAuthoringService
         // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004DC3 begin
 		//rename it to conditional:
 		$this->setConnectorType($connector, new core_kernel_classes_Resource(INSTANCE_TYPEOFCONNECTORS_CONDITIONAL));
-		
+
 		//remove property PROPERTY_CONNECTORS_NEXTACTIVITIES values on connector before:
 		if(is_null($followingActivity)){
-			
+
 			if($followingActivityisConnector){
 				//create a new connector:
 				$followingActivity = $this->createConnector($connector);
@@ -613,7 +614,7 @@ class wfEngine_models_classes_ProcessAuthoringService
 				}
 			}
 		}
-		
+
 		if($followingActivity instanceof core_kernel_classes_Resource){
 			//associate it to the property value of the connector
 			$connector->setPropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_NEXTACTIVITIES), $followingActivity->uriResource);//use this function and not editPropertyValue!
@@ -631,10 +632,10 @@ class wfEngine_models_classes_ProcessAuthoringService
 			}else{
 				throw new Exception("wrong connection type then/else");
 			}
-			
+
 			$returnValue = $followingActivity;
 		}
-		
+
         // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004DC3 end
 
         return $returnValue;
@@ -653,10 +654,10 @@ class wfEngine_models_classes_ProcessAuthoringService
         $returnValue = (bool) false;
 
         // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004DDC begin
-		
+
 		$activityService = wfEngine_models_classes_ActivityService::singleton();
 		$returnValue = $activityService->deleteActivity($activity);
-		
+
         // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004DDC end
 
         return (bool) $returnValue;
@@ -675,21 +676,21 @@ class wfEngine_models_classes_ProcessAuthoringService
         $returnValue = (bool) false;
 
         // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004DE0 begin
-		
+
 		//remove the property values in the call of service instance
 		$callOfService->removePropertyValues(new core_kernel_classes_Property(PROPERTY_CALLOFSERVICES_ACTUALPARAMETERIN));
 		$callOfService->removePropertyValues(new core_kernel_classes_Property(PROPERTY_CALLOFSERVICES_ACTUALPARAMETEROUT));
-		
+
 		//get all actual param of the current call of service
 		$actualParamCollection = $callOfService->getPropertyValuesCollection(new core_kernel_classes_Property(PROPERTY_SERVICESDEFINITION_FORMALPARAMIN));
 		$actualParamCollection = $actualParamCollection->union($callOfService->getPropertyValuesCollection(new core_kernel_classes_Property(PROPERTY_SERVICESDEFINITION_FORMALPARAMOUT)));
 		if($actualParamCollection->count()<=0){
 			return true;//no need to delete anything
 		}
-		
+
 		//delete all of them:
 		foreach($actualParamCollection->getIterator() as $actualParam){
-		
+
 			if($actualParam instanceof core_kernel_classes_Resource){
 				$returnValue = $actualParam->delete(true);
 				if(!$returnValue) {
@@ -697,7 +698,7 @@ class wfEngine_models_classes_ProcessAuthoringService
 				}
 			}
 		}
-		
+
         // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004DE0 end
 
         return (bool) $returnValue;
@@ -716,10 +717,10 @@ class wfEngine_models_classes_ProcessAuthoringService
         $returnValue = (bool) false;
 
         // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004DF5 begin
-		
+
 		$interactiveServiceService = wfEngine_models_classes_InteractiveServiceService::singleton();
 		$returnValue = $interactiveServiceService->deleteInteractiveService($service);
-		
+
         // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004DF5 end
 
         return (bool) $returnValue;
@@ -738,7 +739,7 @@ class wfEngine_models_classes_ProcessAuthoringService
         $returnValue = (bool) false;
 
         // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004DF9 begin
-		
+
 		//get the rule type:
 		if(!is_null($rule)){
 			//if it is a transition rule: get the uri of the related properties: THEN and ELSE:
@@ -747,12 +748,12 @@ class wfEngine_models_classes_ProcessAuthoringService
 			if(!is_null($expression) && ($expression instanceof core_kernel_classes_Resource) ){
 				$this->deleteExpression($expression);
 			}
-			
+
 			//delete reference: should be done on a upper level, at this function call
-			
+
 			$returnValue = true;
 		}
-		
+
         // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004DF9 end
 
         return (bool) $returnValue;
@@ -771,10 +772,10 @@ class wfEngine_models_classes_ProcessAuthoringService
         $returnValue = (bool) false;
 
         // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004DFC begin
-		
+
 		$connectorService = wfEngine_models_classes_ConnectorService::singleton();
 		$returnValue = $connectorService->deleteConnector($connector);
-		
+
         // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004DFC end
 
         return (bool) $returnValue;
@@ -792,7 +793,7 @@ class wfEngine_models_classes_ProcessAuthoringService
     public function deleteConnectorNextActivity( core_kernel_classes_Resource $connector, $connectionType = 'next')
     {
         // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004DFF begin
-		
+
 		// $authorizedProperties = array(
 			// PROPERTY_CONNECTORS_NEXTACTIVITIES,
 			// PROPERTY_TRANSITIONRULES_THEN,
@@ -800,7 +801,7 @@ class wfEngine_models_classes_ProcessAuthoringService
 		// );
 		$nextActivitiesProp = new core_kernel_classes_Property(PROPERTY_CONNECTORS_NEXTACTIVITIES);
 		$connectorService = wfEngine_models_classes_ConnectorService::singleton();
-		
+
 		switch($connectionType){
 			case 'next':{
 				$property = $nextActivitiesProp;
@@ -818,10 +819,10 @@ class wfEngine_models_classes_ProcessAuthoringService
 				throw new Exception('Trying to delete the value of an unauthorized connector property');
 			}
 		}
-		
+
 		$activityRefProp = new core_kernel_classes_Property(PROPERTY_CONNECTORS_ACTIVITYREFERENCE);
 		$activityRef = $connector->getUniquePropertyValue($activityRefProp)->uriResource;
-	
+
 		if($property->uriResource == PROPERTY_CONNECTORS_NEXTACTIVITIES){
 			//manage the connection to the following activities
 			$nextActivityCollection = $connector->getPropertyValuesCollection($property);
@@ -851,7 +852,7 @@ class wfEngine_models_classes_ProcessAuthoringService
 				}
 			}
 		}
-		
+
         // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004DFF end
     }
 
@@ -868,7 +869,7 @@ class wfEngine_models_classes_ProcessAuthoringService
         $returnValue = (bool) false;
 
         // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004E0D begin
-		
+
 		//delete related expressions
 		$firstExpressionCollection = $expression->getPropertyValuesCollection(new core_kernel_classes_Property(PROPERTY_FIRST_EXPRESSION));
 		$secondExpressionCollection = $expression->getPropertyValuesCollection(new core_kernel_classes_Property(PROPERTY_SECOND_EXPRESSION));
@@ -876,15 +877,15 @@ class wfEngine_models_classes_ProcessAuthoringService
 		foreach($expressionCollection->getIterator() as $exp){
 			$this->deleteExpression($exp);
 		}
-		
+
 		$terminalExpression = $expression->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_TERMINAL_EXPRESSION));
 		if(!empty($terminalExpression) && $terminalExpression instanceof core_kernel_classes_Resource){
 			$this->deleteTerm($terminalExpression);
 		}
-		
+
 		//delete the expression itself:
 		$returnValue = $expression->delete(true);
-		
+
         // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004E0D end
 
         return (bool) $returnValue;
@@ -928,12 +929,12 @@ class wfEngine_models_classes_ProcessAuthoringService
 		if(!is_null($firstOperand) && ($firstOperand instanceof core_kernel_classes_Resource)){
 			$this->deleteTerm($firstOperand);
 		}
-		
+
 		$secondOperand = $operation->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_OPERATION_SECND_OP));
 		if(!is_null($secondOperand) && ($secondOperand instanceof core_kernel_classes_Resource)){
 			$this->deleteTerm($secondOperand);
 		}
-		
+
 		$returnValue = $operation->delete(true);
         // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004E16 end
 
@@ -953,7 +954,7 @@ class wfEngine_models_classes_ProcessAuthoringService
         $returnValue = (bool) false;
 
         // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004E19 begin
-		
+
 		if(!is_null($process)){
 			$activities = $this->getActivitiesByProcess($process);
 			foreach($activities as $activity){
@@ -961,10 +962,10 @@ class wfEngine_models_classes_ProcessAuthoringService
 					return $returnValue;
 				}
 			}
-			
+
 			$returnValue = $process->delete(true);
 		}
-		
+
         // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004E19 end
 
         return (bool) $returnValue;
@@ -983,15 +984,15 @@ class wfEngine_models_classes_ProcessAuthoringService
         $returnValue = (bool) false;
 
         // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004E26 begin
-		
+
 		//get the rule type:
 		if(!is_null($rule)){
 			$this->deleteCondition($rule);
-			
+
 			//delete the resources
 			$returnValue = $rule->delete($rule);
 		}
-		
+
         // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004E26 end
 
         return (bool) $returnValue;
@@ -1010,39 +1011,39 @@ class wfEngine_models_classes_ProcessAuthoringService
         $returnValue = (bool) false;
 
         // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004E2B begin
-		
+
 		$termClasses = array(
 			CLASS_TERM_SUJET_PREDICATE_X,
 			CLASS_TERM_CONST,
 			CLASS_TERM
 		);
-		
+
 		//list of terms instance that must not be deleted!
 		$termConstants = array(
 			INSTANCE_TERM_IS_NULL
 		);
-		
+
 		if(!is_null($term)){
 			//determine the class:
-			
+
 			foreach($term->getType() as $class){
 				if($class->uriResource == CLASS_OPERATION){
-					
+
 					$this->deleteOperation($term);//an operation is a term
-					
+
 				}elseif(in_array($class->uriResource,$termClasses)){
-				
+
 					if(!in_array($term->uriResource, $termConstants)){//delete all instances but the one that are preset
 						$term->delete(true);
 					}
-					
+
 				}else{
 					throw new Exception("trying to delete a term with an unknown term class");
 				}
 			}
 			$returnValue = true;
 		}
-		
+
         // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004E2B end
 
         return (bool) $returnValue;
@@ -1062,7 +1063,7 @@ class wfEngine_models_classes_ProcessAuthoringService
         $returnValue = (bool) false;
 
         // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004E2E begin
-		
+
 		if(!empty($conditionString)){
 			$conditionDom =  $this->analyseExpression($conditionString, true);
 			$condition = $this->createCondition($conditionDom);
@@ -1071,12 +1072,12 @@ class wfEngine_models_classes_ProcessAuthoringService
 			}else{
 				//delete old condition if exists:
 				$this->deleteCondition($rule);
-				
+
 				//associate the new condition:
 				$returnValue = $rule->editPropertyValues(new core_kernel_classes_Property(PROPERTY_RULE_IF), $condition->uriResource);
 			}
 		}
-		
+
         // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004E2E end
 
         return (bool) $returnValue;
@@ -1117,41 +1118,41 @@ class wfEngine_models_classes_ProcessAuthoringService
         $returnValue = array();
 
         // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004E35 begin
-		
+
 		//prev: the connectors that links to the current activity
 		//next: the connector (should be unique for an activiy that is not a connector itself) that follows the current activity
 		$returnValue = array(
 			'prev'=>array(),
 			'next'=>array()
 		);
-		
+
 		if(empty($option)){
 		//the default option: select all connectors
 			$option = array('prev','next');
 		}else{
 			$option = array_map('strtolower', $option);
 		}
-		
+
 		$connectorsClass = new core_kernel_classes_Class(CLASS_CONNECTORS);
-		
+
 		if(in_array('prev',$option)){
 			$previousConnectors = $connectorsClass->searchInstances(array(PROPERTY_CONNECTORS_NEXTACTIVITIES => $activity->uriResource), array('like' => false, 'recursive' => 0));
 			foreach ($previousConnectors as $connector){
 				if(!is_null($connector)){
 					if($connector instanceof core_kernel_classes_Resource ){
-						$returnValue['prev'][$connector->uriResource] = $connector; 
+						$returnValue['prev'][$connector->uriResource] = $connector;
 					}
 				}
 			}
 		}
-		
+
 		if(in_array('next',$option)){
-		
+
 			$previousConnectors = $connectorsClass->searchInstances(array(PROPERTY_CONNECTORS_PREVIOUSACTIVITIES => $activity->uriResource), array('like' => false, 'recursive' => false));
 			foreach ($previousConnectors as $connector){
 				if(!is_null($connector)){
 					if($connector instanceof core_kernel_classes_Resource){
-						$returnValue['next'][$connector->uriResource] = $connector; 
+						$returnValue['next'][$connector->uriResource] = $connector;
 						if($isConnector){
 							continue; //continue selecting potential other following activities or connector
 						}else{
@@ -1161,7 +1162,7 @@ class wfEngine_models_classes_ProcessAuthoringService
 				}
 			}
 		}
-		
+
         // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004E35 end
 
         return (array) $returnValue;
@@ -1181,30 +1182,30 @@ class wfEngine_models_classes_ProcessAuthoringService
         $returnValue = null;
 
         // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004E47 begin
-		
+
 		$classFormalParam = new core_kernel_classes_Class(CLASS_FORMALPARAMETER);
-		
-		
+
+
 		foreach($classFormalParam->getInstances(true) as $formalParam){
 			$nameResource = $formalParam->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_FORMALPARAMETER_NAME));
 			$nameValue = null;
 			if(!is_null($nameResource)){
-			
+
 				if($nameResource instanceof core_kernel_classes_Literal){
 					$nameValue = $nameResource->literal;
 				}else if($nameResource instanceof core_kernel_classes_Resource){
 					$nameValue = $nameResource->uriResource;//encode??
 				}
-				
+
 				if($nameValue == $name){
-				
+
 					if(empty($defaultValue)){
-					
+
 						return $returnValue = $formalParam;
-						
+
 					}else{
 						//check defaultvalue:
-						
+
 						$defaultConstantValueContainer = $formalParam->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_FORMALPARAMETER_DEFAULTCONSTANTVALUE));
 						if(!is_null($defaultConstantValueContainer)){
 							if($defaultConstantValueContainer instanceof core_kernel_classes_Literal){
@@ -1216,7 +1217,7 @@ class wfEngine_models_classes_ProcessAuthoringService
 								return $formalParam;
 							}
 						}
-						
+
 						$defaultProcessVariable = $formalParam->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_FORMALPARAMETER_DEFAULTPROCESSVARIABLE));
 						if(!is_null($defaultProcessVariable)){
 							if($defaultProcessVariable instanceof core_kernel_classes_Resource){
@@ -1231,13 +1232,13 @@ class wfEngine_models_classes_ProcessAuthoringService
 								}
 							}
 						}
-						
+
 					}
-					
+
 				}
 			}
 		}
-		
+
         // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004E47 end
 
         return $returnValue;
@@ -1256,14 +1257,14 @@ class wfEngine_models_classes_ProcessAuthoringService
         $returnValue = array();
 
         // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004E6A begin
-		
+
 		$services = $activity->getPropertyValuesCollection(new core_kernel_classes_Property(PROPERTY_ACTIVITIES_INTERACTIVESERVICES));
 		foreach($services->getIterator() as $service){
 			if($service instanceof core_kernel_classes_Resource){
 				$returnValue[$service->uriResource] = $service;
 			}
 		}
-		
+
         // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004E6A end
 
         return (array) $returnValue;
@@ -1282,10 +1283,10 @@ class wfEngine_models_classes_ProcessAuthoringService
         $returnValue = (bool) false;
 
         // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004E6D begin
-	
+
         //all classes are authorized
 	$returnValue = true;
-		
+
         // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004E6D end
 
         return (bool) $returnValue;
@@ -1308,26 +1309,26 @@ class wfEngine_models_classes_ProcessAuthoringService
         $returnValue = (bool) false;
 
         // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004E79 begin
-		
+
 		//must exist:
 		if($formalParam->hasType(new core_kernel_classes_Class(CLASS_FORMALPARAMETER))){
-			
+
 			if(in_array($parameterInOrOut, array(PROPERTY_CALLOFSERVICES_ACTUALPARAMETERIN, PROPERTY_CALLOFSERVICES_ACTUALPARAMETEROUT))
 				&& in_array($actualParameterType, array(PROPERTY_ACTUALPARAMETER_CONSTANTVALUE, PROPERTY_ACTUALPARAMETER_PROCESSVARIABLE))){
-				
+
 				//create new resource for the property value of the current call of service PROPERTY_CALLOFSERVICES_ACTUALPARAMETERIN or PROPERTY_CALLOFSERVICES_ACTUALPARAMETEROUT
 				$actualParameterClass = new core_kernel_classes_Class(CLASS_ACTUALPARAMETER);
 				$newActualParameter = $actualParameterClass->createInstance($formalParam->getLabel(), "actual parameter created by Process Authoring Service");
 				$newActualParameter->setPropertyValue(new core_kernel_classes_Property(PROPERTY_ACTUALPARAMETER_FORMALPARAMETER), $formalParam->uriResource);
 				$newActualParameter->setPropertyValue(new core_kernel_classes_Property($actualParameterType), $value);
-			
+
 				$returnValue = $callOfService->setPropertyValue(new core_kernel_classes_Property($parameterInOrOut), $newActualParameter->uriResource);
 			}
-			
+
 		}else{
 			throw new Exception('the formal parameter does not exist');
 		}
-		
+
         // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004E79 end
 
         return (bool) $returnValue;
@@ -1367,17 +1368,17 @@ class wfEngine_models_classes_ProcessAuthoringService
         $returnValue = (bool) false;
 
         // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004E9D begin
-		
+
 		//@TODO: to be moved to actiivty service:
-		
+
 		$activities = $this->getActivitiesByProcess($process);
 		$propActivityInitial = new core_kernel_classes_Property(PROPERTY_ACTIVITIES_ISINITIAL);
 		foreach($activities as $activityTemp){
 			$activityTemp->editPropertyValues($propActivityInitial, GENERIS_FALSE);
 		}
-		
+
 		$returnValue = $activity->editPropertyValues($propActivityInitial, GENERIS_TRUE);
-		
+
         // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004E9D end
 
         return (bool) $returnValue;
@@ -1397,44 +1398,44 @@ class wfEngine_models_classes_ProcessAuthoringService
         $returnValue = (bool) false;
 
         // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004EA1 begin
-		
+
 		$this->setConnectorType($connectorInstance, new core_kernel_classes_Resource(INSTANCE_TYPEOFCONNECTORS_PARALLEL));
-		
+
 		$propNextActivities = new core_kernel_classes_Property(PROPERTY_CONNECTORS_NEXTACTIVITIES);
 		$propPreviousActivities = new core_kernel_classes_Resource(PROPERTY_CONNECTORS_PREVIOUSACTIVITIES);
 		$cardinalityService = wfEngine_models_classes_ActivityCardinalityService::singleton();
-		
+
 		//remove old property values:
 		$nextActivitiesCollection = $connectorInstance->getPropertyValuesCollection($propNextActivities);
 		$oldSplitVariablesByActivity = array();
 		foreach ($nextActivitiesCollection->getIterator() as $activityMultiplicityResource){
 			if($cardinalityService->isCardinality($activityMultiplicityResource)){
-				
+
 				//record the old split variables values in case it is needed (TODO: optimize this process)
 				$activity = $cardinalityService->getActivity($activityMultiplicityResource);
 				$splitVars = $cardinalityService->getSplitVariables($activityMultiplicityResource);
 				if(!empty($splitVars)){
 					$oldSplitVariablesByActivity[$activity->uriResource] = $splitVars;
 				}
-				
+
 				//delete it
 				$activityMultiplicityResource->delete();
 			}
 		}
 		$returnValue = $connectorInstance->removePropertyValues($propNextActivities);
-		
-		
-		
+
+
+
 		//finally, set the next activities values to the parallel connector:
-		
+
 		$joinConnector = null;
 		$processFlow = new wfEngine_models_classes_ProcessFlow();
 		$i = 0;
-		
+
 		foreach($newActivitiesArray as $activityUri => $count){
-			
+
 			$activity = new core_kernel_classes_Resource($activityUri);
-			
+
 			//set multiplicity to the parallel connector:
 			$cardinality = $cardinalityService->createCardinality($activity, $count);
 			if(isset($oldSplitVariablesByActivity[$activityUri])){
@@ -1442,9 +1443,9 @@ class wfEngine_models_classes_ProcessAuthoringService
 					throw new Exception('cannot set split variables to new cardinality resources');
 				}
 			}
-			
+
 			$returnValue = $connectorInstance->setPropertyValue($propNextActivities, $cardinality);
-			
+
 			//set multiplicity to the merge connector:
 			$previousActvityUri = '';
 			if($i == 0){
@@ -1452,7 +1453,7 @@ class wfEngine_models_classes_ProcessAuthoringService
 				//do it only once:
 				$processFlow->resetCheckedResources();
 				$joinConnector = $processFlow->findJoinFromActivityForward($activity);
-				
+
 				if(!is_null($joinConnector)){
 					//if it exists, we erase all previous activities:
 					//the previous acitivites must be related to the *exact* same activity-multiplicity objects as the parallel but not necessarily the same (e.g. parallel thread with more than 1 acitivty)
@@ -1465,7 +1466,7 @@ class wfEngine_models_classes_ProcessAuthoringService
 					}
 					$returnValue = $joinConnector->removePropertyValues($propPreviousActivities);
 				}
-				
+
 				$previousActvityUri = array_pop($processFlow->getCheckedActivities());
 			}
 			if(!is_null($joinConnector)){
@@ -1475,17 +1476,17 @@ class wfEngine_models_classes_ProcessAuthoringService
 					$joinConnector = $processFlow->findJoinFromActivityForward($activity);
 					$previousActvityUri = array_pop($processFlow->getCheckedActivities());
 				}
-				
+
 				if(!empty($previousActvityUri)){
 					$multiplicity = $cardinalityService->createCardinality(new core_kernel_classes_Resource($previousActvityUri), $count);
 					$returnValue = $joinConnector->setPropertyValue($propPreviousActivities, $multiplicity);
 				}
-				
+
 			}
-			
+
 			$i++;
 		}
-		
+
         // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004EA1 end
 
         return (bool) $returnValue;
@@ -1511,7 +1512,7 @@ class wfEngine_models_classes_ProcessAuthoringService
 			$label = $this->createUniqueLabel($processDefinitionClass);
 		}
 		$returnValue = $processDefinitionClass->createInstance($label, 'created for the unit test of process execution');
-			
+
         // section 10-13-1-39--6cc6036b:12e4807fb4f:-8000:0000000000002BD3 end
 
         return $returnValue;
@@ -1539,23 +1540,23 @@ class wfEngine_models_classes_ProcessAuthoringService
 			}
 			$returnValue = $supportServiceClass->createInstance($label, 'service definition created for the unit test of process execution');
 			$returnValue->setPropertyValue(new core_kernel_classes_Property(PROPERTY_SUPPORTSERVICES_URL), $serviceUrl);//add management of wsdl service
-			
+
 			$propFormalParam = new core_kernel_classes_Property(PROPERTY_SERVICESDEFINITION_FORMALPARAMIN);
 			$classFormalParam = new core_kernel_classes_Class(CLASS_FORMALPARAMETER);
 			$classProcessVariables = new core_kernel_classes_Class(CLASS_PROCESSVARIABLES);
 			$variableService = wfEngine_models_classes_VariableService::singleton();
-			
+
 			foreach($inputParameters as $paramName => $value){
-			
+
 				$formalParam = null;
 				$formalParam = $this->getFormalParameter($paramName, $value);
-				
+
 				if(is_null($formalParam)){
-				
+
 					//create one:
 					$defaultValue = '';
 					$defaultValueType = 'constant';
-					
+
 					if(is_string($value)){
 						$value = trim($value);
 						if(!empty($value)){
@@ -1584,11 +1585,11 @@ class wfEngine_models_classes_ProcessAuthoringService
 							$defaultValueType = 'processvariable';
 						}
 					}
-					
+
 					$formalParam = $this->createFormalParameter($paramName, $defaultValueType, $defaultValue, $paramName);
 				}
-				
-				
+
+
 				if(!is_null($formalParam)) $returnValue->setPropertyValue($propFormalParam, $formalParam->uriResource);
 			}
 		}
@@ -1611,7 +1612,7 @@ class wfEngine_models_classes_ProcessAuthoringService
 
         // section 10-13-1-39--6cc6036b:12e4807fb4f:-8000:0000000000002BF9 begin
 		$urlProperties = array(PROPERTY_SUPPORTSERVICES_URL);//could add the wsdl url here when wsdl service implemented
-		
+
 		foreach($urlProperties as $urlProperty){
 			$serviceDefinitionsClass =  new core_kernel_classes_Class(CLASS_SUPPORTSERVICES);
 			$serviceDefinitions = $serviceDefinitionsClass->searchInstances(array($urlProperty => $serviceUrl), array('like' => false, 'recursive' => 1000));
@@ -1619,7 +1620,7 @@ class wfEngine_models_classes_ProcessAuthoringService
 				$returnValue = $service->delete(true);
 			}
 		}
-		
+
         // section 10-13-1-39--6cc6036b:12e4807fb4f:-8000:0000000000002BF9 end
 
         return (bool) $returnValue;
