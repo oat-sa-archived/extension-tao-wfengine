@@ -516,8 +516,8 @@ class wfEngine_models_classes_ProcessAuthoringService
 		if (empty($transitionRule) || $transitionRule == null) {
 			//create an instance of transition rule:
 			$transitionRuleClass = new core_kernel_classes_Class(CLASS_TRANSITIONRULES);
-			$label = 'TransitionRule : ' . ($isXML) ? $question->saveXML() : $question;
-			$transitionRule = $transitionRuleClass->createInstance($label);
+			$label = $isXML ? $question->saveXML() : $question;
+			$transitionRule = $transitionRuleClass->createInstance('TransitionRule : ' . $label);
 			//Associate the newly created transition rule to the connector:
 			$connector->editPropertyValues(new core_kernel_classes_Property(PROPERTY_CONNECTORS_TRANSITIONRULE), $transitionRule->uriResource);
 		}
@@ -533,7 +533,7 @@ class wfEngine_models_classes_ProcessAuthoringService
 				}
 				$transitionRule->editPropertyValues(new core_kernel_classes_Property(PROPERTY_RULE_IF), $condition->getUri());
 			} else common_Logger::e('condition is not an instance of ressource : '.$condition);
-		} else common_Logger::e('condition is not a ressource : '.$condition->getUri());
+		} else common_Logger::e('condition is not a ressource' );
 
 		$returnValue = $transitionRule;
 
