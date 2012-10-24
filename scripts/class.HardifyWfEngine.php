@@ -321,7 +321,7 @@ extends tao_scripts_Runner
     			$propertyAlias = core_kernel_persistence_hardapi_Utils::getShortName($property);
     			foreach($referencer->propertyLocation($property) as $table){
     				if(!preg_match("/Props$/", $table) && preg_match("/^_[0-9]{2,}/", $table)){
-    					$dbWrapper->execSql("ALTER TABLE `{$table}` ADD INDEX `idx_{$propertyAlias}` (`{$propertyAlias}`( 255 ))");
+    					$dbWrapper->exec("ALTER TABLE `{$table}` ADD INDEX `idx_{$propertyAlias}` (`{$propertyAlias}`( 255 ))");
     				}
     			}
     		}
@@ -329,7 +329,7 @@ extends tao_scripts_Runner
     		self::out("\nRebuild table indexes, it can take a while...");
 
     		//Need to OPTIMIZE / FLUSH the tables in order to rebuild the indexes
-    		$tables = $dbWrapper->dbConnector->MetaTables('TABLES');
+    		$tables = $dbWrapper->getTables();
 
     		$size = count($tables);
     		$i = 0;
@@ -341,8 +341,8 @@ extends tao_scripts_Runner
     			}
     			self::out(" $percent %", array('color' => 'light_green', 'inline' => true, 'prefix' => "\r"));
     			 
-    			$dbWrapper->execSql("OPTIMIZE TABLE `{$tables[$i]}`");
-    			$dbWrapper->execSql("FLUSH TABLE `{$tables[$i]}`");
+    			$dbWrapper->exec("OPTIMIZE TABLE `{$tables[$i]}`");
+    			$dbWrapper->exec("FLUSH TABLE `{$tables[$i]}`");
     			 
     			$i++;
     		}

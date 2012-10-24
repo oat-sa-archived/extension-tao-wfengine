@@ -286,7 +286,7 @@ class wfEngine_models_classes_ProcessExecutionService
 					$queryRemove = substr($queryRemove, 0, strlen($queryRemove) - 1).")";
 					
 				}
-				$dbWrapper->execSql($queryRemove);
+				$dbWrapper->exec($queryRemove);
 				
 			}
 			
