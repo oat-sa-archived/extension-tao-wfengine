@@ -5,7 +5,7 @@ error_reporting(E_ALL);
 /**
  * Service that retrieve information about Activty definition during runtime
  *
- * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+ * @author Joel Bout, <joel.bout@tudor.lu>
  * @package wfEngine
  * @subpackage models_classes
  */
@@ -15,19 +15,18 @@ if (0 > version_compare(PHP_VERSION, '5')) {
 }
 
 /**
- * The Service class is an abstraction of each service instance. 
- * Used to centralize the behavior related to every servcie instances.
- *
- * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
- */
-require_once('tao/models/classes/class.GenerisService.php');
-
-/**
  * include tao_models_classes_ServiceCacheInterface
  *
- * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+ * @author Joel Bout, <joel.bout@tudor.lu>
  */
 require_once('tao/models/classes/interface.ServiceCacheInterface.php');
+
+/**
+ * include wfEngine_models_classes_StepService
+ *
+ * @author Joel Bout, <joel.bout@tudor.lu>
+ */
+require_once('wfEngine/models/classes/class.StepService.php');
 
 /* user defined includes */
 // section 127-0-1-1--7eb5a1dd:13214d5811e:-8000:0000000000002E82-includes begin
@@ -41,12 +40,12 @@ require_once('tao/models/classes/interface.ServiceCacheInterface.php');
  * Service that retrieve information about Activty definition during runtime
  *
  * @access public
- * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+ * @author Joel Bout, <joel.bout@tudor.lu>
  * @package wfEngine
  * @subpackage models_classes
  */
 class wfEngine_models_classes_ActivityService
-    extends tao_models_classes_GenerisService
+    extends wfEngine_models_classes_StepService
         implements tao_models_classes_ServiceCacheInterface
 {
     // --- ASSOCIATIONS ---
@@ -60,7 +59,7 @@ class wfEngine_models_classes_ActivityService
      * Short description of method setCache
      *
      * @access public
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  string methodName
      * @param  array args
      * @param  array value
@@ -105,7 +104,7 @@ class wfEngine_models_classes_ActivityService
      * Short description of method getCache
      *
      * @access public
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  string methodName
      * @param  array args
      * @return mixed
@@ -148,7 +147,7 @@ class wfEngine_models_classes_ActivityService
      * Short description of method clearCache
      *
      * @access public
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  string methodName
      * @param  array args
      * @return boolean
@@ -167,7 +166,7 @@ class wfEngine_models_classes_ActivityService
      * indicate if the activity need back and forth controls
      *
      * @access public
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  Resource activity
      * @return array
      */
@@ -195,7 +194,7 @@ class wfEngine_models_classes_ActivityService
      * retrieve the Interactive service associate to the Activity
      *
      * @access public
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  Resource activity
      * @return array
      */
@@ -221,7 +220,7 @@ class wfEngine_models_classes_ActivityService
      * Check if the activity is initial
      *
      * @access public
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  Resource activity
      * @return boolean
      */
@@ -252,7 +251,7 @@ class wfEngine_models_classes_ActivityService
      * check if activity is final
      *
      * @access public
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  Resource activity
      * @return boolean
      */
@@ -274,7 +273,7 @@ class wfEngine_models_classes_ActivityService
      * get activity's next connector
      *
      * @access public
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  Resource activity
      * @return array
      */
@@ -288,15 +287,10 @@ class wfEngine_models_classes_ActivityService
 		if(!is_null($cachedValue) && is_array($cachedValue)){
 			$returnValue = $cachedValue;
 		}else{
-			$connectorClass = new core_kernel_classes_Class(CLASS_CONNECTORS);
-			$cardinalityClass = new core_kernel_classes_Class(CLASS_ACTIVITYCARDINALITY);
-			$activityCardinalities = $cardinalityClass->searchInstances(array(PROPERTY_ACTIVITYCARDINALITY_ACTIVITY => $activity->uriResource), array('like' => false)); //note: count()>1 only 
-			$previousActivities = array_merge(array($activity->uriResource), array_keys($activityCardinalities));
-			$nextConnectors = $connectorClass->searchInstances(array(PROPERTY_CONNECTORS_PREVIOUSACTIVITIES => $previousActivities), array('like' => false, 'recursive' => 0));
-			foreach ($nextConnectors as $nextConnector) {
-				$returnValue[$nextConnector->uriResource] = $nextConnector;
+			foreach ($this->getNextSteps($activity) as $next) {
+				$returnValue[$next->getUri()] = $next;
 			}
-			
+			// fixing the following error breaks the wfEngine
 			$this->getCache(__METHOD__, array($activity), $returnValue);
 		}
 		
@@ -309,7 +303,7 @@ class wfEngine_models_classes_ActivityService
      * Short description of method isActivity
      *
      * @access public
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  Resource activity
      * @return boolean
      */
@@ -330,7 +324,7 @@ class wfEngine_models_classes_ActivityService
      * Short description of method isHidden
      *
      * @access public
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  Resource activity
      * @return boolean
      */
@@ -362,7 +356,7 @@ class wfEngine_models_classes_ActivityService
      * Short description of method getUniqueNextConnector
      *
      * @access public
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  Resource activity
      * @return core_kernel_classes_Resource
      */
@@ -394,7 +388,9 @@ class wfEngine_models_classes_ActivityService
 			if(count($connectorsTmp) == 1){
 				//ok, the unique next connector has been found
 				$returnValue = $connectorsTmp[0];
-				}
+			} else {
+				common_Logger::w('Found multiple nonjoin next connectors for activity '.$activity->getUri());
+			}
 		}else if($countConnectors == 1){
 			$returnValue = reset($connectors);
 		}else{
@@ -410,7 +406,7 @@ class wfEngine_models_classes_ActivityService
      * Short description of method deleteActivity
      *
      * @access public
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  Resource activity
      * @return boolean
      */
@@ -437,7 +433,7 @@ class wfEngine_models_classes_ActivityService
 		
 		//delete referenced actiivty cardinality resources:
 		$activityCardinalityClass = new core_kernel_classes_Class(CLASS_ACTIVITYCARDINALITY);
-		$cardinalities = $activityCardinalityClass->searchInstances(array(PROPERTY_ACTIVITYCARDINALITY_ACTIVITY => $activity->uriResource), array('like'=>false));
+		$cardinalities = $activityCardinalityClass->searchInstances(array(PROPERTY_STEP_NEXT => $activity->uriResource), array('like'=>false));
 		foreach($cardinalities as $cardinality) {
 			$cardinality->delete(true);
 		}
@@ -454,7 +450,7 @@ class wfEngine_models_classes_ActivityService
      * Short description of method setAcl
      *
      * @access public
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  Resource activity
      * @param  Resource mode
      * @param  Resource target
@@ -511,7 +507,7 @@ class wfEngine_models_classes_ActivityService
      * Short description of method getAclModes
      *
      * @access public
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @return array
      */
     public function getAclModes()
@@ -536,7 +532,7 @@ class wfEngine_models_classes_ActivityService
      * Short description of method __construct
      *
      * @access public
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @return mixed
      */
     public function __construct()
@@ -553,7 +549,7 @@ class wfEngine_models_classes_ActivityService
      * Short description of method setHidden
      *
      * @access public
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  Resource activity
      * @param  boolean hidden
      * @return boolean
@@ -578,7 +574,7 @@ class wfEngine_models_classes_ActivityService
      * Short description of method setControls
      *
      * @access public
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  Resource activity
      * @param  array controls
      * @return boolean
@@ -608,7 +604,7 @@ class wfEngine_models_classes_ActivityService
      * Short description of method getAllControls
      *
      * @access public
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @return array
      */
     public function getAllControls()

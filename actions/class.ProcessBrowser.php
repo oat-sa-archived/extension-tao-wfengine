@@ -149,7 +149,7 @@ class wfEngine_actions_ProcessBrowser extends wfEngine_actions_WfModule{
 		$currentlyAvailableActivityExecutions = $this->processExecutionService->getAvailableCurrentActivityExecutions($this->processExecution, $currentUser, true);
 		
 		$activityExecution = null;
-			
+		
 		if(count($currentlyAvailableActivityExecutions) == 0){
 			//no available current activity exec found: no permission or issue in process execution:
 			$this->pause();
@@ -179,6 +179,7 @@ class wfEngine_actions_ProcessBrowser extends wfEngine_actions_WfModule{
 				}else{
 					//count > 1:
 					//parallel branch, ask the user to select activity to execute:
+					common_Logger::i('Ask the user to select activity');
 					$this->pause();
 					return;
 				}

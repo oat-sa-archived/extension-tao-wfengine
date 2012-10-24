@@ -119,68 +119,6 @@ class wfEngine_models_classes_ProcessTreeService
 						
 			//get connectors
 			$connectors = $processAuthoringService->getConnectorsByActivity($activity);
-			// throw new Exception("data=".var_dump($connectors));	
-			/*
-			if(!empty($connectors['prev'])){
-			
-				$this->currentConnector = null;
-				
-				//activity connected to a previous one:
-				foreach($connectors['prev'] as $connector){
-				
-					$this->currentConnector = $connector;
-					
-					$connectorData = array();
-						
-					//type of connector:
-					$connectorType = $connector->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_TYPE));
-					
-					
-					//if it is a split type
-					if( strtolower($connectorType->getLabel()) == "split"){
-						//get the rule
-						$connectorRule = $connector->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_TRANSITIONRULE));
-						$connectorData[] = $this->conditionNode($connectorRule);
-												
-						//get the "PREC"
-						$prev = $connector->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_PREVIOUSACTIVITIES));
-						$connectorData[] = $this->activityNode($prev, 'prec', true);
-												
-					}elseif(strtolower($connectorType->getLabel()) == "sequence"){
-						$prev = $connector->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_PREVIOUSACTIVITIES));
-						if(!wfEngine_helpers_ProcessUtil::isActivity($prev)){
-							throw new Exception("the previous activity of a sequence connector {$connector->uriResource} must be an activity {$prev->uriResource}");
-						}
-						$connectorData[] = $this->activityNode($prev, 'next', true);
-					}
-					
-					//add to activity data
-					$activityData['children'][] = array(
-						'data' => $connectorType->getLabel().":".$connector->getLabel(),
-						'attributes' => array(
-							'rel' => tao_helpers_Uri::encode($connector->uriResource),
-							'class' => 'node-connector-prev'
-						),
-						'children' => $connectorData
-					);
-					
-					// foreach($connectorData as $data){
-						// $activityData["children"][] = $data;
-					// }
-					
-				}
-			}else{
-				//check if it is the initial activity, otherwise, return an undefined type;
-			
-				//add the default "empty" connector node: SHOULD be displayed: initial service here!!! and there should be only ONE!
-				$activityData['children'][] = array(
-					'data' => __('undefined'),
-					'attributes' => array(
-						'rel' => 'undefined',
-						'class' => 'node-connector-prev'
-					)
-				);
-			}*/
 			
 			//following nodes:
 			if(!empty($connectors['next'])){
@@ -328,7 +266,7 @@ class wfEngine_models_classes_ProcessTreeService
 			
 		}elseif($connectorType->uriResource == INSTANCE_TYPEOFCONNECTORS_SEQUENCE){
 			
-			$next = $connector->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_NEXTACTIVITIES), false);
+			$next = $connector->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_STEP_NEXT), false);
 			if(!is_null($next)){
 				$connectorData[] = $this->activityNode($next, 'next', true);//the default portData array will do
 			}
@@ -337,13 +275,13 @@ class wfEngine_models_classes_ProcessTreeService
 			
 			$cardinalityService = wfEngine_models_classes_ActivityCardinalityService::singleton();
 			$variableService = wfEngine_models_classes_VariableService::singleton();
-			$nextActivitiesCollection = $connector->getPropertyValuesCollection(new core_kernel_classes_Property(PROPERTY_CONNECTORS_NEXTACTIVITIES));
+			$nextActivitiesCollection = $connector->getPropertyValuesCollection(new core_kernel_classes_Property(PROPERTY_STEP_NEXT));
 			$portId = 0;
 			foreach($nextActivitiesCollection->getIterator() as $nextActivity){
 				
 				if($cardinalityService->isCardinality($nextActivity)){
 					
-					$activity = $cardinalityService->getActivity($nextActivity);
+					$activity = $cardinalityService->getDestination($nextActivity);
 					$cardinality = $cardinalityService->getCardinality($nextActivity);
 					$number = ($cardinality instanceof core_kernel_classes_Resource)?'^'.$variableService->getCode($cardinality):$cardinality;
 					$connectorData[] = $this->activityNode(
@@ -362,7 +300,7 @@ class wfEngine_models_classes_ProcessTreeService
 			
 		}elseif($connectorType->uriResource == INSTANCE_TYPEOFCONNECTORS_JOIN){
 			
-			$next = $connector->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_NEXTACTIVITIES), false);
+			$next = $connector->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_STEP_NEXT), false);
 			if(!is_null($next)){
 				$connectorData[] = $this->activityNode($next, 'next', true);//the default portData array will do
 			}

@@ -160,12 +160,16 @@ class ConnectorServiceTestCase extends UnitTestCase {
         );
 
         $this->authoringService->setParallelActivities($connector2, $newActivitiesArray);
+        $activity6 = $this->authoringService->createActivity($this->processDefinition);
+        $connector3 = $this->authoringService->createJoinconnector(array($activity4, $activity5), $activity6);
+        /*
         $activity6 = $this->authoringService->createJoinActivity($connector3, null, '', $activity4);
 		$activity7 = $this->authoringService->createJoinActivity($connector4, $activity6, '', $activity5);
+		*/
 		
 		//check if the connector merging has been effective:
 		$this->assertFalse($connector4->exists());
-		$this->assertEqual($activity6->uriResource, $activity7->uriResource);
+		//$this->assertEqual($activity6->uriResource, $activity7->uriResource);
 		
         $this->assertEqual($this->service->getType($connector2)->uriResource, INSTANCE_TYPEOFCONNECTORS_PARALLEL);
         $this->assertEqual($this->service->getType($connector3)->uriResource, INSTANCE_TYPEOFCONNECTORS_JOIN);
@@ -201,11 +205,11 @@ class ConnectorServiceTestCase extends UnitTestCase {
          */
         $connector1 = $this->authoringService->createConnector($this->activity);
 
-        $then = $this->authoringService->createConditionalActivity($connector1, 'then');//create "Activity_2"
-        $thenConnector = $this->authoringService->createConnector($then, 'then Connector');//create "Activity_2"
-
-        $else = $this->authoringService->createConditionalActivity($connector1, 'else', null, '', true);//create another connector
-        $elseConnector = $this->authoringService->createConnector($else, 'else Connector');//create "Activity_2"
+        $then = $this->authoringService->createConditionalActivity($connector1, 'then');//create "then Activity"
+        $thenConnector = $this->authoringService->createConnector($then, 'then Connector');//create connector for "then Activity"
+        
+        $else = $this->authoringService->createConditionalActivity($connector1, 'else', null, '', true);//create "else Activity"
+        $elseConnector = $this->authoringService->createConnector($else, 'else Connector');//create connector for "else Activity"
 
         $activity3 = $this->authoringService->createSequenceActivity($thenConnector, null, 'Act3');
         $this->authoringService->createSequenceActivity($elseConnector, $activity3);
@@ -215,8 +219,10 @@ class ConnectorServiceTestCase extends UnitTestCase {
 
         $connector1NextAct = $this->service->getNextActivities($connector1);
         $connector1RealNextAct = array($then->uriResource,$else->uriResource);
+        
+        
         $this->assertIsA($connector1NextAct,'array');
-        $this->assertTrue(sizeof($connector1NextAct) == 2);
+        $this->assertEqual(sizeof($connector1NextAct), 2);
         foreach ($connector1NextAct as $nextAct){
            $this->assertTrue(in_array($nextAct->uriResource, $connector1RealNextAct));
         }
@@ -255,12 +261,16 @@ class ConnectorServiceTestCase extends UnitTestCase {
         );
 
         $this->authoringService->setParallelActivities($connector2, $newActivitiesArray);
+        $activity6 = $this->authoringService->createActivity($this->processDefinition);
+        $connector3 = $this->authoringService->createJoinconnector(array($activity4, $activity5), $activity6);
+        /*
         $activity6 = $this->authoringService->createJoinActivity($connector3, null, '', $activity4);
 		$activity7 = $this->authoringService->createJoinActivity($connector4, $activity6, '', $activity5);
+		*/
         
 		//check if the connector merging has been effective:
 		$this->assertFalse($connector4->exists());
-		$this->assertEqual($activity6->uriResource, $activity7->uriResource);
+		//$this->assertEqual($activity6->uriResource, $activity7->uriResource);
 		
 		$cardinalityService = wfEngine_models_classes_ActivityCardinalityService::singleton();
         $activity3NextActi = $this->service->getNextActivities($connector2);
@@ -269,7 +279,7 @@ class ConnectorServiceTestCase extends UnitTestCase {
         $newActivitiesarrayCount = array();
         foreach ($activity3NextActi as $cardinality){
 			$this->assertTrue($cardinalityService->isCardinality($cardinality));
-			$activity = $cardinalityService->getActivity($cardinality);
+			$activity = $cardinalityService->getDestination($cardinality);
 			$keyExists = array_key_exists($activity->uriResource, $newActivitiesArray);
             $this->assertTrue($keyExists);
             if($keyExists){
@@ -367,8 +377,12 @@ class ConnectorServiceTestCase extends UnitTestCase {
         );
 
         $this->authoringService->setParallelActivities($connector2, $newActivitiesArray);
+        $activity6 = $this->authoringService->createActivity($this->processDefinition);
+        $connector3 = $this->authoringService->createJoinConnector(array($activity4, $activity5), $activity6);
+        /*
         $activity6 = $this->authoringService->createJoinActivity($connector3, null, '', $activity4);
 		$activity7 = $this->authoringService->createJoinActivity($connector4, $activity6, '', $activity5);
+		*/
         $this->assertEqual(count($this->service->getNextActivities($connector2)), 2);
 		
         $activity3PrevActi = $this->service->getPreviousActivities($connector2);
@@ -379,18 +393,20 @@ class ConnectorServiceTestCase extends UnitTestCase {
             $this->assertTrue($activity3PrevActi[0]->uriResource == $activity3->uriResource);
         }
         
-        $activity4PrevActi = $this->service->getPreviousActivities($connector3);
+        $activity4PrevActi = $this->service->getPreviousSteps($connector3);
         $this->assertIsA($activity4PrevActi,'array');
         $this->assertEqual(sizeof($activity4PrevActi), 2);
         $cardinalityService = wfEngine_models_classes_ActivityCardinalityService::singleton();
 		$prevActivitiesarrayCount = array();
         foreach ($activity4PrevActi as $cardinality){
 			$this->assertTrue($cardinalityService->isCardinality($cardinality));
-			$activity = $cardinalityService->getActivity($cardinality);
-			$keyExists = array_key_exists($activity->uriResource, $newActivitiesArray);
+			$activities = $cardinalityService->getPreviousSteps($cardinality);
+			$this->assertEqual(count($activities), 1);
+			$activity = current($activities);
+			$keyExists = array_key_exists($activity->getUri(), $newActivitiesArray);
             $this->assertTrue($keyExists);
             if($keyExists){
-				$prevActivitiesarrayCount[$activity->uriResource] = $cardinalityService->getCardinality($cardinality);
+				$prevActivitiesarrayCount[$activity->getUri()] = $cardinalityService->getCardinality($cardinality);
             }
         }
         $this->assertEqual($prevActivitiesarrayCount, $newActivitiesArray);

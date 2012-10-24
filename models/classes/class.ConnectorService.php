@@ -5,7 +5,7 @@ error_reporting(E_ALL);
 /**
  * Connector Services
  *
- * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+ * @author Joel Bout, <joel.bout@tudor.lu>
  * @package wfEngine
  * @subpackage models_classes
  */
@@ -15,19 +15,18 @@ if (0 > version_compare(PHP_VERSION, '5')) {
 }
 
 /**
- * The Service class is an abstraction of each service instance. 
- * Used to centralize the behavior related to every servcie instances.
- *
- * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
- */
-require_once('tao/models/classes/class.GenerisService.php');
-
-/**
  * include tao_models_classes_ServiceCacheInterface
  *
- * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+ * @author Joel Bout, <joel.bout@tudor.lu>
  */
 require_once('tao/models/classes/interface.ServiceCacheInterface.php');
+
+/**
+ * include wfEngine_models_classes_StepService
+ *
+ * @author Joel Bout, <joel.bout@tudor.lu>
+ */
+require_once('wfEngine/models/classes/class.StepService.php');
 
 /* user defined includes */
 // section 127-0-1-1-4ecae359:132158f9a4c:-8000:0000000000002EBB-includes begin
@@ -41,12 +40,12 @@ require_once('tao/models/classes/interface.ServiceCacheInterface.php');
  * Connector Services
  *
  * @access public
- * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+ * @author Joel Bout, <joel.bout@tudor.lu>
  * @package wfEngine
  * @subpackage models_classes
  */
 class wfEngine_models_classes_ConnectorService
-    extends tao_models_classes_GenerisService
+    extends wfEngine_models_classes_StepService
         implements tao_models_classes_ServiceCacheInterface
 {
     // --- ASSOCIATIONS ---
@@ -60,7 +59,7 @@ class wfEngine_models_classes_ConnectorService
      * Short description of method setCache
      *
      * @access public
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  string methodName
      * @param  array args
      * @param  array value
@@ -80,7 +79,7 @@ class wfEngine_models_classes_ConnectorService
      * Short description of method getCache
      *
      * @access public
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  string methodName
      * @param  array args
      * @return mixed
@@ -99,7 +98,7 @@ class wfEngine_models_classes_ConnectorService
      * Short description of method clearCache
      *
      * @access public
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  string methodName
      * @param  array args
      * @return boolean
@@ -118,7 +117,7 @@ class wfEngine_models_classes_ConnectorService
      * Check if the resource is a connector
      *
      * @access public
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  Resource connector
      * @return boolean
      */
@@ -139,23 +138,19 @@ class wfEngine_models_classes_ConnectorService
      * retrieve connector nexts activities
      *
      * @access public
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  Resource connector
+     * @param  boolean followCardinalities
      * @return array
      */
-    public function getNextActivities( core_kernel_classes_Resource $connector)
+    public function getNextActivities( core_kernel_classes_Resource $connector, $followCardinalities = false)
     {
         $returnValue = array();
 
         // section 127-0-1-1-66b8afb4:1322473370c:-8000:0000000000002EC5 begin
-        $nextActivitiesProp = new core_kernel_classes_Property(PROPERTY_CONNECTORS_NEXTACTIVITIES, __METHOD__);
-        $nextActivities = $connector->getPropertyValues($nextActivitiesProp);
-		$count = count($nextActivities);
-		for($i=0;$i<$count;$i++){
-			if(common_Utils::isUri($nextActivities[$i])){
-				$returnValue[] = new core_kernel_classes_Resource($nextActivities[$i]);
-			}
-		}
+        foreach ($this->getNextSteps($connector) as $next) {
+        	$returnValue[$next->getUri()] = $next;
+        }
         // section 127-0-1-1-66b8afb4:1322473370c:-8000:0000000000002EC5 end
 
         return (array) $returnValue;
@@ -165,24 +160,32 @@ class wfEngine_models_classes_ConnectorService
      * retrieve connector previous activities
      *
      * @access public
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  Resource connector
+     * @param  boolean followCardinalities
      * @return array
      */
-    public function getPreviousActivities( core_kernel_classes_Resource $connector)
+    public function getPreviousActivities( core_kernel_classes_Resource $connector, $followCardinalities = false)
     {
         $returnValue = array();
 
         // section 127-0-1-1-66b8afb4:1322473370c:-8000:0000000000002ECB begin
-        $prevActivitiesProp = new core_kernel_classes_Property(PROPERTY_CONNECTORS_PREVIOUSACTIVITIES,__METHOD__);
-        $prevActivities = $connector->getPropertyValues($prevActivitiesProp);
-		$count = count($prevActivities);
-		for($i=0;$i<$count;$i++){
-			if(common_Utils::isUri($prevActivities[$i])){
-				$returnValue[] = new core_kernel_classes_Resource($prevActivities[$i]);
-			}
-		}
-		
+        $steps = $this->getPreviousSteps($connector);
+        if (!$followCardinalities) {
+        	$returnValue = $steps;
+        } else { 
+        	$cardService = wfEngine_models_classes_ActivityCardinalityService::singleton();
+        	foreach ($steps as $cand) {
+        		if ($cardService->isCardinality($cand)) {
+        			// no recursion nescessary since cardinalities cannnot follow each other
+        			foreach ($this->getPreviousSteps($cand) as $orig) {
+        				$returnValue[] = $orig;
+        			}
+        		} else {
+        			$returnValue[] = $cand;
+        		}
+        	}
+        }
         // section 127-0-1-1-66b8afb4:1322473370c:-8000:0000000000002ECB end
 
         return (array) $returnValue;
@@ -192,7 +195,7 @@ class wfEngine_models_classes_ConnectorService
      * retrive type of Connector Conditionnal, Sequestionnal Parallele...
      *
      * @access public
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  Resource connector
      * @return core_kernel_classes_Resource
      */
@@ -217,7 +220,7 @@ class wfEngine_models_classes_ConnectorService
      * Short description of method getTransitionRule
      *
      * @access public
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  Resource connector
      * @return core_kernel_classes_Resource
      */
@@ -237,7 +240,7 @@ class wfEngine_models_classes_ConnectorService
      * Short description of method deleteConnector
      *
      * @access public
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  Resource connector
      * @return boolean
      */
@@ -282,7 +285,7 @@ class wfEngine_models_classes_ConnectorService
 			
 			if($cardinalityService->isCardinality($nextActivity)){
 				try{
-				$activity = $cardinalityService->getActivity($nextActivity);
+				$activity = $cardinalityService->getDestination($nextActivity);
 				}catch(Exception $e){
 					//the actiivty could be null if the reference have been removed...
 				}
@@ -312,7 +315,7 @@ class wfEngine_models_classes_ConnectorService
      * Short description of method __construct
      *
      * @access public
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @return mixed
      */
     public function __construct()
@@ -325,7 +328,7 @@ class wfEngine_models_classes_ConnectorService
      * Short description of method setSplitVariables
      *
      * @access public
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  Resource connector
      * @param  array variables
      * @return boolean
@@ -342,7 +345,7 @@ class wfEngine_models_classes_ConnectorService
 				if($cardinalityService->isCardinality($cardinality)){
 					
 					//find the right cardinality resource (according to the activity defined in the connector):
-					$activity = $cardinalityService->getActivity($cardinality);
+					$activity = $cardinalityService->getDestination($cardinality);
 					if(!is_null($activity) && isset($variables[$activity->uriResource])){
 						$returnValue = $cardinalityService->editSplitVariables($cardinality, $variables[$activity->uriResource]);
 					}
@@ -360,7 +363,7 @@ class wfEngine_models_classes_ConnectorService
      * Short description of method setConnectorType
      *
      * @access public
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  Resource connector
      * @param  Resource type
      * @return boolean
@@ -377,6 +380,23 @@ class wfEngine_models_classes_ConnectorService
         // section 127-0-1-1--1e09aee3:133358e11e1:-8000:000000000000322F end
 
         return (bool) $returnValue;
+    }
+
+    /**
+     * Short description of method getAllConnectorTypes
+     *
+     * @access public
+     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @return array
+     */
+    public function getAllConnectorTypes()
+    {
+        $returnValue = array();
+
+        // section 127-0-1-1--1e09aee3:133358e11e1:-8000:0000000000003242 begin
+        // section 127-0-1-1--1e09aee3:133358e11e1:-8000:0000000000003242 end
+
+        return (array) $returnValue;
     }
 
 } /* end of class wfEngine_models_classes_ConnectorService */

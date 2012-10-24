@@ -5,7 +5,7 @@ error_reporting(E_ALL);
 /**
  * Process Definition Related Exceptions
  *
- * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+ * @author Joel Bout, <joel.bout@tudor.lu>
  * @package wfEngine
  * @subpackage models_classes
  */
@@ -15,10 +15,11 @@ if (0 > version_compare(PHP_VERSION, '5')) {
 }
 
 /**
- * include Exception
+ * include common_exception_Error
  *
- * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+ * @author Joel Bout, <joel.bout@tudor.lu>
  */
+require_once('common/exception/class.Error.php');
 
 /* user defined includes */
 // section 127-0-1-1-7a69d871:1322a76df3c:-8000:0000000000002F60-includes begin
@@ -32,12 +33,12 @@ if (0 > version_compare(PHP_VERSION, '5')) {
  * Process Definition Related Exceptions
  *
  * @access public
- * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+ * @author Joel Bout, <joel.bout@tudor.lu>
  * @package wfEngine
  * @subpackage models_classes
  */
 class wfEngine_models_classes_ProcessDefinitonException
-    extends Exception
+    extends common_exception_Error
 {
     // --- ASSOCIATIONS ---
 

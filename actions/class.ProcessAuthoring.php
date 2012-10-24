@@ -868,7 +868,7 @@ class wfEngine_actions_ProcessAuthoring extends tao_actions_TaoModule {
 	
 	public function saveConnector(){
 		$saved = true;
-		$propNextActivities = new core_kernel_classes_Property(PROPERTY_CONNECTORS_NEXTACTIVITIES);
+		$propNextActivities = new core_kernel_classes_Property(PROPERTY_STEP_NEXT);
 		
 		//decode uri:
 		$data = array();
@@ -915,15 +915,17 @@ class wfEngine_actions_ProcessAuthoring extends tao_actions_TaoModule {
 						//if the current type is still 'join' && target activity has changed || type of connector has changed:
 						if($oldNextActivity->uriResource != $data["join_activityUri"] || $data[PROPERTY_CONNECTORS_TYPE]!= INSTANCE_TYPEOFCONNECTORS_JOIN){
 							
+							throw new common_Exception('Join connectors currently not supported by authoring');
+							
 							$cardinalityService = wfEngine_models_classes_ActivityCardinalityService::singleton();
 							
 							//check if another activities is joined with the same connector:
-							$previousActivityCollection = $connectorInstance->getPropertyValuesCollection(new core_kernel_classes_Property(PROPERTY_CONNECTORS_PREVIOUSACTIVITIES)); 
+							$previousActivities = wfEngine_models_classes_ConnectorService::singleton()->getPreviousActivities($connectorInstance);
 							$anotherPreviousActivity = null;
 							$thisCardinalityResource = null;
-							foreach($previousActivityCollection->getIterator() as $previousActivity){
+							foreach($previousActivities as $previousActivity){
 								if($cardinalityService->isCardinality($previousActivity)){
-									if($cardinalityService->getActivity($previousActivity) != $activity->uriResource){
+									if($cardinalityService->getSource($previousActivity) != $activity->uriResource){
 										$anotherPreviousActivity = $previousActivity;
 									}else{
 										$thisCardinalityResource = $previousActivity;
@@ -936,7 +938,7 @@ class wfEngine_actions_ProcessAuthoring extends tao_actions_TaoModule {
 								//there is another activity, so:
 								//remove reference of that activity from previous connector, and update its activity reference to the one of the other previous activity, update the 'old' join connector
 								
-								$connectorInstance->removePropertyValues(new core_kernel_classes_Property(PROPERTY_CONNECTORS_PREVIOUSACTIVITIES), $thisCardinalityResource);
+								$thisCardinalityResource->removePropertyValues(new core_kernel_classes_Property(PROPERTY_STEP_NEXT));
 								$connectorInstance->editPropertyValues(new core_kernel_classes_Property(PROPERTY_CONNECTORS_ACTIVITYREFERENCE), $anotherPreviousActivity);
 							
 								//since it used to share the connector with other previous activities, now that it needs a new connector of its own, create one here:
@@ -950,7 +952,7 @@ class wfEngine_actions_ProcessAuthoring extends tao_actions_TaoModule {
 								
 								//and edit prec activity number to 1:
 								$connectorInstance->setLabel($activity->getLabel().'_c');
-								$connectorInstance->editPropertyValues(new core_kernel_classes_Property(PROPERTY_CONNECTORS_PREVIOUSACTIVITIES), $thisCardinalityResource);
+								$thisCardinalityResource->editPropertyValues(new core_kernel_classes_Property(PROPERTY_STEP_NEXT), $connectorInstance);
 							}
 							
 						}
@@ -969,7 +971,7 @@ class wfEngine_actions_ProcessAuthoring extends tao_actions_TaoModule {
 		
 		if($data[PROPERTY_CONNECTORS_TYPE] == INSTANCE_TYPEOFCONNECTORS_SEQUENCE){
 			//get form input starting with "next_"
-			$connectorInstance->removePropertyValues(new core_kernel_classes_Property(PROPERTY_CONNECTORS_NEXTACTIVITIES));
+			$connectorInstance->removePropertyValues(new core_kernel_classes_Property(PROPERTY_STEP_NEXT));
 			
 			//manage the case when a conditionnal connector is changed to a sequential one:
 			if(isset($data["then_activityOrConnector"])){
@@ -1017,7 +1019,7 @@ class wfEngine_actions_ProcessAuthoring extends tao_actions_TaoModule {
 		}elseif($data[PROPERTY_CONNECTORS_TYPE] == INSTANCE_TYPEOFCONNECTORS_CONDITIONAL){
 			
 			//clean old value of property (use bind property with empty input?)
-			$connectorInstance->removePropertyValues(new core_kernel_classes_Property(PROPERTY_CONNECTORS_NEXTACTIVITIES));
+			$connectorInstance->removePropertyValues(new core_kernel_classes_Property(PROPERTY_STEP_NEXT));
 			
 			if(isset($data['if'])){
 				

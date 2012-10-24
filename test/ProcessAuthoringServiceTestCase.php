@@ -81,7 +81,8 @@ class ProcessAuthoringServiceTestCase extends UnitTestCase {
 		
 		$activity1 = $this->authoringService->createActivity($this->proc, 'myActivity');
 		$connector1 = $this->authoringService->createConnector($activity1);
-		$this->assertEqual($connector1->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_PREVIOUSACTIVITIES))->uriResource, $activity1->uriResource);
+		$next = $activity1->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_STEP_NEXT));
+		$this->assertEqual($next->getUri(), $connector1->getUri());
 		$this->assertEqual($connector1->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_ACTIVITYREFERENCE))->uriResource, $activity1->uriResource);
 		
 		//create a connector of a connector:
@@ -136,7 +137,7 @@ class ProcessAuthoringServiceTestCase extends UnitTestCase {
 		$this->assertEqual($activity1->uriResource, $shouldBeActivity1->uriResource);
 		
 		$shouldBeActivity1 = null;
-		$shouldBeActivity1 = $followingConnector1->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_NEXTACTIVITIES));
+		$shouldBeActivity1 = $followingConnector1->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_STEP_NEXT));
 		$this->assertEqual($activity1->uriResource,$shouldBeActivity1->uriResource);
 	}
 	
@@ -174,7 +175,7 @@ class ProcessAuthoringServiceTestCase extends UnitTestCase {
 		$connector1 = $this->authoringService->createConnector($activity1);
 		$this->authoringService->createSequenceActivity($connector1, null, '2ndActivityForUnitTest');
 		
-		$nextActivitiesProp = new core_kernel_classes_Property(PROPERTY_CONNECTORS_NEXTACTIVITIES);
+		$nextActivitiesProp = new core_kernel_classes_Property(PROPERTY_STEP_NEXT);
 		
 		$activity2 = $connector1->getUniquePropertyValue($nextActivitiesProp);
 		$this->assertIsA($activity2 , 'core_kernel_classes_Resource');
@@ -231,14 +232,14 @@ class ProcessAuthoringServiceTestCase extends UnitTestCase {
 		);
 		
 		$this->assertTrue($this->authoringService->setParallelActivities($connectorB, $newActivitiesArray));
-		$nextActivitiesCollection = $connectorB->getPropertyValuesCollection(new core_kernel_classes_Property(PROPERTY_CONNECTORS_NEXTACTIVITIES));
+		$nextActivitiesCollection = $connectorB->getPropertyValuesCollection(new core_kernel_classes_Property(PROPERTY_STEP_NEXT));
 		$this->assertEqual($nextActivitiesCollection->count(), 2);
 
 		//merge all activity D instance to F:
 		$this->authoringService->createJoinActivity($connectorD, $activityF, '', $activityD);
-		$previousActivitiesCollection = $connectorD->getPropertyValuesCollection(new core_kernel_classes_Property(PROPERTY_CONNECTORS_PREVIOUSACTIVITIES));
-		
-		$this->assertEqual($previousActivitiesCollection->count(), 2);//2 cardinality resources
+		$activitiyClass = new core_kernel_classes_Class(CLASS_ACTIVITIES);
+		$nexts = wfEngine_models_classes_ConnectorService::singleton()->getPreviousActivities($connectorD);
+		$this->assertEqual(count($nexts), 2);//2 cardinality resources
 	}
 	
 	public function testCreateServiceDefinition(){

@@ -147,8 +147,7 @@ class wfEngine_models_classes_NotificationService
         	//initialize properties 
         	$connectorUserNotifiedProp			= new core_kernel_classes_Property(PROPERTY_CONNECTORS_USER_NOTIFIED);
         	$connectorRoleNotifiedProp 			= new core_kernel_classes_Property(PROPERTY_CONNECTORS_ROLE_NOTIFIED);
-        	$connectorPreviousActivitiesProp 	= new core_kernel_classes_Property(PROPERTY_CONNECTORS_PREVIOUSACTIVITIES);
-        	$connectorNextActivitiesProp 		= new core_kernel_classes_Property(PROPERTY_CONNECTORS_NEXTACTIVITIES);
+        	$connectorNextActivitiesProp 		= new core_kernel_classes_Property(PROPERTY_STEP_NEXT);
         	$activityExecutionUserProp 			= new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_CURRENT_USER);
         	$activityAclModeProp 				= new core_kernel_classes_Property(PROPERTY_ACTIVITIES_ACL_MODE);
         	$activityAclUserProp				= new core_kernel_classes_Property(PROPERTY_ACTIVITIES_RESTRICTED_USER);
@@ -201,7 +200,7 @@ class wfEngine_models_classes_NotificationService
 						$cardinalityService = wfEngine_models_classes_ActivityCardinalityService::singleton();
 						foreach($connectorService->getPreviousActivities($connector) as $prevActivity){
 							if($cardinalityService->isCardinality($prevActivity)){
-								$previousActivities[] = $cardinalityService->getActivity($prevActivity)->uriResource;
+								$previousActivities[] = $cardinalityService->getSource($prevActivity)->uriResource;
 							}else{
 								$previousActivities[] = $prevActivity->uriResource;
 							}
@@ -260,7 +259,7 @@ class wfEngine_models_classes_NotificationService
 							$cardinalityService = wfEngine_models_classes_ActivityCardinalityService::singleton();
 							foreach($connectorService->getNextActivities($connector) as $nextActivity){
 								if($cardinalityService->isCardinality($nextActivity)){
-									$nextActivities[] = $cardinalityService->getActivity($nextActivity)->uriResource;
+									$nextActivities[] = $cardinalityService->getDestination($nextActivity)->uriResource;
 								}else{
 									$nextActivities[] = $nextActivity->uriResource;
 								}

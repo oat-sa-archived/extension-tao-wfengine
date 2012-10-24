@@ -28,7 +28,8 @@ class ActivityExecutionServiceTestCase extends wfEngineServiceTest {
 		$userData = array(
 			PROPERTY_USER_LOGIN		=> 	$login,
 			PROPERTY_USER_PASSWORD	=>	md5($this->userPassword),
-			PROPERTY_USER_DEFLG		=>	'EN'
+			PROPERTY_USER_DEFLG		=>	'EN',
+			PROPERTY_USER_UILG		=>	'EN',
 		);
 		
 		$this->currentUser = $this->userService->getOneUser($login);

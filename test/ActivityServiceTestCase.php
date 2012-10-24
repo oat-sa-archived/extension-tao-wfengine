@@ -53,7 +53,7 @@ class ActivityServiceTestCase extends UnitTestCase {
     }
 
     public function testIsFinal(){
-         $processAuthoringService = wfEngine_models_classes_ProcessAuthoringService::singleton();
+		$processAuthoringService = wfEngine_models_classes_ProcessAuthoringService::singleton();
         $processDefinitionClass = new core_kernel_classes_Class(CLASS_PROCESS);
         $processDefinition = $processDefinitionClass->createInstance('ProcessForUnitTest', 'Unit test');
         $authoringService = wfEngine_models_classes_ProcessAuthoringService::singleton();

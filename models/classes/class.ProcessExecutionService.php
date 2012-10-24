@@ -392,7 +392,6 @@ class wfEngine_models_classes_ProcessExecutionService
         $returnValue = null;
 
         // section 127-0-1-1-7a69d871:1322a76df3c:-8000:0000000000002F51 begin
-		
 		if(empty($comment)){
 			$comment = "create by processExecutionService on ".date("d-m-Y H:i:s");
 		}
@@ -402,6 +401,9 @@ class wfEngine_models_classes_ProcessExecutionService
 		
 		$processDefinitionService = wfEngine_models_classes_ProcessDefinitionService::singleton();
 		$initialActivities = $processDefinitionService->getRootActivities($processDefinition);
+		
+		common_Logger::i('creating process for '.$processDefinition->getUri().' with '.count($initialActivities));
+        
 		
 		if(!count($initialActivities)){
 			
@@ -779,6 +781,10 @@ class wfEngine_models_classes_ProcessExecutionService
 		
 		$activityBeforeTransition = $this->activityExecutionService->getExecutionOf($activityExecution);
 		$nextConnector = $activityDefinitionService->getUniqueNextConnector($activityBeforeTransition);
+		if (wfEngine_models_classes_ActivityCardinalityService::singleton()->isCardinality($nextConnector)) {
+			$nextConnector = wfEngine_models_classes_ActivityCardinalityService::singleton()->getDestination($nextConnector);
+		}
+		
 		$newActivities = array();
 		if(!is_null($nextConnector)){
 			$newActivities = $this->getNewActivities($processExecution, $activityExecution, $nextConnector);
@@ -1124,10 +1130,9 @@ class wfEngine_models_classes_ProcessExecutionService
 		$activityResourceArray = array();
 		$prevActivites = $connectorService->getPreviousActivities($joinConnector);
 		$countPrevActivities = count($prevActivites);
-		for($i=0; $i<$countPrevActivities; $i++){
-			$activityCardinality = $prevActivites[$i];
+		foreach ($prevActivites as $activityCardinality) {
 			if($cardinalityService->isCardinality($activityCardinality)){
-				$activity = $cardinalityService->getActivity($activityCardinality);
+				$activity = $cardinalityService->getSource($activityCardinality);
 				$activityResourceArray[$activity->uriResource] = $cardinalityService->getCardinality($activityCardinality, $activityExecution);
 			}
 		}
@@ -1156,6 +1161,8 @@ class wfEngine_models_classes_ProcessExecutionService
 			}
 
 			$debug[$activityDefinitionUri]['activityExecutionArray'] = $activityExecutionArray;
+			common_Logger::d($activityDefinitionUri.' has cardinality '.$count.' and was executed '.count($activityExecutionArray));
+			
 
 			if(count($activityExecutionArray) == $count){
 				//ok for this activity definiton, continue to the next loop
@@ -1567,7 +1574,7 @@ class wfEngine_models_classes_ProcessExecutionService
 		
 		foreach($connectorService->getNextActivities($currentConnector) as $cardinality){
 			if($cardinalityService->isCardinality($cardinality)){
-				$activity = $cardinalityService->getActivity($cardinality);
+				$activity = $cardinalityService->getDestination($cardinality);
 				if (!is_null($activity)) {
 					$count = $cardinalityService->getCardinality($cardinality, $activityExecution);
 					for ($i = 0; $i < $count; $i++) {
@@ -1735,28 +1742,36 @@ class wfEngine_models_classes_ProcessExecutionService
 		$currentActivityExecutions = $this->getCurrentActivityExecutions($processExecution);
 		$followings = $this->activityExecutionService->getFollowing($activityExecution);
 		$restoringActivityExecutions = array();
-		$restoringActivityExecutions[$activityExecution->uriResource] = $activityExecution;
+		$restoringActivityExecutions[$activityExecution->getUri()] = $activityExecution;
 		
 		if(count($followings)){
 			
 			foreach($followings as $followingActivityExecution){
 				
-				if(in_array($followingActivityExecution->uriResource, array_keys($currentActivityExecutions))){
-					//check that no following activity has been taken:
-					$user = $this->activityExecutionService->getActivityExecutionUser($followingActivityExecution);
-					if(is_null($user)){
-						$allowed = true;
-						$restoringActivityExecutions = array_merge($restoringActivityExecutions, $this->activityExecutionService->getPrevious($followingActivityExecution));
-						continue;
-					}
+				if(!in_array($followingActivityExecution->getUri(), array_keys($currentActivityExecutions))) {
+					common_Logger::w($followingActivityExecution->getUri().' not in currentActivityExecutions (count '.count($currentActivityExecutions).')');
+					$allowed = false;
+					break;
 				}
-				$allowed = false;
-				break;
+				
+				//check that no following activity has been taken:
+				$user = $this->activityExecutionService->getActivityExecutionUser($followingActivityExecution);
+				if(is_null($user)){
+					$allowed = true;
+					$restoringActivityExecutions = array_merge($restoringActivityExecutions, $this->activityExecutionService->getPrevious($followingActivityExecution));
+					continue;
+				} else {
+					common_Logger::w($followingActivityExecution->getUri().' has been taken by user '.$user->getUri());
+					$allowed = false;
+					break;
+				}
 			}
 			
+		} else {
+			common_Logger::w($activityExecution->getUri().' has no following activities, undo impossible');
 		}
 		
-		if($allowed){
+		if ($allowed) {
 			//move the current activity pointer:
 			//of the branch uniquely:
 			if(!empty($followings)){

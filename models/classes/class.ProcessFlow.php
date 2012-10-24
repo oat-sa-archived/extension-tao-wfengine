@@ -52,9 +52,9 @@ class wfEngine_models_classes_ProcessFlow{
 		$connectorClass = new core_kernel_classes_Class(CLASS_CONNECTORS);
 		$cardinalityClass = new core_kernel_classes_Class(CLASS_ACTIVITYCARDINALITY);
 		
-		$activityCardinalities = $cardinalityClass->searchInstances(array(PROPERTY_ACTIVITYCARDINALITY_ACTIVITY => $activity->uriResource), array('like' => false));//note: count()>1 only 
+		$activityCardinalities = $cardinalityClass->searchInstances(array(PROPERTY_STEP_NEXT => $activity->uriResource), array('like' => false));//note: count()>1 only 
 		$nextActivities = array_merge(array($activity->uriResource), array_keys($activityCardinalities));
-		$previousConnectors = $connectorClass->searchInstances(array(PROPERTY_CONNECTORS_NEXTACTIVITIES => $nextActivities), array('like' => false));//note: count()>1 only 
+		$previousConnectors = $connectorClass->searchInstances(array(PROPERTY_STEP_NEXT => $nextActivities), array('like' => false));//note: count()>1 only 
 		foreach($previousConnectors as $connector){
 		
 			if(in_array($connector->uriResource, array_keys($this->checkedConnectors))){
@@ -113,13 +113,12 @@ class wfEngine_models_classes_ProcessFlow{
 		$returnValue = null;
 		
 		//put the activity being searched in an array to prevent searching from it again in case of back connection
-		$this->checkedActivities[] = $activity->uriResource;
+		$this->checkedActivities[] = $activity->getUri();
 		
 		$connectorClass = new core_kernel_classes_Class(CLASS_CONNECTORS);
-		$nextConnectors = $connectorClass->searchInstances(array(PROPERTY_CONNECTORS_PREVIOUSACTIVITIES => $activity->uriResource), array('like' => false));//note: count()>1 only 
-		if(count($nextConnectors)){//there could be only one next connector for an activity
-		
-			$connector = array_pop($nextConnectors);
+		$connector = $activity->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_STEP_NEXT));
+		if(!is_null($connector)){
+
 			if(in_array($connector->uriResource, array_keys($this->checkedConnectors))){
 				continue;
 			}else{
@@ -148,16 +147,14 @@ class wfEngine_models_classes_ProcessFlow{
 				}
 			}
 			
-			$classMultiplicity = new core_kernel_classes_Class(CLASS_ACTIVITYCARDINALITY);
-			$propMultiplicityActivity = new core_kernel_classes_Property(PROPERTY_ACTIVITYCARDINALITY_ACTIVITY);
 			//if the wanted join connector has not be found (i.e. no value returned so far):
 			//get the nextActivitiesCollection and recursively execute the same function ON ONLY ONE of the next parallel branch, but both banches in case of a conditionnal connector
-			$nextActivitiesCollection = $connector->getPropertyValuesCollection(new core_kernel_classes_Property(PROPERTY_CONNECTORS_NEXTACTIVITIES));
+			$nextActivitiesCollection = $connector->getPropertyValuesCollection(new core_kernel_classes_Property(PROPERTY_STEP_NEXT));
 			$cardinalityService = wfEngine_models_classes_ActivityCardinalityService::singleton();
 			foreach($nextActivitiesCollection->getIterator() as $nextActivity){
 				
 				if($cardinalityService->isCardinality($nextActivity)){
-					$nextActivity = $cardinalityService->getActivity($nextActivity);
+					$nextActivity = $cardinalityService->getDestination($nextActivity);
 				}
 			
 				//if the nextActivity happens to have already been checked, jump it
@@ -179,6 +176,33 @@ class wfEngine_models_classes_ProcessFlow{
 		
 		return $returnValue;//null
 	}
+	
+	public function getCardinality(core_kernel_classes_Resource $activity) {
+		
+		$returnValue = 1;
+		
+		// check multiplicity  (according to the cardinality defined in the related parallel connector):
+		$parallelConnector = $this->findParallelFromActivityBackward($activity);
+		
+		if(!is_null($parallelConnector)){
+			$cardinalityService = wfEngine_models_classes_ActivityCardinalityService::singleton();
+			
+			//count the number of time theprevious activity must be set as the previous activity of the join connector
+			$cardinalities = $cardinalityService->getNextSteps($parallelConnector);
+			foreach($cardinalities as $nextActivityCardinality){
+				if(in_array($cardinalityService->getDestination($nextActivityCardinality)->getUri(), $this->getCheckedActivities())){
+					return $cardinalityService->getCardinality($nextActivityCardinality);
+				}
+			}
+			throw new common_exception_Error('parallel execution found by workflow '.$parallelConnector->getUri().' not in current execution path');			
+		} else {
+			// no parallel execution, so 1 execution
+			common_Logger::i('no parallel connector found for '.$activity->getUri());			
+		}
+		
+		return $returnValue;
+	}
+	
 	
 }
 ?>

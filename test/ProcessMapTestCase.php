@@ -154,13 +154,13 @@ class ProcessMapTestCase extends UnitTestCase {
 			$activityList[$i] = $currentActivity;
 			
 			//get its connector (check the type is "sequential) if ok, get the next activity
-			$connectorClass = new core_kernel_classes_Class(CLASS_CONNECTORS);
-			$connectors = $connectorClass->searchInstances(array(PROPERTY_CONNECTORS_PREVIOUSACTIVITIES =>$currentActivity->uriResource), array('like'=>false));
+			$connectors = $currentActivity->getPropertyValues(new core_kernel_classes_Property(PROPERTY_STEP_NEXT));
 			$nextActivity = null;
-			foreach($connectors as $connector){
+			foreach($connectors as $connectorUri){
+				$connector = new core_kernel_classes_Resource($connectorUri);
 				$connectorType = $connector->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_TYPE));
-				if($connectorType->uriResource == INSTANCE_TYPEOFCONNECTORS_SEQUENCE){
-					$nextActivity = $connector->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_NEXTACTIVITIES));
+				if ($connectorType->uriResource == INSTANCE_TYPEOFCONNECTORS_SEQUENCE) {
+					$nextActivity = $connector->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_STEP_NEXT));
 					break;
 				}
 			}

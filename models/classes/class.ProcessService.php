@@ -9,7 +9,7 @@ error_reporting(E_ALL);
  *
  * This file is part of TAO.
  *
- * Automatically generated on 20.09.2012, 17:39:45 with ArgoUML PHP module 
+ * Automatically generated on 18.10.2012, 18:06:07 with ArgoUML PHP module 
  * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
  *
  * @author Joel Bout, <joel.bout@tudor.lu>
@@ -154,6 +154,57 @@ class wfEngine_models_classes_ProcessService
         // section 10-13-1-39-1f91722d:12e9641f6ad:-8000:0000000000002C73 end
 
         return $returnValue;
+    }
+
+    /**
+     * Short description of method getInitialSteps
+     *
+     * @access public
+     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @param  Resource process
+     * @return array
+     */
+    public function getInitialSteps( core_kernel_classes_Resource $process)
+    {
+        $returnValue = array();
+
+        // section 10-30-1--78-705ba397:13a745f6c43:-8000:0000000000003B90 begin
+		$activities = wfEngine_models_classes_ProcessAuthoringService::singleton()->getActivitiesByProcess($process);
+			
+		foreach($activities as $activity){
+			if(wfEngine_models_classes_ActivityService::singleton()->isInitial($activity)){
+				$returnValue[] = $activity;
+			}
+		}	
+        // section 10-30-1--78-705ba397:13a745f6c43:-8000:0000000000003B90 end
+
+        return (array) $returnValue;
+    }
+
+    /**
+     * Short description of method getFinalSteps
+     *
+     * @access public
+     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @param  Resource process
+     * @return array
+     */
+    public function getFinalSteps( core_kernel_classes_Resource $process)
+    {
+        $returnValue = array();
+
+        // section 10-30-1--78-705ba397:13a745f6c43:-8000:0000000000003B93 begin
+		$activities = wfEngine_models_classes_ProcessAuthoringService::singleton()->getActivitiesByProcess($process);
+			
+		foreach($activities as $activity){
+			$next = $activity->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_STEP_NEXT));
+			if(is_null($next)){
+				$returnValue[] = $activity;
+			}
+		}	
+        // section 10-30-1--78-705ba397:13a745f6c43:-8000:0000000000003B93 end
+
+        return (array) $returnValue;
     }
 
 } /* end of class wfEngine_models_classes_ProcessService */

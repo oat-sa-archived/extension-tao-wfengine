@@ -542,7 +542,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		$this->assertEqual(count($nextActivities), 1);
 		$cardinality = reset($nextActivities);
 		$this->assertTrue($cardinalityService->isCardinality($cardinality));
-		$this->assertEqual($cardinalityService->getActivity($cardinality)->uriResource, $activityTranslate->uriResource);
+		$this->assertEqual($cardinalityService->getDestination($cardinality)->uriResource, $activityTranslate->uriResource);
 		$this->assertEqual($cardinalityService->getCardinality($cardinality)->uriResource, $this->vars['translatorsCount']->uriResource);
 		
 		$connectorTranslate = $authoringService->createConnector($activityTranslate);
@@ -554,7 +554,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		$this->assertEqual(count($prevActivities), 1);
 		$cardinality = reset($prevActivities);
 		$this->assertTrue($cardinalityService->isCardinality($cardinality));
-		$this->assertEqual($cardinalityService->getActivity($cardinality)->uriResource, $activityTranslate->uriResource);
+		$this->assertEqual($cardinalityService->getSource($cardinality)->uriResource, $activityTranslate->uriResource);
 		$this->assertEqual($cardinalityService->getCardinality($cardinality)->uriResource, $this->vars['translatorsCount']->uriResource);
 		
 		$this->assertNotNull($activityReconciliation);
@@ -793,7 +793,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		$this->assertEqual(count($nextActivities), 1);
 		$cardinality = reset($nextActivities);
 		$this->assertTrue($cardinalityService->isCardinality($cardinality));
-		$this->assertEqual($cardinalityService->getActivity($cardinality)->uriResource, $activityTranslate->uriResource);
+		$this->assertEqual($cardinalityService->getDestination($cardinality)->uriResource, $activityTranslate->uriResource);
 		$this->assertEqual($cardinalityService->getCardinality($cardinality)->uriResource, $this->vars['translatorsCount']->uriResource);
 
 		$connectorTranslate = $authoringService->createConnector($activityTranslate);
@@ -805,7 +805,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		$this->assertEqual(count($prevActivities), 1);
 		$cardinality = reset($prevActivities);
 		$this->assertTrue($cardinalityService->isCardinality($cardinality));
-		$this->assertEqual($cardinalityService->getActivity($cardinality)->uriResource, $activityTranslate->uriResource);
+		$this->assertEqual($cardinalityService->getSource($cardinality)->uriResource, $activityTranslate->uriResource);
 		$this->assertEqual($cardinalityService->getCardinality($cardinality)->uriResource, $this->vars['translatorsCount']->uriResource);
 
 		$this->assertNotNull($activityReconciliation);
@@ -937,7 +937,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		$this->assertEqual(count($nextActivities), 1);
 		$cardinality = reset($nextActivities);
 		$this->assertTrue($cardinalityService->isCardinality($cardinality));
-		$this->assertEqual($cardinalityService->getActivity($cardinality)->uriResource, $activityTranslate->uriResource);
+		$this->assertEqual($cardinalityService->getDestination($cardinality)->uriResource, $activityTranslate->uriResource);
 		$this->assertEqual($cardinalityService->getCardinality($cardinality)->uriResource, $this->vars['translatorsCount']->uriResource);
 		
 		$connectorTranslate = $authoringService->createConnector($activityTranslate);
@@ -949,7 +949,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		$this->assertEqual(count($prevActivities), 1);
 		$cardinality = reset($prevActivities);
 		$this->assertTrue($cardinalityService->isCardinality($cardinality));
-		$this->assertEqual($cardinalityService->getActivity($cardinality)->uriResource, $activityTranslate->uriResource);
+		$this->assertEqual($cardinalityService->getSource($cardinality)->uriResource, $activityTranslate->uriResource);
 		$this->assertEqual($cardinalityService->getCardinality($cardinality)->uriResource, $this->vars['translatorsCount']->uriResource);
 		
 		$this->assertNotNull($activityReconciliation);

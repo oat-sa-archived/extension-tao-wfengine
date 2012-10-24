@@ -41,6 +41,9 @@ $todefine = array(
 	'CLASS_PROCESSVARIABLES'						=> NS_WFENGINE . '#ClassProcessVariables',
 	'PROPERTY_PROCESSVARIABLES_CODE'				=> NS_WFENGINE . '#PropertyCode',
 	
+	'CLASS_STEP'									=> NS_WFENGINE . '#ClassStep',
+	'PROPERTY_STEP_NEXT'							=> NS_WFENGINE  .'#PropertyStepNext',
+
 	'CLASS_ACTIVITIES'								=> NS_WFENGINE . '#ClassActivities',
 	'PROPERTY_ACTIVITIES_INTERACTIVESERVICES'		=> NS_WFENGINE . '#PropertyActivitiesInteractiveServices',
 	'PROPERTY_ACTIVITIES_RESTRICTED_USER'			=> NS_WFENGINE . '#PropertyActivitiesRestrictedUser',
@@ -49,7 +52,7 @@ $todefine = array(
 	'PROPERTY_ACTIVITIES_ISHIDDEN'					=> NS_WFENGINE . '#PropertyActivitiesHidden',
 	'PROPERTY_ACTIVITIES_ISINITIAL'					=> NS_WFENGINE . '#PropertyActivitiesInitial',
 	'PROPERTY_ACTIVITIES_CONTROLS'					=> NS_WFENGINE  .'#PropertyActivitiesControls',
-	
+
 	'CLASS_ACTIVITYCARDINALITY'						=> NS_WFENGINE . '#ClassActivityCardinality',
 	'PROPERTY_ACTIVITYCARDINALITY_ACTIVITY'			=> NS_WFENGINE . '#PropertyActivityCardinalityActivity',
 	'PROPERTY_ACTIVITYCARDINALITY_CARDINALITY'		=> NS_WFENGINE . '#PropertyActivityCardinalityCardinality',
@@ -61,8 +64,9 @@ $todefine = array(
 	
 	'CLASS_CONNECTORS'								=> NS_WFENGINE . '#ClassConnectors',
 	'PROPERTY_CONNECTORS_TRANSITIONRULE'			=> NS_WFENGINE . '#PropertyConnectorsTransitionRule',
-	'PROPERTY_CONNECTORS_PREVIOUSACTIVITIES'		=> NS_WFENGINE . '#PropertyConnectorsPreviousActivities',
-	'PROPERTY_CONNECTORS_NEXTACTIVITIES'			=> NS_WFENGINE . '#PropertyConnectorsNextActivities',
+	// to remove
+	'PROPERTY_CONNECTORS_NEXTACTIVITIES'			=> NS_WFENGINE . '#PropertyStepNext',
+	//
 	'PROPERTY_CONNECTORS_ACTIVITYREFERENCE'			=> NS_WFENGINE . '#PropertyConnectorsActivityReference',
 	'PROPERTY_CONNECTORS_TYPE' 						=> NS_WFENGINE . '#PropertyConnectorsType',
 	'PROPERTY_CONNECTORS_NOTIFY'					=> NS_WFENGINE  .'#PropertyConnectorsNotificationModes',

@@ -24,7 +24,7 @@ class ProcessExecutionServiceTestCase extends UnitTestCase{
 	const SERVICE_CACHE = false;
 	
 	/**
-	 * @var wfEngine_models_classes_ActivityExecutionService the tested service
+	 * @var wfEngine_models_classes_ProcessExecutionService the tested service
 	 */
 	protected $service = null;
 	
@@ -59,7 +59,8 @@ class ProcessExecutionServiceTestCase extends UnitTestCase{
 		$userData = array(
 			PROPERTY_USER_LOGIN		=> 	$login,
 			PROPERTY_USER_PASSWORD	=>	md5($pass),
-			PROPERTY_USER_DEFLG		=>	'EN'
+			PROPERTY_USER_DEFLG		=>	'EN',
+			PROPERTY_USER_UILG		=>	'EN'
 		);
 		
 		$this->testUserRole = new core_kernel_classes_Class(CLASS_ROLE_WORKFLOWUSERROLE);
@@ -73,6 +74,11 @@ class ProcessExecutionServiceTestCase extends UnitTestCase{
 			$this->currentUser = $this->userService->getCurrentUser();
 			$this->currentUser0 = $this->currentUser;
 		}
+		
+		$this->service = wfEngine_models_classes_ProcessExecutionService::singleton();
+		$this->service->cache = (bool) self::SERVICE_CACHE;
+		
+		
 	}
 	
 	public function tearDown() {
@@ -109,10 +115,7 @@ class ProcessExecutionServiceTestCase extends UnitTestCase{
 	 * Test the service implementation
 	 */
 	public function testService(){
-		$processExecutionService = wfEngine_models_classes_ProcessExecutionService::singleton();
-		$this->assertIsA($processExecutionService, 'tao_models_classes_Service');
-		$this->service = $processExecutionService;
-		$processExecutionService->cache = (bool) self::SERVICE_CACHE;
+		$this->assertIsA($this->service , 'tao_models_classes_Service');
 	}
 	
 	/**
@@ -412,6 +415,32 @@ class ProcessExecutionServiceTestCase extends UnitTestCase{
 		$processDefinitionClass = new core_kernel_classes_Class(CLASS_PROCESS);
 		$processDefinition = $processDefinitionClass->createInstance('PJ processForUnitTest_' . date(DATE_ISO8601),'created for the unit test of process execution');
 		$this->assertNotNull($processDefinition);
+		
+		/*
+		                +---------------+
+		                |  activity 0   |
+		                +-------+-------+
+		                        |
+		                    +---v---+
+		                    |  c 0  |   split
+		                    +--+-+--+
+		                       | |
+		          3  +---------+ +---------+  unit_var_12345678
+		             |                     |
+		     +-------v--------+    +-------v------+
+		     |   activity 1   |    |  activity 2  |
+		     +-------+--------+    +--------+-----+
+		             |                      |
+		             +--------+    +--------+
+		                   +--v----v--+
+		                   |   c 2    |    join
+		                   +----+-----+
+		                        |
+		                +-------v--------+
+		                |  activity 3    |
+		                +----------------+
+		                
+		 */
 
 		//activities definitions
 		$activity0 = $authoringService->createActivity($processDefinition, 'activity0');
@@ -473,8 +502,11 @@ class ProcessExecutionServiceTestCase extends UnitTestCase{
 		$joinActivity = $authoringService->createActivity($processDefinition, 'activity3');
 
 		//join parallel Activity 1 and 2 to "joinActivity"
+		$connector1 = $authoringService->createJoinConnector(array($parallelActivity1,$parallelActivity2),$joinActivity);
+		/*
 		$authoringService->createJoinActivity($connector1, $joinActivity, '', $parallelActivity1);
 		$authoringService->createJoinActivity($connector2, $joinActivity, '', $parallelActivity2);
+		*/
 
 		//run the process
 		$processExecName = 'Test Parallel Process Execution';
@@ -484,7 +516,7 @@ class ProcessExecutionServiceTestCase extends UnitTestCase{
 
 		$this->out(__METHOD__, true);
 		$this->out("<strong>Forward transitions:</strong>", true);
-		
+
 		$previousActivityExecution = null;
 		$numberActivities = 2 + $parallelCount1 + $parallelCount2;
 		$createdUsers = array();
@@ -520,7 +552,7 @@ class ProcessExecutionServiceTestCase extends UnitTestCase{
 			}
 
 			$this->out("<strong> Iteration {$i} :</strong>", true);
-			$this->out("<strong>{$activity->getLabel()}</strong> (among {$countActivities})");
+			$this->out("<strong>".(is_null($activity) ? 'null' : $activity->getLabel())."</strong> (among {$countActivities})");
 			//issue : no activity found for the last iteration...
 			
 			
@@ -554,14 +586,17 @@ class ProcessExecutionServiceTestCase extends UnitTestCase{
 			
 			$activityExecStatus = $activityExecutionService->getStatus($activityExecution);
 			$this->assertNotNull($activityExecStatus);
-			$this->assertEqual($activityExecStatus->uriResource, INSTANCE_PROCESSSTATUS_STARTED);
+			$this->assertEqual($activityExecStatus->getUri(), INSTANCE_PROCESSSTATUS_STARTED);
 
 			//transition to next activity
 			$this->out("current user: ".$this->currentUser->getOnePropertyValue($loginProperty).' "'.$this->currentUser->uriResource.'"');
 			$this->out("performing transition ...");
 
 			//transition to next activity
-			$this->service->performTransition($processInstance, $activityExecution);
+			$performed = $this->service->performTransition($processInstance, $activityExecution);
+			if (!$performed) {
+				$this->out('transition failed.');
+			}
 			$this->out("activity status: ".$activityExecutionService->getStatus($activityExecution)->getLabel());
 			$this->out("process status: ".$this->service->getStatus($processInstance)->getLabel());
 			

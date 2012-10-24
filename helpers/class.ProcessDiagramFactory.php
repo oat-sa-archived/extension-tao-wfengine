@@ -53,7 +53,9 @@ class wfEngine_helpers_ProcessDiagramFactory
 
         // section 127-0-1-1-5c9f7130:133f3eb6549:-8000:0000000000006001 begin
 		
-		$authoringService = wfEngine_models_classes_ProcessAuthoringService::singleton();
+		common_Logger::i("Building diagram for ".$process->getLabel());
+		
+        $authoringService = wfEngine_models_classes_ProcessAuthoringService::singleton();
 		$activityService = wfEngine_models_classes_ActivityService::singleton();
 		$connectorService = wfEngine_models_classes_ConnectorService::singleton();
 		$activityCardinalityService = wfEngine_models_classes_ActivityCardinalityService::singleton();
@@ -78,25 +80,23 @@ class wfEngine_helpers_ProcessDiagramFactory
 				
 				$next = array();
 				
-				common_Logger::i("Handling item of type ".implode(',',$item->getType()));
-				
 				if ($activityService->isActivity($item)) {
 					// add this activity
 					$diagram->addActivity($item, 54 + (200 * $posOnLevel) + (10*$currentLevel), 35 + (80 * $currentLevel));
 					$next = array_merge($next, $activityService->getNextConnectors($item));
-				}
-				
-				if ($connectorService->isConnector($item)) {
+				} elseif ($connectorService->isConnector($item)) {
 					// add this connector
 					$diagram->addConnector($item, 100 + (200 * $posOnLevel) + (10*$currentLevel), 40 + (80 * $currentLevel));
 					$next = array_merge($next,$connectorService->getNextActivities($item));
+				} else {
+					common_Logger::w('unexpected ressource in process '.$item->getUri());
 				}
 				
 				//replace cardinalities
 				foreach ($next as $key => $destination) {
 					if ($activityCardinalityService->isCardinality($destination)) {
 						// not represented on diagram
-						$next[$key] = $activityCardinalityService->getActivity($destination);
+						$next[$key] = $activityCardinalityService->getDestination($destination);
 					}
 				}	
 				
@@ -108,7 +108,6 @@ class wfEngine_helpers_ProcessDiagramFactory
 				$posOnLevel++;
 				$nextLevel = array_merge($nextLevel, $next);
 			}
-			common_Logger::d('did items: '.implode(',', $todo).' for lvl '.$currentLevel);
 			$done = array_merge($done, $todo);
 			$todo = array_diff($nextLevel, $done);
 			$currentLevel++;

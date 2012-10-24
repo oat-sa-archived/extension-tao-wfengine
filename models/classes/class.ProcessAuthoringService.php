@@ -9,7 +9,7 @@ error_reporting(E_ALL);
  *
  * This file is part of TAO.
  *
- * Automatically generated on 20.09.2012, 17:39:45 with ArgoUML PHP module
+ * Automatically generated on 24.10.2012, 10:51:36 with ArgoUML PHP module 
  * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
  *
  * @author Joel Bout, <joel.bout@tudor.lu>
@@ -59,7 +59,7 @@ class wfEngine_models_classes_ProcessAuthoringService
     extends wfEngine_models_classes_ProcessDefinitionService
 {
     // --- ASSOCIATIONS ---
-    // generateAssociationEnd :
+    // generateAssociationEnd : 
 
     // --- ATTRIBUTES ---
 
@@ -282,7 +282,7 @@ class wfEngine_models_classes_ProcessAuthoringService
 
 		if(!empty($returnValue)){
 			//associate the connector to the activity
-			$returnValue->setPropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_PREVIOUSACTIVITIES), $activity->uriResource);
+			$activity->setPropertyValue(new core_kernel_classes_Property(PROPERTY_STEP_NEXT), $returnValue);
 
 			//set the activity reference of the connector:
 			$activityRefProp = new core_kernel_classes_Property(PROPERTY_CONNECTORS_ACTIVITYREFERENCE);
@@ -398,8 +398,7 @@ class wfEngine_models_classes_ProcessAuthoringService
 
 		$this->setConnectorType($connectorInstance, new core_kernel_classes_Resource(INSTANCE_TYPEOFCONNECTORS_JOIN));
 
-		$propNextActivity = new core_kernel_classes_Property(PROPERTY_CONNECTORS_NEXTACTIVITIES);
-		$propPreviousActivities = new core_kernel_classes_Property(PROPERTY_CONNECTORS_PREVIOUSACTIVITIES);
+		$propNextActivity = new core_kernel_classes_Property(PROPERTY_STEP_NEXT);
 
 		if(is_null($previousActivity)){
 			throw new wfEngine_models_classes_ProcessDefinitonException('no previous activity found to be connected to the next activity');
@@ -407,12 +406,12 @@ class wfEngine_models_classes_ProcessAuthoringService
 
 		if(is_null($followingActivity)){
 			$followingActivity = $this->createActivityFromConnector($connectorInstance, $newActivityLabel);
-			$connectorInstance->removePropertyValues($propPreviousActivities);
+			$previousActivity->removePropertyValues(new core_kernel_classes_Property(PROPERTY_STEP_NEXT));
 		}else{
 			//search if a join connector already leads to the following activity:
 			$connectorClass = new core_kernel_classes_Class(CLASS_CONNECTORS);
 			$connectors = $connectorClass->searchInstances(array(
-				PROPERTY_CONNECTORS_NEXTACTIVITIES => $followingActivity->uriResource,
+				PROPERTY_STEP_NEXT => $followingActivity->uriResource,
 				PROPERTY_CONNECTORS_TYPE =>INSTANCE_TYPEOFCONNECTORS_JOIN
 				), array('like' => false, 'recursive' => 0));
 
@@ -435,62 +434,117 @@ class wfEngine_models_classes_ProcessAuthoringService
 			}
 		}
 
-		if($followingActivity instanceof core_kernel_classes_Resource){
-
-			$connectorInstance->editPropertyValues($propNextActivity, $followingActivity->uriResource);
-			$connectorInstance->setLabel(__("Merge to ").$followingActivity->getLabel());
-
-			//check multiplicity  (according to the cardinality defined in the related parallel connector):
-			$processFlow = new wfEngine_models_classes_ProcessFlow();
-			$cardinalityService = wfEngine_models_classes_ActivityCardinalityService::singleton();
-
-			$multiplicity = 1;//default multiplicity, if no multiple parallel activity
-
-			$parallelConnector = null;
-			$parallelConnector = $processFlow->findParallelFromActivityBackward($previousActivity);
-			if(!is_null($parallelConnector)){
-
-				//count the number of time theprevious activity must be set as the previous activity of the join connector
-				$nextActivitiesCollection = $parallelConnector->getPropertyValuesCollection(new core_kernel_classes_Property(PROPERTY_CONNECTORS_NEXTACTIVITIES));
-
-				foreach($nextActivitiesCollection->getIterator() as $nextActivityCardinality){
-					if(in_array($cardinalityService->getActivity($nextActivityCardinality)->uriResource, $processFlow->getCheckedActivities())){
-						$multiplicity = $cardinalityService->getCardinality($nextActivityCardinality);
-						break;
-					}
-				}
-			}
-
-			if($multiplicity){
-
-				$oldPreviousActivityCardinality = null;
-
-
-				//update the cardinality of the corresponding previous activity if exists
-				$prevActivitiesCollection = $connectorInstance->getPropertyValuesCollection($propPreviousActivities);
-				foreach($prevActivitiesCollection->getIterator() as $cardinality){
-					if($cardinalityService->isCardinality($cardinality)){
-						if($cardinalityService->getActivity($cardinality)->uriResource == $previousActivity->uriResource){
-							$oldPreviousActivityCardinality = $cardinality;
-							$cardinalityService->editCardinality($oldPreviousActivityCardinality, $multiplicity);
-							break;
-						}
-					}
-				}
-
-				//if it does not exists, create a new cardinality resource and assign it to the join connector:
-				if(is_null($oldPreviousActivityCardinality)){
-					$cardinality = $cardinalityService->createCardinality($previousActivity, $multiplicity);
-					$connectorInstance->setPropertyValue($propPreviousActivities, $cardinality);
-				}
-			}else{
-				throw new wfEngine_models_classes_ProcessDefinitonException('unexpected null multiplicity in join connector');
-			}
-
-			$returnValue = $followingActivity;
+		if(!$followingActivity instanceof core_kernel_classes_Resource){
+			throw new wfEngine_models_classes_ProcessDefinitonException('Non resource as following activity in '.__FUNCTION__);
 		}
 
+		$connectorInstance->editPropertyValues($propNextActivity, $followingActivity->getUri());
+		$connectorInstance->setLabel(__("Merge to ").$followingActivity->getLabel());
+
+		//check multiplicity  (according to the cardinality defined in the related parallel connector):
+		$processFlow = new wfEngine_models_classes_ProcessFlow();
+		$cardinalityService = wfEngine_models_classes_ActivityCardinalityService::singleton();
+
+		$multiplicity = 1;//default multiplicity, if no multiple parallel activity
+
+		$parallelConnector = null;
+		$parallelConnector = $processFlow->findParallelFromActivityBackward($previousActivity);
+		if(!is_null($parallelConnector)){
+
+			//count the number of time theprevious activity must be set as the previous activity of the join connector
+			$nextActivitiesCollection = $parallelConnector->getPropertyValuesCollection(new core_kernel_classes_Property(PROPERTY_STEP_NEXT));
+
+			foreach($nextActivitiesCollection->getIterator() as $nextActivityCardinality){
+				if(in_array($cardinalityService->getDestination($nextActivityCardinality)->uriResource, $processFlow->getCheckedActivities())){
+					$multiplicity = $cardinalityService->getCardinality($nextActivityCardinality);
+					break;
+				}
+			}
+		}
+
+		if($multiplicity){
+
+			$oldPreviousActivityCardinality = null;
+
+
+			//update the cardinality of the corresponding previous activity if exists
+			$prevActivities = wfEngine_models_classes_ConnectorService::singleton()->getPreviousActivities($connectorInstance);
+			foreach($prevActivities as $cardinality){
+				if($cardinalityService->isCardinality($cardinality)){
+					if($cardinalityService->getSource($cardinality)->uriResource == $previousActivity->uriResource){
+						$oldPreviousActivityCardinality = $cardinality;
+						$cardinalityService->editCardinality($oldPreviousActivityCardinality, $multiplicity);
+						break;
+					}
+				} else {
+					common_Logger::w('Resource '.$cardinality->getUri().' not a cardinality');
+				}
+			}
+
+			//if it does not exists, create a new cardinality resource and assign it to the join connector:
+			if(is_null($oldPreviousActivityCardinality)){
+				$cardinality = $cardinalityService->createCardinality($connectorInstance, $multiplicity);
+				$previousActivity->setPropertyValue(new core_kernel_classes_Property(PROPERTY_STEP_NEXT), $connectorInstance);
+			}
+		}else{
+			throw new wfEngine_models_classes_ProcessDefinitonException('unexpected null multiplicity in join connector');
+		}
+
+		$returnValue = $followingActivity;
+
         // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004D9E end
+
+        return $returnValue;
+    }
+
+    /**
+     * Short description of method createJoinConnector
+     *
+     * @access public
+     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @param  array previousSteps
+     * @param  Resource nextStep
+     * @return core_kernel_classes_Resource
+     */
+    public function createJoinConnector($previousSteps,  core_kernel_classes_Resource $nextStep)
+    {
+        $returnValue = null;
+
+        // section 10-30-1--78--6b4f0e56:13a780d50a9:-8000:0000000000003B95 begin
+        foreach ($previousSteps as $step) {
+        	$followings = $step->getPropertyValues(new core_kernel_classes_Property(PROPERTY_STEP_NEXT));
+        	if (count($followings) > 0) {
+        		$connctorService = wfEngine_models_classes_ConnectorService::singleton();
+        		foreach ($followings as $followingUri) {
+        			$following = new core_kernel_classes_Resource($followingUri);
+        			if ($connctorService->isConnector($following)) {
+        				$connctorService->deleteConnector($following);
+        			} else {
+        				throw new common_Exception('Step '.$step->getUri().' already has a non-connector attached');
+        			}
+        		}
+        	}
+		}
+		
+		$first = current($previousSteps);
+		$returnValue = $this->createConnector($first, "c_".$nextStep->getLabel());
+		common_Logger::d('spawned connector '.$returnValue->getUri());
+		$this->setConnectorType($returnValue, new core_kernel_classes_Resource(INSTANCE_TYPEOFCONNECTORS_JOIN));
+		
+		$first->removePropertyValues(new core_kernel_classes_Property(PROPERTY_STEP_NEXT));
+		$returnValue->setPropertyValue(new core_kernel_classes_Property(PROPERTY_STEP_NEXT), $nextStep);
+		common_Logger::d('removed previous connections, added next');
+		
+		
+		foreach ($previousSteps as $activity) {
+			$flow = new wfEngine_models_classes_ProcessFlow();
+			$multiplicity = $flow->getCardinality($activity);
+			$cardinality = wfEngine_models_classes_ActivityCardinalityService::singleton()->createCardinality($returnValue, $multiplicity);
+			$activity->setPropertyValue(new core_kernel_classes_Property(PROPERTY_STEP_NEXT), $cardinality);
+			common_Logger::d('spawned cardinality '.$cardinality->getUri().' with value '.$multiplicity);
+		}
+		
+        // section 10-30-1--78--6b4f0e56:13a780d50a9:-8000:0000000000003B95 end
 
         return $returnValue;
     }
@@ -502,6 +556,7 @@ class wfEngine_models_classes_ProcessAuthoringService
      * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  Resource connector
      * @param  string question
+     * @param  boolean isXML
      * @return core_kernel_classes_Resource
      */
     public function createTransitionRule( core_kernel_classes_Resource $connector, $question = '', $isXML = false)
@@ -533,7 +588,7 @@ class wfEngine_models_classes_ProcessAuthoringService
 				}
 				$transitionRule->editPropertyValues(new core_kernel_classes_Property(PROPERTY_RULE_IF), $condition->getUri());
 			} else common_Logger::e('condition is not an instance of ressource : '.$condition);
-		} else common_Logger::e('condition is not a ressource' );
+		}
 
 		$returnValue = $transitionRule;
 
@@ -566,7 +621,7 @@ class wfEngine_models_classes_ProcessAuthoringService
 		}
 		if($followingActivity instanceof core_kernel_classes_Resource){
 			//associate it to the property value of the connector
-			$connector->editPropertyValues(new core_kernel_classes_Property(PROPERTY_CONNECTORS_NEXTACTIVITIES), $followingActivity->uriResource);
+			$connector->editPropertyValues(new core_kernel_classes_Property(PROPERTY_STEP_NEXT), $followingActivity->uriResource);
 			//obvisouly, set the following actiivty as not initial (if it happened to be so):
 			$followingActivity->editPropertyValues(new core_kernel_classes_Property(PROPERTY_ACTIVITIES_ISINITIAL), GENERIS_FALSE);
 			$returnValue = $followingActivity;
@@ -596,7 +651,7 @@ class wfEngine_models_classes_ProcessAuthoringService
 		//rename it to conditional:
 		$this->setConnectorType($connector, new core_kernel_classes_Resource(INSTANCE_TYPEOFCONNECTORS_CONDITIONAL));
 
-		//remove property PROPERTY_CONNECTORS_NEXTACTIVITIES values on connector before:
+		//remove property PROPERTY_STEP_NEXT values on connector before:
 		if(is_null($followingActivity)){
 
 			if($followingActivityisConnector){
@@ -615,26 +670,28 @@ class wfEngine_models_classes_ProcessAuthoringService
 			}
 		}
 
-		if($followingActivity instanceof core_kernel_classes_Resource){
-			//associate it to the property value of the connector
-			$connector->setPropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_NEXTACTIVITIES), $followingActivity->uriResource);//use this function and not editPropertyValue!
-			$transitionRule = $connector->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_TRANSITIONRULE));
-			if(empty($transitionRule)){
-				$transitionRule = $this->createTransitionRule($connector);
-				if(is_null($transitionRule)){
-					throw new Exception("the transition rule of the connector split cannot be created");
-				}
-			}
-			if(strtolower($connectionType) == 'then'){
-				$transitionRule->editPropertyValues(new core_kernel_classes_Property(PROPERTY_TRANSITIONRULES_THEN), $followingActivity->uriResource);
-			}elseif(strtolower($connectionType) == 'else'){
-				$transitionRule->editPropertyValues(new core_kernel_classes_Property(PROPERTY_TRANSITIONRULES_ELSE), $followingActivity->uriResource);
-			}else{
-				throw new Exception("wrong connection type then/else");
-			}
-
-			$returnValue = $followingActivity;
+		if(!$followingActivity instanceof core_kernel_classes_Resource){
+			throw new wfEngine_models_classes_ProcessDefinitonException('following activity in '.__METHOD__.' is not a resource');
 		}
+		
+		//associate it to the property value of the connector
+		$connector->setPropertyValue(new core_kernel_classes_Property(PROPERTY_STEP_NEXT), $followingActivity->uriResource);//use this function and not editPropertyValue!
+		$transitionRule = $connector->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_TRANSITIONRULE));
+		if(empty($transitionRule)){
+			$transitionRule = $this->createTransitionRule($connector);
+			if(is_null($transitionRule)){
+				throw new wfEngine_models_classes_ProcessDefinitonException("the transition rule of the connector conditional cannot be created");
+			}
+		}
+		if(strtolower($connectionType) == 'then'){
+			$transitionRule->editPropertyValues(new core_kernel_classes_Property(PROPERTY_TRANSITIONRULES_THEN), $followingActivity->uriResource);
+		}elseif(strtolower($connectionType) == 'else'){
+			$transitionRule->editPropertyValues(new core_kernel_classes_Property(PROPERTY_TRANSITIONRULES_ELSE), $followingActivity->uriResource);
+		}else{
+			throw new wfEngine_models_classes_ProcessDefinitonException("wrong connection type '".$connectionType."', expected then or else");
+		}
+
+		$returnValue = $followingActivity;
 
         // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004DC3 end
 
@@ -782,81 +839,6 @@ class wfEngine_models_classes_ProcessAuthoringService
     }
 
     /**
-     * Short description of method deleteConnectorNextActivity
-     *
-     * @access public
-     * @author Joel Bout, <joel.bout@tudor.lu>
-     * @param  Resource connector
-     * @param  string connectionType
-     * @return mixed
-     */
-    public function deleteConnectorNextActivity( core_kernel_classes_Resource $connector, $connectionType = 'next')
-    {
-        // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004DFF begin
-
-		// $authorizedProperties = array(
-			// PROPERTY_CONNECTORS_NEXTACTIVITIES,
-			// PROPERTY_TRANSITIONRULES_THEN,
-			// PROPERTY_TRANSITIONRULES_ELSE
-		// );
-		$nextActivitiesProp = new core_kernel_classes_Property(PROPERTY_CONNECTORS_NEXTACTIVITIES);
-		$connectorService = wfEngine_models_classes_ConnectorService::singleton();
-
-		switch($connectionType){
-			case 'next':{
-				$property = $nextActivitiesProp;
-				break;
-			}
-			case 'then':{
-				$property = new core_kernel_classes_Property(PROPERTY_TRANSITIONRULES_THEN);
-				break;
-			}
-			case 'else':{
-				$property = new core_kernel_classes_Property(PROPERTY_TRANSITIONRULES_ELSE);
-				break;
-			}
-			default:{
-				throw new Exception('Trying to delete the value of an unauthorized connector property');
-			}
-		}
-
-		$activityRefProp = new core_kernel_classes_Property(PROPERTY_CONNECTORS_ACTIVITYREFERENCE);
-		$activityRef = $connector->getUniquePropertyValue($activityRefProp)->uriResource;
-
-		if($property->uriResource == PROPERTY_CONNECTORS_NEXTACTIVITIES){
-			//manage the connection to the following activities
-			$nextActivityCollection = $connector->getPropertyValuesCollection($property);
-			foreach($nextActivityCollection->getIterator() as $nextActivity){
-				if($connectorService->isConnector($nextActivity)){
-					$nextActivityRef = $nextActivity->getUniquePropertyValue($activityRefProp)->uriResource;
-					if($nextActivityRef == $activityRef){
-						$this->deleteConnector($nextActivity);//delete following connectors only if they have the same activity reference
-					}
-				}
-			}
-			$connector->removePropertyValues($nextActivitiesProp);
-		}elseif(($property->uriResource == PROPERTY_TRANSITIONRULES_THEN)||($property->uriResource == PROPERTY_TRANSITIONRULES_ELSE)){
-			//it is a split connector: get the transition rule, if exists
-			$transitionRule = $connector->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_TRANSITIONRULE));
-			if(!is_null($transitionRule)){
-				$nextActivity = $transitionRule->getOnePropertyValue($property);
-				if(!is_null($nextActivity)){
-					if($connectorService->isConnector($nextActivity)){
-						$nextActivityRef = $nextActivity->getUniquePropertyValue($activityRefProp)->uriResource;
-						if($nextActivityRef == $activityRef){
-							$this->deleteConnector($nextActivity);//delete following connectors only if they have the same activity reference
-						}
-					}
-					$connector->removePropertyValues($nextActivitiesProp, array('pattern' => $nextActivity->uriResource));
-					$transitionRule->removePropertyValues($property, array('pattern' => $nextActivity->uriResource));
-				}
-			}
-		}
-
-        // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004DFF end
-    }
-
-    /**
      * Short description of method deleteExpression
      *
      * @access public
@@ -892,6 +874,76 @@ class wfEngine_models_classes_ProcessAuthoringService
     }
 
     /**
+     * Short description of method deleteConnectorNextActivity
+     *
+     * @access public
+     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @param  Resource connector
+     * @param  string connectionType
+     * @return mixed
+     */
+    public function deleteConnectorNextActivity( core_kernel_classes_Resource $connector, $connectionType = 'next')
+    {
+        // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004DFF begin
+
+		$nextActivitiesProp = new core_kernel_classes_Property(PROPERTY_STEP_NEXT);
+		$connectorService = wfEngine_models_classes_ConnectorService::singleton();
+
+		switch($connectionType){
+			case 'next':{
+				$property = $nextActivitiesProp;
+				break;
+			}
+			case 'then':{
+				$property = new core_kernel_classes_Property(PROPERTY_TRANSITIONRULES_THEN);
+				break;
+			}
+			case 'else':{
+				$property = new core_kernel_classes_Property(PROPERTY_TRANSITIONRULES_ELSE);
+				break;
+			}
+			default:{
+				throw new Exception('Trying to delete the value of an unauthorized connector property');
+			}
+		}
+
+		$activityRefProp = new core_kernel_classes_Property(PROPERTY_CONNECTORS_ACTIVITYREFERENCE);
+		$activityRef = $connector->getUniquePropertyValue($activityRefProp)->uriResource;
+
+		if($property->uriResource == PROPERTY_STEP_NEXT){
+			//manage the connection to the following activities
+			$nextActivityCollection = $connector->getPropertyValuesCollection($property);
+			foreach($nextActivityCollection->getIterator() as $nextActivity){
+				if($connectorService->isConnector($nextActivity)){
+					$nextActivityRef = $nextActivity->getUniquePropertyValue($activityRefProp)->uriResource;
+					if($nextActivityRef == $activityRef){
+						$this->deleteConnector($nextActivity);//delete following connectors only if they have the same activity reference
+					}
+				}
+			}
+			$connector->removePropertyValues($nextActivitiesProp);
+		}elseif(($property->uriResource == PROPERTY_TRANSITIONRULES_THEN)||($property->uriResource == PROPERTY_TRANSITIONRULES_ELSE)){
+			//it is a split connector: get the transition rule, if exists
+			$transitionRule = $connector->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_TRANSITIONRULE));
+			if(!is_null($transitionRule)){
+				$nextActivity = $transitionRule->getOnePropertyValue($property);
+				if(!is_null($nextActivity)){
+					if($connectorService->isConnector($nextActivity)){
+						$nextActivityRef = $nextActivity->getUniquePropertyValue($activityRefProp)->uriResource;
+						if($nextActivityRef == $activityRef){
+							$this->deleteConnector($nextActivity);//delete following connectors only if they have the same activity reference
+						}
+					}
+					$connector->removePropertyValues($nextActivitiesProp, array('pattern' => $nextActivity->uriResource));
+					$transitionRule->removePropertyValues($property, array('pattern' => $nextActivity->uriResource));
+				}
+			}
+		}
+
+        // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004DFF end
+    }
+
+    /**
      * Short description of method deleteInstance
      *
      * @access public
@@ -908,35 +960,6 @@ class wfEngine_models_classes_ProcessAuthoringService
 			$returnValue = $instance->delete(true);//delete references!
 		}
         // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004E13 end
-
-        return (bool) $returnValue;
-    }
-
-    /**
-     * Short description of method deleteOperation
-     *
-     * @access public
-     * @author Joel Bout, <joel.bout@tudor.lu>
-     * @param  Resource operation
-     * @return boolean
-     */
-    public function deleteOperation( core_kernel_classes_Resource $operation)
-    {
-        $returnValue = (bool) false;
-
-        // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004E16 begin
-		$firstOperand = $operation->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_OPERATION_FIRST_OP));
-		if(!is_null($firstOperand) && ($firstOperand instanceof core_kernel_classes_Resource)){
-			$this->deleteTerm($firstOperand);
-		}
-
-		$secondOperand = $operation->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_OPERATION_SECND_OP));
-		if(!is_null($secondOperand) && ($secondOperand instanceof core_kernel_classes_Resource)){
-			$this->deleteTerm($secondOperand);
-		}
-
-		$returnValue = $operation->delete(true);
-        // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004E16 end
 
         return (bool) $returnValue;
     }
@@ -972,6 +995,35 @@ class wfEngine_models_classes_ProcessAuthoringService
     }
 
     /**
+     * Short description of method deleteOperation
+     *
+     * @access public
+     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @param  Resource operation
+     * @return boolean
+     */
+    public function deleteOperation( core_kernel_classes_Resource $operation)
+    {
+        $returnValue = (bool) false;
+
+        // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004E16 begin
+		$firstOperand = $operation->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_OPERATION_FIRST_OP));
+		if(!is_null($firstOperand) && ($firstOperand instanceof core_kernel_classes_Resource)){
+			$this->deleteTerm($firstOperand);
+		}
+
+		$secondOperand = $operation->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_OPERATION_SECND_OP));
+		if(!is_null($secondOperand) && ($secondOperand instanceof core_kernel_classes_Resource)){
+			$this->deleteTerm($secondOperand);
+		}
+
+		$returnValue = $operation->delete(true);
+        // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004E16 end
+
+        return (bool) $returnValue;
+    }
+
+    /**
      * Short description of method deleteRule
      *
      * @access public
@@ -996,6 +1048,26 @@ class wfEngine_models_classes_ProcessAuthoringService
         // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004E26 end
 
         return (bool) $returnValue;
+    }
+
+    /**
+     * Short description of method getActivitiesByProcess
+     *
+     * @access public
+     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @param  Resource process
+     * @return array
+     */
+    public function getActivitiesByProcess( core_kernel_classes_Resource $process)
+    {
+        $returnValue = array();
+
+        // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004E32 begin
+		//connect ro new process def service:
+		$returnValue = $this->getAllActivities($process);
+        // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004E32 end
+
+        return (array) $returnValue;
     }
 
     /**
@@ -1050,60 +1122,6 @@ class wfEngine_models_classes_ProcessAuthoringService
     }
 
     /**
-     * Short description of method editCondition
-     *
-     * @access public
-     * @author Joel Bout, <joel.bout@tudor.lu>
-     * @param  Resource rule
-     * @param  string conditionString
-     * @return boolean
-     */
-    public function editCondition( core_kernel_classes_Resource $rule, $conditionString)
-    {
-        $returnValue = (bool) false;
-
-        // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004E2E begin
-
-		if(!empty($conditionString)){
-			$conditionDom =  $this->analyseExpression($conditionString, true);
-			$condition = $this->createCondition($conditionDom);
-			if(is_null($condition)){
-				throw new Exception("the condition \"{$conditionString}\" cannot be created for the inference rule {$rule->getLabel()}");
-			}else{
-				//delete old condition if exists:
-				$this->deleteCondition($rule);
-
-				//associate the new condition:
-				$returnValue = $rule->editPropertyValues(new core_kernel_classes_Property(PROPERTY_RULE_IF), $condition->uriResource);
-			}
-		}
-
-        // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004E2E end
-
-        return (bool) $returnValue;
-    }
-
-    /**
-     * Short description of method getActivitiesByProcess
-     *
-     * @access public
-     * @author Joel Bout, <joel.bout@tudor.lu>
-     * @param  Resource process
-     * @return array
-     */
-    public function getActivitiesByProcess( core_kernel_classes_Resource $process)
-    {
-        $returnValue = array();
-
-        // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004E32 begin
-		//connect ro new process def service:
-		$returnValue = $this->getAllActivities($process);
-        // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004E32 end
-
-        return (array) $returnValue;
-    }
-
-    /**
      * Short description of method getConnectorsByActivity
      *
      * @access public
@@ -1136,11 +1154,11 @@ class wfEngine_models_classes_ProcessAuthoringService
 		$connectorsClass = new core_kernel_classes_Class(CLASS_CONNECTORS);
 
 		if(in_array('prev',$option)){
-			$previousConnectors = $connectorsClass->searchInstances(array(PROPERTY_CONNECTORS_NEXTACTIVITIES => $activity->uriResource), array('like' => false, 'recursive' => 0));
+			$previousConnectors = $connectorsClass->searchInstances(array(PROPERTY_STEP_NEXT => $activity->uriResource), array('like' => false, 'recursive' => 0));
 			foreach ($previousConnectors as $connector){
 				if(!is_null($connector)){
 					if($connector instanceof core_kernel_classes_Resource ){
-						$returnValue['prev'][$connector->uriResource] = $connector;
+						$returnValue['prev'][$connector->uriResource] = $connector; 
 					}
 				}
 			}
@@ -1148,24 +1166,49 @@ class wfEngine_models_classes_ProcessAuthoringService
 
 		if(in_array('next',$option)){
 
-			$previousConnectors = $connectorsClass->searchInstances(array(PROPERTY_CONNECTORS_PREVIOUSACTIVITIES => $activity->uriResource), array('like' => false, 'recursive' => false));
-			foreach ($previousConnectors as $connector){
-				if(!is_null($connector)){
-					if($connector instanceof core_kernel_classes_Resource){
-						$returnValue['next'][$connector->uriResource] = $connector;
-						if($isConnector){
-							continue; //continue selecting potential other following activities or connector
-						}else{
-							break; //select the unique FOLLOWING connector in case of a real activity  (i.e. not a connector)
-						}
-					}
-				}
-			}
+			$connector = $activity->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_STEP_NEXT));
+			if($connector instanceof core_kernel_classes_Resource){
+				$returnValue['next'][$connector->uriResource] = $connector;
+			};
 		}
 
         // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004E35 end
 
         return (array) $returnValue;
+    }
+
+    /**
+     * Short description of method editCondition
+     *
+     * @access public
+     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @param  Resource rule
+     * @param  string conditionString
+     * @return boolean
+     */
+    public function editCondition( core_kernel_classes_Resource $rule, $conditionString)
+    {
+        $returnValue = (bool) false;
+
+        // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004E2E begin
+
+		if(!empty($conditionString)){
+			$conditionDom =  $this->analyseExpression($conditionString, true);
+			$condition = $this->createCondition($conditionDom);
+			if(is_null($condition)){
+				throw new Exception("the condition \"{$conditionString}\" cannot be created for the inference rule {$rule->getLabel()}");
+			}else{
+				//delete old condition if exists:
+				$this->deleteCondition($rule);
+
+				//associate the new condition:
+				$returnValue = $rule->editPropertyValues(new core_kernel_classes_Property(PROPERTY_RULE_IF), $condition->uriResource);
+			}
+		}
+
+        // section 10-13-1-39-2ae24d29:12d124aa1a7:-8000:0000000000004E2E end
+
+        return (bool) $returnValue;
     }
 
     /**
@@ -1401,8 +1444,7 @@ class wfEngine_models_classes_ProcessAuthoringService
 
 		$this->setConnectorType($connectorInstance, new core_kernel_classes_Resource(INSTANCE_TYPEOFCONNECTORS_PARALLEL));
 
-		$propNextActivities = new core_kernel_classes_Property(PROPERTY_CONNECTORS_NEXTACTIVITIES);
-		$propPreviousActivities = new core_kernel_classes_Resource(PROPERTY_CONNECTORS_PREVIOUSACTIVITIES);
+		$propNextActivities = new core_kernel_classes_Property(PROPERTY_STEP_NEXT);
 		$cardinalityService = wfEngine_models_classes_ActivityCardinalityService::singleton();
 
 		//remove old property values:
@@ -1412,7 +1454,7 @@ class wfEngine_models_classes_ProcessAuthoringService
 			if($cardinalityService->isCardinality($activityMultiplicityResource)){
 
 				//record the old split variables values in case it is needed (TODO: optimize this process)
-				$activity = $cardinalityService->getActivity($activityMultiplicityResource);
+				$activity = $cardinalityService->getDestination($activityMultiplicityResource);
 				$splitVars = $cardinalityService->getSplitVariables($activityMultiplicityResource);
 				if(!empty($splitVars)){
 					$oldSplitVariablesByActivity[$activity->uriResource] = $splitVars;
@@ -1458,6 +1500,14 @@ class wfEngine_models_classes_ProcessAuthoringService
 					//if it exists, we erase all previous activities:
 					//the previous acitivites must be related to the *exact* same activity-multiplicity objects as the parallel but not necessarily the same (e.g. parallel thread with more than 1 acitivty)
 					//we suppose that the previous activities of the found merge connector come *exactly* from the thread generated by its parallel connector (condition for a valid process design)
+					$prevActivities = wfEngine_models_classes_ConnectorService::singleton()->getPreviousActivities($joinConnector);
+					foreach ($prevActivities as $activityMultiplicityResource){
+						if($cardinalityService->isCardinality($activityMultiplicityResource)){
+							$activityMultiplicityResource->delete();
+						}
+						$prevActivities->removePropertyValues(new core_kernel_classes_Property(PROPERTY_STEP_NEXT));
+					}
+					/*
 					$prevActivitiesCollection = $joinConnector->getPropertyValuesCollection($propPreviousActivities);
 					foreach ($prevActivitiesCollection->getIterator() as $activityMultiplicityResource){
 						if($cardinalityService->isCardinality($activityMultiplicityResource)){
@@ -1465,6 +1515,7 @@ class wfEngine_models_classes_ProcessAuthoringService
 						}
 					}
 					$returnValue = $joinConnector->removePropertyValues($propPreviousActivities);
+					*/
 				}
 
 				$previousActvityUri = array_pop($processFlow->getCheckedActivities());
@@ -1478,8 +1529,13 @@ class wfEngine_models_classes_ProcessAuthoringService
 				}
 
 				if(!empty($previousActvityUri)){
-					$multiplicity = $cardinalityService->createCardinality(new core_kernel_classes_Resource($previousActvityUri), $count);
+					$previous = new core_kernel_classes_Resource($previousActvityUri);
+					$cardinality = $cardinalityService->createCardinality($joinConnector, $count);
+					$returnValue = $previous->setPropertyValues(new core_kernel_classes_Property(PROPERTY_STEP_NEXT), $cardinality);
+					/*
+					$multiplicity = $cardinalityService->createCardinality($previous, $count);
 					$returnValue = $joinConnector->setPropertyValue($propPreviousActivities, $multiplicity);
+					*/
 				}
 
 			}

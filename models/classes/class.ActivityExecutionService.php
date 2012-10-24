@@ -648,7 +648,7 @@ class wfEngine_models_classes_ActivityExecutionService
         $processFlow = new wfEngine_models_classes_ProcessFlow();
    		$parallelConnector = $processFlow->findParallelFromActivityBackward($activity);
    		if(!is_null($parallelConnector)){
-			 $returnValue = count($parallelConnector->getPropertyValues(new core_kernel_classes_Property(PROPERTY_CONNECTORS_NEXTACTIVITIES)));
+			 $returnValue = count($parallelConnector->getPropertyValues(new core_kernel_classes_Property(PROPERTY_STEP_NEXT)));
    		}
    		else{
    			$returnValue = 1;
@@ -1122,16 +1122,13 @@ class wfEngine_models_classes_ActivityExecutionService
                     if(count($nextActivities) > 1){
                         throw new wfEngine_models_classes_ProcessExecutionException("Too many next activities, only one is allowed after a join connector");
                     }
-                    $nextActivity = $nextActivities[0];
+                    $nextActivity = current($nextActivities);
                     
 					//get the activity around the connector
 		            $activityResourceArray = array();
-					$prevActivites = $connectorService->getPreviousActivities($connector);
-					$countPrevActivities = count($prevActivites);
-					for($i=0; $i<$countPrevActivities; $i++){
-						$activityCardinality = $prevActivites[$i];
+					foreach ($connectorService->getPreviousActivities($connector) as $activityCardinality) {
 						if($cardinalityService->isCardinality($activityCardinality)){
-							$activity = $cardinalityService->getActivity($activityCardinality);
+							$activity = $cardinalityService->getSource($activityCardinality);
 							$activityResourceArray[$activity->uriResource] = $cardinalityService->getCardinality($activityCardinality, $activityExecution);
 						}
 					}
@@ -1161,7 +1158,9 @@ class wfEngine_models_classes_ActivityExecutionService
 						$returnValue[$newActivityExecution->uriResource] = $newActivityExecution;
 					}
                     break;
-				}	
+				}
+                default:
+                	throw new common_exception_Error('Unknown connectortype for connector '.$connector->getUri());
             }
 			
 			if(!empty($returnValue)){
@@ -1700,7 +1699,7 @@ class wfEngine_models_classes_ActivityExecutionService
 		foreach($connectorService->getNextActivities($connector) as $cardinality){
 			if($cardinalityService->isCardinality($cardinality)){
 				$splitVars = $cardinalityService->getSplitVariables($cardinality);
-				$activity = $cardinalityService->getActivity($cardinality);
+				$activity = $cardinalityService->getDestination($cardinality);
 				
 				if(!is_null($activity) && !empty($splitVars)) {
 					$allSplitVariables[$activity->uriResource] = $splitVars;

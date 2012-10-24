@@ -708,7 +708,7 @@ class wfEngine_helpers_ProcessFormFactory extends tao_helpers_form_GenerisFormFa
 		$idPrefix = '';
 		$nextActivity = null;
 		$propTransitionRule = new core_kernel_classes_Property(PROPERTY_CONNECTORS_TRANSITIONRULE);
-		$propNextActivities = new core_kernel_classes_Property(PROPERTY_CONNECTORS_NEXTACTIVITIES);
+		$propNextActivities = new core_kernel_classes_Property(PROPERTY_STEP_NEXT);
 		//find the next activity if available
 		switch(strtolower($type)){
 			case 'next':
@@ -860,7 +860,7 @@ class wfEngine_helpers_ProcessFormFactory extends tao_helpers_form_GenerisFormFa
 					$cardinalityService = wfEngine_models_classes_ActivityCardinalityService::singleton();
 					foreach($nextActivity as $cardinality){
 
-						$activity = $cardinalityService->getActivity($cardinality);
+						$activity = $cardinalityService->getDestination($cardinality);
 						$number = $cardinalityService->getCardinality($cardinality);
 						if(isset($returnValue[$idPrefix.'_'.$activity->uriResource])){
 							$returnValue[$idPrefix.'_'.$activity->uriResource]->setValue(($number instanceof core_kernel_classes_Resource)?tao_helpers_Uri::encode($number->uriResource):intval($number));

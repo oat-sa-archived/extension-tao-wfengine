@@ -78,7 +78,8 @@ class wfEngineServiceTest extends UnitTestCase {
 		$userData = array(
 			PROPERTY_USER_LOGIN		=> 	$login,
 			PROPERTY_USER_PASSWORD	=>	md5($this->userPassword),
-			PROPERTY_USER_DEFLG		=>	'EN'
+			PROPERTY_USER_DEFLG		=>	'EN',
+			PROPERTY_USER_UILG		=>	'EN'
 		);
 		
 		$user = $this->userService->getOneUser($login);

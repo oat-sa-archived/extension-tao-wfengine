@@ -230,7 +230,7 @@ class wfEngine_models_classes_ProcessChecker
 		foreach($this->authoringService->getActivitiesByProcess($process) as $activity){
 			if(!$this->activityService->isInitial($activity)){
 				//should have a previous activity:
-				$connectors = $connectorsClass->searchInstances(array(PROPERTY_CONNECTORS_NEXTACTIVITIES => $activity->uriResource), array('like'=>false, 'recursive' => 0));
+				$connectors = $connectorsClass->searchInstances(array(PROPERTY_STEP_NEXT => $activity->uriResource), array('like'=>false, 'recursive' => 0));
 				if(empty($connectors)){
 					$returnValue = false;
 					$this->isolatedActivities[$activity->uriResource] = $activity;
@@ -344,7 +344,7 @@ class wfEngine_models_classes_ProcessChecker
         // section 10-13-1-39--7378788e:12e4d9bbe63:-8000:0000000000004FBD begin
 		$returnValue = true;//need to be initiated as true
 		
-		$propNextActivities = new core_kernel_classes_Property(PROPERTY_CONNECTORS_NEXTACTIVITIES);
+		$propNextActivities = new core_kernel_classes_Property(PROPERTY_STEP_NEXT);
 		foreach($connector->getPropertyValuesCollection($propNextActivities)->getIterator() as $nextActivityOrConnector){
 			
 			if($this->activityService->isActivity($nextActivityOrConnector)){
@@ -355,7 +355,7 @@ class wfEngine_models_classes_ProcessChecker
 					$returnValue = $isolated;
 				}
 			}else{
-				throw new Exception('the next acitivty is neither an activity nor a connector');
+				throw new common_exception_Error('the next acitivty of "'.$connector->getUri().'" is neither an activity nor a connector');
 			}
 		}
 		if($returnValue){
