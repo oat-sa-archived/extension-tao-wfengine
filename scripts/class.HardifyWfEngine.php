@@ -341,8 +341,8 @@ extends tao_scripts_Runner
     			}
     			self::out(" $percent %", array('color' => 'light_green', 'inline' => true, 'prefix' => "\r"));
     			 
-    			$dbWrapper->exec("OPTIMIZE TABLE `{$tables[$i]}`");
-    			$dbWrapper->exec("FLUSH TABLE `{$tables[$i]}`");
+    			$dbWrapper->query("OPTIMIZE TABLE `{$tables[$i]}`");
+    			$dbWrapper->query("FLUSH TABLE `{$tables[$i]}`");
     			 
     			$i++;
     		}
