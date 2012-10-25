@@ -64,9 +64,6 @@ $todefine = array(
 	
 	'CLASS_CONNECTORS'								=> NS_WFENGINE . '#ClassConnectors',
 	'PROPERTY_CONNECTORS_TRANSITIONRULE'			=> NS_WFENGINE . '#PropertyConnectorsTransitionRule',
-	// to remove
-	'PROPERTY_CONNECTORS_NEXTACTIVITIES'			=> NS_WFENGINE . '#PropertyStepNext',
-	//
 	'PROPERTY_CONNECTORS_ACTIVITYREFERENCE'			=> NS_WFENGINE . '#PropertyConnectorsActivityReference',
 	'PROPERTY_CONNECTORS_TYPE' 						=> NS_WFENGINE . '#PropertyConnectorsType',
 	'PROPERTY_CONNECTORS_NOTIFY'					=> NS_WFENGINE  .'#PropertyConnectorsNotificationModes',

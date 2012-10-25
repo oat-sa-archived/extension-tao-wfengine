@@ -222,34 +222,6 @@
     <rdfs:comment xml:lang="EN"><![CDATA[Call of Services]]></rdfs:comment>
     <rdfs:subClassOf rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassCallOfservicesResources"/>
   </rdf:Description>
-  <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyConnectorsNextActivities">
-    <rdfs:label xml:lang="EN"><![CDATA[nextActivities]]></rdfs:label>
-    <rdfs:range rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassActivities"/>
-	<rdfs:range rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassActivityCardinality"/>
-    <widget:widget rdf:resource="http://www.tao.lu/datatypes/WidgetDefinitions.rdf#CheckBox"/>
-    <rdfs:domain rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassConnectors"/>
-    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
-	<generis:Multiple rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#True" />
-  </rdf:Description>
-  <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivitiesNext">
-    <rdfs:label xml:lang="EN"><![CDATA[Connector of Activity]]></rdfs:label>
-    <rdfs:comment xml:lang="EN"><![CDATA[Connector of Activity]]></rdfs:comment>
-    <rdfs:dommain rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassActivities"/>
-    <rdfs:dommain rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassConnectors"/>
-    <rdfs:range rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassConnectors"/>
-	<rdfs:range rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassActivityCardinality"/>
-    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
-  </rdf:Description>
-  <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyConnectorsPreviousActivities">
-    <rdfs:label xml:lang="EN"><![CDATA[Previous Activities]]></rdfs:label>
-    <rdfs:comment xml:lang="EN"><![CDATA[Previous Activities]]></rdfs:comment>
-    <rdfs:range rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassActivities"/>
-	<rdfs:range rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassActivityCardinality"/>
-    <widget:widget rdf:resource="http://www.tao.lu/datatypes/WidgetDefinitions.rdf#CheckBox"/>
-    <rdfs:domain rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassConnectors"/>
-    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
-	<generis:Multiple rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#True" />
-  </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#InstanceTypeOfConnectorsSequence">
     <rdfs:label xml:lang="EN"><![CDATA[Sequence]]></rdfs:label>
     <rdfs:comment xml:lang="EN"><![CDATA[Sequence Connector Type]]></rdfs:comment>
@@ -866,14 +838,6 @@
     <rdfs:label xml:lang="EN"><![CDATA[Activity Cardinality]]></rdfs:label>
     <rdfs:comment xml:lang="EN"><![CDATA[Activity Cardinality]]></rdfs:comment>
     <rdfs:subClassOf rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassStep"/>
-  </rdf:Description>
-  <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityCardinalityActivity">
-    <rdfs:range rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassActivities"/>
-    <widget:widget rdf:resource="http://www.tao.lu/datatypes/WidgetDefinitions.rdf#ComboBox"/>
-    <rdfs:label xml:lang="EN"><![CDATA[Activity]]></rdfs:label>
-    <rdfs:comment xml:lang="EN"><![CDATA[Activity]]></rdfs:comment>
-    <rdfs:domain rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassActivityCardinality"/>
-    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityCardinalityCardinality">
     <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
