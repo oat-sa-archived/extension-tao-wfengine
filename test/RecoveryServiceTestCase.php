@@ -1,5 +1,5 @@
 <?php
-require_once dirname(__FILE__) . '/../../tao/test/TestRunner.php';
+require_once dirname(__FILE__) . '/../../tao/test/TaoTestRunner.php';
 include_once dirname(__FILE__) . '/../includes/raw_start.php';
 
 /**
@@ -25,7 +25,7 @@ class RecoveryServiceTestCase extends UnitTestCase {
 	 */
 	public function setUp(){
 		
-		TestRunner::initTest();
+		TaoTestRunner::initTest();
 		
 		$activityExecutionClass = new core_kernel_classes_Class(CLASS_ACTIVITY_EXECUTION);
 		$this->activityExecution = $activityExecutionClass->createInstance('test');

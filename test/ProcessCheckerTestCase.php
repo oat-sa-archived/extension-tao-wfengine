@@ -1,5 +1,5 @@
 <?php
-require_once dirname(__FILE__) . '/../../tao/test/TestRunner.php';
+require_once dirname(__FILE__) . '/../../tao/test/TaoTestRunner.php';
 include_once dirname(__FILE__) . '/../includes/raw_start.php';
 
 class ProcessCheckerTestCase extends UnitTestCase {
@@ -12,7 +12,7 @@ class ProcessCheckerTestCase extends UnitTestCase {
 	 * tests initialization
 	 */
 	public function setUp(){
-		TestRunner::initTest();
+		TaoTestRunner::initTest();
 		
 		$processDefinitionClass = new core_kernel_classes_Class(CLASS_PROCESS);
 		$processDefinition = $processDefinitionClass->createInstance('process of Checker UnitTest','created for the unit test of process cloner');

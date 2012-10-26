@@ -1,5 +1,5 @@
 <?php
-require_once dirname(__FILE__) . '/../../tao/test/TestRunner.php';
+require_once dirname(__FILE__) . '/../../tao/test/TaoTestRunner.php';
 include_once dirname(__FILE__) . '/../includes/raw_start.php';
 
 /**
@@ -47,7 +47,7 @@ class ConnectorServiceTestCase extends UnitTestCase {
      * tests initialization
      */
     public function setUp(){
-        TestRunner::initTest();
+        TaoTestRunner::initTest();
 
         $this->authoringService = wfEngine_models_classes_ProcessAuthoringService::singleton();
 		$this->variableService = wfEngine_models_classes_VariableService::singleton();
