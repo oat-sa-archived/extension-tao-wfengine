@@ -250,7 +250,6 @@
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#ClassConnectors">
     <rdfs:label xml:lang="EN"><![CDATA[Connectors]]></rdfs:label>
     <rdfs:comment xml:lang="EN"><![CDATA[Connectors]]></rdfs:comment>
-    <rdfs:subClassOf rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessDefinitionResources"/>
     <rdfs:subClassOf rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassActivities"/>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessVariables">
