@@ -226,7 +226,6 @@ class wfEngine_models_classes_ProcessChecker
 		
 		$connectorsClass = new core_kernel_classes_Class(CLASS_CONNECTORS);
 		$process = $this->process;
-		$apiModel = core_kernel_impl_ApiModelOO::singleton();
 		foreach($this->authoringService->getActivitiesByProcess($process) as $activity){
 			if(!$this->activityService->isInitial($activity)){
 				//should have a previous activity:

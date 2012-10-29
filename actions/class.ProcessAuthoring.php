@@ -750,19 +750,6 @@ class wfEngine_actions_ProcessAuthoring extends tao_actions_TaoModule {
 			//find whether it is a parameter IN or OUT:
 			
 			//method 1: use the connection relation between the subject serviceDefinition and the object formalParameter: 
-			//issue with the use of the same instance of formal parameter for both parameter in and out of an instance of a service definiton
-			/*
-			$formalParameterType = core_kernel_impl_ApiModelOO::getPredicate($serviceDefinition->uriResource, $formalParam->uriResource);
-			if(strcasecmp($formalParameterType->uriResource, PROPERTY_SERVICESDEFINITION_FORMALPARAMIN)==0){
-				$parameterInOrOut = PROPERTY_CALLOFSERVICES_ACTUALPARAMETERIN;
-			}elseif(strcasecmp($formalParameterType->uriResource, PROPERTY_SERVICESDEFINITION_FORMALPARAMOUT)==0){
-				$parameterInOrOut = PROPERTY_CALLOFSERVICES_ACTUALPARAMETEROUT;
-			}else{
-				//unknown actual parameter type to be bind to the current call of service
-				continue;
-			}
-			*/
-			
 			//method2: use the suffix of the name of the form input:
 			$index = 0;
 			$suffix = '';
