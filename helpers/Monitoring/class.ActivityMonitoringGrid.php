@@ -3,17 +3,17 @@
 error_reporting(E_ALL);
 
 /**
- * TAO - wfEngine/helpers/Monitoring/class.ActivityMonitoringGrid.php
+ * TAO - wfAuthoring/helpers/Monitoring/class.ActivityMonitoringGrid.php
  *
  * $Id$
  *
  * This file is part of TAO.
  *
- * Automatically generated on 16.11.2011, 10:31:40 with ArgoUML PHP module 
+ * Automatically generated on 29.10.2012, 09:08:10 with ArgoUML PHP module 
  * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
  *
- * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
- * @package wfEngine
+ * @author Joel Bout, <joel.bout@tudor.lu>
+ * @package wfAuthoring
  * @subpackage helpers_Monitoring
  */
 
@@ -24,7 +24,7 @@ if (0 > version_compare(PHP_VERSION, '5')) {
 /**
  * include tao_helpers_grid_GridContainer
  *
- * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+ * @author Joel Bout, <joel.bout@tudor.lu>
  */
 require_once('tao/helpers/grid/class.GridContainer.php');
 
@@ -37,14 +37,14 @@ require_once('tao/helpers/grid/class.GridContainer.php');
 // section 127-0-1-1-6c609706:1337d294662:-8000:0000000000003359-constants end
 
 /**
- * Short description of class wfEngine_helpers_Monitoring_ActivityMonitoringGrid
+ * Short description of class
  *
  * @access public
- * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
- * @package wfEngine
+ * @author Joel Bout, <joel.bout@tudor.lu>
+ * @package wfAuthoring
  * @subpackage helpers_Monitoring
  */
-class wfEngine_helpers_Monitoring_ActivityMonitoringGrid
+class wfAuthoring_helpers_Monitoring_ActivityMonitoringGrid
     extends tao_helpers_grid_GridContainer
 {
     // --- ASSOCIATIONS ---
@@ -66,7 +66,7 @@ class wfEngine_helpers_Monitoring_ActivityMonitoringGrid
      * Short description of method initColumns
      *
      * @access protected
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @return boolean
      */
     protected function initColumns()
@@ -103,17 +103,17 @@ class wfEngine_helpers_Monitoring_ActivityMonitoringGrid
 		
 		$returnValue = $this->grid->setColumnsAdapter(
 			$propertyUris,
-			new wfEngine_helpers_Monitoring_ActivityPropertiesAdapter(array('excludedProperties' => $excludedProperties))
+			new wfAuthoring_helpers_Monitoring_ActivityPropertiesAdapter(array('excludedProperties' => $excludedProperties))
 		);
 		
 		$this->grid->addColumn('variables', __('Variables'));
-		$returnValue = $this->grid->setColumnsAdapter('variables', new wfEngine_helpers_Monitoring_VariablesAdapter());
+		$returnValue = $this->grid->setColumnsAdapter('variables', new wfAuthoring_helpers_Monitoring_VariablesAdapter());
 		
         // section 127-0-1-1--521607b6:1338265e839:-8000:000000000000335E end
 
         return (bool) $returnValue;
     }
 
-} /* end of class wfEngine_helpers_Monitoring_ActivityMonitoringGrid */
+} /* end of class wfAuthoring_helpers_Monitoring_ActivityMonitoringGrid */
 
 ?>

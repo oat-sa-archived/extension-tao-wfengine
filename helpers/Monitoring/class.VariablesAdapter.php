@@ -3,17 +3,17 @@
 error_reporting(E_ALL);
 
 /**
- * TAO - wfEngine/helpers/Monitoring/class.VariablesAdapter.php
+ * TAO - wfAuthoring/helpers/Monitoring/class.VariablesAdapter.php
  *
  * $Id$
  *
  * This file is part of TAO.
  *
- * Automatically generated on 15.11.2011, 16:42:32 with ArgoUML PHP module 
+ * Automatically generated on 29.10.2012, 09:08:10 with ArgoUML PHP module 
  * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
  *
- * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
- * @package wfEngine
+ * @author Joel Bout, <joel.bout@tudor.lu>
+ * @package wfAuthoring
  * @subpackage helpers_Monitoring
  */
 
@@ -24,7 +24,7 @@ if (0 > version_compare(PHP_VERSION, '5')) {
 /**
  * include tao_helpers_grid_Cell_SubgridAdapter
  *
- * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+ * @author Joel Bout, <joel.bout@tudor.lu>
  */
 require_once('tao/helpers/grid/Cell/class.SubgridAdapter.php');
 
@@ -37,14 +37,14 @@ require_once('tao/helpers/grid/Cell/class.SubgridAdapter.php');
 // section 127-0-1-1--5e069f0e:133a7dcfc6a:-8000:00000000000033F4-constants end
 
 /**
- * Short description of class wfEngine_helpers_Monitoring_VariablesAdapter
+ * Short description of class wfAuthoring_helpers_Monitoring_VariablesAdapter
  *
  * @access public
- * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
- * @package wfEngine
+ * @author Joel Bout, <joel.bout@tudor.lu>
+ * @package wfAuthoring
  * @subpackage helpers_Monitoring
  */
-class wfEngine_helpers_Monitoring_VariablesAdapter
+class wfAuthoring_helpers_Monitoring_VariablesAdapter
     extends tao_helpers_grid_Cell_SubgridAdapter
 {
     // --- ASSOCIATIONS ---
@@ -58,7 +58,7 @@ class wfEngine_helpers_Monitoring_VariablesAdapter
      * Short description of method getSubgridRows
      *
      * @access public
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  string rowId
      * @return array
      */
@@ -84,7 +84,7 @@ class wfEngine_helpers_Monitoring_VariablesAdapter
      * Short description of method initSubgridOptions
      *
      * @access public
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @return mixed
      */
     public function initSubgridOptions()
@@ -98,17 +98,17 @@ class wfEngine_helpers_Monitoring_VariablesAdapter
      * Short description of method initSubgridClass
      *
      * @access public
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  subgridClass
      * @return mixed
      */
     public function initSubgridClass($subgridClass = '')
     {
         // section 127-0-1-1--5e069f0e:133a7dcfc6a:-8000:00000000000033FE begin
-		$this->subgridClass = 'wfEngine_helpers_Monitoring_ActivityVariablesGrid';
+		$this->subgridClass = 'wfAuthoring_helpers_Monitoring_ActivityVariablesGrid';
         // section 127-0-1-1--5e069f0e:133a7dcfc6a:-8000:00000000000033FE end
     }
 
-} /* end of class wfEngine_helpers_Monitoring_VariablesAdapter */
+} /* end of class wfAuthoring_helpers_Monitoring_VariablesAdapter */
 
 ?>

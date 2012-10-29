@@ -3,17 +3,17 @@
 error_reporting(E_ALL);
 
 /**
- * TAO - wfEngine/helpers/Monitoring/class.ActivityPropertiesAdapter.php
+ * TAO - wfAuthoring/helpers/Monitoring/class.ActivityPropertiesAdapter.php
  *
  * $Id$
  *
  * This file is part of TAO.
  *
- * Automatically generated on 08.11.2011, 11:06:27 with ArgoUML PHP module 
+ * Automatically generated on 29.10.2012, 09:08:10 with ArgoUML PHP module 
  * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
  *
- * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
- * @package wfEngine
+ * @author Joel Bout, <joel.bout@tudor.lu>
+ * @package wfAuthoring
  * @subpackage helpers_Monitoring
  */
 
@@ -24,7 +24,7 @@ if (0 > version_compare(PHP_VERSION, '5')) {
 /**
  * include tao_helpers_grid_Cell_Adapter
  *
- * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+ * @author Joel Bout, <joel.bout@tudor.lu>
  */
 require_once('tao/helpers/grid/Cell/class.Adapter.php');
 
@@ -40,11 +40,11 @@ require_once('tao/helpers/grid/Cell/class.Adapter.php');
  * Short description of class
  *
  * @access public
- * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
- * @package wfEngine
+ * @author Joel Bout, <joel.bout@tudor.lu>
+ * @package wfAuthoring
  * @subpackage helpers_Monitoring
  */
-class wfEngine_helpers_Monitoring_ActivityPropertiesAdapter
+class wfAuthoring_helpers_Monitoring_ActivityPropertiesAdapter
     extends tao_helpers_grid_Cell_Adapter
 {
     // --- ASSOCIATIONS ---
@@ -58,7 +58,7 @@ class wfEngine_helpers_Monitoring_ActivityPropertiesAdapter
      * Short description of method getValue
      *
      * @access public
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  string rowId
      * @param  string columnId
      * @param  string data
@@ -162,6 +162,6 @@ class wfEngine_helpers_Monitoring_ActivityPropertiesAdapter
         return $returnValue;
     }
 
-} /* end of class wfEngine_helpers_Monitoring_ActivityPropertiesAdapter */
+} /* end of class wfAuthoring_helpers_Monitoring_ActivityPropertiesAdapter */
 
 ?>

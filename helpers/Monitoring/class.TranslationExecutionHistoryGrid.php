@@ -12,15 +12,15 @@ if (0 > version_compare(PHP_VERSION, '5')) {
     die('This file was generated for PHP 5');
 }
 /**
- * Short description of class wfEngine_helpers_Monitoring_ExecutionHistoryGrid
+ * Short description of class wfAuthoring_helpers_Monitoring_ExecutionHistoryGrid
  *
  * @access public
  * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
  * @package wfEngine
  * @subpackage helpers_Monitoring
  */
-class wfEngine_helpers_Monitoring_TranslationExecutionHistoryGrid
-    extends wfEngine_helpers_Monitoring_TranslationActivityMonitoringGrid
+class wfAuthoring_helpers_Monitoring_TranslationExecutionHistoryGrid
+    extends wfAuthoring_helpers_Monitoring_TranslationActivityMonitoringGrid
 {
     /**
      * Short description of method __construct

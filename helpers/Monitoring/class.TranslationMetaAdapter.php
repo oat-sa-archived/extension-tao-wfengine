@@ -13,7 +13,7 @@ require_once('wfEngine/test/TranslationProcess/TranslationProcessHelper.php');
  * @package wfEngine
  * @subpackage helpers_Monitoring
  */
-class wfEngine_helpers_Monitoring_TranslationMetaAdapter
+class wfAuthoring_helpers_Monitoring_TranslationMetaAdapter
     extends tao_helpers_grid_Cell_Adapter
 {
 	public function getValue($rowId, $columnId, $data = null)

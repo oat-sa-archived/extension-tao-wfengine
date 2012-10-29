@@ -18,15 +18,15 @@ if (0 > version_compare(PHP_VERSION, '5')) {
 
 
 /**
- * Short description of class wfEngine_helpers_Monitoring_ProcessMonitoringGrid
+ * Short description of class wfAuthoring_helpers_Monitoring_ProcessMonitoringGrid
  *
  * @access public
  * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
  * @package wfEngine
  * @subpackage helpers_Monitoring
  */
-class wfEngine_helpers_Monitoring_TranslationActivityMonitoringGrid
-    extends wfEngine_helpers_Monitoring_ActivityMonitoringGrid
+class wfAuthoring_helpers_Monitoring_TranslationActivityMonitoringGrid
+    extends wfAuthoring_helpers_Monitoring_ActivityMonitoringGrid
 {
 
     /**
@@ -55,7 +55,7 @@ class wfEngine_helpers_Monitoring_TranslationActivityMonitoringGrid
 				'vff',
 				'vff_version'
 			),
-			new wfEngine_helpers_Monitoring_VersionedFileAdapter()
+			new wfAuthoring_helpers_Monitoring_VersionedFileAdapter()
 		);
 		
         return (bool) $returnValue;

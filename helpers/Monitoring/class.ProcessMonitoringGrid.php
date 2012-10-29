@@ -3,17 +3,17 @@
 error_reporting(E_ALL);
 
 /**
- * TAO - wfEngine/helpers/Monitoring/class.ProcessMonitoringGrid.php
+ * TAO - wfAuthoring/helpers/Monitoring/class.ProcessMonitoringGrid.php
  *
  * $Id$
  *
  * This file is part of TAO.
  *
- * Automatically generated on 16.11.2011, 10:26:42 with ArgoUML PHP module 
+ * Automatically generated on 29.10.2012, 09:08:10 with ArgoUML PHP module 
  * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
  *
- * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
- * @package wfEngine
+ * @author Joel Bout, <joel.bout@tudor.lu>
+ * @package wfAuthoring
  * @subpackage helpers_Monitoring
  */
 
@@ -24,7 +24,7 @@ if (0 > version_compare(PHP_VERSION, '5')) {
 /**
  * include tao_helpers_grid_GridContainer
  *
- * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+ * @author Joel Bout, <joel.bout@tudor.lu>
  */
 require_once('tao/helpers/grid/class.GridContainer.php');
 
@@ -37,14 +37,14 @@ require_once('tao/helpers/grid/class.GridContainer.php');
 // section 127-0-1-1--17d909f0:1336f22bf6e:-8000:00000000000032D7-constants end
 
 /**
- * Short description of class wfEngine_helpers_Monitoring_ProcessMonitoringGrid
+ * Short description of class
  *
  * @access public
- * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
- * @package wfEngine
+ * @author Joel Bout, <joel.bout@tudor.lu>
+ * @package wfAuthoring
  * @subpackage helpers_Monitoring
  */
-class wfEngine_helpers_Monitoring_ProcessMonitoringGrid
+class wfAuthoring_helpers_Monitoring_ProcessMonitoringGrid
     extends tao_helpers_grid_GridContainer
 {
     // --- ASSOCIATIONS ---
@@ -66,7 +66,7 @@ class wfEngine_helpers_Monitoring_ProcessMonitoringGrid
      * Short description of method initColumns
      *
      * @access protected
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @return boolean
      */
     protected function initColumns()
@@ -96,7 +96,7 @@ class wfEngine_helpers_Monitoring_ProcessMonitoringGrid
 		
 		$returnValue = $this->grid->setColumnsAdapter(
 			$propertyUris,
-			new wfEngine_helpers_Monitoring_ProcessPropertiesAdapter(array('excludedProperties' => $excludedProperties))
+			new wfAuthoring_helpers_Monitoring_ProcessPropertiesAdapter(array('excludedProperties' => $excludedProperties))
 		);
 		
 		$this->initCurrentActivityColumn();
@@ -109,7 +109,7 @@ class wfEngine_helpers_Monitoring_ProcessMonitoringGrid
      * Can be easily extended to adapt the current activity executions column
      *
      * @access protected
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @return boolean
      */
     protected function initCurrentActivityColumn()
@@ -129,13 +129,13 @@ class wfEngine_helpers_Monitoring_ProcessMonitoringGrid
 		$this->grid->addColumn(PROPERTY_PROCESSINSTANCES_CURRENTACTIVITYEXECUTIONS, __('Current Activities'));
 		$returnValue = $this->grid->setColumnsAdapter(
 			PROPERTY_PROCESSINSTANCES_CURRENTACTIVITYEXECUTIONS,
-			new wfEngine_helpers_Monitoring_CurrentActivitiesAdapter()
+			new wfAuthoring_helpers_Monitoring_CurrentActivitiesAdapter()
 		);	
         // section 127-0-1-1--715d45eb:13387d0ab1e:-8000:0000000000003364 end
 
         return (bool) $returnValue;
     }
 
-} /* end of class wfEngine_helpers_Monitoring_ProcessMonitoringGrid */
+} /* end of class wfAuthoring_helpers_Monitoring_ProcessMonitoringGrid */
 
 ?>

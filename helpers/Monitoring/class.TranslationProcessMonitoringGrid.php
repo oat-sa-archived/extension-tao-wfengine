@@ -18,15 +18,15 @@ if (0 > version_compare(PHP_VERSION, '5')) {
 
 
 /**
- * Short description of class wfEngine_helpers_Monitoring_ProcessMonitoringGrid
+ * Short description of class wfAuthoring_helpers_Monitoring_ProcessMonitoringGrid
  *
  * @access public
  * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
  * @package wfEngine
  * @subpackage helpers_Monitoring
  */
-class wfEngine_helpers_Monitoring_TranslationProcessMonitoringGrid
-    extends wfEngine_helpers_Monitoring_ProcessMonitoringGrid
+class wfAuthoring_helpers_Monitoring_TranslationProcessMonitoringGrid
+    extends wfAuthoring_helpers_Monitoring_ProcessMonitoringGrid
 {
 
     /**
@@ -48,7 +48,7 @@ class wfEngine_helpers_Monitoring_TranslationProcessMonitoringGrid
 		
 		$returnValue = $this->grid->setColumnsAdapter(
 			array('unit', 'country', 'language'),
-			new wfEngine_helpers_Monitoring_TranslationMetaAdapter()
+			new wfAuthoring_helpers_Monitoring_TranslationMetaAdapter()
 		);	
 		
         return (bool) $returnValue;
@@ -69,9 +69,9 @@ class wfEngine_helpers_Monitoring_TranslationProcessMonitoringGrid
 		$this->grid->addColumn(PROPERTY_PROCESSINSTANCES_CURRENTACTIVITYEXECUTIONS, __('Current Activities'));
 		$returnValue = $this->grid->setColumnsAdapter(
 			PROPERTY_PROCESSINSTANCES_CURRENTACTIVITYEXECUTIONS,
-			new wfEngine_helpers_Monitoring_CurrentActivitiesAdapter(
+			new wfAuthoring_helpers_Monitoring_CurrentActivitiesAdapter(
 				array('excludedProperties' => $this->excludedProperties),
-				'wfEngine_helpers_Monitoring_TranslationActivityMonitoringGrid'
+				'wfAuthoring_helpers_Monitoring_TranslationActivityMonitoringGrid'
 			)
 		);	
         // section 127-0-1-1--715d45eb:13387d0ab1e:-8000:0000000000003364 end

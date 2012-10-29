@@ -5,8 +5,8 @@ error_reporting(E_ALL);
 /**
  * Gives the activity monitoring Grid
  *
- * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
- * @package wfEngine
+ * @author Joel Bout, <joel.bout@tudor.lu>
+ * @package wfAuthoring
  * @subpackage helpers_Monitoring
  */
 
@@ -17,7 +17,7 @@ if (0 > version_compare(PHP_VERSION, '5')) {
 /**
  * include tao_helpers_grid_Cell_SubgridAdapter
  *
- * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+ * @author Joel Bout, <joel.bout@tudor.lu>
  */
 require_once('tao/helpers/grid/Cell/class.SubgridAdapter.php');
 
@@ -33,11 +33,11 @@ require_once('tao/helpers/grid/Cell/class.SubgridAdapter.php');
  * Gives the activity monitoring Grid
  *
  * @access public
- * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
- * @package wfEngine
+ * @author Joel Bout, <joel.bout@tudor.lu>
+ * @package wfAuthoring
  * @subpackage helpers_Monitoring
  */
-class wfEngine_helpers_Monitoring_CurrentActivitiesAdapter
+class wfAuthoring_helpers_Monitoring_CurrentActivitiesAdapter
     extends tao_helpers_grid_Cell_SubgridAdapter
 {
     // --- ASSOCIATIONS ---
@@ -51,7 +51,7 @@ class wfEngine_helpers_Monitoring_CurrentActivitiesAdapter
      * Short description of method getSubgridRows
      *
      * @access public
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  string rowId
      * @return array
      */
@@ -73,7 +73,7 @@ class wfEngine_helpers_Monitoring_CurrentActivitiesAdapter
      * Short description of method initSubgridOptions
      *
      * @access public
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @return mixed
      */
     public function initSubgridOptions()
@@ -87,14 +87,14 @@ class wfEngine_helpers_Monitoring_CurrentActivitiesAdapter
      * Short description of method initSubgridClass
      *
      * @access public
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  subgridClass
      * @return mixed
      */
     public function initSubgridClass($subgridClass = '')
     {
         // section 127-0-1-1-72bb438:1338cba5f73:-8000:00000000000033A1 begin
-		$this->subgridClass = 'wfEngine_helpers_Monitoring_ActivityMonitoringGrid';
+		$this->subgridClass = 'wfAuthoring_helpers_Monitoring_ActivityMonitoringGrid';
 		if(!empty($subgridClass)){
 			if(class_exists($subgridClass)){
 				$this->subgridClass = $subgridClass;
@@ -105,6 +105,6 @@ class wfEngine_helpers_Monitoring_CurrentActivitiesAdapter
         // section 127-0-1-1-72bb438:1338cba5f73:-8000:00000000000033A1 end
     }
 
-} /* end of class wfEngine_helpers_Monitoring_CurrentActivitiesAdapter */
+} /* end of class wfAuthoring_helpers_Monitoring_CurrentActivitiesAdapter */
 
 ?>

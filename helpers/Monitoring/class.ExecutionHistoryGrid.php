@@ -3,17 +3,17 @@
 error_reporting(E_ALL);
 
 /**
- * TAO - wfEngine/helpers/Monitoring/class.ExecutionHistoryGrid.php
+ * TAO - wfAuthoring/helpers/Monitoring/class.ExecutionHistoryGrid.php
  *
  * $Id$
  *
  * This file is part of TAO.
  *
- * Automatically generated on 13.03.2012, 17:10:10 with ArgoUML PHP module 
+ * Automatically generated on 29.10.2012, 09:48:14 with ArgoUML PHP module 
  * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
  *
- * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
- * @package wfEngine
+ * @author Joel Bout, <joel.bout@tudor.lu>
+ * @package wfAuthoring
  * @subpackage helpers_Monitoring
  */
 
@@ -22,11 +22,11 @@ if (0 > version_compare(PHP_VERSION, '5')) {
 }
 
 /**
- * include wfEngine_helpers_Monitoring_ActivityMonitoringGrid
+ * include wfAuthoring_helpers_Monitoring_ActivityMonitoringGrid
  *
- * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+ * @author Joel Bout, <joel.bout@tudor.lu>
  */
-require_once('wfEngine/helpers/Monitoring/class.ActivityMonitoringGrid.php');
+require_once('wfAuthoring/helpers/Monitoring/class.ActivityMonitoringGrid.php');
 
 /* user defined includes */
 // section 127-0-1-1-41d91020:13392d7ae4a:-8000:00000000000033A3-includes begin
@@ -37,15 +37,15 @@ require_once('wfEngine/helpers/Monitoring/class.ActivityMonitoringGrid.php');
 // section 127-0-1-1-41d91020:13392d7ae4a:-8000:00000000000033A3-constants end
 
 /**
- * Short description of class wfEngine_helpers_Monitoring_ExecutionHistoryGrid
+ * Short description of class
  *
  * @access public
- * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
- * @package wfEngine
+ * @author Joel Bout, <joel.bout@tudor.lu>
+ * @package wfAuthoring
  * @subpackage helpers_Monitoring
  */
-class wfEngine_helpers_Monitoring_ExecutionHistoryGrid
-    extends wfEngine_helpers_Monitoring_ActivityMonitoringGrid
+class wfAuthoring_helpers_Monitoring_ExecutionHistoryGrid
+    extends wfAuthoring_helpers_Monitoring_ActivityMonitoringGrid
 {
     // --- ASSOCIATIONS ---
 
@@ -58,7 +58,7 @@ class wfEngine_helpers_Monitoring_ExecutionHistoryGrid
      * Short description of method __construct
      *
      * @access public
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  Resource processExecution
      * @param  array options
      * @return boolean
@@ -76,6 +76,6 @@ class wfEngine_helpers_Monitoring_ExecutionHistoryGrid
         return (bool) $returnValue;
     }
 
-} /* end of class wfEngine_helpers_Monitoring_ExecutionHistoryGrid */
+} /* end of class wfAuthoring_helpers_Monitoring_ExecutionHistoryGrid */
 
 ?>

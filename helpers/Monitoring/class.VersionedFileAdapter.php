@@ -3,17 +3,17 @@
 error_reporting(E_ALL);
 
 /**
- * TAO - wfEngine/helpers/Monitoring/class.VersionedFileAdapter.php
+ * TAO - wfAuthoring/helpers/Monitoring/class.VersionedFileAdapter.php
  *
  * $Id$
  *
  * This file is part of TAO.
  *
- * Automatically generated on 08.11.2011, 11:06:27 with ArgoUML PHP module 
+ * Automatically generated on 29.10.2012, 09:08:10 with ArgoUML PHP module 
  * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
  *
- * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
- * @package wfEngine
+ * @author Joel Bout, <joel.bout@tudor.lu>
+ * @package wfAuthoring
  * @subpackage helpers_Monitoring
  */
 
@@ -24,7 +24,7 @@ if (0 > version_compare(PHP_VERSION, '5')) {
 /**
  * include tao_helpers_grid_Cell_Adapter
  *
- * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+ * @author Joel Bout, <joel.bout@tudor.lu>
  */
 require_once('tao/helpers/grid/Cell/class.Adapter.php');
 
@@ -37,14 +37,14 @@ require_once('tao/helpers/grid/Cell/class.Adapter.php');
 // section 127-0-1-1-6c609706:1337d294662:-8000:0000000000003302-constants end
 
 /**
- * Short description of class wfEngine_helpers_Monitoring_VersionedFileAdapter
+ * Short description of class
  *
  * @access public
- * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
- * @package wfEngine
+ * @author Joel Bout, <joel.bout@tudor.lu>
+ * @package wfAuthoring
  * @subpackage helpers_Monitoring
  */
-class wfEngine_helpers_Monitoring_VersionedFileAdapter
+class wfAuthoring_helpers_Monitoring_VersionedFileAdapter
     extends tao_helpers_grid_Cell_Adapter
 {
     // --- ASSOCIATIONS ---
@@ -58,7 +58,7 @@ class wfEngine_helpers_Monitoring_VersionedFileAdapter
      * Short description of method getValue
      *
      * @access public
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  string rowId
      * @param  string columnId
      * @param  string data
@@ -154,20 +154,7 @@ class wfEngine_helpers_Monitoring_VersionedFileAdapter
 
         return $returnValue;
     }
-	
-	private function getTranslationFileProperty($type, $countryCode, $langCode){
-		
-		$returnValue = null;
-		
-		$uri = LOCAL_NAMESPACE.'#Property_'.strtoupper($type).'_'.strtoupper($countryCode).'_'.strtolower($langCode);
-		$property = new core_kernel_classes_Property($uri);
-		if($property->exists()){
-			$returnValue = $property;
-		}
-		
-		return $returnValue;
-	}
 
-} /* end of class wfEngine_helpers_Monitoring_VersionedFileAdapter */
+} /* end of class wfAuthoring_helpers_Monitoring_VersionedFileAdapter */
 
 ?>
