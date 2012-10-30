@@ -481,7 +481,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 	
 	public function testCreatePBAProcess(){
 		
-		$authoringService = wfEngine_models_classes_ProcessAuthoringService::singleton();
+		$authoringService = wfAuthoring_models_classes_ProcessService::singleton();
 		$activityService = wfEngine_models_classes_ActivityService::singleton();
 		$connectorService = wfEngine_models_classes_ConnectorService::singleton();
 		$cardinalityService = wfEngine_models_classes_ActivityCardinalityService::singleton();
@@ -611,7 +611,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 	
 	public function testCreateBookletProcess(){
 		
-	$authoringService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ProcessAuthoringService');
+		$authoringService = wfAuthoring_models_classes_ProcessService::singleton();
 		$activityService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_ActivityService');
 		$processVariableService = tao_models_classes_ServiceFactory::get('wfEngine_models_classes_VariableService');
 		
@@ -732,7 +732,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 	
 	public function testCreateBQProcess(){
 		
-		$authoringService = wfEngine_models_classes_ProcessAuthoringService::singleton();
+		$authoringService = wfAuthoring_models_classes_ProcessService::singleton();
 		$activityService = wfEngine_models_classes_ActivityService::singleton();
 		$connectorService = wfEngine_models_classes_ConnectorService::singleton();
 		$processVariableService = wfEngine_models_classes_VariableService::singleton();
@@ -867,7 +867,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 			return;
 		}
 		
-		$authoringService = wfEngine_models_classes_ProcessAuthoringService::singleton();
+		$authoringService = wfAuthoring_models_classes_ProcessService::singleton();
 		$activityService = wfEngine_models_classes_ActivityService::singleton();
 		$connectorService = wfEngine_models_classes_ConnectorService::singleton();
 		$processVariableService = wfEngine_models_classes_VariableService::singleton();
@@ -2675,7 +2675,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		
 		foreach($this->processDefinition as $process){
 			if($process instanceof core_kernel_classes_Resource) {
-				$authoringService = wfEngine_models_classes_ProcessAuthoringService::singleton();
+				$authoringService = wfAuthoring_models_classes_ProcessService::singleton();
 				$this->assertTrue($authoringService->deleteProcess($process));
 				$this->assertFalse($process->exists());
 			}

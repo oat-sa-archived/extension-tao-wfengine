@@ -128,7 +128,7 @@ class ProcessExecutionServiceTestCase extends UnitTestCase{
 		try{
 			$t_start = microtime(true);
 			
-			$authoringService = wfEngine_models_classes_ProcessAuthoringService::singleton();
+			$authoringService = wfAuthoring_models_classes_ProcessService::singleton();
 			$activityExecutionService = wfEngine_models_classes_ActivityExecutionService::singleton();
 			$activityExecutionService->cache = (bool) self::SERVICE_CACHE;
 			$this->service = wfEngine_models_classes_ProcessExecutionService::singleton();
@@ -407,7 +407,7 @@ class ProcessExecutionServiceTestCase extends UnitTestCase{
 		//init services
 		$activityService = wfEngine_models_classes_ActivityService::singleton();
 		$processVariableService = wfEngine_models_classes_VariableService::singleton();
-		$authoringService = wfEngine_models_classes_ProcessAuthoringService::singleton();
+		$authoringService = wfAuthoring_models_classes_ProcessService::singleton();
 		$activityExecutionService = wfEngine_models_classes_ActivityExecutionService::singleton();
 		$activityExecutionService->cache = (bool) self::SERVICE_CACHE;
 		
@@ -493,7 +493,7 @@ class ProcessExecutionServiceTestCase extends UnitTestCase{
 			$parallelActivity1->uriResource => array($splitVariable1),
 			$parallelActivity2->uriResource => array($splitVariable1, $splitVariable2)
 		);
-		$connectorService = wfEngine_models_classes_ConnectorService::singleton();
+		$connectorService = wfAuthoring_models_classes_ConnectorService::singleton();
 		$connectorService->setSplitVariables($connector0, $splitVariablesArray);
 		
 		$prallelActivitiesArray[$parallelActivity2->uriResource] = $parallelCount2;
@@ -502,7 +502,7 @@ class ProcessExecutionServiceTestCase extends UnitTestCase{
 		$joinActivity = $authoringService->createActivity($processDefinition, 'activity3');
 
 		//join parallel Activity 1 and 2 to "joinActivity"
-		$connector1 = $authoringService->createJoinConnector(array($parallelActivity1,$parallelActivity2),$joinActivity);
+		$connector1 = wfAuthoring_models_classes_ConnectorService::singleton()->createJoin(array($parallelActivity1,$parallelActivity2),$joinActivity);
 		/*
 		$authoringService->createJoinActivity($connector1, $joinActivity, '', $parallelActivity1);
 		$authoringService->createJoinActivity($connector2, $joinActivity, '', $parallelActivity2);

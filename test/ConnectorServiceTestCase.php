@@ -49,7 +49,7 @@ class ConnectorServiceTestCase extends UnitTestCase {
     public function setUp(){
         TaoTestRunner::initTest();
 
-        $this->authoringService = wfEngine_models_classes_ProcessAuthoringService::singleton();
+        $this->authoringService = wfAuthoring_models_classes_ProcessService::singleton();
 		$this->variableService = wfEngine_models_classes_VariableService::singleton();
 		
         $processDefinitionClass = new core_kernel_classes_Class(CLASS_PROCESS);
@@ -161,7 +161,7 @@ class ConnectorServiceTestCase extends UnitTestCase {
 
         $this->authoringService->setParallelActivities($connector2, $newActivitiesArray);
         $activity6 = $this->authoringService->createActivity($this->processDefinition);
-        $connector3 = $this->authoringService->createJoinconnector(array($activity4, $activity5), $activity6);
+		$connector3 = wfAuthoring_models_classes_ConnectorService::singleton()->createJoin(array($activity4, $activity5), $activity6);
         /*
         $activity6 = $this->authoringService->createJoinActivity($connector3, null, '', $activity4);
 		$activity7 = $this->authoringService->createJoinActivity($connector4, $activity6, '', $activity5);
@@ -262,7 +262,7 @@ class ConnectorServiceTestCase extends UnitTestCase {
 
         $this->authoringService->setParallelActivities($connector2, $newActivitiesArray);
         $activity6 = $this->authoringService->createActivity($this->processDefinition);
-        $connector3 = $this->authoringService->createJoinconnector(array($activity4, $activity5), $activity6);
+        $connector3 = wfAuthoring_models_classes_ConnectorService::singleton()->createJoin(array($activity4, $activity5), $activity6);
         /*
         $activity6 = $this->authoringService->createJoinActivity($connector3, null, '', $activity4);
 		$activity7 = $this->authoringService->createJoinActivity($connector4, $activity6, '', $activity5);
@@ -378,7 +378,7 @@ class ConnectorServiceTestCase extends UnitTestCase {
 
         $this->authoringService->setParallelActivities($connector2, $newActivitiesArray);
         $activity6 = $this->authoringService->createActivity($this->processDefinition);
-        $connector3 = $this->authoringService->createJoinConnector(array($activity4, $activity5), $activity6);
+        $connector3 = wfAuthoring_models_classes_ConnectorService::singleton()->createJoin(array($activity4, $activity5), $activity6);
         /*
         $activity6 = $this->authoringService->createJoinActivity($connector3, null, '', $activity4);
 		$activity7 = $this->authoringService->createJoinActivity($connector4, $activity6, '', $activity5);

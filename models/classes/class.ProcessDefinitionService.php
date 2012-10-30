@@ -9,10 +9,10 @@ error_reporting(E_ALL);
  *
  * This file is part of TAO.
  *
- * Automatically generated on 14.11.2011, 11:28:39 with ArgoUML PHP module 
+ * Automatically generated on 29.10.2012, 15:36:37 with ArgoUML PHP module 
  * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
  *
- * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+ * @author Joel Bout, <joel.bout@tudor.lu>
  * @package wfEngine
  * @subpackage models_classes
  */
@@ -25,7 +25,7 @@ if (0 > version_compare(PHP_VERSION, '5')) {
  * The Service class is an abstraction of each service instance. 
  * Used to centralize the behavior related to every servcie instances.
  *
- * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+ * @author Joel Bout, <joel.bout@tudor.lu>
  */
 require_once('tao/models/classes/class.GenerisService.php');
 
@@ -41,7 +41,7 @@ require_once('tao/models/classes/class.GenerisService.php');
  * Short description of class wfEngine_models_classes_ProcessDefinitionService
  *
  * @access public
- * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+ * @author Joel Bout, <joel.bout@tudor.lu>
  * @package wfEngine
  * @subpackage models_classes
  */
@@ -83,7 +83,7 @@ class wfEngine_models_classes_ProcessDefinitionService
      * Short description of method getRootActivities
      *
      * @access public
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  Resource processDefinition
      * @return array
      */
@@ -116,7 +116,7 @@ class wfEngine_models_classes_ProcessDefinitionService
      * Short description of method getAllActivities
      *
      * @access public
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  Resource processDefinition
      * @return array
      */
@@ -139,7 +139,7 @@ class wfEngine_models_classes_ProcessDefinitionService
      * Short description of method getProcessVars
      *
      * @access public
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  Resource processDefinition
      * @return array
      */
@@ -183,7 +183,7 @@ class wfEngine_models_classes_ProcessDefinitionService
      * Short description of method __construct
      *
      * @access public
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @return mixed
      */
     public function __construct()
@@ -202,7 +202,7 @@ class wfEngine_models_classes_ProcessDefinitionService
      * Short description of method setProcessVariable
      *
      * @access public
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  Resource processDefinition
      * @param  string processVariable
      * @return boolean
@@ -232,7 +232,7 @@ class wfEngine_models_classes_ProcessDefinitionService
      * Short description of method setRootActivities
      *
      * @access public
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  Resource processDefinition
      * @param  array rootActivities
      * @return boolean
@@ -253,7 +253,7 @@ class wfEngine_models_classes_ProcessDefinitionService
      * Short description of method setAcl
      *
      * @access public
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  Resource processDefinition
      * @param  Resource mode
      * @param  Resource target
@@ -306,7 +306,7 @@ class wfEngine_models_classes_ProcessDefinitionService
      * Short description of method checkAcl
      *
      * @access public
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  Resource processDefinition
      * @param  Resource currentUser
      * @return boolean
@@ -362,7 +362,7 @@ class wfEngine_models_classes_ProcessDefinitionService
      * Short description of method getAclModes
      *
      * @access public
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @return array
      */
     public function getAclModes()
@@ -375,6 +375,53 @@ class wfEngine_models_classes_ProcessDefinitionService
 			INSTANCE_ACL_USER => new core_kernel_classes_Resource(INSTANCE_ACL_USER)
 		);
         // section 127-0-1-1--db23604:133a151a3dc:-8000:00000000000033BE end
+
+        return (array) $returnValue;
+    }
+
+    /**
+     * Short description of method getInitialSteps
+     *
+     * @access public
+     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @param  Resource process
+     * @return array
+     */
+    public function getInitialSteps( core_kernel_classes_Resource $process)
+    {
+        $returnValue = array();
+
+        // section 10-30-1--78-4ca28256:13aace225cc:-8000:0000000000003BF3 begin
+		foreach($this->getActivitiesByProcess($process) as $activity){
+			if(wfEngine_models_classes_ActivityService::singleton()->isInitial($activity)){
+				$returnValue[] = $activity;
+			}
+		}	
+        // section 10-30-1--78-4ca28256:13aace225cc:-8000:0000000000003BF3 end
+
+        return (array) $returnValue;
+    }
+
+    /**
+     * Short description of method getFinalSteps
+     *
+     * @access public
+     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @param  Resource process
+     * @return array
+     */
+    public function getFinalSteps( core_kernel_classes_Resource $process)
+    {
+        $returnValue = array();
+
+        // section 10-30-1--78-4ca28256:13aace225cc:-8000:0000000000003BF5 begin
+        foreach($this->getAllActivities($process) as $activity) {
+			$nexts = wfEngine_models_classes_StepService::singleton()->getNextSteps($activity);
+			if(empty($next)){
+				$returnValue[] = $activity;
+			}
+		}	
+        // section 10-30-1--78-4ca28256:13aace225cc:-8000:0000000000003BF5 end
 
         return (array) $returnValue;
     }

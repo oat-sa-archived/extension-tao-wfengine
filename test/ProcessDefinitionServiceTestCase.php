@@ -22,7 +22,7 @@ class ProcessDefinitionServiceTestCase extends UnitTestCase {
 		}else{
 			$this->fail('fail to create a process definition resource');
 		}
-		$this->authoringService = wfEngine_models_classes_ProcessAuthoringService::singleton();
+		$this->authoringService = wfAuthoring_models_classes_ProcessService::singleton();
 	}
 	
 	/**

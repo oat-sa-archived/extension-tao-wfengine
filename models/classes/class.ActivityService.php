@@ -163,6 +163,23 @@ class wfEngine_models_classes_ActivityService
     }
 
     /**
+     * Short description of method __construct
+     *
+     * @access protected
+     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @return mixed
+     */
+    protected function __construct()
+    {
+        // section 127-0-1-1--384c890a:132d352d389:-8000:00000000000030A8 begin
+		
+		$this->instancesCache = array();
+		$this->cache = true;
+		parent::__construct();
+        // section 127-0-1-1--384c890a:132d352d389:-8000:00000000000030A8 end
+    }
+
+    /**
      * indicate if the activity need back and forth controls
      *
      * @access public
@@ -403,50 +420,6 @@ class wfEngine_models_classes_ActivityService
     }
 
     /**
-     * Short description of method deleteActivity
-     *
-     * @access public
-     * @author Joel Bout, <joel.bout@tudor.lu>
-     * @param  Resource activity
-     * @return boolean
-     */
-    public function deleteActivity( core_kernel_classes_Resource $activity)
-    {
-        $returnValue = (bool) false;
-
-        // section 127-0-1-1-8ae8e2e:132ba7fdd5a:-8000:0000000000003081 begin
-		
-		$connectorService = wfEngine_models_classes_ConnectorService::singleton();
-		$interactiveServiceService = wfEngine_models_classes_InteractiveServiceService::singleton();
-		$connectorClass = new core_kernel_classes_Class(CLASS_CONNECTORS);
-		$connectors = $connectorClass->searchInstances(array(PROPERTY_CONNECTORS_ACTIVITYREFERENCE => $activity->uriResource), array('like' => false, 'recursive' => 0));
-		foreach($connectors as $connector){
-			$connectorService->deleteConnector($connector);
-		}
-		
-		//deleting resource "acitivty" with its references should be enough normally to remove all references... to be tested
-				
-		//delete call of service!!
-		foreach($this->getInteractiveServices($activity) as $service){
-			$interactiveServiceService->deleteInteractiveService($service);
-		}
-		
-		//delete referenced actiivty cardinality resources:
-		$activityCardinalityClass = new core_kernel_classes_Class(CLASS_ACTIVITYCARDINALITY);
-		$cardinalities = $activityCardinalityClass->searchInstances(array(PROPERTY_STEP_NEXT => $activity->uriResource), array('like'=>false));
-		foreach($cardinalities as $cardinality) {
-			$cardinality->delete(true);
-		}
-		
-		//delete activity itself:
-		$returnValue = $activity->delete(true);
-		
-        // section 127-0-1-1-8ae8e2e:132ba7fdd5a:-8000:0000000000003081 end
-
-        return (bool) $returnValue;
-    }
-
-    /**
      * Short description of method setAcl
      *
      * @access public
@@ -529,23 +502,6 @@ class wfEngine_models_classes_ActivityService
     }
 
     /**
-     * Short description of method __construct
-     *
-     * @access public
-     * @author Joel Bout, <joel.bout@tudor.lu>
-     * @return mixed
-     */
-    public function __construct()
-    {
-        // section 127-0-1-1--384c890a:132d352d389:-8000:00000000000030A8 begin
-		
-		$this->instancesCache = array();
-		$this->cache = true;
-		
-        // section 127-0-1-1--384c890a:132d352d389:-8000:00000000000030A8 end
-    }
-
-    /**
      * Short description of method setHidden
      *
      * @access public
@@ -616,6 +572,33 @@ class wfEngine_models_classes_ActivityService
         // section 127-0-1-1--1e09aee3:133358e11e1:-8000:000000000000324F end
 
         return (array) $returnValue;
+    }
+
+    /**
+     * Short description of method getProcess
+     *
+     * @access public
+     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @param  Resource activity
+     * @return core_kernel_classes_Resource
+     */
+    public function getProcess( core_kernel_classes_Resource $activity)
+    {
+        $returnValue = null;
+
+        // section 10-30-1--78-4ca28256:13aace225cc:-8000:0000000000003BFF begin
+		$processClass = new core_kernel_classes_Class(CLASS_PROCESS);
+		$processes = $processClass->searchInstances(
+			array(PROPERTY_PROCESS_ACTIVITIES => $activity),
+			array('like'=>false, 'recursive' => false)
+		);
+		if (count($processes) != 1) {
+			throw new common_exception_Error('ActivityDefinition('.$activity->getUri().') is associated to '.count($process).' processes');
+		}
+		$returnValue = current($processes); 
+        // section 10-30-1--78-4ca28256:13aace225cc:-8000:0000000000003BFF end
+
+        return $returnValue;
     }
 
 } /* end of class wfEngine_models_classes_ActivityService */

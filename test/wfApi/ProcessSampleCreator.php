@@ -23,7 +23,7 @@ class ProcessSampleCreator{
 		//init services
 		$this->activityService = wfEngine_models_classes_ActivityService::singleton();
 		$this->processVariableService = wfEngine_models_classes_VariableService::singleton();
-		$this->authoringService = wfEngine_models_classes_ProcessAuthoringService::singleton();
+		$this->authoringService = wfAuthoring_models_classes_ProcessService::singleton();
 		$this->activityExecutionService = wfEngine_models_classes_ActivityExecutionService::singleton();
 		$this->connectorService = wfEngine_models_classes_ConnectorService::singleton();
 		$this->processVariablesClass = new core_kernel_classes_Class(CLASS_PROCESSVARIABLES);
@@ -89,7 +89,7 @@ class ProcessSampleCreator{
 		$returnValue = false;
 		
 		$classProcess = new core_kernel_classes_Class(CLASS_PROCESS);
-		$processAuthoringService = wfEngine_models_classes_ProcessAuthoringService::singleton();
+		$processAuthoringService = wfAuthoring_models_classes_ProcessService::singleton();
 		
 		self::$processes = array_merge(
 			self::$processes, 

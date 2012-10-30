@@ -116,7 +116,7 @@ class NotificationServiceTestCase extends UnitTestCase {
 		$activity2Label = 'activity2';
 		$notificationMessage = '';
 		
-		$processAuthoringService = wfEngine_models_classes_ProcessAuthoringService::singleton();
+		$processAuthoringService = wfAuthoring_models_classes_ProcessService::singleton();
 		$processExecutionService = wfEngine_models_classes_ProcessExecutionService::singleton();
 		$activityExecutionService = wfEngine_models_classes_ActivityExecutionService::singleton();
 		$processVariableService = wfEngine_models_classes_VariableService::singleton();
@@ -254,7 +254,7 @@ class NotificationServiceTestCase extends UnitTestCase {
 		try{
 			
 			$processExecutionService = wfEngine_models_classes_ProcessExecutionService::singleton();
-			$authoringService = wfEngine_models_classes_ProcessAuthoringService::singleton();
+			$authoringService = wfAuthoring_models_classes_ProcessService::singleton();
 			$activityExecutionService = wfEngine_models_classes_ActivityExecutionService::singleton();
 			
 			//create a new process def

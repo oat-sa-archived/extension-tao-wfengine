@@ -3,16 +3,16 @@
 error_reporting(E_ALL);
 
 /**
- * Generis Object Oriented API - wfEngine/actions/form/class.Login.php
+ * TAO - wfEngine/actions/form/class.Login.php
  *
  * $Id$
  *
- * This file is part of Generis Object Oriented API.
+ * This file is part of TAO.
  *
- * Automatically generated on 13.04.2010, 11:05:13 with ArgoUML PHP module 
+ * Automatically generated on 29.10.2012, 10:01:51 with ArgoUML PHP module 
  * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
  *
- * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+ * @author Joel Bout, <joel.bout@tudor.lu>
  * @package wfEngine
  * @subpackage actions_form
  */
@@ -25,7 +25,7 @@ if (0 > version_compare(PHP_VERSION, '5')) {
  * This class provide a container for a specific form instance.
  * It's subclasses instanciate a form and it's elements to be used as a
  *
- * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+ * @author Joel Bout, <joel.bout@tudor.lu>
  */
 require_once('tao/helpers/form/class.FormContainer.php');
 
@@ -41,7 +41,7 @@ require_once('tao/helpers/form/class.FormContainer.php');
  * Short description of class wfEngine_actions_form_Login
  *
  * @access public
- * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+ * @author Joel Bout, <joel.bout@tudor.lu>
  * @package wfEngine
  * @subpackage actions_form
  */
@@ -54,12 +54,12 @@ class wfEngine_actions_form_Login
     // --- ATTRIBUTES ---
 
     // --- OPERATIONS ---
-	
+
     /**
      * Short description of method initForm
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @return mixed
      */
     public function initForm()
@@ -79,7 +79,7 @@ class wfEngine_actions_form_Login
      * Short description of method initElements
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @return mixed
      */
     public function initElements()

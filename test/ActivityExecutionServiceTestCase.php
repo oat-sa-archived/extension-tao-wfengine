@@ -74,7 +74,7 @@ class ActivityExecutionServiceTestCase extends wfEngineServiceTest {
 		try{
 			
 			$roleService = wfEngine_models_classes_RoleService::singleton();
-			$authoringService = wfEngine_models_classes_ProcessAuthoringService::singleton();
+			$authoringService = wfAuthoring_models_classes_ProcessService::singleton();
 			$activityService = wfEngine_models_classes_ActivityService::singleton();
 			$activityExecutionService = wfEngine_models_classes_ActivityExecutionService::singleton();
 			$processExecutionService = wfEngine_models_classes_ProcessExecutionService::singleton();

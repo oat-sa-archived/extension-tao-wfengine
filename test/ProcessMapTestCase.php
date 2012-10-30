@@ -21,7 +21,7 @@ class ProcessMapTestCase extends UnitTestCase {
 			$this->proc = $processDefinition;
 		}
 		$this->apiModel = core_kernel_impl_ApiModelOO::singleton();
-		$this->authoringService = wfEngine_models_classes_ProcessAuthoringService::singleton();
+		$this->authoringService = wfAuthoring_models_classes_ProcessService::singleton();
 	}
 	
 	public function testCreateSequenceActivity(){

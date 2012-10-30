@@ -216,11 +216,8 @@ class wfEngine_helpers_ProcessUtil
         $returnValue = (bool) false;
 
         // section 127-0-1-1-3efeec8d:1361b13fcc8:-8000:00000000000038AE begin
-    	$processAuthoringService = wfEngine_models_classes_ProcessAuthoringService::singleton();
-		$connectors = $processAuthoringService->getConnectorsByActivity($activity, array('next'));
-		if(isset($connectors['next'])){
-			$returnValue = empty($connectors['next']);
-		}
+		$next = wfEngine_models_classes_StepService::singleton()->getNextSteps($activity);
+		$returnValue = empty($next);
         // section 127-0-1-1-3efeec8d:1361b13fcc8:-8000:00000000000038AE end
 
         return (bool) $returnValue;
@@ -239,11 +236,7 @@ class wfEngine_helpers_ProcessUtil
         $returnValue = (bool) false;
 
         // section 127-0-1-1-3efeec8d:1361b13fcc8:-8000:00000000000038B0 begin
-    	$processAuthoringService = wfEngine_models_classes_ProcessAuthoringService::singleton();
-		$connectors = $processAuthoringService->getConnectorsByActivity($activity, array('previous'));
-		if(isset($connectors['previous'])){
-			$returnValue = empty($connectors['previous']);
-		}
+        $returnValue = wfEngine_models_classes_ActivityService::singleton()->isInitial($activity);
         // section 127-0-1-1-3efeec8d:1361b13fcc8:-8000:00000000000038B0 end
 
         return (bool) $returnValue;

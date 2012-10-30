@@ -98,10 +98,10 @@ class wfEngine_models_classes_ProcessTreeService
 		);
 		
 		//instanciate the processAuthoring service
-		$processAuthoringService = new wfEngine_models_classes_ProcessAuthoringService();
+		$processDefService = new wfEngine_models_classes_ProcessDefinitionService();
 	
 		$activities = array();
-		$activities = $processAuthoringService->getActivitiesByProcess($process);
+		$activities = $processDefService->getAllActivities($process);
 		// throw new Exception(var_dump($activities));
 		foreach($activities as $activity){
 			
@@ -118,7 +118,7 @@ class wfEngine_models_classes_ProcessTreeService
 			);//default value will do
 						
 			//get connectors
-			$connectors = $processAuthoringService->getConnectorsByActivity($activity);
+			$connectors = wfEngine_models_classes_StepService::singleton()->getNextSteps($activity);
 			
 			//following nodes:
 			if(!empty($connectors['next'])){

@@ -53,10 +53,10 @@ class ActivityServiceTestCase extends UnitTestCase {
     }
 
     public function testIsFinal(){
-		$processAuthoringService = wfEngine_models_classes_ProcessAuthoringService::singleton();
+		$processAuthoringService = wfAuthoring_models_classes_ProcessService::singleton();
         $processDefinitionClass = new core_kernel_classes_Class(CLASS_PROCESS);
         $processDefinition = $processDefinitionClass->createInstance('ProcessForUnitTest', 'Unit test');
-        $authoringService = wfEngine_models_classes_ProcessAuthoringService::singleton();
+        $authoringService = wfAuthoring_models_classes_ProcessService::singleton();
         
         //define activities and connectors
         $activity1 = $authoringService->createActivity($processDefinition, 'activity1');
@@ -81,10 +81,10 @@ class ActivityServiceTestCase extends UnitTestCase {
     }
     
     public function testIsInitial(){
-        $processAuthoringService = wfEngine_models_classes_ProcessAuthoringService::singleton();
+        $processAuthoringService = wfAuthoring_models_classes_ProcessService::singleton();
         $processDefinitionClass = new core_kernel_classes_Class(CLASS_PROCESS);
         $processDefinition = $processDefinitionClass->createInstance('ProcessForUnitTest', 'Unit test');
-        $authoringService = wfEngine_models_classes_ProcessAuthoringService::singleton();
+        $authoringService = wfAuthoring_models_classes_ProcessService::singleton();
         
         //define activities and connectors
         $activity1 = $authoringService->createActivity($processDefinition, 'activity1');
@@ -108,10 +108,10 @@ class ActivityServiceTestCase extends UnitTestCase {
     
     
     public function testGetNextConnectors(){
-        $processAuthoringService = wfEngine_models_classes_ProcessAuthoringService::singleton();
+        $processAuthoringService = wfAuthoring_models_classes_ProcessService::singleton();
         $processDefinitionClass = new core_kernel_classes_Class(CLASS_PROCESS);
         $processDefinition = $processDefinitionClass->createInstance('ProcessForUnitTest', 'Unit test');
-        $authoringService = wfEngine_models_classes_ProcessAuthoringService::singleton();
+        $authoringService = wfAuthoring_models_classes_ProcessService::singleton();
         
         //define activities and connectors
         $activity1 = $authoringService->createActivity($processDefinition, 'activity1');
@@ -161,11 +161,11 @@ class ActivityServiceTestCase extends UnitTestCase {
     }
     
     public function testIsActivity(){
-        $processAuthoringService = wfEngine_models_classes_ProcessAuthoringService::singleton();
+        $processAuthoringService = wfAuthoring_models_classes_ProcessService::singleton();
         $processDefinitionClass = new core_kernel_classes_Class(CLASS_PROCESS);
         $processDefinition = $processDefinitionClass->createInstance('ProcessForUnitTest', 'Unit test');
         
-        $authoringService = wfEngine_models_classes_ProcessAuthoringService::singleton();
+        $authoringService = wfAuthoring_models_classes_ProcessService::singleton();
         
         //define activities and connectors
         $activity1 = $authoringService->createActivity($processDefinition, 'activity1');
@@ -178,7 +178,7 @@ class ActivityServiceTestCase extends UnitTestCase {
     }
     
     public function testIsHidden(){
-		$authoringService = wfEngine_models_classes_ProcessAuthoringService::singleton();
+		$authoringService = wfAuthoring_models_classes_ProcessService::singleton();
         $processDefinitionClass = new core_kernel_classes_Class(CLASS_PROCESS);
         $processDefinition = $processDefinitionClass->createInstance('ProcessForUnitTest', 'Unit test');
         $this->assertIsA($processDefinition, 'core_kernel_classes_Resource');
@@ -198,11 +198,11 @@ class ActivityServiceTestCase extends UnitTestCase {
     }
     
     public function testGetInteractiveServices(){
-        $processAuthoringService = wfEngine_models_classes_ProcessAuthoringService::singleton();
+        $processAuthoringService = wfAuthoring_models_classes_ProcessService::singleton();
         $processDefinitionClass = new core_kernel_classes_Class(CLASS_PROCESS);
         $processDefinition = $processDefinitionClass->createInstance('ProcessForUnitTest', 'Unit test');
                     
-        $authoringService = wfEngine_models_classes_ProcessAuthoringService::singleton();
+        $authoringService = wfAuthoring_models_classes_ProcessService::singleton();
         $interactiveService = wfEngine_models_classes_InteractiveServiceService::singleton();
         
         
@@ -221,12 +221,12 @@ class ActivityServiceTestCase extends UnitTestCase {
     }
     
     public function testGetConstrols(){
-        $processAuthoringService = wfEngine_models_classes_ProcessAuthoringService::singleton();
+        $processAuthoringService = wfAuthoring_models_classes_ProcessService::singleton();
         $processDefinitionClass = new core_kernel_classes_Class(CLASS_PROCESS);
         $processDefinition = $processDefinitionClass->createInstance('ProcessForUnitTest', 'Unit test');
         $this->assertIsA($processDefinition, 'core_kernel_classes_Resource');
         
-        $authoringService = wfEngine_models_classes_ProcessAuthoringService::singleton();
+        $authoringService = wfAuthoring_models_classes_ProcessService::singleton();
         
         //define activities and connectors
         $activity1 = $authoringService->createActivity($processDefinition, 'activity1');
@@ -252,12 +252,12 @@ class ActivityServiceTestCase extends UnitTestCase {
     }
     
     public function testVirtualProcess(){
-        $processAuthoringService = wfEngine_models_classes_ProcessAuthoringService::singleton();
+        $processAuthoringService = wfAuthoring_models_classes_ProcessService::singleton();
         $processDefinitionClass = new core_kernel_classes_Class(CLASS_PROCESS);
         $processDefinition = $processDefinitionClass->createInstance('ProcessForUnitTest', 'Unit test');
         $this->assertIsA($processDefinition, 'core_kernel_classes_Resource');
         
-        $authoringService = wfEngine_models_classes_ProcessAuthoringService::singleton();
+        $authoringService = wfAuthoring_models_classes_ProcessService::singleton();
         
         //define activities and connectors
         $activity1 = $authoringService->createActivity($processDefinition, 'activity1');

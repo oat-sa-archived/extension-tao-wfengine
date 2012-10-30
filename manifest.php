@@ -62,7 +62,6 @@ return array(
 	
 		#PROCESS BASE WWW the web path of the process authoring tool
 		'PROCESS_BASE_WWW'		=> ROOT_URL	.'wfEngine/views/',
-		'PROCESS_SCRIPT_URL'	=> ROOT_URL	.'wfEngine/views/js/authoring/',
 		'PROCESS_BASE_PATH'		=> ROOT_PATH.'wfEngine'.DIRECTORY_SEPARATOR,
 									
 		# Process Browser page title.

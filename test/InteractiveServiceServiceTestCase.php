@@ -23,7 +23,7 @@ class InteractiveServiceServiceTestCase extends UnitTestCase {
 	public function setUp(){
 		TaoTestRunner::initTest();
 		
-		$this->authoringService = wfEngine_models_classes_ProcessAuthoringService::singleton();
+		$this->authoringService = wfAuthoring_models_classes_ProcessService::singleton();
         $processDefinitionClass = new core_kernel_classes_Class(CLASS_PROCESS);
         $this->processDefinition = $processDefinitionClass->createInstance('ProcessForUnitTest', 'Unit test');
 
