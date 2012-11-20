@@ -5,7 +5,7 @@ error_reporting(E_ALL);
 /**
  * Manage the user in the workflow engine
  *
- * @author Joel Bout, <joel.bout@tudor.lu>
+ * @author Jerome Bogaerts, <jerome.bogaerts@tudor.lu>
  * @package wfEngine
  * @subpackage models_classes
  */
@@ -17,7 +17,7 @@ if (0 > version_compare(PHP_VERSION, '5')) {
 /**
  * This class provide service on user management
  *
- * @author Joel Bout, <joel.bout@tudor.lu>
+ * @author Jerome Bogaerts, <jerome.bogaerts@tudor.lu>
  */
 require_once('tao/models/classes/class.UserService.php');
 
@@ -33,7 +33,7 @@ require_once('tao/models/classes/class.UserService.php');
  * Manage the user in the workflow engine
  *
  * @access public
- * @author Joel Bout, <joel.bout@tudor.lu>
+ * @author Jerome Bogaerts, <jerome.bogaerts@tudor.lu>
  * @package wfEngine
  * @subpackage models_classes
  */
@@ -51,7 +51,7 @@ class wfEngine_models_classes_UserService
      * initialize the roles
      *
      * @access public
-     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @author Jerome Bogaerts, <jerome.bogaerts@tudor.lu>
      * @return mixed
      */
     public function initRoles()
@@ -67,7 +67,7 @@ class wfEngine_models_classes_UserService
      * login a user
      *
      * @access public
-     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @author Jerome Bogaerts, <jerome.bogaerts@tudor.lu>
      * @param  string login
      * @param  string password
      * @return boolean
@@ -101,7 +101,7 @@ class wfEngine_models_classes_UserService
      * Short description of method feedAllowedRoles
      *
      * @access public
-     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @author Jerome Bogaerts, <jerome.bogaerts@tudor.lu>
      * @param  Class roleClass
      * @return mixed
      */
@@ -121,10 +121,12 @@ class wfEngine_models_classes_UserService
      * method to format the data
      *
      * @access public
-     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @author Jerome Bogaerts, <jerome.bogaerts@tudor.lu>
+     * @param  Class clazz
+     * @param  array options
      * @return array
      */
-    public function toTree()
+    public function toTree( core_kernel_classes_Class $clazz, $options)
     {
         $returnValue = array();
 
