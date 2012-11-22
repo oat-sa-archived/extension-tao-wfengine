@@ -19,6 +19,9 @@ return array(
 		'rdf' => array(
 				array('ns' => 'http://www.tao.lu/middleware/wfEngine.rdf', 'file' => dirname(__FILE__). '/models/ontology/wfengine.rdf'),
 				array('ns' => 'http://www.tao.lu/Ontologies/taoFuncACL.rdf', 'file' => dirname(__FILE__). '/models/ontology/aclrole.rdf')
+		),
+		'checks' => array(
+			array('type' => 'CheckFileSystemComponent', 'value' => array('id' => 'fs_wfEngine_includes', 'location' => 'wfEngine/includes', 'rights' => 'r'))
 		)
 	),
 	'classLoaderPackages' => array(
