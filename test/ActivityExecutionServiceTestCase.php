@@ -38,7 +38,7 @@ class ActivityExecutionServiceTestCase extends wfEngineServiceTest {
 			$this->currentUser = $wfrole->createInstanceWithProperties($userData); 
 		}
 		
-		core_kernel_users_Service::logout();
+		$this->userService->logout();
 		if($this->userService->loginUser($login, md5($this->userPassword))){
 			$this->currentUser = $this->userService->getCurrentUser();
 			$this->currentUser0 = $this->currentUser;
@@ -741,7 +741,7 @@ class ActivityExecutionServiceTestCase extends wfEngineServiceTest {
 			$this->assertFalse($processInstance->exists());
 			
 			if(!is_null($this->currentUser)){
-				core_kernel_users_Service::logout();
+				$this->userService->logout();
 				$this->userService->removeUser($this->currentUser);
 			}
 			

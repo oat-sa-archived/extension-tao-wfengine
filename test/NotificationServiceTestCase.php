@@ -62,7 +62,7 @@ class NotificationServiceTestCase extends UnitTestCase {
 			$this->currentUser = $wfrole->createInstanceWithProperties($userData);
 		}
 		
-		core_kernel_users_Service::logout();
+		$this->userService->logout();
 		if($this->userService->loginUser($login, md5($pass))){
 			$this->currentUser = $this->userService->getCurrentUser();
 		}
@@ -418,7 +418,7 @@ class NotificationServiceTestCase extends UnitTestCase {
 		
 			
 			if(!is_null($this->currentUser)){
-				core_kernel_users_Service::logout();
+				$this->userService->logout();
 				$this->assertTrue($this->userService->removeUser($this->currentUser));
 			}
 		}

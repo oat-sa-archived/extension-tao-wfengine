@@ -101,7 +101,7 @@ class wfEngineServiceTest extends UnitTestCase {
 		$returnValue = false;
 		
 		//Login another user to execute parallel branch
-		core_kernel_users_Service::logout();
+		$this->userService->logout();
 		$loginProperty = new core_kernel_classes_Property(PROPERTY_USER_LOGIN);
 		if(!is_null($this->currentUser)){
 			$this->out("logout ". $this->currentUser->getOnePropertyValue($loginProperty) . ' "' . $this->currentUser->uriResource . '"', true);

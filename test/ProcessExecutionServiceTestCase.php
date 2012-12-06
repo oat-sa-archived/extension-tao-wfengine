@@ -69,7 +69,7 @@ class ProcessExecutionServiceTestCase extends UnitTestCase{
 			$this->currentUser = $this->testUserRole->createInstanceWithProperties($userData);
 		}
 		
-		core_kernel_users_Service::logout();
+		$this->userService->logout();
 		if($this->userService->loginUser($login, md5($pass))){
 			$this->currentUser = $this->userService->getCurrentUser();
 			$this->currentUser0 = $this->currentUser;
@@ -385,7 +385,7 @@ class ProcessExecutionServiceTestCase extends UnitTestCase{
 			$this->assertFalse($processInstance->exists());
 			
 			if(!is_null($this->currentUser)){
-				core_kernel_users_Service::logout();
+				$this->userService->logout();
 				$this->userService->removeUser($this->currentUser);
 			}
 		}
@@ -643,7 +643,7 @@ class ProcessExecutionServiceTestCase extends UnitTestCase{
 			if($this->service->isPaused($processInstance)){
 
 				//Login another user to execute parallel branch
-				core_kernel_users_Service::logout();
+				$this->userService->logout();
 				$this->out("logout ". $this->currentUser->getOnePropertyValue($loginProperty) . ' "' . $this->currentUser->uriResource . '"', true);
 				
 				list($usec, $sec) = explode(" ", microtime());
@@ -765,7 +765,7 @@ class ProcessExecutionServiceTestCase extends UnitTestCase{
 			
 			if(!is_null($user) && !is_null($activityDefinition)){
 				
-				core_kernel_users_Service::logout();
+				$this->userService->logout();
 				$this->out("logout ". $this->currentUser->getOnePropertyValue($loginProperty) . ' "' . $this->currentUser->uriResource . '"', true);
 
 				$login = (string) $user->getUniquePropertyValue($loginProperty);
@@ -856,7 +856,7 @@ class ProcessExecutionServiceTestCase extends UnitTestCase{
 		}
 
 		if(!is_null($this->currentUser)){
-			core_kernel_users_Service::logout();
+			$this->userService->logout();
 			$this->userService->removeUser($this->currentUser);
 		}
 		
