@@ -283,7 +283,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 			
 			//create a working file for that user:
 			$fileName = $this->getFileName($unit->getLabel(), $countryCode, $languageCode, $type, $user);
-			$file = core_kernel_versioning_File::create($fileName, '/', $this->getDefaultRepository());
+			$file = core_kernel_versioning_File::createVersioned($fileName, '/', $this->getDefaultRepository());
 			$this->assertIsA($file, 'core_kernel_versioning_File');
 			
 			//set file content:
@@ -445,7 +445,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 
 						foreach(array('xliff', 'vff') as $fileType){
 							$fileName = $this->getFileName($unitName, $countryCode, $langCode, $fileType);
-							$file = core_kernel_versioning_File::create($fileName, '/', $this->getDefaultRepository());
+							$file = core_kernel_versioning_File::createVersioned($fileName, '/', $this->getDefaultRepository());
 							$this->assertIsA($file, 'core_kernel_versioning_File');
 							$this->assertTrue($file->setContent(strtoupper($fileType).' for country "' . $countryCode . '" and language "' . $langCode . '" : \n'));
 							$this->assertTrue($file->add());
