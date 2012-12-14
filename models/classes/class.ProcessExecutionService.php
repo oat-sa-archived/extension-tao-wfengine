@@ -1579,7 +1579,11 @@ class wfEngine_models_classes_ProcessExecutionService
 			if($cardinalityService->isCardinality($cardinality)){
 				$activity = $cardinalityService->getDestination($cardinality);
 				if (!is_null($activity)) {
-					$count = $cardinalityService->getCardinality($cardinality, $activityExecution);
+					try{
+						$count = $cardinalityService->getCardinality($cardinality, $activityExecution);
+					}catch(wfEngine_models_classes_ProcessExecutionException $e){
+						$count = 0;//in case the parallel variable is not set
+					}
 					for ($i = 0; $i < $count; $i++) {
 						$returnValue[] = $activity;
 					}
