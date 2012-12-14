@@ -296,6 +296,9 @@ class wfEngine_models_classes_ProcessExecutionService
 				}
 			}
 		}
+		else{
+			throw new InvalidArgumentException('$processExecutions must be an array.');
+		}
         // section 10-50-1-116-185ba8ba:12f4978614f:-8000:0000000000002D68 end
 
         return (bool) $returnValue;
