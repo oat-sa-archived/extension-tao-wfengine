@@ -1126,10 +1126,18 @@ class wfEngine_models_classes_ActivityExecutionService
                     
 					//get the activity around the connector
 		            $activityResourceArray = array();
-					foreach ($connectorService->getPreviousActivities($connector) as $activityCardinality) {
+					$prevActivites = $connectorService->getPreviousActivities($connector);
+					$countPrevActivities = count($prevActivites);
+					for($i=0; $i<$countPrevActivities; $i++){
+						$activityCardinality = $prevActivites[$i];
 						if($cardinalityService->isCardinality($activityCardinality)){
-							$activity = $cardinalityService->getSource($activityCardinality);
-							$activityResourceArray[$activity->uriResource] = $cardinalityService->getCardinality($activityCardinality, $activityExecution);
+							$activity = $cardinalityService->getActivity($activityCardinality);
+							try{
+								$count = $cardinalityService->getCardinality($activityCardinality, $activityExecution);
+							}catch(wfEngine_models_classes_ProcessExecutionException $e){
+								$count = 0;
+							}
+							$activityResourceArray[$activity->uriResource] = $count;
 						}
 					}
 					

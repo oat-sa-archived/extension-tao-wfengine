@@ -1133,8 +1133,13 @@ class wfEngine_models_classes_ProcessExecutionService
 		$countPrevActivities = count($prevActivites);
 		foreach ($prevActivites as $activityCardinality) {
 			if($cardinalityService->isCardinality($activityCardinality)){
-				$activity = $cardinalityService->getSource($activityCardinality);
-				$activityResourceArray[$activity->uriResource] = $cardinalityService->getCardinality($activityCardinality, $activityExecution);
+				$activity = $cardinalityService->getActivity($activityCardinality);
+				try{
+					$count = $cardinalityService->getCardinality($activityCardinality, $activityExecution);
+				}catch(wfEngine_models_classes_ProcessExecutionException $e){
+					$count = 0;
+				}
+				$activityResourceArray[$activity->uriResource] = $count;
 			}
 		}
 		//TODO: implement the case of successive merging: A & B merging to C, D & E merging F and C & F merging to G...
