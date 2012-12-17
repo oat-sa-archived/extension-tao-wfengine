@@ -260,6 +260,7 @@ class wfEngine_models_classes_ProcessExecutionService
         // section 10-50-1-116-185ba8ba:12f4978614f:-8000:0000000000002D68 begin
 		if(is_array($processExecutions)){
 			if(empty($processExecutions)){
+				$activityExecutionClass = new core_kernel_classes_Class(CLASS_ACTIVITY_EXECUTION);
 				//get all instances!
 				foreach($this->processInstancesClass->getInstances(false) as $processInstance){
 					if($finishedOnly){
@@ -268,25 +269,22 @@ class wfEngine_models_classes_ProcessExecutionService
 					$processExecutions[] = $processInstance;
 				}
 				
-				$dbWrapper = core_kernel_classes_DbWrapper::singleton();
-				$queryRemove =  "DELETE FROM statements WHERE subject IN ( ";
+				$execToDelete = array();
+				
 				foreach($processExecutions as $processExecution){ 
-					
-					$queryRemove  .= "'".$processExecution->uriResource."',";
 						
 					$allActivityExecutions = $processExecution->getPropertyValues($this->processInstancesActivityExecutionsProp);
 					$count = count($allActivityExecutions);
-					for($i=0;$i<$count;$i++){
+					for($i = 0 ; $i < $count; $i++){
 						$uri = $allActivityExecutions[$i];
 						if(common_Utils::isUri($uri)){
-							$queryRemove  .= "'".$uri."',";
+							$execToDelete[] = $uri;
 						}
 					}
-					
-					$queryRemove = substr($queryRemove, 0, strlen($queryRemove) - 1).")";
-					
 				}
-				$dbWrapper->exec($queryRemove);
+				
+				$this->processInstancesClass->deleteInstances($processExecutions);
+				$activityExecutionClass->deleteInstances($execToDelete);
 				
 			}
 			
