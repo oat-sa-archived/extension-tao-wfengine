@@ -1133,7 +1133,7 @@ class wfEngine_models_classes_ProcessExecutionService
 		$countPrevActivities = count($prevActivites);
 		foreach ($prevActivites as $activityCardinality) {
 			if($cardinalityService->isCardinality($activityCardinality)){
-				$activity = $cardinalityService->getActivity($activityCardinality);
+				$activity = $cardinalityService->getSource($activityCardinality);
 				try{
 					$count = $cardinalityService->getCardinality($activityCardinality, $activityExecution);
 				}catch(wfEngine_models_classes_ProcessExecutionException $e){
