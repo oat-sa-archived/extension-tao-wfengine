@@ -4,6 +4,34 @@
     @targetLanguage ES
 -->
 <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xml:base="http://www.tao.lu/middleware/wfEngine.rdf">
+  <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#ClassStep">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage ES
+    @source Step
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassStep
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="ES"><![CDATA[Step]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage ES
+    @source Process Step
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassStep
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="ES"><![CDATA[Process Step]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyStepNext">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage ES
+    @source nextStep
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyStepNext
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="ES"><![CDATA[nextStep]]></rdfs:label>
+  </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyTransitionRulesThen">
     <!--
     @sourceLanguage EN
@@ -525,34 +553,6 @@
     @predicate http://www.w3.org/2000/01/rdf-schema#comment
     -->
     <rdfs:comment xml:lang="ES"><![CDATA[Call of Services]]></rdfs:comment>
-  </rdf:Description>
-  <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyConnectorsNextActivities">
-    <!--
-    @sourceLanguage EN
-    @targetLanguage ES
-    @source nextActivities
-    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyConnectorsNextActivities
-    @predicate http://www.w3.org/2000/01/rdf-schema#label
-    -->
-    <rdfs:label xml:lang="ES"><![CDATA[nextActivities]]></rdfs:label>
-  </rdf:Description>
-  <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyConnectorsPreviousActivities">
-    <!--
-    @sourceLanguage EN
-    @targetLanguage ES
-    @source Previous Activities
-    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyConnectorsPreviousActivities
-    @predicate http://www.w3.org/2000/01/rdf-schema#label
-    -->
-    <rdfs:label xml:lang="ES"><![CDATA[Previous Activities]]></rdfs:label>
-    <!--
-    @sourceLanguage EN
-    @targetLanguage ES
-    @source Previous Activities
-    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyConnectorsPreviousActivities
-    @predicate http://www.w3.org/2000/01/rdf-schema#comment
-    -->
-    <rdfs:comment xml:lang="ES"><![CDATA[Previous Activities]]></rdfs:comment>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#InstanceTypeOfConnectorsSequence">
     <!--
@@ -1570,7 +1570,7 @@
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyAccessControlModesRoleRestrictedUserInheritedDelivery
     @predicate http://www.w3.org/2000/01/rdf-schema#comment
     -->
-    <rdfs:comment xml:lang="ES"><![CDATA[Useful for deliveries]]></rdfs:comment>
+    <rdfs:comment xml:lang="ES"><![CDATA[Role Restricted User Inherited]]></rdfs:comment>
     <!--
     @sourceLanguage EN
     @targetLanguage ES
@@ -2121,24 +2121,6 @@
     @predicate http://www.w3.org/2000/01/rdf-schema#comment
     -->
     <rdfs:comment xml:lang="ES"><![CDATA[Activity Cardinality]]></rdfs:comment>
-  </rdf:Description>
-  <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityCardinalityActivity">
-    <!--
-    @sourceLanguage EN
-    @targetLanguage ES
-    @source Activity
-    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityCardinalityActivity
-    @predicate http://www.w3.org/2000/01/rdf-schema#label
-    -->
-    <rdfs:label xml:lang="ES"><![CDATA[Activity]]></rdfs:label>
-    <!--
-    @sourceLanguage EN
-    @targetLanguage ES
-    @source Activity
-    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityCardinalityActivity
-    @predicate http://www.w3.org/2000/01/rdf-schema#comment
-    -->
-    <rdfs:comment xml:lang="ES"><![CDATA[Activity]]></rdfs:comment>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityCardinalityCardinality">
     <!--
