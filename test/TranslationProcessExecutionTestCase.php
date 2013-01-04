@@ -433,35 +433,6 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 			//create unit:
 			$this->units[$unitName] = $translationClass->createInstance($unitName, 'created for translation process execution test case');
 			$this->assertNotNull($this->units[$unitName]);
-			if(helpers_Versioning::isEnabled()){
-				foreach ($this->langCountries as $countryCode => $languageCodes){
-
-					foreach ($languageCodes as $langCode){
-						
-						$this->assertIsA($this->createTranslationProperty('xliff', $countryCode, $langCode),'core_kernel_classes_Property');
-						$this->assertIsA($this->createTranslationProperty('xliff_working', $countryCode, $langCode),'core_kernel_classes_Property');
-						$this->assertIsA($this->createTranslationProperty('vff', $countryCode, $langCode),'core_kernel_classes_Property');
-						$this->assertIsA($this->createTranslationProperty('vff_working', $countryCode, $langCode),'core_kernel_classes_Property');
-
-						foreach(array('xliff', 'vff') as $fileType){
-							$fileName = $this->getFileName($unitName, $countryCode, $langCode, $fileType);
-							$file = core_kernel_versioning_File::createVersioned($fileName, '/', $this->getDefaultRepository());
-							$this->assertIsA($file, 'core_kernel_versioning_File');
-							$this->assertTrue($file->setContent(strtoupper($fileType).' for country "' . $countryCode . '" and language "' . $langCode . '" : \n'));
-							$this->assertTrue($file->add());
-							$this->assertTrue($file->commit());
-
-							$this->assertTrue($this->units[$unitName]->setPropertyValue($this->properties[TranslationProcessHelper::getPropertyName($fileType, $countryCode, $langCode)], $file));
-							
-							$values = $this->units[$unitName]->getPropertyValues($this->properties[TranslationProcessHelper::getPropertyName($fileType, $countryCode, $langCode)]);
-							$this->assertEqual(count($values), 1);
-			
-							$this->files[$fileName] = $file;
-						}
-					}
-
-				}
-			}
 		}
 		
 //		var_dump($this->units, $this->properties, $this->files);
@@ -1216,18 +1187,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		
 		$vffRevision = 0;
 		$xliffRevision = 0;
-		if(helpers_Versioning::isEnabled()){
-			
-			$xliffFile = $this->getItemFile($unit, 'xliff', $countryCode, $languageCode);
-			$this->assertNotNull($xliffFile);
-			$xliffRevision = $xliffFile->getVersion();
-			
-			$vffFile = $this->getItemFile($unit, 'vff', $countryCode, $languageCode);
-			$this->assertNotNull($vffFile);
-			$vffRevision = $vffFile->getVersion();
-			
-		}
-		
+
 		$initVariables = array(
 			$this->vars['unitUri']->uriResource => $unit->uriResource,
 			$this->vars['countryCode']->uriResource => $countryCode,
@@ -1400,16 +1360,6 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 					}
 				}
 				
-				//update xliff and vff:
-				if(helpers_Versioning::isEnabled()){
-					$xliffContent = $this->executeServiceDownloadFile('xliff');
-					$this->assertFalse(empty($xliffContent));
-					$vffContent = $this->executeServiceDownloadFile('vff');
-					$this->assertFalse(empty($vffContent));
-
-					$this->executeServiceUploadFile('xliff', $xliffContent.' \n XLIFF by user '.$this->currentUser->getLabel().' \n', $this->currentUser);
-					$this->executeServiceUploadFile('vff', $vffContent.' \n VFF by user '.$this->currentUser->getLabel().' \n', $this->currentUser);
-				}
 			}
 			
 			//transition to next activity
@@ -1479,17 +1429,6 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		
 		$vffRevision = 0;
 		$xliffRevision = 0;
-		if(helpers_Versioning::isEnabled()){
-			
-			$xliffFile = $this->getItemFile($unit, 'xliff', $countryCode, $languageCode);
-			$this->assertNotNull($xliffFile);
-			$xliffRevision = $xliffFile->getVersion();
-			
-			$vffFile = $this->getItemFile($unit, 'vff', $countryCode, $languageCode);
-			$this->assertNotNull($vffFile);
-			$vffRevision = $vffFile->getVersion();
-			
-		}
 		
 		$initVariables = array(
 			$this->vars['unitUri']->uriResource => $unit->uriResource,
@@ -1683,17 +1622,6 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 						break;
 					}	
 				}
-				
-				//update xliff and vff:
-				if(helpers_Versioning::isEnabled()){
-					$xliffContent = $this->executeServiceDownloadFile('xliff');
-					$this->assertFalse(empty($xliffContent));
-					$vffContent = $this->executeServiceDownloadFile('vff');
-					$this->assertFalse(empty($vffContent));
-
-					$this->executeServiceUploadFile('xliff', $xliffContent.' \n XLIFF by user '.$this->currentUser->getLabel().' \n', $this->currentUser);
-					$this->executeServiceUploadFile('vff', $vffContent.' \n VFF by user '.$this->currentUser->getLabel().' \n', $this->currentUser);
-				}
 			}
 			
 			//transition to next activity
@@ -1762,17 +1690,6 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		
 		$vffRevision = 0;
 		$xliffRevision = 0;
-		if(helpers_Versioning::isEnabled()){
-			
-			$xliffFile = $this->getItemFile($unit, 'xliff', $countryCode, $languageCode);
-			$this->assertNotNull($xliffFile);
-			$xliffRevision = $xliffFile->getVersion();
-			
-			$vffFile = $this->getItemFile($unit, 'vff', $countryCode, $languageCode);
-			$this->assertNotNull($vffFile);
-			$vffRevision = $vffFile->getVersion();
-			
-		}
 		
 		$initVariables = array(
 			$this->vars['unitUri']->uriResource => $unit->uriResource,
@@ -2026,16 +1943,6 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 					}
 					
 				}
-				//update xliff and vff:
-				if(helpers_Versioning::isEnabled()){
-					$xliffContent = $this->executeServiceDownloadFile('xliff');
-					$this->assertFalse(empty($xliffContent));
-					$vffContent = $this->executeServiceDownloadFile('vff');
-					$this->assertFalse(empty($vffContent));
-
-					$this->executeServiceUploadFile('xliff', $xliffContent.' \n XLIFF by user '.$this->currentUser->getLabel().' \n', $this->currentUser);
-					$this->executeServiceUploadFile('vff', $vffContent.' \n VFF by user '.$this->currentUser->getLabel().' \n', $this->currentUser);
-				}
 			}
 			
 			//transition to next activity
@@ -2175,21 +2082,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 			
 			$xliffFileContent = '';
 			$vffFileContent = '';
-			if(helpers_Versioning::isEnabled()){
-				$xliffFile = $this->getItemFile($unit, 'xliff', $countryCode, $languageCode);
-				$vffFile = $this->getItemFile($unit, 'vff', $countryCode, $languageCode);
 
-				$xliffFileContent = (string) $xliffFile->getFileContent();
-				$vffFileContent = (string) $vffFile->getFileContent();
-
-				if(empty($xliffFileContent)){
-					throw new Exception('the original xliff file is empty!');
-				}
-				if(empty($vffFileContent)){
-					throw new Exception('the original vff file is empty!');
-				}
-			}
-			
 			//push values:
 			$pushedVars = array();
 			foreach($translators as $translator){
@@ -2202,12 +2095,6 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 					$translatorResource = new core_kernel_classes_Resource($translator);
 				}
 				$this->out("selected translator : {$translatorResource->getLabel()} ({$translatorResource->uriResource})");
-
-				//creating working xliff and vff file for them for intial files:
-				if(helpers_Versioning::isEnabled()){
-					$this->createItemFile('xliff_working', $xliffFileContent, $translatorResource);
-					$this->createItemFile('vff_working', $vffFileContent, $translatorResource);
-				}
 
 			}
 			$this->assertTrue(count($pushedVars) > 0);
@@ -2227,16 +2114,6 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		$this->out('executing service translate ', true);
 		
 		$processVariableService = wfEngine_models_classes_VariableService::singleton();
-		
-		if(helpers_Versioning::isEnabled()){
-			$xliffContent = $this->executeServiceDownloadFile('xliff_working', $this->currentUser);
-			$this->assertFalse(empty($xliffContent));
-			$vffContent = $this->executeServiceDownloadFile('vff_working', $this->currentUser);
-			$this->assertFalse(empty($vffContent));
-
-			$this->executeServiceUploadFile('xliff_working', $xliffContent.' \n translation by user '.$this->currentUser->getLabel().' \n', $this->currentUser);
-			$this->executeServiceUploadFile('vff_working', $vffContent.' \n vff by user '.$this->currentUser->getLabel().' \n', $this->currentUser);
-		}
 				
 		$valid = true;
 		if($valid){
@@ -2270,16 +2147,6 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 
 		$vffRevision = 0;
 		$xliffRevision = 0;
-		if (helpers_Versioning::isEnabled()) {
-
-			$xliffFile = $this->getItemFile($unit, 'xliff', $countryCode, $languageCode);
-			$this->assertNotNull($xliffFile);
-			$xliffRevision = $xliffFile->getVersion();
-
-			$vffFile = $this->getItemFile($unit, 'vff', $countryCode, $languageCode);
-			$this->assertNotNull($vffFile);
-			$vffRevision = $vffFile->getVersion();
-		}
 
 		$initVariables = array(
 			$this->vars['unitUri']->uriResource => $unit->uriResource,
@@ -2414,17 +2281,6 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 					}
 					break;
 				}
-			}
-			
-			//update xliff and vff:
-			if (helpers_Versioning::isEnabled()) {
-				$xliffContent = $this->executeServiceDownloadFile('xliff');
-				$this->assertFalse(empty($xliffContent));
-				$vffContent = $this->executeServiceDownloadFile('vff');
-				$this->assertFalse(empty($vffContent));
-
-				$this->executeServiceUploadFile('xliff', $xliffContent . ' \n XLIFF by user ' . $this->currentUser->getLabel() . ' \n', $this->currentUser);
-				$this->executeServiceUploadFile('vff', $vffContent . ' \n VFF by user ' . $this->currentUser->getLabel() . ' \n', $this->currentUser);
 			}
 
 			//transition to next activity
