@@ -102,7 +102,7 @@ class wfEngine_actions_Authentication extends wfEngine_actions_WfModule
                 'uilg' => PROPERTY_USER_UILG,
                 'deflg' => PROPERTY_USER_DEFLG,
                 'mail' => PROPERTY_USER_MAIL,
-                'firstname' => PROPERTY_USER_FIRTNAME,
+                'firstname' => PROPERTY_USER_FIRSTNAME,
                 'lastname' => PROPERTY_USER_LASTNAME,
             );
             foreach($properties as $label=>$propertyUri){

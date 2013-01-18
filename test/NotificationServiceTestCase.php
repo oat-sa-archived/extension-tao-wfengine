@@ -52,7 +52,7 @@ class NotificationServiceTestCase extends UnitTestCase {
 			PROPERTY_USER_PASSWORD	=>	md5($pass),
 			PROPERTY_USER_DEFLG		=>	'EN',
 			PROPERTY_USER_MAIL		=>  'somsack.sipasseuth@tudor.lu',
-			PROPERTY_USER_FIRTNAME  =>	'myFirstName',
+			PROPERTY_USER_FIRSTNAME  =>	'myFirstName',
 			PROPERTY_USER_LASTNAME  =>	'myLastName'
 		);
 		
@@ -145,7 +145,7 @@ class NotificationServiceTestCase extends UnitTestCase {
 			),
 			VAR_CURRENT_USER => array(
 				RDFS_LABEL,
-				PROPERTY_USER_FIRTNAME,
+				PROPERTY_USER_FIRSTNAME,
 				PROPERTY_USER_LASTNAME
 			)
 		);
@@ -160,7 +160,7 @@ class NotificationServiceTestCase extends UnitTestCase {
 		}
 		
 		$notificationMessage = '
-			Dear {{'.$spx[VAR_CURRENT_USER][PROPERTY_USER_FIRTNAME]->uriResource.'}} {{'.$spx[VAR_CURRENT_USER][PROPERTY_USER_LASTNAME]->uriResource.'}},
+			Dear {{'.$spx[VAR_CURRENT_USER][PROPERTY_USER_FIRSTNAME]->uriResource.'}} {{'.$spx[VAR_CURRENT_USER][PROPERTY_USER_LASTNAME]->uriResource.'}},
 
 			Please join the translation process of the unit {{'.$spx[VAR_ACTIVITY_INSTANCE][$vars['unitLabel']->uriResource]->uriResource.'}} to {{'.$spx[VAR_ACTIVITY_INSTANCE][$vars['languageCode']->uriResource]->uriResource.'}}_{{'.$spx[VAR_ACTIVITY_INSTANCE][$vars['countryCode']->uriResource]->uriResource.'}} to complete your next task "{{'.$spx[VAR_ACTIVITY_DEFINITION][RDFS_LABEL]->uriResource.'}}".
 
