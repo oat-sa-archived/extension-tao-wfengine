@@ -120,7 +120,7 @@ class wfEngine_actions_ProcessBrowser extends wfEngine_actions_WfModule{
 			$this->autoredirectToIndex();
 			return;
 		}
-				
+		
 		/*
 		 * known use of Session::setAttribute("processUri") in:
 		 * - taoDelivery_actions_ItemDelivery::runner()
@@ -147,7 +147,6 @@ class wfEngine_actions_ProcessBrowser extends wfEngine_actions_WfModule{
 		
 		//get activity execution from currently available process definitions:
 		$currentlyAvailableActivityExecutions = $this->processExecutionService->getAvailableCurrentActivityExecutions($this->processExecution, $currentUser, true);
-		
 		$activityExecution = null;
 		
 		if(count($currentlyAvailableActivityExecutions) == 0){

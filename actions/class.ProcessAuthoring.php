@@ -103,7 +103,7 @@ class wfEngine_actions_ProcessAuthoring extends tao_actions_TaoModule {
 				case 'variable': 
 					$classUri=CLASS_PROCESSVARIABLES;break;
 				case 'role': 
-					$classUri=CLASS_ROLE_WORKFLOWUSER;break;//used to be CLASS_ROLE then CLASS_ROLE_BACKOFFICE, now only back office roles are authorized to wf users (including TAO managers)
+					$classUri=CLASS_ROLE_WORKFLOWUSER;break;//used to be CLASS_ROLE then INSTANCE_ROLE_BACKOFFICE, now only back office roles are authorized to wf users (including TAO managers)
 				default:
 					throw new Exception('unknown class');break;
 			}

@@ -436,16 +436,16 @@ class wfEngine_models_classes_ActivityService
         // section 127-0-1-1--1b682bf3:132cdc3fef4:-8000:000000000000309D begin
 		
 		//check the kind of resources
-        if($this->getClass($activity)->uriResource != CLASS_ACTIVITIES){
-        	throw new Exception("Activity must be an instance of the class Activities");
+        if($this->getClass($activity)->getUri() != CLASS_ACTIVITIES){
+        	throw new Exception("Activity must be an instance of the Activities Class");
         }
-        if(!in_array($mode->uriResource, array_keys($this->getAclModes()))){
-        	throw new Exception("Unknow acl mode");
+        if(!in_array($mode->getUri(), array_keys($this->getAclModes()))){
+        	throw new Exception("Unknow ACL mode");
         }
         
         //set the ACL mode
         $properties = array(
-        	PROPERTY_ACTIVITIES_ACL_MODE => $mode->uriResource
+        	PROPERTY_ACTIVITIES_ACL_MODE => $mode->getUri()
         );
         
         switch($mode->uriResource){
@@ -454,16 +454,16 @@ class wfEngine_models_classes_ActivityService
         	case INSTANCE_ACL_ROLE_RESTRICTED_USER_INHERITED:
 			case INSTANCE_ACL_ROLE_RESTRICTED_USER_DELIVERY:{
         		if(is_null($target)){
-        			throw new Exception("Target must reference a role resource");
+        			throw new Exception("Target must reference a Role Resource");
         		}
-        		$properties[PROPERTY_ACTIVITIES_RESTRICTED_ROLE] = $target->uriResource;
+        		$properties[PROPERTY_ACTIVITIES_RESTRICTED_ROLE] = $target->getUri();
         		break;
         	}	
         	case INSTANCE_ACL_USER:{
         		if(is_null($target)){
-        			throw new Exception("Target must reference a user resource");
+        			throw new Exception("Target must reference a user Resource");
         		}
-        		$properties[PROPERTY_ACTIVITIES_RESTRICTED_USER] = $target->uriResource;
+        		$properties[PROPERTY_ACTIVITIES_RESTRICTED_USER] = $target->getUri();
         		break;
 			}
         }
@@ -492,7 +492,7 @@ class wfEngine_models_classes_ActivityService
 		if(is_null($returnValue)){
 			$aclModeClass = new core_kernel_classes_Class(CLASS_ACL_MODES);
 			foreach($aclModeClass->getInstances() as $mode){
-				$returnValue[$mode->uriResource] = $mode;
+				$returnValue[$mode->getUri()] = $mode;
 			}
 			$this->setCache(__METHOD__, array(), $returnValue);
 		}

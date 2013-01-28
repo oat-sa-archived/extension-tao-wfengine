@@ -336,7 +336,7 @@ class wfEngine_models_classes_ProcessDefinitionService
                     case INSTANCE_ACL_USER:
                         $processUser = $processDefinition->getOnePropertyValue($restrictedUserProp);
                         if(!is_null($processUser)){
-                            if($processUser->uriResource == $currentUser->uriResource) {
+                            if($processUser->getUri() == $currentUser->getUri()) {
                                 $returnValue = true;
                             }
                         }
@@ -345,8 +345,8 @@ class wfEngine_models_classes_ProcessDefinitionService
                         //check if the current user has the restricted role
                     case INSTANCE_ACL_ROLE:
                     	$processRole 		= $processDefinition->getOnePropertyValue($restrictedRoleProp);
-                        $processRoleClass 	= new core_kernel_classes_Class($processRole->getUri());
-                    	$returnValue		= $currentUser->isInstanceOf($processRoleClass);
+                    	$userService 		= core_kernel_users_Service::singleton();
+                    	$returnValue		= $userService->userHasRoles($currentUser, $processRole);
                         break;
                     default:
                         $returnValue = true;

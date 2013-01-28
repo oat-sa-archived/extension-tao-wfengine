@@ -14,7 +14,8 @@ http://localhost/wfEngine/scripts/deleteProcessExecutions.php?processExecutionUr
 */
 require_once dirname(__FILE__).'/../includes/raw_start.php';
 
-core_control_FrontController::connect(SYS_USER_LOGIN, SYS_USER_PASS, DATABASE_NAME);
+$userService = core_kernel_users_Service::singleton();
+$userService->login(SYS_USER_LOGIN, SYS_USER_PASS, new core_kernel_classes_Class('http://www.tao.lu/Ontologies/TAO.rdf#TaoManagerRole'));
 
 $processExecutionUri = '';
 if(isset($_GET['processExecutionUri'])){

@@ -78,14 +78,15 @@ class wfEngineServiceTest extends UnitTestCase {
 		$userData = array(
 			PROPERTY_USER_LOGIN		=> 	$login,
 			PROPERTY_USER_PASSWORD	=>	md5($this->userPassword),
-			PROPERTY_USER_DEFLG		=>	'EN',
-			PROPERTY_USER_UILG		=>	'EN'
+			PROPERTY_USER_DEFLG		=>	'http://www.tao.lu/Ontologies/TAO.rdf#LangEN',
+			PROPERTY_USER_UILG		=>	'http://www.tao.lu/Ontologies/TAO.rdf#LangEN',
+			PROPERTY_USER_ROLES		=>	INSTANCE_ROLE_WORKFLOW
 		);
 		
 		$user = $this->userService->getOneUser($login);
 		if(is_null($user)){
-			$wfrole = new core_kernel_classes_Class(CLASS_ROLE_WORKFLOWUSERROLE);
-			$user = $wfrole->createInstanceWithProperties($userData);
+			$userClass = new core_kernel_classes_Class(CLASS_WORKFLOWUSER);
+			$user = $userClass->createInstanceWithProperties($userData);
 		}
 		$returnValue = $user;
 		
@@ -114,7 +115,7 @@ class wfEngineServiceTest extends UnitTestCase {
 			$returnValue = true;
 			$this->out("new user logged in: ".$this->currentUser->getOnePropertyValue($loginProperty).' "'.$this->currentUser->uriResource.'"');
 		}else{
-			$this->fail("unable to login user $login<br>");
+			$this->fail("unable to login user $login");
 		}
 		
 		$activityExecutionService = wfEngine_models_classes_ActivityExecutionService::singleton();

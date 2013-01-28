@@ -48,18 +48,19 @@ class NotificationServiceTestCase extends UnitTestCase {
 		$login = 'wfTester';
 		$pass = 'test123';
 		$userData = array(
-			PROPERTY_USER_LOGIN		=> 	$login,
-			PROPERTY_USER_PASSWORD	=>	md5($pass),
-			PROPERTY_USER_DEFLG		=>	'EN',
-			PROPERTY_USER_MAIL		=>  'somsack.sipasseuth@tudor.lu',
-			PROPERTY_USER_FIRSTNAME  =>	'myFirstName',
-			PROPERTY_USER_LASTNAME  =>	'myLastName'
+			PROPERTY_USER_LOGIN			=> 	$login,
+			PROPERTY_USER_PASSWORD		=>	md5($pass),
+			PROPERTY_USER_DEFLG			=>	'EN',
+			PROPERTY_USER_MAIL			=>  'somsack.sipasseuth@tudor.lu',
+			PROPERTY_USER_FIRSTNAME  	=>	'Sammy',
+			PROPERTY_USER_LASTNAME  	=>	'Norville Rogers',
+			PROPERTY_USER_ROLES			=>  INSTANCE_ROLE_WORKFLOW
 		);
 		
 		$this->currentUser = $this->userService->getOneUser($login);
 		if(is_null($this->currentUser)){
-			$wfrole = new core_kernel_classes_Class(CLASS_ROLE_WORKFLOWUSERROLE);
-			$this->currentUser = $wfrole->createInstanceWithProperties($userData);
+			$userClass = new core_kernel_classes_Class(CLASS_WORKFLOWUSER);
+			$this->currentUser = $userClass->createInstanceWithProperties($userData);
 		}
 		
 		$this->userService->logout();
@@ -212,7 +213,7 @@ class NotificationServiceTestCase extends UnitTestCase {
 		$this->assertNotNull($notification);
 		$builtMessage = (string) $notification->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_NOTIFICATION_MESSAGE));
 		$this->assertEqual($builtMessage, '
-			Dear myFirstName myLastName,
+			Dear Sammy Norville Rogers,
 
 			Please join the translation process of the unit myUnit to fr_FR to complete your next task "activity1".
 
@@ -256,6 +257,8 @@ class NotificationServiceTestCase extends UnitTestCase {
 			$processExecutionService = wfEngine_models_classes_ProcessExecutionService::singleton();
 			$authoringService = wfAuthoring_models_classes_ProcessService::singleton();
 			$activityExecutionService = wfEngine_models_classes_ActivityExecutionService::singleton();
+			$roleService = wfEngine_models_classes_RoleService::singleton();
+			$userService = core_kernel_users_Service::singleton();
 			
 			//create a new process def
 			$processDefinitionClass = new core_kernel_classes_Class(CLASS_PROCESS);
@@ -265,11 +268,10 @@ class NotificationServiceTestCase extends UnitTestCase {
 			$aclModeRole		 = new core_kernel_classes_Resource(INSTANCE_ACL_ROLE);
 			$aclModeUser		 = new core_kernel_classes_Resource(INSTANCE_ACL_USER);
 			
-			$role1		 = new core_kernel_classes_Resource(CLASS_ROLE_WORKFLOWUSERROLE);
-			
-			$roleService = wfEngine_models_classes_RoleService::singleton();
-			$role2		 = $roleService->createInstance($roleService->getRoleClass(), 'test role 2');
-			$roleService->setRoleToUsers($role2, array($this->currentUser->uriResource));
+			$wfRole 	 = new core_kernel_classes_Resource(INSTANCE_ROLE_WORKFLOW);
+			$role1		 = $userService->addRole('Role 1', '', $wfRole);
+			$role2		 = $userService->addRole('Role 2', '', $wfRole);
+			$roleService->setRoleToUsers($role2, array($this->currentUser));
 			
 			
 			//define activities and connectors

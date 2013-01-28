@@ -28,14 +28,14 @@ class ActivityExecutionServiceTestCase extends wfEngineServiceTest {
 		$userData = array(
 			PROPERTY_USER_LOGIN		=> 	$login,
 			PROPERTY_USER_PASSWORD	=>	md5($this->userPassword),
-			PROPERTY_USER_DEFLG		=>	'EN',
-			PROPERTY_USER_UILG		=>	'EN',
-		);
+			PROPERTY_USER_DEFLG		=>	'http://www.tao.lu/Ontologies/TAO.rdf#LangEN',
+			PROPERTY_USER_UILG		=>	'http://www.tao.lu/Ontologies/TAO.rdf#LangEN',
+			PROPERTY_USER_ROLES		=> 	INSTANCE_ROLE_WORKFLOW);
 		
 		$this->currentUser = $this->userService->getOneUser($login);
 		if(is_null($this->currentUser)){
-			$wfrole = new core_kernel_classes_Class(CLASS_ROLE_WORKFLOWUSERROLE);
-			$this->currentUser = $wfrole->createInstanceWithProperties($userData); 
+			$userClass = new core_kernel_classes_Class(CLASS_WORKFLOWUSER);
+			$this->currentUser = $userClass->createInstanceWithProperties($userData);
 		}
 		
 		$this->userService->logout();
@@ -72,7 +72,7 @@ class ActivityExecutionServiceTestCase extends wfEngineServiceTest {
 		error_reporting(E_ALL);
 		
 		try{
-			
+			$generisUserService = core_kernel_users_Service::singleton();
 			$roleService = wfEngine_models_classes_RoleService::singleton();
 			$authoringService = wfAuthoring_models_classes_ProcessService::singleton();
 			$activityService = wfEngine_models_classes_ActivityService::singleton();
@@ -89,23 +89,23 @@ class ActivityExecutionServiceTestCase extends wfEngineServiceTest {
 			//INSTANCE_ACL_ROLE_RESTRICTED_USER_DELIVERY, $roleA 
 			
 			//create roles and users:
-			$roleClass = new core_kernel_classes_Class(CLASS_ROLE_WORKFLOWUSERROLE);
-			$roleA = $roleService->createInstance($roleClass, 'ACLTestCaseRoleA');
-			$roleB = $roleService->createInstance($roleClass, 'ACLTestCaseRoleB');
-			$roleC = $roleService->createInstance($roleClass, 'ACLTestCaseRoleC');
+			$wfRole = new core_kernel_classes_Resource(INSTANCE_ROLE_WORKFLOW);
+			$roleA = $generisUserService->addRole('ACLTestCaseRoleA', '', $wfRole);
+			$roleB = $generisUserService->addRole('ACLTestCaseRoleB', '', $wfRole);
+			$roleC = $generisUserService->addRole('ACLTestCaseRoleC', '', $wfRole);
 			
 			list($usec, $sec) = explode(" ", microtime());
 			$users = array();
 			$users[0] = $usec;
-			for($i=1; $i<=6; $i++){
-				$users[] = 'ACLTestCaseUser'.$i.'-'.$usec;
+			for($i = 1; $i <= 6; $i++){
+				$users[] = 'ACLTestCaseUser' . $i . '-' . $usec;
 			}
-			$user1 = $this->createUser($users[1]);$user1->setLabel($users[1]);
-			$user2 = $this->createUser($users[2]);$user2->setLabel($users[2]);
-			$user3 = $this->createUser($users[3]);$user3->setLabel($users[3]);
-			$user4 = $this->createUser($users[4]);$user4->setLabel($users[4]);
-			$user5 = $this->createUser($users[5]);$user5->setLabel($users[5]);
-			$user6 = $this->createUser($users[6]);$user6->setLabel($users[6]);
+			$user1 = $this->createUser($users[1]); $user1->setLabel($users[1]);
+			$user2 = $this->createUser($users[2]); $user2->setLabel($users[2]);
+			$user3 = $this->createUser($users[3]); $user3->setLabel($users[3]);
+			$user4 = $this->createUser($users[4]); $user4->setLabel($users[4]);
+			$user5 = $this->createUser($users[5]); $user5->setLabel($users[5]);
+			$user6 = $this->createUser($users[6]); $user6->setLabel($users[6]);
 			
 			$roleService->setRoleToUsers($roleA, array(
 				$user1->uriResource,
@@ -206,7 +206,7 @@ class ActivityExecutionServiceTestCase extends wfEngineServiceTest {
 			$iterationNumber = 6;
 			$i = 1;
 			while($i <= $iterationNumber){
-				if($i<$iterationNumber){
+				if($i < $iterationNumber){
 					//try deleting a process that is not finished
 					$this->assertFalse($processExecutionService->deleteProcessExecution($processInstance, true));
 				}

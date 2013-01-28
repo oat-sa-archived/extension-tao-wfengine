@@ -18,9 +18,6 @@ class UsersHelper
 		
 			//get the user in the session
 			$currentUser = $userService->getCurrentUser(Session::getAttribute(tao_models_classes_UserService::LOGIN_KEY));
-				
-			//connect the API
-			core_control_FrontController::connect($currentUser['login'], $currentUser['password'], DATABASE_NAME);
 			
 			//init the languages
 			core_kernel_classes_Session::singleton()->setDataLanguage($userService->getUserLanguage($currentUser['login']));
@@ -38,17 +35,17 @@ class UsersHelper
 
 	public static function buildCurrentUserForView()
 	{
-		$userService = wfEngine_models_classes_UserService::singleton();
-		$roleService = wfEngine_models_classes_RoleService::singleton();
-		$currentUser = $userService->getCurrentUser();
+		$userService = core_kernel_users_Service::singleton();
+		$wfUserService = wfEngine_models_classes_UserService::singleton();
+		$currentUser = $wfUserService->getCurrentUser();
 		
 		// username.
 		$data['username'] 	= (string)$currentUser->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_USER_LOGIN));
 	
 		// user roles.
 		$data['roles']		= array();
-		$roles = $roleService->getUserRoles($currentUser);
-		foreach($roles as $role){	
+		$roles = $userService->getUserRoles($currentUser);
+		foreach($roles as $role){
 			$data['roles'][] = array(
 				'uri' 	 => $role->uriResource,
 				'label' => $role->getLabel()

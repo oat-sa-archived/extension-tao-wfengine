@@ -38,6 +38,16 @@ class ProcessExecutionServiceTestCase extends UnitTestCase{
 	 */
 	protected $currentUser = null;
 	
+	/**
+	 * @var core_kernel_classes_Resource
+	 */
+	protected $testUserRole = null;
+	
+	/**
+	 * @var core_kernel_classes_Class
+	 */
+	protected $testUserClass = null;
+	
 	protected $currentUser0 = null;
 	
 	/**
@@ -59,14 +69,17 @@ class ProcessExecutionServiceTestCase extends UnitTestCase{
 		$userData = array(
 			PROPERTY_USER_LOGIN		=> 	$login,
 			PROPERTY_USER_PASSWORD	=>	md5($pass),
-			PROPERTY_USER_DEFLG		=>	'EN',
-			PROPERTY_USER_UILG		=>	'EN'
+			PROPERTY_USER_DEFLG		=>	'http://www.tao.lu/Ontologies/TAO.rdf#LangEN',
+			PROPERTY_USER_UILG		=>	'http://www.tao.lu/Ontologies/TAO.rdf#LangEN',
+			PROPERTY_USER_ROLES		=>  INSTANCE_ROLE_WORKFLOW
 		);
 		
-		$this->testUserRole = new core_kernel_classes_Class(CLASS_ROLE_WORKFLOWUSERROLE);
+		$this->testUserClass = new core_kernel_classes_Class(CLASS_WORKFLOWUSER);
+		$this->testUserRole = new core_kernel_classes_Resource(INSTANCE_ROLE_WORKFLOW);
 		$this->currentUser = $this->userService->getOneUser($login);
+		
 		if(is_null($this->currentUser)){
-			$this->currentUser = $this->testUserRole->createInstanceWithProperties($userData);
+			$this->currentUser = $this->testUserClass->createInstanceWithProperties($userData);
 		}
 		
 		$this->userService->logout();
@@ -652,21 +665,23 @@ class ProcessExecutionServiceTestCase extends UnitTestCase{
 				$userData = array(
 					PROPERTY_USER_LOGIN		=> 	$login,
 					PROPERTY_USER_PASSWORD	=>	md5($pass),
-					PROPERTY_USER_DEFLG		=>	'EN',
+					PROPERTY_USER_DEFLG		=>	'http://www.tao.lu/Ontologies/TAO.rdf#LangEN',
+					PROPERTY_USER_UILG		=>  'http://www.tao.lu/Ontologies/TAO.rdf#LangEN',
+					PROPERTY_USER_ROLES		=> 	INSTANCE_ROLE_WORKFLOW,
 					RDFS_LABEL				=> $login
 				);
 
 				$otherUser = $this->userService->getOneUser($login);
 				if(is_null($otherUser)){
-					$otherUser = $this->testUserRole->createInstanceWithProperties($userData);
+					$otherUser = $this->testUserClass->createInstanceWithProperties($userData);
 				}
-				$createdUsers[$otherUser->uriResource] = $otherUser; 
+				$createdUsers[$otherUser->getUri()] = $otherUser; 
 
 				if($this->userService->loginUser($login, md5($pass))){
 					$this->currentUser = $this->userService->getCurrentUser();
 					$this->out("new user logged in: ".$this->currentUser->getOnePropertyValue($loginProperty).' "'.$this->currentUser->uriResource.'"');
 				}else{
-					$this->fail("unable to login user $login<br>");
+					$this->fail("unable to login user $login");
 				}
 			}
 		}

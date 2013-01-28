@@ -9,7 +9,8 @@ require_once dirname(__FILE__).'/../includes/raw_start.php';
 set_time_limit(0);
 
 //connec to the api
-core_control_FrontController::connect(SYS_USER_LOGIN, SYS_USER_PASS, DATABASE_NAME);
+$userService = core_kernel_users_Service::singleton();
+$userService->login(SYS_USER_LOGIN, SYS_USER_PASS, new core_kernel_classes_Class('http://www.tao.lu/Ontologies/TAO.rdf#TaoManagerRole'));
 		
 $notificationService = wfEngine_models_classes_NotificationService::singleton();
 $sent = $notificationService->sendNotifications(new tao_helpers_transfert_MailAdapter());

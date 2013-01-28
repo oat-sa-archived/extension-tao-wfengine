@@ -58,7 +58,7 @@ class wfEngine_models_classes_UserService
     {
         // section 127-0-1-1-951b66:128b0d3ece8:-8000:0000000000001F55 begin
 
-		$this->allowedRoles = array(CLASS_ROLE_BACKOFFICE);
+		$this->allowedRoles = array(INSTANCE_ROLE_WORKFLOW => new core_kernel_classes_Resource(INSTANCE_ROLE_WORKFLOW));
 
         // section 127-0-1-1-951b66:128b0d3ece8:-8000:0000000000001F55 end
     }
@@ -95,26 +95,6 @@ class wfEngine_models_classes_UserService
         // section 127-0-1-1-951b66:128b0d3ece8:-8000:0000000000001F59 end
 
         return (bool) $returnValue;
-    }
-
-    /**
-     * Short description of method feedAllowedRoles
-     *
-     * @access public
-     * @author Jerome Bogaerts, <jerome.bogaerts@tudor.lu>
-     * @param  Class roleClass
-     * @return mixed
-     */
-    public function feedAllowedRoles( core_kernel_classes_Class $roleClass = null)
-    {
-        // section 127-0-1-1--2c34ff07:1291273bd7e:-8000:0000000000001F94 begin
-
-			if (empty($roleClass)) {
-				$roleClass = new core_kernel_classes_Class(CLASS_ROLE_WORKFLOWUSER);
-			}
-			$this->allowedRoles = array($roleClass->getUri());
-
-        // section 127-0-1-1--2c34ff07:1291273bd7e:-8000:0000000000001F94 end
     }
 
     /**

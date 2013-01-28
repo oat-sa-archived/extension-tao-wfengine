@@ -516,6 +516,7 @@ class wfEngine_models_classes_ActivityExecutionService
         			
         			//check if th current user is the restricted user
         			case INSTANCE_ACL_USER:{
+        				
         				$activityUser = $this->getRestrictedUser($activityExecution);
         				if(!is_null($activityUser)){
 	        				if($activityUser->uriResource == $currentUser->uriResource) {
@@ -526,9 +527,10 @@ class wfEngine_models_classes_ActivityExecutionService
         			}
         			//check if the current user has the restricted role
         			case INSTANCE_ACL_ROLE:{
+        				
+        				$userService 		= core_kernel_users_Service::singleton();
         				$activityRole 		= $this->getRestrictedRole($activityExecution);
-        				$activityRoleClass 	= new core_kernel_classes_Class($activityRole->getUri());
-        				$returnValue		= $currentUser->isInstanceOf($activityRoleClass); 
+        				$returnValue		= $userService->userHasRoles($currentUser, $activityRole);
         				break;	
         			}
         			//check if the current user has the restricted role and is the restricted user
@@ -537,36 +539,39 @@ class wfEngine_models_classes_ActivityExecutionService
         				//check if an activity execution already exists for the current activity or if there are several in parallel, check if there is one spot available. If so create the activity execution:
 						//need to know the current process execution, from it, get the process definition and the number of activity executions associated to it.
 						//from the process definition get the number of allowed activity executions for this activity definition (normally only 1 but can be more, for a parallel connector)
-						
-        				$activityRole 		= $this->getRestrictedRole($activityExecution);
-        				$activityRoleClass 	= new core_kernel_classes_Class($activityRole->getUri());
-        				if ($currentUser->isInstanceOf($activityRoleClass)) {
-							$assignedUser = $this->getActivityExecutionUser($activityExecution);
-							if(is_null($assignedUser)|| $assignedUser->uriResource == $currentUser->uriResource){
+						$userService = core_kernel_users_Service::singleton();
+        				$activityRole = $this->getRestrictedRole($activityExecution);
+        				
+        				if (true === $userService->userHasRoles($currentUser, $activityRole)){
+        					
+        					$assignedUser = $this->getActivityExecutionUser($activityExecution);
+        					
+							if(is_null($assignedUser) || $assignedUser->getUri() == $currentUser->getUri()){
 								$returnValue = true;
 							}
-						}
-
+        				}
         				break;	
         			}	
         			//check if the current user has the restricted role and is the restricted user based on the previous activity with the given role
         			case INSTANCE_ACL_ROLE_RESTRICTED_USER_INHERITED:{
-        				$activityRole 		= $this->getRestrictedRole($activityExecution);
-        				$activityRoleClass 	= new core_kernel_classes_Class($activityRole->getUri());
-        				if ($currentUser->isInstanceOf($activityRoleClass)) {
+        				
+        				$userService = core_kernel_users_Service::singleton();
+        				$activityRole = $this->getRestrictedRole($activityExecution);
+        				
+        				if (true === $userService->userHasRoles($currentUser, $activityRole)) {
         							
 							$roleSearchPattern = array();
-							$roleSearchPattern[] = $activityRole->uriResource;
+							$roleSearchPattern[] = $activityRole->getUri();
 							$relatedProcessVariable = $this->getRestrictedRole($activityExecution, false);
-							if(!is_null($relatedProcessVariable) && $relatedProcessVariable->uriResource != $activityRole->uriResource){
-								$roleSearchPattern[] = $relatedProcessVariable->uriResource;
+							if(!is_null($relatedProcessVariable) && $relatedProcessVariable->getUri() != $activityRole->getUri()){
+								$roleSearchPattern[] = $relatedProcessVariable->getUri();
 							}
 							
 							//search for a past activity execution that has the the right role:
 							$activityExecutionsClass = new core_kernel_classes_Class(CLASS_ACTIVITY_EXECUTION);
 							$pastActivityExecutions = $activityExecutionsClass->searchInstances(array(
-								PROPERTY_ACTIVITY_EXECUTION_ACTIVITY => $this->getExecutionOf($activityExecution)->uriResource,
-								PROPERTY_ACTIVITY_EXECUTION_PROCESSEXECUTION => $processExecution->uriResource,
+								PROPERTY_ACTIVITY_EXECUTION_ACTIVITY => $this->getExecutionOf($activityExecution)->getUri(),
+								PROPERTY_ACTIVITY_EXECUTION_PROCESSEXECUTION => $processExecution->getUri(),
 								PROPERTY_ACTIVITY_EXECUTION_ACL_MODE => INSTANCE_ACL_ROLE_RESTRICTED_USER_INHERITED,
 								PROPERTY_ACTIVITY_EXECUTION_RESTRICTED_ROLE => $roleSearchPattern
 							), array(
@@ -578,7 +583,7 @@ class wfEngine_models_classes_ActivityExecutionService
 								foreach ($pastActivityExecutions as $pastActivityExecution) {
 									$pastUser = $this->getActivityExecutionUser($pastActivityExecution);
 									if (!is_null($pastUser)){
-										if($pastUser->uriResource == $currentUser->uriResource){
+										if($pastUser->getUri() == $currentUser->getUri()){
 											$returnValue = true; //user's activity execution
 										}
 										break(2);
@@ -598,11 +603,13 @@ class wfEngine_models_classes_ActivityExecutionService
 					}
 					//special case for deliveries
 					case INSTANCE_ACL_ROLE_RESTRICTED_USER_DELIVERY:{
+						
+						$userService = core_kernel_users_Service::singleton();
+						
 						$activity = $this->getExecutionOf($activityExecution);
 						if($this->activityService->isInitial($activity)){
-	        				$activityRole 		= $this->getRestrictedRole($activityExecution);
-	        				$activityRoleClass 	= new core_kernel_classes_Class($activityRole->getUri());
-	        				$returnValue = $currentUser->isInstanceOf($activityRoleClass);
+	        				$activityRole = $this->getRestrictedRole($activityExecution);
+	        				$returnValue = $userService->userHasRoles($currentUser, $activityRole);
 						}else{
 							$process = $processExecution->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_PROCESSINSTANCES_EXECUTIONOF));
 							if(!is_null($process)){
