@@ -90,9 +90,9 @@ class ActivityExecutionServiceTestCase extends wfEngineServiceTest {
 			
 			//create roles and users:
 			$wfRole = new core_kernel_classes_Resource(INSTANCE_ROLE_WORKFLOW);
-			$roleA = $generisUserService->addRole('ACLTestCaseRoleA', '', $wfRole);
-			$roleB = $generisUserService->addRole('ACLTestCaseRoleB', '', $wfRole);
-			$roleC = $generisUserService->addRole('ACLTestCaseRoleC', '', $wfRole);
+			$roleA = $generisUserService->addRole('ACLTestCaseRoleA', $wfRole);
+			$roleB = $generisUserService->addRole('ACLTestCaseRoleB', $wfRole);
+			$roleC = $generisUserService->addRole('ACLTestCaseRoleC', $wfRole);
 			
 			list($usec, $sec) = explode(" ", microtime());
 			$users = array();

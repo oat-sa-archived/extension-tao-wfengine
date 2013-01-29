@@ -269,8 +269,8 @@ class NotificationServiceTestCase extends UnitTestCase {
 			$aclModeUser		 = new core_kernel_classes_Resource(INSTANCE_ACL_USER);
 			
 			$wfRole 	 = new core_kernel_classes_Resource(INSTANCE_ROLE_WORKFLOW);
-			$role1		 = $userService->addRole('Role 1', '', $wfRole);
-			$role2		 = $userService->addRole('Role 2', '', $wfRole);
+			$role1		 = $userService->addRole('Role 1', $wfRole);
+			$role2		 = $userService->addRole('Role 2', $wfRole);
 			$roleService->setRoleToUsers($role2, array($this->currentUser));
 			
 			
