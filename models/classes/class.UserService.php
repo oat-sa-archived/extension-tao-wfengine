@@ -112,7 +112,7 @@ class wfEngine_models_classes_UserService
 
         // section 127-0-1-1-718243b3:12912642ee4:-8000:0000000000001F92 begin
 
-        $users = $this->getAllUsers(array('order'=>'login'));
+        $users = $this->getAllUsers(array('order' => 'login'));
 		foreach($users as $user){
 			$login = (string) $user->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_USER_LABEL));
 			$returnValue[] = array(
