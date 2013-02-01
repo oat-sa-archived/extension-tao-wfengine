@@ -116,93 +116,31 @@ extends tao_scripts_Runner
 		switch($this->mode){
 			case self::MODE_SMOOTH2HARD:
 				 
-				self::out("Compiling triples to relational database", array('color' => 'light_blue'));
+				self::out("Compiling triples to relational database...", array('color' => 'light_blue'));
 				 
 				$options = array(
     				'recursive'				=> true,
     				'append'				=> true,
-					'createForeigns'		=> true,
+					'createForeigns'		=> false,
 					'referencesAllTypes'	=> true,
 					'rmSources'				=> true
 				);
 				 
-				$switcher = new core_kernel_persistence_Switcher(array('http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessVariables'));
+				$switcher = new core_kernel_persistence_Switcher(array('http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessVariables',
+																	   'http://www.tao.lu/Ontologies/TAOResult.rdf#GradeVariable'));
 				 
-				self::out("\nCompiling Languages classes", array('color' => 'light_blue'));
+				$api = core_kernel_impl_ApiModelOO::singleton();
+				$toCompile = $api->getAllClasses()->toArray();
 				
-				$languagesClass = new core_kernel_classes_Class('http://www.tao.lu/Ontologies/TAO.rdf#Languages');
-				
-				self::out(" - Hardifying ".$languagesClass->getLabel(), array('color' => 'light_green'));
-				
-				$switcher->hardify($languagesClass, array_merge($options, array(
-                	'additionalProperties'  => array(new core_kernel_classes_Property('http://www.w3.org/1999/02/22-rdf-syntax-ns#value')),
-                    'createForeigns'        => false
-				)));
-				 
-				// Compiled wfEngine data
-				self::out("\nCompiling wfEngine classes", array('color' => 'light_blue'));
-				 
-				//class used by the wfEngine
-				$wfClasses = array(
-					"http://www.tao.lu/middleware/wfEngine.rdf#ClassSupportServices",
-					"http://www.tao.lu/middleware/wfEngine.rdf#ClassCallOfservicesResources",
-					"http://www.tao.lu/middleware/wfEngine.rdf#ClassServiceDefinitionResources",
-					"http://www.tao.lu/middleware/wfEngine.rdf#ClassServicesResources",
-					"http://www.tao.lu/middleware/wfEngine.rdf#ClassConnectors"
-				);
-				 
-				foreach($wfClasses as $classUri){
-					$class = new core_kernel_classes_Class($classUri);
-					$this->out(" - Hardifying ".$class->getLabel(), array('color' => 'light_green'));
-					$switcher->hardify($class, $options);
+				foreach ($toCompile as $tC){
+					$classLabel = $tC->getLabel();
+					self::out("\nCompiling '${classLabel}' class...", array('color' => 'light_blue'));
+					$switcher->hardify($tC, $options);
 				}
-				 
-				// Compiled test takers
-				self::out("\nCompiling test takers", array('color' => 'light_blue'));
-				 
-				$testTakerClass = new core_kernel_classes_Class('http://www.tao.lu/Ontologies/TAOSubject.rdf#Subject');
-				$userClass		= new core_kernel_classes_Class('http://www.tao.lu/Ontologies/generis.rdf#User');
-				$taoSubjectRoleClass =  new core_kernel_classes_Class('http://www.tao.lu/Ontologies/TAO.rdf#TaoSubjectRole');
-				
-				self::out(" - Hardifying ".$testTakerClass->getLabel(), array('color' => 'light_green'));
-				$switcher->hardify($testTakerClass, array_merge($options, array('topClass' => $userClass)));
-				
-				//force referencing:
-				$resourceReferencer = core_kernel_persistence_hardapi_ResourceReferencer::singleton();
-				if(!$resourceReferencer->isClassReferenced($taoSubjectRoleClass)){
-					
-					self::out(" No instance of class {} Force referencing the class ".$taoSubjectRoleClass->getLabel(), array('color' => 'light_green'));
-					
-					$resourceReferencer->referenceClass(
-							$taoSubjectRoleClass, 
-							array(
-								'table' => '_'.core_kernel_persistence_hardapi_Utils::getShortName($testTakerClass),
-								'topClass'=> $userClass
-								)
-						);
-				}
-				
-
-				// Compiled groups
-				self::out("\nCompiling groups", array('color' => 'light_blue'));
-				 
-				$groupClass = new core_kernel_classes_Class('http://www.tao.lu/Ontologies/TAOGroup.rdf#Group');
-
-				self::out(" - Hardifying ".$groupClass->getLabel(), array('color' => 'light_green'));
-
-				$switcher->hardify($groupClass, $options);
-
-				// Compiled delivery history
-				self::out("\nCompiling delivery history", array('color' => 'light_blue'));
-				 
-				$deliveryHistoryClass = new core_kernel_classes_Class('http://www.tao.lu/Ontologies/TAODelivery.rdf#History');
-
-				self::out(" - Hardifying ".$deliveryHistoryClass->getLabel(), array('color' => 'light_green'));
-
-				$switcher->hardify($deliveryHistoryClass, array_merge($options, array('createForeigns' => false)));
-
 				
 				unset($switcher);
+				
+				self::out("Compilation process complete.");
 				 
 				break;
 
@@ -239,11 +177,11 @@ extends tao_scripts_Runner
 				// Compiled test takers
 				self::out("\nDecompiling test takers", array('color' => 'light_blue'));
 				 
-				$testTakerClass = new core_kernel_classes_Class('http://www.tao.lu/Ontologies/TAOSubject.rdf#Subject');
+				$userClass	= new core_kernel_classes_Class('http://www.tao.lu/Ontologies/generis.rdf#User');
 
-				self::out(" - Unhardifying ".$testTakerClass->getLabel(), array('color' => 'light_green'));
+				self::out(" - Unhardifying ".$userClass->getLabel(), array('color' => 'light_green'));
 
-				$switcher->unhardify($testTakerClass, $options);
+				$switcher->unhardify($userClass, $options);
 				 
 				// Compiled groups
 				self::out("\nDecompiling groups", array('color' => 'light_blue'));
@@ -261,7 +199,7 @@ extends tao_scripts_Runner
 
 				self::out(" - Unhardifying ".$deliveryHistoryClass->getLabel(), array('color' => 'light_green'));
 
-				$switcher->unhardify($deliveryHistoryClass, array_merge($options));
+				$switcher->unhardify($deliveryHistoryClass, $options);
 
 				unset($switcher);
 				 
