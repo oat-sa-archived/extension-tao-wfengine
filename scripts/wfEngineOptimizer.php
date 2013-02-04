@@ -13,14 +13,14 @@ new wfEngine_scripts_HardifyWfEngine(array(
 			'type' 			=> 'boolean',
 			'shortcut'		=> 'c',
 			'required'		=> true,
-			'description'	=> 'Compile the workflow triple store to relational database'
+			'description'	=> 'Compile the triple store to relational database'
 		),
 		array(
 			'name' 			=> 'decompile',
 			'type' 			=> 'boolean',
 			'shortcut'		=> 'd',
 			'required'		=> true,
-			'description'	=> 'Get the data from the workflow relational database to the triple store (if previously compiled)'
+			'description'	=> 'Get the data from the relational database to the triple store (if previously compiled)'
 		),
 		array(
 			'name'			=> 'indexes',

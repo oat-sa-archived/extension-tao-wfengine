@@ -89,10 +89,10 @@ extends tao_scripts_Runner
 	{
 		// section 127-0-1-1-22592813:12fbf8723a0:-8000:0000000000002FD6 begin
 
-		if(isset($this->parameters['compile']) && $this->parameters['compile'] == true){
+		if(!empty($this->parameters['compile'])){
 			$this->mode = self::MODE_SMOOTH2HARD;
 		}
-		if(isset($this->parameters['decompile']) && $this->parameters['decompile'] == true){
+		if(!empty($this->parameters['decompile'])){
 			$this->mode = self::MODE_HARD2SMOOTH;
 		}
 		 
@@ -147,60 +147,27 @@ extends tao_scripts_Runner
 				 
 			case self::MODE_HARD2SMOOTH:
 				 
-				self::out("Decompiling triples to relational database", array('color' => 'light_blue'));
+				self::out("Uncompiling relational database to triples...", array('color' => 'light_blue'));
 				 
 				$options = array(
     				'recursive'				=> true,
     				'removeForeigns'		=> true				
 				);
 				 
-				$switcher = new core_kernel_persistence_Switcher(array('http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessVariables'));
+				$switcher = new core_kernel_persistence_Switcher(array('http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessVariables',
+																	   'http://www.tao.lu/Ontologies/TAOResult.rdf#GradeVariable'));
 				 
-				// Compiled wfEngine data
-				self::out("\nDecompiling wfEngine classes", array('color' => 'light_blue'));
-				 
-				//class used by the wfEngine
-				$wfClasses = array(
-					"http://www.tao.lu/middleware/wfEngine.rdf#ClassSupportServices",
-					"http://www.tao.lu/middleware/wfEngine.rdf#ClassCallOfservicesResources",
-					"http://www.tao.lu/middleware/wfEngine.rdf#ClassServiceDefinitionResources",
-					"http://www.tao.lu/middleware/wfEngine.rdf#ClassServicesResources",
-					"http://www.tao.lu/middleware/wfEngine.rdf#ClassConnectors"
-				);
-				 
-				foreach($wfClasses as $classUri){
-					$class = new core_kernel_classes_Class($classUri);
-					$this->out(" - Unhardifying ".$class->getLabel(), array('color' => 'light_green'));
-					$switcher->unhardify($class, $options);
+				$api = core_kernel_impl_ApiModelOO::singleton();
+				$toDecompile = $api->getAllClasses()->toArray();
+				
+				foreach ($toDecompile as $tD){
+					$classLabel = $tD->getLabel();
+					self::out("\nDecompiling '${classLabel}' class...", array('color' => 'light_blue'));
+					$switcher->unhardify($tD, $options);
 				}
-
-				// Compiled test takers
-				self::out("\nDecompiling test takers", array('color' => 'light_blue'));
-				 
-				$userClass	= new core_kernel_classes_Class('http://www.tao.lu/Ontologies/generis.rdf#User');
-
-				self::out(" - Unhardifying ".$userClass->getLabel(), array('color' => 'light_green'));
-
-				$switcher->unhardify($userClass, $options);
-				 
-				// Compiled groups
-				self::out("\nDecompiling groups", array('color' => 'light_blue'));
-				 
-				$groupClass = new core_kernel_classes_Class('http://www.tao.lu/Ontologies/TAOGroup.rdf#Group');
-
-				self::out(" - Unhardifying ".$groupClass->getLabel(), array('color' => 'light_green'));
-
-				$switcher->unhardify($groupClass, $options);
-
-				// Compiled delivery history
-				self::out("\nDecompiling delivery history", array('color' => 'light_blue'));
-				 
-				$deliveryHistoryClass = new core_kernel_classes_Class('http://www.tao.lu/Ontologies/TAODelivery.rdf#History');
-
-				self::out(" - Unhardifying ".$deliveryHistoryClass->getLabel(), array('color' => 'light_green'));
-
-				$switcher->unhardify($deliveryHistoryClass, $options);
-
+				
+				self::out("Decompilation process complete.");
+				
 				unset($switcher);
 				 
 				break;
