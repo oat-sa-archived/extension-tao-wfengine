@@ -38,7 +38,7 @@ class wfEngine_actions_ProcessInstanciation extends wfEngine_actions_WfModule{
 	
 	public function initProcessExecution($posted){
 		
-		ini_set('max_execution_time', 200);
+		set_time_limit(200);
 			
 		$processExecutionService = wfEngine_models_classes_ProcessExecutionService::singleton();
 		$activityExecutionService = wfEngine_models_classes_ActivityExecutionService::singleton();
