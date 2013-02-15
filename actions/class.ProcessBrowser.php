@@ -104,7 +104,7 @@ class wfEngine_actions_ProcessBrowser extends wfEngine_actions_WfModule{
 	}
 	
 	protected function redirectToMain(){
-		Session::removeAttribute("processUri");
+		$this->removeSessionAttribute("processUri");
 		$this->redirect(tao_helpers_Uri::url('index', 'WfHome'));
 	}
 	
@@ -127,7 +127,7 @@ class wfEngine_actions_ProcessBrowser extends wfEngine_actions_WfModule{
 		 * - tao_actions_Api::createAuthEnvironment()
 		 * TODO: clean usage
 		 */
-		Session::setAttribute("processUri", $this->processExecution->uriResource);
+		$this->setSessionAttribute("processUri", $this->processExecution->uriResource);
 		
 		//user data for browser view
 		$userViewData = UsersHelper::buildCurrentUserForView(); 

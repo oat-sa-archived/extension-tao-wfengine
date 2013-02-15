@@ -12,12 +12,13 @@ class UsersHelper
 	public static function authenticate($in_login, $in_password){
 
 		$userService = wfEngine_models_classes_UserService::singleton();
+		$session = Context::getInstance()->getSession();
 		
 		//loggin into tao 
 		if($userService->loginUser($in_login, $in_password, false)){
 		
 			//get the user in the session
-			$currentUser = $userService->getCurrentUser(Session::getAttribute(tao_models_classes_UserService::LOGIN_KEY));
+			$currentUser = $userService->getCurrentUser($session->getAttribute(tao_models_classes_UserService::LOGIN_KEY));
 			
 			//init the languages
 			core_kernel_classes_Session::singleton()->setDataLanguage($userService->getUserLanguage($currentUser['login']));

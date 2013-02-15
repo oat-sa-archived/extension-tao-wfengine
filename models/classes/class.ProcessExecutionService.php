@@ -757,8 +757,10 @@ class wfEngine_models_classes_ProcessExecutionService
         $returnValue = null;
 
         // section 127-0-1-1-7a69d871:1322a76df3c:-8000:0000000000002F84 begin
-		
-		Session::setAttribute("activityExecutionUri", $activityExecution->uriResource);
+		$context = Context::getInstance();
+		$session = $context->getSession();
+        
+		$session->setAttribute("activityExecutionUri", $activityExecution->uriResource);
 		
 		//check if the transition is possible, e.g. process is not finished
 		if($this->isFinished($processExecution)){
@@ -875,11 +877,6 @@ class wfEngine_models_classes_ProcessExecutionService
 				if(is_null($currentUser)){
 					throw new wfEngine_models_classes_ProcessExecutionException("No current user found!");
 				}
-				//security check if the user is allowed to access this activity
-				// if(!$activityExecutionService->checkAcl($activity->resource, $currentUser, $processExecution)){
-					// Session::removeAttribute("processUri");
-					// $this->redirect(_url('index', 'Main'));
-				// }//already performed above...
 				
 				$activityExecutionResource = $this->initCurrentActivityExecution($processExecution, $activityExecutionAfterTransition, $currentUser, true);//force execution of the ghost actiivty
 				//service not executed? use curl request?
@@ -1369,7 +1366,9 @@ class wfEngine_models_classes_ProcessExecutionService
 				}
 				$activityExecution->editPropertyValues($propLastTime, time());
 				
-				Session::setAttribute("activityExecutionUri", $returnValue->uriResource);//for variable service only?
+				$context = Context::getInstance();
+				$session = $context->getSession();
+				$session->setAttribute("activityExecutionUri", $returnValue->uriResource);//for variable service only?
 			}
 			
         }

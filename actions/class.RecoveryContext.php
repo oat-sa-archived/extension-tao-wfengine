@@ -15,11 +15,13 @@ class wfEngine_actions_RecoveryContext extends tao_actions_Api {
 	 */
 	public function retrieve(){
 		$context = array();
+		$ctx = Context::getInstance();
+		$session = $ctx->getSession();
 		
-		if(	$this->hasRequestParameter('token') && 	Session::hasAttribute('activityExecutionUri')){
+		if(	$this->hasRequestParameter('token') && 	$session->hasAttribute('activityExecutionUri')){
 			
 			$token = $this->getRequestParameter('token');
-			$activityExecutionUri = Session::getAttribute('activityExecutionUri');
+			$activityExecutionUri = $session->getAttribute('activityExecutionUri');
 			
 			if($this->authenticate($token) && !empty($activityExecutionUri)){
 				$activityExecution = new core_kernel_classes_Resource($activityExecutionUri);
@@ -35,13 +37,15 @@ class wfEngine_actions_RecoveryContext extends tao_actions_Api {
 	 * Save a context in the current activity execution
 	 */
 	public function save(){
+		$session = Context::getInstance()->getSession();
+		
 		$saved = false;
 		if(	$this->hasRequestParameter('token') && 
 			$this->hasRequestParameter('context') &&
-			Session::hasAttribute('activityExecutionUri')){
+			$session->hasAttribute('activityExecutionUri')){
 			
 			$token = $this->getRequestParameter('token');
-			$activityExecutionUri = Session::getAttribute('activityExecutionUri');
+			$activityExecutionUri = $session->getAttribute('activityExecutionUri');
 			
 			if($this->authenticate($token) && !empty($activityExecutionUri)){
 				$activityExecution = new core_kernel_classes_Resource($activityExecutionUri);
