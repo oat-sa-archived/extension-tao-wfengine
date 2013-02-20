@@ -192,14 +192,14 @@ class wfEngine_models_classes_ActivityService
         $returnValue = array();
 
         // section 127-0-1-1--7eb5a1dd:13214d5811e:-8000:0000000000002E84 begin
-		$possibleValues = array( INSTANCE_CONTROL_BACKWARD, INSTANCE_CONTROL_FORWARD ); 
+		$possibleValues = array(INSTANCE_CONTROL_BACKWARD, INSTANCE_CONTROL_FORWARD); 
 		$propValues = $activity->getPropertyValues(new core_kernel_classes_Property(PROPERTY_ACTIVITIES_CONTROLS));
 		foreach ($propValues as $value) {
 			if(in_array($value, $possibleValues)){
 				$returnValue[$value] = true;
 			}
 		}
-		if($this->isInitial($activity) && isset($returnValue[INSTANCE_CONTROL_BACKWARD])){
+		if($this->isInitial($activity)){
 			$returnValue[INSTANCE_CONTROL_BACKWARD] = false ;
 		}
         // section 127-0-1-1--7eb5a1dd:13214d5811e:-8000:0000000000002E84 end

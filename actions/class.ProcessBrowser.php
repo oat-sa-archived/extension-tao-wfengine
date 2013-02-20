@@ -122,10 +122,10 @@ class wfEngine_actions_ProcessBrowser extends wfEngine_actions_WfModule{
 		}
 		
 		/*
+		 * @todo: clean usage
 		 * known use of Session::setAttribute("processUri") in:
 		 * - taoDelivery_actions_ItemDelivery::runner()
 		 * - tao_actions_Api::createAuthEnvironment()
-		 * TODO: clean usage
 		 */
 		$this->setSessionAttribute("processUri", $this->processExecution->uriResource);
 		
@@ -210,8 +210,8 @@ class wfEngine_actions_ProcessBrowser extends wfEngine_actions_WfModule{
 			//set activity control:
 			$controls = $activityService->getControls($activityDefinition);
 			$browserViewData['controls'] = array(
-				'backward' 	=> in_array(INSTANCE_CONTROL_BACKWARD, $controls),
-				'forward'	=> in_array(INSTANCE_CONTROL_FORWARD, $controls)
+				'backward' 	=> isset($controls[INSTANCE_CONTROL_BACKWARD])?(bool)$controls[INSTANCE_CONTROL_BACKWARD]:false,
+				'forward'	=> isset($controls[INSTANCE_CONTROL_FORWARD])?(bool)$controls[INSTANCE_CONTROL_FORWARD]:false,
 			);
 		
 			// If paused, resume it:
