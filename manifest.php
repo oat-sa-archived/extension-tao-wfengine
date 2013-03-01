@@ -11,7 +11,7 @@ return array(
 	'name' => 'wfEngine ',
 	'description' => 'Workflow Engine extension',
 	'version' => '2.4',
-	'author' => 'CRP Henri Tudor',
+	'author' => 'Open Assessment Technologies, CRP Henri Tudor',
 	'dependencies' => array('tao'),
 	'models' => array('http://www.tao.lu/middleware/wfEngine.rdf',
 		'http://www.tao.lu/Ontologies/taoFuncACL.rdf'),
