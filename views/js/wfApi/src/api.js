@@ -23,7 +23,7 @@
  * @namespace wfApi
  */
 var wfApi = { 
-	context : window.top.document || window.document
+	context : window.parent.document || window.document
 };
 
 var root_url = root_url || '';
