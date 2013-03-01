@@ -27,7 +27,7 @@ class wfEngine_actions_WfHome extends wfEngine_actions_WfModule
 		$uiLanguages		= tao_helpers_I18n::getAvailableLangs();
 		$this->setData('uiLanguages', $uiLanguages);
 		
-		$userViewData = UsersHelper::buildCurrentUserForView();
+		$userViewData = wfEngine_helpers_UsersHelper::buildCurrentUserForView();
 		$this->setData('userViewData', $userViewData);
 		
 		//list of available process executions:

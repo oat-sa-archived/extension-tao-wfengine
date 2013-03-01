@@ -9,7 +9,7 @@ class wfEngine_actions_ProcessInstanciation extends wfEngine_actions_WfModule{
 
 		$processDefinitionUri = urldecode($processDefinitionUri);
 
-		$userViewData 		= UsersHelper::buildCurrentUserForView();
+		$userViewData 		= wfEngine_helpers_UsersHelper::buildCurrentUserForView();
 		$this->setData('userViewData',$userViewData);
 
 		$processAuthoringData 	= array();

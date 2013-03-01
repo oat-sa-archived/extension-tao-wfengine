@@ -80,7 +80,7 @@ class wfEngine_actions_ProcessBrowser extends wfEngine_actions_WfModule{
 			return;
 		}
 		//user data for browser view
-		$userViewData = UsersHelper::buildCurrentUserForView(); 
+		$userViewData = wfEngine_helpers_UsersHelper::buildCurrentUserForView(); 
 		$this->setData('userViewData', $userViewData);
 		$this->setData('processExecutionUri', urlencode($this->processExecution->uriResource));
 		
@@ -130,7 +130,7 @@ class wfEngine_actions_ProcessBrowser extends wfEngine_actions_WfModule{
 		$this->setSessionAttribute("processUri", $this->processExecution->uriResource);
 		
 		//user data for browser view
-		$userViewData = UsersHelper::buildCurrentUserForView(); 
+		$userViewData = wfEngine_helpers_UsersHelper::buildCurrentUserForView(); 
 		$this->setData('userViewData', $userViewData);
 		$browserViewData = array(); // general data for browser view.
 		

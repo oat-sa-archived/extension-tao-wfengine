@@ -1,6 +1,6 @@
 <?php
 
-class UsersHelper
+class wfEngine_helpers_UsersHelper
 {
 
 	/**
