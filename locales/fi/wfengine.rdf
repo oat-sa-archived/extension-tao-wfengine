@@ -1,0 +1,2179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    @sourceLanguage EN
+    @targetLanguage fi
+-->
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xml:base="http://www.tao.lu/middleware/wfEngine.rdf#">
+  <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#ClassStep">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Step
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassStep
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="fi"><![CDATA[Step]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Process Step
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassStep
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="fi"><![CDATA[Process Step]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyStepNext">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source nextStep
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyStepNext
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="fi"><![CDATA[nextStep]]></rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyTransitionRulesThen">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Then
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyTransitionRulesThen
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="fi"><![CDATA[Then]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Then statement
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyTransitionRulesThen
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="fi"><![CDATA[Then statement]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#ClassCallOfservicesResources">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Call Of services Resources
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassCallOfservicesResources
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="fi"><![CDATA[Call Of services Resources]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Call of services Resources
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassCallOfservicesResources
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="fi"><![CDATA[Call of services Resources]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#ClassServiceDefinitionResources">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Services Definition Resources
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassServiceDefinitionResources
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="fi"><![CDATA[Services Definition Resources]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Services Definition Resources
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassServiceDefinitionResources
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="fi"><![CDATA[Services Definition Resources]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessDefinitionResources">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Process Definition Resources
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessDefinitionResources
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="fi"><![CDATA[Process Definition Resources]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Process Definition Resources
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessDefinitionResources
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="fi"><![CDATA[Process Definition Resources]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#ClassServicesResources">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Services Resources
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassServicesResources
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="fi"><![CDATA[Services Resources]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Services Resources
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassServicesResources
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="fi"><![CDATA[Services Resources]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessExecutionResources">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Process Execution Resource
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessExecutionResources
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="fi"><![CDATA[Process Execution Resource]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Process Execution Resource
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessExecutionResources
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="fi"><![CDATA[Process Execution Resource]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#ClassTransitionRules">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Transition Rules
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassTransitionRules
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="fi"><![CDATA[Transition Rules]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Transition Rules
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassTransitionRules
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="fi"><![CDATA[Transition Rules]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyServiceDefinitionsFormalParameterIn">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source formalParameterIn
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyServiceDefinitionsFormalParameterIn
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="fi"><![CDATA[formalParameterIn]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Formal Parameter for input
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyServiceDefinitionsFormalParameterIn
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="fi"><![CDATA[Formal Parameter for input]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivitiesInitial">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source isInitial
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivitiesInitial
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="fi"><![CDATA[isInitial]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Is Initial activity
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivitiesInitial
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="fi"><![CDATA[Is Initial activity]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#InstanceStatusPaused">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Paused
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#InstanceStatusPaused
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="fi"><![CDATA[Paused]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Paused status
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#InstanceStatusPaused
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="fi"><![CDATA[Paused status]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessInstancesStatus">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Status
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessInstancesStatus
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="fi"><![CDATA[Status]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Status
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessInstancesStatus
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="fi"><![CDATA[Status]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#InstanceStatusFinished">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Finished
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#InstanceStatusFinished
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="fi"><![CDATA[Finished]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Finished Status
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#InstanceStatusFinished
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="fi"><![CDATA[Finished Status]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#InstanceStatusResumed">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Active
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#InstanceStatusResumed
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="fi"><![CDATA[Active]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Active status
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#InstanceStatusResumed
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="fi"><![CDATA[Active status]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#InstanceStatusStarted">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Started
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#InstanceStatusStarted
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="fi"><![CDATA[Started]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Started status
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#InstanceStatusStarted
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="fi"><![CDATA[Started status]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#InstanceStatusClosed">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Closed
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#InstanceStatusClosed
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="fi"><![CDATA[Closed]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Closed status
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#InstanceStatusClosed
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="fi"><![CDATA[Closed status]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessInstanceStatus">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Process Instance Status
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessInstanceStatus
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="fi"><![CDATA[Process Instance Status]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Process Instance Status
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessInstanceStatus
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="fi"><![CDATA[Process Instance Status]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessInstancesExecutionOf">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Execution of
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessInstancesExecutionOf
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="fi"><![CDATA[Execution of]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Execution of
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessInstancesExecutionOf
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="fi"><![CDATA[Execution of]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessInstancesCurrentActivityExecutions">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Current Activity Executions
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessInstancesCurrentActivityExecutions
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="fi"><![CDATA[Current Activity Executions]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Current Activity Executions
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessInstancesCurrentActivityExecutions
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="fi"><![CDATA[Current Activity Executions]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessInstancesActivityExecutions">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Activity Executions
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessInstancesActivityExecutions
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="fi"><![CDATA[Activity Executions]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Activity Executions
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessInstancesActivityExecutions
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="fi"><![CDATA[Activity Executions]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessInstancesTimeStarted">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Started on
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessInstancesTimeStarted
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="fi"><![CDATA[Started on]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source the start time of the process execution
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessInstancesTimeStarted
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="fi"><![CDATA[the start time of the process execution]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessInstances">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Process Instances
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessInstances
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="fi"><![CDATA[Process Instances]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Process Instances
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessInstances
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="fi"><![CDATA[Process Instances]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessActivities">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Activities
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessActivities
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="fi"><![CDATA[Activities]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Activities
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessActivities
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="fi"><![CDATA[Activities]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessRootActivities">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Root Activities
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessRootActivities
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="fi"><![CDATA[Root Activities]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Root Activities
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessRootActivities
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="fi"><![CDATA[Root Activities]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyCallOfServicesActualParameterOut">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Actual Parameter Out
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyCallOfServicesActualParameterOut
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="fi"><![CDATA[Actual Parameter Out]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Actual Parameter Out
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyCallOfServicesActualParameterOut
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="fi"><![CDATA[Actual Parameter Out]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyServiceDefinitionsFormalParameterOut">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Formal Parameter Out
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyServiceDefinitionsFormalParameterOut
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="fi"><![CDATA[Formal Parameter Out]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Formal Paramater Out
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyServiceDefinitionsFormalParameterOut
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="fi"><![CDATA[Formal Paramater Out]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyConnectorsType">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Connector Type
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyConnectorsType
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="fi"><![CDATA[Connector Type]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Connector Type
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyConnectorsType
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="fi"><![CDATA[Connector Type]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyCallOfServicesActualParameterin">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Actual Parameter In
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyCallOfServicesActualParameterin
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="fi"><![CDATA[Actual Parameter In]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Actual Parameter In
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyCallOfServicesActualParameterin
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="fi"><![CDATA[Actual Parameter In]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyCallOfServicesServiceDefinition">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Service Definition
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyCallOfServicesServiceDefinition
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="fi"><![CDATA[Service Definition]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Service Definition
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyCallOfServicesServiceDefinition
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="fi"><![CDATA[Service Definition]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#ClassCallOfServices">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Call of Services
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassCallOfServices
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="fi"><![CDATA[Call of Services]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Call of Services
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassCallOfServices
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="fi"><![CDATA[Call of Services]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#InstanceTypeOfConnectorsSequence">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Sequence
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#InstanceTypeOfConnectorsSequence
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="fi"><![CDATA[Sequence]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Sequence Connector Type
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#InstanceTypeOfConnectorsSequence
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="fi"><![CDATA[Sequence Connector Type]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#InstanceTypeOfConnectorsConditional">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Conditional
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#InstanceTypeOfConnectorsConditional
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="fi"><![CDATA[Conditional]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Conditional Connector Type
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#InstanceTypeOfConnectorsConditional
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="fi"><![CDATA[Conditional Connector Type]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#InstanceTypeOfConnectorsParallel">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Split
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#InstanceTypeOfConnectorsParallel
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="fi"><![CDATA[Split]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Split Connector Type
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#InstanceTypeOfConnectorsParallel
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="fi"><![CDATA[Split Connector Type]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#InstanceTypeOfConnectorsJoin">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Join
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#InstanceTypeOfConnectorsJoin
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="fi"><![CDATA[Join]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Join Connector Type
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#InstanceTypeOfConnectorsJoin
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="fi"><![CDATA[Join Connector Type]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#InstanceTypeOfConnectorsSwitch">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Switch
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#InstanceTypeOfConnectorsSwitch
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="fi"><![CDATA[Switch]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Switch Connector Type
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#InstanceTypeOfConnectorsSwitch
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="fi"><![CDATA[Switch Connector Type]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#ClassConnectors">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Connectors
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassConnectors
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="fi"><![CDATA[Connectors]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Connectors
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassConnectors
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="fi"><![CDATA[Connectors]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessVariables">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Process Variables
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessVariables
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="fi"><![CDATA[Process Variables]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Process Variables
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessVariables
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="fi"><![CDATA[Process Variables]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#ClassTypeOfConnectors">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source TypeOfConnectors
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassTypeOfConnectors
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="fi"><![CDATA[TypeOfConnectors]]></rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyActualParametersProcessVariable">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Process Variable
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActualParametersProcessVariable
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="fi"><![CDATA[Process Variable]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Process Variable
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActualParametersProcessVariable
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="fi"><![CDATA[Process Variable]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyActualParametersConstantValue">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Constant Value
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActualParametersConstantValue
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="fi"><![CDATA[Constant Value]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Constant Value
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActualParametersConstantValue
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="fi"><![CDATA[Constant Value]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessVariables">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Process Variables
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessVariables
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="fi"><![CDATA[Process Variables]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Process Variables
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessVariables
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="fi"><![CDATA[Process Variables]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyActualParametersFormalParameter">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Formal Parameter
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActualParametersFormalParameter
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="fi"><![CDATA[Formal Parameter]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Formal Parameter
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActualParametersFormalParameter
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="fi"><![CDATA[Formal Parameter]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyFormalParametersDefaultConstantValue">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Default Constant Value
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyFormalParametersDefaultConstantValue
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="fi"><![CDATA[Default Constant Value]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Default Constant Value
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyFormalParametersDefaultConstantValue
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="fi"><![CDATA[Default Constant Value]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyFormalParametersDefaultProcessVariable">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source DefaultProcessVariable
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyFormalParametersDefaultProcessVariable
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="fi"><![CDATA[DefaultProcessVariable]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Default Process Variable
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyFormalParametersDefaultProcessVariable
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="fi"><![CDATA[Default Process Variable]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#ClassActualParameters">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Actual Parameter
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassActualParameters
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="fi"><![CDATA[Actual Parameter]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Actual Parameter
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassActualParameters
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="fi"><![CDATA[Actual Parameter]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyFormalParameterDataType">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Data Type
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyFormalParameterDataType
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="fi"><![CDATA[Data Type]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Data Type
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyFormalParameterDataType
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="fi"><![CDATA[Data Type]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyFormalParametersName">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Name
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyFormalParametersName
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="fi"><![CDATA[Name]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Formal Parameter Name
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyFormalParametersName
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="fi"><![CDATA[Formal Parameter Name]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#ClassFormalParameters">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Formal Parameter
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassFormalParameters
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="fi"><![CDATA[Formal Parameter]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Formal Parameter
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassFormalParameters
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="fi"><![CDATA[Formal Parameter]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertySupportServicesUrl">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source url
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertySupportServicesUrl
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="fi"><![CDATA[url]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source url
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertySupportServicesUrl
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="fi"><![CDATA[url]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyWebServicesWsdlUrl">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source wsdl location
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyWebServicesWsdlUrl
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="fi"><![CDATA[wsdl location]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source wsdl location
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyWebServicesWsdlUrl
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="fi"><![CDATA[wsdl location]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyFormalParameterName">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Name
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyFormalParameterName
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="fi"><![CDATA[Name]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Formal Parameter Name
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyFormalParameterName
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="fi"><![CDATA[Formal Parameter Name]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivitiesInteractiveServices">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Interactive Services
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivitiesInteractiveServices
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="fi"><![CDATA[Interactive Services]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Interactive Services
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivitiesInteractiveServices
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="fi"><![CDATA[Interactive Services]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#ClassSupportServices">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Support Services
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassSupportServices
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="fi"><![CDATA[Support Services]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Support Services
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassSupportServices
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="fi"><![CDATA[Support Services]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#ClassWebServices">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Web Service
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassWebServices
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="fi"><![CDATA[Web Service]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Web Service
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassWebServices
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="fi"><![CDATA[Web Service]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#ClassServiceDefinitions">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Services Definition
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassServiceDefinitions
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="fi"><![CDATA[Services Definition]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Services Definition
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassServiceDefinitions
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="fi"><![CDATA[Services Definition]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#ClassActivities">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Activity
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassActivities
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="fi"><![CDATA[Activity]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Activity
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassActivities
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="fi"><![CDATA[Activity]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessDefinitions">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Process Definition
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessDefinitions
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="fi"><![CDATA[Process Definition]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Process Definition
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessDefinitions
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="fi"><![CDATA[Process Definition]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyConnectorsTransitionRule">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Transition Rule
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyConnectorsTransitionRule
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="fi"><![CDATA[Transition Rule]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Transition Rule
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyConnectorsTransitionRule
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="fi"><![CDATA[Transition Rule]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyTransitionRulesElse">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Else
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyTransitionRulesElse
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="fi"><![CDATA[Else]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Else statement
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyTransitionRulesElse
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="fi"><![CDATA[Else statement]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivitiesHidden">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Is Hidden
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivitiesHidden
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="fi"><![CDATA[Is Hidden]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Is Hidden
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivitiesHidden
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="fi"><![CDATA[Is Hidden]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyConnectorsActivityReference">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Activity Reference
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyConnectorsActivityReference
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="fi"><![CDATA[Activity Reference]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source the reference to the activity at the time of creation
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyConnectorsActivityReference
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="fi"><![CDATA[the reference to the activity at the time of creation]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyCode">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Code
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyCode
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="fi"><![CDATA[Code]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source For process variables only
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyCode
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="fi"><![CDATA[For process variables only]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyCallOfServicesTop">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Top Shifting
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyCallOfServicesTop
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="fi"><![CDATA[Top Shifting]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source The CSS top attribute value for the service iframe
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyCallOfServicesTop
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="fi"><![CDATA[The CSS top attribute value for the service iframe]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyCallOfServicesLeft">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Left Shifting
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyCallOfServicesLeft
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="fi"><![CDATA[Left Shifting]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source The CSS left attribute value for the service iframe
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyCallOfServicesLeft
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="fi"><![CDATA[The CSS left attribute value for the service iframe]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyCallOfServicesWidth">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Width
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyCallOfServicesWidth
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="fi"><![CDATA[Width]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source The CSS width attribute value for the service iframe
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyCallOfServicesWidth
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="fi"><![CDATA[The CSS width attribute value for the service iframe]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyCallOfServicesHeight">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Height
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyCallOfServicesHeight
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="fi"><![CDATA[Height]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source The CSS height attribute value for the service iframe
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyCallOfServicesHeight
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="fi"><![CDATA[The CSS height attribute value for the service iframe]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsExecutionOf">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Activity Definition
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsExecutionOf
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="fi"><![CDATA[Activity Definition]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Activity Definition
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsExecutionOf
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="fi"><![CDATA[Activity Definition]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsCurrentUser">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Current User
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsCurrentUser
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="fi"><![CDATA[Current User]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Current User
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsCurrentUser
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="fi"><![CDATA[Current User]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsProcessExecution">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Process Execution
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsProcessExecution
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="fi"><![CDATA[Process Execution]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source The process execution to which the activity execution is linked
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsProcessExecution
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="fi"><![CDATA[The process execution to which the activity execution is linked]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsHasVariables">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Variables
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsHasVariables
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="fi"><![CDATA[Variables]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Serialized array of currently used variables
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsHasVariables
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="fi"><![CDATA[Serialized array of currently used variables]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsPreviousActivityExecutions">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Previous Activity Executions
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsPreviousActivityExecutions
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="fi"><![CDATA[Previous Activity Executions]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Used to build the process path
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsPreviousActivityExecutions
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="fi"><![CDATA[Used to build the process path]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsFollowingActivityExecutions">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Following Activity Executions
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsFollowingActivityExecutions
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="fi"><![CDATA[Following Activity Executions]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Used to build the process path
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsFollowingActivityExecutions
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="fi"><![CDATA[Used to build the process path]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsStatus">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Status
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsStatus
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="fi"><![CDATA[Status]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source The status of the activity execution
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsStatus
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="fi"><![CDATA[The status of the activity execution]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsTimeCreated">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Created on
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsTimeCreated
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="fi"><![CDATA[Created on]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source The creation time of the activity execution
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsTimeCreated
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="fi"><![CDATA[The creation time of the activity execution]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsTimeStarted">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Started on
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsTimeStarted
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="fi"><![CDATA[Started on]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source The start time of the activity execution
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsTimeStarted
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="fi"><![CDATA[The start time of the activity execution]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsTimeLastAccess">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Last accessed on
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsTimeLastAccess
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="fi"><![CDATA[Last accessed on]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source The last time the current user accessed it
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsTimeLastAccess
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="fi"><![CDATA[The last time the current user accessed it]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsNonce">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Nonce
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsNonce
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="fi"><![CDATA[Nonce]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source The nonce to garantee unique action (transitions)
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsNonce
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="fi"><![CDATA[The nonce to garantee unique action (transitions)]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsAccessControlMode">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Execution ACL mode
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsAccessControlMode
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="fi"><![CDATA[Execution ACL mode]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source The ACL mode applied to the acitivty execution
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsAccessControlMode
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="fi"><![CDATA[The ACL mode applied to the acitivty execution]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsRestrictedUser">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Execution restricted user
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsRestrictedUser
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="fi"><![CDATA[Execution restricted user]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source The user who is allowed to execute the activity execution
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsRestrictedUser
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="fi"><![CDATA[The user who is allowed to execute the activity execution]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsRestrictedRole">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Execution restricted role
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsRestrictedRole
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="fi"><![CDATA[Execution restricted role]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source The role who is allowed to execute the activity execution
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsRestrictedRole
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="fi"><![CDATA[The role who is allowed to execute the activity execution]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#ClassActivityExecutions">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Activity Instance Resource
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassActivityExecutions
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="fi"><![CDATA[Activity Instance Resource]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Activity Instance Resource
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassActivityExecutions
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="fi"><![CDATA[Activity Instance Resource]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#ClassAccessControlModes">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source ACL modes
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassAccessControlModes
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="fi"><![CDATA[ACL modes]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source ACL modes
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassAccessControlModes
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="fi"><![CDATA[ACL modes]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyAccessControlModesRole">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Role
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyAccessControlModesRole
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="fi"><![CDATA[Role]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Access Control Role
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyAccessControlModesRole
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="fi"><![CDATA[Access Control Role]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyAccessControlModesRoleRestrictedUser">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Role Restricted User
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyAccessControlModesRoleRestrictedUser
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="fi"><![CDATA[Role Restricted User]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Role Restricted User
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyAccessControlModesRoleRestrictedUser
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="fi"><![CDATA[Role Restricted User]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyAccessControlModesUser">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source User
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyAccessControlModesUser
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="fi"><![CDATA[User]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source User
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyAccessControlModesUser
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="fi"><![CDATA[User]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyAccessControlModesRoleRestrictedUserInherited">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Role Restricted User Inherited
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyAccessControlModesRoleRestrictedUserInherited
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="fi"><![CDATA[Role Restricted User Inherited]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Role Restricted User Inherited
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyAccessControlModesRoleRestrictedUserInherited
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="fi"><![CDATA[Role Restricted User Inherited]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyAccessControlModesRoleRestrictedUserInheritedDelivery">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Role Restricted User Inherited Delivery
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyAccessControlModesRoleRestrictedUserInheritedDelivery
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="fi"><![CDATA[Role Restricted User Inherited Delivery]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Useful for deliveries
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyAccessControlModesRoleRestrictedUserInheritedDelivery
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="fi"><![CDATA[Useful for deliveries]]></rdfs:comment>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Role Restricted User Inherited
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyAccessControlModesRoleRestrictedUserInheritedDelivery
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="fi"><![CDATA[Role Restricted User Inherited]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivitiesAccessControlMode">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source ACL mode
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivitiesAccessControlMode
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="fi"><![CDATA[ACL mode]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source ACL mode
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivitiesAccessControlMode
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="fi"><![CDATA[ACL mode]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivitiesRestrictedRole">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source restricted Role
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivitiesRestrictedRole
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="fi"><![CDATA[restricted Role]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source restricted Role
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivitiesRestrictedRole
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="fi"><![CDATA[restricted Role]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivitiesRestrictedUser">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Restricted User
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivitiesRestrictedUser
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="fi"><![CDATA[Restricted User]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Restricted User
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivitiesRestrictedUser
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="fi"><![CDATA[Restricted User]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessInitAccesControlMode">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Init ACL mode
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessInitAccesControlMode
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="fi"><![CDATA[Init ACL mode]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Init ACL mode
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessInitAccesControlMode
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="fi"><![CDATA[Init ACL mode]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessInitRestrictedUser">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Init Restricted User
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessInitRestrictedUser
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="fi"><![CDATA[Init Restricted User]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Init Restricted User
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessInitRestrictedUser
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="fi"><![CDATA[Init Restricted User]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessInitRestrictedRole">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Init Restricted Role
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessInitRestrictedRole
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="fi"><![CDATA[Init Restricted Role]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Init Restricted Role
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessInitRestrictedRole
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="fi"><![CDATA[Init Restricted Role]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessDiagramData">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Diagram Data
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessDiagramData
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="fi"><![CDATA[Diagram Data]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Diagram Data
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessDiagramData
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="fi"><![CDATA[Diagram Data]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#ClassNotificationMode">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Notification Mode
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassNotificationMode
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="fi"><![CDATA[Notification Mode]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Notification Mode
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassNotificationMode
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="fi"><![CDATA[Notification Mode]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#InstanceNotifyUser">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Notify User
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#InstanceNotifyUser
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="fi"><![CDATA[Notify User]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Notify User
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#InstanceNotifyUser
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="fi"><![CDATA[Notify User]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#InstanceNotifyNextActivityUsers">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Notify Next Activity Users
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#InstanceNotifyNextActivityUsers
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="fi"><![CDATA[Notify Next Activity Users]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Notify Next Activity Users
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#InstanceNotifyNextActivityUsers
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="fi"><![CDATA[Notify Next Activity Users]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#InstanceNotifyThenActivityUsers">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Notify Then Activity Users
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#InstanceNotifyThenActivityUsers
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="fi"><![CDATA[Notify Then Activity Users]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source For connector of conditional type only
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#InstanceNotifyThenActivityUsers
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="fi"><![CDATA[For connector of conditional type only]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#InstanceNotifyElseActivityUsers">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Notify Else Activity Users
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#InstanceNotifyElseActivityUsers
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="fi"><![CDATA[Notify Else Activity Users]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source For connector of conditional type only
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#InstanceNotifyElseActivityUsers
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="fi"><![CDATA[For connector of conditional type only]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#InstanceNotifyPreviousActivityUsers">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Notify Previous Activity Users
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#InstanceNotifyPreviousActivityUsers
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="fi"><![CDATA[Notify Previous Activity Users]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Notify Previous Activity Users
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#InstanceNotifyPreviousActivityUsers
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="fi"><![CDATA[Notify Previous Activity Users]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#InstanceNotifyRole">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Notify Role
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#InstanceNotifyRole
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="fi"><![CDATA[Notify Role]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Notify Role
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#InstanceNotifyRole
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="fi"><![CDATA[Notify Role]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyConnectorsNotificationModes">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Notify
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyConnectorsNotificationModes
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="fi"><![CDATA[Notify]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Notify
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyConnectorsNotificationModes
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="fi"><![CDATA[Notify]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyConnectorsNotifiedUser">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Users to notify
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyConnectorsNotifiedUser
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="fi"><![CDATA[Users to notify]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Users to notify
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyConnectorsNotifiedUser
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="fi"><![CDATA[Users to notify]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyConnectorsNotifiedRole">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Role's users to notify
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyConnectorsNotifiedRole
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="fi"><![CDATA[Role's users to notify]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Role's users to notify
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyConnectorsNotifiedRole
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="fi"><![CDATA[Role's users to notify]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyConnectorsNotificationMessage">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Notification Message
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyConnectorsNotificationMessage
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="fi"><![CDATA[Notification Message]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Notification Message
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyConnectorsNotificationMessage
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="fi"><![CDATA[Notification Message]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#ClassNotification">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Notification
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassNotification
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="fi"><![CDATA[Notification]]></rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyNotificationTo">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source User to notify
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyNotificationTo
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="fi"><![CDATA[User to notify]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source User to notify
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyNotificationTo
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="fi"><![CDATA[User to notify]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyNotificationConnector">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Connector's notification
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyNotificationConnector
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="fi"><![CDATA[Connector's notification]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Connector's notification
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyNotificationConnector
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="fi"><![CDATA[Connector's notification]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyNotificationProcessExecution">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Process execution's notification
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyNotificationProcessExecution
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="fi"><![CDATA[Process execution's notification]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Process execution's notification
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyNotificationProcessExecution
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="fi"><![CDATA[Process execution's notification]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyNotificationSent">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Notification sent
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyNotificationSent
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="fi"><![CDATA[Notification sent]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Notification sent
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyNotificationSent
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="fi"><![CDATA[Notification sent]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyNotificationDate">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Notification date
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyNotificationDate
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="fi"><![CDATA[Notification date]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Notification date
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyNotificationDate
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="fi"><![CDATA[Notification date]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsContextRecovery">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Context Recovery
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsContextRecovery
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="fi"><![CDATA[Context Recovery]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Context Recovery
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsContextRecovery
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="fi"><![CDATA[Context Recovery]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#ClassControls">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Controls
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassControls
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="fi"><![CDATA[Controls]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Controls
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassControls
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="fi"><![CDATA[Controls]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#InstanceControlsForward">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Forward
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#InstanceControlsForward
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="fi"><![CDATA[Forward]]></rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#InstanceControlsBackward">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Backward
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#InstanceControlsBackward
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="fi"><![CDATA[Backward]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Backward
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#InstanceControlsBackward
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="fi"><![CDATA[Backward]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivitiesControls">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Activity controls
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivitiesControls
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="fi"><![CDATA[Activity controls]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Activity controls
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivitiesControls
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="fi"><![CDATA[Activity controls]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#ProcessVarPrevEndosment">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source PREV_ENDORSMENT
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#ProcessVarPrevEndosment
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="fi"><![CDATA[PREV_ENDORSMENT]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Previous Endorsment
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#ProcessVarPrevEndosment
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="fi"><![CDATA[Previous Endorsment]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#ClassActivityCardinality">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Activity Cardinality
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassActivityCardinality
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="fi"><![CDATA[Activity Cardinality]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Activity Cardinality
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassActivityCardinality
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="fi"><![CDATA[Activity Cardinality]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityCardinalityCardinality">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Cardinality
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityCardinalityCardinality
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="fi"><![CDATA[Cardinality]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Cardinality
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityCardinalityCardinality
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="fi"><![CDATA[Cardinality]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityCardinalitySplitVariables">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Split variables
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityCardinalitySplitVariables
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="fi"><![CDATA[Split variables]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Split variables
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityCardinalitySplitVariables
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="fi"><![CDATA[Split variables]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#WorkflowsManagerRole">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source Workflows Manager
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#WorkflowsManagerRole
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="fi"><![CDATA[Workflows Manager]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage fi
+    @source The Workflows Manager Role
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#WorkflowsManagerRole
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="fi"><![CDATA[The Workflows Manager Role]]></rdfs:comment>
+  </rdf:Description>
+</rdf:RDF>
