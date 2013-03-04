@@ -162,7 +162,7 @@ class wfEngine_models_classes_VariableService
         $returnValue = (bool) false;
 
         // section -87--2--3--76--7eb229c2:12916be1ece:-8000:0000000000003C07 begin
-    	$session = Context::getInstance()->getSession();
+    	$session = PHPSession::singleton();
         
 		if(is_null($activityExecution) && $session->hasAttribute("activityExecutionUri")){
 			$activityExecution = new core_kernel_classes_Resource($session->getAttribute("activityExecutionUri"));
@@ -212,7 +212,7 @@ class wfEngine_models_classes_VariableService
         $returnValue = (bool) false;
 
         // section -87--2--3--76--7eb229c2:12916be1ece:-8000:0000000000003C0B begin
-        $session = Context::getInstance()->getSession();
+        $session = PHPSession::singleton();
         
 		if(is_null($activityExecution) && $session->hasAttribute("activityExecutionUri")){
 			$activityExecution = new core_kernel_classes_Resource($session->getAttribute("activityExecutionUri"));
@@ -261,7 +261,7 @@ class wfEngine_models_classes_VariableService
         $returnValue = null;
 
         // section -87--2--3--76--7eb229c2:12916be1ece:-8000:0000000000003C0E begin
-        $session = Context::getInstance()->getSession();
+        $session = PHPSession::singleton();
         
 		if(is_null($activityExecution) && $session->hasAttribute("activityExecutionUri")){
 			$activityExecution = new core_kernel_classes_Resource($session->getAttribute("activityExecutionUri"));
@@ -301,7 +301,7 @@ class wfEngine_models_classes_VariableService
         $returnValue = array();
 
         // section -87--2--3--76--7eb229c2:12916be1ece:-8000:0000000000003C11 begin
-        $session = Context::getInstance()->getSession();
+        $session = PHPSession::singleton();
         
 		if(is_null($activityExecution) && $session->hasAttribute("activityExecutionUri")){
 			$activityExecution = new core_kernel_classes_Resource($session->getAttribute("activityExecutionUri"));
@@ -544,7 +544,7 @@ class wfEngine_models_classes_VariableService
         $returnValue = (bool) false;
 
         // section 127-0-1-1-1899355b:13312537157:-8000:00000000000030E7 begin
-        $session = Context::getInstance()->getSession();
+        $session = PHPSession::singleton();
         
 		if(is_null($activityExecution) && $session->hasAttribute("activityExecutionUri")){
 			$activityExecution = new core_kernel_classes_Resource($session->getAttribute("activityExecutionUri"));

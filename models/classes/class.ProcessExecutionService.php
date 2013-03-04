@@ -757,8 +757,7 @@ class wfEngine_models_classes_ProcessExecutionService
         $returnValue = null;
 
         // section 127-0-1-1-7a69d871:1322a76df3c:-8000:0000000000002F84 begin
-		$context = Context::getInstance();
-		$session = $context->getSession();
+		$session = PHPSession::singleton();
         
 		$session->setAttribute("activityExecutionUri", $activityExecution->uriResource);
 		

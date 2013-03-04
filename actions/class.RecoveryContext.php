@@ -15,8 +15,7 @@ class wfEngine_actions_RecoveryContext extends tao_actions_Api {
 	 */
 	public function retrieve(){
 		$context = array();
-		$ctx = Context::getInstance();
-		$session = $ctx->getSession();
+		$session = PHPSession::singleton();
 		
 		if(	$this->hasRequestParameter('token') && 	$session->hasAttribute('activityExecutionUri')){
 			
@@ -37,7 +36,7 @@ class wfEngine_actions_RecoveryContext extends tao_actions_Api {
 	 * Save a context in the current activity execution
 	 */
 	public function save(){
-		$session = Context::getInstance()->getSession();
+		$session = PHPSession::singleton();
 		
 		$saved = false;
 		if(	$this->hasRequestParameter('token') && 

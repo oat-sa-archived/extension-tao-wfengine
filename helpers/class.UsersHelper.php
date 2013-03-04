@@ -12,7 +12,7 @@ class wfEngine_helpers_UsersHelper
 	public static function authenticate($in_login, $in_password){
 
 		$userService = wfEngine_models_classes_UserService::singleton();
-		$session = Context::getInstance()->getSession();
+		$session = PHPSession::singleton();
 		
 		//loggin into tao 
 		if($userService->loginUser($in_login, $in_password, false)){
