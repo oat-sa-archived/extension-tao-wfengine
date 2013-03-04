@@ -1366,8 +1366,7 @@ class wfEngine_models_classes_ProcessExecutionService
 				}
 				$activityExecution->editPropertyValues($propLastTime, time());
 				
-				$context = Context::getInstance();
-				$session = $context->getSession();
+				$session = PHPSession::singleton();
 				$session->setAttribute("activityExecutionUri", $returnValue->uriResource);//for variable service only?
 			}
 			
