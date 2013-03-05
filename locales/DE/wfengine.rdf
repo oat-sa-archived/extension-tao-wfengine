@@ -3,7 +3,7 @@
     @sourceLanguage EN
     @targetLanguage DE
 -->
-<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xml:base="http://www.tao.lu/middleware/wfEngine.rdf">
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xml:base="http://www.tao.lu/middleware/wfEngine.rdf#">
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#ClassStep">
     <!--
     @sourceLanguage EN
@@ -2157,5 +2157,23 @@
     @predicate http://www.w3.org/2000/01/rdf-schema#comment
     -->
     <rdfs:comment xml:lang="DE"><![CDATA[Split variables]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#WorkflowsManagerRole">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source Workflows Manager
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#WorkflowsManagerRole
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="DE"><![CDATA[Workflows Manager]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DE
+    @source The Workflows Manager Role
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#WorkflowsManagerRole
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="DE"><![CDATA[The Workflows Manager Role]]></rdfs:comment>
   </rdf:Description>
 </rdf:RDF>
