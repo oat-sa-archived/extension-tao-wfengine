@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: TAO v2.4-beta1\n"
-"PO-Revision-Date: 2013-03-05T10:36:34\n"
+"Project-Id-Version: TAO v2.3-beta\n"
+"PO-Revision-Date: 2012-09-21T15:09:11\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: SE\n"
@@ -17,35 +17,150 @@ msgstr "(fortfarande odefinerat)"
 msgid "[TAO Notification System] Workflow"
 msgstr ""
 
+msgid "Access Control Mode"
+msgstr ""
+
 msgid "Access denied. Please renew your authentication."
 msgstr ""
+
+msgid "Actions"
+msgstr "Handlingar"
 
 msgid "Active Process"
 msgstr "Aktiv process"
 
+msgid "Activity"
+msgstr "Aktivitet"
+
+msgid "Activity Editor"
+msgstr "Aktivitetsredigerare"
+
+msgid "Activity or Connector"
+msgstr "Aktivitet eller anslutare"
+
+msgid "Activity Variables"
+msgstr ""
+
 msgid "Add (Ctrl-A)"
 msgstr "Lägg till (Ctrl-A)"
+
+#, tao-public
+msgid "Add a user"
+msgstr "Lägg till användare"
 
 msgid "An error occured during request processing"
 msgstr "Ett fel inträffade under förfrågad process"
 
+msgid "An error occured during user deletion"
+msgstr "Ett fel inträffade när användaren skulle tas bort"
+
+msgid "Assign User to role"
+msgstr "Tilldela användare en roll"
+
 msgid "Back"
 msgstr "Bakåt"
+
+msgid "Browse Tests"
+msgstr "Bläddra test"
+
+#, tao-public
+msgid "Build processes to drive activities into a workflow."
+msgstr ""
+
+msgid "cancel"
+msgstr "stäng av"
 
 msgid "Cannot create process execution"
 msgstr ""
 
+msgid "check code"
+msgstr "stoppa kod"
+
+msgid "checking the code..."
+msgstr "stoppar koden..."
+
 msgid "Close (Esc)"
 msgstr "Stäng (Esc)"
+
+msgid "Close all"
+msgstr "Stäng alla"
+
+msgid "Code"
+msgstr ""
+
+msgid "Code already used"
+msgstr ""
+
+msgid "Compilation"
+msgstr "Sammanställande"
 
 msgid "Connect"
 msgstr "Anslut"
 
+msgid "Connector"
+msgstr "Anslutare"
+
+msgid "Connector Type"
+msgstr "Anslutartyp"
+
+msgid "Constant"
+msgstr "Konstant"
+
+msgid "Country"
+msgstr ""
+
+msgid "create new activity"
+msgstr "skapa ny aktivitet"
+
+msgid "create new connector"
+msgstr "skapa ny anslutare"
+
+msgid "create table"
+msgstr "skapa tabell"
+
 msgid "created by"
 msgstr ""
 
+msgid "Current Activities"
+msgstr ""
+
+msgid "Current activities"
+msgstr ""
+
+msgid "Current User"
+msgstr ""
+
+msgid "Data Language"
+msgstr "Dataspråk"
+
+msgid "Delete"
+msgstr "Ta bort"
+
+msgid "delete"
+msgstr "ta bort"
+
+msgid "Delete user"
+msgstr "Ta bort användare"
+
+msgid "Do you want to change the connector type? \n"
+" THe child connectors will be deleted."
+msgstr ""
+
+msgid "Edit"
+msgstr "Redigera"
+
+#, tao-public
+msgid "Edit a user"
+msgstr "Redigera en användare"
+
+msgid "Edit user"
+msgstr "Redigera användare"
+
 msgid "Else"
 msgstr "Annan"
+
+msgid "Email"
+msgstr "E-mail"
 
 msgid "Enter remark text here"
 msgstr "Skriv in märkt text här"
@@ -53,11 +168,20 @@ msgstr "Skriv in märkt text här"
 msgid "execution of"
 msgstr ""
 
+msgid "export"
+msgstr "exportera"
+
 msgid "Export - Debug only (Ctrl-E)"
 msgstr "Exportera - felsök endast (Ctrl-E)"
 
+msgid "Filter"
+msgstr "Filter"
+
 msgid "Finished Process"
 msgstr "Process färdig"
+
+msgid "Formal Parameter"
+msgstr "Formell parameter"
 
 msgid "Forward"
 msgstr "Framåt"
@@ -65,11 +189,17 @@ msgstr "Framåt"
 msgid "Go to"
 msgstr "Gå till"
 
+msgid "History"
+msgstr ""
+
 msgid "Home"
 msgstr "Hem"
 
 msgid "If"
 msgstr "Om"
+
+msgid "IF"
+msgstr "OM"
 
 msgid "If there is no available activity or there are more than one. You will be redirected to the process main page."
 msgstr ""
@@ -77,14 +207,38 @@ msgstr ""
 msgid "Initialize new Process"
 msgstr "Initialisera ny process"
 
+msgid "Input Parameters"
+msgstr ""
+
+msgid "interactive service saved"
+msgstr "interaktiv service sparad"
+
+msgid "Interface Language"
+msgstr "Användargränssnittsspråk"
+
+msgid "Label"
+msgstr "Etikett"
+
+msgid "Language"
+msgstr ""
+
 msgid "Launch Process"
 msgstr "Spåra process"
+
+msgid "list the users"
+msgstr "lista användarna"
 
 msgid "Loading next activity..."
 msgstr "Laddar nästa aktivitet..."
 
+msgid "loading..."
+msgstr "laddar..."
+
 msgid "Login"
 msgstr "Logga in"
+
+msgid "Login not available"
+msgstr "Det går ej att logga in"
 
 msgid "login: "
 msgstr ""
@@ -92,11 +246,51 @@ msgstr ""
 msgid "Logout"
 msgstr "Logga ut"
 
+#, tao-public
+msgid "Manage processes"
+msgstr "Hantera processer"
+
+#, tao-public
+msgid "Manage roles"
+msgstr "Hantera roller"
+
+msgid "Manage Roles and associate roles to workflow users"
+msgstr "Hantera roller och knyt roller till arbetsflödeanvändare"
+
+#, tao-public
+msgid "Manage users"
+msgstr "Hantera användare"
+
+msgid "Merge to "
+msgstr ""
+
+msgid "meta data"
+msgstr "metadata"
+
+#, tao-public
+msgid "Monitor processes"
+msgstr ""
+
+msgid "Monitoring processes"
+msgstr ""
+
 msgid "More detailed description here."
 msgstr "Mer detaljerad beskrivning här"
 
 msgid "My roles"
 msgstr "Mina roller"
+
+msgid "Name"
+msgstr "Namn"
+
+msgid "new process"
+msgstr "ny process"
+
+msgid "new role"
+msgstr "ny roll"
+
+msgid "newly edited"
+msgstr ""
 
 msgid "No account match the given login / password"
 msgstr "Inget konto matchar det angivna användarnamnet/lösenordet"
@@ -107,14 +301,40 @@ msgstr ""
 msgid "No variable code given"
 msgstr ""
 
+msgid "ok"
+msgstr "ok"
+
+msgid "Open all"
+msgstr "Öppna alla"
+
+msgid "Output Parameters"
+msgstr ""
+
 msgid "Password"
 msgstr "Lösenord"
 
 msgid "Pause"
 msgstr "Paus"
 
+msgid "please choose another one"
+msgstr "var vänlig välj en annan"
+
+msgid "Please confirm deletion"
+msgstr "Var vänlig och bekräfta raderande"
+
+msgid "Please confirm deletion.\n"
+" Warning: related resources might be affected."
+msgstr ""
+
 msgid "Please confirm the deletion of the activity"
 msgstr "Var vänlig och bekräfta raderande av aktiviteten."
+
+msgid "Please confirm the deletion of the connector: \n"
+" child connectors will be delete at the same time"
+msgstr ""
+
+msgid "Please confirm user deletion"
+msgstr "Var vänlig bekräfta raderandet av användare"
 
 msgid "Please login"
 msgstr "Var vänlig logga in"
@@ -122,17 +342,58 @@ msgstr "Var vänlig logga in"
 msgid "Please login to access the selected activity."
 msgstr ""
 
+msgid "Please select a delivery before authoring it"
+msgstr "Var vänlig välj en leverans innan skapande av den"
+
+msgid "Please select a process before authoring it"
+msgstr "Var vänlig välj en process innan skapandet av den"
+
+msgid "Positionning"
+msgstr "Placering"
+
 msgid "Process"
 msgstr "Process"
 
+#, tao-public
+msgid "Process authoring"
+msgstr "Processförfattande"
+
+msgid "Process Definition"
+msgstr ""
+
+msgid "Process Execution"
+msgstr ""
+
 msgid "Process Finished"
+msgstr ""
+
+msgid "Process History"
 msgstr ""
 
 msgid "Process initialization"
 msgstr "Processinitialiserande"
 
+msgid "Process Property"
+msgstr "Processegenskap"
+
+msgid "Process saved"
+msgstr "Process sparad"
+
 msgid "Process Tree:"
 msgstr "Processträd"
+
+msgid "Process Variable"
+msgstr "Processvariabel"
+
+msgid "Process Variables"
+msgstr "Processvariabler"
+
+#, tao-public
+msgid "Processes"
+msgstr "Processes"
+
+msgid "Processes library"
+msgstr ""
 
 msgid "Question (Ctrl-Q)"
 msgstr "Fråga (Ctrl-Q)"
@@ -143,20 +404,66 @@ msgstr ""
 msgid "Redirection in "
 msgstr ""
 
+msgid "reload"
+msgstr "ladda om"
+
+msgid "reloading form..."
+msgstr "omladdning..."
+
+msgid "Restricted to"
+msgstr ""
+
+msgid "Role"
+msgstr "Roll"
+
+msgid "Role saved"
+msgstr "Roll sparad"
+
+msgid "Role(s)"
+msgstr "Roll(er)"
+
+msgid "Roles library"
+msgstr ""
+
+msgid "save"
+msgstr "spara"
+
+msgid "Save"
+msgstr "Spara"
+
+msgid "saved"
+msgstr "sparad"
+
+msgid "search"
+msgstr "sök"
+
 msgid "seconds"
 msgstr ""
 
 msgid "Select a test"
 msgstr "Välj ett test"
 
+msgid "Service Definition"
+msgstr "Servicedefinition"
+
+msgid "Set the activity as a final one will delete its following connector. \n"
+" Are you sure?"
+msgstr ""
+
 msgid "Start/Resume the case"
 msgstr "Starta/återuppta fallet"
+
+msgid "Started Time"
+msgstr ""
 
 msgid "Status"
 msgstr "Status"
 
 msgid "Suppress"
 msgstr "Upphäv"
+
+msgid "Sure?"
+msgstr "Säkert?"
 
 msgid "TAO - An Open and Versatile Computer-Based Assessment Platform"
 msgstr "TAO - En öppen, smidig och mångsidig datorbaserad utvärderingsplattform"
@@ -166,6 +473,9 @@ msgstr "TAO processverktyg"
 
 msgid "The activity provided in the url is no longer the up-to-date."
 msgstr ""
+
+msgid "the chosen code has already been used for the process variable"
+msgstr "den valda koden har redan använts för processvariabeln"
 
 msgid "The link may be outdated."
 msgstr ""
@@ -182,6 +492,9 @@ msgstr ""
 msgid "The resource is not an activity execution"
 msgstr ""
 
+msgid "The role is using by one or several users. Please remove the role to these users first."
+msgstr "Rollen används av en eller flera användare. Var vänlig ta bort rollen från dessa användare först."
+
 msgid "The variable with the code '.$code.' does not exists"
 msgstr ""
 
@@ -194,8 +507,27 @@ msgstr "Skriv ((Ctrl-T)"
 msgid "type??"
 msgstr "skriv??"
 
+msgid "Unable to delete the process execution.\n"
+"Close process before delete it."
+msgstr ""
+
 msgid "Unable to log in the user"
 msgstr ""
+
+msgid "undefined"
+msgstr "odefinierad"
+
+msgid "Unit"
+msgstr ""
+
+msgid "Use the * character to replace any string"
+msgstr "Använd * tecknet för att ersätta en tråd"
+
+msgid "User added"
+msgstr "Användare tillagd"
+
+msgid "User deleted successfully"
+msgstr "Användare framgångsrikt borttagen"
 
 msgid "User Id."
 msgstr "Användar-id"
@@ -206,13 +538,37 @@ msgstr ""
 msgid "User name:"
 msgstr "Användarnamn:"
 
+msgid "User saved"
+msgstr "Användare sparad"
+
+msgid "Value"
+msgstr ""
+
+msgid "Variables"
+msgstr ""
+
+msgid "VFF"
+msgstr ""
+
+msgid "VFF version"
+msgstr ""
+
 msgid "Welcome to TAO Process Engine"
 msgstr "Välkommen till TAO processverktyg"
 
 msgid "Workflow Engine"
 msgstr "Arbetsflödesverktyg"
 
+msgid "Workflow Users"
+msgstr "Arbetsflödesanvändare"
+
 msgid "WorkflowEngine Process Browser "
+msgstr ""
+
+msgid "XLIFF"
+msgstr ""
+
+msgid "XLIFF version"
 msgstr ""
 
 msgid "You will be redirected to the current activity if you are allowed to."

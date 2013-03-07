@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: TAO v2.4-beta1\n"
-"PO-Revision-Date: 2013-03-05T10:36:27\n"
+"Project-Id-Version: TAO v2.3-beta\n"
+"PO-Revision-Date: 2012-09-21T15:08:44\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: AR\n"
@@ -17,35 +17,150 @@ msgstr "(لا يزال غير معروف)"
 msgid "[TAO Notification System] Workflow"
 msgstr ""
 
+msgid "Access Control Mode"
+msgstr ""
+
 msgid "Access denied. Please renew your authentication."
 msgstr ""
+
+msgid "Actions"
+msgstr "الأعمال"
 
 msgid "Active Process"
 msgstr "Processus actif"
 
+msgid "Activity"
+msgstr "نشاط"
+
+msgid "Activity Editor"
+msgstr "محرر نشاط"
+
+msgid "Activity or Connector"
+msgstr "نشاط أو رابط"
+
+msgid "Activity Variables"
+msgstr ""
+
 msgid "Add (Ctrl-A)"
 msgstr "(Ctrl-A)إضافة"
+
+#, tao-public
+msgid "Add a user"
+msgstr "إضافة مستخدم"
 
 msgid "An error occured during request processing"
 msgstr "حدث خطأ أثناء معالجة الطلب"
 
+msgid "An error occured during user deletion"
+msgstr "حدث خطأ أثناء حذف المستخدم"
+
+msgid "Assign User to role"
+msgstr "تعيين دور الى المستخدم"
+
 msgid "Back"
 msgstr "رجوع"
 
+msgid "Browse Tests"
+msgstr "تصفح الاختبارات"
+
+#, tao-public
+msgid "Build processes to drive activities into a workflow."
+msgstr ""
+
+msgid "cancel"
+msgstr ""
+
 msgid "Cannot create process execution"
+msgstr ""
+
+msgid "check code"
+msgstr ""
+
+msgid "checking the code..."
 msgstr ""
 
 msgid "Close (Esc)"
 msgstr "(Esc)اغلاق"
 
+msgid "Close all"
+msgstr "اغلاق الجميع"
+
+msgid "Code"
+msgstr ""
+
+msgid "Code already used"
+msgstr ""
+
+msgid "Compilation"
+msgstr "ترجمة"
+
 msgid "Connect"
 msgstr "الاتصال"
+
+msgid "Connector"
+msgstr "رابط"
+
+msgid "Connector Type"
+msgstr "نوع الموصل"
+
+msgid "Constant"
+msgstr "ثابت"
+
+msgid "Country"
+msgstr ""
+
+msgid "create new activity"
+msgstr ""
+
+msgid "create new connector"
+msgstr ""
+
+msgid "create table"
+msgstr ""
 
 msgid "created by"
 msgstr ""
 
+msgid "Current Activities"
+msgstr ""
+
+msgid "Current activities"
+msgstr ""
+
+msgid "Current User"
+msgstr ""
+
+msgid "Data Language"
+msgstr "لغة البيانات"
+
+msgid "Delete"
+msgstr "حذف"
+
+msgid "delete"
+msgstr ""
+
+msgid "Delete user"
+msgstr "حذف مستخدم"
+
+msgid "Do you want to change the connector type? \n"
+" THe child connectors will be deleted."
+msgstr ""
+
+msgid "Edit"
+msgstr "تحرير"
+
+#, tao-public
+msgid "Edit a user"
+msgstr "تحرير المستخم"
+
+msgid "Edit user"
+msgstr "تحرير المستخم"
+
 msgid "Else"
 msgstr "والا"
+
+msgid "Email"
+msgstr "البريد الإلكتروني"
 
 msgid "Enter remark text here"
 msgstr "أدخل نص الملاحظة هنا"
@@ -53,11 +168,20 @@ msgstr "أدخل نص الملاحظة هنا"
 msgid "execution of"
 msgstr ""
 
+msgid "export"
+msgstr ""
+
 msgid "Export - Debug only (Ctrl-E)"
 msgstr "(CTRL-E) تصدير - تصحيح فقط"
 
+msgid "Filter"
+msgstr "تصفية"
+
 msgid "Finished Process"
 msgstr "انتهاء العملية"
+
+msgid "Formal Parameter"
+msgstr "اعداد شكلي"
 
 msgid "Forward"
 msgstr "تحويل"
@@ -65,11 +189,17 @@ msgstr "تحويل"
 msgid "Go to"
 msgstr "الذهاب الى"
 
+msgid "History"
+msgstr ""
+
 msgid "Home"
 msgstr "الصفحة الرئيسية"
 
 msgid "If"
 msgstr "Si"
+
+msgid "IF"
+msgstr ""
 
 msgid "If there is no available activity or there are more than one. You will be redirected to the process main page."
 msgstr ""
@@ -77,14 +207,38 @@ msgstr ""
 msgid "Initialize new Process"
 msgstr "بدء عملية جديدة"
 
+msgid "Input Parameters"
+msgstr ""
+
+msgid "interactive service saved"
+msgstr ""
+
+msgid "Interface Language"
+msgstr "لغة الواجهة"
+
+msgid "Label"
+msgstr "تسمية"
+
+msgid "Language"
+msgstr ""
+
 msgid "Launch Process"
 msgstr "إطلاق عملية"
+
+msgid "list the users"
+msgstr ""
 
 msgid "Loading next activity..."
 msgstr "...تحميل النشاط التالي"
 
+msgid "loading..."
+msgstr ""
+
 msgid "Login"
 msgstr "الدخول"
+
+msgid "Login not available"
+msgstr "الدخول غير متوفر"
 
 msgid "login: "
 msgstr ""
@@ -92,11 +246,51 @@ msgstr ""
 msgid "Logout"
 msgstr "الخروج"
 
+#, tao-public
+msgid "Manage processes"
+msgstr "إدارة العمليات"
+
+#, tao-public
+msgid "Manage roles"
+msgstr "إدارة الأدوار"
+
+msgid "Manage Roles and associate roles to workflow users"
+msgstr "إدارة الأدوار والأدوار المنتسبة لعمل المستخدمين"
+
+#, tao-public
+msgid "Manage users"
+msgstr "إدارة المستخدمين"
+
+msgid "Merge to "
+msgstr ""
+
+msgid "meta data"
+msgstr ""
+
+#, tao-public
+msgid "Monitor processes"
+msgstr ""
+
+msgid "Monitoring processes"
+msgstr ""
+
 msgid "More detailed description here."
 msgstr ".وصف أكثر تفصيل هنا"
 
 msgid "My roles"
 msgstr "ادواري"
+
+msgid "Name"
+msgstr "الاسم"
+
+msgid "new process"
+msgstr ""
+
+msgid "new role"
+msgstr ""
+
+msgid "newly edited"
+msgstr ""
 
 msgid "No account match the given login / password"
 msgstr "لا يتطابق مع حساب معين الدخول / كلمة السر"
@@ -107,14 +301,40 @@ msgstr ""
 msgid "No variable code given"
 msgstr ""
 
+msgid "ok"
+msgstr ""
+
+msgid "Open all"
+msgstr "فتح الجميع"
+
+msgid "Output Parameters"
+msgstr ""
+
 msgid "Password"
 msgstr "كلمة السر"
 
 msgid "Pause"
 msgstr "وقف"
 
+msgid "please choose another one"
+msgstr ""
+
+msgid "Please confirm deletion"
+msgstr "الرجاء تأكيد الحذف"
+
+msgid "Please confirm deletion.\n"
+" Warning: related resources might be affected."
+msgstr ""
+
 msgid "Please confirm the deletion of the activity"
 msgstr "الرجاء تأكيد حذف النشاط"
+
+msgid "Please confirm the deletion of the connector: \n"
+" child connectors will be delete at the same time"
+msgstr ""
+
+msgid "Please confirm user deletion"
+msgstr "الرجاء تأكيد حذف المستخدم"
 
 msgid "Please login"
 msgstr "الرجاء الدخول"
@@ -122,17 +342,58 @@ msgstr "الرجاء الدخول"
 msgid "Please login to access the selected activity."
 msgstr ""
 
+msgid "Please select a delivery before authoring it"
+msgstr "Veuillez déjà choisir une livraison avant de l'éditer"
+
+msgid "Please select a process before authoring it"
+msgstr "Veuillez déjà choisir un processus de l'éditer"
+
+msgid "Positionning"
+msgstr "Positionnement"
+
 msgid "Process"
 msgstr "Processus"
 
+#, tao-public
+msgid "Process authoring"
+msgstr "Processus de création"
+
+msgid "Process Definition"
+msgstr ""
+
+msgid "Process Execution"
+msgstr ""
+
 msgid "Process Finished"
+msgstr ""
+
+msgid "Process History"
 msgstr ""
 
 msgid "Process initialization"
 msgstr "بدء العملية"
 
+msgid "Process Property"
+msgstr "Processus de propriété"
+
+msgid "Process saved"
+msgstr "حفظ العملية"
+
 msgid "Process Tree:"
 msgstr "Arborescence des processus:"
+
+msgid "Process Variable"
+msgstr "Processus variable"
+
+msgid "Process Variables"
+msgstr "Variables de processus"
+
+#, tao-public
+msgid "Processes"
+msgstr "Processus"
+
+msgid "Processes library"
+msgstr ""
 
 msgid "Question (Ctrl-Q)"
 msgstr "(Ctrl-Q)سؤال"
@@ -143,20 +404,66 @@ msgstr ""
 msgid "Redirection in "
 msgstr ""
 
+msgid "reload"
+msgstr ""
+
+msgid "reloading form..."
+msgstr ""
+
+msgid "Restricted to"
+msgstr ""
+
+msgid "Role"
+msgstr "دور"
+
+msgid "Role saved"
+msgstr "حفظ الدور"
+
+msgid "Role(s)"
+msgstr "الدور"
+
+msgid "Roles library"
+msgstr ""
+
+msgid "save"
+msgstr ""
+
+msgid "Save"
+msgstr "حفظ"
+
+msgid "saved"
+msgstr ""
+
+msgid "search"
+msgstr ""
+
 msgid "seconds"
 msgstr ""
 
 msgid "Select a test"
 msgstr "تحديد اختبار"
 
+msgid "Service Definition"
+msgstr "تعريف الخدمة"
+
+msgid "Set the activity as a final one will delete its following connector. \n"
+" Are you sure?"
+msgstr ""
+
 msgid "Start/Resume the case"
 msgstr "ابدأ / استئناف الحالة"
+
+msgid "Started Time"
+msgstr ""
 
 msgid "Status"
 msgstr "الحالة"
 
 msgid "Suppress"
 msgstr "حذف"
+
+msgid "Sure?"
+msgstr "هل انت متاكد؟"
 
 msgid "TAO - An Open and Versatile Computer-Based Assessment Platform"
 msgstr "منهاج التقييم القائم على الحاسوب مفتوح ومتعدد الاستخدامات - TAO"
@@ -165,6 +472,9 @@ msgid "TAO Process Engine"
 msgstr "TAO محرك عملية"
 
 msgid "The activity provided in the url is no longer the up-to-date."
+msgstr ""
+
+msgid "the chosen code has already been used for the process variable"
 msgstr ""
 
 msgid "The link may be outdated."
@@ -182,6 +492,9 @@ msgstr ""
 msgid "The resource is not an activity execution"
 msgstr ""
 
+msgid "The role is using by one or several users. Please remove the role to these users first."
+msgstr "Le rôle est à l'aide d';un ou plusieurs utilisateurs. S'il vous plaît supprimer le rôle de ces premiers utilisateurs."
+
 msgid "The variable with the code '.$code.' does not exists"
 msgstr ""
 
@@ -194,8 +507,27 @@ msgstr "(Ctrl-T) اضغط"
 msgid "type??"
 msgstr ""
 
+msgid "Unable to delete the process execution.\n"
+"Close process before delete it."
+msgstr ""
+
 msgid "Unable to log in the user"
 msgstr ""
+
+msgid "undefined"
+msgstr ""
+
+msgid "Unit"
+msgstr ""
+
+msgid "Use the * character to replace any string"
+msgstr "استخدام الحرف * ليحل محل أي سلسلة"
+
+msgid "User added"
+msgstr "اضافة مستخدم"
+
+msgid "User deleted successfully"
+msgstr "تم حذف المستخدم بنجاح"
 
 msgid "User Id."
 msgstr "معرف المستخدم"
@@ -206,13 +538,37 @@ msgstr ""
 msgid "User name:"
 msgstr ":اسم المستخدم"
 
+msgid "User saved"
+msgstr "المستخدم محفوظ"
+
+msgid "Value"
+msgstr ""
+
+msgid "Variables"
+msgstr ""
+
+msgid "VFF"
+msgstr ""
+
+msgid "VFF version"
+msgstr ""
+
 msgid "Welcome to TAO Process Engine"
 msgstr "Bienvenue dans le moteur de processus TAO"
 
 msgid "Workflow Engine"
 msgstr "محرك سير العمل"
 
+msgid "Workflow Users"
+msgstr "مستخدمين سير العمل"
+
 msgid "WorkflowEngine Process Browser "
+msgstr ""
+
+msgid "XLIFF"
+msgstr ""
+
+msgid "XLIFF version"
 msgstr ""
 
 msgid "You will be redirected to the current activity if you are allowed to."
