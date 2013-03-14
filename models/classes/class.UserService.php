@@ -85,40 +85,6 @@ class wfEngine_models_classes_UserService
     }
 
     /**
-     * login a user
-     *
-     * @access public
-     * @author Jerome Bogaerts, <jerome.bogaerts@tudor.lu>
-     * @param  string login
-     * @param  string password
-     * @return boolean
-     */
-    public function loginUser($login, $password)
-    {
-        $returnValue = (bool) false;
-
-        // section 127-0-1-1-951b66:128b0d3ece8:-8000:0000000000001F59 begin
-
-        if(parent::loginUser($login, $password)){
-
-        	$currentUser = $this->getCurrentUser();
-        	if(!is_null($currentUser)){
-        		
-				$_SESSION['taoqual.authenticated'] 		= true;
-				$_SESSION['taoqual.lang']				= core_kernel_classes_Session::singleton()->getInterfaceLanguage();
-				$_SESSION['taoqual.serviceContentLang'] = core_kernel_classes_Session::singleton()->getInterfaceLanguage();
-				$_SESSION['taoqual.userId']				= $login;
-				
-				$returnValue = true;
-        	}
-        }
-
-        // section 127-0-1-1-951b66:128b0d3ece8:-8000:0000000000001F59 end
-
-        return (bool) $returnValue;
-    }
-
-    /**
      * method to format the data
      *
      * @access public

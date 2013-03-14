@@ -30,18 +30,7 @@ class wfEngine_actions_WfModule extends tao_actions_CommonModule
 		}
 		
 	}
-	
-	/*
-	 * Check if the current user is allowed to acces the request
-	 * Override this method to allow/deny a request
-	 * @return boolean
-	 *
-	protected function _isAllowed()
-	{
-		return (isset($_SESSION['taoqual.authenticated']) && core_kernel_users_Service::singleton()->isASessionOpened());	//if a user is logged in
-	}
-	*/
-    
+
     /**
      * Behaviour to adopt if the user is not allowed to access the current action.
      */
