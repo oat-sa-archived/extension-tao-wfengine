@@ -25,7 +25,6 @@ define('NS_RULES', 'http://www.tao.lu/middleware/Rules.rdf');
 $todefine = array(
 	'ENABLE_HTTP_REDIRECT_PROCESS_BROWSER' 			=> false,
 	
-	'GENERIS_BOOLEAN' 								=> GENERIS_NS . '#Boolean',
 	'PROPERTY_USER_LABEL'							=> GENERIS_NS.'#login',
 	'VAR_PROCESS_INSTANCE' 							=> NS_RULES . '#VarProcessInstance',
 	'VAR_ACTIVITY_INSTANCE' 						=> NS_RULES . '#VarActivityInstance',
@@ -42,8 +41,6 @@ $todefine = array(
 	'PROPERTY_PROCESS_INIT_RESTRICTED_USER'			=> NS_WFENGINE . '#PropertyProcessInitRestrictedUser',
 	'PROPERTY_PROCESS_INIT_RESTRICTED_ROLE'			=> NS_WFENGINE . '#PropertyProcessInitRestrictedRole',
 	'PROPERTY_PROCESS_INIT_ACL_MODE'				=> NS_WFENGINE . '#PropertyProcessInitAccesControlMode',//!!!
-	
-	'CLASS_ROLE'									=> NS_WFENGINE . '#ClassRole',
 	
 	'CLASS_PROCESSINSTANCES'						=> NS_WFENGINE . '#ClassProcessInstances',
 	'PROPERTY_PROCESSINSTANCES_STATUS'				=> NS_WFENGINE . '#PropertyProcessInstancesStatus',
