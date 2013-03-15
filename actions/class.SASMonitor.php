@@ -38,7 +38,6 @@ class wfEngine_actions_SASMonitor extends wfEngine_actions_Monitor {
 	public function __construct()
 	{
     	tao_helpers_Context::load('STANDALONE_MODE');
-        $this->setSessionAttribute('currentExtension', 'wfEngine');
         parent::__construct();
 	}
     
