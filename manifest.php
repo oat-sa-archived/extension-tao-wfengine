@@ -52,6 +52,27 @@ return array(
 		dirname(__FILE__).'/helpers/'
 
 	),
+	'optimizableClasses' => array(
+		'http://www.tao.lu/middleware/wfEngine.rdf#ClassSupportServices',
+		'http://www.tao.lu/middleware/wfEngine.rdf#ClassCallOfservicesResources',
+		'http://www.tao.lu/middleware/wfEngine.rdf#ClassServiceDefinitionResources',
+		'http://www.tao.lu/middleware/wfEngine.rdf#ClassServicesResources',
+		'http://www.tao.lu/middleware/wfEngine.rdf#ClassConnectors',
+		'http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessInstances',
+		'http://www.tao.lu/middleware/wfEngine.rdf#ClassActivityCardinality'
+	),
+	'optimizableProperties' => array(
+		'http://www.tao.lu/middleware/wfEngine.rdf#PropertyActualParametersFormalParameter',
+		'http://www.tao.lu/middleware/wfEngine.rdf#PropertySupportServicesUrl',
+		'http://www.tao.lu/middleware/wfEngine.rdf#PropertyConnectorsType',
+		'http://www.tao.lu/middleware/wfEngine.rdf#PropertyConnectorsActivityReference',
+		'http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessInstancesStatus',
+		'http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessInstancesExecutionOf',
+		'http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsStatus',
+		'http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsExecutionOf',
+		'http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsCurrentUser',
+		'http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsProcessExecution'
+	),
 	'constants' => array(
 		# actions directory
 		"DIR_ACTIONS"			=> $extpath."actions".DIRECTORY_SEPARATOR,
