@@ -123,18 +123,12 @@ class wfEngineServiceTest extends UnitTestCase {
 		$returnValue = false;
 		
 		//Login another user to execute parallel branch
-		$this->userService->logout();
+		$this->logoutUser();
 		$loginProperty = new core_kernel_classes_Property(PROPERTY_USER_LOGIN);
-		if(!is_null($this->currentUser)){
-			$this->out("logout ". $this->currentUser->getOnePropertyValue($loginProperty) . ' "' . $this->currentUser->uriResource . '"', true);
-		}else{
-			$this->out("logout ");
-		}
-		
 		if($this->userService->loginUser($login, md5($this->userPassword))){
 			$this->currentUser = $this->userService->getCurrentUser();
 			$returnValue = true;
-			$this->out("new user logged in: ".$this->currentUser->getOnePropertyValue($loginProperty).' "'.$this->currentUser->uriResource.'"');
+			$this->out("user logged in: ".$this->currentUser->getOnePropertyValue($loginProperty).' "'.$this->currentUser->uriResource.'"');
 		}else{
 			$this->fail("unable to login user $login");
 		}
@@ -143,6 +137,15 @@ class wfEngineServiceTest extends UnitTestCase {
 		$activityExecutionService->clearCache('wfEngine_models_classes_ActivityExecutionService::checkAcl');
 		
 		return $returnValue;
+	}
+	
+	protected function logoutUser(){
+		if(!is_null($this->currentUser)){
+			$loginProperty = new core_kernel_classes_Property(PROPERTY_USER_LOGIN);
+			$this->out("logout ". $this->currentUser->getOnePropertyValue($loginProperty) . ' "' . $this->currentUser->uriResource . '"', true);
+			$this->userService->logout();
+			$this->currentUser = null;
+		}
 	}
 	
 	protected function checkAccessControl($activityExecution){
