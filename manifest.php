@@ -34,16 +34,20 @@ return array(
 	'version' => '2.4',
 	'author' => 'Open Assessment Technologies, CRP Henri Tudor',
 	'dependencies' => array('tao'),
-	'models' => array('http://www.tao.lu/middleware/wfEngine.rdf',
-		'http://www.tao.lu/Ontologies/taoFuncACL.rdf'),
+	'models' => array(
+		'http://www.tao.lu/middleware/wfEngine.rdf'
+	),
 	'install' => array(
 		'rdf' => array(
-				array('ns' => 'http://www.tao.lu/middleware/wfEngine.rdf', 'file' => dirname(__FILE__). '/models/ontology/wfengine.rdf'),
-				array('ns' => 'http://www.tao.lu/Ontologies/taoFuncACL.rdf', 'file' => dirname(__FILE__). '/models/ontology/aclrole.rdf')
+			dirname(__FILE__). '/models/ontology/wfengine.rdf',
+			dirname(__FILE__). '/models/ontology/aclrole.rdf',
+		),
+		'php' => array(
+			dirname(__FILE__). '/scripts/install/sasServices.php',
 		),
 		'checks' => array(
 			array('type' => 'CheckFileSystemComponent', 'value' => array('id' => 'fs_wfEngine_includes', 'location' => 'wfEngine/includes', 'rights' => 'r'))
-		)
+		),
 	),
 	'managementRole' => 'http://www.tao.lu/middleware/wfEngine.rdf#WorkflowsManagerRole',
 	'optimizableClasses' => array(
