@@ -46,12 +46,6 @@ return array(
 		)
 	),
 	'managementRole' => 'http://www.tao.lu/middleware/wfEngine.rdf#WorkflowsManagerRole',
-	'classLoaderPackages' => array(
-		dirname(__FILE__).'/actions/',
-		dirname(__FILE__).'/models/classes/',
-		dirname(__FILE__).'/helpers/'
-
-	),
 	'optimizableClasses' => array(
 		'http://www.tao.lu/middleware/wfEngine.rdf#ClassSupportServices',
 		'http://www.tao.lu/middleware/wfEngine.rdf#ClassCallOfservicesResources',

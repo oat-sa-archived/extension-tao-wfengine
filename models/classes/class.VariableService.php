@@ -191,7 +191,8 @@ class wfEngine_models_classes_VariableService
 		
 		if(!is_null($activityExecution)){
 			
-			Bootstrap::loadConstants('wfEngine');	//because it could be called anywhere
+			$loader = new common_ext_ExtensionLoader(common_ext_ExtensionsManager::singleton()->getExtensionById('wfEngine'));
+			$loader->load();	//because it could be called anywhere
 			
 			$variablesProp = new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_VARIABLES);
 			$newVar = unserialize($activityExecution->getOnePropertyValue($variablesProp));
@@ -241,8 +242,9 @@ class wfEngine_models_classes_VariableService
 		
 		if(!is_null($activityExecution)){
 			
-			Bootstrap::loadConstants('wfEngine');	//because it could be called anywhere
-			
+			$loader = new common_ext_ExtensionLoader(common_ext_ExtensionsManager::singleton()->getExtensionById('wfEngine'));
+			$loader->load();	//because it could be called anywhere
+						
 			$oldVar = unserialize($activityExecution->getOnePropertyValue($this->variablesProperty));
 			if(is_string($params)){
 				$params = array($params);
