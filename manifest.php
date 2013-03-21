@@ -51,13 +51,11 @@ return array(
 	),
 	'managementRole' => 'http://www.tao.lu/middleware/wfEngine.rdf#WorkflowsManagerRole',
 	'optimizableClasses' => array(
-		'http://www.tao.lu/middleware/wfEngine.rdf#ClassSupportServices',
-		'http://www.tao.lu/middleware/wfEngine.rdf#ClassCallOfservicesResources',
-		'http://www.tao.lu/middleware/wfEngine.rdf#ClassServiceDefinitionResources',
+		'http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessDefinitionResources',
+		'http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessExecutionResources',
 		'http://www.tao.lu/middleware/wfEngine.rdf#ClassServicesResources',
-		'http://www.tao.lu/middleware/wfEngine.rdf#ClassConnectors',
-		'http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessInstances',
-		'http://www.tao.lu/middleware/wfEngine.rdf#ClassActivityCardinality'
+		'http://www.tao.lu/middleware/wfEngine.rdf#ClassActivityExecutions',
+		'http://www.tao.lu/middleware/wfEngine.rdf#ClassAccessControlModes'
 	),
 	'optimizableProperties' => array(
 		'http://www.tao.lu/middleware/wfEngine.rdf#PropertyActualParametersFormalParameter',
