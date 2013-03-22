@@ -200,7 +200,7 @@ class ProcessSampleCreator{
 	public function createSimpleParallelProcess($label = 'Simple Parallel Process', $comment = ''){
 		
 		//set testUserRole
-		$this->testUserRole = new core_kernel_classes_Resource(CLASS_ROLE_WORKFLOWUSERROLE);
+		$testUserRole = new core_kernel_classes_Resource(INSTANCE_ROLE_WORKFLOW);
 		
 		//process definition
 		$processDefinition = $this->createProcess($label, $comment);
@@ -215,12 +215,12 @@ class ProcessSampleCreator{
 
 		$parallelActivity1 = $this->authoringService->createActivity($processDefinition, 'activity1');
 		$roleRestrictedUser = new core_kernel_classes_Resource(INSTANCE_ACL_ROLE_RESTRICTED_USER);
-		$this->activityService->setAcl($parallelActivity1, $roleRestrictedUser, $this->testUserRole); //!!! it is mendatory to set the role restricted user ACL mode to make this parallel process test case work
+		$this->activityService->setAcl($parallelActivity1, $roleRestrictedUser, $testUserRole); //!!! it is mendatory to set the role restricted user ACL mode to make this parallel process test case work
 
 		$connector1 = $this->authoringService->createConnector($parallelActivity1);
 
 		$parallelActivity2 = $this->authoringService->createActivity($processDefinition, 'activity2');
-		$this->activityService->setAcl($parallelActivity2, $roleRestrictedUser, $this->testUserRole); //!!! it is mendatory to set the role restricted user ACL mode to make this parallel process test case work
+		$this->activityService->setAcl($parallelActivity2, $roleRestrictedUser, $testUserRole); //!!! it is mendatory to set the role restricted user ACL mode to make this parallel process test case work
 
 		$connector2 = $this->authoringService->createConnector($parallelActivity2);
 
