@@ -26,4 +26,7 @@
  * @package wfEngine
  */
 
-// @todo include sasservices
+$localData = dirname(__FILE__).DIRECTORY_SEPARATOR.'sasServices.rdf';
+
+$modelCreator = new tao_install_utils_ModelCreator(LOCAL_NAMESPACE);
+$modelCreator->insertLocalModelFile($localData);

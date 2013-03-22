@@ -101,7 +101,7 @@ class wfEngine_models_classes_UserService
 
         $users = $this->getAllUsers(array('order' => 'login'));
 		foreach($users as $user){
-			$login = (string) $user->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_USER_LABEL));
+			$login = (string) $user->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_USER_LOGIN));
 			$returnValue[] = array(
 					'data' 	=> tao_helpers_Display::textCutter($user->getLabel(), 16),
 					'attributes' => array(

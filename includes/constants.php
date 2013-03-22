@@ -25,13 +25,10 @@ define('NS_RULES', 'http://www.tao.lu/middleware/Rules.rdf');
 $todefine = array(
 	'ENABLE_HTTP_REDIRECT_PROCESS_BROWSER' 			=> false,
 	
-	'PROPERTY_USER_LABEL'							=> GENERIS_NS.'#login',
 	'VAR_PROCESS_INSTANCE' 							=> NS_RULES . '#VarProcessInstance',
 	'VAR_ACTIVITY_INSTANCE' 						=> NS_RULES . '#VarActivityInstance',
 	'VAR_ACTIVITY_DEFINITION'						=> NS_RULES . '#VarActivityDefinition',
 	'VAR_CURRENT_USER'								=> NS_RULES . '#VarCurrentUser',
-	
-	'PROPERTY_GENERIS_ALLOWFREEVALUEOF'				=> NS_WFENGINE . '#PropertyAllowFreeValueOf',
 	
 	'CLASS_PROCESS'									=> NS_WFENGINE . '#ClassProcessDefinitions',
 	'PROPERTY_PROCESS_VARIABLES'					=> NS_WFENGINE . '#PropertyProcessVariables',
