@@ -172,7 +172,6 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 	public function testCreateUsers(){
 		
 		error_reporting(E_ALL);
-		
 		if($this->createUsers){
 			
 			$roleService = wfEngine_models_classes_RoleService::singleton();
@@ -181,21 +180,30 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 			
 			$this->userLogins = array();
 			$this->users = array();	
-			$this->roles = array();
 			
 			//create roles and users:
-			$roleClass = new core_kernel_classes_Class(CLASS_ROLE_WORKFLOWUSERROLE);
-			$this->roles['consortium'] = $roleService->createInstance($roleClass, 'consortium - '.$usec);
-			$this->roles['NPM'] = $roleService->createInstance($roleClass, 'NPMs - '.$usec);
-			$this->roles['translator'] = $roleService->createInstance($roleClass, 'translators - '.$usec);
-			$this->roles['reconciler'] = $roleService->createInstance($roleClass, 'reconcilers - '.$usec);
-			$this->roles['verifier'] = $roleService->createInstance($roleClass, 'verifiers - '.$usec);
-			$this->roles['developer'] = $roleService->createInstance($roleClass, 'developers - '.$usec);
-			$this->roles['testDeveloper'] = $roleService->createInstance($roleClass, 'test developers - '.$usec);
+			$userService = core_kernel_users_Service::singleton();
+			$wfRole = new core_kernel_classes_Resource(INSTANCE_ROLE_WORKFLOW);
+			
+			$this->roles = array();
+			$this->roles['consortium']	= $userService->addRole('consortium - '.$usec, $wfRole);
+			$this->roles['NPM']			= $userService->addRole('NPMs - '.$usec, $wfRole);
+			$this->roles['translator']	= $userService->addRole('translators - '.$usec, $wfRole);
+			$this->roles['reconciler']	= $userService->addRole('reconcilers - '.$usec, $wfRole);
+			$this->roles['verifier']	= $userService->addRole('verifiers - '.$usec, $wfRole);
+			$this->roles['developer']	= $userService->addRole('developers - '.$usec, $wfRole);
+			$this->roles['testDeveloper'] = $userService->addRole('test developers - '.$usec, $wfRole);
+			
+			$classRole =  new core_kernel_classes_Class(CLASS_ROLE);
+			$translatorClass = $classRole->createSubClass('translatorsTestClass');
+			foreach ($this->roles as $role) {
+				$role->setType($translatorClass);
+				$role->removeType($classRole);
+			}
 			
 			//create the country code and language code properties to the wf user class:
-			$propUserCountryCode = $this->createTranslationProperty('CountryCode', '', '', $roleClass);
-			$propUserLangCode = $this->createTranslationProperty('LanguageCode', '', '', $roleClass);
+			$propUserCountryCode = $this->createTranslationProperty('CountryCode', '', '', $translatorClass);
+			$propUserLangCode = $this->createTranslationProperty('LanguageCode', '', '', $translatorClass);
 			
 			//generate users' logins:
 			$this->userLogins = array();
@@ -475,7 +483,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		
 		$authoringService = wfAuthoring_models_classes_ProcessService::singleton();
 		$activityService = wfEngine_models_classes_ActivityService::singleton();
-		$connectorService = wfEngine_models_classes_ConnectorService::singleton();
+		$connectorService = wfAuthoring_models_classes_ConnectorService::singleton();
 		$cardinalityService = wfEngine_models_classes_ActivityCardinalityService::singleton();
 		
 		$varCodes = array(
@@ -726,7 +734,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		
 		$authoringService = wfAuthoring_models_classes_ProcessService::singleton();
 		$activityService = wfEngine_models_classes_ActivityService::singleton();
-		$connectorService = wfEngine_models_classes_ConnectorService::singleton();
+		$connectorService = wfAuthoring_models_classes_ConnectorService::singleton();
 		$processVariableService = wfEngine_models_classes_VariableService::singleton();
 		$cardinalityService = wfEngine_models_classes_ActivityCardinalityService::singleton();
 
@@ -861,7 +869,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		
 		$authoringService = wfAuthoring_models_classes_ProcessService::singleton();
 		$activityService = wfEngine_models_classes_ActivityService::singleton();
-		$connectorService = wfEngine_models_classes_ConnectorService::singleton();
+		$connectorService = wfAuthoring_models_classes_ConnectorService::singleton();
 		$processVariableService = wfEngine_models_classes_VariableService::singleton();
 		$cardinalityService = wfEngine_models_classes_ActivityCardinalityService::singleton();
 		
