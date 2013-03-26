@@ -19,77 +19,47 @@
  *               2009-2012 (update and modification) Public Research Centre Henri Tudor (under the project TAO-SUSTAIN & TAO-DEV);
  * 
  */
-?>
-<?php
-
-error_reporting(E_ALL);
-
-/**
- * Manage the user in the workflow engine
- *
- * @author Jerome Bogaerts, <jerome.bogaerts@tudor.lu>
- * @package wfEngine
- * @subpackage models_classes
- */
-
-if (0 > version_compare(PHP_VERSION, '5')) {
-    die('This file was generated for PHP 5');
-}
-
-/**
- * This class provide service on user management
- *
- * @author Jerome Bogaerts, <jerome.bogaerts@tudor.lu>
- */
-require_once('tao/models/classes/class.UserService.php');
-
-/* user defined includes */
-// section 127-0-1-1-951b66:128b0d3ece8:-8000:0000000000001F53-includes begin
-// section 127-0-1-1-951b66:128b0d3ece8:-8000:0000000000001F53-includes end
-
-/* user defined constants */
-// section 127-0-1-1-951b66:128b0d3ece8:-8000:0000000000001F53-constants begin
-// section 127-0-1-1-951b66:128b0d3ece8:-8000:0000000000001F53-constants end
 
 /**
  * Manage the user in the workflow engine
  *
  * @access public
- * @author Jerome Bogaerts, <jerome.bogaerts@tudor.lu>
+ * @author Jerome Bogaerts, <jerome@taotesting.com>
  * @package wfEngine
  * @subpackage models_classes
  */
 class wfEngine_models_classes_UserService
     extends tao_models_classes_UserService
 {
-    // --- ASSOCIATIONS ---
-
-
-    // --- ATTRIBUTES ---
-
-    // --- OPERATIONS ---
 
     /**
-     * initialize the roles
+     * Overrides tao_models_classes_UserService to restrict authenticable users to those
+     * having the Workflow role.
      *
      * @access public
-     * @author Jerome Bogaerts, <jerome.bogaerts@tudor.lu>
-     * @return mixed
+     * @author Jerome Bogaerts, <jerome@taotesting.com>
+     * @return array
      */
     public function getAllowedRolesForLogin()
     {
-        // section 127-0-1-1-951b66:128b0d3ece8:-8000:0000000000001F55 begin
-
 		return array(INSTANCE_ROLE_WORKFLOW => new core_kernel_classes_Resource(INSTANCE_ROLE_WORKFLOW));
-
-        // section 127-0-1-1-951b66:128b0d3ece8:-8000:0000000000001F55 end
+    }
+    
+    /**
+     * New users will be Workflow Users.
+     * 
+     * @return core_kernel_classes_Class The class to use to instantiate new users.
+     */
+    public function getUserClass()
+    {
+    	return new core_kernel_classes_Class(CLASS_WORKFLOWUSER);
     }
 
     /**
      * method to format the data
      *
      * @access public
-     * @author Jerome Bogaerts, <jerome.bogaerts@tudor.lu>
+     * @author Jerome Bogaerts, <jerome@taotesting.com>
      * @param  Class clazz
      * @param  array options
      * @return array
@@ -97,8 +67,6 @@ class wfEngine_models_classes_UserService
     public function toTree( core_kernel_classes_Class $clazz, $options)
     {
         $returnValue = array();
-
-        // section 127-0-1-1-718243b3:12912642ee4:-8000:0000000000001F92 begin
 
         $users = $this->getAllUsers(array('order' => 'login'));
 		foreach($users as $user){
@@ -114,11 +82,9 @@ class wfEngine_models_classes_UserService
 
 		}
 
-        // section 127-0-1-1-718243b3:12912642ee4:-8000:0000000000001F92 end
-
         return (array) $returnValue;
     }
 
-} /* end of class wfEngine_models_classes_UserService */
+}
 
 ?>
