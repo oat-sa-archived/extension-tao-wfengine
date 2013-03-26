@@ -40,7 +40,7 @@ class wfEngine_models_classes_UserService
      * @author Jerome Bogaerts, <jerome@taotesting.com>
      * @return array
      */
-    public function getAllowedRolesForLogin()
+    public function getAllowedRoles()
     {
 		return array(INSTANCE_ROLE_WORKFLOW => new core_kernel_classes_Resource(INSTANCE_ROLE_WORKFLOW));
     }
