@@ -76,11 +76,11 @@ class wfEngine_models_classes_UserService
      * @author Jerome Bogaerts, <jerome.bogaerts@tudor.lu>
      * @return mixed
      */
-    public function initRoles()
+    public function getAllowedRolesForLogin()
     {
         // section 127-0-1-1-951b66:128b0d3ece8:-8000:0000000000001F55 begin
 
-		$this->allowedRoles = array(INSTANCE_ROLE_WORKFLOW => new core_kernel_classes_Resource(INSTANCE_ROLE_WORKFLOW));
+		return array(INSTANCE_ROLE_WORKFLOW => new core_kernel_classes_Resource(INSTANCE_ROLE_WORKFLOW));
 
         // section 127-0-1-1-951b66:128b0d3ece8:-8000:0000000000001F55 end
     }
