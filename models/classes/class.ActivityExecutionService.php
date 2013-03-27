@@ -550,7 +550,7 @@ class wfEngine_models_classes_ActivityExecutionService
         			//check if the current user has the restricted role
         			case INSTANCE_ACL_ROLE:{
         				
-        				$userService 		= core_kernel_users_Service::singleton();
+        				$userService 		= tao_models_classes_UserService::singleton();
         				$activityRole 		= $this->getRestrictedRole($activityExecution);
         				$returnValue		= $userService->userHasRoles($currentUser, $activityRole);
         				break;	
@@ -561,7 +561,7 @@ class wfEngine_models_classes_ActivityExecutionService
         				//check if an activity execution already exists for the current activity or if there are several in parallel, check if there is one spot available. If so create the activity execution:
 						//need to know the current process execution, from it, get the process definition and the number of activity executions associated to it.
 						//from the process definition get the number of allowed activity executions for this activity definition (normally only 1 but can be more, for a parallel connector)
-						$userService = core_kernel_users_Service::singleton();
+						$userService = tao_models_classes_UserService::singleton();
         				$activityRole = $this->getRestrictedRole($activityExecution);
         				
         				if (true === $userService->userHasRoles($currentUser, $activityRole)){
@@ -577,7 +577,7 @@ class wfEngine_models_classes_ActivityExecutionService
         			//check if the current user has the restricted role and is the restricted user based on the previous activity with the given role
         			case INSTANCE_ACL_ROLE_RESTRICTED_USER_INHERITED:{
         				
-        				$userService = core_kernel_users_Service::singleton();
+        				$userService = tao_models_classes_UserService::singleton();
         				$activityRole = $this->getRestrictedRole($activityExecution);
         				
         				if (true === $userService->userHasRoles($currentUser, $activityRole)) {
@@ -626,7 +626,7 @@ class wfEngine_models_classes_ActivityExecutionService
 					//special case for deliveries
 					case INSTANCE_ACL_ROLE_RESTRICTED_USER_DELIVERY:{
 						
-						$userService = core_kernel_users_Service::singleton();
+						$userService = tao_models_classes_UserService::singleton();
 						
 						$activity = $this->getExecutionOf($activityExecution);
 						if($this->activityService->isInitial($activity)){

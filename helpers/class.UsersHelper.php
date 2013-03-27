@@ -27,7 +27,6 @@ class wfEngine_helpers_UsersHelper
 
 	public static function buildCurrentUserForView()
 	{
-		$userService = core_kernel_users_Service::singleton();
 		$wfUserService = wfEngine_models_classes_UserService::singleton();
 		$currentUser = $wfUserService->getCurrentUser();
 		
@@ -36,7 +35,7 @@ class wfEngine_helpers_UsersHelper
 	
 		// user roles.
 		$data['roles']		= array();
-		$roles = $userService->getUserRoles($currentUser);
+		$roles = $wfUserService->getUserRoles($currentUser);
 		foreach($roles as $role){
 			$data['roles'][] = array(
 				'uri' 	 => $role->uriResource,

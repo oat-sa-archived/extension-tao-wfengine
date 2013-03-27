@@ -183,17 +183,17 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 			$this->users = array();	
 			
 			//create roles and users:
-			$userService = core_kernel_users_Service::singleton();
+			$roleService = tao_models_classes_RoleService::singleton();
 			$wfRole = new core_kernel_classes_Resource(INSTANCE_ROLE_WORKFLOW);
 			
 			$this->roles = array();
-			$this->roles['consortium']	= $userService->addRole('consortium - '.$usec, $wfRole);
-			$this->roles['NPM']			= $userService->addRole('NPMs - '.$usec, $wfRole);
-			$this->roles['translator']	= $userService->addRole('translators - '.$usec, $wfRole);
-			$this->roles['reconciler']	= $userService->addRole('reconcilers - '.$usec, $wfRole);
-			$this->roles['verifier']	= $userService->addRole('verifiers - '.$usec, $wfRole);
-			$this->roles['developer']	= $userService->addRole('developers - '.$usec, $wfRole);
-			$this->roles['testDeveloper'] = $userService->addRole('test developers - '.$usec, $wfRole);
+			$this->roles['consortium']	= $roleService->addRole('consortium - '.$usec, $wfRole);
+			$this->roles['NPM']			= $roleService->addRole('NPMs - '.$usec, $wfRole);
+			$this->roles['translator']	= $roleService->addRole('translators - '.$usec, $wfRole);
+			$this->roles['reconciler']	= $roleService->addRole('reconcilers - '.$usec, $wfRole);
+			$this->roles['verifier']	= $roleService->addRole('verifiers - '.$usec, $wfRole);
+			$this->roles['developer']	= $roleService->addRole('developers - '.$usec, $wfRole);
+			$this->roles['testDeveloper'] = $roleService->addRole('test developers - '.$usec, $wfRole);
 			
 			$classRole =  new core_kernel_classes_Class(CLASS_ROLE);
 			$translatorClass = $classRole->createSubClass('translatorsTestClass');
@@ -277,13 +277,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 				}
 				$this->assertTrue($roleService->setRoleToUsers($role, $userUris));
 			}
-			
-			
-			
-//			var_dump($this->userLogins, $this->roleLogins, $this->users);
-//			exit;
-		}
-			
+		}		
 	}
 	
 	private function getFileName($unitLabel, $countryCode, $langCode, $type, core_kernel_classes_Resource $user = null){

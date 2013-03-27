@@ -280,7 +280,6 @@ class NotificationServiceTestCase extends UnitTestCase {
 			$authoringService = wfAuthoring_models_classes_ProcessService::singleton();
 			$activityExecutionService = wfEngine_models_classes_ActivityExecutionService::singleton();
 			$roleService = wfEngine_models_classes_RoleService::singleton();
-			$userService = core_kernel_users_Service::singleton();
 			
 			//create a new process def
 			$processDefinitionClass = new core_kernel_classes_Class(CLASS_PROCESS);
@@ -291,8 +290,8 @@ class NotificationServiceTestCase extends UnitTestCase {
 			$aclModeUser		 = new core_kernel_classes_Resource(INSTANCE_ACL_USER);
 			
 			$wfRole 	 = new core_kernel_classes_Resource(INSTANCE_ROLE_WORKFLOW);
-			$role1		 = $userService->addRole('Role 1', $wfRole);
-			$role2		 = $userService->addRole('Role 2', $wfRole);
+			$role1		 = $roleService->addRole('Role 1', $wfRole);
+			$role2		 = $roleService->addRole('Role 2', $wfRole);
 			$roleService->setRoleToUsers($role2, array($this->currentUser));
 			
 			

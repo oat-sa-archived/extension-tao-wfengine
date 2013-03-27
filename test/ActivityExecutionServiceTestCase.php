@@ -94,7 +94,6 @@ class ActivityExecutionServiceTestCase extends wfEngineServiceTest {
 		error_reporting(E_ALL);
 		
 		try{
-			$generisUserService = core_kernel_users_Service::singleton();
 			$roleService = wfEngine_models_classes_RoleService::singleton();
 			$authoringService = wfAuthoring_models_classes_ProcessService::singleton();
 			$activityService = wfEngine_models_classes_ActivityService::singleton();
@@ -112,9 +111,9 @@ class ActivityExecutionServiceTestCase extends wfEngineServiceTest {
 			
 			//create roles and users:
 			$wfRole = new core_kernel_classes_Resource(INSTANCE_ROLE_WORKFLOW);
-			$roleA = $generisUserService->addRole('ACLTestCaseRoleA', $wfRole);
-			$roleB = $generisUserService->addRole('ACLTestCaseRoleB', $wfRole);
-			$roleC = $generisUserService->addRole('ACLTestCaseRoleC', $wfRole);
+			$roleA = $roleService->addRole('ACLTestCaseRoleA', $wfRole);
+			$roleB = $roleService->addRole('ACLTestCaseRoleB', $wfRole);
+			$roleC = $roleService->addRole('ACLTestCaseRoleC', $wfRole);
 			
 			list($usec, $sec) = explode(" ", microtime());
 			$users = array();

@@ -367,7 +367,7 @@ class wfEngine_models_classes_ProcessDefinitionService
                         //check if the current user has the restricted role
                     case INSTANCE_ACL_ROLE:
                     	$processRole 		= $processDefinition->getOnePropertyValue($restrictedRoleProp);
-                    	$userService 		= core_kernel_users_Service::singleton();
+                    	$userService 		= tao_models_classes_UserService::singleton();
                     	$returnValue		= $userService->userHasRoles($currentUser, $processRole);
                         break;
                     default:
