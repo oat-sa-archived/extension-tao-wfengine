@@ -21,7 +21,7 @@
  */
 
 /**
- * Manage the user in the workflow engine
+ * Manage the users in the Workflow Engine Extension.
  *
  * @access public
  * @author Jerome Bogaerts, <jerome@taotesting.com>
