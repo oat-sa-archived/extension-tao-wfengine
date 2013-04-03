@@ -54,37 +54,6 @@ class wfEngine_models_classes_UserService
     {
     	return new core_kernel_classes_Class(CLASS_WORKFLOWUSER);
     }
-
-    /**
-     * method to format the data
-     *
-     * @access public
-     * @author Jerome Bogaerts, <jerome@taotesting.com>
-     * @param  Class clazz
-     * @param  array options
-     * @return array
-     */
-    public function toTree( core_kernel_classes_Class $clazz, $options)
-    {
-        $returnValue = array();
-
-        $users = $this->getAllUsers(array('order' => 'login'));
-		foreach($users as $user){
-			$login = (string) $user->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_USER_LOGIN));
-			$returnValue[] = array(
-					'data' 	=> tao_helpers_Display::textCutter($user->getLabel(), 16),
-					'attributes' => array(
-						'id' => tao_helpers_Uri::encode($user->uriResource),
-						'class' => 'node-instance',
-						'title' => __('login: ').$login
-					)
-				);
-
-		}
-
-        return (array) $returnValue;
-    }
-
 }
 
 ?>
