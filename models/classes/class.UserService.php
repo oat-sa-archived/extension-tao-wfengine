@@ -48,6 +48,8 @@ class wfEngine_models_classes_UserService
     /**
      * New users will be Workflow Users.
      * 
+     * @access public
+     * @author Jerome Bogaerts, <jerome@taotesting.com>
      * @return core_kernel_classes_Class The class to use to instantiate new users.
      */
     public function getUserClass()
