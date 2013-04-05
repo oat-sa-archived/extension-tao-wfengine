@@ -952,14 +952,6 @@
     <wf:PropertySupportServicesUrl><![CDATA[/taoDelivery/SaSResultServer/editResultServerClass?classUri=^resultServerClassUri&]]></wf:PropertySupportServicesUrl>
     <wf:PropertyServiceDefinitionsFormalParameterIn rdf:resource="LOCAL_NAMESPACE#i1296572585073826000"/>
   </rdf:Description>
-  <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572608092327000">
-    <rdf:type rdf:resource="LOCAL_NAMESPACE#i1296572597019323800"/>
-    <rdfs:label xml:lang="EN"><![CDATA[ResultServer related delivery]]></rdfs:label>
-    <rdfs:comment><![CDATA[Select result server deliveries]]></rdfs:comment>
-    <wf:PropertySupportServicesUrl><![CDATA[/taoDelivery/SaSResultServer/selectDeliveries?uri=^resultServerUri&classUri=^resultServerClassUri&]]></wf:PropertySupportServicesUrl>
-    <wf:PropertyServiceDefinitionsFormalParameterIn rdf:resource="LOCAL_NAMESPACE#i1296572585084020300"/>
-    <wf:PropertyServiceDefinitionsFormalParameterIn rdf:resource="LOCAL_NAMESPACE#i1296572585073826000"/>
-  </rdf:Description>
   <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572609061964300">
     <rdf:type rdf:resource="LOCAL_NAMESPACE#i1296572597019323800"/>
     <rdfs:label xml:lang="EN"><![CDATA[ResultServer removing]]></rdfs:label>
