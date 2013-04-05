@@ -2158,4 +2158,22 @@
     -->
     <rdfs:comment xml:lang="DA"><![CDATA[Split variables]]></rdfs:comment>
   </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#WorkflowsManagerRole">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DA
+    @source Workflows Manager
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#WorkflowsManagerRole
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="DA"><![CDATA[Workflows Manager]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage DA
+    @source The Workflows Manager Role
+    @subject http://www.tao.lu/middleware/wfEngine.rdf#WorkflowsManagerRole
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="DA"><![CDATA[The Workflows Manager Role]]></rdfs:comment>
+  </rdf:Description>
 </rdf:RDF>

@@ -1,14 +1,12 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: TAO v2.4-alpha1\n"
-"PO-Revision-Date: 2013-03-28 19:59+0200\n"
-"Last-Translator: Anders <aos@vucnordjylland.dk>\n"
-"Language: da\n"
+"Project-Id-Version: TAO v2.4-beta3\n"
+"PO-Revision-Date: 2013-04-05T18:43:00\n"
+"Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
+"Language: DA\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Pootle 2.1.6\n"
 
 msgid "(Ctrl-C)"
 msgstr "(Ctrl-C)"
@@ -74,9 +72,7 @@ msgid "If"
 msgstr "Om"
 
 msgid "If there is no available activity or there are more than one. You will be redirected to the process main page."
-msgstr ""
-"Hvis der ikke er tilgængelig aktivitet eller der er mere end en. Du vil "
-"blive omdirigeret til proces hovedsiden."
+msgstr "Hvis der ikke er tilgængelig aktivitet eller der er mere end en. Du vil blive omdirigeret til proces hovedsiden."
 
 msgid "Initialize new Process"
 msgstr "Initialisere ny process"
@@ -89,9 +85,6 @@ msgstr "Henter næste aktivitet..."
 
 msgid "Login"
 msgstr "Log ind"
-
-msgid "login: "
-msgstr "log ind: "
 
 msgid "Logout"
 msgstr "Log ud"
@@ -147,14 +140,8 @@ msgstr "Omdiriger øjeblikkelig"
 msgid "Redirection in "
 msgstr "Omdirigering "
 
-msgid "saved"
-msgstr "gemt"
-
 msgid "seconds"
 msgstr "sekunder"
-
-msgid "Select a test"
-msgstr "Vælg en test"
 
 msgid "Start/Resume the case"
 msgstr "Start/genoptag sagen"
@@ -223,6 +210,5 @@ msgid "WorkflowEngine Process Browser "
 msgstr "Arbejdsprocesværktøj Proces Browser "
 
 msgid "You will be redirected to the current activity if you are allowed to."
-msgstr ""
-"Du vil blive omdirigeret til den aktuelle aktivitet hvis du har tilladelse "
-"til det."
+msgstr "Du vil blive omdirigeret til den aktuelle aktivitet hvis du har tilladelse til det."
+

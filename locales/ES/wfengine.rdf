@@ -1570,7 +1570,7 @@
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyAccessControlModesRoleRestrictedUserInheritedDelivery
     @predicate http://www.w3.org/2000/01/rdf-schema#comment
     -->
-    <rdfs:comment xml:lang="ES"><![CDATA[Role Restricted User Inherited]]></rdfs:comment>
+    <rdfs:comment xml:lang="ES"><![CDATA[Useful for deliveries]]></rdfs:comment>
     <!--
     @sourceLanguage EN
     @targetLanguage ES

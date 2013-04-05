@@ -40,7 +40,7 @@
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyTransitionRulesThen
     @predicate http://www.w3.org/2000/01/rdf-schema#label
     -->
-    <rdfs:label xml:lang="LU"><![CDATA[then]]></rdfs:label>
+    <rdfs:label xml:lang="LU"><![CDATA[Then]]></rdfs:label>
     <!--
     @sourceLanguage EN
     @targetLanguage LU
@@ -328,7 +328,7 @@
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessInstancesExecutionOf
     @predicate http://www.w3.org/2000/01/rdf-schema#label
     -->
-    <rdfs:label xml:lang="LU"><![CDATA[execution Of]]></rdfs:label>
+    <rdfs:label xml:lang="LU"><![CDATA[Execution of]]></rdfs:label>
     <!--
     @sourceLanguage EN
     @targetLanguage LU
@@ -490,7 +490,7 @@
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyConnectorsType
     @predicate http://www.w3.org/2000/01/rdf-schema#label
     -->
-    <rdfs:label xml:lang="LU"><![CDATA[Type Of Connector]]></rdfs:label>
+    <rdfs:label xml:lang="LU"><![CDATA[Connector Type]]></rdfs:label>
     <!--
     @sourceLanguage EN
     @targetLanguage LU
@@ -698,7 +698,7 @@
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActualParametersProcessVariable
     @predicate http://www.w3.org/2000/01/rdf-schema#label
     -->
-    <rdfs:label xml:lang="LU"><![CDATA[_processVariable]]></rdfs:label>
+    <rdfs:label xml:lang="LU"><![CDATA[Process Variable]]></rdfs:label>
     <!--
     @sourceLanguage EN
     @targetLanguage LU
@@ -716,7 +716,7 @@
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActualParametersConstantValue
     @predicate http://www.w3.org/2000/01/rdf-schema#label
     -->
-    <rdfs:label xml:lang="LU"><![CDATA[_constantValue]]></rdfs:label>
+    <rdfs:label xml:lang="LU"><![CDATA[Constant Value]]></rdfs:label>
     <!--
     @sourceLanguage EN
     @targetLanguage LU
@@ -752,7 +752,7 @@
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActualParametersFormalParameter
     @predicate http://www.w3.org/2000/01/rdf-schema#label
     -->
-    <rdfs:label xml:lang="LU"><![CDATA[formalParameter]]></rdfs:label>
+    <rdfs:label xml:lang="LU"><![CDATA[Formal Parameter]]></rdfs:label>
     <!--
     @sourceLanguage EN
     @targetLanguage LU
@@ -770,7 +770,7 @@
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyFormalParametersDefaultConstantValue
     @predicate http://www.w3.org/2000/01/rdf-schema#label
     -->
-    <rdfs:label xml:lang="LU"><![CDATA[DefaultConstantValue]]></rdfs:label>
+    <rdfs:label xml:lang="LU"><![CDATA[Default Constant Value]]></rdfs:label>
     <!--
     @sourceLanguage EN
     @targetLanguage LU
@@ -824,7 +824,7 @@
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyFormalParameterDataType
     @predicate http://www.w3.org/2000/01/rdf-schema#label
     -->
-    <rdfs:label xml:lang="LU"><![CDATA[DataType]]></rdfs:label>
+    <rdfs:label xml:lang="LU"><![CDATA[Data Type]]></rdfs:label>
     <!--
     @sourceLanguage EN
     @targetLanguage LU
@@ -896,7 +896,7 @@
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyWebServicesWsdlUrl
     @predicate http://www.w3.org/2000/01/rdf-schema#label
     -->
-    <rdfs:label xml:lang="LU"><![CDATA[wsdl_location]]></rdfs:label>
+    <rdfs:label xml:lang="LU"><![CDATA[wsdl location]]></rdfs:label>
     <!--
     @sourceLanguage EN
     @targetLanguage LU
@@ -950,7 +950,7 @@
     @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassSupportServices
     @predicate http://www.w3.org/2000/01/rdf-schema#label
     -->
-    <rdfs:label xml:lang="LU"><![CDATA[Support services]]></rdfs:label>
+    <rdfs:label xml:lang="LU"><![CDATA[Support Services]]></rdfs:label>
     <!--
     @sourceLanguage EN
     @targetLanguage LU
@@ -968,7 +968,7 @@
     @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassWebServices
     @predicate http://www.w3.org/2000/01/rdf-schema#label
     -->
-    <rdfs:label xml:lang="LU"><![CDATA[Web Services]]></rdfs:label>
+    <rdfs:label xml:lang="LU"><![CDATA[Web Service]]></rdfs:label>
     <!--
     @sourceLanguage EN
     @targetLanguage LU
@@ -986,7 +986,7 @@
     @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassServiceDefinitions
     @predicate http://www.w3.org/2000/01/rdf-schema#label
     -->
-    <rdfs:label xml:lang="LU"><![CDATA[Services Definitions]]></rdfs:label>
+    <rdfs:label xml:lang="LU"><![CDATA[Services Definition]]></rdfs:label>
     <!--
     @sourceLanguage EN
     @targetLanguage LU
@@ -1004,7 +1004,7 @@
     @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassActivities
     @predicate http://www.w3.org/2000/01/rdf-schema#label
     -->
-    <rdfs:label xml:lang="LU"><![CDATA[Activities]]></rdfs:label>
+    <rdfs:label xml:lang="LU"><![CDATA[Activity]]></rdfs:label>
     <!--
     @sourceLanguage EN
     @targetLanguage LU
@@ -1022,7 +1022,7 @@
     @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessDefinitions
     @predicate http://www.w3.org/2000/01/rdf-schema#label
     -->
-    <rdfs:label xml:lang="LU"><![CDATA[Process Definitions]]></rdfs:label>
+    <rdfs:label xml:lang="LU"><![CDATA[Process Definition]]></rdfs:label>
     <!--
     @sourceLanguage EN
     @targetLanguage LU
@@ -1058,7 +1058,7 @@
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyTransitionRulesElse
     @predicate http://www.w3.org/2000/01/rdf-schema#label
     -->
-    <rdfs:label xml:lang="LU"><![CDATA[else]]></rdfs:label>
+    <rdfs:label xml:lang="LU"><![CDATA[Else]]></rdfs:label>
     <!--
     @sourceLanguage EN
     @targetLanguage LU
@@ -1076,7 +1076,7 @@
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivitiesHidden
     @predicate http://www.w3.org/2000/01/rdf-schema#label
     -->
-    <rdfs:label xml:lang="LU"><![CDATA[isHidden]]></rdfs:label>
+    <rdfs:label xml:lang="LU"><![CDATA[Is Hidden]]></rdfs:label>
     <!--
     @sourceLanguage EN
     @targetLanguage LU
@@ -1120,7 +1120,7 @@
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyCode
     @predicate http://www.w3.org/2000/01/rdf-schema#comment
     -->
-    <rdfs:comment xml:lang="LU"><![CDATA[for process variables only]]></rdfs:comment>
+    <rdfs:comment xml:lang="LU"><![CDATA[For process variables only]]></rdfs:comment>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyCallOfServicesTop">
     <!--
@@ -1130,7 +1130,7 @@
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyCallOfServicesTop
     @predicate http://www.w3.org/2000/01/rdf-schema#label
     -->
-    <rdfs:label xml:lang="LU"><![CDATA[top shifting]]></rdfs:label>
+    <rdfs:label xml:lang="LU"><![CDATA[Top Shifting]]></rdfs:label>
     <!--
     @sourceLanguage EN
     @targetLanguage LU
@@ -1138,7 +1138,7 @@
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyCallOfServicesTop
     @predicate http://www.w3.org/2000/01/rdf-schema#comment
     -->
-    <rdfs:comment xml:lang="LU"><![CDATA[the css top attribute value for the service iframe]]></rdfs:comment>
+    <rdfs:comment xml:lang="LU"><![CDATA[The CSS top attribute value for the service iframe]]></rdfs:comment>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyCallOfServicesLeft">
     <!--
@@ -1148,7 +1148,7 @@
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyCallOfServicesLeft
     @predicate http://www.w3.org/2000/01/rdf-schema#label
     -->
-    <rdfs:label xml:lang="LU"><![CDATA[left shifting]]></rdfs:label>
+    <rdfs:label xml:lang="LU"><![CDATA[Left Shifting]]></rdfs:label>
     <!--
     @sourceLanguage EN
     @targetLanguage LU
@@ -1156,7 +1156,7 @@
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyCallOfServicesLeft
     @predicate http://www.w3.org/2000/01/rdf-schema#comment
     -->
-    <rdfs:comment xml:lang="LU"><![CDATA[the css left attribute value for the service iframe]]></rdfs:comment>
+    <rdfs:comment xml:lang="LU"><![CDATA[The CSS left attribute value for the service iframe]]></rdfs:comment>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyCallOfServicesWidth">
     <!--
@@ -1166,7 +1166,7 @@
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyCallOfServicesWidth
     @predicate http://www.w3.org/2000/01/rdf-schema#label
     -->
-    <rdfs:label xml:lang="LU"><![CDATA[width]]></rdfs:label>
+    <rdfs:label xml:lang="LU"><![CDATA[Width]]></rdfs:label>
     <!--
     @sourceLanguage EN
     @targetLanguage LU
@@ -1174,7 +1174,7 @@
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyCallOfServicesWidth
     @predicate http://www.w3.org/2000/01/rdf-schema#comment
     -->
-    <rdfs:comment xml:lang="LU"><![CDATA[the css width attribute value for the service iframe]]></rdfs:comment>
+    <rdfs:comment xml:lang="LU"><![CDATA[The CSS width attribute value for the service iframe]]></rdfs:comment>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyCallOfServicesHeight">
     <!--
@@ -1184,7 +1184,7 @@
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyCallOfServicesHeight
     @predicate http://www.w3.org/2000/01/rdf-schema#label
     -->
-    <rdfs:label xml:lang="LU"><![CDATA[height]]></rdfs:label>
+    <rdfs:label xml:lang="LU"><![CDATA[Height]]></rdfs:label>
     <!--
     @sourceLanguage EN
     @targetLanguage LU
@@ -1192,7 +1192,7 @@
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyCallOfServicesHeight
     @predicate http://www.w3.org/2000/01/rdf-schema#comment
     -->
-    <rdfs:comment xml:lang="LU"><![CDATA[the css height attribute value for the service iframe]]></rdfs:comment>
+    <rdfs:comment xml:lang="LU"><![CDATA[The CSS height attribute value for the service iframe]]></rdfs:comment>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsExecutionOf">
     <!--
@@ -1246,7 +1246,7 @@
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsProcessExecution
     @predicate http://www.w3.org/2000/01/rdf-schema#comment
     -->
-    <rdfs:comment xml:lang="LU"><![CDATA[the process execution to which the activity execution is linked]]></rdfs:comment>
+    <rdfs:comment xml:lang="LU"><![CDATA[The process execution to which the activity execution is linked]]></rdfs:comment>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsHasVariables">
     <!--
@@ -1256,7 +1256,7 @@
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsHasVariables
     @predicate http://www.w3.org/2000/01/rdf-schema#label
     -->
-    <rdfs:label xml:lang="LU"><![CDATA[Has variables]]></rdfs:label>
+    <rdfs:label xml:lang="LU"><![CDATA[Variables]]></rdfs:label>
     <!--
     @sourceLanguage EN
     @targetLanguage LU
@@ -1264,7 +1264,7 @@
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsHasVariables
     @predicate http://www.w3.org/2000/01/rdf-schema#comment
     -->
-    <rdfs:comment xml:lang="LU"><![CDATA[serialized array of currently used variables]]></rdfs:comment>
+    <rdfs:comment xml:lang="LU"><![CDATA[Serialized array of currently used variables]]></rdfs:comment>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsPreviousActivityExecutions">
     <!--
@@ -1282,7 +1282,7 @@
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsPreviousActivityExecutions
     @predicate http://www.w3.org/2000/01/rdf-schema#comment
     -->
-    <rdfs:comment xml:lang="LU"><![CDATA[to build the process path]]></rdfs:comment>
+    <rdfs:comment xml:lang="LU"><![CDATA[Used to build the process path]]></rdfs:comment>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsFollowingActivityExecutions">
     <!--
@@ -1300,7 +1300,7 @@
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsFollowingActivityExecutions
     @predicate http://www.w3.org/2000/01/rdf-schema#comment
     -->
-    <rdfs:comment xml:lang="LU"><![CDATA[to build the process path]]></rdfs:comment>
+    <rdfs:comment xml:lang="LU"><![CDATA[Used to build the process path]]></rdfs:comment>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsStatus">
     <!--
@@ -1318,7 +1318,7 @@
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsStatus
     @predicate http://www.w3.org/2000/01/rdf-schema#comment
     -->
-    <rdfs:comment xml:lang="LU"><![CDATA[the status of the activity execution]]></rdfs:comment>
+    <rdfs:comment xml:lang="LU"><![CDATA[The status of the activity execution]]></rdfs:comment>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsTimeCreated">
     <!--
@@ -1336,7 +1336,7 @@
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsTimeCreated
     @predicate http://www.w3.org/2000/01/rdf-schema#comment
     -->
-    <rdfs:comment xml:lang="LU"><![CDATA[the creation time of the activity execution]]></rdfs:comment>
+    <rdfs:comment xml:lang="LU"><![CDATA[The creation time of the activity execution]]></rdfs:comment>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsTimeStarted">
     <!--
@@ -1354,7 +1354,7 @@
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsTimeStarted
     @predicate http://www.w3.org/2000/01/rdf-schema#comment
     -->
-    <rdfs:comment xml:lang="LU"><![CDATA[the start time of the activity execution]]></rdfs:comment>
+    <rdfs:comment xml:lang="LU"><![CDATA[The start time of the activity execution]]></rdfs:comment>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsTimeLastAccess">
     <!--
@@ -1372,7 +1372,7 @@
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsTimeLastAccess
     @predicate http://www.w3.org/2000/01/rdf-schema#comment
     -->
-    <rdfs:comment xml:lang="LU"><![CDATA[the time the current user accessed it]]></rdfs:comment>
+    <rdfs:comment xml:lang="LU"><![CDATA[The last time the current user accessed it]]></rdfs:comment>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsNonce">
     <!--
@@ -1382,7 +1382,7 @@
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsNonce
     @predicate http://www.w3.org/2000/01/rdf-schema#label
     -->
-    <rdfs:label xml:lang="LU"><![CDATA[nonce]]></rdfs:label>
+    <rdfs:label xml:lang="LU"><![CDATA[Nonce]]></rdfs:label>
     <!--
     @sourceLanguage EN
     @targetLanguage LU
@@ -1390,7 +1390,7 @@
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsNonce
     @predicate http://www.w3.org/2000/01/rdf-schema#comment
     -->
-    <rdfs:comment xml:lang="LU"><![CDATA[the nonce to garantee unique action (transitions)]]></rdfs:comment>
+    <rdfs:comment xml:lang="LU"><![CDATA[The nonce to garantee unique action (transitions)]]></rdfs:comment>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsAccessControlMode">
     <!--
@@ -1408,7 +1408,7 @@
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsAccessControlMode
     @predicate http://www.w3.org/2000/01/rdf-schema#comment
     -->
-    <rdfs:comment xml:lang="LU"><![CDATA[the ACL mode applied to the acitivty execution]]></rdfs:comment>
+    <rdfs:comment xml:lang="LU"><![CDATA[The ACL mode applied to the acitivty execution]]></rdfs:comment>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsRestrictedUser">
     <!--
@@ -1426,7 +1426,7 @@
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsRestrictedUser
     @predicate http://www.w3.org/2000/01/rdf-schema#comment
     -->
-    <rdfs:comment xml:lang="LU"><![CDATA[the user who is allowed to execute the activity execution]]></rdfs:comment>
+    <rdfs:comment xml:lang="LU"><![CDATA[The user who is allowed to execute the activity execution]]></rdfs:comment>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsRestrictedRole">
     <!--
@@ -1444,7 +1444,7 @@
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsRestrictedRole
     @predicate http://www.w3.org/2000/01/rdf-schema#comment
     -->
-    <rdfs:comment xml:lang="LU"><![CDATA[the role who is allowed to execute the activity execution]]></rdfs:comment>
+    <rdfs:comment xml:lang="LU"><![CDATA[The role who is allowed to execute the activity execution]]></rdfs:comment>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#ClassActivityExecutions">
     <!--
@@ -1570,7 +1570,7 @@
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyAccessControlModesRoleRestrictedUserInheritedDelivery
     @predicate http://www.w3.org/2000/01/rdf-schema#comment
     -->
-    <rdfs:comment xml:lang="LU"><![CDATA[Role Restricted User Inherited]]></rdfs:comment>
+    <rdfs:comment xml:lang="LU"><![CDATA[Useful for deliveries]]></rdfs:comment>
     <!--
     @sourceLanguage EN
     @targetLanguage LU
@@ -1606,7 +1606,7 @@
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivitiesRestrictedRole
     @predicate http://www.w3.org/2000/01/rdf-schema#label
     -->
-    <rdfs:label xml:lang="LU"><![CDATA[restrictedRole]]></rdfs:label>
+    <rdfs:label xml:lang="LU"><![CDATA[restricted Role]]></rdfs:label>
     <!--
     @sourceLanguage EN
     @targetLanguage LU
@@ -1624,7 +1624,7 @@
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivitiesRestrictedUser
     @predicate http://www.w3.org/2000/01/rdf-schema#label
     -->
-    <rdfs:label xml:lang="LU"><![CDATA[restrictedUser]]></rdfs:label>
+    <rdfs:label xml:lang="LU"><![CDATA[Restricted User]]></rdfs:label>
     <!--
     @sourceLanguage EN
     @targetLanguage LU
@@ -1642,7 +1642,7 @@
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessInitAccesControlMode
     @predicate http://www.w3.org/2000/01/rdf-schema#label
     -->
-    <rdfs:label xml:lang="LU"><![CDATA[init ACL mode]]></rdfs:label>
+    <rdfs:label xml:lang="LU"><![CDATA[Init ACL mode]]></rdfs:label>
     <!--
     @sourceLanguage EN
     @targetLanguage LU
@@ -1660,7 +1660,7 @@
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessInitRestrictedUser
     @predicate http://www.w3.org/2000/01/rdf-schema#label
     -->
-    <rdfs:label xml:lang="LU"><![CDATA[init restricted user]]></rdfs:label>
+    <rdfs:label xml:lang="LU"><![CDATA[Init Restricted User]]></rdfs:label>
     <!--
     @sourceLanguage EN
     @targetLanguage LU
@@ -1678,7 +1678,7 @@
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessInitRestrictedRole
     @predicate http://www.w3.org/2000/01/rdf-schema#label
     -->
-    <rdfs:label xml:lang="LU"><![CDATA[init restricted role]]></rdfs:label>
+    <rdfs:label xml:lang="LU"><![CDATA[Init Restricted Role]]></rdfs:label>
     <!--
     @sourceLanguage EN
     @targetLanguage LU
@@ -1696,7 +1696,7 @@
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessDiagramData
     @predicate http://www.w3.org/2000/01/rdf-schema#label
     -->
-    <rdfs:label xml:lang="LU"><![CDATA[diagramData]]></rdfs:label>
+    <rdfs:label xml:lang="LU"><![CDATA[Diagram Data]]></rdfs:label>
     <!--
     @sourceLanguage EN
     @targetLanguage LU

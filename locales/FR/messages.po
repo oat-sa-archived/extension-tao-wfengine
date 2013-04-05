@@ -1,14 +1,12 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: TAO v2.3-beta\n"
-"PO-Revision-Date: 2012-11-02 17:56+0200\n"
-"Last-Translator: Lionel <lionel.lecaque@tudor.lu>\n"
-"Language: fr\n"
+"Project-Id-Version: TAO v2.4-beta3\n"
+"PO-Revision-Date: 2013-04-05T18:43:07\n"
+"Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
+"Language: FR\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Pootle 2.1.6\n"
 
 msgid "(Ctrl-C)"
 msgstr "(Ctrl-C)"
@@ -19,151 +17,35 @@ msgstr "(Reste à définir)"
 msgid "[TAO Notification System] Workflow"
 msgstr "[Système de Notifications TAO]  Workflow"
 
-msgid "Access Control Mode"
-msgstr "Mode de Contrôle d'Accès"
-
 msgid "Access denied. Please renew your authentication."
 msgstr "Accès refusé. Veuillez renouveller votre authentification."
-
-msgid "Actions"
-msgstr "Actions"
 
 msgid "Active Process"
 msgstr "Processus actif"
 
-msgid "Activity"
-msgstr "Activité"
-
-msgid "Activity Editor"
-msgstr "Editeur d'activité"
-
-msgid "Activity or Connector"
-msgstr "Activité ou connecteur"
-
-msgid "Activity Variables"
-msgstr "Variables de l'activité"
-
 msgid "Add (Ctrl-A)"
 msgstr "Ajouter (Ctrl-A)"
-
-#, tao-public
-msgid "Add a user"
-msgstr "Ajouter un utilisateur"
 
 msgid "An error occured during request processing"
 msgstr "Une erreur s'est produite lors de la demande de traitement"
 
-msgid "An error occured during user deletion"
-msgstr "Une erreur s'est produite lors de la suppression de l'utilisateur"
-
-msgid "Assign User to role"
-msgstr "Affecter l'utilisateur au rôle"
-
 msgid "Back"
 msgstr "Retour"
-
-msgid "Browse Tests"
-msgstr "Tests Parcourir"
-
-#, tao-public
-msgid "Build processes to drive activities into a workflow."
-msgstr "Créer des processus pour conduire des activités à l'intérieur d'un workflow"
-
-msgid "cancel"
-msgstr "annuler"
 
 msgid "Cannot create process execution"
 msgstr "Impossible de créer une exécution de processus"
 
-msgid "check code"
-msgstr "vérifier le code"
-
-msgid "checking the code..."
-msgstr "vérification du code..."
-
 msgid "Close (Esc)"
 msgstr "Fermer (Esc)"
-
-msgid "Close all"
-msgstr "Fermer tout"
-
-msgid "Code"
-msgstr "Code"
-
-msgid "Code already used"
-msgstr "Code déjà utilisé"
-
-msgid "Compilation"
-msgstr "Compilation"
 
 msgid "Connect"
 msgstr "Connectez"
 
-msgid "Connector"
-msgstr "Connecteur"
-
-msgid "Connector Type"
-msgstr "Type de connecteur"
-
-msgid "Constant"
-msgstr "Constant"
-
-msgid "Country"
-msgstr "Pays"
-
-msgid "create new activity"
-msgstr "créer une nouvelle activité"
-
-msgid "create new connector"
-msgstr "créer un nouveau connecteur"
-
-msgid "create table"
-msgstr "créer un tableau"
-
 msgid "created by"
 msgstr "créé par"
 
-msgid "Current Activities"
-msgstr "Activités courantes"
-
-msgid "Current activities"
-msgstr "Activités courantes"
-
-msgid "Current User"
-msgstr "Utilisateur courant"
-
-msgid "Data Language"
-msgstr "Langue des données"
-
-msgid "Delete"
-msgstr "Supprimer"
-
-msgid "delete"
-msgstr "supprimer"
-
-msgid "Delete user"
-msgstr "Supprimer l'utilisateur"
-
-msgid "Do you want to change the connector type? \n"
-" THe child connectors will be deleted."
-msgstr "Voulez-vous changer le type de connecteur ?\n"
-"Les connecteurs enfants seront supprimés."
-
-msgid "Edit"
-msgstr "Modifier"
-
-#, tao-public
-msgid "Edit a user"
-msgstr "Modifier un utilisateur"
-
-msgid "Edit user"
-msgstr "Modifier l'utilisateur"
-
 msgid "Else"
 msgstr "Sinon"
-
-msgid "Email"
-msgstr "Courriel"
 
 msgid "Enter remark text here"
 msgstr "Entrez le texte remarquable ici"
@@ -171,20 +53,11 @@ msgstr "Entrez le texte remarquable ici"
 msgid "execution of"
 msgstr "exécution de"
 
-msgid "export"
-msgstr "export"
-
 msgid "Export - Debug only (Ctrl-E)"
 msgstr "Export - Debug seulement (Ctrl-E)"
 
-msgid "Filter"
-msgstr "Filtrer"
-
 msgid "Finished Process"
 msgstr "Processus terminé"
-
-msgid "Formal Parameter"
-msgstr "Paramètre formel"
 
 msgid "Forward"
 msgstr "Suivant"
@@ -192,110 +65,35 @@ msgstr "Suivant"
 msgid "Go to"
 msgstr "Allez à"
 
-msgid "History"
-msgstr "Historique"
-
 msgid "Home"
 msgstr "Accueil"
 
 msgid "If"
 msgstr "Si"
 
-msgid "IF"
-msgstr "SI"
-
 msgid "If there is no available activity or there are more than one. You will be redirected to the process main page."
-msgstr ""
-"S'il n'y a pas ou plus d'une activité disponible, vous serez redirigé vers "
-"la page principale."
+msgstr "S'il n'y a pas ou plus d'une activité disponible, vous serez redirigé vers la page principale."
 
 msgid "Initialize new Process"
 msgstr "Initialiser un nouveau processus"
 
-msgid "Input Parameters"
-msgstr "Paramètres d'entrée"
-
-msgid "interactive service saved"
-msgstr "service interactif sauvé"
-
-msgid "Interface Language"
-msgstr "Langue de l'interface"
-
-msgid "Label"
-msgstr "Label"
-
-msgid "Language"
-msgstr "Langue"
-
 msgid "Launch Process"
 msgstr "Lancement du processus"
-
-msgid "list the users"
-msgstr "lister les utilisateurs"
 
 msgid "Loading next activity..."
 msgstr "Chargement de la prochaine activité..."
 
-msgid "loading..."
-msgstr "chargement..."
-
 msgid "Login"
 msgstr "Identifiant"
 
-msgid "Login not available"
-msgstr "Identifiant non disponible"
-
-msgid "login: "
-msgstr "Identifiant : "
-
 msgid "Logout"
 msgstr "Déconnexion"
-
-#, tao-public
-msgid "Manage processes"
-msgstr "Gérer les processus"
-
-#, tao-public
-msgid "Manage roles"
-msgstr "Gérer les rôles"
-
-msgid "Manage Roles and associate roles to workflow users"
-msgstr "Gérer les rôles et les rôles associés aux flux de travail des utilisateurs"
-
-#, tao-public
-msgid "Manage users"
-msgstr "Gérer les utilisateurs"
-
-msgid "Merge to "
-msgstr "Fusionner vers "
-
-msgid "meta data"
-msgstr "méta-données"
-
-#, tao-public
-msgid "Monitor processes"
-msgstr "Surveiller les processus"
-
-msgid "Monitoring processes"
-msgstr "Surveillance des processus"
 
 msgid "More detailed description here."
 msgstr "Description plus détaillée ici."
 
 msgid "My roles"
 msgstr "Mes rôles"
-
-msgid "Name"
-msgstr "Nom"
-
-msgid "new process"
-msgstr "nouveau processus"
-
-msgid "new role"
-msgstr "nouveau rôle"
-
-msgid "newly edited"
-msgstr "nouvellement édité"
 
 msgid "No account match the given login / password"
 msgstr "Pas de compte correspondant aux identifiants donnés"
@@ -306,43 +104,14 @@ msgstr "Pas de définition de processus pour l'uri donnée"
 msgid "No variable code given"
 msgstr "Pas de code de variable donné"
 
-msgid "ok"
-msgstr "ok"
-
-msgid "Open all"
-msgstr "Tout ouvrir"
-
-msgid "Output Parameters"
-msgstr "Paramètres de sortie"
-
 msgid "Password"
 msgstr "Mot de passe"
 
 msgid "Pause"
 msgstr "Pause"
 
-msgid "please choose another one"
-msgstr "veuillez en choisir un autre"
-
-msgid "Please confirm deletion"
-msgstr "Veuillez confirmer la suppression"
-
-msgid "Please confirm deletion.\n"
-" Warning: related resources might be affected."
-msgstr ""
-"Veuillez confirmer la suppression.\n"
-"Attention : les ressources liées pourraient être affectées."
-
 msgid "Please confirm the deletion of the activity"
 msgstr "Veuillez confirmer la suppression de l'activité"
-
-msgid "Please confirm the deletion of the connector: \n"
-" child connectors will be delete at the same time"
-msgstr "Veuillez confirmer la suppression du connecteur.\n"
-"Les connecteurs enfants seront également supprimés."
-
-msgid "Please confirm user deletion"
-msgstr "Veuillez confirmer la suppression d'utilisateur"
 
 msgid "Please login"
 msgstr "Veuillez vous identifier"
@@ -350,58 +119,17 @@ msgstr "Veuillez vous identifier"
 msgid "Please login to access the selected activity."
 msgstr "Veuillez vous identifier pour accéder à l'activité sélectionnée."
 
-msgid "Please select a delivery before authoring it"
-msgstr "Veuillez déjà choisir une livraison avant de l'éditer"
-
-msgid "Please select a process before authoring it"
-msgstr "Veuillez déjà choisir un processus de l'éditer"
-
-msgid "Positionning"
-msgstr "Positionnement"
-
 msgid "Process"
 msgstr "Processus"
-
-#, tao-public
-msgid "Process authoring"
-msgstr "Processus de création"
-
-msgid "Process Definition"
-msgstr "Définition de processus"
-
-msgid "Process Execution"
-msgstr "Exécution de processus"
 
 msgid "Process Finished"
 msgstr ""
 
-msgid "Process History"
-msgstr "Historique de processus"
-
 msgid "Process initialization"
 msgstr "Initialisation du processus"
 
-msgid "Process Property"
-msgstr "Processus de propriété"
-
-msgid "Process saved"
-msgstr "Processus sauvegardé"
-
 msgid "Process Tree:"
 msgstr "Arborescence des processus :"
-
-msgid "Process Variable"
-msgstr "Variable de processus"
-
-msgid "Process Variables"
-msgstr "Variables de processus"
-
-#, tao-public
-msgid "Processes"
-msgstr "Processus"
-
-msgid "Processes library"
-msgstr "Librairie de processus"
 
 msgid "Question (Ctrl-Q)"
 msgstr "Question (Ctrl-Q)"
@@ -412,68 +140,17 @@ msgstr "Rediriger immédiatement"
 msgid "Redirection in "
 msgstr "Redirection dans "
 
-msgid "reload"
-msgstr "recharger"
-
-msgid "reloading form..."
-msgstr "Rechargement de .."
-
-msgid "Restricted to"
-msgstr "Restreint à"
-
-msgid "Role"
-msgstr "Rôle"
-
-msgid "Role saved"
-msgstr "Rôle sauvegardé"
-
-msgid "Role(s)"
-msgstr "Rôle (s)"
-
-# Meme en anglais j aime pas Roles Library, on doit pouvoir trouver mieux
-msgid "Roles library"
-msgstr ""
-
-msgid "save"
-msgstr "enregistrer"
-
-msgid "Save"
-msgstr "Enregistrer"
-
-msgid "saved"
-msgstr "enregistré"
-
-msgid "search"
-msgstr "recherche"
-
 msgid "seconds"
 msgstr "secondes"
 
-msgid "Select a test"
-msgstr "Sélectionnez un test"
-
-msgid "Service Definition"
-msgstr "Définition du service"
-
-msgid "Set the activity as a final one will delete its following connector. \n"
-" Are you sure?"
-msgstr "Définir l'activité en tant qu'activité finale supprimera les connecteurs suivants. \n"
-"Etes-vous sûr ?"
-
 msgid "Start/Resume the case"
 msgstr "Démarrer / Reprendre le cas"
-
-msgid "Started Time"
-msgstr "Heure de démarrage"
 
 msgid "Status"
 msgstr "Statut"
 
 msgid "Suppress"
 msgstr "Supprimer"
-
-msgid "Sure?"
-msgstr "Etes-vous certain?"
 
 msgid "TAO - An Open and Versatile Computer-Based Assessment Platform"
 msgstr "TAO - Une plate-forme d'évaluation informatisée ouverte et polyvalente"
@@ -483,9 +160,6 @@ msgstr "Moteur de Processus TAO"
 
 msgid "The activity provided in the url is no longer the up-to-date."
 msgstr "L'activité fournie dans l'url n'est plus à jour."
-
-msgid "the chosen code has already been used for the process variable"
-msgstr "le code choisi est déjà utilisé par une variable de processus"
 
 msgid "The link may be outdated."
 msgstr "Le lien n'est plus valide."
@@ -502,11 +176,6 @@ msgstr "La ressource n'est pas une exécution de processus"
 msgid "The resource is not an activity execution"
 msgstr "La ressource n'est pas une exécution d'activité"
 
-msgid "The role is using by one or several users. Please remove the role to these users first."
-msgstr ""
-"Le rôle est déjà utilisé par un ou plusieurs utilisateurs. Veuillez d'abord "
-"supprimer l'attribution de ce rôle pour ces utilisateurs."
-
 msgid "The variable with the code '.$code.' does not exists"
 msgstr "La variable avec le code ' .$code.' n'existe pas\n"
 "\n"
@@ -521,27 +190,8 @@ msgstr "Tapez (Ctrl-T)"
 msgid "type??"
 msgstr "type ??"
 
-msgid "Unable to delete the process execution.\n"
-"Close process before delete it."
-msgstr ""
-
 msgid "Unable to log in the user"
 msgstr "Impossible d'identifer l'utilisateur"
-
-msgid "undefined"
-msgstr "indéfini"
-
-msgid "Unit"
-msgstr "Unité"
-
-msgid "Use the * character to replace any string"
-msgstr "Utilisez * pour remplacer n'importe quel caractère"
-
-msgid "User added"
-msgstr "L'utilisateur a été ajouté"
-
-msgid "User deleted successfully"
-msgstr "Utilisateur supprimé avec succès"
 
 msgid "User Id."
 msgstr "ID utilisateur"
@@ -552,38 +202,15 @@ msgstr "Utilisateur identifié"
 msgid "User name:"
 msgstr "Nom d'utilisateur :"
 
-msgid "User saved"
-msgstr "Utilisateur sauvegardé"
-
-msgid "Value"
-msgstr "Valeur"
-
-msgid "Variables"
-msgstr "Variables"
-
-msgid "VFF"
-msgstr "VFF"
-
-msgid "VFF version"
-msgstr "VFF version"
-
 msgid "Welcome to TAO Process Engine"
 msgstr "Bienvenue dans le moteur de processus TAO"
 
 msgid "Workflow Engine"
 msgstr "Moteur de Processus"
 
-msgid "Workflow Users"
-msgstr "Utilisateurs workflow"
-
 msgid "WorkflowEngine Process Browser "
 msgstr "Navigateur de processus"
 
-msgid "XLIFF"
-msgstr "XLIFF"
-
-msgid "XLIFF version"
-msgstr "Version XLIFF"
-
 msgid "You will be redirected to the current activity if you are allowed to."
 msgstr "Vous serez redirigé vers l'activité courante si vous en avez la permission."
+
