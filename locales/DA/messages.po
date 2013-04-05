@@ -1,223 +1,228 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: TAO v2.4-alpha1\n"
-"PO-Revision-Date: 2013-02-15T19:18:23\n"
-"Last-Translator: TAO Translation Team <translation@tao.lu>\n"
+"PO-Revision-Date: 2013-03-28 19:59+0200\n"
+"Last-Translator: Anders <aos@vucnordjylland.dk>\n"
+"Language: da\n"
 "MIME-Version: 1.0\n"
-"Language: DA\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Pootle 2.1.6\n"
 
 msgid "(Ctrl-C)"
-msgstr ""
+msgstr "(Ctrl-C)"
 
 msgid "(still undefined)"
-msgstr ""
+msgstr "(fortsat udefineret)"
 
 msgid "[TAO Notification System] Workflow"
-msgstr ""
+msgstr "[TAO Notification System] Arbejdsproces"
 
 msgid "Access denied. Please renew your authentication."
-msgstr ""
+msgstr "Adgang nægtet. Forny adgang."
 
 msgid "Active Process"
-msgstr ""
+msgstr "Aktiv proces"
 
 msgid "Add (Ctrl-A)"
-msgstr ""
+msgstr "Læg til (Ctrl-A)"
 
 msgid "An error occured during request processing"
-msgstr ""
+msgstr "En fejl indtraf under forespørgsel"
 
 msgid "Back"
-msgstr ""
+msgstr "Tilbage"
 
 msgid "Cannot create process execution"
-msgstr ""
+msgstr "Kan ikke oprette proces udførelsen"
 
 msgid "Close (Esc)"
-msgstr ""
+msgstr "Luk (Esc)"
 
 msgid "Connect"
-msgstr ""
+msgstr "Tilslut"
 
 msgid "created by"
-msgstr ""
+msgstr "oprettet af"
 
 msgid "Else"
-msgstr ""
+msgstr "Anden"
 
 msgid "Enter remark text here"
-msgstr ""
+msgstr "Skriv anmærkninger ind her"
 
 msgid "execution of"
-msgstr ""
+msgstr "udførelse af"
 
 msgid "Export - Debug only (Ctrl-E)"
-msgstr ""
+msgstr "Eksportere - fejlsøg kun (Ctrl-E)"
 
 msgid "Finished Process"
-msgstr ""
+msgstr "Process færdig"
 
 msgid "Forward"
-msgstr ""
+msgstr "Fremad"
 
 msgid "Go to"
-msgstr ""
+msgstr "Gå til"
 
 msgid "Home"
-msgstr ""
+msgstr "Hjem"
 
 msgid "If"
-msgstr ""
+msgstr "Om"
 
 msgid "If there is no available activity or there are more than one. You will be redirected to the process main page."
 msgstr ""
+"Hvis der ikke er tilgængelig aktivitet eller der er mere end en. Du vil "
+"blive omdirigeret til proces hovedsiden."
 
 msgid "Initialize new Process"
-msgstr ""
+msgstr "Initialisere ny process"
 
 msgid "Launch Process"
-msgstr ""
+msgstr "Starter proces"
 
 msgid "Loading next activity..."
-msgstr ""
+msgstr "Henter næste aktivitet..."
 
 msgid "Login"
-msgstr ""
+msgstr "Log ind"
 
 msgid "login: "
-msgstr ""
+msgstr "log ind: "
 
 msgid "Logout"
-msgstr ""
+msgstr "Log ud"
 
 msgid "More detailed description here."
-msgstr ""
+msgstr "Mere detaljerede beskrivelse her."
 
 msgid "My roles"
-msgstr ""
+msgstr "Mine roller"
 
 msgid "No account match the given login / password"
-msgstr ""
+msgstr "Ingen konto matcher det angivne log ind / adgangskode"
 
 msgid "No process definition uri given"
-msgstr ""
+msgstr "Ingen proces definition uri"
 
 msgid "No variable code given"
-msgstr ""
+msgstr "Ingen variabel kode givet"
 
 msgid "Password"
-msgstr ""
+msgstr "Adgangskode"
 
 msgid "Pause"
-msgstr ""
+msgstr "Pause"
 
 msgid "Please confirm the deletion of the activity"
-msgstr ""
+msgstr "Bekræft sletning af aktiviteten"
 
 msgid "Please login"
-msgstr ""
+msgstr "Log ind"
 
 msgid "Please login to access the selected activity."
-msgstr ""
+msgstr "Log ind for at gå til den valgte aktivitet."
 
 msgid "Process"
-msgstr ""
+msgstr "Proces"
 
 msgid "Process Finished"
-msgstr ""
+msgstr "Proces færdig"
 
 msgid "Process initialization"
-msgstr ""
+msgstr "Process initialisering"
 
 msgid "Process Tree:"
-msgstr ""
+msgstr "Proces træ:"
 
 msgid "Question (Ctrl-Q)"
-msgstr ""
+msgstr "Spørgsmål (Ctrl-Q)"
 
 msgid "Redirect immediately"
-msgstr ""
+msgstr "Omdiriger øjeblikkelig"
 
 msgid "Redirection in "
-msgstr ""
+msgstr "Omdirigering "
 
 msgid "saved"
-msgstr ""
+msgstr "gemt"
 
 msgid "seconds"
-msgstr ""
+msgstr "sekunder"
 
 msgid "Select a test"
-msgstr ""
+msgstr "Vælg en test"
 
 msgid "Start/Resume the case"
-msgstr ""
+msgstr "Start/genoptag sagen"
 
 msgid "Status"
-msgstr ""
+msgstr "Status"
 
 msgid "Suppress"
-msgstr ""
+msgstr "Annuller"
 
 msgid "TAO - An Open and Versatile Computer-Based Assessment Platform"
-msgstr ""
+msgstr "TAO - En åben og alsidig computer-baseret testplatform"
 
 msgid "TAO Process Engine"
-msgstr ""
+msgstr "TAO procesværktøj"
 
 msgid "The activity provided in the url is no longer the up-to-date."
-msgstr ""
+msgstr "Aktiviteten fastsat i url'en er ikke længer up-to-date."
 
 msgid "The link may be outdated."
-msgstr ""
+msgstr "Linket er måske forældet."
 
 msgid "The Process module allows to create Process"
-msgstr ""
+msgstr "Procesmodulet lader dig oprette processer"
 
 msgid "The resource is not a process definition"
-msgstr ""
+msgstr "Ressourcen er ikke en proces definition"
 
 msgid "The resource is not a process execution"
-msgstr ""
+msgstr "Ressourcen er ikke en proces udførelse"
 
 msgid "The resource is not an activity execution"
-msgstr ""
+msgstr "Ressourcen er ikke en aktivitets udførelse"
 
 msgid "The variable with the code '.$code.' does not exists"
-msgstr ""
+msgstr "Variablen med koden '.$code.' eksistere ikke"
 
 msgid "Then"
-msgstr ""
+msgstr "Da"
 
 msgid "Type (Ctrl-T)"
-msgstr ""
+msgstr "Skriv (Ctrl-T)"
 
 msgid "type??"
-msgstr ""
+msgstr "skriv??"
 
 msgid "Unable to log in the user"
-msgstr ""
+msgstr "Det er ikke muligt at logge brugeren ind"
 
 msgid "User Id."
-msgstr ""
+msgstr "Bruger id."
 
 msgid "User logged in successfully"
-msgstr ""
+msgstr "Bruger logget ind med succes"
 
 msgid "User name:"
-msgstr ""
+msgstr "Brugernavn:"
 
 msgid "Welcome to TAO Process Engine"
-msgstr ""
+msgstr "Velkommen til TAO procesværktøj"
 
 msgid "Workflow Engine"
-msgstr ""
+msgstr "Arbejdsproces værktøj"
 
 msgid "WorkflowEngine Process Browser "
-msgstr ""
+msgstr "Arbejdsprocesværktøj Proces Browser "
 
 msgid "You will be redirected to the current activity if you are allowed to."
 msgstr ""
-
+"Du vil blive omdirigeret til den aktuelle aktivitet hvis du har tilladelse "
+"til det."
