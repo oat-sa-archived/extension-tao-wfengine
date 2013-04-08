@@ -632,7 +632,7 @@
     <rdfs:range rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassAccessControlModes"/>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivitiesRestrictedRole">
-    <rdfs:range rdf:resource="http://www.tao.lu/Ontologies/TAO.rdf#ClassRole"/>
+    <rdfs:range rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#ClassRole"/>
 	<rdfs:range rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessVariables"/>
     <widget:widget rdf:resource="http://www.tao.lu/datatypes/WidgetDefinitions.rdf#ComboBox"/>
     <rdfs:domain rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassActivities"/>
