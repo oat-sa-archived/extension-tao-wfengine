@@ -840,34 +840,34 @@
     <rdf:type rdf:resource="LOCAL_NAMESPACE#i1296572597019323800"/>
     <rdfs:label xml:lang="EN"><![CDATA[Campaign class selection]]></rdfs:label>
     <rdfs:comment><![CDATA[Select a campaign (sub)class]]></rdfs:comment>
-    <wf:PropertySupportServicesUrl><![CDATA[/taoDelivery/SaSCampaign/sasSelect?selectInstance=false&]]></wf:PropertySupportServicesUrl>
+    <wf:PropertySupportServicesUrl><![CDATA[/taoCampaign/SaSCampaign/sasSelect?selectInstance=false&]]></wf:PropertySupportServicesUrl>
     <wf:PropertyServiceDefinitionsFormalParameterIn rdf:resource="LOCAL_NAMESPACE#i1296572584050444900"/>
   </rdf:Description>
   <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572602040641400">
     <rdf:type rdf:resource="LOCAL_NAMESPACE#i1296572597019323800"/>
     <rdfs:label xml:lang="EN"><![CDATA[Campaign selection]]></rdfs:label>
     <rdfs:comment><![CDATA[Select a campaign]]></rdfs:comment>
-    <wf:PropertySupportServicesUrl><![CDATA[/taoDelivery/SaSCampaign/sasSelect?selectInstance=true&]]></wf:PropertySupportServicesUrl>
+    <wf:PropertySupportServicesUrl><![CDATA[/taoCampaign/SaSCampaign/sasSelect?selectInstance=true&]]></wf:PropertySupportServicesUrl>
     <wf:PropertyServiceDefinitionsFormalParameterIn rdf:resource="LOCAL_NAMESPACE#i1296572584052192100"/>
   </rdf:Description>
   <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572602060694700">
     <rdf:type rdf:resource="LOCAL_NAMESPACE#i1296572597019323800"/>
     <rdfs:label xml:lang="EN"><![CDATA[Campaigns searching]]></rdfs:label>
     <rdfs:comment><![CDATA[Search campaigns instances]]></rdfs:comment>
-    <wf:PropertySupportServicesUrl><![CDATA[/taoDelivery/SaSCampaign/search]]></wf:PropertySupportServicesUrl>
+    <wf:PropertySupportServicesUrl><![CDATA[/taoCampaign/SaSCampaign/search]]></wf:PropertySupportServicesUrl>
   </rdf:Description>
   <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572602074340500">
     <rdf:type rdf:resource="LOCAL_NAMESPACE#i1296572597019323800"/>
     <rdfs:label xml:lang="EN"><![CDATA[Campaign add]]></rdfs:label>
     <rdfs:comment><![CDATA[Add a new campaign and redirect to the edit form]]></rdfs:comment>
-    <wf:PropertySupportServicesUrl><![CDATA[/taoDelivery/SaSCampaign/sasAddInstance?classUri=^campaignClassUri&]]></wf:PropertySupportServicesUrl>
+    <wf:PropertySupportServicesUrl><![CDATA[/taoCampaign/SaSCampaign/sasAddInstance?classUri=^campaignClassUri&]]></wf:PropertySupportServicesUrl>
     <wf:PropertyServiceDefinitionsFormalParameterIn rdf:resource="LOCAL_NAMESPACE#i1296572585054541300"/>
   </rdf:Description>
   <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572603010431400">
     <rdf:type rdf:resource="LOCAL_NAMESPACE#i1296572597019323800"/>
     <rdfs:label xml:lang="EN"><![CDATA[Campaign editor]]></rdfs:label>
     <rdfs:comment><![CDATA[Edit campaign properties]]></rdfs:comment>
-    <wf:PropertySupportServicesUrl><![CDATA[/taoDelivery/SaSCampaign/sasEditInstance?uri=^campaignUri&classUri=^campaignClassUri&]]></wf:PropertySupportServicesUrl>
+    <wf:PropertySupportServicesUrl><![CDATA[/taoCampaign/SaSCampaign/sasEditInstance?uri=^campaignUri&classUri=^campaignClassUri&]]></wf:PropertySupportServicesUrl>
     <wf:PropertyServiceDefinitionsFormalParameterIn rdf:resource="LOCAL_NAMESPACE#i1296572585063991900"/>
     <wf:PropertyServiceDefinitionsFormalParameterIn rdf:resource="LOCAL_NAMESPACE#i1296572585054541300"/>
   </rdf:Description>
@@ -875,7 +875,7 @@
     <rdf:type rdf:resource="LOCAL_NAMESPACE#i1296572597019323800"/>
     <rdfs:label xml:lang="EN"><![CDATA[Campaign full editor]]></rdfs:label>
     <rdfs:comment><![CDATA[Full edit form: edit campaign properties and select related deliveries]]></rdfs:comment>
-    <wf:PropertySupportServicesUrl><![CDATA[/taoDelivery/SaSCampaign/editCampaign?uri=^campaignUri&classUri=^campaignClassUri&]]></wf:PropertySupportServicesUrl>
+    <wf:PropertySupportServicesUrl><![CDATA[/taoCampaign/SaSCampaign/editCampaign?uri=^campaignUri&classUri=^campaignClassUri&]]></wf:PropertySupportServicesUrl>
     <wf:PropertyServiceDefinitionsFormalParameterIn rdf:resource="LOCAL_NAMESPACE#i1296572585063991900"/>
     <wf:PropertyServiceDefinitionsFormalParameterIn rdf:resource="LOCAL_NAMESPACE#i1296572585054541300"/>
   </rdf:Description>
@@ -883,14 +883,14 @@
     <rdf:type rdf:resource="LOCAL_NAMESPACE#i1296572597019323800"/>
     <rdfs:label xml:lang="EN"><![CDATA[Campaign class editor]]></rdfs:label>
     <rdfs:comment><![CDATA[Edit a campaign (sub)class: add/edit/delete class properties]]></rdfs:comment>
-    <wf:PropertySupportServicesUrl><![CDATA[/taoDelivery/SaSCampaign/editCampaignClass?classUri=^campaignClassUri&]]></wf:PropertySupportServicesUrl>
+    <wf:PropertySupportServicesUrl><![CDATA[/taoCampaign/SaSCampaign/editCampaignClass?classUri=^campaignClassUri&]]></wf:PropertySupportServicesUrl>
     <wf:PropertyServiceDefinitionsFormalParameterIn rdf:resource="LOCAL_NAMESPACE#i1296572585054541300"/>
   </rdf:Description>
   <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296572604061300400">
     <rdf:type rdf:resource="LOCAL_NAMESPACE#i1296572597019323800"/>
     <rdfs:label xml:lang="EN"><![CDATA[Campaign related delivery]]></rdfs:label>
     <rdfs:comment><![CDATA[Select campaign deliveries]]></rdfs:comment>
-    <wf:PropertySupportServicesUrl><![CDATA[/taoDelivery/SaSCampaign/selectDeliveries?uri=^campaignUri&classUri=^campaignClassUri&]]></wf:PropertySupportServicesUrl>
+    <wf:PropertySupportServicesUrl><![CDATA[/taoCampaign/SaSCampaign/selectDeliveries?uri=^campaignUri&classUri=^campaignClassUri&]]></wf:PropertySupportServicesUrl>
     <wf:PropertyServiceDefinitionsFormalParameterIn rdf:resource="LOCAL_NAMESPACE#i1296572585063991900"/>
     <wf:PropertyServiceDefinitionsFormalParameterIn rdf:resource="LOCAL_NAMESPACE#i1296572585054541300"/>
   </rdf:Description>
@@ -898,7 +898,7 @@
     <rdf:type rdf:resource="LOCAL_NAMESPACE#i1296572597019323800"/>
     <rdfs:label xml:lang="EN"><![CDATA[Campaign removing]]></rdfs:label>
     <rdfs:comment><![CDATA[Delete a campaign instance]]></rdfs:comment>
-    <wf:PropertySupportServicesUrl><![CDATA[/taoDelivery/SaSCampaign/sasDeleteInstance?uri=^campaignUri&classUri=^campaignClassUri&]]></wf:PropertySupportServicesUrl>
+    <wf:PropertySupportServicesUrl><![CDATA[/taoCampaign/SaSCampaign/sasDeleteInstance?uri=^campaignUri&classUri=^campaignClassUri&]]></wf:PropertySupportServicesUrl>
     <wf:PropertyServiceDefinitionsFormalParameterIn rdf:resource="LOCAL_NAMESPACE#i1296572585063991900"/>
     <wf:PropertyServiceDefinitionsFormalParameterIn rdf:resource="LOCAL_NAMESPACE#i1296572585054541300"/>
   </rdf:Description>

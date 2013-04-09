@@ -74,9 +74,9 @@ class SaSManager{
 		$sasFiles = array();
 		$extensionsManager = common_ext_ExtensionsManager::singleton();
 		foreach($extensionsManager->getInstalledExtensions() as $extension){
-			$filePath = ROOT_PATH . '/'. $extension->id . '/models/services/sas.xml';
+			$filePath = ROOT_PATH . $extension->getID() . '/models/services/sas.xml';
 			if(file_exists($filePath)){
-				$sasFiles[$extension->id] = $filePath;
+				$sasFiles[$extension->getID()] = $filePath;
 			}
 		}
 		
