@@ -119,7 +119,7 @@ class wfEngine_models_classes_InteractiveServiceService
 		$returnValue .= '?';
 		if(preg_match('/^\//i', $returnValue)){
 			//create absolute url (prevent issue when TAO installed on a subfolder
-			$returnValue = ROOT_URL.$returnValue;
+			$returnValue = ROOT_URL.ltrim($returnValue, '/');
 		}
 		
 		$input 	= $this->getInputValues($interactiveService, $activityExecution);
