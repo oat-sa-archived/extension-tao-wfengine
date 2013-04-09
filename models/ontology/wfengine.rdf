@@ -350,14 +350,6 @@
     <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
     <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
   </rdf:Description>
-  <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyFormalParameterName">
-    <rdfs:label xml:lang="EN"><![CDATA[Name]]></rdfs:label>
-    <rdfs:comment xml:lang="EN"><![CDATA[Formal Parameter Name]]></rdfs:comment>
-    <widget:widget rdf:resource="http://www.tao.lu/datatypes/WidgetDefinitions.rdf#TextBox"/>
-    <rdfs:domain rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessDefinitions"/>
-    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
-    <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
-  </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivitiesInteractiveServices">
     <rdfs:label xml:lang="EN"><![CDATA[Interactive Services]]></rdfs:label>
     <rdfs:comment xml:lang="EN"><![CDATA[Interactive Services]]></rdfs:comment>
