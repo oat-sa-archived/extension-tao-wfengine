@@ -164,7 +164,7 @@ msgstr ""
 msgid "The link may be outdated."
 msgstr ""
 
-msgid "The Process module allows to create Process"
+msgid "The Processes module allows to create Processes"
 msgstr "Le module de traitement permet de créer des processus"
 
 msgid "The resource is not a process definition"

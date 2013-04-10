@@ -164,7 +164,7 @@ msgstr "L'activité fournie dans l'url n'est plus à jour."
 msgid "The link may be outdated."
 msgstr "Le lien n'est plus valide."
 
-msgid "The Process module allows to create Process"
+msgid "The Processes module allows to create Processes"
 msgstr "Le module Processus permet de créer des processus"
 
 msgid "The resource is not a process definition"

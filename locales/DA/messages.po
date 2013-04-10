@@ -164,7 +164,7 @@ msgstr "Aktiviteten fastsat i url'en er ikke længer up-to-date."
 msgid "The link may be outdated."
 msgstr "Linket er måske forældet."
 
-msgid "The Process module allows to create Process"
+msgid "The Processes module allows to create Processes"
 msgstr "Procesmodulet lader dig oprette processer"
 
 msgid "The resource is not a process definition"
