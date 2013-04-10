@@ -377,6 +377,10 @@ class wfEngine_actions_ProcessBrowser extends wfEngine_actions_WfModule{
 			$this->redirectToIndex();
 		}
 	}
+	
+	public function callback(){
+		
+	}
 
 	public function pause(){
 		

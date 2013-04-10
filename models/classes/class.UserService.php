@@ -52,7 +52,7 @@ class wfEngine_models_classes_UserService
      * @author Jerome Bogaerts, <jerome@taotesting.com>
      * @return core_kernel_classes_Class The class to use to instantiate new users.
      */
-    public function getUserClass()
+    public function getRootClass()
     {
     	return new core_kernel_classes_Class(CLASS_WORKFLOWUSER);
     }
