@@ -95,7 +95,7 @@ msgstr "Description plus détaillée ici."
 msgid "My roles"
 msgstr "Mes rôles"
 
-msgid "No account match the given login / password"
+msgid "Invalid login or password. Please try again."
 msgstr "Pas de compte correspondant aux identifiants donnés"
 
 msgid "No process definition uri given"

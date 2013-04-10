@@ -77,7 +77,7 @@ class wfEngine_actions_Authentication extends wfEngine_actions_WfModule
 					}
 				}
 				else{
-					$this->setData('errorMessage', __('No account match the given login / password'));
+					$this->setData('errorMessage', __('Invalid login or password. Please try again.'));
 				}
 			}
 		}

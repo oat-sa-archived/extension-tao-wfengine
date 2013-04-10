@@ -95,7 +95,7 @@ msgstr ".وصف أكثر تفصيل هنا"
 msgid "My roles"
 msgstr "ادواري"
 
-msgid "No account match the given login / password"
+msgid "Invalid login or password. Please try again."
 msgstr "لا يتطابق مع حساب معين الدخول / كلمة السر"
 
 msgid "No process definition uri given"

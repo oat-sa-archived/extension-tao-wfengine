@@ -95,7 +95,7 @@ msgstr ""
 msgid "My roles"
 msgstr ""
 
-msgid "No account match the given login / password"
+msgid "Invalid login or password. Please try again."
 msgstr ""
 
 msgid "No process definition uri given"
