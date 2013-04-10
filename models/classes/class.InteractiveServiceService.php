@@ -114,17 +114,14 @@ class wfEngine_models_classes_InteractiveServiceService
 		}else if($serviceDefinitionUrl instanceof core_kernel_classes_Resource){
 			$serviceUrl = $serviceDefinitionUrl->uriResource;
 		}
-		common_Logger::i($serviceUrl);
 		// Remove the parameters because they are only for show, and they are actualy encoded in the variables
 		$urlPart = explode('?',$serviceUrl);
 		$returnValue = $urlPart[0];
 		$returnValue .= '?';
-		common_Logger::i($returnValue);
 		if(preg_match('/^\//i', $returnValue)){
 			//create absolute url (prevent issue when TAO installed on a subfolder
 			$returnValue = ROOT_URL.ltrim($returnValue, '/');
 		}
-		common_Logger::i($returnValue);
 		
 		$input 	= $this->getInputValues($interactiveService, $activityExecution);
 		$output	= array();//for later use
@@ -143,7 +140,6 @@ class wfEngine_models_classes_InteractiveServiceService
         	$returnValue .= urlencode(trim($name)) . '=' . urlencode(trim($actualValue)) . '&';
         
 		}
-		common_Logger::i($returnValue);
 		
         // section 127-0-1-1--7eb5a1dd:13214d5811e:-8000:0000000000002E99 end
 
