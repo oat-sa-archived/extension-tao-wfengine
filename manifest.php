@@ -44,7 +44,7 @@ return array(
 			dirname(__FILE__). '/models/ontology/aclrole.rdf',
 		),
 		'php' => array(
-			dirname(__FILE__). '/scripts/install/sasServices.php',
+			//dirname(__FILE__). '/scripts/importSas.php',
 		),
 		'checks' => array(
 			array('type' => 'CheckFileSystemComponent', 'value' => array('id' => 'fs_wfEngine_includes', 'location' => 'wfEngine/includes', 'rights' => 'r'))
