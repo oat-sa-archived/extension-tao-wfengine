@@ -119,7 +119,7 @@ msgstr "الرجاء الدخول"
 msgid "Please login to access the selected activity."
 msgstr ""
 
-msgid "Process"
+msgid "Processes"
 msgstr "Processus"
 
 msgid "Process Finished"
@@ -164,7 +164,7 @@ msgstr ""
 msgid "The link may be outdated."
 msgstr ""
 
-msgid "The Processes module allows to create Processes"
+msgid "The Processes module allows to create Processes."
 msgstr "Le module de traitement permet de créer des processus"
 
 msgid "The resource is not a process definition"

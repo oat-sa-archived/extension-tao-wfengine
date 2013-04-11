@@ -30,7 +30,7 @@
 					<thead>
 						<tr>
 							<th><?=__("Status")?></th>
-							<th><?=__("Process")?></th>
+							<th><?=__("Processes")?></th>
 							<th><?=__("Start/Resume the case")?></th>
 						</tr>
 					</thead>
