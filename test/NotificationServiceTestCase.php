@@ -253,8 +253,9 @@ class NotificationServiceTestCase extends UnitTestCase {
 			}
 		}
 		
-		$this->assertTrue($processAuthoringService->deleteProcess($processDefinition));
 		$this->assertTrue($processExecutionService->deleteProcessExecution($processExecution));
+		$this->assertTrue($processAuthoringService->deleteProcess($processDefinition));
+		
 	}
 	
 	private function createSPX(core_kernel_classes_Resource $context, core_kernel_classes_Property $predicate){
