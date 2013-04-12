@@ -140,7 +140,7 @@ class wfEngine_models_classes_InteractiveServiceService
         	$returnValue .= urlencode(trim($name)) . '=' . urlencode(trim($actualValue)) . '&';
         
 		}
-		
+		$returnValue .= 'standalone=true';
         // section 127-0-1-1--7eb5a1dd:13214d5811e:-8000:0000000000002E99 end
 
         return (string) $returnValue;

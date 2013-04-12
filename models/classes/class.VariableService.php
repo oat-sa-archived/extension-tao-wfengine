@@ -210,6 +210,8 @@ class wfEngine_models_classes_VariableService
 					else{
 						$newVar = array($k);
 					}
+				} else {
+					common_Logger::w('No process variable found for key '.$k);
 				}
 				
 			}

@@ -195,5 +195,19 @@ class InteractiveServiceServiceTestCase extends UnitTestCase {
 		
 		$service1->delete();
 	}
+	
+	public function testDefinitions(){
+		$serviceDefinitionClass = new core_kernel_classes_Class(CLASS_SERVICESDEFINITION);
+		foreach ($serviceDefinitionClass->getInstances(true) as $serviceDefinition) {
+			$serviceDefinitionUrl = $serviceDefinition->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_SUPPORTSERVICES_URL));
+			$this->assertNotNull($serviceDefinitionUrl);
+			$this->assertTrue(!empty($serviceDefinitionUrl));
+			$resolver = new Resolver($serviceDefinitionUrl);
+			$accessService = tao_models_classes_funcACL_AccessService::singleton();
+			$actionUri = $accessService->makeEMAUri($resolver->getExtensionFromURL(), $resolver->getModule(), $resolver->getAction());
+			$res = new core_kernel_classes_Resource($actionUri);
+			$this->assertTrue($res->exists(), 'action of service definition "'.$serviceDefinition->getLabel().'" does not exist');
+		}
+	}
 
 }
