@@ -220,9 +220,16 @@ class wfEngine_actions_ProcessBrowser extends wfEngine_actions_WfModule{
 			$activityDefinition = $this->activityExecutionService->getExecutionOf($activityExecution);
 			$interactiveServices = $activityService->getInteractiveServices($activityDefinition);
 			$services = array();
+			
 			foreach($interactiveServices as $interactiveService){
+				$callUrl = $interactiveServiceService->getCallUrl($interactiveService, $activityExecution);
+				if (in_array(substr($callUrl, -1), array('?', '&'))) {
+					$callUrl .= 'standalone=true';
+				} else {
+					$callUrl .= (strpos($callUrl, '?') ? '&' : '?').'standalone=true';
+				}
 				$services[] = array(
-					'callUrl'	=> $interactiveServiceService->getCallUrl($interactiveService, $activityExecution),
+					'callUrl'	=> $callUrl,
 					'style'		=> $interactiveServiceService->getStyle($interactiveService),
 					'resource'	=> $interactiveService,
 				);
