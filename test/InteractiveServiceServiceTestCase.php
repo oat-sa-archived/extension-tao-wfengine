@@ -207,7 +207,8 @@ class InteractiveServiceServiceTestCase extends UnitTestCase {
 			$serviceDefinitionUrl = $serviceDefinition->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_SUPPORTSERVICES_URL));
 			$this->assertNotNull($serviceDefinitionUrl);
 			$this->assertTrue(!empty($serviceDefinitionUrl));
-			$resolver = new Resolver($serviceDefinitionUrl);
+			$fullUri = ROOT_URL.ltrim($serviceDefinitionUrl, '/');
+			$resolver = new Resolver($fullUri);
 			$accessService = tao_models_classes_funcACL_AccessService::singleton();
 			$actionUri = $accessService->makeEMAUri($resolver->getExtensionFromURL(), $resolver->getModule(), $resolver->getAction());
 			$res = new core_kernel_classes_Resource($actionUri);

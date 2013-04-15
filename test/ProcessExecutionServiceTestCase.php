@@ -91,8 +91,8 @@ class ProcessExecutionServiceTestCase extends UnitTestCase{
 		$userData = array(
 			PROPERTY_USER_LOGIN		=> 	$login,
 			PROPERTY_USER_PASSWORD	=>	md5($pass),
-			PROPERTY_USER_DEFLG		=>	'http://www.tao.lu/Ontologies/TAO.rdf#LangEN',
-			PROPERTY_USER_UILG		=>	'http://www.tao.lu/Ontologies/TAO.rdf#LangEN',
+			PROPERTY_USER_DEFLG		=>	'http://www.tao.lu/Ontologies/TAO.rdf#Lang'.DEFAULT_LANG,
+			PROPERTY_USER_UILG		=>	'http://www.tao.lu/Ontologies/TAO.rdf#Lang'.DEFAULT_LANG,
 			PROPERTY_USER_ROLES		=>  INSTANCE_ROLE_WORKFLOW
 		);
 		
@@ -687,8 +687,8 @@ class ProcessExecutionServiceTestCase extends UnitTestCase{
 				$userData = array(
 					PROPERTY_USER_LOGIN		=> 	$login,
 					PROPERTY_USER_PASSWORD	=>	md5($pass),
-					PROPERTY_USER_DEFLG		=>	'http://www.tao.lu/Ontologies/TAO.rdf#LangEN',
-					PROPERTY_USER_UILG		=>  'http://www.tao.lu/Ontologies/TAO.rdf#LangEN',
+					PROPERTY_USER_DEFLG		=>	'http://www.tao.lu/Ontologies/TAO.rdf#Lang'.DEFAULT_LANG,
+					PROPERTY_USER_UILG		=>  'http://www.tao.lu/Ontologies/TAO.rdf#Lang'.DEFAULT_LANG,
 					PROPERTY_USER_ROLES		=> 	INSTANCE_ROLE_WORKFLOW,
 					RDFS_LABEL				=> $login
 				);
