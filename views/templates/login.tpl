@@ -8,9 +8,6 @@
 		<style media="screen">
 			@import url(<?echo BASE_WWW; ?>/css/login.css);
 		</style>
-
-		<script type="text/javascript" src="<?=TAOBASE_WWW?>js/jquery-1.8.0.min.js"></script>
-		<script type="text/javascript" src="<?=TAOBASE_WWW ?>js/login.js"></script>
 	</head>
 
 	<body>

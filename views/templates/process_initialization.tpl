@@ -8,8 +8,6 @@
 		</style>
 
 		<script type="text/javascript" src="<?=TAOBASE_WWW?>js/jquery-1.8.0.min.js"></script>
-		<script type="text/javascript" src="<?=BASE_WWW?>/js/process_authoring.js"></script>
-		<script type="text/javascript" src="<?=BASE_WWW?>/js/gateway/ProcessAuthoring.js"></script>
 	</head>
 	<body>
 		<ul id="control">
