@@ -3,8 +3,8 @@
 	<head>
 		<title><?php echo __("TAO - An Open and Versatile Computer-Based Assessment Platform"); ?></title>
 
-		<script type="text/javascript" src="<?=BASE_WWW?>js/jquery-1.8.0.min.js"></script>
-		<script type="text/javascript" src="<?=BASE_WWW?>js/jquery-ui-1.8.23.custom.min.js"></script>
+		<script type="text/javascript" src="<?=TAOBASE_WWW?>js/jquery-1.8.0.min.js"></script>
+		<script type="text/javascript" src="<?=TAOBASE_WWW?>js/jquery-ui-1.8.23.custom.min.js"></script>
 		<script type="text/javascript" src="<?=BASE_WWW?>js/jquery.json.js"></script>
 		<script type="text/javascript" src="<?=BASE_WWW?>js/wfEngine.js"></script>
 		<script type="text/javascript" src="<?=BASE_WWW?>js/process_browser.js"></script>
@@ -31,12 +31,12 @@
 			@import url(<?=BASE_WWW?>css/process_browser.css);
 		</style>
 
-		<meta http-equiv="refresh" content="10;url==?=_url('index','ProcessBrowser', null, array('processUri' => get_data('processExecutionUri')))?>"/>
+		<meta http-equiv="refresh" content="10;url=<?=_url('index','ProcessBrowser', null, array('processUri' => get_data('processExecutionUri')))?>"/>
 
 	</head>
 
 	<body>
-		<div id="loader"><img src="<?=BASE_WWW?>img/ajax-loader.gif" /> <?=__('Loading next activity...')?></div>
+		<div id="loader"><img src="<?=TAOBASE_WWW?>img/ajax-loader.gif" /> <?=__('Loading next activity...')?></div>
 		<div id="process_view"></div>
 
 		<ul id="control">
