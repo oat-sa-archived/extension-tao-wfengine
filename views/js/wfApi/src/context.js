@@ -78,7 +78,7 @@ function RecoveryContext (){
 			params:  {},										//the common parameters to send to the service
 			method: 'post',										//sending method
 			format: 'json',										//the response format, now ONLY JSON is supported
-			flush:  true										//clear the context registry once the context is saved
+			flush:  false										//clear the context registry once the context is saved
 	};
 	
 	/**
