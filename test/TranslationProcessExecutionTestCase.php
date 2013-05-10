@@ -307,7 +307,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 			
 			//create a working file for that user:
 			$fileName = $this->getFileName($unit->getLabel(), $countryCode, $languageCode, $type, $user);
-			$file = core_kernel_versioning_File::createVersioned($fileName, '/', $this->getDefaultRepository());
+			$file = $this->getOneRepository()->createFile($filename);
 			$this->assertIsA($file, 'core_kernel_versioning_File');
 			
 			//set file content:
@@ -377,8 +377,8 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		return $returnValue;
 	}
 	
-	// Get the default repository of the TAO instance
-	private function getDefaultRepository(){
+	// Get a repository of the TAO instance
+	private function getOneRepository(){
 		
 		$repository = null;
 		
