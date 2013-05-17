@@ -36,7 +36,7 @@ if($create){
 	$processFactory = new ProcessSampleCreator();
 	$processSequence = $processFactory->createSimpleSequenceProcess();
 	
-	$output[] = $processSequence->uriResource;
+	$output[] = $processSequence->getUri();
 	
 }else if($clean){
 	$output['succes'] = ProcessSampleCreator::clean();

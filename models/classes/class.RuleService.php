@@ -91,7 +91,7 @@ class wfEngine_models_classes_RuleService
 		$returnValue = null;
 		
 		$property = new core_kernel_classes_Property(PROPERTY_RULE_IF);
-		$returnValue = new core_kernel_rules_Expression($rule->getUniquePropertyValue($property)->uriResource, __METHOD__);
+		$returnValue = new core_kernel_rules_Expression($rule->getUniquePropertyValue($property)->getUri(), __METHOD__);
 		
 		return $returnValue;
         // section 127-0-1-1--4b38ca35:1323a4c748d:-8000:0000000000002F94 end

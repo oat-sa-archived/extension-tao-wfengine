@@ -247,9 +247,9 @@ class wfEngine_models_classes_RecoveryService
 			$activityExecutionClass = new core_kernel_classes_Class(CLASS_ACTIVITY_EXECUTION);
 			$activityExecutions = $activityExecutionClass->searchInstances(
 				array(
-					PROPERTY_ACTIVITY_EXECUTION_PROCESSEXECUTION => $processExecution->uriResource,
-					PROPERTY_ACTIVITY_EXECUTION_ACTIVITY => $activityDefinition->uriResource,
-					PROPERTY_ACTIVITY_EXECUTION_CURRENT_USER => $user->uriResource
+					PROPERTY_ACTIVITY_EXECUTION_PROCESSEXECUTION => $processExecution->getUri(),
+					PROPERTY_ACTIVITY_EXECUTION_ACTIVITY => $activityDefinition->getUri(),
+					PROPERTY_ACTIVITY_EXECUTION_CURRENT_USER => $user->getUri()
 				),
 				array(
 					'like' => false,

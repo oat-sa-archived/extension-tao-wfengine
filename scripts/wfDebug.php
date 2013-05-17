@@ -55,7 +55,7 @@ class wfDebugger{
 
                                 $key = $triple->predicate;
                                 
-                                if(!is_null($sortProperty) && $sortProperty->uriResource == $key){
+                                if(!is_null($sortProperty) && $sortProperty->getUri() == $key){
                                         $epoch = $triple->epoch;
                                 }
                                 
@@ -98,7 +98,7 @@ class wfDebugger{
                         }
 
                         $returnValue = array(
-                            'resource'  => "{$data->getLabel()} ({$data->uriResource})",
+                            'resource'  => "{$data->getLabel()} ({$data->getUri()})",
                             'properties' => $propertyValues
                         );
                         
@@ -146,14 +146,14 @@ class wfDebugger{
                         echo "tokens ({$processInstances->count()}):".$this->br;
                         $sortedProcessInstances = array();
                         foreach($processInstances->getIterator() as $token){
-                                $sortedProcessInstances[$token->uriResource] = $token;
+                                $sortedProcessInstances[$token->getUri()] = $token;
                         }
                         krsort($sortedProcessInstances);
                         foreach($sortedProcessInstances as $token){
                                 $this->data_dump($token);
                         }
 
-                        $activityExecutions = $apiModel->getSubject(PROPERTY_ACTIVITY_EXECUTION_PROCESSEXECUTION, $processInstance->uriResource);
+                        $activityExecutions = $apiModel->getSubject(PROPERTY_ACTIVITY_EXECUTION_PROCESSEXECUTION, $processInstance->getUri());
                         echo "activity executions ({$activityExecutions->count()}):".$this->br;
                         $sortedActivityExecutions = array();
                         $timeSortingProperty = new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_CTX_RECOVERY);
@@ -174,7 +174,7 @@ class wfDebugger{
                                                 $sortedActivityExecutions[$lastModifiedTime->format('U')] = $activityExecution;
                                         }
                                 }else{
-                                        $sortedActivityExecutions[$activityExecution->uriResource] = $activityExecution;
+                                        $sortedActivityExecutions[$activityExecution->getUri()] = $activityExecution;
                                 }
                         }
                         krsort($sortedActivityExecutions);

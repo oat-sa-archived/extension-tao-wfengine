@@ -67,7 +67,7 @@ class ProcessDefinitionServiceTestCase extends UnitTestCase {
 		
 		$rootActivities = $this->service->getRootActivities($this->processDefinition);
 		$this->assertEqual(count($rootActivities), 1);
-		$this->assertEqual($rootActivities[0]->uriResource, $activity1->uriResource);
+		$this->assertEqual($rootActivities[0]->getUri(), $activity1->getUri());
 	}
 	
 	public function testGetAllActivities(){
@@ -79,7 +79,7 @@ class ProcessDefinitionServiceTestCase extends UnitTestCase {
 		$this->assertEqual(count($allActivities), 3);
 		
 		foreach($allActivities as $activity){
-			$this->assertTrue(in_array($activity->uriResource, array($activity1->uriResource, $activity2->uriResource, $activity3->uriResource)));
+			$this->assertTrue(in_array($activity->getUri(), array($activity1->getUri(), $activity2->getUri(), $activity3->getUri())));
 		}
 	}
 	
@@ -96,8 +96,8 @@ class ProcessDefinitionServiceTestCase extends UnitTestCase {
 		
 		$processVars = $this->service->getProcessVars($this->processDefinition);
 		$this->assertEqual(count($processVars), 2);
-		$this->assertTrue(isset($processVars[$myProcessVar1->uriResource]));
-		$secondProcessVar = $processVars[$myProcessVar1->uriResource];
+		$this->assertTrue(isset($processVars[$myProcessVar1->getUri()]));
+		$secondProcessVar = $processVars[$myProcessVar1->getUri()];
 		
 		$this->assertEqual($secondProcessVar['name'], $myProcessVarName1);
 		

@@ -215,7 +215,7 @@ class wfEngine_helpers_ProcessUtil
     	if(!is_null($resource) && !is_null($clazz)){	
 			foreach($resource->getTypes() as $type){
 				if($type instanceof core_kernel_classes_Class){
-					if( $type->uriResource == $clazz->uriResource){
+					if($type->equals($clazz)){
 						$returnValue = true;
 						break;
 					}

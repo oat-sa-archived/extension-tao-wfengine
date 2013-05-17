@@ -104,7 +104,7 @@ class wfEngine_actions_ProcessBrowser extends wfEngine_actions_WfModule{
 		//user data for browser view
 		$userViewData = wfEngine_helpers_UsersHelper::buildCurrentUserForView(); 
 		$this->setData('userViewData', $userViewData);
-		$this->setData('processExecutionUri', urlencode($this->processExecution->uriResource));
+		$this->setData('processExecutionUri', urlencode($this->processExecution->getUri()));
 		
 		$this->setView('auto_redirecting.tpl');
 		
@@ -116,7 +116,7 @@ class wfEngine_actions_ProcessBrowser extends wfEngine_actions_WfModule{
 		if(ENABLE_HTTP_REDIRECT_PROCESS_BROWSER){
 			$parameters = array();
 			if(!empty($this->activityExecution)){
-				$parameters['activityExecutionUri'] = urlencode($this->activityExecution->uriResource);
+				$parameters['activityExecutionUri'] = urlencode($this->activityExecution->getUri());
 			}
 			$this->redirect(tao_helpers_Uri::url('index', 'ProcessBrowser', null, $parameters));
 		}else{
@@ -149,7 +149,7 @@ class wfEngine_actions_ProcessBrowser extends wfEngine_actions_WfModule{
 		 * - taoDelivery_actions_ItemDelivery::runner()
 		 * - tao_actions_Api::createAuthEnvironment()
 		 */
-		$this->setSessionAttribute("processUri", $this->processExecution->uriResource);
+		$this->setSessionAttribute("processUri", $this->processExecution->getUri());
 		
 		//user data for browser view
 		$userViewData = wfEngine_helpers_UsersHelper::buildCurrentUserForView(); 
@@ -178,7 +178,7 @@ class wfEngine_actions_ProcessBrowser extends wfEngine_actions_WfModule{
 		}else{
 			if(!is_null($this->activityExecution) && $this->activityExecution instanceof core_kernel_classes_Resource){
 				foreach($currentlyAvailableActivityExecutions as $availableActivityExec){
-					if($availableActivityExec->uriResource == $this->activityExecution->uriResource){
+					if($availableActivityExec->getUri() == $this->activityExecution->getUri()){
 						$activityExecution = $this->processExecutionService->initCurrentActivityExecution($this->processExecution, $this->activityExecution, $currentUser);
 						break;
 					}
@@ -187,7 +187,7 @@ class wfEngine_actions_ProcessBrowser extends wfEngine_actions_WfModule{
 					//invalid choice of activity execution:
 					$this->activityExecution = null;
 //					$invalidActivity = new core_kernel_classes_Resource($activityUri);
-//					throw new wfEngine_models_classes_ProcessExecutionException("invalid choice of activity definition in process browser {$invalidActivity->getLabel()} ({$invalidActivity->uriResource}). \n<br/> The link may be outdated.");
+//					throw new wfEngine_models_classes_ProcessExecutionException("invalid choice of activity definition in process browser {$invalidActivity->getLabel()} ({$invalidActivity->getUri()}). \n<br/> The link may be outdated.");
 					$this->autoredirectToIndex();
 					return;
 				}
@@ -211,8 +211,8 @@ class wfEngine_actions_ProcessBrowser extends wfEngine_actions_WfModule{
 			
 			$this->activityExecution = $activityExecution;
 			
-			$browserViewData[''] = $this->processExecution->uriResource;
-			$browserViewData['activityExecutionUri'] = $activityExecution->uriResource;
+			$browserViewData[''] = $this->processExecution->getUri();
+			$browserViewData['activityExecutionUri'] = $activityExecution->getUri();
 			$this->activityExecutionService->createNonce($this->activityExecution);
 			$browserViewData['activityExecutionNonce'] = $this->activityExecutionService->getNonce($activityExecution);
 			
@@ -255,8 +255,8 @@ class wfEngine_actions_ProcessBrowser extends wfEngine_actions_WfModule{
 			$browserViewData['processLabel'] 			= $processDefinition->getLabel();
 			$browserViewData['processExecutionLabel']	= $this->processExecution->getLabel();
 			$browserViewData['activityLabel'] 			= $activityDefinition->getLabel();
-			$browserViewData['processUri']				= $this->processExecution->uriResource;
-			$browserViewData['active_Resource']			="'".$activityDefinition->uriResource."'" ;
+			$browserViewData['processUri']				= $this->processExecution->getUri();
+			$browserViewData['active_Resource']			="'".$activityDefinition->getUri()."'" ;
 			$browserViewData['isInteractiveService'] 	= true;
 			$this->setData('browserViewData', $browserViewData);
 					
@@ -327,7 +327,7 @@ class wfEngine_actions_ProcessBrowser extends wfEngine_actions_WfModule{
 					if(is_null($activityDefinition)){
 						$activityDefinition = $this->activityExecutionService->getExecutionOf($previousActivityExecution);
 					}else{
-						if($activityDefinition->uriResource != $this->activityExecutionService->getExecutionOf($previousActivityExecution)->uriResource){
+						if($activityDefinition->getUri() != $this->activityExecutionService->getExecutionOf($previousActivityExecution)->getUri()){
 							break;
 						}
 					}
@@ -373,7 +373,7 @@ class wfEngine_actions_ProcessBrowser extends wfEngine_actions_WfModule{
 					if(is_null($activityDefinition)){
 						$activityDefinition = $this->activityExecutionService->getExecutionOf($nextActivityExecution);
 					}else{
-						if($activityDefinition->uriResource != $this->activityExecutionService->getExecutionOf($nextActivityExecution)->uriResource){
+						if($activityDefinition->getUri() != $this->activityExecutionService->getExecutionOf($nextActivityExecution)->getUri()){
 							break;
 						}
 					}

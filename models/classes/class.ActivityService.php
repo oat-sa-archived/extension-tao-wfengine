@@ -100,10 +100,10 @@ class wfEngine_models_classes_ActivityService
 				case __CLASS__.'::getNextConnectors':{
 					if(isset($args[0]) && $args[0] instanceof core_kernel_classes_Resource){
 						$activity = $args[0];
-						if(!isset($this->instancesCache[$activity->uriResource])){
-							$this->instancesCache[$activity->uriResource] = array();
+						if(!isset($this->instancesCache[$activity->getUri()])){
+							$this->instancesCache[$activity->getUri()] = array();
 						}
-						$this->instancesCache[$activity->uriResource][$methodName] = $value;
+						$this->instancesCache[$activity->getUri()][$methodName] = $value;
 						$returnValue = true;
 					}
 					break;
@@ -144,9 +144,9 @@ class wfEngine_models_classes_ActivityService
 				case __CLASS__.'::getNextConnectors':{
 					if(isset($args[0]) && $args[0] instanceof core_kernel_classes_Resource){
 						$activity = $args[0];
-						if(isset($this->instancesCache[$activity->uriResource])
-						&& isset($this->instancesCache[$activity->uriResource][$methodName])){
-							$returnValue = $this->instancesCache[$activity->uriResource][$methodName];
+						if(isset($this->instancesCache[$activity->getUri()])
+						&& isset($this->instancesCache[$activity->getUri()][$methodName])){
+							$returnValue = $this->instancesCache[$activity->getUri()][$methodName];
 						}
 					}
 					break;
@@ -246,7 +246,7 @@ class wfEngine_models_classes_ActivityService
 		$services = $activity->getPropertyValuesCollection(new core_kernel_classes_Property(PROPERTY_ACTIVITIES_INTERACTIVESERVICES));
 		foreach($services->getIterator() as $service){
 			if($service instanceof core_kernel_classes_Resource){
-				$returnValue[$service->uriResource] = $service;
+				$returnValue[$service->getUri()] = $service;
 			}
 		}
 
@@ -274,7 +274,7 @@ class wfEngine_models_classes_ActivityService
 		}else{
 			$isIntial = $activity->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_ACTIVITIES_ISINITIAL));
 			if(!is_null($isIntial) && $isIntial instanceof core_kernel_classes_Resource){
-				if($isIntial->uriResource == GENERIS_TRUE){
+				if($isIntial->getUri() == GENERIS_TRUE){
 					$returnValue = true;
 				}
 			}
@@ -379,7 +379,7 @@ class wfEngine_models_classes_ActivityService
 			$propHidden = new core_kernel_classes_Property(PROPERTY_ACTIVITIES_ISHIDDEN);
 			$hidden = $activity->getOnePropertyValue($propHidden);
 			if (!is_null($hidden) && $hidden instanceof core_kernel_classes_Resource) {
-				if ($hidden->uriResource == GENERIS_TRUE) {
+				if ($hidden->getUri() == GENERIS_TRUE) {
 					$returnValue = true;
 				}
 			}
@@ -415,7 +415,7 @@ class wfEngine_models_classes_ActivityService
 				$connectorType = $connector->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_TYPE));
 				//drop the connector join for now 
 				//(a join connector is considered only when it is only one found, i.e. the "else" case below)
-				if($connectorType->uriResource != INSTANCE_TYPEOFCONNECTORS_JOIN){
+				if($connectorType->getUri() != INSTANCE_TYPEOFCONNECTORS_JOIN){
 					$connectorsTmp[] = $connector;
 				}else{
 					//warning: join connector:
@@ -470,7 +470,7 @@ class wfEngine_models_classes_ActivityService
         	PROPERTY_ACTIVITIES_ACL_MODE => $mode->getUri()
         );
         
-        switch($mode->uriResource){
+        switch($mode->getUri()){
         	case INSTANCE_ACL_ROLE:
         	case INSTANCE_ACL_ROLE_RESTRICTED_USER:
         	case INSTANCE_ACL_ROLE_RESTRICTED_USER_INHERITED:

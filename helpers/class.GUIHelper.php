@@ -104,7 +104,7 @@ class wfEngine_helpers_GUIHelper
 		$baseURI = 'img/status_';
 		$statusName = '';
 		
-		switch ($status->uriResource){
+		switch ($status->getUri()){
 			case INSTANCE_PROCESSSTATUS_PAUSED:
 				$statusName = 'paused';
 				break;

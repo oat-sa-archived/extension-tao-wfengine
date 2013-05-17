@@ -105,7 +105,7 @@ class wfEngine_actions_WfApi extends tao_actions_Api {
 					$this->setErrorMessage('There are more than one current activity executions');
 				}
 			}else{
-				if(!isset($currentActivityExecutions[$this->activityExecution->uriResource])){
+				if(!isset($currentActivityExecutions[$this->activityExecution->getUri()])){
 					$returnValue = $this->activityExecution;
 				}else{
 					$this->setErrorMessage('The current activity execution is not among the current ones of the process execution');

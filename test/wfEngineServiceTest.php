@@ -129,7 +129,7 @@ class wfEngineServiceTest extends UnitTestCase {
 		if($this->userService->loginUser($login, md5($this->userPassword))){
 			$this->currentUser = $this->userService->getCurrentUser();
 			$returnValue = true;
-			$this->out("user logged in: ".$this->currentUser->getOnePropertyValue($loginProperty).' "'.$this->currentUser->uriResource.'"');
+			$this->out("user logged in: ".$this->currentUser->getOnePropertyValue($loginProperty).' "'.$this->currentUser->getUri().'"');
 		}else{
 			$this->fail("unable to login user $login");
 		}
@@ -143,7 +143,7 @@ class wfEngineServiceTest extends UnitTestCase {
 	protected function logoutUser(){
 		if(!is_null($this->currentUser)){
 			$loginProperty = new core_kernel_classes_Property(PROPERTY_USER_LOGIN);
-			$this->out("logout ". $this->currentUser->getOnePropertyValue($loginProperty) . ' "' . $this->currentUser->uriResource . '"', true);
+			$this->out("logout ". $this->currentUser->getOnePropertyValue($loginProperty) . ' "' . $this->currentUser->getUri() . '"', true);
 			$this->userService->logout();
 			$this->currentUser = null;
 		}
@@ -160,7 +160,7 @@ class wfEngineServiceTest extends UnitTestCase {
 		$this->assertNotNull($aclMode);
 		if(is_null($restrictedTo)){
 			$activity = $activityExecutionService->getExecutionOf($activityExecution);
-			$this->fail("cannot get the restricted user or role for the activity execution {$activityExecution->uriResource} of the activity {$activity->getLabel()} ({$activity->uriResource} ");
+			$this->fail("cannot get the restricted user or role for the activity execution {$activityExecution->getUri()} of the activity {$activity->getLabel()} ({$activity->getUri()} ");
 		}
 		$this->out("ACL mode: {$aclMode->getLabel()}; restricted to {$restrictedTo->getLabel()}", true);
 	}

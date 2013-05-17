@@ -38,7 +38,7 @@ class wfEngine_helpers_UsersHelper
 		$roles = $wfUserService->getUserRoles($currentUser);
 		foreach($roles as $role){
 			$data['roles'][] = array(
-				'uri' 	 => $role->uriResource,
+				'uri' 	 => $role->getUri(),
 				'label' => $role->getLabel()
 			);
 		}

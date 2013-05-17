@@ -69,27 +69,27 @@ class wfEngine_models_classes_ProcessFlow{
 		$returnValue = null;
 		
 		//put the activity being searched in an array to prevent searching from it again in case of back connection
-		$this->checkedActivities[] = $activity->uriResource;
+		$this->checkedActivities[] = $activity->getUri();
 		
 		$connectorClass = new core_kernel_classes_Class(CLASS_CONNECTORS);
 		$cardinalityClass = new core_kernel_classes_Class(CLASS_ACTIVITYCARDINALITY);
 		
-		$activityCardinalities = $cardinalityClass->searchInstances(array(PROPERTY_STEP_NEXT => $activity->uriResource), array('like' => false));//note: count()>1 only 
-		$nextActivities = array_merge(array($activity->uriResource), array_keys($activityCardinalities));
+		$activityCardinalities = $cardinalityClass->searchInstances(array(PROPERTY_STEP_NEXT => $activity->getUri()), array('like' => false));//note: count()>1 only 
+		$nextActivities = array_merge(array($activity->getUri()), array_keys($activityCardinalities));
 		$previousConnectors = $connectorClass->searchInstances(array(PROPERTY_STEP_NEXT => $nextActivities), array('like' => false));//note: count()>1 only 
 		foreach($previousConnectors as $connector){
 		
-			if(in_array($connector->uriResource, array_keys($this->checkedConnectors))){
+			if(in_array($connector->getUri(), array_keys($this->checkedConnectors))){
 				continue;
 			}else{
-				$this->checkedConnectors[$connector->uriResource] = $connector;
+				$this->checkedConnectors[$connector->getUri()] = $connector;
 			}
 		
 			//get the type of the connector:
 			$connectorType = $connector->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_TYPE));
 			if($connectorType instanceof core_kernel_classes_Resource){
 				
-				switch($connectorType->uriResource){
+				switch($connectorType->getUri()){
 					case INSTANCE_TYPEOFCONNECTORS_PARALLEL:{
 						//parallel connector found:
 						if($this->jump == 0){
@@ -112,7 +112,7 @@ class wfEngine_models_classes_ProcessFlow{
 			//Note: the use of the property activity reference allow to jump to the "main" (in case of a join connector and successive conditionnal connectors) directly
 			
 			//if the previousActivity happens to have already been checked, jump it
-			if(in_array($previousActivity->uriResource, $this->checkedActivities)){
+			if(in_array($previousActivity->getUri(), $this->checkedActivities)){
 				continue;
 			}else{
 				$parallelConnector = $this->findParallelFromActivityBackward($previousActivity);
@@ -141,17 +141,17 @@ class wfEngine_models_classes_ProcessFlow{
 		$connector = $activity->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_STEP_NEXT));
 		if(!is_null($connector)){
 
-			if(in_array($connector->uriResource, array_keys($this->checkedConnectors))){
+			if(in_array($connector->getUri(), array_keys($this->checkedConnectors))){
 				continue;
 			}else{
-				$this->checkedConnectors[$connector->uriResource] = $connector;
+				$this->checkedConnectors[$connector->getUri()] = $connector;
 			}
 		
 			//get the type of the connector:
 			$connectorType = $connector->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_TYPE));
 			if($connectorType instanceof core_kernel_classes_Resource){
 				
-				switch($connectorType->uriResource){
+				switch($connectorType->getUri()){
 					case INSTANCE_TYPEOFCONNECTORS_JOIN:{
 						//parallel connector found:
 						if($this->jump == 0){
@@ -180,7 +180,7 @@ class wfEngine_models_classes_ProcessFlow{
 				}
 			
 				//if the nextActivity happens to have already been checked, jump it
-				if(in_array($nextActivity->uriResource, $this->checkedActivities)){
+				if(in_array($nextActivity->getUri(), $this->checkedActivities)){
 					continue;
 				}else{
 					$joinConnector = $this->findJoinFromActivityForward($nextActivity);

@@ -145,7 +145,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 							if(isset($translatorLogins[$i+1])){
 								$translatorLogin = $translatorLogins[$i+1];
 								if(isset($this->users[$translatorLogin])){
-									$translators[] = $this->users[$translatorLogin]->uriResource;
+									$translators[] = $this->users[$translatorLogin]->getUri();
 								}
 							}
 						}
@@ -153,9 +153,9 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 					
 					if(isset($this->users[$npmLogin]) && isset($this->users[$reconcilerLogin]) && isset($this->users[$verifierLogin])){
 						$returnValue = array(
-							'npm' => $this->users[$npmLogin]->uriResource,
-							'reconciler' => $this->users[$reconcilerLogin]->uriResource,
-							'verifier' => $this->users[$verifierLogin]->uriResource,
+							'npm' => $this->users[$npmLogin]->getUri(),
+							'reconciler' => $this->users[$reconcilerLogin]->getUri(),
+							'verifier' => $this->users[$verifierLogin]->getUri(),
 							'translators' => $translators
 						);
 					}
@@ -214,21 +214,21 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 			$memberConsortium = 1;
 			for($i = 1; $i <= $memberConsortium; $i++){
 				$this->userLogins['consortium'][$i] = 'consortium_'.$i.'_'.$usec;//the process admin
-				$this->roleLogins[$this->roles['consortium']->uriResource][] = $this->userLogins['consortium'][$i];
+				$this->roleLogins[$this->roles['consortium']->getUri()][] = $this->userLogins['consortium'][$i];
 			}
 			
 			$this->userLogins['developer'] = array();
 			$nbDevelopers = 6;
 			for($i = 1; $i <= $nbDevelopers; $i++){
 				$this->userLogins['developer'][$i] = 'developer_'.$i.'_'.$usec;//ETS_01, ETS_02, etc.
-				$this->roleLogins[$this->roles['developer']->uriResource][] = $this->userLogins['developer'][$i];
+				$this->roleLogins[$this->roles['developer']->getUri()][] = $this->userLogins['developer'][$i];
 			}
 			
 			$this->userLogins['testDeveloper'] = array();
 			$nbTestDevelopers = 3;
 			for($i = 1; $i <= $nbTestDevelopers; $i++){
 				$this->userLogins['testDeveloper'][$i] = 'testDeveloper_'.$i.'_'.$usec;//test creators
-				$this->roleLogins[$this->roles['testDeveloper']->uriResource][] = $this->userLogins['testDeveloper'][$i];
+				$this->roleLogins[$this->roles['testDeveloper']->getUri()][] = $this->userLogins['testDeveloper'][$i];
 			}
 			
 			$nbTranslatorsByCountryLang = 3;
@@ -237,7 +237,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 				
 				//one NPM by country
 				$this->userLogins[$countryCode]['NPM'] = 'NPM_'.$countryCode.'_'.$usec;
-				$this->roleLogins[$this->roles['NPM']->uriResource][] = $this->userLogins[$countryCode]['NPM'];
+				$this->roleLogins[$this->roles['NPM']->getUri()][] = $this->userLogins[$countryCode]['NPM'];
 				
 				foreach($languageCodes as $languageCode){
 					
@@ -247,13 +247,13 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 						'reconciler' => 'reconciler_'.$countryCode.'_'.$languageCode.'_'.$usec,
 						'verifier' => 'verifier_'.$countryCode.'_'.$languageCode.'_'.$usec
 					);
-					$this->roleLogins[$this->roles['reconciler']->uriResource][] = $this->userLogins[$countryCode][$languageCode]['reconciler'];
-					$this->roleLogins[$this->roles['verifier']->uriResource][] = $this->userLogins[$countryCode][$languageCode]['verifier'];
+					$this->roleLogins[$this->roles['reconciler']->getUri()][] = $this->userLogins[$countryCode][$languageCode]['reconciler'];
+					$this->roleLogins[$this->roles['verifier']->getUri()][] = $this->userLogins[$countryCode][$languageCode]['verifier'];
 					
 					//as many translators as wanted:
 					for($i = 1; $i <= $nbTranslatorsByCountryLang; $i++){
 						$this->userLogins[$countryCode][$languageCode]['translator'][$i] = 'translator_'.$countryCode.'_'.$languageCode.'_'.$i.'_'.$usec;
-						$this->roleLogins[$this->roles['translator']->uriResource][] = $this->userLogins[$countryCode][$languageCode]['translator'][$i];
+						$this->roleLogins[$this->roles['translator']->getUri()][] = $this->userLogins[$countryCode][$languageCode]['translator'][$i];
 					}
 				}
 			}
@@ -272,7 +272,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 							$this->assertTrue($this->users[$login]->setPropertyValue($propUserCountryCode, $countryCode));
 							$this->assertTrue($this->users[$login]->setPropertyValue($propUserLangCode, $langCode));
 						}
-						$userUris[] = $this->users[$login]->uriResource;
+						$userUris[] = $this->users[$login]->getUri();
 					}
 				}
 				$this->assertTrue($roleService->setRoleToUsers($role, $userUris));
@@ -339,7 +339,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		$returnValue = null;
 		
 		if(!isset($this->properties[TranslationProcessHelper::getPropertyName($type, $countryCode, $langCode)])){
-			$this->fail("The item property does not exist for the item {$item->getLabel()} ({$item->uriResource}) : $type, $countryCode, $langCode ");
+			$this->fail("The item property does not exist for the item {$item->getLabel()} ({$item->getUri()}) : $type, $countryCode, $langCode ");
 			return $returnValue;
 		}
 		
@@ -355,7 +355,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 				if(common_Utils::isUri($uri)){
 					$aFile = new core_kernel_versioning_File($uri);
 					$assignedUser = $aFile->getUniquePropertyValue($this->userProperty);
-					if($assignedUser->uriResource == $user->uriResource){
+					if($assignedUser->getUri() == $user->getUri()){
 						$file = $aFile;
 						break;
 					}
@@ -371,7 +371,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		if(!is_null($file) && $file->isVersioned()){
 			$returnValue = $file;
 		}else{
-			$this->fail("Cannot get the versioned {$type} file in {$countryCode}_{$langCode} for the item {$item->getLabel()} ({$item->uriResource})");
+			$this->fail("Cannot get the versioned {$type} file in {$countryCode}_{$langCode} for the item {$item->getLabel()} ({$item->getUri()})");
 		}
 		
 		return $returnValue;
@@ -393,7 +393,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 				throw new Exception('no default repository exists in TAO');
 			}else {
 				$repository = array_pop($repositories);
-				$repository = new core_kernel_versioning_Repository($repository->uriResource);
+				$repository = new core_kernel_versioning_Repository($repository->getUri());
 				$this->defaultRepository = $repository;
 			}
 		}
@@ -419,7 +419,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 			if(!$property->exists()){
 				$propertyClass = new core_kernel_classes_Class(RDF_PROPERTY,__METHOD__);
 				$propertyInstance = $propertyClass->createInstance($label, '', $uri);
-				$property = new core_kernel_classes_Property($propertyInstance->uriResource,__METHOD__);
+				$property = new core_kernel_classes_Property($propertyInstance->getUri(),__METHOD__);
 			}
 
 			if(!$class->setProperty($property)){
@@ -529,16 +529,16 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		$activityService->setAcl($activityTranslate, $aclUser, $this->vars['translator']);
 		$activityService->setControls($activityTranslate, array(INSTANCE_CONTROL_FORWARD));
 		
-		$result = $authoringService->setParallelActivities($connectorSelectTranslators, array($activityTranslate->uriResource => $this->vars['translatorsCount']));
+		$result = $authoringService->setParallelActivities($connectorSelectTranslators, array($activityTranslate->getUri() => $this->vars['translatorsCount']));
 		$this->assertTrue($result);
-		$this->assertTrue($connectorService->setSplitVariables($connectorSelectTranslators, array($activityTranslate->uriResource => $this->vars['translator'])));
+		$this->assertTrue($connectorService->setSplitVariables($connectorSelectTranslators, array($activityTranslate->getUri() => $this->vars['translator'])));
 		
 		$nextActivities = $connectorService->getNextActivities($connectorSelectTranslators);
 		$this->assertEqual(count($nextActivities), 1);
 		$cardinality = reset($nextActivities);
 		$this->assertTrue($cardinalityService->isCardinality($cardinality));
-		$this->assertEqual($cardinalityService->getDestination($cardinality)->uriResource, $activityTranslate->uriResource);
-		$this->assertEqual($cardinalityService->getCardinality($cardinality)->uriResource, $this->vars['translatorsCount']->uriResource);
+		$this->assertEqual($cardinalityService->getDestination($cardinality)->getUri(), $activityTranslate->getUri());
+		$this->assertEqual($cardinalityService->getCardinality($cardinality)->getUri(), $this->vars['translatorsCount']->getUri());
 		
 		$connectorTranslate = $authoringService->createConnector($activityTranslate);
 		$this->assertNotNull($connectorTranslate);
@@ -549,8 +549,8 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		$this->assertEqual(count($prevActivities), 1);
 		$cardinality = reset($prevActivities);
 		$this->assertTrue($cardinalityService->isCardinality($cardinality));
-		$this->assertEqual($cardinalityService->getSource($cardinality)->uriResource, $activityTranslate->uriResource);
-		$this->assertEqual($cardinalityService->getCardinality($cardinality)->uriResource, $this->vars['translatorsCount']->uriResource);
+		$this->assertEqual($cardinalityService->getSource($cardinality)->getUri(), $activityTranslate->getUri());
+		$this->assertEqual($cardinalityService->getCardinality($cardinality)->getUri(), $this->vars['translatorsCount']->getUri());
 		
 		$this->assertNotNull($activityReconciliation);
 		$activityService->setAcl($activityReconciliation, $aclUser, $this->vars['reconciler']);
@@ -599,7 +599,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		//if not ok, can go to optional activity to review corrections:
 		$activityFinalCheckElse = $authoringService->createConditionalActivity($connectorFinalCheck, 'else', $activityCorrectVerification);//if ^finalCheck != 1
 		$this->assertNotNull($activityFinalCheckElse);
-		$this->assertEqual($activityFinalCheckElse->uriResource, $activityCorrectVerification->uriResource);
+		$this->assertEqual($activityFinalCheckElse->getUri(), $activityCorrectVerification->getUri());
 		
 		$this->processDefinition['PBA'] = $processDefinition;
 	}
@@ -673,7 +673,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		//if not ok, return to review assembled booklets:
 		$activityOpticalCheckElse = $authoringService->createConditionalActivity($connectorLayoutCorrections, 'else', $activityReviewBooklets);//if ^layoutCheck != 1
 		$this->assertNotNull($activityOpticalCheckElse);
-		$this->assertEqual($activityOpticalCheckElse->uriResource, $activityReviewBooklets->uriResource);
+		$this->assertEqual($activityOpticalCheckElse->getUri(), $activityReviewBooklets->getUri());
 		
 		//final sign off (TD):
 		$transitionRule = $authoringService->createTransitionRule($connectorOpticalCheck, '^finalCheck == 1');
@@ -689,7 +689,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		//if not ok, return to optical check:
 		$activityOpticalCheckElse = $authoringService->createConditionalActivity($connectorOpticalCheck, 'else', $activityLayoutCorrections);//if ^finalCheck != 1
 		$this->assertNotNull($activityOpticalCheckElse);
-		$this->assertEqual($activityOpticalCheckElse->uriResource, $activityLayoutCorrections->uriResource);
+		$this->assertEqual($activityOpticalCheckElse->getUri(), $activityLayoutCorrections->getUri());
 		
 		//country sign off:
 		$transitionRule = $authoringService->createTransitionRule($connectorTDsignOff, '^TDsignOff == 1');
@@ -705,7 +705,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		//if not ok, return to optical check:
 		$activityTDsignOffElse = $authoringService->createConditionalActivity($connectorTDsignOff, 'else', $activityOpticalCheck);//if ^TDsignOff != 1
 		$this->assertNotNull($activityTDsignOffElse);
-		$this->assertEqual($activityTDsignOffElse->uriResource, $activityOpticalCheck->uriResource);
+		$this->assertEqual($activityTDsignOffElse->getUri(), $activityOpticalCheck->getUri());
 		
 		//final activity:
 		$transitionRule = $authoringService->createTransitionRule($connectorCountrySignOff, '^countrySignOff == 1');
@@ -720,7 +720,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		//if not ok, return to optical check:
 		$activityCountrySignOffElse = $authoringService->createConditionalActivity($connectorCountrySignOff, 'else', $activityTDsignOff);//if ^countrySignOff != 1
 		$this->assertNotNull($activityCountrySignOffElse);
-		$this->assertEqual($activityCountrySignOffElse->uriResource, $activityTDsignOff->uriResource);
+		$this->assertEqual($activityCountrySignOffElse->getUri(), $activityTDsignOff->getUri());
 		
 		$this->processDefinition['Booklet'] = $processDefinition;
 	}
@@ -780,16 +780,16 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		$activityService->setAcl($activityTranslate, $aclUser, $this->vars['translator']);
 		$activityService->setControls($activityTranslate, array(INSTANCE_CONTROL_FORWARD));
 
-		$result = $authoringService->setParallelActivities($connectorSelectTranslators, array($activityTranslate->uriResource => $this->vars['translatorsCount']));
+		$result = $authoringService->setParallelActivities($connectorSelectTranslators, array($activityTranslate->getUri() => $this->vars['translatorsCount']));
 		$this->assertTrue($result);
-		$this->assertTrue($connectorService->setSplitVariables($connectorSelectTranslators, array($activityTranslate->uriResource => $this->vars['translator'])));
+		$this->assertTrue($connectorService->setSplitVariables($connectorSelectTranslators, array($activityTranslate->getUri() => $this->vars['translator'])));
 
 		$nextActivities = $connectorService->getNextActivities($connectorSelectTranslators);
 		$this->assertEqual(count($nextActivities), 1);
 		$cardinality = reset($nextActivities);
 		$this->assertTrue($cardinalityService->isCardinality($cardinality));
-		$this->assertEqual($cardinalityService->getDestination($cardinality)->uriResource, $activityTranslate->uriResource);
-		$this->assertEqual($cardinalityService->getCardinality($cardinality)->uriResource, $this->vars['translatorsCount']->uriResource);
+		$this->assertEqual($cardinalityService->getDestination($cardinality)->getUri(), $activityTranslate->getUri());
+		$this->assertEqual($cardinalityService->getCardinality($cardinality)->getUri(), $this->vars['translatorsCount']->getUri());
 
 		$connectorTranslate = $authoringService->createConnector($activityTranslate);
 		$this->assertNotNull($connectorTranslate);
@@ -800,8 +800,8 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		$this->assertEqual(count($prevActivities), 1);
 		$cardinality = reset($prevActivities);
 		$this->assertTrue($cardinalityService->isCardinality($cardinality));
-		$this->assertEqual($cardinalityService->getSource($cardinality)->uriResource, $activityTranslate->uriResource);
-		$this->assertEqual($cardinalityService->getCardinality($cardinality)->uriResource, $this->vars['translatorsCount']->uriResource);
+		$this->assertEqual($cardinalityService->getSource($cardinality)->getUri(), $activityTranslate->getUri());
+		$this->assertEqual($cardinalityService->getCardinality($cardinality)->getUri(), $this->vars['translatorsCount']->getUri());
 
 		$this->assertNotNull($activityReconciliation);
 		$activityService->setAcl($activityReconciliation, $aclUser, $this->vars['reconciler']);
@@ -849,7 +849,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		//if not ok, can go to optional activity to review corrections:
 		$activityFinalCheckElse = $authoringService->createConditionalActivity($connectorFinalCheck, 'else', $activityCorrectVerification); //if ^finalCheck != 1
 		$this->assertNotNull($activityFinalCheckElse);
-		$this->assertEqual($activityFinalCheckElse->uriResource, $activityCorrectVerification->uriResource);
+		$this->assertEqual($activityFinalCheckElse->getUri(), $activityCorrectVerification->getUri());
 
 		$this->processDefinition['BQ'] = $processDefinition;
 		
@@ -924,16 +924,16 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		$activityService->setAcl($activityTranslate, $aclUser, $this->vars['translator']);
 		$activityService->setControls($activityTranslate, array(INSTANCE_CONTROL_FORWARD));
 		
-		$result = $authoringService->setParallelActivities($connectorSelectTranslators, array($activityTranslate->uriResource => $this->vars['translatorsCount']));
+		$result = $authoringService->setParallelActivities($connectorSelectTranslators, array($activityTranslate->getUri() => $this->vars['translatorsCount']));
 		$this->assertTrue($result);
-		$this->assertTrue($connectorService->setSplitVariables($connectorSelectTranslators, array($activityTranslate->uriResource => $this->vars['translator'])));
+		$this->assertTrue($connectorService->setSplitVariables($connectorSelectTranslators, array($activityTranslate->getUri() => $this->vars['translator'])));
 		
 		$nextActivities = $connectorService->getNextActivities($connectorSelectTranslators);
 		$this->assertEqual(count($nextActivities), 1);
 		$cardinality = reset($nextActivities);
 		$this->assertTrue($cardinalityService->isCardinality($cardinality));
-		$this->assertEqual($cardinalityService->getDestination($cardinality)->uriResource, $activityTranslate->uriResource);
-		$this->assertEqual($cardinalityService->getCardinality($cardinality)->uriResource, $this->vars['translatorsCount']->uriResource);
+		$this->assertEqual($cardinalityService->getDestination($cardinality)->getUri(), $activityTranslate->getUri());
+		$this->assertEqual($cardinalityService->getCardinality($cardinality)->getUri(), $this->vars['translatorsCount']->getUri());
 		
 		$connectorTranslate = $authoringService->createConnector($activityTranslate);
 		$this->assertNotNull($connectorTranslate);
@@ -944,8 +944,8 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		$this->assertEqual(count($prevActivities), 1);
 		$cardinality = reset($prevActivities);
 		$this->assertTrue($cardinalityService->isCardinality($cardinality));
-		$this->assertEqual($cardinalityService->getSource($cardinality)->uriResource, $activityTranslate->uriResource);
-		$this->assertEqual($cardinalityService->getCardinality($cardinality)->uriResource, $this->vars['translatorsCount']->uriResource);
+		$this->assertEqual($cardinalityService->getSource($cardinality)->getUri(), $activityTranslate->getUri());
+		$this->assertEqual($cardinalityService->getCardinality($cardinality)->getUri(), $this->vars['translatorsCount']->getUri());
 		
 		$this->assertNotNull($activityReconciliation);
 		$activityService->setAcl($activityReconciliation, $aclUser, $this->vars['reconciler']);
@@ -985,7 +985,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		$this->assertNotNull($transitionRule);
 		
 		$activityCorrectVerificationBis = $authoringService->createConditionalActivity($connectorTDreview, 'else', $activityCorrectVerification);//if ^TDreview != 1
-		$this->assertEqual($activityCorrectVerification->uriResource, $activityCorrectVerificationBis->uriResource);
+		$this->assertEqual($activityCorrectVerification->getUri(), $activityCorrectVerificationBis->getUri());
 		
 		//correct layout :
 		$activityCorrectLayout = $authoringService->createConditionalActivity($connectorTDreview, 'then', null, 'Correct Layout Issues');//if ^TDreview == 1
@@ -1030,15 +1030,15 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		
 		//if not ok, return to correct layout : 
 		$activityCorrectLayoutBis = $authoringService->createConditionalActivity($connectorFinalCheck, 'else', $activityCorrectLayout);//if ^finalCheck != 1
-		$this->assertEqual($activityCorrectLayout->uriResource, $activityCorrectLayoutBis->uriResource);
+		$this->assertEqual($activityCorrectLayout->getUri(), $activityCorrectLayoutBis->getUri());
 		
 		//verification : 
 		$transitionRule = $authoringService->createTransitionRule($connectorVerification, '^opticalCheck == 1');
 		$this->assertNotNull($transitionRule);
 		$activityFinalCheckBis = $authoringService->createConditionalActivity($connectorVerification, 'then', $activityFinalCheck);//if ^opticalCheck == 1
-		$this->assertEqual($activityFinalCheckBis->uriResource, $activityFinalCheck->uriResource);
+		$this->assertEqual($activityFinalCheckBis->getUri(), $activityFinalCheck->getUri());
 		$activityCorrectLayoutBis = $authoringService->createConditionalActivity($connectorVerification, 'else', $activityCorrectLayout);//if ^opticalCheck != 1
-		$this->assertEqual($activityCorrectLayoutBis->uriResource, $activityCorrectLayout->uriResource);
+		$this->assertEqual($activityCorrectLayoutBis->getUri(), $activityCorrectLayout->getUri());
 		
 		//scoring verification:
 		$activityScoringVerification = $authoringService->createSequenceActivity($connectorScoringDefinition, null, 'Scoring Verification');
@@ -1081,7 +1081,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		$activityService->setHidden($activityFinal, true);
 		
 		$activityTDSignOffBis = $authoringService->createConditionalActivity($connectorCountrySignOff, 'else', $activityTDSignOff);
-		$this->assertEqual($activityTDSignOff->uriResource, $activityTDSignOffBis->uriResource);
+		$this->assertEqual($activityTDSignOff->getUri(), $activityTDSignOffBis->getUri());
 		
 		//end of process definition
 		
@@ -1143,7 +1143,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 					if($i%4 == 0){
 						if ($processPBA instanceof core_kernel_classes_Resource) {
 							$this->out("executes {$processPBA->getLabel()} for {$unit->getLabel()}/{$countryCode}/{$langCode}:", true);
-							$this->executeProcessPBA($processPBA, $unit->uriResource, $countryCode, $langCode, $simulationOptions);
+							$this->executeProcessPBA($processPBA, $unit->getUri(), $countryCode, $langCode, $simulationOptions);
 						}else{
 							$this->fail('No PBA process definition found to be executed');
 						}
@@ -1153,7 +1153,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 					if($i%4 == 1){
 						if ($processBooklet instanceof core_kernel_classes_Resource) {
 							$this->out("executes {$processBooklet->getLabel()} for {$unit->getLabel()}/{$countryCode}/{$langCode}:", true);
-							$this->executeProcessBooklet($processBooklet, $unit->uriResource, $countryCode, $langCode, $simulationOptions);
+							$this->executeProcessBooklet($processBooklet, $unit->getUri(), $countryCode, $langCode, $simulationOptions);
 						}else{
 							$this->fail('No Booklet process definition found to be executed');
 						}
@@ -1163,7 +1163,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 					if($i%4 == 2){
 						if ($processCBA instanceof core_kernel_classes_Resource) {
 							$this->out("executes {$processCBA->getLabel()} for {$unit->getLabel()}/{$countryCode}/{$langCode}:", true);
-							$this->executeProcessCBA($processCBA, $unit->uriResource, $countryCode, $langCode, $simulationOptions);
+							$this->executeProcessCBA($processCBA, $unit->getUri(), $countryCode, $langCode, $simulationOptions);
 						}else{
 							$this->fail('No process definition found to be executed');
 						}
@@ -1172,7 +1172,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 					if($i%4 == 3){
 						if ($processBQ instanceof core_kernel_classes_Resource) {
 							$this->out("executes {$processBQ->getLabel()} for {$unit->getLabel()}/{$countryCode}/{$langCode}:", true);
-							$this->executeProcessBQ($processBQ, $unit->uriResource, $countryCode, $langCode, $simulationOptions);
+							$this->executeProcessBQ($processBQ, $unit->getUri(), $countryCode, $langCode, $simulationOptions);
 						}else{
 							$this->fail('No BQ process definition found to be executed');
 						}
@@ -1213,21 +1213,21 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		$xliffRevision = 0;
 
 		$initVariables = array(
-			$this->vars['unitUri']->uriResource => $unit->uriResource,
-			$this->vars['countryCode']->uriResource => $countryCode,
-			$this->vars['languageCode']->uriResource => $languageCode,
-			$this->vars['npm']->uriResource => $users['npm'],
-			$this->vars['reconciler']->uriResource => $users['reconciler'],
-			$this->vars['verifier']->uriResource => $users['verifier'],
-			$this->vars['xliff']->uriResource => $xliffRevision,
-			$this->vars['vff']->uriResource => $vffRevision,
+			$this->vars['unitUri']->getUri() => $unit->getUri(),
+			$this->vars['countryCode']->getUri() => $countryCode,
+			$this->vars['languageCode']->getUri() => $languageCode,
+			$this->vars['npm']->getUri() => $users['npm'],
+			$this->vars['reconciler']->getUri() => $users['reconciler'],
+			$this->vars['verifier']->getUri() => $users['verifier'],
+			$this->vars['xliff']->getUri() => $xliffRevision,
+			$this->vars['vff']->getUri() => $vffRevision,
 		);
 		
 		$this->changeUser($this->userLogins['consortium'][1]);
 		$this->assertTrue($processDefinitionService->checkAcl($processDefinition, $this->currentUser));
 		
 		$processInstance = $processExecutionService->createProcessExecution($processDefinition, $processExecName, $processExecComment, $initVariables);
-		$this->assertEqual($processDefinition->uriResource, $processExecutionService->getExecutionOf($processInstance)->uriResource);
+		$this->assertEqual($processDefinition->getUri(), $processExecutionService->getExecutionOf($processInstance)->getUri());
 		
 		$processInstance->setPropertyValue($this->properties[TranslationProcessHelper::getPropertyName('unitUri')], $unit);
 		$processInstance->setPropertyValue($this->properties[TranslationProcessHelper::getPropertyName('countryCode')], $countryCode);
@@ -1236,7 +1236,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		$this->assertTrue($processExecutionService->checkStatus($processInstance, 'started'));
 
 		$this->out(__METHOD__, true);
-		$this->processExecutions[$processInstance->uriResource] = $processInstance;
+		$this->processExecutions[$processInstance->getUri()] = $processInstance;
 			
 		$currentActivityExecutions = $processExecutionService->getCurrentActivityExecutions($processInstance);
 		$this->assertEqual(count($currentActivityExecutions), 1);
@@ -1281,7 +1281,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 			$activity = $activityExecutionService->getExecutionOf($activityExecution);
 			
 			$this->out("<strong>Iteration {$i} : activity no{$activityIndex} : ".$activity->getLabel()."</strong>", true);
-			$this->out("current user : ".$this->currentUser->getOnePropertyValue($loginProperty).' "'.$this->currentUser->uriResource.'"', true);
+			$this->out("current user : ".$this->currentUser->getOnePropertyValue($loginProperty).' "'.$this->currentUser->getUri().'"', true);
 			
 			$this->checkAccessControl($activityExecution);
 			
@@ -1314,7 +1314,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 				
 				//execute service:
 				$this->assertTrue($this->executeServiceTranslate(array(
-					'translatorUri' => $theTranslator->uriResource
+					'translatorUri' => $theTranslator->getUri()
 				)));
 				
 			}else{
@@ -1455,21 +1455,21 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		$xliffRevision = 0;
 		
 		$initVariables = array(
-			$this->vars['unitUri']->uriResource => $unit->uriResource,
-			$this->vars['countryCode']->uriResource => $countryCode,
-			$this->vars['languageCode']->uriResource => $languageCode,
-			$this->vars['npm']->uriResource => $users['npm'],
-			$this->vars['reconciler']->uriResource => $users['reconciler'],
-			$this->vars['verifier']->uriResource => $users['verifier'],
-			$this->vars['xliff']->uriResource => $xliffRevision,
-			$this->vars['vff']->uriResource => $vffRevision,
+			$this->vars['unitUri']->getUri() => $unit->getUri(),
+			$this->vars['countryCode']->getUri() => $countryCode,
+			$this->vars['languageCode']->getUri() => $languageCode,
+			$this->vars['npm']->getUri() => $users['npm'],
+			$this->vars['reconciler']->getUri() => $users['reconciler'],
+			$this->vars['verifier']->getUri() => $users['verifier'],
+			$this->vars['xliff']->getUri() => $xliffRevision,
+			$this->vars['vff']->getUri() => $vffRevision,
 		);
 		
 		$this->changeUser($this->userLogins['consortium'][1]);
 		$this->assertTrue($processDefinitionService->checkAcl($processDefinition, $this->currentUser));
 		
 		$processInstance = $processExecutionService->createProcessExecution($processDefinition, $processExecName, $processExecComment, $initVariables);
-		$this->assertEqual($processDefinition->uriResource, $processExecutionService->getExecutionOf($processInstance)->uriResource);
+		$this->assertEqual($processDefinition->getUri(), $processExecutionService->getExecutionOf($processInstance)->getUri());
 		
 		$processInstance->setPropertyValue($this->properties[TranslationProcessHelper::getPropertyName('unitUri')], $unit);
 		$processInstance->setPropertyValue($this->properties[TranslationProcessHelper::getPropertyName('countryCode')], $countryCode);
@@ -1478,7 +1478,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		$this->assertTrue($processExecutionService->checkStatus($processInstance, 'started'));
 
 		$this->out(__METHOD__, true);
-		$this->processExecutions[$processInstance->uriResource] = $processInstance;
+		$this->processExecutions[$processInstance->getUri()] = $processInstance;
 			
 		$currentActivityExecutions = $processExecutionService->getCurrentActivityExecutions($processInstance);
 		$this->assertEqual(count($currentActivityExecutions), 1);
@@ -1523,7 +1523,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 			$activity = $activityExecutionService->getExecutionOf($activityExecution);
 			
 			$this->out("<strong>Iteration {$i} : activity no{$activityIndex} : ".$activity->getLabel()."</strong>", true);
-			$this->out("current user : ".$this->currentUser->getOnePropertyValue($loginProperty).' "'.$this->currentUser->uriResource.'"', true);
+			$this->out("current user : ".$this->currentUser->getOnePropertyValue($loginProperty).' "'.$this->currentUser->getUri().'"', true);
 			
 			$this->checkAccessControl($activityExecution);
 			
@@ -1556,7 +1556,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 				
 				//execute service:
 				$this->assertTrue($this->executeServiceTranslate(array(
-					'translatorUri' => $theTranslator->uriResource
+					'translatorUri' => $theTranslator->getUri()
 				)));
 				
 			}else{
@@ -1716,21 +1716,21 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		$xliffRevision = 0;
 		
 		$initVariables = array(
-			$this->vars['unitUri']->uriResource => $unit->uriResource,
-			$this->vars['countryCode']->uriResource => $countryCode,
-			$this->vars['languageCode']->uriResource => $languageCode,
-			$this->vars['npm']->uriResource => $users['npm'],
-			$this->vars['reconciler']->uriResource => $users['reconciler'],
-			$this->vars['verifier']->uriResource => $users['verifier'],
-			$this->vars['xliff']->uriResource => $xliffRevision,
-			$this->vars['vff']->uriResource => $vffRevision,
+			$this->vars['unitUri']->getUri() => $unit->getUri(),
+			$this->vars['countryCode']->getUri() => $countryCode,
+			$this->vars['languageCode']->getUri() => $languageCode,
+			$this->vars['npm']->getUri() => $users['npm'],
+			$this->vars['reconciler']->getUri() => $users['reconciler'],
+			$this->vars['verifier']->getUri() => $users['verifier'],
+			$this->vars['xliff']->getUri() => $xliffRevision,
+			$this->vars['vff']->getUri() => $vffRevision,
 		);
 		
 		$this->changeUser($this->userLogins['consortium'][1]);
 		$this->assertTrue($processDefinitionService->checkAcl($processDefinition, $this->currentUser));
 		
 		$processInstance = $processExecutionService->createProcessExecution($processDefinition, $processExecName, $processExecComment, $initVariables);
-		$this->assertEqual($processDefinition->uriResource, $processExecutionService->getExecutionOf($processInstance)->uriResource);
+		$this->assertEqual($processDefinition->getUri(), $processExecutionService->getExecutionOf($processInstance)->getUri());
 		
 		$processInstance->setPropertyValue($this->properties[TranslationProcessHelper::getPropertyName('unitUri')], $unit);
 		$processInstance->setPropertyValue($this->properties[TranslationProcessHelper::getPropertyName('countryCode')], $countryCode);
@@ -1739,7 +1739,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		$this->assertTrue($processExecutionService->checkStatus($processInstance, 'started'));
 
 		$this->out(__METHOD__, true);
-		$this->processExecutions[$processInstance->uriResource] = $processInstance;
+		$this->processExecutions[$processInstance->getUri()] = $processInstance;
 			
 		$currentActivityExecutions = $processExecutionService->getCurrentActivityExecutions($processInstance);
 		$this->assertEqual(count($currentActivityExecutions), 1);
@@ -1794,7 +1794,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 			$activity = $activityExecutionService->getExecutionOf($activityExecution);
 			
 			$this->out("<strong>Iteration {$i} : activity no{$activityIndex} : ".$activity->getLabel()."</strong>", true);
-			$this->out("current user : ".$this->currentUser->getOnePropertyValue($loginProperty).' "'.$this->currentUser->uriResource.'"', true);
+			$this->out("current user : ".$this->currentUser->getOnePropertyValue($loginProperty).' "'.$this->currentUser->getUri().'"', true);
 			
 			$this->checkAccessControl($activityExecution);
 			
@@ -1827,7 +1827,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 				
 				//execute service:
 				$this->assertTrue($this->executeServiceTranslate(array(
-					'translatorUri' => $theTranslator->uriResource
+					'translatorUri' => $theTranslator->getUri()
 				)));
 				
 			}else{
@@ -2035,9 +2035,9 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		$activityExecStatus = $activityExecutionService->getStatus($activityExecution);
 		$this->assertNotNull($activityExecStatus);
 		if($started){
-			$this->assertEqual($activityExecStatus->uriResource, INSTANCE_PROCESSSTATUS_STARTED);
+			$this->assertEqual($activityExecStatus->getUri(), INSTANCE_PROCESSSTATUS_STARTED);
 		}else{
-			$this->assertEqual($activityExecStatus->uriResource, INSTANCE_PROCESSSTATUS_RESUMED);
+			$this->assertEqual($activityExecStatus->getUri(), INSTANCE_PROCESSSTATUS_RESUMED);
 		}
 		
 		return $activityExecution;
@@ -2112,13 +2112,13 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 			foreach($translators as $translator){
 				$translatorResource = null;
 				if($translator instanceof core_kernel_classes_Resource){
-					$pushedVars[] = $translator->uriResource;
+					$pushedVars[] = $translator->getUri();
 					$translatorResource = $translator;
 				}else if(is_string($translator) && common_Utils::isUri($translator)){
 					$pushedVars[] = $translator;
 					$translatorResource = new core_kernel_classes_Resource($translator);
 				}
-				$this->out("selected translator : {$translatorResource->getLabel()} ({$translatorResource->uriResource})");
+				$this->out("selected translator : {$translatorResource->getLabel()} ({$translatorResource->getUri()})");
 
 			}
 			$this->assertTrue(count($pushedVars) > 0);
@@ -2173,21 +2173,21 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		$xliffRevision = 0;
 
 		$initVariables = array(
-			$this->vars['unitUri']->uriResource => $unit->uriResource,
-			$this->vars['countryCode']->uriResource => $countryCode,
-			$this->vars['languageCode']->uriResource => $languageCode,
-			$this->vars['npm']->uriResource => $users['npm'],
-			$this->vars['reconciler']->uriResource => $users['reconciler'],
-			$this->vars['verifier']->uriResource => $users['verifier'],
-			$this->vars['xliff']->uriResource => $xliffRevision,
-			$this->vars['vff']->uriResource => $vffRevision,
+			$this->vars['unitUri']->getUri() => $unit->getUri(),
+			$this->vars['countryCode']->getUri() => $countryCode,
+			$this->vars['languageCode']->getUri() => $languageCode,
+			$this->vars['npm']->getUri() => $users['npm'],
+			$this->vars['reconciler']->getUri() => $users['reconciler'],
+			$this->vars['verifier']->getUri() => $users['verifier'],
+			$this->vars['xliff']->getUri() => $xliffRevision,
+			$this->vars['vff']->getUri() => $vffRevision,
 		);
 
 		$this->changeUser($this->userLogins['consortium'][1]);
 		$this->assertTrue($processDefinitionService->checkAcl($processDefinition, $this->currentUser));
 
 		$processInstance = $processExecutionService->createProcessExecution($processDefinition, $processExecName, $processExecComment, $initVariables);
-		$this->assertEqual($processDefinition->uriResource, $processExecutionService->getExecutionOf($processInstance)->uriResource);
+		$this->assertEqual($processDefinition->getUri(), $processExecutionService->getExecutionOf($processInstance)->getUri());
 
 		$processInstance->setPropertyValue($this->properties[TranslationProcessHelper::getPropertyName('unitUri')], $unit);
 		$processInstance->setPropertyValue($this->properties[TranslationProcessHelper::getPropertyName('countryCode')], $countryCode);
@@ -2196,7 +2196,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		$this->assertTrue($processExecutionService->checkStatus($processInstance, 'started'));
 
 		$this->out(__METHOD__, true);
-		$this->processExecutions[$processInstance->uriResource] = $processInstance;
+		$this->processExecutions[$processInstance->getUri()] = $processInstance;
 
 		$currentActivityExecutions = $processExecutionService->getCurrentActivityExecutions($processInstance);
 		$this->assertEqual(count($currentActivityExecutions), 1);
@@ -2228,7 +2228,7 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 			$activity = $activityExecutionService->getExecutionOf($activityExecution);
 
 			$this->out("<strong>Iteration {$i} : activity no{$activityIndex} : " . $activity->getLabel() . "</strong>", true);
-			$this->out("current user : " . $this->currentUser->getOnePropertyValue($loginProperty) . ' "' . $this->currentUser->uriResource . '"', true);
+			$this->out("current user : " . $this->currentUser->getOnePropertyValue($loginProperty) . ' "' . $this->currentUser->getUri() . '"', true);
 
 			$this->checkAccessControl($activityExecution);
 
@@ -2426,9 +2426,9 @@ class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 		$translatorRole = $this->roles['translator'];
 		
 		if($replacement instanceof core_kernel_classes_Resource){
-			if($replacement->hasType(new core_kernel_classes_Class($translatorRole->uriResource))){
+			if($replacement->hasType(new core_kernel_classes_Class($translatorRole->getUri()))){
 				$processVariableService = wfEngine_models_classes_VariableService::singleton();
-				$returnValue = $processVariableService->edit('translator', $replacement->uriResource);
+				$returnValue = $processVariableService->edit('translator', $replacement->getUri());
 			}
 		}
 		

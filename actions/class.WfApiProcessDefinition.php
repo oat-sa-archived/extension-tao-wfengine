@@ -83,7 +83,7 @@ class wfEngine_actions_WfApiProcessDefinition extends wfEngine_actions_WfApi {
 			$processExecution = $this->processExecutionService->createProcessExecution($this->processDefinition, $name, $comment, $variables);
 			if(!is_null($processExecution)){
 				$this->setSuccess(true);
-				$this->setData('processExecutionUri', $processExecution->uriResource);
+				$this->setData('processExecutionUri', $processExecution->getUri());
 			}
 			else{
 				$this->setErrorMessage(__('Cannot create process execution'));

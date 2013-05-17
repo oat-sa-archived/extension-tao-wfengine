@@ -79,7 +79,7 @@ class wfEngine_actions_ProcessInstanciation extends wfEngine_actions_WfModule{
 			$activityExecutionService->createNonce($initialActivityExecution);
 		}
 
-		$param = array('processUri' => urlencode($newProcessExecution->uriResource));
+		$param = array('processUri' => urlencode($newProcessExecution->getUri()));
 		$this->redirect(tao_helpers_Uri::url('index', 'ProcessBrowser', null, $param));
 
 	}

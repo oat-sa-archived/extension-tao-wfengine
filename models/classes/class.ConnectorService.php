@@ -231,7 +231,7 @@ class wfEngine_models_classes_ConnectorService
        	    $returnValue = $connector->getUniquePropertyValue($connTypeProp);
        	}
        	catch (common_Exception $e) {
-			throw new wfEngine_models_classes_ProcessDefinitonException('Exception when retreiving connector type ' . $connector->uriResource);
+			throw new wfEngine_models_classes_ProcessDefinitonException('Exception when retreiving connector type ' . $connector->getUri());
        	}
         // section 127-0-1-1-66b8afb4:1322473370c:-8000:0000000000002ECF end
 

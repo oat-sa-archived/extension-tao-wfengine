@@ -122,7 +122,7 @@ class wfEngine_models_classes_ProcessDefinitionService
 		{
 			$isInitialCollection = $activity->getOnePropertyValue($this->activitiesIsInitialProp);
 		
-			if ($isInitialCollection!= null && $isInitialCollection->uriResource == GENERIS_TRUE)
+			if ($isInitialCollection!= null && $isInitialCollection->getUri() == GENERIS_TRUE)
 			{
 				//new: return array of Resource insteand of Activity
 				$returnValue[] = $activity;
@@ -149,7 +149,7 @@ class wfEngine_models_classes_ProcessDefinitionService
         // section 127-0-1-1--6e15d8e:132297dc60d:-8000:0000000000002EF0 begin
 		foreach ($processDefinition->getPropertyValuesCollection($this->processActivitiesProp)->getIterator() as $activity){
 			if($activity instanceof core_kernel_classes_Resource){
-				$returnValue[$activity->uriResource] = $activity;
+				$returnValue[$activity->getUri()] = $activity;
 			}
 		}
         // section 127-0-1-1--6e15d8e:132297dc60d:-8000:0000000000002EF0 end
@@ -188,7 +188,7 @@ class wfEngine_models_classes_ProcessDefinitionService
 			$label = $variable->getLabel();
 			$range = $variable->getPropertyValues($rangeProp);
 
-			$returnValue[$variable->uriResource] = array(
+			$returnValue[$variable->getUri()] = array(
 				'name' => trim(strip_tags($label)), 
 				'widgets' => $widgets,
 				'range' => $range
@@ -239,10 +239,10 @@ class wfEngine_models_classes_ProcessDefinitionService
 			$variableService = wfEngine_models_classes_VariableService::singleton();
 			$processVariableResource = $variableService->getProcessVariable($processVariable);
 			if(!is_null($processVariableResource) && $processVariableResource instanceof core_kernel_classes_Resource){
-				$returnValue = $processDefinition->setPropertyValue($this->processVariablesProp, $processVariableResource->uriResource);
+				$returnValue = $processDefinition->setPropertyValue($this->processVariablesProp, $processVariableResource->getUri());
 			}
 		}elseif($processVariable instanceof core_kernel_classes_Resource){
-			$returnValue = $processDefinition->setPropertyValue($this->processVariablesProp, $processVariable->uriResource);
+			$returnValue = $processDefinition->setPropertyValue($this->processVariablesProp, $processVariable->getUri());
 		}
 		
         // section 127-0-1-1--6e15d8e:132297dc60d:-8000:0000000000002F06 end
@@ -290,28 +290,28 @@ class wfEngine_models_classes_ProcessDefinitionService
         if(!$processDefinition->hasType(new core_kernel_classes_Class(CLASS_PROCESS))){
         	throw new Exception("Process must be an instance of the class Process");
         }
-        if(!in_array($mode->uriResource, array_keys($this->getAclModes()))){
+        if(!in_array($mode->getUri(), array_keys($this->getAclModes()))){
         	throw new Exception("Unknow acl mode");
         }
         
         //set the ACL mode
         $properties = array(
-        	PROPERTY_PROCESS_INIT_ACL_MODE	=> $mode->uriResource
+        	PROPERTY_PROCESS_INIT_ACL_MODE	=> $mode->getUri()
         );
         
-        switch($mode->uriResource){
+        switch($mode->getUri()){
         	case INSTANCE_ACL_ROLE:{
         		if(is_null($target)){
         			throw new Exception("Target must reference a role resource");
         		}
-        		$properties[PROPERTY_PROCESS_INIT_RESTRICTED_ROLE] = $target->uriResource;
+        		$properties[PROPERTY_PROCESS_INIT_RESTRICTED_ROLE] = $target->getUri();
         		break;
         	}	
         	case INSTANCE_ACL_USER:{
         		if(is_null($target)){
         			throw new Exception("Target must reference a user resource");
         		}
-        		$properties[PROPERTY_PROCESS_INIT_RESTRICTED_USER] = $target->uriResource;
+        		$properties[PROPERTY_PROCESS_INIT_RESTRICTED_USER] = $target->getUri();
         		break;
 			}	
         }
@@ -352,7 +352,7 @@ class wfEngine_models_classes_ProcessDefinitionService
                 $returnValue = true;	//if no mode defined, the process is allowed
             }
             else{
-                switch($modeUri->uriResource){
+                switch($modeUri->getUri()){
                      
                     //check if th current user is the restricted user
                     case INSTANCE_ACL_USER:

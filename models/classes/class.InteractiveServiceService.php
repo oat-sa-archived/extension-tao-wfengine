@@ -112,7 +112,7 @@ class wfEngine_models_classes_InteractiveServiceService
 		if($serviceDefinitionUrl instanceof core_kernel_classes_Literal){
 			$serviceUrl = $serviceDefinitionUrl->literal;
 		}else if($serviceDefinitionUrl instanceof core_kernel_classes_Resource){
-			$serviceUrl = $serviceDefinitionUrl->uriResource;
+			$serviceUrl = $serviceDefinitionUrl->getUri();
 		}
 		// Remove the parameters because they are only for show, and they are actualy encoded in the variables
 		$urlPart = explode('?',$serviceUrl);
@@ -263,7 +263,7 @@ class wfEngine_models_classes_InteractiveServiceService
 					$paramValue = '';
 					
 					//use the current and unique token to get the process variable value:
-					$paramValueResourceArray = $activityExecution->getPropertyValues(new core_kernel_classes_Property($inParameterProcessVariable->uriResource));
+					$paramValueResourceArray = $activityExecution->getPropertyValues(new core_kernel_classes_Property($inParameterProcessVariable->getUri()));
 					
 					$paramValue = '';
 					if(sizeof($paramValueResourceArray)){
@@ -280,7 +280,7 @@ class wfEngine_models_classes_InteractiveServiceService
 					$returnValue[common_Utils::fullTrim($formalParameterName)] = array(
 						'type' => $paramType, 
 						'value' => $paramValue, 
-						'uri' => $inParameterProcessVariable->uriResource
+						'uri' => $inParameterProcessVariable->getUri()
 						);
 					
 				}else if(!is_null($inParameterConstant)){
@@ -291,7 +291,7 @@ class wfEngine_models_classes_InteractiveServiceService
 					if($inParameterConstant instanceof core_kernel_classes_Literal){
 						$paramValue = $inParameterConstant->literal;
 					}else if($inParameterConstant instanceof core_kernel_classes_Resource){
-						$paramValue = $inParameterConstant->uriResource;//encode??
+						$paramValue = $inParameterConstant->getUri();//encode??
 					}
 					
 					$returnValue[common_Utils::fullTrim($formalParameterName)] = array(

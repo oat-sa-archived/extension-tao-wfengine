@@ -126,7 +126,7 @@ class InteractiveServiceServiceTestCase extends UnitTestCase {
 			if(!is_null($formalParam) && $formalParam instanceof core_kernel_classes_Resource){
 				$defaultProcessVar = $formalParam->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_FORMALPARAMETER_DEFAULTPROCESSVARIABLE));
 				if(!is_null($defaultProcessVar)){
-					$this->assertTrue($this->authoringService->setActualParameter($service1, $formalParam, $defaultProcessVar->uriResource, PROPERTY_CALLOFSERVICES_ACTUALPARAMETERIN, PROPERTY_ACTUALPARAMETER_PROCESSVARIABLE));
+					$this->assertTrue($this->authoringService->setActualParameter($service1, $formalParam, $defaultProcessVar->getUri(), PROPERTY_CALLOFSERVICES_ACTUALPARAMETERIN, PROPERTY_ACTUALPARAMETER_PROCESSVARIABLE));
 				}else{
 					$this->assertTrue($this->authoringService->setActualParameter($service1, $formalParam, 'value'.$i));
 				}
@@ -140,12 +140,12 @@ class InteractiveServiceServiceTestCase extends UnitTestCase {
 		
 		$classActivityExecution = new core_kernel_classes_Class(CLASS_ACTIVITY_EXECUTION);
 		$activityExec1 = $classActivityExecution->createInstance('activity exec for interactive service test case');
-		$activityExec1->setPropertyValue(new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_CURRENT_USER), $currentUser->uriResource);
+		$activityExec1->setPropertyValue(new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_CURRENT_USER), $currentUser->getUri());
 		
 		$procVarValue1 = 'procVarValue1';
 		$procVarValue2 = 'procVarValue2';
-		$activityExec1->setPropertyValue(new core_kernel_classes_Property($myProcessVar1->uriResource), $procVarValue1);
-		$activityExec1->setPropertyValue(new core_kernel_classes_Property($myProcessVar2->uriResource), $procVarValue2);
+		$activityExec1->setPropertyValue(new core_kernel_classes_Property($myProcessVar1->getUri()), $procVarValue1);
+		$activityExec1->setPropertyValue(new core_kernel_classes_Property($myProcessVar2->getUri()), $procVarValue2);
 		
 		//check call url again
 		$callUrl = $this->service->getCallUrl($service1);

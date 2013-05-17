@@ -213,7 +213,7 @@ class SaSImporter extends SasManager{
 					foreach($params as $key => $value){
 						$formalParam = $this->getFormalParameter($key, $value);
 						if(!is_null($formalParam)){
-							$service->setPropertyValue($this->serviceFormalParamInProp, $formalParam->uriResource);
+							$service->setPropertyValue($this->serviceFormalParamInProp, $formalParam->getUri());
 						}
 						else{
 							echo "\nError\n";
@@ -258,7 +258,7 @@ class SaSImporter extends SasManager{
 			if(!is_null($processVar)){
 				//set the new instance of process variable as a property of the class process instance:
 				if($processVar->setType(new core_kernel_classes_Class(RDF_PROPERTY))){
-					$newProcessInstanceProperty = new core_kernel_classes_Property($processVar->uriResource);
+					$newProcessInstanceProperty = new core_kernel_classes_Property($processVar->getUri());
 					$newProcessInstanceProperty->setDomain(new core_kernel_classes_Class(CLASS_TOKEN));
 					$newProcessInstanceProperty->setRange($this->rdfLiteralClass);
 				}
@@ -326,7 +326,7 @@ class SaSImporter extends SasManager{
 				if($formalParam['processVar']){
 					$processVar = $this->getProcessVar(str_replace('^', '', $formalParam['processVar']));
 					if(!is_null($processVar)){
-						$formalParamResource->setPropertyValue($this->formalParamDefProcessVarProp, $processVar->uriResource);
+						$formalParamResource->setPropertyValue($this->formalParamDefProcessVarProp, $processVar->getUri());
 					}
 				}
 				if($formalParam['constant']){
@@ -354,7 +354,7 @@ class SaSImporter extends SasManager{
 				if(!is_null($foundProcessVar)){
 					try{
 						$processVar = $formalParam->getUniquePropertyValue($this->formalParamDefProcessVarProp);
-						if($foundProcessVar->uriResource == $processVar->uriResource){
+						if($foundProcessVar->getUri() == $processVar->getUri()){
 							return $formalParam;
 						}
 					}	

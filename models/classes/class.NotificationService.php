@@ -193,7 +193,7 @@ class wfEngine_models_classes_NotificationService
 	        	
 				$nextActivities = array();
 	        	//get the users regarding the notification mode
-	        	switch($notify->uriResource){
+	        	switch($notify->getUri()){
 	        		
 	        		//users directly defined 
 	        		case INSTANCE_NOTIFY_USER: 
@@ -222,20 +222,20 @@ class wfEngine_models_classes_NotificationService
 						$cardinalityService = wfEngine_models_classes_ActivityCardinalityService::singleton();
 						foreach($connectorService->getPreviousActivities($connector) as $prevActivity){
 							if($cardinalityService->isCardinality($prevActivity)){
-								$previousActivities[] = $cardinalityService->getSource($prevActivity)->uriResource;
+								$previousActivities[] = $cardinalityService->getSource($prevActivity)->getUri();
 							}else{
-								$previousActivities[] = $prevActivity->uriResource;
+								$previousActivities[] = $prevActivity->getUri();
 							}
 						}
 						
 						$activity = $activityExecutionService->getExecutionOf($activityExecution);
 						
 						//check activity execution against connector
-						if(in_array($activity->uriResource, $previousActivities)){
+						if(in_array($activity->getUri(), $previousActivities)){
 							$activityExecutionUser = $activityExecutionService->getActivityExecutionUser($activityExecution);
 							if (!is_null($activityExecutionUser)) {
-								if (!in_array($activityExecutionUser->uriResource, $users)) {
-									$users[] = $activityExecutionUser->uriResource;
+								if (!in_array($activityExecutionUser->getUri(), $users)) {
+									$users[] = $activityExecutionUser->getUri();
 								}
 							}
 						}
@@ -244,12 +244,12 @@ class wfEngine_models_classes_NotificationService
 	        			
 	        		//get the users 
 					case INSTANCE_NOTIFY_THEN:{
-						if($connectorService->getType($connector)->uriResource == INSTANCE_TYPEOFCONNECTORS_CONDITIONAL){
+						if($connectorService->getType($connector)->getUri() == INSTANCE_TYPEOFCONNECTORS_CONDITIONAL){
 							$transitionRule = $connectorService->getTransitionRule($connector);
 							if($transitionRule instanceof core_kernel_classes_Resource) {
 								$then = $transitionRuleService->getThenActivity($transitionRule);
 								if($then instanceof core_kernel_classes_Resource){
-									$nextActivities[] = $then->uriResource;
+									$nextActivities[] = $then->getUri();
 								}
 							}
 						}else{
@@ -260,12 +260,12 @@ class wfEngine_models_classes_NotificationService
 					}
 					case INSTANCE_NOTIFY_ELSE:{
 						if(empty($nextActivities)){
-							if ($connectorService->getType($connector)->uriResource == INSTANCE_TYPEOFCONNECTORS_CONDITIONAL) {
+							if ($connectorService->getType($connector)->getUri() == INSTANCE_TYPEOFCONNECTORS_CONDITIONAL) {
 								$transitionRule = $connectorService->getTransitionRule($connector);
 								if ($transitionRule instanceof core_kernel_classes_Resource) {
 									$else = $transitionRuleService->getElseActivity($transitionRule);
 									if ($else instanceof core_kernel_classes_Resource) {
-										$nextActivities[] = $else->uriResource;
+										$nextActivities[] = $else->getUri();
 									}
 								}
 							} else {
@@ -281,9 +281,9 @@ class wfEngine_models_classes_NotificationService
 							$cardinalityService = wfEngine_models_classes_ActivityCardinalityService::singleton();
 							foreach($connectorService->getNextActivities($connector) as $nextActivity){
 								if($cardinalityService->isCardinality($nextActivity)){
-									$nextActivities[] = $cardinalityService->getDestination($nextActivity)->uriResource;
+									$nextActivities[] = $cardinalityService->getDestination($nextActivity)->getUri();
 								}else{
-									$nextActivities[] = $nextActivity->uriResource;
+									$nextActivities[] = $nextActivity->getUri();
 								}
 							}
 						}
@@ -292,7 +292,7 @@ class wfEngine_models_classes_NotificationService
 						foreach($nextActivityExecutions as $activityExec){
 							
 							$activity = $activityExecutionService->getExecutionOf($activityExec);
-							if(!in_array($activity->uriResource, $nextActivities)){
+							if(!in_array($activity->getUri(), $nextActivities)){
 								//invalid activity exec
 								continue;
 							}
@@ -300,12 +300,12 @@ class wfEngine_models_classes_NotificationService
 							//check if it is among the next activity of the connector:
 							$mode = $activityExecutionService->getAclMode($activityExec);
 							if ($mode instanceof core_kernel_classes_Resource) {
-								switch ($mode->uriResource) {
+								switch ($mode->getUri()) {
 									case INSTANCE_ACL_USER:
 										$restrictedUser = $activityExecutionService->getRestrictedUser($activityExec);//@TODO: implemente multiple restricted users?
 										if(!is_null($restrictedUser)){
-											if (!in_array($restrictedUser->uriResource, $users)) {
-												$users[] = $restrictedUser->uriResource;
+											if (!in_array($restrictedUser->getUri(), $users)) {
+												$users[] = $restrictedUser->getUri();
 											}
 										}
 										break;
@@ -360,7 +360,7 @@ class wfEngine_models_classes_NotificationService
         // section 127-0-1-1-1609ec43:129caf00b07:-8000:0000000000002242 begin
         
         //get the notifications with the sent property to false
-		$notifications = $this->notificationClass->searchInstances(array($this->notificationSentProp->uriResource => GENERIS_FALSE), array('like' => false, 'recursive' => 0));
+		$notifications = $this->notificationClass->searchInstances(array($this->notificationSentProp->getUri() => GENERIS_FALSE), array('like' => false, 'recursive' => 0));
 	    foreach($notifications as $notification){
 	    	//there a date prop by sending try. After 4 try, we stop to try (5 because the 4 try and the 1st date is the creation date) 
 	    	$dates = $notification->getPropertyValues($this->notificationDateProp);
@@ -430,7 +430,7 @@ class wfEngine_models_classes_NotificationService
         			$message->setTo($toEmail);
         			$message->setFrom("tao.notification.system@tao.lu");
         			
-        			$messages[$notificationResource->uriResource] = $message;
+        			$messages[$notificationResource->getUri()] = $message;
         		}
         	}
         	
@@ -496,14 +496,14 @@ class wfEngine_models_classes_NotificationService
 					foreach ($termUris as $termUri) {
 						$term = new core_kernel_rules_Term($termUri);
 						$replacement = $term->evaluate(array(
-							VAR_PROCESS_INSTANCE => $processExecution->uriResource,
-							VAR_ACTIVITY_INSTANCE => $activityExecution->uriResource,
-							VAR_ACTIVITY_DEFINITION => $activity->uriResource,
-							VAR_CURRENT_USER => $user->uriResource
+							VAR_PROCESS_INSTANCE => $processExecution->getUri(),
+							VAR_ACTIVITY_INSTANCE => $activityExecution->getUri(),
+							VAR_ACTIVITY_DEFINITION => $activity->getUri(),
+							VAR_CURRENT_USER => $user->getUri()
 						));
 						
 						if($replacement instanceof core_kernel_classes_Resource 
-							&& $replacement->uriResource == INSTANCE_TERM_IS_NULL){
+							&& $replacement->getUri() == INSTANCE_TERM_IS_NULL){
 							$replacement = '';
 						}
 						

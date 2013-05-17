@@ -60,17 +60,17 @@ class ProcessMapTestCase extends UnitTestCase {
 		//create formal param associated to the 3 required proc var:
 		$paramMap = $authoringService->getFormalParameter('map');
 		if(is_null($paramMap)){
-			$paramMap = $authoringService->createFormalParameter('map', 'processvariable', $var_map->uriResource, 'label of the formal param "map"');
+			$paramMap = $authoringService->createFormalParameter('map', 'processvariable', $var_map->getUri(), 'label of the formal param "map"');
 		}
 		
 		$param1 = $authoringService->getFormalParameter('param1');
 		if(is_null($param1)){
-			$param1 = $authoringService->createFormalParameter('param1', 'processvariable', $var_param1->uriResource, 'label of the formal param "param1"');
+			$param1 = $authoringService->createFormalParameter('param1', 'processvariable', $var_param1->getUri(), 'label of the formal param "param1"');
 		}
 		
 		$param2 = $authoringService->getFormalParameter('param2');
 		if(is_null($param2)){
-			$param2 = $authoringService->createFormalParameter('param2', 'processvariable', $var_param2->uriResource, 'label of the formal param "param2"');
+			$param2 = $authoringService->createFormalParameter('param2', 'processvariable', $var_param2->getUri(), 'label of the formal param "param2"');
 		}
 		
 		//creating the activity definition and connecting them sequentially:
@@ -126,21 +126,21 @@ class ProcessMapTestCase extends UnitTestCase {
 				
 				//set service definition (the unit) and parameters:
 				$serviceDefinition->setPropertyValue(new core_kernel_classes_Property(PROPERTY_SUPPORTSERVICES_URL), $url_unit);
-				$serviceDefinition->setPropertyValue(new core_kernel_classes_Property(PROPERTY_SERVICESDEFINITION_FORMALPARAMIN), $paramMap->uriResource);
-				$serviceDefinition->setPropertyValue(new core_kernel_classes_Property(PROPERTY_SERVICESDEFINITION_FORMALPARAMIN), $param1->uriResource);
-				$serviceDefinition->setPropertyValue(new core_kernel_classes_Property(PROPERTY_SERVICESDEFINITION_FORMALPARAMIN), $param2->uriResource);
+				$serviceDefinition->setPropertyValue(new core_kernel_classes_Property(PROPERTY_SERVICESDEFINITION_FORMALPARAMIN), $paramMap->getUri());
+				$serviceDefinition->setPropertyValue(new core_kernel_classes_Property(PROPERTY_SERVICESDEFINITION_FORMALPARAMIN), $param1->getUri());
+				$serviceDefinition->setPropertyValue(new core_kernel_classes_Property(PROPERTY_SERVICESDEFINITION_FORMALPARAMIN), $param2->getUri());
 			
-				$serviceDefinitions[$serviceDefinition->uriResource] = $serviceDefinition;
+				$serviceDefinitions[$serviceDefinition->getUri()] = $serviceDefinition;
 			}
 			$this->assertNotNull($serviceDefinition);
 			
 			//create a call of service and associate the service definition to it:
 			$service = $authoringService->createInteractiveService($activity);
-			$service->setPropertyValue(new core_kernel_classes_Property(PROPERTY_CALLOFSERVICES_SERVICEDEFINITION), $serviceDefinition->uriResource);
+			$service->setPropertyValue(new core_kernel_classes_Property(PROPERTY_CALLOFSERVICES_SERVICEDEFINITION), $serviceDefinition->getUri());
 			
-			$authoringService->setActualParameter($service, $paramMap, $var_map->uriResource, PROPERTY_CALLOFSERVICES_ACTUALPARAMETERIN, PROPERTY_ACTUALPARAMETER_PROCESSVARIABLE);
-			$authoringService->setActualParameter($service, $param1, $var_param1->uriResource, PROPERTY_CALLOFSERVICES_ACTUALPARAMETERIN, PROPERTY_ACTUALPARAMETER_PROCESSVARIABLE);
-			$authoringService->setActualParameter($service, $param2, $var_param2->uriResource, PROPERTY_CALLOFSERVICES_ACTUALPARAMETERIN, PROPERTY_ACTUALPARAMETER_PROCESSVARIABLE);
+			$authoringService->setActualParameter($service, $paramMap, $var_map->getUri(), PROPERTY_CALLOFSERVICES_ACTUALPARAMETERIN, PROPERTY_ACTUALPARAMETER_PROCESSVARIABLE);
+			$authoringService->setActualParameter($service, $param1, $var_param1->getUri(), PROPERTY_CALLOFSERVICES_ACTUALPARAMETERIN, PROPERTY_ACTUALPARAMETER_PROCESSVARIABLE);
+			$authoringService->setActualParameter($service, $param2, $var_param2->getUri(), PROPERTY_CALLOFSERVICES_ACTUALPARAMETERIN, PROPERTY_ACTUALPARAMETER_PROCESSVARIABLE);
 			
 			$this->assertNotNull($service);
 			
@@ -161,7 +161,7 @@ class ProcessMapTestCase extends UnitTestCase {
 			
 			$isIntial = $activity->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_ACTIVITIES_ISINITIAL));
 			if(!is_null($isIntial) && $isIntial instanceof core_kernel_classes_Resource){
-				if($isIntial->uriResource == GENERIS_TRUE){
+				if($isIntial->getUri() == GENERIS_TRUE){
 					$currentActivity = $activity;
 					break;
 				}
@@ -181,7 +181,7 @@ class ProcessMapTestCase extends UnitTestCase {
 			foreach($connectors as $connectorUri){
 				$connector = new core_kernel_classes_Resource($connectorUri);
 				$connectorType = $connector->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_CONNECTORS_TYPE));
-				if ($connectorType->uriResource == INSTANCE_TYPEOFCONNECTORS_SEQUENCE) {
+				if ($connectorType->getUri() == INSTANCE_TYPEOFCONNECTORS_SEQUENCE) {
 					$nextActivity = $connector->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_STEP_NEXT));
 					break;
 				}

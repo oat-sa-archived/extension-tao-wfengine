@@ -74,11 +74,11 @@ class wfEngine_actions_WfHome extends wfEngine_actions_WfModule
 					
 				$currentActivities = array();
 				// Bypass ACL Check if possible...
-				if ($processStatus->uriResource == INSTANCE_PROCESSSTATUS_FINISHED) {
+				if ($processStatus->getUri() == INSTANCE_PROCESSSTATUS_FINISHED) {
 					$processViewData[] = array(
 						'type' 			=> $processDefinition->getLabel(),
 						'label' 		=> $processExecution->getLabel(),
-						'uri' 			=> $processExecution->uriResource,
+						'uri' 			=> $processExecution->getUri(),
 						'activities'	=> array(array('label' => '', 'uri' => '', 'may_participate' => false, 'finished' => true, 'allowed'=> true)),
 						'status'		=> $processStatus
 					);
@@ -94,7 +94,7 @@ class wfEngine_actions_WfHome extends wfEngine_actions_WfModule
 						
 						$activityExecFinishedByUser = false;
 						$assignedUser = $activityExecutionService->getActivityExecutionUser($currentActivityExecution);
-						if(!is_null($assignedUser) && $assignedUser->uriResource == $currentUser->uriResource){
+						if(!is_null($assignedUser) && $assignedUser->getUri() == $currentUser->getUri()){
 							$activityExecFinishedByUser = $activityExecutionService->isFinished($currentActivityExecution);
 						}
 						
@@ -103,8 +103,8 @@ class wfEngine_actions_WfHome extends wfEngine_actions_WfModule
 						$currentActivities[] = array(
 							'label'				=> $currentActivity->getLabel(),
 							'uri' 				=> $uri,
-							'may_participate'	=> ($processStatus->uriResource != INSTANCE_PROCESSSTATUS_FINISHED && $isAllowed),
-							'finished'			=> ($processStatus->uriResource == INSTANCE_PROCESSSTATUS_FINISHED),
+							'may_participate'	=> ($processStatus->getUri() != INSTANCE_PROCESSSTATUS_FINISHED && $isAllowed),
+							'finished'			=> ($processStatus->getUri() == INSTANCE_PROCESSSTATUS_FINISHED),
 							'allowed'			=> $isAllowed,
 							'activityEnded'		=> $activityExecFinishedByUser
 						);
@@ -113,7 +113,7 @@ class wfEngine_actions_WfHome extends wfEngine_actions_WfModule
 					$processViewData[] = array(
 						'type' 			=> $processDefinition->getLabel(),
 						'label' 		=> $processExecution->getLabel(),
-						'uri' 			=> $processExecution->uriResource,
+						'uri' 			=> $processExecution->getUri(),
 						'activities'	=> $currentActivities,
 						'status'		=> $processStatus
 					);

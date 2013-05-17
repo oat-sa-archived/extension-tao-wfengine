@@ -201,7 +201,7 @@ class wfEngine_models_classes_VariableService
 			foreach($variable as $k => $v) {
 				$processVariable = $this->getProcessVariable($k);
 				if(!is_null($processVariable)){
-					$property = new core_kernel_classes_Property($processVariable->uriResource);
+					$property = new core_kernel_classes_Property($processVariable->getUri());
 
 					$returnValue &= $activityExecution->editPropertyValues($property,$v);
 					if(is_array($newVar)){
@@ -258,7 +258,7 @@ class wfEngine_models_classes_VariableService
 					if(in_array($param,$oldVar)){
 						$processVariable = $this->getProcessVariable($param);
 						if(!is_null($processVariable)){
-							$property = new core_kernel_classes_Property($processVariable->uriResource);
+							$property = new core_kernel_classes_Property($processVariable->getUri());
 							$returnValue &= $activityExecution->removePropertyValues($property);
 							$oldVar = array_diff($oldVar,array($param));
 						}
@@ -298,7 +298,7 @@ class wfEngine_models_classes_VariableService
 			if(is_array($vars) && in_array($key,$vars)){
 				$processVariable = $this->getProcessVariable($key);
 				if(!is_null($processVariable)){
-					$property = new core_kernel_classes_Property($processVariable->uriResource);
+					$property = new core_kernel_classes_Property($processVariable->getUri());
 					$values = $activityExecution->getPropertyValuesCollection($property);
 					if($values->count() == 1){
 						$returnValue = $values->get(0);
@@ -341,7 +341,7 @@ class wfEngine_models_classes_VariableService
 				foreach($vars as $code){
 					$processVariable = $this->getProcessVariable($code);
 					if(!is_null($processVariable)){
-						$property = new core_kernel_classes_Property($processVariable->uriResource);
+						$property = new core_kernel_classes_Property($processVariable->getUri());
 						$values = $activityExecution->getPropertyValuesCollection($property);
 						if($values->count() == 1){
 							$returnValue[$code] = $values->get(0);
@@ -451,12 +451,12 @@ class wfEngine_models_classes_VariableService
 		//set the new instance of process variable as a property of the class process instance:
 		$ok = $returnValue->setType(new core_kernel_classes_Class(RDF_PROPERTY));
 		if($ok){
-			$newTokenProperty = new core_kernel_classes_Property($returnValue->uriResource);
+			$newTokenProperty = new core_kernel_classes_Property($returnValue->getUri());
 			$newTokenProperty->setDomain(new core_kernel_classes_Class(CLASS_ACTIVITY_EXECUTION));
 			$newTokenProperty->setRange(new core_kernel_classes_Class(RDFS_LITERAL));//literal only!
 			$newTokenProperty->setPropertyValue(new core_kernel_classes_Property(PROPERTY_MULTIPLE), GENERIS_TRUE);
 		}else{
-			throw new Exception("the newly created process variable {$label} ({$returnValue->uriResource}) cannot be set as a property of the class Activity Execution");
+			throw new Exception("the newly created process variable {$label} ({$returnValue->getUri()}) cannot be set as a property of the class Activity Execution");
 		}
 		
 		
@@ -582,7 +582,7 @@ class wfEngine_models_classes_VariableService
 			$processVariable = $this->getProcessVariable($key);
 			
 			if(!is_null($processVariable)){
-				$property = new core_kernel_classes_Property($processVariable->uriResource);
+				$property = new core_kernel_classes_Property($processVariable->getUri());
 				if($edit){
 					$returnValue &= $activityExecution->editPropertyValues($property, $value);
 				}else{
@@ -639,7 +639,7 @@ class wfEngine_models_classes_VariableService
 
         // section 127-0-1-1--9be58b4:1341d29fb0d:-8000:0000000000003468 begin
 		foreach($this->processVariablesClass->getInstances(false) as $variable){
-			$returnValue[$variable->uriResource] = array(
+			$returnValue[$variable->getUri()] = array(
 				'code' => $this->getCode($variable),
 				'label' => $variable->getLabel()
 			);

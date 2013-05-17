@@ -100,10 +100,10 @@ class wfEngine_models_classes_ProcessExecutionService
 				case __CLASS__.'::getStatus':{
 					if(isset($args[0]) && $args[0] instanceof core_kernel_classes_Resource){
 						$processExecution = $args[0];
-						if(!isset($this->instancesCache[$processExecution->uriResource])){
-							$this->instancesCache[$processExecution->uriResource] = array();
+						if(!isset($this->instancesCache[$processExecution->getUri()])){
+							$this->instancesCache[$processExecution->getUri()] = array();
 						}
-						$this->instancesCache[$processExecution->uriResource][$methodName] = $value;
+						$this->instancesCache[$processExecution->getUri()][$methodName] = $value;
 						$returnValue = true;
 					}
 					break;
@@ -111,10 +111,10 @@ class wfEngine_models_classes_ProcessExecutionService
 				case __CLASS__.'::getCurrentActivityExecutions':{
 					if(count($args) == 1 && isset($args[0]) && $args[0] instanceof core_kernel_classes_Resource){
 						$processExecution = $args[0];
-						if(!isset($this->instancesCache[$processExecution->uriResource])){
-							$this->instancesCache[$processExecution->uriResource] = array();
+						if(!isset($this->instancesCache[$processExecution->getUri()])){
+							$this->instancesCache[$processExecution->getUri()] = array();
 						}
-						$this->instancesCache[$processExecution->uriResource][$methodName] = $value;
+						$this->instancesCache[$processExecution->getUri()][$methodName] = $value;
 						$returnValue = true;
 					}
 					break;
@@ -152,10 +152,10 @@ class wfEngine_models_classes_ProcessExecutionService
 				case __CLASS__.'::getStatus':{
 					if(isset($args[0]) && $args[0] instanceof core_kernel_classes_Resource){
 						$processExecution = $args[0];
-						if(isset($this->instancesCache[$processExecution->uriResource])
-						&& isset($this->instancesCache[$processExecution->uriResource][$methodName])){
+						if(isset($this->instancesCache[$processExecution->getUri()])
+						&& isset($this->instancesCache[$processExecution->getUri()][$methodName])){
 
-							$returnValue = $this->instancesCache[$processExecution->uriResource][$methodName];
+							$returnValue = $this->instancesCache[$processExecution->getUri()][$methodName];
 
 						}
 					}
@@ -194,9 +194,9 @@ class wfEngine_models_classes_ProcessExecutionService
 				case __CLASS__.'::getCurrentActivityExecutions': {
 					if (count($args) == 1 && isset($args[0]) && $args[0] instanceof core_kernel_classes_Resource) {
 						$processExecution = $args[0];
-						if(isset($this->instancesCache[$processExecution->uriResource])
-						&& $this->instancesCache[$processExecution->uriResource][$methodName]){
-							unset($this->instancesCache[$processExecution->uriResource][$methodName]);
+						if(isset($this->instancesCache[$processExecution->getUri()])
+						&& $this->instancesCache[$processExecution->getUri()][$methodName]){
+							unset($this->instancesCache[$processExecution->getUri()][$methodName]);
 							$returnValue = true;
 						}
 					}else if(count($args) == 2 
@@ -204,17 +204,17 @@ class wfEngine_models_classes_ProcessExecutionService
 						&& isset($args[1]) && is_array($args[1])){
 
 						$processExecution = $args[0];
-						if(isset($this->instancesCache[$processExecution->uriResource])
-							&& isset($this->instancesCache[$processExecution->uriResource][$methodName])){
+						if(isset($this->instancesCache[$processExecution->getUri()])
+							&& isset($this->instancesCache[$processExecution->getUri()][$methodName])){
 
 							foreach($args[1] as $activityExecution) {
 								if($activityExecution instanceof core_kernel_classes_Resource){
-									if(isset($this->instancesCache[$processExecution->uriResource][$methodName][$activityExecution->uriResource])){
-										unset($this->instancesCache[$processExecution->uriResource][$methodName][$activityExecution->uriResource]);
+									if(isset($this->instancesCache[$processExecution->getUri()][$methodName][$activityExecution->getUri()])){
+										unset($this->instancesCache[$processExecution->getUri()][$methodName][$activityExecution->getUri()]);
 									}
 								}
 							}
-							unset($this->instancesCache[$processExecution->uriResource][$methodName]);
+							unset($this->instancesCache[$processExecution->getUri()][$methodName]);
 							$returnValue = true;
 						}
 					}
@@ -358,7 +358,7 @@ class wfEngine_models_classes_ProcessExecutionService
         // section 127-0-1-1-7c36bc99:13092a153cd:-8000:0000000000003B8C begin
         if(!is_null($processDefinition)){
                 $processInstancesClass = new core_kernel_classes_Class(CLASS_PROCESSINSTANCES);
-                $returnValue = $processInstancesClass->searchInstances(array(PROPERTY_PROCESSINSTANCES_EXECUTIONOF => $processDefinition->uriResource));
+                $returnValue = $processInstancesClass->searchInstances(array(PROPERTY_PROCESSINSTANCES_EXECUTIONOF => $processDefinition->getUri()));
         }
         // section 127-0-1-1-7c36bc99:13092a153cd:-8000:0000000000003B8C end
 
@@ -441,7 +441,7 @@ class wfEngine_models_classes_ProcessExecutionService
 			foreach ($initialActivities as $activity){
 				$activityExecution = $this->activityExecutionService->createActivityExecution($activity, $processInstance);
 				if(!is_null($activityExecution)){
-					$activityExecutions[$activityExecution->uriResource] = $activityExecution;
+					$activityExecutions[$activityExecution->getUri()] = $activityExecution;
 				}
 			}
 
@@ -622,13 +622,13 @@ class wfEngine_models_classes_ProcessExecutionService
 
 		if (!empty($status)){
 			if($status instanceof core_kernel_classes_Resource){
-				switch($status->uriResource){
+				switch($status->getUri()){
 					case INSTANCE_PROCESSSTATUS_RESUMED:
 					case INSTANCE_PROCESSSTATUS_STARTED:
 					case INSTANCE_PROCESSSTATUS_FINISHED:
 					case INSTANCE_PROCESSSTATUS_PAUSED:
 					case INSTANCE_PROCESSSTATUS_CLOSED:{
-						$returnValue = $processExecution->editPropertyValues($this->processInstancesStatusProp, $status->uriResource);
+						$returnValue = $processExecution->editPropertyValues($this->processInstancesStatusProp, $status->getUri());
 						break;
 					}
 				}
@@ -657,7 +657,7 @@ class wfEngine_models_classes_ProcessExecutionService
 					}
 				}
 				if($status instanceof core_kernel_classes_Resource){
-					$returnValue = $processExecution->editPropertyValues($this->processInstancesStatusProp, $status->uriResource);
+					$returnValue = $processExecution->editPropertyValues($this->processInstancesStatusProp, $status->getUri());
 				}
 			}
 			
@@ -689,7 +689,7 @@ class wfEngine_models_classes_ProcessExecutionService
 			
 			$status = $processExecution->getOnePropertyValue($this->processInstancesStatusProp);
 			if (!is_null($status)){
-				switch($status->uriResource){
+				switch($status->getUri()){
 					case INSTANCE_PROCESSSTATUS_RESUMED:
 					case INSTANCE_PROCESSSTATUS_STARTED:
 					case INSTANCE_PROCESSSTATUS_FINISHED:
@@ -729,12 +729,12 @@ class wfEngine_models_classes_ProcessExecutionService
 		
 		if(!is_null($processStatus)){
 			if ($status instanceof core_kernel_classes_Resource) {
-				if ($processStatus->uriResource == $status->uriResource) {
+				if ($processStatus->getUri() == $status->getUri()) {
 					$returnValue = true;
 				}
 			} else if (is_string($status)) {
 				
-				switch ($processStatus->uriResource){
+				switch ($processStatus->getUri()){
 					case INSTANCE_PROCESSSTATUS_RESUMED: {
 						$returnValue = (strtolower($status) == 'resumed');
 						break;
@@ -781,7 +781,7 @@ class wfEngine_models_classes_ProcessExecutionService
         // section 127-0-1-1-7a69d871:1322a76df3c:-8000:0000000000002F84 begin
 		$session = PHPSession::singleton();
         
-		$session->setAttribute("activityExecutionUri", $activityExecution->uriResource);
+		$session->setAttribute("activityExecutionUri", $activityExecution->getUri());
 		
 		//check if the transition is possible, e.g. process is not finished
 		if($this->isFinished($processExecution)){
@@ -800,7 +800,7 @@ class wfEngine_models_classes_ProcessExecutionService
 		if($activityExecution->exists()){
 			$this->activityExecutionService->finish($activityExecution);
 		}else{
-			throw new Exception("cannot find the activity execution of the current activity {$activityBeforeTransition->uriResource} in perform transition");
+			throw new Exception("cannot find the activity execution of the current activity {$activityBeforeTransition->getUri()} in perform transition");
 		}
 		
 		$activityBeforeTransition = $this->activityExecutionService->getExecutionOf($activityExecution);
@@ -842,7 +842,7 @@ class wfEngine_models_classes_ProcessExecutionService
 		//if the connector is not a parallel one, let the user continue in his current branch and prevent the pause:
 		$uniqueNextActivityExecution = null;
 		if(!is_null($nextConnector)){
-			if($connectorService->getType($nextConnector)->uriResource != INSTANCE_TYPEOFCONNECTORS_PARALLEL){
+			if($connectorService->getType($nextConnector)->getUri() != INSTANCE_TYPEOFCONNECTORS_PARALLEL){
 				
 				if(count($newActivityExecutions) == 1){
 					//TODO: could do a double check here: if($newActivities[0] is one of the activty found in the current tokens):
@@ -864,14 +864,14 @@ class wfEngine_models_classes_ProcessExecutionService
 			return array();
 		}elseif(!is_null($uniqueNextActivityExecution)){
 			//we are certain that the next activity would be for the user so return it:
-			$authorizedActivityExecutions[$uniqueNextActivityExecution->uriResource] = $uniqueNextActivityExecution;
+			$authorizedActivityExecutions[$uniqueNextActivityExecution->getUri()] = $uniqueNextActivityExecution;
 			$setPause = false;
 		}else{
 			
 			foreach ($newActivityExecutions as $activityExecutionAfterTransition){
 				//check if the current user is allowed to execute the activity
 				if($this->activityExecutionService->checkAcl($activityExecutionAfterTransition, $currentUser, $processExecution)){
-					$authorizedActivityExecutions[$activityExecutionAfterTransition->uriResource] = $activityExecutionAfterTransition;
+					$authorizedActivityExecutions[$activityExecutionAfterTransition->getUri()] = $activityExecutionAfterTransition;
 					$setPause = false;
 				}
 				else{
@@ -905,7 +905,7 @@ class wfEngine_models_classes_ProcessExecutionService
 					$followingActivityExecutions = $this->performTransition($processExecution, $activityExecutionResource);
 					if(is_array($followingActivityExecutions)){
 						foreach ($followingActivityExecutions as $followingActivityExec) {
-							$returnValue[$followingActivityExec->uriResource] = $followingActivityExec;
+							$returnValue[$followingActivityExec->getUri()] = $followingActivityExec;
 						}
 					}
 				}else{
@@ -961,12 +961,12 @@ class wfEngine_models_classes_ProcessExecutionService
 				$newActivityDefinition = $this->activityExecutionService->getExecutionOf($newActivityExecution);
 				if($activityService->isHidden($newActivityDefinition) && !$activityService->isInitial($newActivityDefinition)){
 					$newNewActivityExecutions = $this->performBackwardTransition($processExecution, $newActivityExecution);
-					unset($newActivityExecutions[$newActivityExecution->uriResource]);
+					unset($newActivityExecutions[$newActivityExecution->getUri()]);
 					foreach($newNewActivityExecutions as $newNewActivityExec){
-						$returnValue[$newNewActivityExec->uriResource] = $newNewActivityExec;
+						$returnValue[$newNewActivityExec->getUri()] = $newNewActivityExec;
 					}
 				}else{
-					$returnValue[$newActivityExecution->uriResource] = $newActivityExecution; 
+					$returnValue[$newActivityExecution->getUri()] = $newActivityExecution; 
 				}
 			}
 			
@@ -1013,7 +1013,7 @@ class wfEngine_models_classes_ProcessExecutionService
 			throw new common_Exception('Connector type must be a Resource');
 		}
 		
-		switch ($connectorType->uriResource) {
+		switch ($connectorType->getUri()) {
 			case INSTANCE_TYPEOFCONNECTORS_CONDITIONAL:{
 				
 				$returnValue = $this->getConditionalConnectorNewActivities($processExecution, $activityExecution, $currentConnector);
@@ -1085,7 +1085,7 @@ class wfEngine_models_classes_ProcessExecutionService
 			return $returnValue;
 		}
 		
-		$evaluationResult = $transitionRuleService->getExpression($transitionRule)->evaluate(array(VAR_PROCESS_INSTANCE=>$activityExecution->uriResource));
+		$evaluationResult = $transitionRuleService->getExpression($transitionRule)->evaluate(array(VAR_PROCESS_INSTANCE=>$activityExecution->getUri()));
 //		var_dump('transition rule '.$transitionRule->getLabel(), $evaluationResult);
 		
 		if ($evaluationResult){
@@ -1099,7 +1099,7 @@ class wfEngine_models_classes_ProcessExecutionService
 					$returnValue = $this->getNewActivities($processExecution, $activityExecution, $thenActivity);
 				}
 			}else{
-				throw new wfEngine_models_classes_ProcessDefinitonException('no "then" activity found for the transition rule '.$transitionRule->uriResource);
+				throw new wfEngine_models_classes_ProcessDefinitonException('no "then" activity found for the transition rule '.$transitionRule->getUri());
 			}
 //			var_dump('then', $returnValue);
 		}else{
@@ -1113,7 +1113,7 @@ class wfEngine_models_classes_ProcessExecutionService
 					$returnValue = $this->getNewActivities($processExecution, $activityExecution, $elseActivity);
 				}
 			}else{
-				throw new wfEngine_models_classes_ProcessDefinitonException('no "else" activity found for the transition rule '.$transitionRule->uriResource);
+				throw new wfEngine_models_classes_ProcessDefinitonException('no "else" activity found for the transition rule '.$transitionRule->getUri());
 			}
 //			var_dump('else', $returnValue);
 		}
@@ -1157,7 +1157,7 @@ class wfEngine_models_classes_ProcessExecutionService
 				}catch(wfEngine_models_classes_ProcessExecutionException $e){
 					$count = 0;
 				}
-				$activityResourceArray[$activity->uriResource] = $count;
+				$activityResourceArray[$activity->getUri()] = $count;
 			}
 		}
 		//TODO: implement the case of successive merging: A & B merging to C, D & E merging F and C & F merging to G...
@@ -1261,7 +1261,7 @@ class wfEngine_models_classes_ProcessExecutionService
             }
 			if(is_array($activityExecutions)){
 				foreach($activityExecutions as $activityExecution){
-					$returnValue = $processExecution->setPropertyValue($this->processInstancesCurrentActivityExecutionsProp, $activityExecution->uriResource);
+					$returnValue = $processExecution->setPropertyValue($this->processInstancesCurrentActivityExecutionsProp, $activityExecution->getUri());
 				}
 				//associative array mendatory in cache!
 				$this->setCache(__CLASS__.'::getCurrentActivityExecutions', array($processExecution), $activityExecutions);
@@ -1312,12 +1312,12 @@ class wfEngine_models_classes_ProcessExecutionService
 			
 		}else{
 			//search by criteria:
-			$propertyFilter = array(PROPERTY_ACTIVITY_EXECUTION_PROCESSEXECUTION =>	$processExecution->uriResource);
+			$propertyFilter = array(PROPERTY_ACTIVITY_EXECUTION_PROCESSEXECUTION =>	$processExecution->getUri());
 			if(!is_null($activityDefinition)){
-				$propertyFilter[PROPERTY_ACTIVITY_EXECUTION_ACTIVITY] = $activityDefinition->uriResource;
+				$propertyFilter[PROPERTY_ACTIVITY_EXECUTION_ACTIVITY] = $activityDefinition->getUri();
 			}
 			if(!is_null($user) && $user instanceof core_kernel_classes_Resource){
-				$propertyFilter[PROPERTY_ACTIVITY_EXECUTION_CURRENT_USER] = $user->uriResource;
+				$propertyFilter[PROPERTY_ACTIVITY_EXECUTION_CURRENT_USER] = $user->getUri();
 			}
 				
 			$foundActivityExecutions = $this->activityExecutionsClass->searchInstances($propertyFilter, array('like' => false, 'recursive' => false));
@@ -1361,7 +1361,7 @@ class wfEngine_models_classes_ProcessExecutionService
              
 			$assignedUser = $this->activityExecutionService->getActivityExecutionUser($activityExecution);
 			
-			if(!is_null($assignedUser) && $assignedUser->uriResource == $user->uriResource){
+			if(!is_null($assignedUser) && $assignedUser->getUri() == $user->getUri()){
 				
 				$this->activityExecutionService->setStatus($activityExecution, 'resumed');
 				$returnValue = $activityExecution;
@@ -1388,7 +1388,7 @@ class wfEngine_models_classes_ProcessExecutionService
 				$activityExecution->editPropertyValues($propLastTime, time());
 				
 				$session = PHPSession::singleton();
-				$session->setAttribute("activityExecutionUri", $returnValue->uriResource);//for variable service only?
+				$session->setAttribute("activityExecutionUri", $returnValue->getUri());//for variable service only?
 			}
 			
         }
@@ -1421,7 +1421,7 @@ class wfEngine_models_classes_ProcessExecutionService
 			$activityDefinition = null;
 			$assignedUser = $currentActivityExecution->getOnePropertyValue($propActivityExecutionCurrentUser);
 			if(!is_null($assignedUser)){
-				if($assignedUser->uriResource == $currentUser->uriResource){
+				if($assignedUser->getUri() == $currentUser->getUri()){
 					$ok = true;
 				}
 			}else{
@@ -1439,7 +1439,7 @@ class wfEngine_models_classes_ProcessExecutionService
 				if(is_null($activityDefinition)){
 					$activityDefinition = $this->activityExecutionService->getExecutionOf($currentActivityExecution);
 				}
-				$returnValue[$activityDefinition->uriResource] = $activityDefinition;
+				$returnValue[$activityDefinition->getUri()] = $activityDefinition;
 			}
 		}
 		
@@ -1479,7 +1479,7 @@ class wfEngine_models_classes_ProcessExecutionService
 				}else{
 					$removePattern = array();
 					foreach($activityExecutions as $activityExecution){
-						$removePattern[] = $activityExecution->uriResource;
+						$removePattern[] = $activityExecution->getUri();
 					}
 					
 					$returnValue = $processExecution->removePropertyValues($this->processInstancesCurrentActivityExecutionsProp, array(
@@ -1538,7 +1538,7 @@ class wfEngine_models_classes_ProcessExecutionService
 				for($j=0; $j<$countPrevious; $j++){
 					if(common_Utils::isUri($previous[$j])){
 						$prevousActivityExecution = new core_kernel_classes_Resource($previous[$j]);
-						$previousArray[] = $prevousActivityExecution->uriResource;
+						$previousArray[] = $prevousActivityExecution->getUri();
 					}
 				}
 
@@ -1547,7 +1547,7 @@ class wfEngine_models_classes_ProcessExecutionService
 				for($k=0; $k<$countFollowing; $k++){
 					if(common_Utils::isUri($following[$k])){
 						$followingActivityExecution = new core_kernel_classes_Resource($following[$k]);
-						$followingArray[] = $followingActivityExecution->uriResource;
+						$followingArray[] = $followingActivityExecution->getUri();
 					}
 				}
 				$user = $this->activityExecutionService->getActivityExecutionUser($activityExecution);
@@ -1557,11 +1557,11 @@ class wfEngine_models_classes_ProcessExecutionService
 				$restrictedUser = $this->activityExecutionService->getRestrictedUser($activityExecution);
 				
 				$returnValue[$uri] = array(
-					'executionOf' => $activityDefinition->getLabel().' ('.$activityDefinition->uriResource.')',
-					'user' => (is_null($user))?'none':$user->getLabel().' ('.$user->uriResource.')',
+					'executionOf' => $activityDefinition->getLabel().' ('.$activityDefinition->getUri().')',
+					'user' => (is_null($user))?'none':$user->getLabel().' ('.$user->getUri().')',
 					'status' => (is_null($status))?'none':$status->getLabel(),
 					'createdOn' => date('d-m-Y G:i:s', (string)$activityExecution->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_TIME_CREATED))),
-					'current' => array_key_exists($activityExecution->uriResource, $currentActivityExecutions),
+					'current' => array_key_exists($activityExecution->getUri(), $currentActivityExecutions),
 					'previous' => $previousArray,
 					'following' => $followingArray,
 					'context' => $recoveryService->getContext($activityExecution, ''),
@@ -1640,13 +1640,13 @@ class wfEngine_models_classes_ProcessExecutionService
 			$ok = false;
 			$assignedUser = $this->activityExecutionService->getActivityExecutionUser($currentActivityExecution);
 			if(!is_null($assignedUser)){
-				$ok = ($assignedUser->uriResource == $currentUser->uriResource);
+				$ok = ($assignedUser->getUri() == $currentUser->getUri());
 			}else{
 				$ok = $this->activityExecutionService->checkACL($currentActivityExecution, $currentUser, $processExecution);
 			}
 			
 			if($ok){
-				$returnValue[$currentActivityExecution->uriResource] = $currentActivityExecution;
+				$returnValue[$currentActivityExecution->getUri()] = $currentActivityExecution;
 			}
 		}	
         // section 127-0-1-1--1b682bf3:132cdc3fef4:-8000:000000000000307A end
@@ -1700,7 +1700,7 @@ class wfEngine_models_classes_ProcessExecutionService
 					for($j=0; $j<$countPrevious; $j++){
 						if(common_Utils::isUri($previous[$j])){
 							$prevousActivityExecution = new core_kernel_classes_Resource($previous[$j]);
-							$previousArray[] = $prevousActivityExecution->uriResource;
+							$previousArray[] = $prevousActivityExecution->getUri();
 						}
 					}
 
@@ -1709,7 +1709,7 @@ class wfEngine_models_classes_ProcessExecutionService
 					for($k=0; $k<$countFollowing; $k++){
 						if(common_Utils::isUri($following[$k])){
 							$followingActivityExecution = new core_kernel_classes_Resource($following[$k]);
-							$followingArray[] = $followingActivityExecution->uriResource;
+							$followingArray[] = $followingActivityExecution->getUri();
 						}
 					}
 				
@@ -1717,7 +1717,7 @@ class wfEngine_models_classes_ProcessExecutionService
 						'activityExecution' => $activityExecution,
 						'executionOf' => $this->activityExecutionService->getExecutionOf($activityExecution),
 						'createdOn' => date('d-m-Y G:i:s', $createdOn),
-						'current' => array_key_exists($activityExecution->uriResource, $currentActivityExecutions),
+						'current' => array_key_exists($activityExecution->getUri(), $currentActivityExecutions),
 						'status' => $this->activityExecutionService->getStatus($activityExecution),
 
 						'ACLmode' => $this->activityExecutionService->getAclMode($activityExecution),
@@ -1734,7 +1734,7 @@ class wfEngine_models_classes_ProcessExecutionService
 					);
 					
 				}else{
-					$unorderedActivityExecutions[$uri] = $activityExecution->uriResource;
+					$unorderedActivityExecutions[$uri] = $activityExecution->getUri();
 				}
 				
 				$creationTime[$uri] = $createdOn;

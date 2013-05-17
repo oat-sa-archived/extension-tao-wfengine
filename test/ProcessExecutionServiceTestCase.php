@@ -213,8 +213,8 @@ class ProcessExecutionServiceTestCase extends UnitTestCase{
 			$processExecName = 'Test Process Execution';
 			$processExecComment = 'created for processExecustionService test case by '.__METHOD__;
 			$processInstance = $this->service->createProcessExecution($processDefinition, $processExecName, $processExecComment);
-			$this->assertEqual($processDefinition->uriResource, $this->service->getExecutionOf($processInstance)->uriResource);
-			$this->assertEqual($processDefinition->uriResource, $this->service->getExecutionOf($processInstance)->uriResource);
+			$this->assertEqual($processDefinition->getUri(), $this->service->getExecutionOf($processInstance)->getUri());
+			$this->assertEqual($processDefinition->getUri(), $this->service->getExecutionOf($processInstance)->getUri());
 			
 			$this->assertTrue($this->service->checkStatus($processInstance, 'started'));
 			
@@ -248,7 +248,7 @@ class ProcessExecutionServiceTestCase extends UnitTestCase{
 				$this->assertNotNull($activityExecution);
 				$activityExecStatus = $activityExecutionService->getStatus($activityExecution);
 				$this->assertNotNull($activityExecStatus);
-				$this->assertEqual($activityExecStatus->uriResource, INSTANCE_PROCESSSTATUS_STARTED);
+				$this->assertEqual($activityExecStatus->getUri(), INSTANCE_PROCESSSTATUS_STARTED);
 				
 				//transition to next activity
 				$transitionResult = $this->service->performTransition($processInstance, $activityExecution);
@@ -315,13 +315,13 @@ class ProcessExecutionServiceTestCase extends UnitTestCase{
 				$this->assertNotNull($activityExecution);
 				$activityExecStatus = $activityExecutionService->getStatus($activityExecution);
 				$this->assertNotNull($activityExecStatus);
-				$this->assertEqual($activityExecStatus->uriResource, INSTANCE_PROCESSSTATUS_RESUMED);
+				$this->assertEqual($activityExecStatus->getUri(), INSTANCE_PROCESSSTATUS_RESUMED);
 				
 				//transition to next activity
 				$transitionResult = $this->service->performBackwardTransition($processInstance, $activityExecution);
 				$processStatus = $this->service->getStatus($processInstance);
 				$this->assertNotNull($processStatus);
-				$this->assertEqual($processStatus->uriResource, INSTANCE_PROCESSSTATUS_RESUMED);
+				$this->assertEqual($processStatus->getUri(), INSTANCE_PROCESSSTATUS_RESUMED);
 				if($j < $iterationNumber-1){
 					$this->assertTrue(count($transitionResult));
 				}else{
@@ -357,9 +357,9 @@ class ProcessExecutionServiceTestCase extends UnitTestCase{
 				$activityExecStatus = $activityExecutionService->getStatus($activityExecution);
 				$this->assertNotNull($activityExecStatus);
 				if($i == 1){
-					$this->assertEqual($activityExecStatus->uriResource, INSTANCE_PROCESSSTATUS_RESUMED);
+					$this->assertEqual($activityExecStatus->getUri(), INSTANCE_PROCESSSTATUS_RESUMED);
 				}else{
-					$this->assertEqual($activityExecStatus->uriResource, INSTANCE_PROCESSSTATUS_STARTED);
+					$this->assertEqual($activityExecStatus->getUri(), INSTANCE_PROCESSSTATUS_STARTED);
 				}
 				
 				//transition to next activity
@@ -511,8 +511,8 @@ class ProcessExecutionServiceTestCase extends UnitTestCase{
 		$parallelCount2_processVar_key = 'unit_var_'.time();
 		$parallelCount2_processVar = $processVariableService->createProcessVariable('Var for unit test', $parallelCount2_processVar_key);
 		$prallelActivitiesArray = array(
-			$parallelActivity1->uriResource => $parallelCount1,
-			$parallelActivity2->uriResource => $parallelCount2_processVar
+			$parallelActivity1->getUri() => $parallelCount1,
+			$parallelActivity2->getUri() => $parallelCount2_processVar
 		);
 		
 		$result = $authoringService->setParallelActivities($connector0, $prallelActivitiesArray);
@@ -525,13 +525,13 @@ class ProcessExecutionServiceTestCase extends UnitTestCase{
 		$splitVariable2 = $processVariableService->createProcessVariable('Split Var2 for unit test', $splitVariable2_key);
 		
 		$splitVariablesArray = array(
-			$parallelActivity1->uriResource => array($splitVariable1),
-			$parallelActivity2->uriResource => array($splitVariable1, $splitVariable2)
+			$parallelActivity1->getUri() => array($splitVariable1),
+			$parallelActivity2->getUri() => array($splitVariable1, $splitVariable2)
 		);
 		$connectorService = wfAuthoring_models_classes_ConnectorService::singleton();
 		$connectorService->setSplitVariables($connector0, $splitVariablesArray);
 		
-		$prallelActivitiesArray[$parallelActivity2->uriResource] = $parallelCount2;
+		$prallelActivitiesArray[$parallelActivity2->getUri()] = $parallelCount2;
 		
 
 		$joinActivity = $authoringService->createActivity($processDefinition, 'activity3');
@@ -567,7 +567,7 @@ class ProcessExecutionServiceTestCase extends UnitTestCase{
 				foreach($activitieExecs as $activityExecUri => $activityExec){
 					if(!$activityExecutionService->isFinished($activityExec)){
 						$activityDefinition = $activityExecutionService->getExecutionOf($activityExec);
-						$activityUri = $activityDefinition->uriResource;
+						$activityUri = $activityDefinition->getUri();
 						if(isset($prallelActivitiesArray[$activityUri])){
 							if($prallelActivitiesArray[$activityUri] > 0){
 								$prallelActivitiesArray[$activityUri]--;
@@ -624,7 +624,7 @@ class ProcessExecutionServiceTestCase extends UnitTestCase{
 			$this->assertEqual($activityExecStatus->getUri(), INSTANCE_PROCESSSTATUS_STARTED);
 
 			//transition to next activity
-			$this->out("current user: ".$this->currentUser->getOnePropertyValue($loginProperty).' "'.$this->currentUser->uriResource.'"');
+			$this->out("current user: ".$this->currentUser->getOnePropertyValue($loginProperty).' "'.$this->currentUser->getUri().'"');
 			$this->out("performing transition ...");
 
 			//transition to next activity
@@ -643,7 +643,7 @@ class ProcessExecutionServiceTestCase extends UnitTestCase{
 					$activitieExecs = $this->service->getCurrentActivityExecutions($processInstance);
 					$this->assertEqual(count($activitieExecs), 1);
 					$activityBis = $activityExecutionService->getExecutionOf(reset($activitieExecs));
-					$this->assertTrue($activity->uriResource == $activityBis->uriResource);
+					$this->assertTrue($activity->getUri() == $activityBis->getUri());
 
 					$transitionResult = $this->service->performTransition($processInstance, $activityExecution);
 
@@ -679,7 +679,7 @@ class ProcessExecutionServiceTestCase extends UnitTestCase{
 
 				//Login another user to execute parallel branch
 				$this->userService->logout();
-				$this->out("logout ". $this->currentUser->getOnePropertyValue($loginProperty) . ' "' . $this->currentUser->uriResource . '"', true);
+				$this->out("logout ". $this->currentUser->getOnePropertyValue($loginProperty) . ' "' . $this->currentUser->getUri() . '"', true);
 				
 				list($usec, $sec) = explode(" ", microtime());
 				$login = 'wfTester-'.$i.'-'.$usec;
@@ -701,7 +701,7 @@ class ProcessExecutionServiceTestCase extends UnitTestCase{
 
 				if($this->userService->loginUser($login, md5($pass))){
 					$this->currentUser = $this->userService->getCurrentUser();
-					$this->out("new user logged in: ".$this->currentUser->getOnePropertyValue($loginProperty).' "'.$this->currentUser->uriResource.'"');
+					$this->out("new user logged in: ".$this->currentUser->getOnePropertyValue($loginProperty).' "'.$this->currentUser->getUri().'"');
 				}else{
 					$this->fail("unable to login user $login");
 				}
@@ -736,7 +736,7 @@ class ProcessExecutionServiceTestCase extends UnitTestCase{
 					
 					$activity = $parallelActivity2;
 					foreach($this->service->getCurrentActivityExecutions($processInstance, $activity) as $activityExec){
-						if($activityExecutionService->getActivityExecutionUser($activityExec)->uriResource == $this->currentUser->uriResource){
+						if($activityExecutionService->getActivityExecutionUser($activityExec)->getUri() == $this->currentUser->getUri()){
 							$activityExecution = $activityExec;
 						}
 					}
@@ -744,7 +744,7 @@ class ProcessExecutionServiceTestCase extends UnitTestCase{
 					if(is_null($activityExecution)){
 						$activity = $parallelActivity1;
 						foreach ($this->service->getCurrentActivityExecutions($processInstance, $activity) as $activityExec) {
-							if ($activityExecutionService->getActivityExecutionUser($activityExec)->uriResource == $this->currentUser->uriResource) {
+							if ($activityExecutionService->getActivityExecutionUser($activityExec)->getUri() == $this->currentUser->getUri()) {
 								$activityExecution = $activityExec;
 							}
 						}
@@ -762,9 +762,9 @@ class ProcessExecutionServiceTestCase extends UnitTestCase{
 			$this->assertNotNull($activityExecution);
 			$activityExecStatus = $activityExecutionService->getStatus($activityExecution);
 			$this->assertNotNull($activityExecStatus);
-			$this->assertEqual($activityExecStatus->uriResource, INSTANCE_PROCESSSTATUS_RESUMED);
+			$this->assertEqual($activityExecStatus->getUri(), INSTANCE_PROCESSSTATUS_RESUMED);
 			
-			$this->out("current user: ".$this->currentUser->getOnePropertyValue($loginProperty).' "'.$this->currentUser->uriResource.'"');
+			$this->out("current user: ".$this->currentUser->getOnePropertyValue($loginProperty).' "'.$this->currentUser->getUri().'"');
 			$this->out("performing transition ...");
 
 			//transition to next activity
@@ -780,7 +780,7 @@ class ProcessExecutionServiceTestCase extends UnitTestCase{
 			$this->assertNotNull($processStatus);
 			$this->out("activity status: ".$activityExecutionService->getStatus($activityExecution)->getLabel());
 			$this->out("process status: ".$processStatus->getLabel());
-			$this->assertEqual($processStatus->uriResource, INSTANCE_PROCESSSTATUS_PAUSED);
+			$this->assertEqual($processStatus->getUri(), INSTANCE_PROCESSSTATUS_PAUSED);
 			
 			$j++;
 		}
@@ -803,13 +803,13 @@ class ProcessExecutionServiceTestCase extends UnitTestCase{
 			if(!is_null($user) && !is_null($activityDefinition)){
 				
 				$this->userService->logout();
-				$this->out("logout ". $this->currentUser->getOnePropertyValue($loginProperty) . ' "' . $this->currentUser->uriResource . '"', true);
+				$this->out("logout ". $this->currentUser->getOnePropertyValue($loginProperty) . ' "' . $this->currentUser->getUri() . '"', true);
 
 				$login = (string) $user->getUniquePropertyValue($loginProperty);
 				$pass = 'test123';
 				if ($this->userService->loginUser($login, md5($pass))) {
 					$this->currentUser = $this->userService->getCurrentUser();
-					$this->out("new user logged in: " . $this->currentUser->getOnePropertyValue($loginProperty) . ' "' . $this->currentUser->uriResource . '"');
+					$this->out("new user logged in: " . $this->currentUser->getOnePropertyValue($loginProperty) . ' "' . $this->currentUser->getUri() . '"');
 				} else {
 					$this->fail("unable to login user $login<br>");
 				}
@@ -822,10 +822,10 @@ class ProcessExecutionServiceTestCase extends UnitTestCase{
 				$this->assertNotNull($activityExecution);
 				$activityExecStatus = $activityExecutionService->getStatus($activityExecution);
 				$this->assertNotNull($activityExecStatus);
-				$this->assertEqual($activityExecStatus->uriResource, INSTANCE_PROCESSSTATUS_RESUMED);
+				$this->assertEqual($activityExecStatus->getUri(), INSTANCE_PROCESSSTATUS_RESUMED);
 				
 				//transition to next activity
-				$this->out("current user: ".$this->currentUser->getOnePropertyValue($loginProperty).' "'.$this->currentUser->uriResource.'"');
+				$this->out("current user: ".$this->currentUser->getOnePropertyValue($loginProperty).' "'.$this->currentUser->getUri().'"');
 				$this->out("performing transition ...");
 
 				//transition to next activity
@@ -852,7 +852,7 @@ class ProcessExecutionServiceTestCase extends UnitTestCase{
 		$this->assertEqual(count($activitieExecs), 1);
 		$activityExecution = reset($activitieExecs);
 		$activity = $activityExecutionService->getExecutionOf($activityExecution);
-		$this->assertEqual($activity->uriResource, $joinActivity->uriResource);
+		$this->assertEqual($activity->getUri(), $joinActivity->getUri());
 		
 		$this->out("<strong>Executing last activity: ".$activity->getLabel()."</strong>", true);
 			
@@ -862,10 +862,10 @@ class ProcessExecutionServiceTestCase extends UnitTestCase{
 
 		$activityExecStatus = $activityExecutionService->getStatus($activityExecution);
 		$this->assertNotNull($activityExecStatus);
-		$this->assertEqual($activityExecStatus->uriResource, INSTANCE_PROCESSSTATUS_STARTED);
+		$this->assertEqual($activityExecStatus->getUri(), INSTANCE_PROCESSSTATUS_STARTED);
 
 		//transition to next activity
-		$this->out("current user: ".$this->currentUser->getOnePropertyValue($loginProperty).' "'.$this->currentUser->uriResource.'"');
+		$this->out("current user: ".$this->currentUser->getOnePropertyValue($loginProperty).' "'.$this->currentUser->getUri().'"');
 		$this->out("performing transition ...");
 
 		//transition to next activity
@@ -888,7 +888,7 @@ class ProcessExecutionServiceTestCase extends UnitTestCase{
 		
 		//delete created users:
 		foreach($createdUsers as $createdUser){
-			$this->out('deleting '.$createdUser->getLabel().' "'.$createdUser->uriResource.'"');
+			$this->out('deleting '.$createdUser->getLabel().' "'.$createdUser->getUri().'"');
 			$this->assertTrue($this->userService->removeUser($createdUser));
 		}
 

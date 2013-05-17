@@ -9,7 +9,7 @@
 
 		<script type="text/javascript">
 			window.processUri = '<?=urlencode($browserViewData['processUri'])?>';
-			window.activityUri = '<?=urlencode($activity->uriResource)?>';
+			window.activityUri = '<?=urlencode($activity->getUri())?>';
 			window.activeResources = <?=$browserViewData['active_Resource']?>;
 			window.activityExecutionUri = '<?=urlencode($browserViewData['activityExecutionUri'])?>';
 			//window.processExecutionUri = '<?=urlencode($browserViewData['processUri'])?>';

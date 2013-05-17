@@ -142,7 +142,7 @@ class ProcessSampleCreator{
 		$returnValue = $processDefinitionClass->createInstance($label, empty($comment)?'created by the script CreateProcess.php on ' . date(DATE_ISO8601):$comment);
 		if(!is_null($returnValue) && $returnValue instanceof core_kernel_classes_Resource){
 			$returnValue->setPropertyValue($this->propertyIsSample, GENERIS_TRUE);
-			self::$processes[$returnValue->uriResource] = $returnValue;
+			self::$processes[$returnValue->getUri()] = $returnValue;
 		}else{
 			throw new Exception('cannot create process '.$label);
 		}
@@ -231,8 +231,8 @@ class ProcessSampleCreator{
 		$parallelCount2_processVar_key = 'unit_var';
 		$parallelCount2_processVar = $this->getVariable($parallelCount2_processVar_key);
 		$prallelActivitiesArray = array(
-			$parallelActivity1->uriResource => $parallelCount1,
-			$parallelActivity2->uriResource => $parallelCount2_processVar
+			$parallelActivity1->getUri() => $parallelCount1,
+			$parallelActivity2->getUri() => $parallelCount2_processVar
 		);
 
 		$result = $this->authoringService->setParallelActivities($connector0, $prallelActivitiesArray);
@@ -244,12 +244,12 @@ class ProcessSampleCreator{
 		$splitVariable2 = $this->getVariable($splitVariable2_key);
 
 		$splitVariablesArray = array(
-			$parallelActivity1->uriResource => array($splitVariable1),
-			$parallelActivity2->uriResource => array($splitVariable1, $splitVariable2)
+			$parallelActivity1->getUri() => array($splitVariable1),
+			$parallelActivity2->getUri() => array($splitVariable1, $splitVariable2)
 		);
 		$this->connectorService->setSplitVariables($connector0, $splitVariablesArray);
 
-		$prallelActivitiesArray[$parallelActivity2->uriResource] = $parallelCount2;
+		$prallelActivitiesArray[$parallelActivity2->getUri()] = $parallelCount2;
 
 
 		$joinActivity = $this->authoringService->createActivity($processDefinition, 'activity3');

@@ -129,16 +129,16 @@ class ActivityExecutionServiceTestCase extends wfEngineServiceTest {
 			$user6 = $this->createUser($users[6]); $user6->setLabel($users[6]);
 			
 			$roleService->setRoleToUsers($roleA, array(
-				$user1->uriResource,
-				$user2->uriResource,
-				$user3->uriResource
+				$user1->getUri(),
+				$user2->getUri(),
+				$user3->getUri()
 			));
 			$roleService->setRoleToUsers($roleB, array(
-				$user4->uriResource,
-				$user5->uriResource
+				$user4->getUri(),
+				$user5->getUri()
 			));
 			$roleService->setRoleToUsers($roleC, array(
-				$user6->uriResource
+				$user6->getUri()
 			));
 			
 			//create some process variables:
@@ -209,8 +209,8 @@ class ActivityExecutionServiceTestCase extends wfEngineServiceTest {
 			$processExecName = 'Test Process Execution';
 			$processExecComment = 'created for processExecustionService test case by '.__METHOD__;
 			$processInstance = $processExecutionService->createProcessExecution($processDefinition, $processExecName, $processExecComment);
-			$this->assertEqual($processDefinition->uriResource, $processExecutionService->getExecutionOf($processInstance)->uriResource);
-			$this->assertEqual($processDefinition->uriResource, $processExecutionService->getExecutionOf($processInstance)->uriResource);
+			$this->assertEqual($processDefinition->getUri(), $processExecutionService->getExecutionOf($processInstance)->getUri());
+			$this->assertEqual($processDefinition->getUri(), $processExecutionService->getExecutionOf($processInstance)->getUri());
 			
 			$this->assertTrue($processExecutionService->checkStatus($processInstance, 'started'));
 			
@@ -238,7 +238,7 @@ class ActivityExecutionServiceTestCase extends wfEngineServiceTest {
 				
 				$this->out("<strong>".$activity->getLabel()."</strong>", true);
 				$this->assertTrue($activity->getLabel() == 'activity'.$i);
-				$this->out("current user : ".$this->currentUser->getOnePropertyValue($loginProperty).' "'.$this->currentUser->uriResource.'"', true);
+				$this->out("current user : ".$this->currentUser->getOnePropertyValue($loginProperty).' "'.$this->currentUser->getUri().'"', true);
 				
 				$activityExecutions = $processExecutionService->getCurrentActivityExecutions($processInstance);
 				$activityExecution = reset($activityExecutions);
@@ -266,7 +266,7 @@ class ActivityExecutionServiceTestCase extends wfEngineServiceTest {
 						$this->assertTrue($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
 						$this->assertNotNull($processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser));
 						
-						$processVariableService->push($role_processVar_key, $roleB->uriResource);
+						$processVariableService->push($role_processVar_key, $roleB->getUri());
 						break;
 					}
 					case 2:{
@@ -288,7 +288,7 @@ class ActivityExecutionServiceTestCase extends wfEngineServiceTest {
 						$this->assertTrue($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
 						$this->assertNotNull($processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser));
 						
-						$processVariableService->push($user_processVar_key, $user2->uriResource);
+						$processVariableService->push($user_processVar_key, $user2->getUri());
 						break;
 					}
 					case 3:{
@@ -377,7 +377,7 @@ class ActivityExecutionServiceTestCase extends wfEngineServiceTest {
 				$this->assertNotNull($activityExecution);
 				$activityExecStatus = $activityExecutionService->getStatus($activityExecution);
 				$this->assertNotNull($activityExecStatus);
-				$this->assertEqual($activityExecStatus->uriResource, INSTANCE_PROCESSSTATUS_RESUMED);
+				$this->assertEqual($activityExecStatus->getUri(), INSTANCE_PROCESSSTATUS_RESUMED);
 				
 				//transition to next activity
 				$transitionResult = $processExecutionService->performTransition($processInstance, $activityExecution);
@@ -423,7 +423,7 @@ class ActivityExecutionServiceTestCase extends wfEngineServiceTest {
 				$this->out("<strong>".$activity->getLabel()."</strong>", true);
 				$index = $iterationNumber - $j;
 				$this->assertEqual($activity->getLabel(), "activity$index");
-				$this->out("current user : ".$this->currentUser->getOnePropertyValue($loginProperty).' "'.$this->currentUser->uriResource.'"', true);
+				$this->out("current user : ".$this->currentUser->getOnePropertyValue($loginProperty).' "'.$this->currentUser->getUri().'"', true);
 				
 				$this->checkAccessControl($activityExecution);
 				
@@ -553,13 +553,13 @@ class ActivityExecutionServiceTestCase extends wfEngineServiceTest {
 				$this->assertNotNull($activityExecution);
 				$activityExecStatus = $activityExecutionService->getStatus($activityExecution);
 				$this->assertNotNull($activityExecStatus);
-				$this->assertEqual($activityExecStatus->uriResource, INSTANCE_PROCESSSTATUS_RESUMED);
+				$this->assertEqual($activityExecStatus->getUri(), INSTANCE_PROCESSSTATUS_RESUMED);
 				
 				//transition to next activity
 				$transitionResult = $processExecutionService->performBackwardTransition($processInstance, $activityExecution);
 				$processStatus = $processExecutionService->getStatus($processInstance);
 				$this->assertNotNull($processStatus);
-				$this->assertEqual($processStatus->uriResource, INSTANCE_PROCESSSTATUS_RESUMED);
+				$this->assertEqual($processStatus->getUri(), INSTANCE_PROCESSSTATUS_RESUMED);
 				if($j < $iterationNumber-1){
 					$this->assertTrue(count($transitionResult));
 				}else{
@@ -613,7 +613,7 @@ class ActivityExecutionServiceTestCase extends wfEngineServiceTest {
 						$this->assertNotNull($processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser));
 						
 						//TODO:to be modified after "back"
-						$processVariableService->push($role_processVar_key, $roleB->uriResource);
+						$processVariableService->push($role_processVar_key, $roleB->getUri());
 						
 						break;
 					}
@@ -637,7 +637,7 @@ class ActivityExecutionServiceTestCase extends wfEngineServiceTest {
 						$this->assertNotNull($processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser));
 						
 						//TODO:to be modified after "back"
-						$processVariableService->push($user_processVar_key, $user2->uriResource);
+						$processVariableService->push($user_processVar_key, $user2->getUri());
 						
 						break;
 					}

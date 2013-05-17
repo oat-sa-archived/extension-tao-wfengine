@@ -57,8 +57,8 @@ class wfEngine_actions_Authentication extends wfEngine_actions_WfModule
 
 		//create the login for to the activity execution of a process execution:
 		$myLoginFormContainer = new wfEngine_actions_form_Login(array(
-			'processUri' => !is_null($processExecution)?$processExecution->uriResource:'',
-			'activityUri' => !is_null($activityExecution)?$activityExecution->uriResource:''
+			'processUri' => !is_null($processExecution)?$processExecution->getUri():'',
+			'activityUri' => !is_null($activityExecution)?$activityExecution->getUri():''
 		));
 		$myForm = $myLoginFormContainer->getForm();
 
@@ -130,7 +130,7 @@ class wfEngine_actions_Authentication extends wfEngine_actions_WfModule
             foreach($properties as $label=>$propertyUri){
                 $value = $currentUser->getOnePropertyValue(new core_kernel_classes_Property($propertyUri));
                 if($value instanceof core_kernel_classes_Resource){
-                    $data[$label] = $value->uriResource;
+                    $data[$label] = $value->getUri();
                 }else if($value instanceof core_kernel_classes_Literal){
                     $data[$label] = (string)$value;
                 }
@@ -138,7 +138,7 @@ class wfEngine_actions_Authentication extends wfEngine_actions_WfModule
             //add roles
             $data['roles'] = array();
             foreach($currentUser->getAllPropertyValues(new core_kernel_classes_Property(RDFS_TYPE)) as $type){
-                $data['roles'][] = $type->uriResource;
+                $data['roles'][] = $type->getUri();
             }
         }
         //write the response

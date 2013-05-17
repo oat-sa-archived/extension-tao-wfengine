@@ -115,7 +115,7 @@ class wfEngine_models_classes_TransitionRuleService
        
         }
         catch (common_Exception $e){
-            throw new wfEngine_models_classes_ProcessExecutionException('Transition Rule ' . $rule->uriResource . ' do not have value for Then Property');
+            throw new wfEngine_models_classes_ProcessExecutionException('Transition Rule ' . $rule->getUri() . ' do not have value for Then Property');
         }
         // section 127-0-1-1-66b8afb4:1322473370c:-8000:0000000000002EDB end
 
@@ -137,7 +137,7 @@ class wfEngine_models_classes_TransitionRuleService
         // section 127-0-1-1-66b8afb4:1322473370c:-8000:0000000000002EDE begin
          $ruleType = $rule->getType();
          $returnValue = $ruleType instanceof core_kernel_classes_Resource 
-                         && $ruleType->uriResource == CLASS_TRANSITIONRULES ;
+                         && $ruleType->getUri() == CLASS_TRANSITIONRULES ;
              
          
         // section 127-0-1-1-66b8afb4:1322473370c:-8000:0000000000002EDE end
@@ -158,7 +158,7 @@ class wfEngine_models_classes_TransitionRuleService
         $returnValue = null;
 
         // section 127-0-1-1-74734511:1327233d503:-8000:0000000000003032 begin
-        $ruleObj = new core_kernel_rules_Rule($rule->uriResource);
+        $ruleObj = new core_kernel_rules_Rule($rule->getUri());
         $returnValue = $ruleObj->getExpression();
         // section 127-0-1-1-74734511:1327233d503:-8000:0000000000003032 end
 

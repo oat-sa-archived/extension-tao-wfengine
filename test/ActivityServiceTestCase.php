@@ -147,7 +147,7 @@ class ActivityServiceTestCase extends UnitTestCase {
         $connector1 = $authoringService->createConnector($activity1);
         $connectorList = $this->service->getNextConnectors($activity1);
         $this->assertTrue(count($connectorList) == 1);
-        $this->assertTrue(array_key_exists($connector1->uriResource, $connectorList));
+        $this->assertTrue(array_key_exists($connector1->getUri(), $connectorList));
         
 		$authoringService->setConnectorType($connector1, new core_kernel_classes_Resource(INSTANCE_TYPEOFCONNECTORS_SEQUENCE));
 
@@ -156,7 +156,7 @@ class ActivityServiceTestCase extends UnitTestCase {
                 
 		$connectorList = $this->service->getNextConnectors($activity1);
         $this->assertTrue(count($connectorList) == 1);
-        $this->assertTrue(array_key_exists($connector1->uriResource, $connectorList));
+        $this->assertTrue(array_key_exists($connector1->getUri(), $connectorList));
         
         $connector2 = $authoringService->createConnector($activity2);
         		
@@ -235,7 +235,7 @@ class ActivityServiceTestCase extends UnitTestCase {
         
         $service1 = $authoringService->createInteractiveService($activity1);
         $this->assertTrue( count($this->service->getInteractiveServices($activity1)) == 1 );
-        $this->assertTrue( array_key_exists($service1->uriResource, $this->service->getInteractiveServices($activity1)) );
+        $this->assertTrue( array_key_exists($service1->getUri(), $this->service->getInteractiveServices($activity1)) );
         
         $service1->delete(true);
         $activity1->delete(true);
