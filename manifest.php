@@ -47,7 +47,7 @@ return array(
 			//dirname(__FILE__). '/scripts/importSas.php',
 		),
 		'checks' => array(
-			array('type' => 'CheckFileSystemComponent', 'value' => array('id' => 'fs_wfEngine_includes', 'location' => 'wfEngine/includes', 'rights' => 'r'))
+			array('type' => 'CheckFileSystemComponent', 'value' => array('id' => 'fs_wfEngine_includes', 'location' => 'wfEngine/includes', 'rights' => 'rw'))
 		),
 	),
 	'managementRole' => 'http://www.tao.lu/middleware/wfEngine.rdf#WorkflowsManagerRole',
