@@ -6,6 +6,7 @@
 		<script type="text/javascript" src="<?=TAOBASE_WWW?>js/jquery-1.8.0.min.js"></script>
 		<script type="text/javascript" src="<?=TAOBASE_WWW?>js/jquery-ui-1.8.23.custom.min.js"></script>
 		<script type="text/javascript" src="<?=BASE_WWW?>js/jquery.json.js"></script>
+		<script type="text/javascript" src="<?=BASE_WWW?>js/serviceApi/ServiceWfImpl.js"></script>
 
 		<script type="text/javascript">
 			window.processUri = '<?=urlencode($browserViewData['processUri'])?>';
@@ -13,6 +14,8 @@
 			window.activeResources = <?=$browserViewData['active_Resource']?>;
 			window.activityExecutionUri = '<?=urlencode($browserViewData['activityExecutionUri'])?>';
 			//window.processExecutionUri = '<?=urlencode($browserViewData['processUri'])?>';
+			
+			var api = new ServiceWfImpl(activityExecutionUri);
 
 			function goToPage(page_str){
 				$("#loader").css('display', 'block');
@@ -44,6 +47,17 @@
 				$aFrame.unbind('load').load(function(){
 					$(this).attr('src', "<?=$service['callUrl']?>");
 					$(this).unbind('load');
+					if (jQuery.browser.msie) {
+						this.onreadystatechange = function(){	
+							if(this.readyState == 'complete'){
+								api.connect(this);	
+							}
+						};
+					} else {		
+						this.onload = function(){
+							api.connect(this);	
+						};
+					}
 				});
 				<?endforeach;?>
 
