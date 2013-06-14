@@ -32,25 +32,30 @@
  */
 class wfEngine_actions_RecoveryContext extends tao_actions_Api {
 	
+	// token authentication does not seem to add any additional security
+	/*
+	public function _isAllowed() {
+		return parent::_isAllowed()
+			&& $this->hasRequestParameter('token')
+			&& $this->authenticate($this->getRequestParameter('token'))
+		;
+	}
+	*/
+	
 	/**
 	 * Retrieve the current context
 	 */
 	public function retrieve(){
-		$context = array();
 		$session = PHPSession::singleton();
 		
-		if(	$this->hasRequestParameter('token') && 	$session->hasAttribute('activityExecutionUri')){
-			
-			$token = $this->getRequestParameter('token');
-			$activityExecutionUri = $session->getAttribute('activityExecutionUri');
-			
-			if($this->authenticate($token) && !empty($activityExecutionUri)){
-				$activityExecution = new core_kernel_classes_Resource($activityExecutionUri);
-				$recoveryService = wfEngine_models_classes_RecoveryService::singleton();
-				
-				$context = $recoveryService->getContext($activityExecution, 'any');//get the first, no null context!
-			}
+		if(!$session->hasAttribute('activityExecutionUri')){
+			throw new common_exception_Error('missing activityExecutionUri in Session during RecoveryContext::retrieve()');
 		}
+			
+		$activityExecutionUri = $session->getAttribute('activityExecutionUri');
+		$activityExecution = new core_kernel_classes_Resource($activityExecutionUri);
+		$recoveryService = wfEngine_models_classes_RecoveryService::singleton();
+		$context = $recoveryService->getContext($activityExecution, 'any');//get the first, no null context!
 		echo json_encode($context);
 	}
 	
@@ -59,29 +64,28 @@ class wfEngine_actions_RecoveryContext extends tao_actions_Api {
 	 */
 	public function save(){
 		$session = PHPSession::singleton();
+		if(!$session->hasAttribute('activityExecutionUri')){
+			throw new common_exception_Error('missing activityExecutionUri in Session during RecoveryContext::retrieve()');
+		}
+		if(!$this->hasRequestParameter('context')){
+			throw new common_exception_MissingParameter('context');
+		}
 		
 		$saved = false;
-		if(	$this->hasRequestParameter('token') && 
-			$this->hasRequestParameter('context') &&
-			$session->hasAttribute('activityExecutionUri')){
-			
-			$token = $this->getRequestParameter('token');
-			$activityExecutionUri = $session->getAttribute('activityExecutionUri');
-			
-			if($this->authenticate($token) && !empty($activityExecutionUri)){
-				$activityExecution = new core_kernel_classes_Resource($activityExecutionUri);
-				$recoveryService = wfEngine_models_classes_RecoveryService::singleton();
-				
-				$context = $this->getRequestParameter('context');
-				if(is_array($context)){
-					if(count($context) > 0){
-						$saved = $recoveryService->saveContext($activityExecution, $context);						
-					}
+		$activityExecutionUri = $session->getAttribute('activityExecutionUri');
+		if(!empty($activityExecutionUri)){
+			$activityExecution = new core_kernel_classes_Resource($activityExecutionUri);
+			$recoveryService = wfEngine_models_classes_RecoveryService::singleton();
+
+			$context = $this->getRequestParameter('context');
+			if(is_array($context)){
+				if(count($context) > 0){
+					$saved = $recoveryService->saveContext($activityExecution, $context);						
 				}
-				else if (is_null($context) || $context == 'null'){
-					//if the data sent are null [set context to null], we remove it  
-					$saved = $recoveryService->removeContext($activityExecution);
-				}
+			}
+			else if (is_null($context) || $context == 'null'){
+				//if the data sent are null [set context to null], we remove it  
+				$saved = $recoveryService->removeContext($activityExecution);
 			}
 		}
 		echo json_encode(array('saved' => $saved));
