@@ -59,13 +59,16 @@ class wfEngine_actions_WfApiVariable extends wfEngine_actions_WfApi {
 			$this->setErrorMessage(__('No variable code given'));
 		}
 		
-		$values = $this->getRequestParameter('value');
-		if(is_array($values)){
-			foreach($values as $value){
-				$this->values[] = urldecode($value);
+		// don't use getRequestParameter since it modifies the params
+		if (isset($_REQUEST['value'])) {
+			$values = $_REQUEST['value'];
+			if(is_array($values)){
+				foreach($values as $value){
+					$this->values[] = urldecode($value);
+				}
+			}else{
+				$this->values[] = urldecode($values);
 			}
-		}else{
-			$this->values[] = urldecode($values);
 		}
 	}
 	
