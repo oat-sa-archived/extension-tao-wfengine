@@ -76,10 +76,8 @@ class wfEngine_actions_WfApi extends tao_actions_Api {
 
 	protected function setSuccess($success){
 
-		$caller = array_shift(debug_backtrace());
-
 		$this->output['success'] = (bool) $success;
-		$this->output['caller'] = __CLASS__.'::'.$caller['function'];
+		$this->output['caller'] = __CLASS__.'::'.__FUNCTION__;
 		
 	}
 	
