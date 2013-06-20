@@ -46,8 +46,6 @@ class wfEngine_actions_WfHome extends wfEngine_actions_WfModule
                 
 		//init variable that save data to be used in the view
 		$processViewData 	= array();
-		$uiLanguages		= tao_helpers_I18n::getAvailableLangs();
-		$this->setData('uiLanguages', $uiLanguages);
 		
 		$userViewData = wfEngine_helpers_UsersHelper::buildCurrentUserForView();
 		$this->setData('userViewData', $userViewData);
