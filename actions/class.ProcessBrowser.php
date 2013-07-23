@@ -287,7 +287,11 @@ class wfEngine_actions_ProcessBrowser extends wfEngine_actions_WfModule{
 				));
 			}
 			/* </DEBUG> */
-			
+
+			$this->setData('activityExecutionUri',		$browserViewData['activityExecutionUri']);
+			$this->setData('processUri',				$browserViewData['processUri']);
+			$this->setData('activityExecutionNonce',	$browserViewData['activityExecutionNonce']);
+					
 			$this->setView('process_browser.tpl');
 		}
 	}
