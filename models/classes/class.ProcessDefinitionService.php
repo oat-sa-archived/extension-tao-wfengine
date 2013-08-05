@@ -208,7 +208,7 @@ class wfEngine_models_classes_ProcessDefinitionService
      * @author Joel Bout, <joel.bout@tudor.lu>
      * @return mixed
      */
-    public function __construct()
+    protected function __construct()
     {
         // section 127-0-1-1--6e15d8e:132297dc60d:-8000:0000000000002F01 begin
 		
