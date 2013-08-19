@@ -415,7 +415,9 @@ class wfEngine_models_classes_ProcessExecutionService
         $returnValue = null;
 
         // section 127-0-1-1-7a69d871:1322a76df3c:-8000:0000000000002F51 begin
-		if(empty($comment)){
+		common_Logger::i('Creating processexecution for '.$processDefinition->getUri());
+        
+        if(empty($comment)){
 			$comment = "create by processExecutionService on ".date("d-m-Y H:i:s");
 		}
 		$processInstance = $this->processInstancesClass->createInstance($name, $comment);
@@ -424,9 +426,6 @@ class wfEngine_models_classes_ProcessExecutionService
 		
 		$processDefinitionService = wfEngine_models_classes_ProcessDefinitionService::singleton();
 		$initialActivities = $processDefinitionService->getRootActivities($processDefinition);
-		
-		common_Logger::i('creating process for '.$processDefinition->getUri().' with '.count($initialActivities));
-        
 		
 		if(!count($initialActivities)){
 			
