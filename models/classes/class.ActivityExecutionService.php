@@ -19,45 +19,6 @@
  *               2009-2012 (update and modification) Public Research Centre Henri Tudor (under the project TAO-SUSTAIN & TAO-DEV);
  * 
  */
-?>
-<?php
-
-error_reporting(E_ALL);
-
-/**
- * This service enables you to manage, control, restrict the process activities
- *
- * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
- * @package wfEngine
- * @subpackage models_classes
- */
-
-if (0 > version_compare(PHP_VERSION, '5')) {
-    die('This file was generated for PHP 5');
-}
-
-/**
- * The Service class is an abstraction of each service instance. 
- * Used to centralize the behavior related to every servcie instances.
- *
- * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
- */
-require_once('tao/models/classes/class.GenerisService.php');
-
-/**
- * include tao_models_classes_ServiceCacheInterface
- *
- * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
- */
-require_once('tao/models/classes/interface.ServiceCacheInterface.php');
-
-/* user defined includes */
-// section 127-0-1-1--10e47d9e:128d54bbb0d:-8000:0000000000001F5B-includes begin
-// section 127-0-1-1--10e47d9e:128d54bbb0d:-8000:0000000000001F5B-includes end
-
-/* user defined constants */
-// section 127-0-1-1--10e47d9e:128d54bbb0d:-8000:0000000000001F5B-constants begin
-// section 127-0-1-1--10e47d9e:128d54bbb0d:-8000:0000000000001F5B-constants end
 
 /**
  * This service enables you to manage, control, restrict the process activities
@@ -666,7 +627,7 @@ class wfEngine_models_classes_ActivityExecutionService
      * @access public
      * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @param  Resource activity
-     * @return core_kernel_classes_Session_int
+     * @return int
      */
     public function getEstimatedExecutionCount( core_kernel_classes_Resource $activity)
     {
@@ -1832,6 +1793,4 @@ class wfEngine_models_classes_ActivityExecutionService
         return (array) $returnValue;
     }
 
-} /* end of class wfEngine_models_classes_ActivityExecutionService */
-
-?>
+}
