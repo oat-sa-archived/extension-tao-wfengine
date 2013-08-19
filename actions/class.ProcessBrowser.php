@@ -56,7 +56,7 @@ class wfEngine_actions_ProcessBrowser extends wfEngine_actions_WfModule{
 			//check that the process execution is not finished or closed here:
 			if($this->processExecutionService->isFinished($processExecution)){
 				
-				//cannot browse a finished process execution:
+			    common_Logger::w('Cannot browse a finished process execution');
 				$this->redirectToMain();
 				
 			}else{
@@ -84,10 +84,11 @@ class wfEngine_actions_ProcessBrowser extends wfEngine_actions_WfModule{
 						}
 						
 					}else{
-						//the provided activity execution is no longer the current one (link may be outdated).
+					    //the provided activity execution is no longer the current one (link may be outdated).
 						//the user is redirected to the current activity execution if allowed, 
 						//or redirected to "main" if there are more than one allowed current activity execution or none
-						$this->autoRedirecting = true;
+                        common_Logger::w('The provided activity execution is no longer the current one');
+					    $this->autoRedirecting = true;
 					}
 				}
 			}
@@ -139,7 +140,7 @@ class wfEngine_actions_ProcessBrowser extends wfEngine_actions_WfModule{
 		}
 		
 		if($this->autoRedirecting){
-			$this->autoredirectToIndex();
+		    $this->autoredirectToIndex();
 			return;
 		}
 		
@@ -172,7 +173,7 @@ class wfEngine_actions_ProcessBrowser extends wfEngine_actions_WfModule{
 		$activityExecution = null;
 		
 		if(count($currentlyAvailableActivityExecutions) == 0){
-			//no available current activity exec found: no permission or issue in process execution:
+		    common_Logger::w('No available current activity exec found: no permission or issue in process execution');
 			$this->pause();
 			return;
 		}else{
