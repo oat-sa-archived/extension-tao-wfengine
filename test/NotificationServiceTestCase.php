@@ -86,7 +86,7 @@ class NotificationServiceTestCase extends UnitTestCase {
 		}
 		
 		$this->userService->logout();
-		if($this->userService->loginUser($login, md5($pass))){
+		if($this->userService->loginUser($login, $pass)){
 			$this->currentUser = $this->userService->getCurrentUser();
 		}
 	}

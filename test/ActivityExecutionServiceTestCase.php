@@ -61,7 +61,7 @@ class ActivityExecutionServiceTestCase extends wfEngineServiceTest {
 		}
 		
 		$this->userService->logout();
-		if($this->userService->loginUser($login, md5($this->userPassword))){
+		if($this->userService->loginUser($login, $this->userPassword)){
 			$this->currentUser = $this->userService->getCurrentUser();
 			$this->currentUser0 = $this->currentUser;
 		}

@@ -103,10 +103,6 @@ class SaSImporter extends SasManager{
 		
 		parent::__construct();
 		
-		//connec to the api
-		$userService = core_kernel_users_Service::singleton();
-		$userService->login(SYS_USER_LOGIN, SYS_USER_PASS, new core_kernel_classes_Class('http://www.tao.lu/Ontologies/TAO.rdf#TaoManagerRole'));
-
 		//initialize ref to API classes and properties
 		
 		$this->rdfLiteralClass				= new core_kernel_classes_Class(RDFS_LITERAL);
