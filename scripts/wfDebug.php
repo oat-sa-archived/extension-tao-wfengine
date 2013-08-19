@@ -37,7 +37,7 @@ class wfDebugger{
                 $userService = core_kernel_users_Service::singleton();
 				$userService->login(SYS_USER_LOGIN, SYS_USER_PASS, new core_kernel_classes_Class('http://www.tao.lu/Ontologies/TAO.rdf#TaoManagerRole'));
 				$this->processExecutionService = wfEngine_models_classes_ProcessExecutionService::singleton();
-                $this->localNS = core_kernel_classes_Session::singleton()->getNameSpace();
+                $this->localNS = common_ext_NamespaceManager::singleton()->getLocalNamespace()->getUri();
                 $this->unserialize = (isset($options['unserialize']))? (int)$options['unserialize']:0;
         }
         
@@ -118,7 +118,7 @@ class wfDebugger{
 
                 if(isset($_GET[$key])){
                         if(preg_match('/^i/i', $_GET[$key])){
-                                $returnValue = new core_kernel_classes_Resource($this->localNS.'#'.$_GET[$key]);
+                                $returnValue = new core_kernel_classes_Resource($this->localNS.$_GET[$key]);
                         }else{
                                 $returnValue = new core_kernel_classes_Resource(urldecode($_GET[$key]));
                         }
