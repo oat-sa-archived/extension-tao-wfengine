@@ -65,7 +65,7 @@ class wfEngine_actions_Authentication extends wfEngine_actions_WfModule
 		if($myForm->isSubmited()){
 			if($myForm->isValid()){
 				$values = $myForm->getValues();
-				if($this->userService->loginUser($values['login'], md5($values['password']))){
+				if($this->userService->loginUser($values['login'], $values['password'])){
 					if(!empty($values['processUri']) && !empty($values['activityUri'])){
 						$this->redirect(_url('index', 'ProcessBrowser', 'wfEngine', array(
 								'processUri' => urlencode($values['processUri']),
@@ -95,7 +95,7 @@ class wfEngine_actions_Authentication extends wfEngine_actions_WfModule
         $message = __('Unable to log in the user');
         //log the user
         if($this->hasRequestParameter('login') && $this->hasRequestParameter('password')){
-            if ($this->userService->loginUser($this->getRequestParameter('login'), md5($this->getRequestParameter('password')))){
+            if ($this->userService->loginUser($this->getRequestParameter('login'), $this->getRequestParameter('password'))){
                 $success = true;
                 $message = __('User logged in successfully');
             }
