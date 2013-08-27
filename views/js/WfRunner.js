@@ -31,7 +31,7 @@ function WfRunner(activityExecutionUri, processUri, activityExecutionNonce) {
 }
 
 WfRunner.prototype.initService = function(serviceUri, style, url) {
-	var serviceApi = new ServiceWfImpl(serviceUri, this);
+	var serviceApi = new ServiceWfImpl(this.activityExecutionUri, this);
 	this.services.push(serviceApi);
 	
 	var $aFrame = $('<iframe class="toolframe" frameborder="0" style="'+style+'" src="'+this.processBrowserModule+'loading"></iframe>').appendTo('#tools');
