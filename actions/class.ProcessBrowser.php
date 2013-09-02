@@ -229,6 +229,7 @@ class wfEngine_actions_ProcessBrowser extends wfEngine_actions_WfModule{
 				} else {
 					$callUrl .= (strpos($callUrl, '?') ? '&' : '?').'standalone=true';
 				}
+				$callUrl .= '&serviceCallId='.urlencode($activityExecution->getUri());
 				$services[] = array(
 					'callUrl'	=> $callUrl,
 					'style'		=> $interactiveServiceService->getStyle($interactiveService),
