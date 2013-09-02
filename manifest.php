@@ -42,6 +42,7 @@ return array(
 		'rdf' => array(
 			dirname(__FILE__). '/models/ontology/wfengine.rdf',
 			dirname(__FILE__). '/models/ontology/aclrole.rdf',
+		    dirname(__FILE__). '/models/ontology/wfRunner.rdf',
 		),
 		'php' => array(
 			//dirname(__FILE__). '/scripts/importSas.php',
