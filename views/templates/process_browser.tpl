@@ -15,7 +15,7 @@
 			window.activityExecutionUri = '<?=urlencode($browserViewData['activityExecutionUri'])?>';
 			//window.processExecutionUri = '<?=urlencode($browserViewData['processUri'])?>';
 			
-			var api = new ServiceWfImpl(activityExecutionUri);
+			var api = new ServiceWfImpl(<?= json_encode($browserViewData['activityExecutionUri']);?>);
 
 			function goToPage(page_str){
 				$("#loader").css('display', 'block');
