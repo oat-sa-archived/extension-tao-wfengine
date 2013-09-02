@@ -113,34 +113,8 @@ $todefine = array(
 	'PROPERTY_NOTIFICATION_SENT' 					=> NS_WFENGINE  .'#PropertyNotificationSent',
 	'PROPERTY_NOTIFICATION_DATE' 					=> NS_WFENGINE  .'#PropertyNotificationDate',
 	'PROPERTY_NOTIFICATION_MESSAGE'					=> NS_WFENGINE  .'#PropertyNotificationMessage',
-	
-	'CLASS_CALLOFSERVICES'							=> NS_WFENGINE . '#ClassCallOfServices',
-	'PROPERTY_CALLOFSERVICES_SERVICEDEFINITION'		=> NS_WFENGINE . '#PropertyCallOfServicesServiceDefinition',
-	'PROPERTY_CALLOFSERVICES_ACTUALPARAMETEROUT'	=> NS_WFENGINE . '#PropertyCallOfServicesActualParameterOut',
-	'PROPERTY_CALLOFSERVICES_ACTUALPARAMETERIN'		=> NS_WFENGINE . '#PropertyCallOfServicesActualParameterin',
-	'PROPERTY_CALLOFSERVICES_TOP'					=> NS_WFENGINE . '#PropertyCallOfServicesTop',
-	'PROPERTY_CALLOFSERVICES_LEFT'					=> NS_WFENGINE . '#PropertyCallOfServicesLeft',
-	'PROPERTY_CALLOFSERVICES_WIDTH'					=> NS_WFENGINE . '#PropertyCallOfServicesWidth',
-	'PROPERTY_CALLOFSERVICES_HEIGHT'				=> NS_WFENGINE . '#PropertyCallOfServicesHeight',
-	
-	'CLASS_SERVICESDEFINITION'						=> NS_WFENGINE . '#ClassServiceDefinitions',
-	'PROPERTY_SERVICESDEFINITION_FORMALPARAMOUT'	=> NS_WFENGINE . '#PropertyServiceDefinitionsFormalParameterOut',
-	'PROPERTY_SERVICESDEFINITION_FORMALPARAMIN' 	=> NS_WFENGINE . '#PropertyServiceDefinitionsFormalParameterIn',
-	
-	'CLASS_SUPPORTSERVICES'							=> NS_WFENGINE . '#ClassSupportServices',
-	'PROPERTY_SUPPORTSERVICES_URL'					=> NS_WFENGINE .'#PropertySupportServicesUrl',
-	
-	'CLASS_WEBSERVICES'								=> NS_WFENGINE . '#ClassWebServices',
-	
-	'CLASS_FORMALPARAMETER'							=> NS_WFENGINE . '#ClassFormalParameters',
-	'PROPERTY_FORMALPARAMETER_DEFAULTCONSTANTVALUE' => NS_WFENGINE . '#PropertyFormalParametersDefaultConstantValue',
-	'PROPERTY_FORMALPARAMETER_DEFAULTPROCESSVARIABLE'=>NS_WFENGINE . '#PropertyFormalParametersDefaultProcessVariable',
-	'PROPERTY_FORMALPARAMETER_NAME'					=> NS_WFENGINE . '#PropertyFormalParametersName',
-	
-	'CLASS_ACTUALPARAMETER'							=> NS_WFENGINE . '#ClassActualParameters',
-	'PROPERTY_ACTUALPARAMETER_PROCESSVARIABLE'		=> NS_WFENGINE . '#PropertyActualParametersProcessVariable',
-	'PROPERTY_ACTUALPARAMETER_CONSTANTVALUE'		=> NS_WFENGINE . '#PropertyActualParametersConstantValue',
-	'PROPERTY_ACTUALPARAMETER_FORMALPARAMETER'		=> NS_WFENGINE . '#PropertyActualParametersFormalParameter',
+
+    // moved constants of service definitions and calls to tao
 	
 	'CLASS_ACTIVITY_EXECUTION' 						=> NS_WFENGINE . '#ClassActivityExecutions',
 	'PROPERTY_ACTIVITY_EXECUTION_ACTIVITY'			=> NS_WFENGINE . '#PropertyActivityExecutionsExecutionOf',
@@ -173,6 +147,10 @@ $todefine = array(
 	'PROPERTY_TOKEN_CURRENTUSER'					=> NS_WFENGINE  .'#PropertyTokensCurrentUser',
 	
 	'API_LOGIN' 									=> SYS_USER_LOGIN,
-	'API_PASSWORD' 									=> SYS_USER_PASS
+	'API_PASSWORD' 									=> SYS_USER_PASS,
+    
+    'INSTANCE_SERVICE_PROCESSRUNNER'                => NS_WFENGINE  .'#ProcessDefinitionRunner',
+    'INSTANCE_FORMALPARAM_PROCESSDEFINITION'        => NS_WFENGINE  .'#FormalParamProcessDefinition',
+    'INSTANCE_FORMALPARAM_PROCESSVARIABLES'         => NS_WFENGINE  .'#FormalParamProcessVariables',
 );
 ?>
