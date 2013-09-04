@@ -30,13 +30,14 @@ function WfRunner(activityExecutionUri, processUri, activityExecutionNonce) {
 	
 }
 
-WfRunner.prototype.initService = function(serviceUri, style, url) {
-	var serviceApi = new ServiceWfImpl(this.activityExecutionUri, this);
+WfRunner.prototype.initService = function(serviceApi, style) {
 	this.services.push(serviceApi);
+	var selfref = this;
+	serviceApi.onFinish(function() {return function(wfRunner) {wfRunner.forward()}(selfref)});
 	
 	var $aFrame = $('<iframe class="toolframe" frameborder="0" style="'+style+'" src="'+this.processBrowserModule+'loading"></iframe>').appendTo('#tools');
 	$aFrame.unbind('load').load(function(){
-		$(this).attr('src', url);
+		$(this).attr('src', serviceApi.getCallUrl());
 		$(this).unbind('load');
 
 		$(this).load(function() {
@@ -51,6 +52,7 @@ WfRunner.prototype.initService = function(serviceUri, style, url) {
 			var oldHeight = $('#tools').height();
 			var height = $(doc).height();
 			$('#tools').height(height + oldHeight);
+			
 		});
 
 		if (jQuery.browser.msie) {

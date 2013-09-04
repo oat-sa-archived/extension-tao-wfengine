@@ -223,17 +223,12 @@ class wfEngine_actions_ProcessBrowser extends wfEngine_actions_WfModule{
 			$services = array();
 			
 			foreach($interactiveServices as $interactiveService){
-				$callUrl = $interactiveServiceService->getCallUrl($interactiveService, $activityExecution);
-				if (in_array(substr($callUrl, -1), array('?', '&'))) {
-					$callUrl .= 'standalone=true';
-				} else {
-					$callUrl .= (strpos($callUrl, '?') ? '&' : '?').'standalone=true';
-				}
-				$callUrl .= '&serviceCallId='.urlencode($activityExecution->getUri());
+			    
+			    $serviceCallModel = tao_models_classes_service_ServiceCall::fromResource($interactiveService);
+			    $jsServiceApi = tao_helpers_ServiceJavascripts::getServiceApi($serviceCallModel, $activityExecution->getUri(), array());
 				$services[] = array(
-					'callUrl'	=> $callUrl,
 					'style'		=> $interactiveServiceService->getStyle($interactiveService),
-					'resource'	=> $interactiveService,
+				    'api'      => $jsServiceApi
 				);
 			}
 			$this->setData('services', $services);
@@ -271,13 +266,10 @@ class wfEngine_actions_ProcessBrowser extends wfEngine_actions_WfModule{
 				
 				$servicesResources = array();
 				foreach($services as $service){
-					$servicesResources[] = array(
-						'resource' => $service['resource'],
-						'callUrl'	=> $service['callUrl'],
-						'style'	=> $service['style'],
-						'input'		=> $interactiveServiceService->getInputValues($interactiveService, $activityExecution),
-						'output'	=> $interactiveServiceService->getOutputValues($interactiveService, $activityExecution)
-					);
+				    $servicesResource = $service;
+				    $servicesResource['input'] = $interactiveServiceService->getInputValues($interactiveService, $activityExecution);
+				    $servicesResource['output'] = $interactiveServiceService->getOutputValues($interactiveService, $activityExecution);
+					$servicesResources[] = $servicesResource;
 				}
 				$variableService = wfEngine_models_classes_VariableService::singleton();
 				$this->setData('debugData', array(
@@ -360,7 +352,7 @@ class wfEngine_actions_ProcessBrowser extends wfEngine_actions_WfModule{
 		if($nextActivityExecutions === false || count($nextActivityExecutions) == 0 ){
 			
 			if ($this->processExecutionService->isFinished($this->processExecution)) {
-				$this->redirectToMain();
+				$this->finish();
 			} elseif ($this->processExecutionService->isPaused($this->processExecution)) {
 				$this->pause();
 			}
@@ -391,6 +383,10 @@ class wfEngine_actions_ProcessBrowser extends wfEngine_actions_WfModule{
 		}
 	}
 	
+	protected function finish(){
+        $this->redirectToMain();
+    }
+
 	public function callback(){
 		
 	}

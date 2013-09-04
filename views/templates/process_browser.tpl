@@ -10,9 +10,10 @@
 		</script>
 		<script src="<?=TAOBASE_WWW?>js/require-jquery.js"></script>
 		<script src="<?=TAOBASE_WWW?>js/main.js"></script>
+		<script src="<?=TAOBASE_WWW?>js/serviceApi/ServiceApi.js"></script>
+		<script src="<?=TAOBASE_WWW?>js/serviceApi/StateStorage.js"></script>
 		
 		<script type="text/javascript" src="<?=ROOT_URL?>wfEngine/views/js/wfApi/wfApi.min.js"></script>
-		<script type="text/javascript" src="<?=ROOT_URL?>wfEngine/views/js/serviceApi/ServiceWfImpl.js"></script>
 		<script type="text/javascript" src="<?=ROOT_URL?>wfEngine/views/js/WfRunner.js"></script>
 		<script type="text/javascript">
 			require(['require', 'jquery', 'json2'], function(req, $) {
@@ -24,6 +25,9 @@
 					<?=json_encode(get_data('processUri'))?>,
 					<?=json_encode(get_data('activityExecutionNonce'))?>
 				);
+				<?foreach($services as $service):?>
+    				wfRunner.initService(<?=$service['api']?>,<?=json_encode($service['style'])?>);
+    			<?endforeach;?>
 				$("#back").click(function(){
 					wfRunner.backward();
 				});
@@ -105,9 +109,6 @@
 				</div>
 
 				<div id="tools">
-				<?foreach($services as $service) {
-				    echo $service['html'];
-				}?>
 				</div>
 
 			</div>

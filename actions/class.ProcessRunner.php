@@ -29,6 +29,7 @@ class wfEngine_actions_ProcessRunner extends wfEngine_actions_ProcessBrowser {
 	    tao_helpers_Context::load('STANDALONE_MODE');
 		parent::__construct();
 	}
+	
 	public function run(){
 		
 		set_time_limit(200);
@@ -72,5 +73,10 @@ class wfEngine_actions_ProcessRunner extends wfEngine_actions_ProcessBrowser {
 		$param = array('processUri' => urlencode($processExecution->getUri()), 'standalone' => 'true');
 		$this->redirect(tao_helpers_Uri::url('index', null, null, $param));
 	}
+	
+	protected function finish(){
+	    echo tao_helpers_ServiceJavascripts::getFinishedSniplet();
+	}
+	
 
 }
