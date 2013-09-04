@@ -21,7 +21,7 @@
     <rdf:type rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassSupportServices"/>
     <rdfs:label xml:lang="en-US"><![CDATA[Process Runner]]></rdfs:label>
     <rdfs:comment xml:lang="en-US"><![CDATA[Runs a process definition using the workflow engine]]></rdfs:comment>
-    <wf:PropertySupportServicesUrl><![CDATA[/wfEngine/ProcessRunner/index?processDefinition=^ProcessDefinition&processVariables=^processVariables&]]></wf:PropertySupportServicesUrl>
+    <wf:PropertySupportServicesUrl><![CDATA[/wfEngine/ProcessRunner/run?processDefinition=^ProcessDefinition&processVariables=^processVariables&]]></wf:PropertySupportServicesUrl>
     <wf:PropertyServiceDefinitionsFormalParameterIn rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#FormalParamProcessDefinition"/>
   </rdf:Description>
 </rdf:RDF>

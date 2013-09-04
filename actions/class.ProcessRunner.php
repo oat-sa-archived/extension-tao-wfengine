@@ -23,42 +23,54 @@
  * 
  * @author Joel Bout, <joel@taotesting.com>
  */
-class wfEngine_actions_ProcessRunner extends wfEngine_actions_WfModule{
+class wfEngine_actions_ProcessRunner extends wfEngine_actions_ProcessBrowser {
 	
 	public function __construct(){
 	    tao_helpers_Context::load('STANDALONE_MODE');
 		parent::__construct();
 	}
-	public function index(){
+	public function run(){
 		
 		set_time_limit(200);
-			
+
 		$processExecutionService = wfEngine_models_classes_ProcessExecutionService::singleton();
 		$activityExecutionService = wfEngine_models_classes_ActivityExecutionService::singleton();
-		
+
 		$processDefinitionUri = $this->getRequestParameter('processDefinition');
 		$processDefinition = new core_kernel_classes_Resource($processDefinitionUri);
-
-		$processExecName = $processDefinition->getLabel();
-		$processExecComment = 'Created in Processes server on ' . date(DATE_ISO8601);
 		
-		if (isset($_REQUEST['processVariables']) && !empty($_REQUEST['processVariables'])) {
-		    $processVariables = json_decode($_REQUEST['processVariables'], true);
-		    $processVariables = is_array($processVariables) ? $processVariables : array();
-		} else {
-		    // none provided
-		    $processVariables = array();
+		if (!$this->hasRequestParameter('serviceCallId')) {
+		    throw new common_exception_Error('No serviceCallId on service call');
 		}
+	    $serviceService = tao_models_classes_service_state_Service::singleton();
+	    $userUri = common_session_SessionManager::getSession()->getUserUri();
+	    $processExecutionUri = is_null($userUri) ? null : $serviceService->get($userUri, $this->getRequestParameter('serviceCallId'));
+		if (is_null($processExecutionUri)) {
 
-		$newProcessExecution = $processExecutionService->createProcessExecution($processDefinition, $processExecName, $processExecComment, $processVariables);
+    		$processExecName = $processDefinition->getLabel();
+    		$processExecComment = 'Created in Processes server on ' . date(DATE_ISO8601);
+    		
+    		if (isset($_REQUEST['processVariables']) && !empty($_REQUEST['processVariables'])) {
+    		    $processVariables = json_decode($_REQUEST['processVariables'], true);
+    		    $processVariables = is_array($processVariables) ? $processVariables : array();
+    		} else {
+    		    // none provided
+    		    $processVariables = array();
+    		}
+    
+    		$newProcessExecution = $processExecutionService->createProcessExecution($processDefinition, $processExecName, $processExecComment, $processVariables);
+    		$processExecutionUri = $newProcessExecution->getUri();
+    		$serviceService->set($userUri, $this->getRequestParameter('serviceCallId'),$processExecutionUri);
+		}
 		
+		$processExecution = new core_kernel_classes_Resource($processExecutionUri);
 		//create nonce to initial activity executions:
-		foreach($processExecutionService->getCurrentActivityExecutions($newProcessExecution) as $initialActivityExecution){
+		foreach($processExecutionService->getCurrentActivityExecutions($processExecution ) as $initialActivityExecution){
 			$activityExecutionService->createNonce($initialActivityExecution);
 		}
 
-		$param = array('processUri' => urlencode($newProcessExecution->getUri()), 'standalone' => 'true');
-		$this->redirect(tao_helpers_Uri::url('index', 'ProcessBrowser', null, $param));
+		$param = array('processUri' => urlencode($processExecution->getUri()), 'standalone' => 'true');
+		$this->redirect(tao_helpers_Uri::url('index', null, null, $param));
 	}
 
 }

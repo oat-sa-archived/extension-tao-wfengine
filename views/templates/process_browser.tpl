@@ -24,10 +24,6 @@
 					<?=json_encode(get_data('processUri'))?>,
 					<?=json_encode(get_data('activityExecutionNonce'))?>
 				);
-				<?foreach($services as $service):?>
-					wfRunner.initService(<?=json_encode($service['resource']->getUri())?>,<?=json_encode($service['style'])?>,<?=json_encode($service['callUrl'])?>);
-				<?endforeach;?>
-				
 				$("#back").click(function(){
 					wfRunner.backward();
 				});
@@ -49,7 +45,7 @@
 	<body>
 		<div id="loader"><img src="<?=BASE_WWW?>img/ajax-loader.gif" /> <?=__('Loading next item...')?></div>
 		<div id="process_view"></div>
-        <?if(!has_data('allowControl') || get_data('allowControl')):?>
+        <?if(!tao_helpers_Context::check('STANDALONE_MODE') && !has_data('allowControl') || get_data('allowControl')):?>
 			<ul id="control">
 	
 	
@@ -109,10 +105,17 @@
 				</div>
 
 				<div id="tools">
+				<?foreach($services as $service) {
+				    echo $service['html'];
+				}?>
 				</div>
 
 			</div>
 
 			<br class="clear" />
   		</div>
-	<? include TAO_TPL_PATH .'footer/layout_footer_'.TAO_RELEASE_STATUS.'.tpl' ?>
+<?php
+    if (!tao_helpers_Context::check('STANDALONE_MODE')) {
+        include TAO_TPL_PATH .'footer/layout_footer_'.TAO_RELEASE_STATUS.'.tpl';
+    }
+?>
