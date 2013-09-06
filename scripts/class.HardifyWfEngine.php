@@ -138,7 +138,7 @@ extends tao_scripts_Runner
 		switch($this->mode){
 			case self::MODE_SMOOTH2HARD:
 				 
-				self::out("Compiling triples to relational database...", array('color' => 'light_blue'));
+				$this->out("Compiling triples to relational database...", array('color' => 'light_blue'));
 				 
 				$options = array(
     				'recursive'				=> true,
@@ -156,20 +156,20 @@ extends tao_scripts_Runner
 				
 				foreach ($toCompile as $tC){
 					$classLabel = $tC->getLabel();
-					self::out("\nCompiling '${classLabel}' class...", array('color' => 'light_blue'));
+					$this->out("\nCompiling '${classLabel}' class...", array('color' => 'light_blue'));
 					$switcher->hardify($tC, $options);
 				}
 				
 				unset($switcher);
 				
-				self::out("Compilation process complete.");
+				$this->out("Compilation process complete.");
 				 
 				break;
 
 				 
 			case self::MODE_HARD2SMOOTH:
 				 
-				self::out("Uncompiling relational database to triples...", array('color' => 'light_blue'));
+				$this->out("Uncompiling relational database to triples...", array('color' => 'light_blue'));
 				 
 				$options = array(
     				'recursive'				=> true,
@@ -184,18 +184,18 @@ extends tao_scripts_Runner
 				
 				foreach ($toDecompile as $tD){
 					$classLabel = $tD->getLabel();
-					self::out("\nDecompiling '${classLabel}' class...", array('color' => 'light_blue'));
+					$this->out("\nDecompiling '${classLabel}' class...", array('color' => 'light_blue'));
 					$switcher->unhardify($tD, $options);
 				}
 				
-				self::out("Decompilation process complete.");
+				$this->out("Decompilation process complete.");
 				
 				unset($switcher);
 				 
 				break;
 
 			default:
-				self::err('Unknow mode', true);
+				$this->err('Unknow mode', true);
 		}
 		 
 		// section 127-0-1-1-22592813:12fbf8723a0:-8000:0000000000002FD4 end
@@ -220,7 +220,7 @@ extends tao_scripts_Runner
 			$dbWrapper = core_kernel_classes_DbWrapper::singleton();
 
 			//Create indexes on discrimining columns
-			self::out("\nCreate extra indexes, it can take a while...");
+			$this->out("\nCreate extra indexes, it can take a while...");
 
 			//uris of the indexes to add to single columns
 			$indexProperties = array(
@@ -260,7 +260,7 @@ extends tao_scripts_Runner
     			}
     		}
 
-    		self::out("\nRebuild table indexes, it can take a while...");
+    		$this->out("\nRebuild table indexes, it can take a while...");
 
     		//Need to OPTIMIZE / FLUSH the tables in order to rebuild the indexes
     		$tables = $dbWrapper->getTables();
@@ -273,7 +273,7 @@ extends tao_scripts_Runner
     			if($percent < 10){
     				$percent = '0'.$percent;
     			}
-    			self::out(" ${percent} %", array('color' => 'light_green', 'inline' => true, 'prefix' => "\r"));
+    			$this->out(" ${percent} %", array('color' => 'light_green', 'inline' => true, 'prefix' => "\r"));
     			 
     			$dbWrapper->rebuildIndexes($tables[$i]);
     			$dbWrapper->flush($tables[$i]);
@@ -282,7 +282,7 @@ extends tao_scripts_Runner
     		}
 		}
 		 
-		self::out("\nFinished !\n", array('color' => 'light_blue'));
+		$this->out("\nFinished !\n", array('color' => 'light_blue'));
 		// section 127-0-1-1-22592813:12fbf8723a0:-8000:0000000000002FD8 end
 	}
 
