@@ -71,7 +71,7 @@ class NotificationServiceTestCase extends UnitTestCase {
 		$pass = 'test123';
 		$userData = array(
 			PROPERTY_USER_LOGIN			=> 	$login,
-			PROPERTY_USER_PASSWORD		=>	md5($pass),
+			PROPERTY_USER_PASSWORD		=>	$pass,
 			PROPERTY_USER_DEFLG			=>	'EN',
 			PROPERTY_USER_MAIL			=>  'somsack.sipasseuth@tudor.lu',
 			PROPERTY_USER_FIRSTNAME  	=>	'Sammy',
