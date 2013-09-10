@@ -200,8 +200,9 @@ class InteractiveServiceServiceTestCase extends UnitTestCase {
 		$serviceDefinitionClass = new core_kernel_classes_Class(CLASS_SERVICESDEFINITION);
 		foreach ($serviceDefinitionClass->getInstances(true) as $serviceDefinition) {
 			
-			if ($serviceDefinition->getUri() == 'http://www.tao.lu/Ontologies/TAODelivery.rdf#ServiceTestContainer') {
-				// don't test the testcontainer since it's not a real service
+			if ($serviceDefinition->getUri() == 'http://www.tao.lu/Ontologies/TAODelivery.rdf#ServiceTestContainer'
+		          || $serviceDefinition->getUri() == 'http://www.tao.lu/Ontologies/TAOTest.rdf#FakeItemRunner') {
+				// don't test the item / testcontainer since it's not a real service
 				continue;
 			}
 			$serviceDefinitionUrl = $serviceDefinition->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_SUPPORTSERVICES_URL));
