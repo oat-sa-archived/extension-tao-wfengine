@@ -19,8 +19,7 @@
  *               2009-2012 (update and modification) Public Research Centre Henri Tudor (under the project TAO-SUSTAIN & TAO-DEV);
  * 
  */
-?>
-<?php
+
 class wfEngine_actions_WfModule extends tao_actions_CommonModule
 {
 	
@@ -46,9 +45,8 @@ class wfEngine_actions_WfModule extends tao_actions_CommonModule
                 ));
         }else{
             $this->redirect(_url('index', 'Authentication', 'wfEngine', array(
-                    'errorMessage' => urlencode(__('Access denied. Please renew your authentication.'))
+                    'errorMessage' => urlencode(__('Access denied. Please renew your authentication!'))
                 )));
         }
     }
 }
-?>
