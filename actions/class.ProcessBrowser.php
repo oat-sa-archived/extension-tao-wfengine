@@ -221,11 +221,21 @@ class wfEngine_actions_ProcessBrowser extends wfEngine_actions_WfModule{
 			$activityDefinition = $this->activityExecutionService->getExecutionOf($activityExecution);
 			$interactiveServices = $activityService->getInteractiveServices($activityDefinition);
 			$services = array();
-			
 			foreach($interactiveServices as $interactiveService){
 			    
 			    $serviceCallModel = tao_models_classes_service_ServiceCall::fromResource($interactiveService);
-			    $jsServiceApi = tao_helpers_ServiceJavascripts::getServiceApi($serviceCallModel, $activityExecution->getUri(), array());
+			    $vars = $serviceCallModel->getRequiredVariables();
+			    $parameters = array();
+			    foreach ($vars as $variable) {
+			        $key = (string)$variable->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_PROCESSVARIABLES_CODE));
+			        $value = $activityExecution->getOnePropertyValue(new core_kernel_classes_Property($variable));
+			        if ($value instanceof core_kernel_classes_Resource) {
+			            $parameters[$key] = $value->getUri();
+			        } elseif ($value instanceof core_kernel_classes_Literal) {
+			            $parameters[$key] = (string)$value;
+			        }
+			    }
+			    $jsServiceApi = tao_helpers_ServiceJavascripts::getServiceApi($serviceCallModel, $activityExecution->getUri(), $parameters);
 				$services[] = array(
 					'style'		=> $interactiveServiceService->getStyle($interactiveService),
 				    'api'      => $jsServiceApi
