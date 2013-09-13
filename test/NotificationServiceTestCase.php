@@ -69,10 +69,11 @@ class NotificationServiceTestCase extends UnitTestCase {
 		
 		$login = 'wfTester';
 		$pass = 'test123';
+		$langResource = tao_models_classes_LanguageService::singleton()->getLanguageByCode(DEFAULT_LANG);
 		$userData = array(
 			PROPERTY_USER_LOGIN			=> 	$login,
-			PROPERTY_USER_PASSWORD		=>	$pass,
-			PROPERTY_USER_DEFLG			=>	'EN',
+			PROPERTY_USER_PASSWORD		=>	md5($pass),
+			PROPERTY_USER_DEFLG			=>	$langResource,
 			PROPERTY_USER_MAIL			=>  'somsack.sipasseuth@tudor.lu',
 			PROPERTY_USER_FIRSTNAME  	=>	'Sammy',
 			PROPERTY_USER_LASTNAME  	=>	'Norville Rogers',
@@ -80,21 +81,20 @@ class NotificationServiceTestCase extends UnitTestCase {
 		);
 		
 		$this->currentUser = $this->userService->getOneUser($login);
+		$this->assertNull($this->currentUser);
 		if(is_null($this->currentUser)){
-			$userClass = new core_kernel_classes_Class(CLASS_WORKFLOWUSER);
+			$userClass = new core_kernel_classes_Class(CLASS_GENERIS_USER);
 			$this->currentUser = $userClass->createInstanceWithProperties($userData);
 		}
 		
 		$this->userService->logout();
-		if($this->userService->loginUser($login, $pass)){
-			$this->currentUser = $this->userService->getCurrentUser();
-		}
+		$this->assertTrue($this->userService->loginUser($login, $pass));
+		$this->assertEqual($this->currentUser->getUri(),$this->userService->getCurrentUser()->getUri());
 	}
 	
 	public function tearDown() {
-		if (!is_null($this->currentUser)){
-			$this->currentUser->delete();
-		}
+	    $this->assertNotNull($this->currentUser);
+		$this->currentUser->delete();
     }
 	
 	/**
