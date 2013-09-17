@@ -359,21 +359,6 @@
     <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
 	<generis:Multiple rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#True" />
   </rdf:Description>
-  <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#ClassSupportServices">
-    <rdfs:label xml:lang="en-US"><![CDATA[Support Services]]></rdfs:label>
-    <rdfs:comment xml:lang="en-US"><![CDATA[Support Services]]></rdfs:comment>
-    <rdfs:subClassOf rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassServiceDefinitions"/>
-  </rdf:Description>
-  <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#ClassWebServices">
-    <rdfs:label xml:lang="en-US"><![CDATA[Web Service]]></rdfs:label>
-    <rdfs:comment xml:lang="en-US"><![CDATA[Web Service]]></rdfs:comment>
-    <rdfs:subClassOf rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassServiceDefinitions"/>
-  </rdf:Description>
-  <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#ClassServiceDefinitions">
-    <rdfs:label xml:lang="en-US"><![CDATA[Services Definition]]></rdfs:label>
-    <rdfs:comment xml:lang="en-US"><![CDATA[Services Definition]]></rdfs:comment>
-    <rdfs:subClassOf rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassServiceDefinitionResources"/>
-  </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#ClassActivities">
     <rdfs:label xml:lang="en-US"><![CDATA[Activity]]></rdfs:label>
     <rdfs:comment xml:lang="en-US"><![CDATA[Activity]]></rdfs:comment>
