@@ -425,7 +425,8 @@ class wfEngine_models_classes_ProcessDefinitionService
     }
 
     /**
-     * Short description of method getFinalSteps
+     * returns all the activities that are final
+     * aka which have no following step
      *
      * @access public
      * @author Joel Bout, <joel.bout@tudor.lu>
@@ -435,19 +436,13 @@ class wfEngine_models_classes_ProcessDefinitionService
     public function getFinalSteps( core_kernel_classes_Resource $process)
     {
         $returnValue = array();
-
-        // section 10-30-1--78-4ca28256:13aace225cc:-8000:0000000000003BF5 begin
         foreach($this->getAllActivities($process) as $activity) {
 			$nexts = wfEngine_models_classes_StepService::singleton()->getNextSteps($activity);
-			if(empty($next)){
+			if(empty($nexts)){
 				$returnValue[] = $activity;
 			}
 		}	
-        // section 10-30-1--78-4ca28256:13aace225cc:-8000:0000000000003BF5 end
-
         return (array) $returnValue;
     }
 
-} /* end of class wfEngine_models_classes_ProcessDefinitionService */
-
-?>
+}
