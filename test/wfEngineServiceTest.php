@@ -37,7 +37,7 @@ class wfEngineServiceTest extends UnitTestCase {
 	 * CHANGE IT MANNUALLY to see step by step the output
 	 * @var boolean
 	 */
-	protected $OUTPUT = true;
+	protected $OUTPUT = false;
 	
 	/**
 	 * @var wfEngine_models_classes_UserService
