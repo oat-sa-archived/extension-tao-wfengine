@@ -37,7 +37,7 @@ class ProcessExecutionServiceTestCase extends UnitTestCase{
 	 * CHANGE IT MANNUALLY to see step by step the output
 	 * @var boolean
 	 */
-	const OUTPUT = true;
+	const OUTPUT = false;
 	
 	/**
 	 * CHANGE IT MANNUALLY to use service cache
