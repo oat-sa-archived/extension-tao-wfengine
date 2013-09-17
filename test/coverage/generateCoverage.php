@@ -39,6 +39,7 @@ if(PHP_SAPI == 'cli'){
 else{
 	$reporter = new HtmlReporter();
 }
+error_reporting(0);
 require_once  PHPCOVERAGE_HOME. "/CoverageRecorder.php";
 require_once PHPCOVERAGE_HOME . "/reporter/HtmlCoverageReporter.php";
 //run the unit test suite
@@ -49,7 +50,9 @@ $covReporter = new HtmlCoverageReporter("Code Coverage Report wfEngine", "", PHP
 $cov = new CoverageRecorder($includePaths, $excludePaths, $covReporter);
 //run the unit test suite
 $cov->startInstrumentation();
+error_reporting(E_ALL);
 $testSuite->run($reporter);
+error_reporting(0);
 $cov->stopInstrumentation();
 $cov->generateReport();
 $covReporter->printTextSummary(PHPCOVERAGE_REPORTS.'/wfEngine_coverage.txt');
