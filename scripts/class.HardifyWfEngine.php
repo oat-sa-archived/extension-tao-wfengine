@@ -132,8 +132,9 @@ extends tao_scripts_Runner
 	{
 		// section 127-0-1-1-22592813:12fbf8723a0:-8000:0000000000002FD4 begin
 
-		if (!defined('DEBUG_PERSISTENCE'))
+		if (!defined('DEBUG_PERSISTENCE')){
 			define ('DEBUG_PERSISTENCE', false);
+		}
 		 
 		switch($this->mode){
 			case self::MODE_SMOOTH2HARD:
