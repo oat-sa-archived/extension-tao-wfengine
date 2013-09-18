@@ -91,7 +91,7 @@ class wfEngine_actions_form_Login
     	$this->form = tao_helpers_form_FormFactory::getForm('loginForm');
 		
 		$connectElt = tao_helpers_form_FormFactory::getElement('connect', 'Submit');
-		$connectElt->setValue(__('Login'));
+		$connectElt->setValue(__('Log in'));
 		$this->form->setActions(array($connectElt), 'bottom');
     	
         // section 127-0-1-1-68f1e705:127f61c8a56:-8000:00000000000023C0 end
