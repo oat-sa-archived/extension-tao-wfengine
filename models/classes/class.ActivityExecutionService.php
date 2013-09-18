@@ -170,7 +170,7 @@ class wfEngine_models_classes_ActivityExecutionService
 
         // section 127-0-1-1-3a6b44f1:1326d50ba09:-8000:00000000000065D0 begin
 		if($this->cache){
-			switch($methodName):
+			switch($methodName){
 				case __CLASS__.'::getExecutionOf':
 				case __CLASS__.'::getStatus':
 				case __CLASS__.'::getActivityExecutionUser':
@@ -207,7 +207,7 @@ class wfEngine_models_classes_ActivityExecutionService
 					}
 					break;
 				}
-			endswitch;
+			}
 			
 		}
         // section 127-0-1-1-3a6b44f1:1326d50ba09:-8000:00000000000065D0 end
