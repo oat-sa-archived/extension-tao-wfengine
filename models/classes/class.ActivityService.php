@@ -94,7 +94,7 @@ class wfEngine_models_classes_ActivityService
         // section 127-0-1-1-3a6b44f1:1326d50ba09:-8000:00000000000065CB begin
 		if($this->cache){
 			
-			switch($methodName):
+			switch($methodName){
 //				case __CLASS__.'::isInitial':
 //				case __CLASS__.'::isHidden':
 				case __CLASS__.'::getNextConnectors':{
@@ -114,7 +114,7 @@ class wfEngine_models_classes_ActivityService
 					}
 					break;
 				}
-			endswitch;
+		}
 			
 		}
         // section 127-0-1-1-3a6b44f1:1326d50ba09:-8000:00000000000065CB end
@@ -138,7 +138,7 @@ class wfEngine_models_classes_ActivityService
         // section 127-0-1-1-3a6b44f1:1326d50ba09:-8000:00000000000065D0 begin
 		if($this->cache){
 			
-			switch($methodName):
+			switch($methodName){
 //				case __CLASS__.'::isInitial':
 //				case __CLASS__.'::isHidden':
 				case __CLASS__.'::getNextConnectors':{
@@ -157,7 +157,7 @@ class wfEngine_models_classes_ActivityService
 					}
 					break;
 				}
-			endswitch;
+			}
 			
 		}
         // section 127-0-1-1-3a6b44f1:1326d50ba09:-8000:00000000000065D0 end
