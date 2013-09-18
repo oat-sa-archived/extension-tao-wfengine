@@ -1,5 +1,5 @@
 <?php
-/*  
+/**  
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; under version 2
@@ -19,45 +19,8 @@
  *               2009-2012 (update and modification) Public Research Centre Henri Tudor (under the project TAO-SUSTAIN & TAO-DEV);
  * 
  */
-?>
-<?php
 
-error_reporting(E_ALL);
 
-/**
- * Manage the particular executions of a process definition.
- *
- * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
- * @package wfEngine
- * @subpackage models_classes
- */
-
-if (0 > version_compare(PHP_VERSION, '5')) {
-    die('This file was generated for PHP 5');
-}
-
-/**
- * The Service class is an abstraction of each service instance. 
- * Used to centralize the behavior related to every servcie instances.
- *
- * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
- */
-require_once('tao/models/classes/class.GenerisService.php');
-
-/**
- * include tao_models_classes_ServiceCacheInterface
- *
- * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
- */
-require_once('tao/models/classes/interface.ServiceCacheInterface.php');
-
-/* user defined includes */
-// section 127-0-1-1--2bba7ca5:129262ff3bb:-8000:0000000000001FE7-includes begin
-// section 127-0-1-1--2bba7ca5:129262ff3bb:-8000:0000000000001FE7-includes end
-
-/* user defined constants */
-// section 127-0-1-1--2bba7ca5:129262ff3bb:-8000:0000000000001FE7-constants begin
-// section 127-0-1-1--2bba7ca5:129262ff3bb:-8000:0000000000001FE7-constants end
 
 /**
  * Manage the particular executions of a process definition.
@@ -95,7 +58,7 @@ class wfEngine_models_classes_ProcessExecutionService
         // section 127-0-1-1-3a6b44f1:1326d50ba09:-8000:00000000000065CB begin
 		if($this->cache){
 			
-			switch($methodName):
+			switch($methodName){
 				case __CLASS__.'::getExecutionOf':
 				case __CLASS__.'::getStatus':{
 					if(isset($args[0]) && $args[0] instanceof core_kernel_classes_Resource){
@@ -119,7 +82,7 @@ class wfEngine_models_classes_ProcessExecutionService
 					}
 					break;
 				}
-			endswitch;
+			}
 		}
         // section 127-0-1-1-3a6b44f1:1326d50ba09:-8000:00000000000065CB end
 
@@ -1231,7 +1194,9 @@ class wfEngine_models_classes_ProcessExecutionService
 				throw new wfEngine_models_classes_ProcessExecutionException('No empty value allowed for the property "execution of"');
 			}
 			
-			if(!empty($returnValue)) $this->setCache(__METHOD__, array($processExecution), $returnValue);
+			if(!empty($returnValue)) {
+			    $this->setCache(__METHOD__, array($processExecution), $returnValue);
+			}
 		}
 		
         // section 127-0-1-1--42c550f9:1323e0e4fe5:-8000:0000000000002FB6 end

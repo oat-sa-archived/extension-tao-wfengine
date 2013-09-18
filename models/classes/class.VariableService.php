@@ -1,5 +1,5 @@
 <?php
-/*  
+/**  
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; under version 2
@@ -19,45 +19,7 @@
  *               2009-2012 (update and modification) Public Research Centre Henri Tudor (under the project TAO-SUSTAIN & TAO-DEV);
  * 
  */
-?>
-<?php
 
-error_reporting(E_ALL);
-
-/**
- * Enable you to manage the process variables
- *
- * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
- * @package wfEngine
- * @subpackage models_classes
- */
-
-if (0 > version_compare(PHP_VERSION, '5')) {
-    die('This file was generated for PHP 5');
-}
-
-/**
- * The Service class is an abstraction of each service instance. 
- * Used to centralize the behavior related to every servcie instances.
- *
- * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
- */
-require_once('tao/models/classes/class.GenerisService.php');
-
-/**
- * include tao_models_classes_ServiceCacheInterface
- *
- * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
- */
-require_once('tao/models/classes/interface.ServiceCacheInterface.php');
-
-/* user defined includes */
-// section -87--2--3--76--7eb229c2:12916be1ece:-8000:0000000000003C05-includes begin
-// section -87--2--3--76--7eb229c2:12916be1ece:-8000:0000000000003C05-includes end
-
-/* user defined constants */
-// section -87--2--3--76--7eb229c2:12916be1ece:-8000:0000000000003C05-constants begin
-// section -87--2--3--76--7eb229c2:12916be1ece:-8000:0000000000003C05-constants end
 
 /**
  * Enable you to manage the process variables
@@ -95,7 +57,7 @@ class wfEngine_models_classes_VariableService
         // section 127-0-1-1-3a6b44f1:1326d50ba09:-8000:00000000000065CB begin
 		
 		if($this->cache){
-			switch($methodName):
+			switch($methodName){
 				case __CLASS__.'::getProcessVariable':{
 					if(isset($args[0]) && is_string($args[0]) && $value instanceof core_kernel_classes_Resource){
 						$code = $args[0];
@@ -107,7 +69,7 @@ class wfEngine_models_classes_VariableService
 					}
 					break;
 				}	
-			endswitch;
+			}
 		}
 		
         // section 127-0-1-1-3a6b44f1:1326d50ba09:-8000:00000000000065CB end
@@ -132,7 +94,7 @@ class wfEngine_models_classes_VariableService
 		// 
 		if($this->cache){
 			
-			switch($methodName):
+			switch($methodName){
 				case __CLASS__.'::getProcessVariable':{
 					if(isset($args[0]) && is_string($args[0])){
 						$code = $args[0];
@@ -143,7 +105,7 @@ class wfEngine_models_classes_VariableService
 					}
 					break;
 				}	
-			endswitch;
+			}
 			
 		}
         // section 127-0-1-1-3a6b44f1:1326d50ba09:-8000:00000000000065D0 end
