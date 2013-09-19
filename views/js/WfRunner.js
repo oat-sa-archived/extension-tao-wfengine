@@ -18,6 +18,15 @@
  *               2009-2012 (update and modification) Public Research Centre Henri Tudor (under the project TAO-SUSTAIN & TAO-DEV);
  * 
  */
+var autoResizeId;
+
+function autoResize(frame, frequence) {
+	
+	$frame = $(frame);
+	autoResizeId = setInterval(function() {
+		$frame.height($frame.contents().height());
+	}, frequence);
+}
 
 function WfRunner(activityExecutionUri, processUri, activityExecutionNonce) {
 	this.activityExecutionUri = activityExecutionUri;
@@ -35,35 +44,22 @@ WfRunner.prototype.initService = function(serviceApi, style) {
 	var selfref = this;
 	serviceApi.onFinish(function() {return function(wfRunner) {wfRunner.forward()}(selfref)});
 	
-	var $aFrame = $('<iframe class="toolframe" frameborder="0" style="'+style+'" src="'+this.processBrowserModule+'loading"></iframe>').appendTo('#tools');
+	var $aFrame = $('<iframe class="toolframe" frameborder="0" style="" scrolling="no" src="'+this.processBrowserModule+'loading"></iframe>').appendTo('#tools');
 	$aFrame.unbind('load').load(function(){
 		$(this).attr('src', serviceApi.getCallUrl());
 		$(this).unbind('load');
 
-		$(this).load(function() {
-			// Auto adapt tool container regarding iframe heights
-			var frame = this;
-			var doc = frame.contentWindow || frame.contentDocument;
-
-			if (doc.document) {
-				doc = doc.document;
-			}
-
-			var oldHeight = $('#tools').height();
-			var height = $(doc).height();
-			$('#tools').height(height + oldHeight);
-			
-		});
-
 		if (jQuery.browser.msie) {
 			this.onreadystatechange = function(){	
 				if(this.readyState == 'complete'){
-						serviceApi.connect(this);	
+						serviceApi.connect(this);
+						autoResize(this, 10);
 					}
 				};
 			} else {		
 				this.onload = function(){
 					serviceApi.connect(this);	
+					autoResize(this, 10);
 				};
 			}
 		});
@@ -71,6 +67,8 @@ WfRunner.prototype.initService = function(serviceApi, style) {
 }
 
 WfRunner.prototype.forward = function() {
+	clearInterval(autoResizeId);
+	
 	$("#navigation").hide();
 	var url = this.processBrowserModule + 'next'
 		+ '?processUri=' + encodeURIComponent(this.processUri)

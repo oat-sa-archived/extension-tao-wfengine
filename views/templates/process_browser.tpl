@@ -48,11 +48,10 @@
 
 	<body>
 		<div id="loader"><img src="<?=BASE_WWW?>img/ajax-loader.gif" /> <?=__('Loading next item...')?></div>
+		<div id="runner">
 		<div id="process_view"></div>
         <?if(!tao_helpers_Context::check('STANDALONE_MODE') && !has_data('allowControl') || get_data('allowControl')):?>
 			<ul id="control">
-	
-	
 	        	<li>
 	        		<span id="connecteduser" class="icon"><?=__("User name:")?> <span id="username"><?=$userViewData['username']?></span></span>
 	        		<span class="separator"></span>
@@ -74,7 +73,7 @@
 	         	</li>
 	
 			</ul>
-
+			
 			<?if(get_data('debugWidget')):?>
 					<div id="debugWindow" style="display:none;">
 						<?foreach(get_data('debugData') as $debugSection => $debugObj):?>
@@ -91,7 +90,6 @@
 
 		<div id="content">
 			<div id="business">
-
 				<div id="navigation">
 					<?if(USE_PREVIOUS):?>
 						<?if($browserViewData['controls']['backward']):?>
@@ -110,11 +108,10 @@
 
 				<div id="tools">
 				</div>
-
 			</div>
-
 			<br class="clear" />
   		</div>
+	</div>
 <?php
     if (!tao_helpers_Context::check('STANDALONE_MODE')) {
         include TAO_TPL_PATH .'footer/layout_footer_'.TAO_RELEASE_STATUS.'.tpl';
