@@ -86,6 +86,126 @@ class ActivityExecutionServiceTestCase extends wfEngineServiceTest {
 
 	}
 	
+	
+	private function checkAclRole($users,$activityExecution,$processInstance){
+	    $activityExecutionService = wfEngine_models_classes_ActivityExecutionService::singleton();
+	    $processExecutionService = wfEngine_models_classes_ProcessExecutionService::singleton();
+
+	    $this->assertTrue($this->changeUser($users[4]));
+	    $this->assertFalse($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
+	    $this->assertNull($processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser));
+	    
+	    $this->assertTrue($this->changeUser($users[6]));
+	    $this->assertFalse($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
+	    $this->assertNull($processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser));
+	    
+	    $this->assertTrue($this->changeUser($users[1]));
+	    $this->assertTrue($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
+	    $this->assertNotNull($processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser));
+	    
+	    $this->assertTrue($this->changeUser($users[2]));
+	    $this->assertTrue($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
+	    $this->assertNotNull($processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser));
+	    
+	    
+	}
+	
+	private function checkAclRoleRestrictedUser($users,$activityExecution,$processInstance){
+	    $activityExecutionService = wfEngine_models_classes_ActivityExecutionService::singleton();
+	    $processExecutionService = wfEngine_models_classes_ProcessExecutionService::singleton();
+	     
+	    
+	    $this->assertTrue($this->changeUser($users[1]));
+	    $this->assertFalse($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
+	    $this->assertNull($processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser));
+	    
+	    $this->assertTrue($this->changeUser($users[5]));
+	    $this->assertTrue($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
+	    $this->assertNotNull($processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser));
+	    
+	    $this->assertTrue($this->changeUser($users[4]));
+	    $this->assertFalse($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
+	    $this->assertNull($processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser));
+	    
+	    $this->assertTrue($this->changeUser($users[5]));
+	    $this->assertTrue($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
+	    $this->assertNotNull($processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser));
+	    
+	}
+	private function checkAclRoleRestrictedUserInherited($users,$activityExecution,$processInstance){
+	    $activityExecutionService = wfEngine_models_classes_ActivityExecutionService::singleton();
+	    $processExecutionService = wfEngine_models_classes_ProcessExecutionService::singleton();
+	     
+    	$this->assertTrue($this->changeUser($users[1]));
+    	$this->assertFalse($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
+    	$this->assertNull($processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser));
+    	    
+    	$this->assertTrue($this->changeUser($users[4]));
+    	$this->assertFalse($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
+    	$this->assertNull($processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser));
+    	
+    	$this->assertTrue($this->changeUser($users[5]));
+    	$this->assertTrue($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
+    	$this->assertNotNull($processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser));
+    	
+	}
+	
+	private function checkAclUser($users,$activityExecution,$processInstance){
+	    $activityExecutionService = wfEngine_models_classes_ActivityExecutionService::singleton();
+	    $processExecutionService = wfEngine_models_classes_ProcessExecutionService::singleton();
+	    
+	    $this->assertTrue($this->changeUser($users[3]));
+	    $this->assertFalse($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
+	    $this->assertNull($processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser));
+	    
+	    $this->assertTrue($this->changeUser($users[2]));
+	    $this->assertTrue($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
+	    $this->assertNotNull($processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser));
+	    
+	    $this->assertTrue($this->changeUser($users[6]));
+	    $this->assertFalse($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
+	    $this->assertNull($processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser));
+	    
+	    $this->assertTrue($this->changeUser($users[2]));
+	    $this->assertTrue($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
+	    $this->assertNotNull($processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser));
+	    
+	}
+	
+	private function checkAclRoleRestrictedUserDelivery($users,$activityExecution,$processInstance){
+	    $activityExecutionService = wfEngine_models_classes_ActivityExecutionService::singleton();
+	    $processExecutionService = wfEngine_models_classes_ProcessExecutionService::singleton();
+	    $this->assertTrue($this->changeUser($users[1]));
+	    $this->assertFalse($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
+	    $this->assertNull($processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser));
+	    
+	    $this->assertTrue($this->changeUser($users[3]));
+	    $this->assertFalse($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
+	    $this->assertNull($processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser));
+	    
+	    $this->assertTrue($this->changeUser($users[6]));
+	    $this->assertFalse($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
+	    $this->assertNull($processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser));
+	    
+	    $this->assertTrue($this->changeUser($users[2]));
+	    $this->assertTrue($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
+	    $this->assertNotNull($processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser));
+	    
+	}
+	
+	private function checkUser5($users,$activityExecution,$processInstance){
+	    $activityExecutionService = wfEngine_models_classes_ActivityExecutionService::singleton();
+	    $processExecutionService = wfEngine_models_classes_ProcessExecutionService::singleton();
+	    $this->assertTrue($this->changeUser($users[3]));
+	    $this->assertFalse($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
+	    $this->assertNull($processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser));
+	    
+	    $this->assertTrue($this->changeUser($users[5]));
+	    $this->assertTrue($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
+	    $this->assertNotNull($processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser));
+	    
+	}
+	
 	/**
 	 * Test the sequential process execution:
 	 */
@@ -250,123 +370,48 @@ class ActivityExecutionServiceTestCase extends wfEngineServiceTest {
 					case 1:{
 						//INSTANCE_ACL_ROLE, $roleA:
 						
-						$this->assertTrue($this->changeUser($users[4]));
-						$this->assertFalse($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
-						$this->assertNull($processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser));
-				
-						$this->assertTrue($this->changeUser($users[6]));
-						$this->assertFalse($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
-						$this->assertNull($processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser));
-				
-						$this->assertTrue($this->changeUser($users[1]));
-						$this->assertTrue($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
-						$this->assertNotNull($processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser));
-				
-						$this->assertTrue($this->changeUser($users[2]));
-						$this->assertTrue($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
-						$this->assertNotNull($processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser));
-						
+						$this->checkAclRole($users, $activityExecution, $processInstance);
 						$processVariableService->push($role_processVar_key, $roleB->getUri());
 						break;
 					}
 					case 2:{
 						//INSTANCE_ACL_ROLE_RESTRICTED_USER, $roleB:
 						
-						$this->assertTrue($this->changeUser($users[1]));
-						$this->assertFalse($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
-						$this->assertNull($processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser));
-				
-						$this->assertTrue($this->changeUser($users[5]));
-						$this->assertTrue($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
-						$this->assertNotNull($processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser));
-				
-						$this->assertTrue($this->changeUser($users[4]));
-						$this->assertFalse($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
-						$this->assertNull($processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser));
-						
-						$this->assertTrue($this->changeUser($users[5]));
-						$this->assertTrue($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
-						$this->assertNotNull($processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser));
-						
+						$this->checkAclRoleRestrictedUser($users, $activityExecution, $processInstance);
 						$processVariableService->push($user_processVar_key, $user2->getUri());
 						break;
 					}
 					case 3:{
 						//INSTANCE_ACL_ROLE_RESTRICTED_USER_INHERITED, $roleB
 						
-						$this->assertTrue($this->changeUser($users[1]));
-						$this->assertFalse($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
-						$this->assertNull($processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser));
 				
 						$this->assertTrue($this->changeUser($users[5]));
 						$this->assertTrue($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
 						$this->assertNotNull($processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser));
 				
-						$this->assertTrue($this->changeUser($users[4]));
-						$this->assertFalse($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
-						$this->assertNull($processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser));
-						
-						$this->assertTrue($this->changeUser($users[5]));
-						$this->assertTrue($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
-						$this->assertNotNull($processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser));
-						
+					    $this->checkAclRoleRestrictedUserInherited($users, $activityExecution, $processInstance);
+					    
 						break;
 					}
 					case 4:{
 						//INSTANCE_ACL_USER, $user2:
 						
-						$this->assertTrue($this->changeUser($users[3]));
-						$this->assertFalse($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
-						$this->assertNull($processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser));
 						
-						$this->assertTrue($this->changeUser($users[2]));
-						$this->assertTrue($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
-						$this->assertNotNull($processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser));
-						
-						$this->assertTrue($this->changeUser($users[6]));
-						$this->assertFalse($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
-						$this->assertNull($processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser));
-						
-						$this->assertTrue($this->changeUser($users[2]));
-						$this->assertTrue($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
-						$this->assertNotNull($processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser));
-						
+						$this->checkAclUser($users, $activityExecution, $processInstance);
 						break;
 					}
 					case 5:{
 						//INSTANCE_ACL_ROLE_RESTRICTED_USER_INHERITED, $roleB:
 						//only user5 can access it normally:
-						
-						$this->assertTrue($this->changeUser($users[3]));
-						$this->assertFalse($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
-						$this->assertNull($processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser));
-						
-						$this->assertTrue($this->changeUser($users[5]));
-						$this->assertTrue($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
-						$this->assertNotNull($processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser));
-						
+						$this->checkUser5($users, $activityExecution, $processInstance);
+
 						break;
 					}
 					case 6:{
 						//INSTANCE_ACL_ROLE_RESTRICTED_USER_DELIVERY, $roleA:
 						//only the user of $roleA that executed (the initial acivity belongs to user2:
 						
-						$this->assertTrue($this->changeUser($users[1]));
-						$this->assertFalse($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
-						$this->assertNull($processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser));
-						
-						$this->assertTrue($this->changeUser($users[3]));
-						$this->assertFalse($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
-						$this->assertNull($processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser));
-						
-						$this->assertTrue($this->changeUser($users[6]));
-						$this->assertFalse($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
-						$this->assertNull($processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser));
-						
-						$this->assertTrue($this->changeUser($users[2]));
-						$this->assertTrue($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
-						$this->assertNotNull($processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser));
-						
+                        $this->checkAclRoleRestrictedUserDelivery($users, $activityExecution, $processInstance);
 						break;
 					}
 				}
@@ -431,118 +476,41 @@ class ActivityExecutionServiceTestCase extends wfEngineServiceTest {
 				switch($index){
 					case 1:{
 						//INSTANCE_ACL_ROLE, $roleA:
-						
-						$this->assertTrue($this->changeUser($users[4]));
-						$this->assertFalse($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
-						$this->assertNull($processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser));
-				
-						$this->assertTrue($this->changeUser($users[6]));
-						$this->assertFalse($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
-						$this->assertNull($processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser));
-				
-						$this->assertTrue($this->changeUser($users[1]));
-						$this->assertTrue($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
-						$this->assertNotNull($processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser));
-				
-						$this->assertTrue($this->changeUser($users[2]));
-						$this->assertTrue($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
-						$this->assertNotNull($processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser));
-						
+
+					    $this->checkAclRole($users, $activityExecution, $processInstance);
 						break;
 					}
 					case 2:{
 						//INSTANCE_ACL_ROLE_RESTRICTED_USER, $roleB:
-						
-						$this->assertTrue($this->changeUser($users[1]));
-						$this->assertFalse($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
-						$this->assertNull($processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser));
-				
-						$this->assertTrue($this->changeUser($users[5]));
-						$this->assertTrue($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
-						$this->assertNotNull($processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser));
-				
-						$this->assertTrue($this->changeUser($users[4]));
-						$this->assertFalse($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
-						$this->assertNull($processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser));
-						
-						$this->assertTrue($this->changeUser($users[5]));
-						$this->assertTrue($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
-						$this->assertNotNull($processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser));
-						
+					    
+					    $this->checkAclRoleRestrictedUser($users, $activityExecution, $processInstance);
 						break;
 					}
 					case 3:{
 						//INSTANCE_ACL_ROLE_RESTRICTED_USER_INHERITED, $roleB
 						
-						$this->assertTrue($this->changeUser($users[1]));
-						$this->assertFalse($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
-						$this->assertNull($processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser));
-				
-						$this->assertTrue($this->changeUser($users[4]));
-						$this->assertFalse($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
-						$this->assertNull($processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser));
-						
-						$this->assertTrue($this->changeUser($users[5]));
-						$this->assertTrue($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
-						$this->assertNotNull($processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser));
-						
+                        $this->checkAclRoleRestrictedUserInherited($users, $activityExecution, $processInstance);
 						break;
 					}
 					case 4:{
 						//INSTANCE_ACL_USER, $user2:
 						
-						$this->assertTrue($this->changeUser($users[3]));
-						$this->assertFalse($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
-						$this->assertNull($processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser));
-						
-						$this->assertTrue($this->changeUser($users[2]));
-						$this->assertTrue($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
-						$this->assertNotNull($processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser));
-						
-						$this->assertTrue($this->changeUser($users[6]));
-						$this->assertFalse($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
-						$this->assertNull($processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser));
-						
-						$this->assertTrue($this->changeUser($users[2]));
-						$this->assertTrue($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
-						$this->assertNotNull($processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser));
-						
+                        $this->checkAclUser($users, $activityExecution, $processInstance);
 						break;
 					}
 					case 5:{
+					    
 						//INSTANCE_ACL_ROLE_RESTRICTED_USER_INHERITED, $roleB:
 						//only user5 can access it normally:
-						
-						$this->assertTrue($this->changeUser($users[3]));
-						$this->assertFalse($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
-						$this->assertNull($processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser));
-						
-						$this->assertTrue($this->changeUser($users[5]));
-						$this->assertTrue($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
-						$this->assertNotNull($processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser));
-						
+					    $this->checkUser5($users, $activityExecution, $processInstance);
+					    	
 						break;
 					}
 					case 6:{
 						//INSTANCE_ACL_ROLE_RESTRICTED_USER_DELIVERY, $roleA:
 						//only the user of $roleA that executed (the initial acivity belongs to user2:
 						
-						$this->assertTrue($this->changeUser($users[1]));
-						$this->assertFalse($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
-						$this->assertNull($processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser));
-						
-						$this->assertTrue($this->changeUser($users[3]));
-						$this->assertFalse($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
-						$this->assertNull($processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser));
-						
-						$this->assertTrue($this->changeUser($users[6]));
-						$this->assertFalse($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
-						$this->assertNull($processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser));
-						
-						$this->assertTrue($this->changeUser($users[2]));
-						$this->assertTrue($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
-						$this->assertNotNull($processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser));
-						
+                        $this->checkAclRoleRestrictedUserDelivery($users, $activityExecution, $processInstance);
 						break;
 					}
 					
@@ -595,23 +563,9 @@ class ActivityExecutionServiceTestCase extends wfEngineServiceTest {
 				switch($i){
 					case 1:{
 						//INSTANCE_ACL_ROLE, $roleA:
-						
-						$this->assertTrue($this->changeUser($users[4]));
-						$this->assertFalse($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
-						$this->assertNull($processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser));
-				
-						$this->assertTrue($this->changeUser($users[6]));
-						$this->assertFalse($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
-						$this->assertNull($processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser));
-				
-						$this->assertTrue($this->changeUser($users[1]));
-						$this->assertTrue($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
-						$this->assertNotNull($processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser));
-				
-						$this->assertTrue($this->changeUser($users[2]));
-						$this->assertTrue($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
-						$this->assertNotNull($processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser));
-						
+					
+					    $this->checkAclRole($users, $activityExecution, $processInstance);
+					    
 						//TODO:to be modified after "back"
 						$processVariableService->push($role_processVar_key, $roleB->getUri());
 						
@@ -620,22 +574,7 @@ class ActivityExecutionServiceTestCase extends wfEngineServiceTest {
 					case 2:{
 						//INSTANCE_ACL_ROLE_RESTRICTED_USER, $roleB:
 						
-						$this->assertTrue($this->changeUser($users[1]));
-						$this->assertFalse($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
-						$this->assertNull($processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser));
-				
-						$this->assertTrue($this->changeUser($users[5]));
-						$this->assertTrue($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
-						$this->assertNotNull($processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser));
-				
-						$this->assertTrue($this->changeUser($users[4]));
-						$this->assertFalse($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
-						$this->assertNull($processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser));
-						
-						$this->assertTrue($this->changeUser($users[5]));
-						$this->assertTrue($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
-						$this->assertNotNull($processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser));
-						
+                        $this->checkAclRoleRestrictedUser($users, $activityExecution, $processInstance);
 						//TODO:to be modified after "back"
 						$processVariableService->push($user_processVar_key, $user2->getUri());
 						
@@ -643,76 +582,27 @@ class ActivityExecutionServiceTestCase extends wfEngineServiceTest {
 					}
 					case 3:{
 						//INSTANCE_ACL_ROLE_RESTRICTED_USER_INHERITED, $roleB
-						
-						$this->assertTrue($this->changeUser($users[1]));
-						$this->assertFalse($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
-						$this->assertNull($processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser));
-				
-						$this->assertTrue($this->changeUser($users[4]));
-						$this->assertFalse($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
-						$this->assertNull($processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser));
-						
-						$this->assertTrue($this->changeUser($users[5]));
-						$this->assertTrue($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
-						$this->assertNotNull($processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser));
-						
+						$this->checkAclRoleRestrictedUserInherited($users, $activityExecution, $processInstance);
 						break;
 					}
 					case 4:{
 						//INSTANCE_ACL_USER, $user2:
-						
-						$this->assertTrue($this->changeUser($users[3]));
-						$this->assertFalse($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
-						$this->assertNull($processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser));
-						
-						$this->assertTrue($this->changeUser($users[2]));
-						$this->assertTrue($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
-						$this->assertNotNull($processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser));
-						
-						$this->assertTrue($this->changeUser($users[6]));
-						$this->assertFalse($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
-						$this->assertNull($processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser));
-						
-						$this->assertTrue($this->changeUser($users[2]));
-						$this->assertTrue($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
-						$this->assertNotNull($processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser));
-						
+						$this->checkAclUser($users, $activityExecution, $processInstance);
 						break;
 					}
 					case 5:{
 						//INSTANCE_ACL_ROLE_RESTRICTED_USER_INHERITED, $roleB:
 						//only user5 can access it normally:
 						
-						$this->assertTrue($this->changeUser($users[3]));
-						$this->assertFalse($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
-						$this->assertNull($processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser));
-						
-						$this->assertTrue($this->changeUser($users[5]));
-						$this->assertTrue($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
-						$this->assertNotNull($processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser));
-						
+                        $this->checkUser5($users, $activityExecution, $processInstance);
+					    					
 						break;
 					}
 					case 6:{
 						//INSTANCE_ACL_ROLE_RESTRICTED_USER_DELIVERY, $roleA:
 						//only the user of $roleA that executed (the initial acivity belongs to user2:
 						
-						$this->assertTrue($this->changeUser($users[1]));
-						$this->assertFalse($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
-						$this->assertNull($processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser));
-						
-						$this->assertTrue($this->changeUser($users[3]));
-						$this->assertFalse($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
-						$this->assertNull($processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser));
-						
-						$this->assertTrue($this->changeUser($users[6]));
-						$this->assertFalse($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
-						$this->assertNull($processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser));
-						
-						$this->assertTrue($this->changeUser($users[2]));
-						$this->assertTrue($activityExecutionService->checkAcl($activityExecution, $this->currentUser, $processInstance));
-						$this->assertNotNull($processExecutionService->initCurrentActivityExecution($processInstance, $activityExecution, $this->currentUser));
-						
+						$this->checkAclRoleRestrictedUserDelivery($users, $activityExecution, $processInstance);
 						break;
 					}
 					
