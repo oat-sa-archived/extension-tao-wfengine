@@ -104,7 +104,7 @@ class wfEngine_models_classes_ProcessExecutionService
 
         // section 127-0-1-1-3a6b44f1:1326d50ba09:-8000:00000000000065D0 begin
 		if($this->cache){
-			switch($methodName):
+			switch($methodName){
 				case __CLASS__.'::getCurrentActivityExecutions':{
 					if(count($args) != 1){
 						//only allow the simplest version of the method
@@ -124,7 +124,7 @@ class wfEngine_models_classes_ProcessExecutionService
 					}
 					break;
 				}
-			endswitch;
+		  }
 		}
 		
         // section 127-0-1-1-3a6b44f1:1326d50ba09:-8000:00000000000065D0 end
@@ -249,7 +249,9 @@ class wfEngine_models_classes_ProcessExecutionService
 				//get all instances!
 				foreach($this->processInstancesClass->getInstances(false) as $processInstance){
 					if($finishedOnly){
-						if(!$this->isFinished($processInstance)) continue;
+						if(!$this->isFinished($processInstance)) {
+						    continue;
+						}
 					}
 					$processExecutions[] = $processInstance;
 				}
