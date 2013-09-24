@@ -112,8 +112,12 @@
 			<br class="clear" />
   		</div>
 	</div>
+	
+
 <?php
     if (!tao_helpers_Context::check('STANDALONE_MODE')) {
-        include TAO_TPL_PATH .'footer/layout_footer_'.TAO_RELEASE_STATUS.'.tpl';
+        include TAO_TPL_PATH .'layout_footer.tpl';
     }
 ?>
+</body>
+</html>
