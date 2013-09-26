@@ -30,7 +30,7 @@ $extpath = dirname(__FILE__).DIRECTORY_SEPARATOR;
 $taopath = dirname(dirname(__FILE__)).DIRECTORY_SEPARATOR.'tao'.DIRECTORY_SEPARATOR;
 
 return array(
-	'name' => 'wfEngine ',
+	'name' => 'wfEngine',
 	'description' => 'Workflow Engine extension',
 	'version' => '2.4',
 	'author' => 'Open Assessment Technologies, CRP Henri Tudor',
