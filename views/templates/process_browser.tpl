@@ -16,27 +16,31 @@
 		<script type="text/javascript" src="<?=ROOT_URL?>wfEngine/views/js/wfApi/wfApi.min.js"></script>
 		<script type="text/javascript" src="<?=ROOT_URL?>wfEngine/views/js/WfRunner.js"></script>
 		<script type="text/javascript">
-			require(['require', 'jquery', 'json2'], function(req, $) {
-				$("#debug").click(function(){
-					$("#debugWindow").toggle('slow');
-				});
-				var wfRunner = new WfRunner(
-					<?=json_encode(get_data('activityExecutionUri'))?>,
-					<?=json_encode(get_data('processUri'))?>,
-					<?=json_encode(get_data('activityExecutionNonce'))?>
-				);
-				<?foreach($services as $service):?>
-    				wfRunner.initService(<?=$service['api']?>,<?=json_encode($service['style'])?>);
-    			<?endforeach;?>
-				$("#back").click(function(){
-					wfRunner.backward();
-				});
-				$("#next").click(function(){
-					wfRunner.forward();
-				});
-				
-				$("#loader").css('display', 'none');
-			});		
+                    require(['jquery', 'json2'], function($) {
+
+                        $(document).ready(function(){
+                            $("#debug").click(function(){
+                                    $("#debugWindow").toggle('slow');
+                            });
+                            var wfRunner = new WfRunner(
+                                    <?=json_encode(get_data('activityExecutionUri'))?>,
+                                    <?=json_encode(get_data('processUri'))?>,
+                                    <?=json_encode(get_data('activityExecutionNonce'))?>
+                            );
+                            <?foreach($services as $service):?>
+                            wfRunner.initService(<?=$service['api']?>,<?=json_encode($service['style'])?>);
+                            <?endforeach;?>
+                            
+                            $("#back").click(function(){
+                                    wfRunner.backward();
+                            });
+                            $("#next").click(function(){
+                                    wfRunner.forward();
+                            });
+
+                            $("#loader").css('display', 'none');
+                         });
+                    });		
 		</script>
 		
 		<style media="screen">

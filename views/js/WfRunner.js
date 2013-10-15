@@ -22,7 +22,7 @@ var autoResizeId;
 
 function autoResize(frame, frequence) {
 	
-	$frame = $(frame);
+	var $frame = $(frame);
 	autoResizeId = setInterval(function() {
 		$frame.height($frame.contents().height());
 	}, frequence);
@@ -36,13 +36,15 @@ function WfRunner(activityExecutionUri, processUri, activityExecutionNonce) {
 	this.services = [];
 	
 	this.processBrowserModule = window.location.href.replace(/^(.*\/)[^/]*/, "$1");
-	
 }
 
 WfRunner.prototype.initService = function(serviceApi, style) {
-	this.services.push(serviceApi);
-	var selfref = this;
-	serviceApi.onFinish(function() {return function(wfRunner) {wfRunner.forward()}(selfref)});
+	var self = this;
+        this.services.push(serviceApi);
+	
+	serviceApi.onFinish(function() {
+            return self.forward()
+        });
 	
 	var $aFrame = $('<iframe class="toolframe" frameborder="0" style="" scrolling="no" src="'+this.processBrowserModule+'loading"></iframe>').appendTo('#tools');
 	$aFrame.unbind('load').load(function(){
