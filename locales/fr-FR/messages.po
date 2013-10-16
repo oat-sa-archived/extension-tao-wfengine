@@ -153,7 +153,7 @@ msgid "Suppress"
 msgstr "Supprimer"
 
 msgid "TAO - An Open and Versatile Computer-Based Assessment Platform"
-msgstr "TAO - Une plate-forme d'évaluation assistée par ordinateur libre et modulable"
+msgstr "TAO - Une Plate-Forme d'Évaluation Assistée par Ordinateur Libre et Modulable"
 
 msgid "TAO Process Engine"
 msgstr "Moteur de Processus TAO"
@@ -213,3 +213,9 @@ msgstr "Navigateur de processus"
 
 msgid "You will be redirected to the current activity if you are allowed to."
 msgstr "Vous serez redirigé vers l'activité courante si vous en avez la permission."
+
+msgid "Log in"
+msgstr "Se connecter"
+
+msgid "Change..."
+msgstr "Changer..."
