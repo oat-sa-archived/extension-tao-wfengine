@@ -10,35 +10,49 @@
 		</script>
 		<script src="<?=TAOBASE_WWW?>js/require-jquery.js"></script>
 		<script src="<?=TAOBASE_WWW?>js/main.js"></script>
+                <script src="<?=TAOBASE_WWW?>js/spin.min.js"></script>
 		<script src="<?=TAOBASE_WWW?>js/serviceApi/ServiceApi.js"></script>
 		<script src="<?=TAOBASE_WWW?>js/serviceApi/StateStorage.js"></script>
 		
 		<script type="text/javascript" src="<?=ROOT_URL?>wfEngine/views/js/wfApi/wfApi.min.js"></script>
 		<script type="text/javascript" src="<?=ROOT_URL?>wfEngine/views/js/WfRunner.js"></script>
 		<script type="text/javascript">
+                    
                     require(['jquery', 'json2'], function($) {
 
                         $(document).ready(function(){
-                            $("#debug").click(function(){
-                                    $("#debugWindow").toggle('slow');
-                            });
+                            var $back = $('#back');
+                            var $next = $("#next");
+                        
                             var wfRunner = new WfRunner(
-                                    <?=json_encode(get_data('activityExecutionUri'))?>,
-                                    <?=json_encode(get_data('processUri'))?>,
-                                    <?=json_encode(get_data('activityExecutionNonce'))?>
+                                <?=json_encode(get_data('activityExecutionUri'))?>,
+                                <?=json_encode(get_data('processUri'))?>,
+                                <?=json_encode(get_data('activityExecutionNonce'))?>
                             );
                             <?foreach($services as $service):?>
-                            wfRunner.initService(<?=$service['api']?>,<?=json_encode($service['style'])?>);
+                            wfRunner.initService(<?=$service['api']?>, <?=json_encode($service['style'])?>);
                             <?endforeach;?>
                             
-                            $("#back").click(function(){
-                                    wfRunner.backward();
+                            $back.click(function(e){
+                                
+                                $back.off('click');
+                                $next.off('click');
+                                wfRunner.backward();
+                                
+                                e.preventDefault();
                             });
-                            $("#next").click(function(){
-                                    wfRunner.forward();
+                            $("#next").click(function(e){
+                            
+                                $back.off('click');
+                                $next.off('click');
+                                wfRunner.forward();
+                                
+                                e.preventDefault();
                             });
-
-                            $("#loader").css('display', 'none');
+                            
+                            $("#debug").click(function(){
+                                $("#debugWindow").toggle('slow');
+                            });
                          });
                     });		
 		</script>
@@ -51,7 +65,6 @@
 	</head>
 
 	<body>
-		<div id="loader"><img src="<?=BASE_WWW?>img/ajax-loader.gif" /> <?=__('Loading next item...')?></div>
 		<div id="runner">
 		<div id="process_view"></div>
         <?if(!tao_helpers_Context::check('STANDALONE_MODE') && !has_data('allowControl') || get_data('allowControl')):?>

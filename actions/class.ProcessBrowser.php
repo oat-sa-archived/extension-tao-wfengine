@@ -412,10 +412,6 @@ class wfEngine_actions_ProcessBrowser extends wfEngine_actions_WfModule{
 		
 		$this->redirectToMain();
 	}
-	
-	public function loading(){
-		$this->setView('activityLoading.tpl');
-	}
 
 }
 ?>
