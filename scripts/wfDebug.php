@@ -34,8 +34,7 @@ class wfDebugger{
         protected $br = '<br/>';
         
         public function __construct($options = array()){
-                $userService = core_kernel_users_Service::singleton();
-				$userService->login(SYS_USER_LOGIN, SYS_USER_PASS, new core_kernel_classes_Class('http://www.tao.lu/Ontologies/TAO.rdf#TaoManagerRole'));
+                common_user_auth_Service::singleton()->startSession(new core_kernel_users_GenerisUser(new core_kernel_classes_Resource(TAO_INSTALLATOR)));
 				$this->processExecutionService = wfEngine_models_classes_ProcessExecutionService::singleton();
                 $this->localNS = common_ext_NamespaceManager::singleton()->getLocalNamespace()->getUri();
                 $this->unserialize = (isset($options['unserialize']))? (int)$options['unserialize']:0;
