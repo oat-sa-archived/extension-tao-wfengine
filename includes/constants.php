@@ -145,9 +145,6 @@ $todefine = array(
 	'PROPERTY_TOKEN_ACTIVITY'						=> NS_WFENGINE  .'#PropertyTokensActivity',
 	'PROPERTY_TOKEN_ACTIVITYEXECUTION'				=> NS_WFENGINE  .'#PropertyTokensActivityExecution',
 	'PROPERTY_TOKEN_CURRENTUSER'					=> NS_WFENGINE  .'#PropertyTokensCurrentUser',
-	
-	'API_LOGIN' 									=> SYS_USER_LOGIN,
-	'API_PASSWORD' 									=> SYS_USER_PASS,
     
     'INSTANCE_SERVICE_PROCESSRUNNER'                => NS_WFENGINE  .'#ProcessDefinitionRunner',
     'INSTANCE_FORMALPARAM_PROCESSDEFINITION'        => NS_WFENGINE  .'#FormalParamProcessDefinition',
