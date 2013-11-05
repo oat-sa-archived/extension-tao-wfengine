@@ -160,20 +160,11 @@ class wfDebugger{
                         $i = 0;
                         foreach($activityExecutions->getIterator() as $activityExecution){
                                 if(!is_null($timeSortingProperty)){
-                                        $lastModifiedTime = null;
-                                        try{
-                                                $lastModifiedTime = $activityExecution->getLastModificationDate($timeSortingProperty);
-                                        }catch(common_Exception $e){
-                                                echo $e->getMessage().': '.$activityExecution->getLabel();
-                                                echo $this->br;
-                                                $sortedActivityExecutions[$i] = $activityExecution;$i++;
-                                        }
-                                        
-                                        if(!is_null($lastModifiedTime)){
-                                                $sortedActivityExecutions[$lastModifiedTime->format('U')] = $activityExecution;
-                                        }
+                                    $created = $activityExecution->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_TIME_CREATED));
+                                    $key = is_null($created) ? $i : (string)$created; 
+                                    $sortedActivityExecutions[$key] = $activityExecution;
                                 }else{
-                                        $sortedActivityExecutions[$activityExecution->getUri()] = $activityExecution;
+                                    $sortedActivityExecutions[$activityExecution->getUri()] = $activityExecution;
                                 }
                         }
                         krsort($sortedActivityExecutions);
