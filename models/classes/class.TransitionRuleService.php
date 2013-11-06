@@ -135,11 +135,7 @@ class wfEngine_models_classes_TransitionRuleService
         $returnValue = (bool) false;
 
         // section 127-0-1-1-66b8afb4:1322473370c:-8000:0000000000002EDE begin
-         $ruleType = $rule->getType();
-         $returnValue = $ruleType instanceof core_kernel_classes_Resource 
-                         && $ruleType->getUri() == CLASS_TRANSITIONRULES ;
-             
-         
+        $returnValue = $rule->hasType(new core_kernel_classes_Class(CLASS_TRANSITIONRULES));
         // section 127-0-1-1-66b8afb4:1322473370c:-8000:0000000000002EDE end
 
         return (bool) $returnValue;
