@@ -26,6 +26,9 @@ msgstr "Processus actif"
 msgid "Add (Ctrl-A)"
 msgstr "Ajouter (Ctrl-A)"
 
+msgid "Advanced Users"
+msgstr "Utilisateurs Avancés"
+
 msgid "An error occured during request processing"
 msgstr "Une erreur s'est produite lors de la demande de traitement"
 
