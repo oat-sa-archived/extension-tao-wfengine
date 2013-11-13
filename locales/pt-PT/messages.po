@@ -1,187 +1,195 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: TAO v2.5-alpha\n"
-"PO-Revision-Date: 2013-06-18T15:46:20\n"
-"Last-Translator: TAO Translation Team <translation@tao.lu>\n"
+"PO-Revision-Date: 2013-11-12 10:34-0000\n"
+"Last-Translator: Paulo Amorim <paulo@amorims.com>\n"
 "MIME-Version: 1.0\n"
 "Language: pt-PT\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: \n"
+"Language-Team: \n"
+"X-Generator: Poedit 1.5.7\n"
 
 msgid "(still undefined)"
-msgstr ""
+msgstr "(ainda não definido)"
 
 msgid "[TAO Notification System] Workflow"
-msgstr ""
+msgstr "[Sistema de notificações TAO] Fluxo de Trabalho"
 
 msgid "Access denied. Please renew your authentication."
-msgstr ""
+msgstr "Acesso negado. Por favor renove a sua autenticação"
 
 msgid "Active Process"
-msgstr ""
+msgstr "Processo Activo"
 
 msgid "An error occured during request processing"
-msgstr ""
+msgstr "Um erro ocorreu durante o processo requerido"
 
 msgid "Back"
-msgstr ""
+msgstr "Voltar"
 
 msgid "Cannot create process execution"
-msgstr ""
+msgstr "Não é possível criar a execução de processo"
 
 msgid "Connect"
-msgstr ""
+msgstr "Ligar"
 
 msgid "created by"
-msgstr ""
+msgstr "criado por"
 
 msgid "Else"
-msgstr ""
+msgstr "Outro"
 
 msgid "execution of"
-msgstr ""
+msgstr "Execução de"
 
 msgid "Finished Process"
-msgstr ""
+msgstr "Processo terminado"
 
 msgid "Forward"
-msgstr ""
+msgstr "Avançar"
 
 msgid "Home"
-msgstr ""
+msgstr "Inicio"
 
 msgid "If"
-msgstr ""
+msgstr "Se"
 
-msgid "If there is no available activity or there are more than one. You will be redirected to the process main page."
+msgid ""
+"If there is no available activity or there are more than one. You will be "
+"redirected to the process main page."
 msgstr ""
+"Se não houver qualquer actividade disponível ou se há mais do que uma. Você "
+"será redireccionado para a página principal do processo."
 
 msgid "Initialize new Process"
-msgstr ""
+msgstr "Inicializar novo processo"
 
 msgid "Invalid login or password. Please try again."
-msgstr ""
+msgstr "Nome de utilizador ou palavra-passe invalida, Por favor tente de novo."
 
 msgid "Launch Process"
-msgstr ""
+msgstr "Executar o processo"
 
 msgid "Loading next activity..."
-msgstr ""
+msgstr "Executar próxima actividade"
 
 msgid "Login"
-msgstr ""
+msgstr "Inicio de sessão"
 
 msgid "Logout"
-msgstr ""
+msgstr "Terminar sessão"
 
 msgid "More detailed description here."
-msgstr ""
+msgstr "Descrição mais detalhada aqui."
 
 msgid "My roles"
-msgstr ""
+msgstr "Os meus papeis"
 
 msgid "No process definition uri given"
-msgstr ""
+msgstr "Nenhuma definição dada ao processo uri"
 
 msgid "No variable code given"
-msgstr ""
+msgstr "Nenhum código de variável dado"
 
 msgid "Password"
-msgstr ""
+msgstr "Palavra-passe"
 
 msgid "Pause"
-msgstr ""
+msgstr "Pausa"
 
 msgid "Please confirm the deletion of the activity"
-msgstr ""
+msgstr "Por favor confirme a eliminação da actividade"
 
 msgid "Please login"
-msgstr ""
+msgstr "Por favor autentique-se"
 
 msgid "Please login to access the selected activity."
-msgstr ""
+msgstr "Por favor autentique-se para aceder a actividade seleccionada."
 
 msgid "Process Finished"
-msgstr ""
+msgstr "Processo terminado"
 
 msgid "Process initialization"
-msgstr ""
+msgstr "Processo iniciado"
 
 msgid "Process Tree:"
-msgstr ""
+msgstr "Arvore do processo"
 
 msgid "Processes"
-msgstr ""
+msgstr "Processos"
 
 msgid "Redirect immediately"
-msgstr ""
+msgstr "Redireccionar imediatamente"
 
 msgid "Redirection in "
-msgstr ""
+msgstr "Redirecção em"
 
 msgid "seconds"
-msgstr ""
+msgstr "Segundos"
 
 msgid "Start/Resume the case"
-msgstr ""
+msgstr "Iniciar / Reiniciar processo"
 
 msgid "Status"
-msgstr ""
+msgstr "Estado"
 
 msgid "TAO - An Open and Versatile Computer-Based Assessment Platform"
 msgstr ""
+"TAO - Uma Plataforma de Avaliação baseada em sistemas de informação versátil "
+"e aberta"
 
 msgid "TAO Process Engine"
-msgstr ""
+msgstr "Motor de processos TAO"
 
 msgid "The activity provided in the url is no longer the up-to-date."
-msgstr ""
+msgstr "A actividade fornecida no URL não se encontra actualizada."
 
 msgid "The link may be outdated."
-msgstr ""
+msgstr "O atalho poderá estar obsoleto"
 
 msgid "The Processes module allows to create Processes."
-msgstr ""
+msgstr "O modulo de processos permite a criação de processos"
 
 msgid "The resource is not a process definition"
-msgstr ""
+msgstr "O recurso não é uma definição de processo"
 
 msgid "The resource is not a process execution"
-msgstr ""
+msgstr "O recurso não é uma execução de processo"
 
 msgid "The resource is not an activity execution"
-msgstr ""
+msgstr "O recurso não é uma execução de actividade"
 
 msgid "The variable with the code '.$code.' does not exists"
-msgstr ""
+msgstr "A Variável com o código '.$code.'  não existe"
 
 msgid "Then"
-msgstr ""
+msgstr "Então"
 
 msgid "type??"
-msgstr ""
+msgstr "tipo??"
 
 msgid "Unable to log in the user"
-msgstr ""
+msgstr "Impossível autenticar utilizador"
 
 msgid "User Id."
-msgstr ""
+msgstr "Id de utilizador"
 
 msgid "User logged in successfully"
-msgstr ""
+msgstr "Utilizador autenticado com sucesso"
 
 msgid "User name:"
-msgstr ""
+msgstr "Nome de utilizador:"
 
 msgid "Welcome to TAO Process Engine"
-msgstr ""
+msgstr "Bem vindo ao Motor de processos TAO"
 
 msgid "Workflow Engine"
-msgstr ""
+msgstr "Motor fluxo de trabalho"
 
 msgid "WorkflowEngine Process Browser "
-msgstr ""
+msgstr "Navegador do Motor de fluxo de trabalho"
 
 msgid "You will be redirected to the current activity if you are allowed to."
-msgstr ""
-
+msgstr "Será redireccionado para a actividade actual, se tiver permissões."
