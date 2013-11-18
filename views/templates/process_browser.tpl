@@ -8,8 +8,7 @@
 			var root_url = '<?=ROOT_URL?>';
 			var base_lang = '<?=strtolower(tao_helpers_I18n::getLangCode())?>';
 		</script>
-		<script src="<?=TAOBASE_WWW?>js/require-jquery.js"></script>
-		<script src="<?=TAOBASE_WWW?>js/main.js"></script>
+                <script src="<?=TAOBASE_WWW?>js/require-jquery.js" ></script>
                 <script src="<?=TAOBASE_WWW?>js/spin.min.js"></script>
 		<script src="<?=TAOBASE_WWW?>js/serviceApi/ServiceApi.js"></script>
 		<script src="<?=TAOBASE_WWW?>js/serviceApi/StateStorage.js"></script>
@@ -17,42 +16,44 @@
 		<script type="text/javascript" src="<?=ROOT_URL?>wfEngine/views/js/wfApi/wfApi.min.js"></script>
 		<script type="text/javascript" src="<?=ROOT_URL?>wfEngine/views/js/WfRunner.js"></script>
 		<script type="text/javascript">
-                    
-                    require(['jquery', 'json2'], function($) {
-
-                        $(document).ready(function(){
-                            var $back = $('#back');
-                            var $next = $("#next");
+                    require([taobase_www + 'js/config/config.js'], function(){
+                        'use strict';
                         
-                            var wfRunner = new WfRunner(
-                                <?=json_encode(get_data('activityExecutionUri'))?>,
-                                <?=json_encode(get_data('processUri'))?>,
-                                <?=json_encode(get_data('activityExecutionNonce'))?>
-                            );
-                            <?foreach($services as $service):?>
-                            wfRunner.initService(<?=$service['api']?>, <?=json_encode($service['style'])?>);
-                            <?endforeach;?>
-                            
-                            $back.click(function(e){
-                                
-                                $back.off('click');
-                                $next.off('click');
-                                wfRunner.backward();
-                                
-                                e.preventDefault();
-                            });
-                            $("#next").click(function(e){
-                            
-                                $back.off('click');
-                                $next.off('click');
-                                wfRunner.forward();
-                                
-                                e.preventDefault();
-                            });
-                            
-                            $("#debug").click(function(){
-                                $("#debugWindow").toggle('slow');
-                            });
+                        require(['jquery', 'json2'], function($) {
+
+                            $(document).ready(function(){
+                                var $back = $('#back');
+                                var $next = $("#next");
+                                var wfRunner = new WfRunner(
+                                    <?=json_encode(get_data('activityExecutionUri'))?>,
+                                    <?=json_encode(get_data('processUri'))?>,
+                                    <?=json_encode(get_data('activityExecutionNonce'))?>
+                                );
+                                <?foreach($services as $service):?>
+                                wfRunner.initService(<?=$service['api']?>, <?=json_encode($service['style'])?>);
+                                <?endforeach;?>
+
+                                $back.click(function(e){
+
+                                    $back.off('click');
+                                    $next.off('click');
+                                    wfRunner.backward();
+
+                                    e.preventDefault();
+                                });
+                                $("#next").click(function(e){
+
+                                    $back.off('click');
+                                    $next.off('click');
+                                    wfRunner.forward();
+
+                                    e.preventDefault();
+                                });
+
+                                $("#debug").click(function(){
+                                    $("#debugWindow").toggle('slow');
+                                });
+                             });
                          });
                     });		
 		</script>
