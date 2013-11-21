@@ -1,15 +1,12 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: TAO v2.4-beta3\n"
-"PO-Revision-Date: 2013-04-09T12:09:22\n"
+"Project-Id-Version: TAO v2.6-alpha\n"
+"PO-Revision-Date: 2013-11-20T14:44:20\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: es-ES\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-
-msgid "(Ctrl-C)"
-msgstr ""
 
 msgid "(still undefined)"
 msgstr ""
@@ -17,13 +14,13 @@ msgstr ""
 msgid "[TAO Notification System] Workflow"
 msgstr ""
 
-msgid "Access denied. Please renew your authentication."
+msgid "Access denied. Please renew your authentication!"
 msgstr ""
 
 msgid "Active Process"
 msgstr ""
 
-msgid "Add (Ctrl-A)"
+msgid "Advanced Users"
 msgstr ""
 
 msgid "An error occured during request processing"
@@ -35,10 +32,10 @@ msgstr ""
 msgid "Cannot create process execution"
 msgstr ""
 
-msgid "Close (Esc)"
+msgid "Change..."
 msgstr ""
 
-msgid "Connect"
+msgid "Check pending tasks for assessment preparation."
 msgstr ""
 
 msgid "created by"
@@ -47,22 +44,13 @@ msgstr ""
 msgid "Else"
 msgstr ""
 
-msgid "Enter remark text here"
-msgstr ""
-
 msgid "execution of"
-msgstr ""
-
-msgid "Export - Debug only (Ctrl-E)"
 msgstr ""
 
 msgid "Finished Process"
 msgstr ""
 
 msgid "Forward"
-msgstr ""
-
-msgid "Go to"
 msgstr ""
 
 msgid "Home"
@@ -77,10 +65,16 @@ msgstr ""
 msgid "Initialize new Process"
 msgstr ""
 
+msgid "Invalid login or password. Please try again."
+msgstr ""
+
 msgid "Launch Process"
 msgstr ""
 
 msgid "Loading next activity..."
+msgstr ""
+
+msgid "Log in"
 msgstr ""
 
 msgid "Login"
@@ -89,13 +83,7 @@ msgstr ""
 msgid "Logout"
 msgstr ""
 
-msgid "More detailed description here."
-msgstr ""
-
 msgid "My roles"
-msgstr ""
-
-msgid "Invalid login or password. Please try again."
 msgstr ""
 
 msgid "No process definition uri given"
@@ -113,13 +101,7 @@ msgstr ""
 msgid "Please confirm the deletion of the activity"
 msgstr ""
 
-msgid "Please login"
-msgstr ""
-
 msgid "Please login to access the selected activity."
-msgstr ""
-
-msgid "Processes"
 msgstr ""
 
 msgid "Process Finished"
@@ -131,7 +113,7 @@ msgstr ""
 msgid "Process Tree:"
 msgstr ""
 
-msgid "Question (Ctrl-Q)"
+msgid "Processes"
 msgstr ""
 
 msgid "Redirect immediately"
@@ -147,9 +129,6 @@ msgid "Start/Resume the case"
 msgstr ""
 
 msgid "Status"
-msgstr ""
-
-msgid "Suppress"
 msgstr ""
 
 msgid "TAO - An Open and Versatile Computer-Based Assessment Platform"
@@ -180,9 +159,6 @@ msgid "The variable with the code '.$code.' does not exists"
 msgstr ""
 
 msgid "Then"
-msgstr ""
-
-msgid "Type (Ctrl-T)"
 msgstr ""
 
 msgid "type??"

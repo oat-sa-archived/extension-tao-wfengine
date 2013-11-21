@@ -924,60 +924,6 @@
     -->
     <rdfs:comment xml:lang="pt-PT"><![CDATA[Interactive Services]]></rdfs:comment>
   </rdf:Description>
-  <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#ClassSupportServices">
-    <!--
-    @sourceLanguage EN
-    @targetLanguage pt-PT
-    @source Support Services
-    @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassSupportServices
-    @predicate http://www.w3.org/2000/01/rdf-schema#label
-    -->
-    <rdfs:label xml:lang="pt-PT"><![CDATA[Support Services]]></rdfs:label>
-    <!--
-    @sourceLanguage EN
-    @targetLanguage pt-PT
-    @source Support Services
-    @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassSupportServices
-    @predicate http://www.w3.org/2000/01/rdf-schema#comment
-    -->
-    <rdfs:comment xml:lang="pt-PT"><![CDATA[Support Services]]></rdfs:comment>
-  </rdf:Description>
-  <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#ClassWebServices">
-    <!--
-    @sourceLanguage EN
-    @targetLanguage pt-PT
-    @source Web Service
-    @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassWebServices
-    @predicate http://www.w3.org/2000/01/rdf-schema#label
-    -->
-    <rdfs:label xml:lang="pt-PT"><![CDATA[Web Service]]></rdfs:label>
-    <!--
-    @sourceLanguage EN
-    @targetLanguage pt-PT
-    @source Web Service
-    @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassWebServices
-    @predicate http://www.w3.org/2000/01/rdf-schema#comment
-    -->
-    <rdfs:comment xml:lang="pt-PT"><![CDATA[Web Service]]></rdfs:comment>
-  </rdf:Description>
-  <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#ClassServiceDefinitions">
-    <!--
-    @sourceLanguage EN
-    @targetLanguage pt-PT
-    @source Services Definition
-    @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassServiceDefinitions
-    @predicate http://www.w3.org/2000/01/rdf-schema#label
-    -->
-    <rdfs:label xml:lang="pt-PT"><![CDATA[Services Definition]]></rdfs:label>
-    <!--
-    @sourceLanguage EN
-    @targetLanguage pt-PT
-    @source Services Definition
-    @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassServiceDefinitions
-    @predicate http://www.w3.org/2000/01/rdf-schema#comment
-    -->
-    <rdfs:comment xml:lang="pt-PT"><![CDATA[Services Definition]]></rdfs:comment>
-  </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#ClassActivities">
     <!--
     @sourceLanguage EN
@@ -1552,7 +1498,7 @@
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyAccessControlModesRoleRestrictedUserInheritedDelivery
     @predicate http://www.w3.org/2000/01/rdf-schema#comment
     -->
-    <rdfs:comment xml:lang="pt-PT"><![CDATA[Useful for deliveries]]></rdfs:comment>
+    <rdfs:comment xml:lang="pt-PT"><![CDATA[Role Restricted User Inherited]]></rdfs:comment>
     <!--
     @sourceLanguage EN
     @targetLanguage pt-PT

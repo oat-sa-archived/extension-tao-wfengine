@@ -23,14 +23,6 @@
 class wfEngine_actions_WfModule extends tao_actions_CommonModule
 {
 	
-	public function __construct()
-	{
-		if(!$this->_isAllowed()){
-			$this->notAllowedRedirection();
-		}
-		
-	}
-
     /**
      * Behaviour to adopt if the user is not allowed to access the current action.
      */

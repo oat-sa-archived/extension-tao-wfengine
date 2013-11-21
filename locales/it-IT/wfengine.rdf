@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
 -->
 <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xml:base="http://www.tao.lu/middleware/wfEngine.rdf#">
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#ClassStep">
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Step
     @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassStep
@@ -14,7 +14,7 @@
     -->
     <rdfs:label xml:lang="it-IT"><![CDATA[Step]]></rdfs:label>
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Process Step
     @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassStep
@@ -24,7 +24,7 @@
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyStepNext">
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source nextStep
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyStepNext
@@ -34,7 +34,7 @@
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyTransitionRulesThen">
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Then
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyTransitionRulesThen
@@ -42,7 +42,7 @@
     -->
     <rdfs:label xml:lang="it-IT"><![CDATA[Then]]></rdfs:label>
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Then statement
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyTransitionRulesThen
@@ -52,7 +52,7 @@
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#ClassCallOfservicesResources">
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Call Of services Resources
     @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassCallOfservicesResources
@@ -60,7 +60,7 @@
     -->
     <rdfs:label xml:lang="it-IT"><![CDATA[Call Of services Resources]]></rdfs:label>
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Call of services Resources
     @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassCallOfservicesResources
@@ -70,7 +70,7 @@
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#ClassServiceDefinitionResources">
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Services Definition Resources
     @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassServiceDefinitionResources
@@ -78,7 +78,7 @@
     -->
     <rdfs:label xml:lang="it-IT"><![CDATA[Services Definition Resources]]></rdfs:label>
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Services Definition Resources
     @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassServiceDefinitionResources
@@ -88,7 +88,7 @@
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessDefinitionResources">
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Process Definition Resources
     @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessDefinitionResources
@@ -96,7 +96,7 @@
     -->
     <rdfs:label xml:lang="it-IT"><![CDATA[Process Definition Resources]]></rdfs:label>
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Process Definition Resources
     @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessDefinitionResources
@@ -106,7 +106,7 @@
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#ClassServicesResources">
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Services Resources
     @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassServicesResources
@@ -114,7 +114,7 @@
     -->
     <rdfs:label xml:lang="it-IT"><![CDATA[Services Resources]]></rdfs:label>
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Services Resources
     @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassServicesResources
@@ -124,7 +124,7 @@
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessExecutionResources">
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Process Execution Resource
     @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessExecutionResources
@@ -132,7 +132,7 @@
     -->
     <rdfs:label xml:lang="it-IT"><![CDATA[Process Execution Resource]]></rdfs:label>
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Process Execution Resource
     @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessExecutionResources
@@ -142,7 +142,7 @@
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#ClassTransitionRules">
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Transition Rules
     @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassTransitionRules
@@ -150,7 +150,7 @@
     -->
     <rdfs:label xml:lang="it-IT"><![CDATA[Transition Rules]]></rdfs:label>
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Transition Rules
     @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassTransitionRules
@@ -160,7 +160,7 @@
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyServiceDefinitionsFormalParameterIn">
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source formalParameterIn
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyServiceDefinitionsFormalParameterIn
@@ -168,7 +168,7 @@
     -->
     <rdfs:label xml:lang="it-IT"><![CDATA[formalParameterIn]]></rdfs:label>
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Formal Parameter for input
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyServiceDefinitionsFormalParameterIn
@@ -178,7 +178,7 @@
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivitiesInitial">
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source isInitial
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivitiesInitial
@@ -186,7 +186,7 @@
     -->
     <rdfs:label xml:lang="it-IT"><![CDATA[isInitial]]></rdfs:label>
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Is Initial activity
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivitiesInitial
@@ -196,7 +196,7 @@
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#InstanceStatusPaused">
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Paused
     @subject http://www.tao.lu/middleware/wfEngine.rdf#InstanceStatusPaused
@@ -204,7 +204,7 @@
     -->
     <rdfs:label xml:lang="it-IT"><![CDATA[Paused]]></rdfs:label>
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Paused status
     @subject http://www.tao.lu/middleware/wfEngine.rdf#InstanceStatusPaused
@@ -214,7 +214,7 @@
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessInstancesStatus">
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Status
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessInstancesStatus
@@ -222,7 +222,7 @@
     -->
     <rdfs:label xml:lang="it-IT"><![CDATA[Status]]></rdfs:label>
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Status
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessInstancesStatus
@@ -232,7 +232,7 @@
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#InstanceStatusFinished">
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Finished
     @subject http://www.tao.lu/middleware/wfEngine.rdf#InstanceStatusFinished
@@ -240,7 +240,7 @@
     -->
     <rdfs:label xml:lang="it-IT"><![CDATA[Finished]]></rdfs:label>
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Finished Status
     @subject http://www.tao.lu/middleware/wfEngine.rdf#InstanceStatusFinished
@@ -250,7 +250,7 @@
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#InstanceStatusResumed">
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Active
     @subject http://www.tao.lu/middleware/wfEngine.rdf#InstanceStatusResumed
@@ -258,7 +258,7 @@
     -->
     <rdfs:label xml:lang="it-IT"><![CDATA[Active]]></rdfs:label>
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Active status
     @subject http://www.tao.lu/middleware/wfEngine.rdf#InstanceStatusResumed
@@ -268,7 +268,7 @@
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#InstanceStatusStarted">
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Started
     @subject http://www.tao.lu/middleware/wfEngine.rdf#InstanceStatusStarted
@@ -276,7 +276,7 @@
     -->
     <rdfs:label xml:lang="it-IT"><![CDATA[Started]]></rdfs:label>
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Started status
     @subject http://www.tao.lu/middleware/wfEngine.rdf#InstanceStatusStarted
@@ -286,7 +286,7 @@
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#InstanceStatusClosed">
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Closed
     @subject http://www.tao.lu/middleware/wfEngine.rdf#InstanceStatusClosed
@@ -294,7 +294,7 @@
     -->
     <rdfs:label xml:lang="it-IT"><![CDATA[Closed]]></rdfs:label>
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Closed status
     @subject http://www.tao.lu/middleware/wfEngine.rdf#InstanceStatusClosed
@@ -304,7 +304,7 @@
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessInstanceStatus">
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Process Instance Status
     @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessInstanceStatus
@@ -312,7 +312,7 @@
     -->
     <rdfs:label xml:lang="it-IT"><![CDATA[Process Instance Status]]></rdfs:label>
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Process Instance Status
     @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessInstanceStatus
@@ -322,7 +322,7 @@
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessInstancesExecutionOf">
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Execution of
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessInstancesExecutionOf
@@ -330,7 +330,7 @@
     -->
     <rdfs:label xml:lang="it-IT"><![CDATA[Execution of]]></rdfs:label>
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Execution of
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessInstancesExecutionOf
@@ -340,7 +340,7 @@
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessInstancesCurrentActivityExecutions">
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Current Activity Executions
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessInstancesCurrentActivityExecutions
@@ -348,7 +348,7 @@
     -->
     <rdfs:label xml:lang="it-IT"><![CDATA[Current Activity Executions]]></rdfs:label>
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Current Activity Executions
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessInstancesCurrentActivityExecutions
@@ -358,7 +358,7 @@
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessInstancesActivityExecutions">
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Activity Executions
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessInstancesActivityExecutions
@@ -366,7 +366,7 @@
     -->
     <rdfs:label xml:lang="it-IT"><![CDATA[Activity Executions]]></rdfs:label>
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Activity Executions
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessInstancesActivityExecutions
@@ -376,7 +376,7 @@
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessInstancesTimeStarted">
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Started on
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessInstancesTimeStarted
@@ -384,7 +384,7 @@
     -->
     <rdfs:label xml:lang="it-IT"><![CDATA[Started on]]></rdfs:label>
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source the start time of the process execution
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessInstancesTimeStarted
@@ -394,7 +394,7 @@
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessInstances">
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Process Instances
     @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessInstances
@@ -402,7 +402,7 @@
     -->
     <rdfs:label xml:lang="it-IT"><![CDATA[Process Instances]]></rdfs:label>
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Process Instances
     @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessInstances
@@ -412,7 +412,7 @@
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessActivities">
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Activities
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessActivities
@@ -420,7 +420,7 @@
     -->
     <rdfs:label xml:lang="it-IT"><![CDATA[Activities]]></rdfs:label>
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Activities
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessActivities
@@ -430,7 +430,7 @@
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessRootActivities">
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Root Activities
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessRootActivities
@@ -438,7 +438,7 @@
     -->
     <rdfs:label xml:lang="it-IT"><![CDATA[Root Activities]]></rdfs:label>
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Root Activities
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessRootActivities
@@ -448,7 +448,7 @@
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyCallOfServicesActualParameterOut">
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Actual Parameter Out
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyCallOfServicesActualParameterOut
@@ -456,7 +456,7 @@
     -->
     <rdfs:label xml:lang="it-IT"><![CDATA[Actual Parameter Out]]></rdfs:label>
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Actual Parameter Out
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyCallOfServicesActualParameterOut
@@ -466,7 +466,7 @@
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyServiceDefinitionsFormalParameterOut">
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Formal Parameter Out
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyServiceDefinitionsFormalParameterOut
@@ -474,7 +474,7 @@
     -->
     <rdfs:label xml:lang="it-IT"><![CDATA[Formal Parameter Out]]></rdfs:label>
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Formal Paramater Out
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyServiceDefinitionsFormalParameterOut
@@ -484,7 +484,7 @@
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyConnectorsType">
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Connector Type
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyConnectorsType
@@ -492,7 +492,7 @@
     -->
     <rdfs:label xml:lang="it-IT"><![CDATA[Connector Type]]></rdfs:label>
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Connector Type
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyConnectorsType
@@ -502,7 +502,7 @@
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyCallOfServicesActualParameterin">
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Actual Parameter In
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyCallOfServicesActualParameterin
@@ -510,7 +510,7 @@
     -->
     <rdfs:label xml:lang="it-IT"><![CDATA[Actual Parameter In]]></rdfs:label>
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Actual Parameter In
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyCallOfServicesActualParameterin
@@ -520,7 +520,7 @@
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyCallOfServicesServiceDefinition">
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Service Definition
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyCallOfServicesServiceDefinition
@@ -528,7 +528,7 @@
     -->
     <rdfs:label xml:lang="it-IT"><![CDATA[Service Definition]]></rdfs:label>
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Service Definition
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyCallOfServicesServiceDefinition
@@ -538,7 +538,7 @@
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#ClassCallOfServices">
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Call of Services
     @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassCallOfServices
@@ -546,7 +546,7 @@
     -->
     <rdfs:label xml:lang="it-IT"><![CDATA[Call of Services]]></rdfs:label>
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Call of Services
     @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassCallOfServices
@@ -556,7 +556,7 @@
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#InstanceTypeOfConnectorsSequence">
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Sequence
     @subject http://www.tao.lu/middleware/wfEngine.rdf#InstanceTypeOfConnectorsSequence
@@ -564,7 +564,7 @@
     -->
     <rdfs:label xml:lang="it-IT"><![CDATA[Sequence]]></rdfs:label>
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Sequence Connector Type
     @subject http://www.tao.lu/middleware/wfEngine.rdf#InstanceTypeOfConnectorsSequence
@@ -574,7 +574,7 @@
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#InstanceTypeOfConnectorsConditional">
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Conditional
     @subject http://www.tao.lu/middleware/wfEngine.rdf#InstanceTypeOfConnectorsConditional
@@ -582,7 +582,7 @@
     -->
     <rdfs:label xml:lang="it-IT"><![CDATA[Conditional]]></rdfs:label>
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Conditional Connector Type
     @subject http://www.tao.lu/middleware/wfEngine.rdf#InstanceTypeOfConnectorsConditional
@@ -592,7 +592,7 @@
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#InstanceTypeOfConnectorsParallel">
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Split
     @subject http://www.tao.lu/middleware/wfEngine.rdf#InstanceTypeOfConnectorsParallel
@@ -600,7 +600,7 @@
     -->
     <rdfs:label xml:lang="it-IT"><![CDATA[Split]]></rdfs:label>
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Split Connector Type
     @subject http://www.tao.lu/middleware/wfEngine.rdf#InstanceTypeOfConnectorsParallel
@@ -610,7 +610,7 @@
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#InstanceTypeOfConnectorsJoin">
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Join
     @subject http://www.tao.lu/middleware/wfEngine.rdf#InstanceTypeOfConnectorsJoin
@@ -618,7 +618,7 @@
     -->
     <rdfs:label xml:lang="it-IT"><![CDATA[Join]]></rdfs:label>
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Join Connector Type
     @subject http://www.tao.lu/middleware/wfEngine.rdf#InstanceTypeOfConnectorsJoin
@@ -628,7 +628,7 @@
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#InstanceTypeOfConnectorsSwitch">
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Switch
     @subject http://www.tao.lu/middleware/wfEngine.rdf#InstanceTypeOfConnectorsSwitch
@@ -636,7 +636,7 @@
     -->
     <rdfs:label xml:lang="it-IT"><![CDATA[Switch]]></rdfs:label>
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Switch Connector Type
     @subject http://www.tao.lu/middleware/wfEngine.rdf#InstanceTypeOfConnectorsSwitch
@@ -646,7 +646,7 @@
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#ClassConnectors">
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Connectors
     @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassConnectors
@@ -654,7 +654,7 @@
     -->
     <rdfs:label xml:lang="it-IT"><![CDATA[Connectors]]></rdfs:label>
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Connectors
     @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassConnectors
@@ -664,7 +664,7 @@
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessVariables">
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Process Variables
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessVariables
@@ -672,7 +672,7 @@
     -->
     <rdfs:label xml:lang="it-IT"><![CDATA[Process Variables]]></rdfs:label>
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Process Variables
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessVariables
@@ -682,7 +682,7 @@
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#ClassTypeOfConnectors">
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source TypeOfConnectors
     @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassTypeOfConnectors
@@ -692,7 +692,7 @@
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyActualParametersProcessVariable">
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Process Variable
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActualParametersProcessVariable
@@ -700,7 +700,7 @@
     -->
     <rdfs:label xml:lang="it-IT"><![CDATA[Process Variable]]></rdfs:label>
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Process Variable
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActualParametersProcessVariable
@@ -710,7 +710,7 @@
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyActualParametersConstantValue">
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Constant Value
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActualParametersConstantValue
@@ -718,7 +718,7 @@
     -->
     <rdfs:label xml:lang="it-IT"><![CDATA[Constant Value]]></rdfs:label>
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Constant Value
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActualParametersConstantValue
@@ -728,7 +728,7 @@
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessVariables">
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Process Variables
     @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessVariables
@@ -736,7 +736,7 @@
     -->
     <rdfs:label xml:lang="it-IT"><![CDATA[Process Variables]]></rdfs:label>
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Process Variables
     @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessVariables
@@ -746,7 +746,7 @@
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyActualParametersFormalParameter">
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Formal Parameter
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActualParametersFormalParameter
@@ -754,7 +754,7 @@
     -->
     <rdfs:label xml:lang="it-IT"><![CDATA[Formal Parameter]]></rdfs:label>
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Formal Parameter
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActualParametersFormalParameter
@@ -764,7 +764,7 @@
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyFormalParametersDefaultConstantValue">
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Default Constant Value
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyFormalParametersDefaultConstantValue
@@ -772,7 +772,7 @@
     -->
     <rdfs:label xml:lang="it-IT"><![CDATA[Default Constant Value]]></rdfs:label>
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Default Constant Value
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyFormalParametersDefaultConstantValue
@@ -782,7 +782,7 @@
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyFormalParametersDefaultProcessVariable">
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source DefaultProcessVariable
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyFormalParametersDefaultProcessVariable
@@ -790,7 +790,7 @@
     -->
     <rdfs:label xml:lang="it-IT"><![CDATA[DefaultProcessVariable]]></rdfs:label>
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Default Process Variable
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyFormalParametersDefaultProcessVariable
@@ -800,7 +800,7 @@
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#ClassActualParameters">
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Actual Parameter
     @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassActualParameters
@@ -808,7 +808,7 @@
     -->
     <rdfs:label xml:lang="it-IT"><![CDATA[Actual Parameter]]></rdfs:label>
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Actual Parameter
     @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassActualParameters
@@ -818,7 +818,7 @@
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyFormalParameterDataType">
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Data Type
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyFormalParameterDataType
@@ -826,7 +826,7 @@
     -->
     <rdfs:label xml:lang="it-IT"><![CDATA[Data Type]]></rdfs:label>
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Data Type
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyFormalParameterDataType
@@ -836,7 +836,7 @@
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyFormalParametersName">
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Name
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyFormalParametersName
@@ -844,7 +844,7 @@
     -->
     <rdfs:label xml:lang="it-IT"><![CDATA[Name]]></rdfs:label>
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Formal Parameter Name
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyFormalParametersName
@@ -854,7 +854,7 @@
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#ClassFormalParameters">
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Formal Parameter
     @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassFormalParameters
@@ -862,7 +862,7 @@
     -->
     <rdfs:label xml:lang="it-IT"><![CDATA[Formal Parameter]]></rdfs:label>
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Formal Parameter
     @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassFormalParameters
@@ -872,7 +872,7 @@
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertySupportServicesUrl">
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source url
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertySupportServicesUrl
@@ -880,7 +880,7 @@
     -->
     <rdfs:label xml:lang="it-IT"><![CDATA[url]]></rdfs:label>
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source url
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertySupportServicesUrl
@@ -890,7 +890,7 @@
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyWebServicesWsdlUrl">
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source wsdl location
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyWebServicesWsdlUrl
@@ -898,7 +898,7 @@
     -->
     <rdfs:label xml:lang="it-IT"><![CDATA[wsdl location]]></rdfs:label>
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source wsdl location
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyWebServicesWsdlUrl
@@ -908,7 +908,7 @@
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivitiesInteractiveServices">
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Interactive Services
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivitiesInteractiveServices
@@ -916,7 +916,7 @@
     -->
     <rdfs:label xml:lang="it-IT"><![CDATA[Interactive Services]]></rdfs:label>
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Interactive Services
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivitiesInteractiveServices
@@ -924,63 +924,9 @@
     -->
     <rdfs:comment xml:lang="it-IT"><![CDATA[Interactive Services]]></rdfs:comment>
   </rdf:Description>
-  <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#ClassSupportServices">
-    <!--
-    @sourceLanguage en-US
-    @targetLanguage it-IT
-    @source Support Services
-    @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassSupportServices
-    @predicate http://www.w3.org/2000/01/rdf-schema#label
-    -->
-    <rdfs:label xml:lang="it-IT"><![CDATA[Support Services]]></rdfs:label>
-    <!--
-    @sourceLanguage en-US
-    @targetLanguage it-IT
-    @source Support Services
-    @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassSupportServices
-    @predicate http://www.w3.org/2000/01/rdf-schema#comment
-    -->
-    <rdfs:comment xml:lang="it-IT"><![CDATA[Support Services]]></rdfs:comment>
-  </rdf:Description>
-  <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#ClassWebServices">
-    <!--
-    @sourceLanguage en-US
-    @targetLanguage it-IT
-    @source Web Service
-    @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassWebServices
-    @predicate http://www.w3.org/2000/01/rdf-schema#label
-    -->
-    <rdfs:label xml:lang="it-IT"><![CDATA[Web Service]]></rdfs:label>
-    <!--
-    @sourceLanguage en-US
-    @targetLanguage it-IT
-    @source Web Service
-    @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassWebServices
-    @predicate http://www.w3.org/2000/01/rdf-schema#comment
-    -->
-    <rdfs:comment xml:lang="it-IT"><![CDATA[Web Service]]></rdfs:comment>
-  </rdf:Description>
-  <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#ClassServiceDefinitions">
-    <!--
-    @sourceLanguage en-US
-    @targetLanguage it-IT
-    @source Services Definition
-    @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassServiceDefinitions
-    @predicate http://www.w3.org/2000/01/rdf-schema#label
-    -->
-    <rdfs:label xml:lang="it-IT"><![CDATA[Services Definition]]></rdfs:label>
-    <!--
-    @sourceLanguage en-US
-    @targetLanguage it-IT
-    @source Services Definition
-    @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassServiceDefinitions
-    @predicate http://www.w3.org/2000/01/rdf-schema#comment
-    -->
-    <rdfs:comment xml:lang="it-IT"><![CDATA[Services Definition]]></rdfs:comment>
-  </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#ClassActivities">
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Activity
     @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassActivities
@@ -988,7 +934,7 @@
     -->
     <rdfs:label xml:lang="it-IT"><![CDATA[Activity]]></rdfs:label>
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Activity
     @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassActivities
@@ -998,7 +944,7 @@
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessDefinitions">
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Process Definition
     @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessDefinitions
@@ -1006,7 +952,7 @@
     -->
     <rdfs:label xml:lang="it-IT"><![CDATA[Process Definition]]></rdfs:label>
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Process Definition
     @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessDefinitions
@@ -1016,7 +962,7 @@
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyConnectorsTransitionRule">
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Transition Rule
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyConnectorsTransitionRule
@@ -1024,7 +970,7 @@
     -->
     <rdfs:label xml:lang="it-IT"><![CDATA[Transition Rule]]></rdfs:label>
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Transition Rule
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyConnectorsTransitionRule
@@ -1034,7 +980,7 @@
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyTransitionRulesElse">
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Else
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyTransitionRulesElse
@@ -1042,7 +988,7 @@
     -->
     <rdfs:label xml:lang="it-IT"><![CDATA[Else]]></rdfs:label>
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Else statement
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyTransitionRulesElse
@@ -1052,7 +998,7 @@
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivitiesHidden">
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Is Hidden
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivitiesHidden
@@ -1060,7 +1006,7 @@
     -->
     <rdfs:label xml:lang="it-IT"><![CDATA[Is Hidden]]></rdfs:label>
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Is Hidden
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivitiesHidden
@@ -1070,7 +1016,7 @@
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyConnectorsActivityReference">
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Activity Reference
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyConnectorsActivityReference
@@ -1078,7 +1024,7 @@
     -->
     <rdfs:label xml:lang="it-IT"><![CDATA[Activity Reference]]></rdfs:label>
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source the reference to the activity at the time of creation
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyConnectorsActivityReference
@@ -1088,7 +1034,7 @@
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyCode">
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Code
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyCode
@@ -1096,7 +1042,7 @@
     -->
     <rdfs:label xml:lang="it-IT"><![CDATA[Code]]></rdfs:label>
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source For process variables only
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyCode
@@ -1106,7 +1052,7 @@
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyCallOfServicesTop">
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Top Shifting
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyCallOfServicesTop
@@ -1114,7 +1060,7 @@
     -->
     <rdfs:label xml:lang="it-IT"><![CDATA[Top Shifting]]></rdfs:label>
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source The CSS top attribute value for the service iframe
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyCallOfServicesTop
@@ -1124,7 +1070,7 @@
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyCallOfServicesLeft">
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Left Shifting
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyCallOfServicesLeft
@@ -1132,7 +1078,7 @@
     -->
     <rdfs:label xml:lang="it-IT"><![CDATA[Left Shifting]]></rdfs:label>
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source The CSS left attribute value for the service iframe
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyCallOfServicesLeft
@@ -1142,7 +1088,7 @@
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyCallOfServicesWidth">
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Width
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyCallOfServicesWidth
@@ -1150,7 +1096,7 @@
     -->
     <rdfs:label xml:lang="it-IT"><![CDATA[Width]]></rdfs:label>
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source The CSS width attribute value for the service iframe
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyCallOfServicesWidth
@@ -1160,7 +1106,7 @@
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyCallOfServicesHeight">
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Height
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyCallOfServicesHeight
@@ -1168,7 +1114,7 @@
     -->
     <rdfs:label xml:lang="it-IT"><![CDATA[Height]]></rdfs:label>
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source The CSS height attribute value for the service iframe
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyCallOfServicesHeight
@@ -1178,7 +1124,7 @@
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsExecutionOf">
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Activity Definition
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsExecutionOf
@@ -1186,7 +1132,7 @@
     -->
     <rdfs:label xml:lang="it-IT"><![CDATA[Activity Definition]]></rdfs:label>
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Activity Definition
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsExecutionOf
@@ -1196,7 +1142,7 @@
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsCurrentUser">
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Current User
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsCurrentUser
@@ -1204,7 +1150,7 @@
     -->
     <rdfs:label xml:lang="it-IT"><![CDATA[Current User]]></rdfs:label>
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Current User
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsCurrentUser
@@ -1214,7 +1160,7 @@
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsProcessExecution">
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Process Execution
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsProcessExecution
@@ -1222,7 +1168,7 @@
     -->
     <rdfs:label xml:lang="it-IT"><![CDATA[Process Execution]]></rdfs:label>
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source The process execution to which the activity execution is linked
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsProcessExecution
@@ -1232,7 +1178,7 @@
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsHasVariables">
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Variables
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsHasVariables
@@ -1240,7 +1186,7 @@
     -->
     <rdfs:label xml:lang="it-IT"><![CDATA[Variables]]></rdfs:label>
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Serialized array of currently used variables
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsHasVariables
@@ -1250,7 +1196,7 @@
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsPreviousActivityExecutions">
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Previous Activity Executions
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsPreviousActivityExecutions
@@ -1258,7 +1204,7 @@
     -->
     <rdfs:label xml:lang="it-IT"><![CDATA[Previous Activity Executions]]></rdfs:label>
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Used to build the process path
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsPreviousActivityExecutions
@@ -1268,7 +1214,7 @@
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsFollowingActivityExecutions">
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Following Activity Executions
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsFollowingActivityExecutions
@@ -1276,7 +1222,7 @@
     -->
     <rdfs:label xml:lang="it-IT"><![CDATA[Following Activity Executions]]></rdfs:label>
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Used to build the process path
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsFollowingActivityExecutions
@@ -1286,7 +1232,7 @@
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsStatus">
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Status
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsStatus
@@ -1294,7 +1240,7 @@
     -->
     <rdfs:label xml:lang="it-IT"><![CDATA[Status]]></rdfs:label>
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source The status of the activity execution
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsStatus
@@ -1304,7 +1250,7 @@
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsTimeCreated">
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Created on
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsTimeCreated
@@ -1312,7 +1258,7 @@
     -->
     <rdfs:label xml:lang="it-IT"><![CDATA[Created on]]></rdfs:label>
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source The creation time of the activity execution
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsTimeCreated
@@ -1322,7 +1268,7 @@
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsTimeStarted">
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Started on
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsTimeStarted
@@ -1330,7 +1276,7 @@
     -->
     <rdfs:label xml:lang="it-IT"><![CDATA[Started on]]></rdfs:label>
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source The start time of the activity execution
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsTimeStarted
@@ -1340,7 +1286,7 @@
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsTimeLastAccess">
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Last accessed on
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsTimeLastAccess
@@ -1348,7 +1294,7 @@
     -->
     <rdfs:label xml:lang="it-IT"><![CDATA[Last accessed on]]></rdfs:label>
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source The last time the current user accessed it
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsTimeLastAccess
@@ -1358,7 +1304,7 @@
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsNonce">
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Nonce
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsNonce
@@ -1366,7 +1312,7 @@
     -->
     <rdfs:label xml:lang="it-IT"><![CDATA[Nonce]]></rdfs:label>
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source The nonce to garantee unique action (transitions)
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsNonce
@@ -1376,7 +1322,7 @@
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsAccessControlMode">
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Execution ACL mode
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsAccessControlMode
@@ -1384,7 +1330,7 @@
     -->
     <rdfs:label xml:lang="it-IT"><![CDATA[Execution ACL mode]]></rdfs:label>
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source The ACL mode applied to the acitivty execution
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsAccessControlMode
@@ -1394,7 +1340,7 @@
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsRestrictedUser">
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Execution restricted user
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsRestrictedUser
@@ -1402,7 +1348,7 @@
     -->
     <rdfs:label xml:lang="it-IT"><![CDATA[Execution restricted user]]></rdfs:label>
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source The user who is allowed to execute the activity execution
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsRestrictedUser
@@ -1412,7 +1358,7 @@
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsRestrictedRole">
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Execution restricted role
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsRestrictedRole
@@ -1420,7 +1366,7 @@
     -->
     <rdfs:label xml:lang="it-IT"><![CDATA[Execution restricted role]]></rdfs:label>
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source The role who is allowed to execute the activity execution
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsRestrictedRole
@@ -1430,7 +1376,7 @@
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#ClassActivityExecutions">
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Activity Instance Resource
     @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassActivityExecutions
@@ -1438,7 +1384,7 @@
     -->
     <rdfs:label xml:lang="it-IT"><![CDATA[Activity Instance Resource]]></rdfs:label>
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Activity Instance Resource
     @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassActivityExecutions
@@ -1448,7 +1394,7 @@
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#ClassAccessControlModes">
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source ACL modes
     @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassAccessControlModes
@@ -1456,7 +1402,7 @@
     -->
     <rdfs:label xml:lang="it-IT"><![CDATA[ACL modes]]></rdfs:label>
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source ACL modes
     @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassAccessControlModes
@@ -1466,7 +1412,7 @@
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyAccessControlModesRole">
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Role
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyAccessControlModesRole
@@ -1474,7 +1420,7 @@
     -->
     <rdfs:label xml:lang="it-IT"><![CDATA[Role]]></rdfs:label>
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Access Control Role
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyAccessControlModesRole
@@ -1484,7 +1430,7 @@
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyAccessControlModesRoleRestrictedUser">
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Role Restricted User
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyAccessControlModesRoleRestrictedUser
@@ -1492,7 +1438,7 @@
     -->
     <rdfs:label xml:lang="it-IT"><![CDATA[Role Restricted User]]></rdfs:label>
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Role Restricted User
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyAccessControlModesRoleRestrictedUser
@@ -1502,7 +1448,7 @@
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyAccessControlModesUser">
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source User
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyAccessControlModesUser
@@ -1510,7 +1456,7 @@
     -->
     <rdfs:label xml:lang="it-IT"><![CDATA[User]]></rdfs:label>
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source User
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyAccessControlModesUser
@@ -1520,7 +1466,7 @@
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyAccessControlModesRoleRestrictedUserInherited">
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Role Restricted User Inherited
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyAccessControlModesRoleRestrictedUserInherited
@@ -1528,7 +1474,7 @@
     -->
     <rdfs:label xml:lang="it-IT"><![CDATA[Role Restricted User Inherited]]></rdfs:label>
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Role Restricted User Inherited
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyAccessControlModesRoleRestrictedUserInherited
@@ -1538,7 +1484,7 @@
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyAccessControlModesRoleRestrictedUserInheritedDelivery">
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Role Restricted User Inherited Delivery
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyAccessControlModesRoleRestrictedUserInheritedDelivery
@@ -1546,15 +1492,15 @@
     -->
     <rdfs:label xml:lang="it-IT"><![CDATA[Role Restricted User Inherited Delivery]]></rdfs:label>
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Useful for deliveries
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyAccessControlModesRoleRestrictedUserInheritedDelivery
     @predicate http://www.w3.org/2000/01/rdf-schema#comment
     -->
-    <rdfs:comment xml:lang="it-IT"><![CDATA[Useful for deliveries]]></rdfs:comment>
+    <rdfs:comment xml:lang="it-IT"><![CDATA[Role Restricted User Inherited]]></rdfs:comment>
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Role Restricted User Inherited
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyAccessControlModesRoleRestrictedUserInheritedDelivery
@@ -1564,7 +1510,7 @@
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivitiesAccessControlMode">
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source ACL mode
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivitiesAccessControlMode
@@ -1572,7 +1518,7 @@
     -->
     <rdfs:label xml:lang="it-IT"><![CDATA[ACL mode]]></rdfs:label>
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source ACL mode
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivitiesAccessControlMode
@@ -1582,7 +1528,7 @@
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivitiesRestrictedRole">
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source restricted Role
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivitiesRestrictedRole
@@ -1590,7 +1536,7 @@
     -->
     <rdfs:label xml:lang="it-IT"><![CDATA[restricted Role]]></rdfs:label>
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source restricted Role
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivitiesRestrictedRole
@@ -1600,7 +1546,7 @@
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivitiesRestrictedUser">
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Restricted User
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivitiesRestrictedUser
@@ -1608,7 +1554,7 @@
     -->
     <rdfs:label xml:lang="it-IT"><![CDATA[Restricted User]]></rdfs:label>
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Restricted User
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivitiesRestrictedUser
@@ -1618,7 +1564,7 @@
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessInitAccesControlMode">
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Init ACL mode
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessInitAccesControlMode
@@ -1626,7 +1572,7 @@
     -->
     <rdfs:label xml:lang="it-IT"><![CDATA[Init ACL mode]]></rdfs:label>
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Init ACL mode
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessInitAccesControlMode
@@ -1636,7 +1582,7 @@
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessInitRestrictedUser">
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Init Restricted User
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessInitRestrictedUser
@@ -1644,7 +1590,7 @@
     -->
     <rdfs:label xml:lang="it-IT"><![CDATA[Init Restricted User]]></rdfs:label>
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Init Restricted User
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessInitRestrictedUser
@@ -1654,7 +1600,7 @@
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessInitRestrictedRole">
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Init Restricted Role
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessInitRestrictedRole
@@ -1662,7 +1608,7 @@
     -->
     <rdfs:label xml:lang="it-IT"><![CDATA[Init Restricted Role]]></rdfs:label>
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Init Restricted Role
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessInitRestrictedRole
@@ -1672,7 +1618,7 @@
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessDiagramData">
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Diagram Data
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessDiagramData
@@ -1680,7 +1626,7 @@
     -->
     <rdfs:label xml:lang="it-IT"><![CDATA[Diagram Data]]></rdfs:label>
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Diagram Data
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessDiagramData
@@ -1690,7 +1636,7 @@
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#ClassNotificationMode">
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Notification Mode
     @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassNotificationMode
@@ -1698,7 +1644,7 @@
     -->
     <rdfs:label xml:lang="it-IT"><![CDATA[Notification Mode]]></rdfs:label>
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Notification Mode
     @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassNotificationMode
@@ -1708,7 +1654,7 @@
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#InstanceNotifyUser">
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Notify User
     @subject http://www.tao.lu/middleware/wfEngine.rdf#InstanceNotifyUser
@@ -1716,7 +1662,7 @@
     -->
     <rdfs:label xml:lang="it-IT"><![CDATA[Notify User]]></rdfs:label>
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Notify User
     @subject http://www.tao.lu/middleware/wfEngine.rdf#InstanceNotifyUser
@@ -1726,7 +1672,7 @@
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#InstanceNotifyNextActivityUsers">
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Notify Next Activity Users
     @subject http://www.tao.lu/middleware/wfEngine.rdf#InstanceNotifyNextActivityUsers
@@ -1734,7 +1680,7 @@
     -->
     <rdfs:label xml:lang="it-IT"><![CDATA[Notify Next Activity Users]]></rdfs:label>
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Notify Next Activity Users
     @subject http://www.tao.lu/middleware/wfEngine.rdf#InstanceNotifyNextActivityUsers
@@ -1744,7 +1690,7 @@
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#InstanceNotifyThenActivityUsers">
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Notify Then Activity Users
     @subject http://www.tao.lu/middleware/wfEngine.rdf#InstanceNotifyThenActivityUsers
@@ -1752,7 +1698,7 @@
     -->
     <rdfs:label xml:lang="it-IT"><![CDATA[Notify Then Activity Users]]></rdfs:label>
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source For connector of conditional type only
     @subject http://www.tao.lu/middleware/wfEngine.rdf#InstanceNotifyThenActivityUsers
@@ -1762,7 +1708,7 @@
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#InstanceNotifyElseActivityUsers">
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Notify Else Activity Users
     @subject http://www.tao.lu/middleware/wfEngine.rdf#InstanceNotifyElseActivityUsers
@@ -1770,7 +1716,7 @@
     -->
     <rdfs:label xml:lang="it-IT"><![CDATA[Notify Else Activity Users]]></rdfs:label>
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source For connector of conditional type only
     @subject http://www.tao.lu/middleware/wfEngine.rdf#InstanceNotifyElseActivityUsers
@@ -1780,7 +1726,7 @@
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#InstanceNotifyPreviousActivityUsers">
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Notify Previous Activity Users
     @subject http://www.tao.lu/middleware/wfEngine.rdf#InstanceNotifyPreviousActivityUsers
@@ -1788,7 +1734,7 @@
     -->
     <rdfs:label xml:lang="it-IT"><![CDATA[Notify Previous Activity Users]]></rdfs:label>
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Notify Previous Activity Users
     @subject http://www.tao.lu/middleware/wfEngine.rdf#InstanceNotifyPreviousActivityUsers
@@ -1798,7 +1744,7 @@
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#InstanceNotifyRole">
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Notify Role
     @subject http://www.tao.lu/middleware/wfEngine.rdf#InstanceNotifyRole
@@ -1806,7 +1752,7 @@
     -->
     <rdfs:label xml:lang="it-IT"><![CDATA[Notify Role]]></rdfs:label>
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Notify Role
     @subject http://www.tao.lu/middleware/wfEngine.rdf#InstanceNotifyRole
@@ -1816,7 +1762,7 @@
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyConnectorsNotificationModes">
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Notify
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyConnectorsNotificationModes
@@ -1824,7 +1770,7 @@
     -->
     <rdfs:label xml:lang="it-IT"><![CDATA[Notify]]></rdfs:label>
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Notify
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyConnectorsNotificationModes
@@ -1834,7 +1780,7 @@
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyConnectorsNotifiedUser">
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Users to notify
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyConnectorsNotifiedUser
@@ -1842,7 +1788,7 @@
     -->
     <rdfs:label xml:lang="it-IT"><![CDATA[Users to notify]]></rdfs:label>
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Users to notify
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyConnectorsNotifiedUser
@@ -1852,7 +1798,7 @@
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyConnectorsNotifiedRole">
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Role's users to notify
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyConnectorsNotifiedRole
@@ -1860,7 +1806,7 @@
     -->
     <rdfs:label xml:lang="it-IT"><![CDATA[Role's users to notify]]></rdfs:label>
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Role's users to notify
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyConnectorsNotifiedRole
@@ -1870,7 +1816,7 @@
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyConnectorsNotificationMessage">
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Notification Message
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyConnectorsNotificationMessage
@@ -1878,7 +1824,7 @@
     -->
     <rdfs:label xml:lang="it-IT"><![CDATA[Notification Message]]></rdfs:label>
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Notification Message
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyConnectorsNotificationMessage
@@ -1888,7 +1834,7 @@
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#ClassNotification">
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Notification
     @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassNotification
@@ -1898,7 +1844,7 @@
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyNotificationTo">
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source User to notify
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyNotificationTo
@@ -1906,7 +1852,7 @@
     -->
     <rdfs:label xml:lang="it-IT"><![CDATA[User to notify]]></rdfs:label>
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source User to notify
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyNotificationTo
@@ -1916,7 +1862,7 @@
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyNotificationConnector">
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Connector's notification
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyNotificationConnector
@@ -1924,7 +1870,7 @@
     -->
     <rdfs:label xml:lang="it-IT"><![CDATA[Connector's notification]]></rdfs:label>
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Connector's notification
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyNotificationConnector
@@ -1934,7 +1880,7 @@
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyNotificationProcessExecution">
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Process execution's notification
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyNotificationProcessExecution
@@ -1942,7 +1888,7 @@
     -->
     <rdfs:label xml:lang="it-IT"><![CDATA[Process execution's notification]]></rdfs:label>
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Process execution's notification
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyNotificationProcessExecution
@@ -1952,7 +1898,7 @@
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyNotificationSent">
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Notification sent
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyNotificationSent
@@ -1960,7 +1906,7 @@
     -->
     <rdfs:label xml:lang="it-IT"><![CDATA[Notification sent]]></rdfs:label>
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Notification sent
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyNotificationSent
@@ -1970,7 +1916,7 @@
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyNotificationDate">
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Notification date
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyNotificationDate
@@ -1978,7 +1924,7 @@
     -->
     <rdfs:label xml:lang="it-IT"><![CDATA[Notification date]]></rdfs:label>
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Notification date
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyNotificationDate
@@ -1988,7 +1934,7 @@
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsContextRecovery">
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Context Recovery
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsContextRecovery
@@ -1996,7 +1942,7 @@
     -->
     <rdfs:label xml:lang="it-IT"><![CDATA[Context Recovery]]></rdfs:label>
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Context Recovery
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsContextRecovery
@@ -2006,7 +1952,7 @@
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#ClassControls">
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Controls
     @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassControls
@@ -2014,7 +1960,7 @@
     -->
     <rdfs:label xml:lang="it-IT"><![CDATA[Controls]]></rdfs:label>
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Controls
     @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassControls
@@ -2024,7 +1970,7 @@
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#InstanceControlsForward">
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Forward
     @subject http://www.tao.lu/middleware/wfEngine.rdf#InstanceControlsForward
@@ -2034,7 +1980,7 @@
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#InstanceControlsBackward">
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Backward
     @subject http://www.tao.lu/middleware/wfEngine.rdf#InstanceControlsBackward
@@ -2042,7 +1988,7 @@
     -->
     <rdfs:label xml:lang="it-IT"><![CDATA[Backward]]></rdfs:label>
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Backward
     @subject http://www.tao.lu/middleware/wfEngine.rdf#InstanceControlsBackward
@@ -2052,7 +1998,7 @@
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivitiesControls">
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Activity controls
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivitiesControls
@@ -2060,7 +2006,7 @@
     -->
     <rdfs:label xml:lang="it-IT"><![CDATA[Activity controls]]></rdfs:label>
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Activity controls
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivitiesControls
@@ -2070,7 +2016,7 @@
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#ProcessVarPrevEndosment">
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source PREV_ENDORSMENT
     @subject http://www.tao.lu/middleware/wfEngine.rdf#ProcessVarPrevEndosment
@@ -2078,7 +2024,7 @@
     -->
     <rdfs:label xml:lang="it-IT"><![CDATA[PREV_ENDORSMENT]]></rdfs:label>
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Previous Endorsment
     @subject http://www.tao.lu/middleware/wfEngine.rdf#ProcessVarPrevEndosment
@@ -2088,7 +2034,7 @@
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#ClassActivityCardinality">
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Activity Cardinality
     @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassActivityCardinality
@@ -2096,7 +2042,7 @@
     -->
     <rdfs:label xml:lang="it-IT"><![CDATA[Activity Cardinality]]></rdfs:label>
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Activity Cardinality
     @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassActivityCardinality
@@ -2106,7 +2052,7 @@
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityCardinalityCardinality">
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Cardinality
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityCardinalityCardinality
@@ -2114,7 +2060,7 @@
     -->
     <rdfs:label xml:lang="it-IT"><![CDATA[Cardinality]]></rdfs:label>
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Cardinality
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityCardinalityCardinality
@@ -2124,7 +2070,7 @@
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityCardinalitySplitVariables">
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Split variables
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityCardinalitySplitVariables
@@ -2132,7 +2078,7 @@
     -->
     <rdfs:label xml:lang="it-IT"><![CDATA[Split variables]]></rdfs:label>
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Split variables
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityCardinalitySplitVariables
@@ -2142,7 +2088,7 @@
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#WorkflowsManagerRole">
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source Workflows Manager
     @subject http://www.tao.lu/middleware/wfEngine.rdf#WorkflowsManagerRole
@@ -2150,7 +2096,7 @@
     -->
     <rdfs:label xml:lang="it-IT"><![CDATA[Workflows Manager]]></rdfs:label>
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage it-IT
     @source The Workflows Manager Role
     @subject http://www.tao.lu/middleware/wfEngine.rdf#WorkflowsManagerRole

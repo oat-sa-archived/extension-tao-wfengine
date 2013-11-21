@@ -41,7 +41,6 @@ return array(
 	'install' => array(
 		'rdf' => array(
 			dirname(__FILE__). '/models/ontology/wfengine.rdf',
-			dirname(__FILE__). '/models/ontology/aclrole.rdf',
 		    dirname(__FILE__). '/models/ontology/wfRunner.rdf',
 		),
 		'php' => array(
@@ -52,6 +51,29 @@ return array(
 		),
 	),
 	'managementRole' => 'http://www.tao.lu/middleware/wfEngine.rdf#WorkflowsManagerRole',
+    'acl' => array(
+        array('grant', 'http://www.tao.lu/Ontologies/wfEngine.rdf#WorkflowsManagerRole', array('ext'=>'wfEngine')),
+        array('grant', 'http://www.tao.lu/Ontologies/generis.rdf#AnonymousRole', array('ext'=>'wfEngine', 'mod' => 'Authentication')),
+        array('grant', 'http://www.tao.lu/Ontologies/TAO.rdf#WorkflowRole', array('ext'=>'wfEngine', 'mod' => 'WfHome')),
+        array('grant', 'http://www.tao.lu/Ontologies/TAO.rdf#WorkflowRole', array('ext'=>'wfEngine', 'mod' => 'ProcessBrowser')),
+        array('grant', 'http://www.tao.lu/Ontologies/TAO.rdf#WorkflowRole', array('ext'=>'wfEngine', 'mod' => 'ProcessInstanciation')),
+        array('grant', 'http://www.tao.lu/Ontologies/TAO.rdf#WorkflowRole', array('ext'=>'taoItems', 'mod' => 'SaSItems')),
+        array('grant', 'http://www.tao.lu/Ontologies/TAO.rdf#WorkflowRole', array('ext'=>'taoSubjects', 'mod' => 'SaSSubjects')),
+        array('grant', 'http://www.tao.lu/Ontologies/TAO.rdf#WorkflowRole', array('ext'=>'taoSubjects', 'mod' => 'SasSubjectsImport')),
+        array('grant', 'http://www.tao.lu/Ontologies/TAO.rdf#WorkflowRole', array('ext'=>'taoTests', 'mod' => 'SaSTests')),
+        array('grant', 'http://www.tao.lu/Ontologies/TAO.rdf#WorkflowRole', array('ext'=>'taoGroups', 'mod' => 'SaSGroups')),
+        array('grant', 'http://www.tao.lu/Ontologies/TAO.rdf#WorkflowRole', array('ext'=>'taoDelivery', 'mod' => 'SaSResultServer')),
+        array('grant', 'http://www.tao.lu/Ontologies/TAO.rdf#WorkflowRole', array('ext'=>'taoDelivery', 'mod' => 'SaSDelivery')),
+	    array('grant', 'http://www.tao.lu/Ontologies/TAO.rdf#WorkflowRole', array('ext'=>'tao', 'mod' => 'WebService')),
+	    array('grant', 'http://www.tao.lu/Ontologies/TAO.rdf#WorkflowRole', array('ext'=>'taoResults', 'mod' => 'SaSResults')),
+	    array('grant', 'http://www.tao.lu/Ontologies/TAO.rdf#WorkflowRole', array('ext'=>'tao', 'mod' => 'SaSUsers')),
+	    array('grant', 'http://www.tao.lu/Ontologies/TAO.rdf#WorkflowRole', array('ext'=>'tao', 'mod' => 'File')),
+	    array('grant', 'http://www.tao.lu/Ontologies/TAO.rdf#WorkflowRole', array('ext'=>'wfEngine', 'mod' => 'WfApiProcessExecution')),
+	    array('grant', 'http://www.tao.lu/Ontologies/TAO.rdf#WorkflowRole', array('ext'=>'wfEngine', 'mod' => 'WfApiActivityExecution')),
+	    array('grant', 'http://www.tao.lu/Ontologies/TAO.rdf#WorkflowRole', array('ext'=>'wfEngine', 'mod' => 'WfApiProcessDefinition')),
+	    array('grant', 'http://www.tao.lu/Ontologies/TAO.rdf#WorkflowRole', array('ext'=>'wfEngine', 'mod' => 'WfApiProcessDefinition')),
+	    array('grant', 'http://www.tao.lu/Ontologies/TAO.rdf#WorkflowRole', array('ext'=>'wfEngine', 'mod' => 'RecoveryContext'))
+	),
 	'optimizableClasses' => array(
 		'http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessDefinitionResources',
 		'http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessExecutionResources',

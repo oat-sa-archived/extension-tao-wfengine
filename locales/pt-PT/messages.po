@@ -1,15 +1,12 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: TAO v2.5-alpha\n"
-"PO-Revision-Date: 2013-11-12 10:34-0000\n"
-"Last-Translator: Paulo Amorim <paulo@amorims.com>\n"
+"Project-Id-Version: TAO v2.6-alpha\n"
+"PO-Revision-Date: 2013-11-20T14:44:21\n"
+"Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: pt-PT\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: \n"
-"Language-Team: \n"
-"X-Generator: Poedit 1.5.7\n"
 
 msgid "(still undefined)"
 msgstr "(ainda não definido)"
@@ -17,11 +14,14 @@ msgstr "(ainda não definido)"
 msgid "[TAO Notification System] Workflow"
 msgstr "[Sistema de notificações TAO] Fluxo de Trabalho"
 
-msgid "Access denied. Please renew your authentication."
-msgstr "Acesso negado. Por favor renove a sua autenticação"
+msgid "Access denied. Please renew your authentication!"
+msgstr ""
 
 msgid "Active Process"
 msgstr "Processo Activo"
+
+msgid "Advanced Users"
+msgstr ""
 
 msgid "An error occured during request processing"
 msgstr "Um erro ocorreu durante o processo requerido"
@@ -32,8 +32,11 @@ msgstr "Voltar"
 msgid "Cannot create process execution"
 msgstr "Não é possível criar a execução de processo"
 
-msgid "Connect"
-msgstr "Ligar"
+msgid "Change..."
+msgstr ""
+
+msgid "Check pending tasks for assessment preparation."
+msgstr ""
 
 msgid "created by"
 msgstr "criado por"
@@ -56,12 +59,8 @@ msgstr "Inicio"
 msgid "If"
 msgstr "Se"
 
-msgid ""
-"If there is no available activity or there are more than one. You will be "
-"redirected to the process main page."
-msgstr ""
-"Se não houver qualquer actividade disponível ou se há mais do que uma. Você "
-"será redireccionado para a página principal do processo."
+msgid "If there is no available activity or there are more than one. You will be redirected to the process main page."
+msgstr "Se não houver qualquer actividade disponível ou se há mais do que uma. Você será redireccionado para a página principal do processo."
 
 msgid "Initialize new Process"
 msgstr "Inicializar novo processo"
@@ -75,14 +74,14 @@ msgstr "Executar o processo"
 msgid "Loading next activity..."
 msgstr "Executar próxima actividade"
 
+msgid "Log in"
+msgstr ""
+
 msgid "Login"
 msgstr "Inicio de sessão"
 
 msgid "Logout"
 msgstr "Terminar sessão"
-
-msgid "More detailed description here."
-msgstr "Descrição mais detalhada aqui."
 
 msgid "My roles"
 msgstr "Os meus papeis"
@@ -101,9 +100,6 @@ msgstr "Pausa"
 
 msgid "Please confirm the deletion of the activity"
 msgstr "Por favor confirme a eliminação da actividade"
-
-msgid "Please login"
-msgstr "Por favor autentique-se"
 
 msgid "Please login to access the selected activity."
 msgstr "Por favor autentique-se para aceder a actividade seleccionada."
@@ -136,9 +132,7 @@ msgid "Status"
 msgstr "Estado"
 
 msgid "TAO - An Open and Versatile Computer-Based Assessment Platform"
-msgstr ""
-"TAO - Uma Plataforma de Avaliação baseada em sistemas de informação versátil "
-"e aberta"
+msgstr "TAO - Uma Plataforma de Avaliação baseada em sistemas de informação versátil e aberta"
 
 msgid "TAO Process Engine"
 msgstr "Motor de processos TAO"
@@ -193,3 +187,4 @@ msgstr "Navegador do Motor de fluxo de trabalho"
 
 msgid "You will be redirected to the current activity if you are allowed to."
 msgstr "Será redireccionado para a actividade actual, se tiver permissões."
+

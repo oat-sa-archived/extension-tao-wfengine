@@ -1,15 +1,12 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: TAO v2.4-beta3\n"
-"PO-Revision-Date: 2013-04-09T12:09:16\n"
+"Project-Id-Version: TAO v2.6-alpha\n"
+"PO-Revision-Date: 2013-11-20T14:44:19\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: ar-arb\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-
-msgid "(Ctrl-C)"
-msgstr "(Ctrl-C)"
 
 msgid "(still undefined)"
 msgstr "(لا يزال غير معروف)"
@@ -17,14 +14,14 @@ msgstr "(لا يزال غير معروف)"
 msgid "[TAO Notification System] Workflow"
 msgstr ""
 
-msgid "Access denied. Please renew your authentication."
+msgid "Access denied. Please renew your authentication!"
 msgstr ""
 
 msgid "Active Process"
 msgstr "Processus actif"
 
-msgid "Add (Ctrl-A)"
-msgstr "(Ctrl-A)إضافة"
+msgid "Advanced Users"
+msgstr ""
 
 msgid "An error occured during request processing"
 msgstr "حدث خطأ أثناء معالجة الطلب"
@@ -35,11 +32,11 @@ msgstr "رجوع"
 msgid "Cannot create process execution"
 msgstr ""
 
-msgid "Close (Esc)"
-msgstr "(Esc)اغلاق"
+msgid "Change..."
+msgstr ""
 
-msgid "Connect"
-msgstr "الاتصال"
+msgid "Check pending tasks for assessment preparation."
+msgstr ""
 
 msgid "created by"
 msgstr ""
@@ -47,23 +44,14 @@ msgstr ""
 msgid "Else"
 msgstr "والا"
 
-msgid "Enter remark text here"
-msgstr "أدخل نص الملاحظة هنا"
-
 msgid "execution of"
 msgstr ""
-
-msgid "Export - Debug only (Ctrl-E)"
-msgstr "(CTRL-E) تصدير - تصحيح فقط"
 
 msgid "Finished Process"
 msgstr "انتهاء العملية"
 
 msgid "Forward"
 msgstr "تحويل"
-
-msgid "Go to"
-msgstr "الذهاب الى"
 
 msgid "Home"
 msgstr "الصفحة الرئيسية"
@@ -77,11 +65,17 @@ msgstr ""
 msgid "Initialize new Process"
 msgstr "بدء عملية جديدة"
 
+msgid "Invalid login or password. Please try again."
+msgstr "لا يتطابق مع حساب معين الدخول / كلمة السر"
+
 msgid "Launch Process"
 msgstr "إطلاق عملية"
 
 msgid "Loading next activity..."
 msgstr "...تحميل النشاط التالي"
+
+msgid "Log in"
+msgstr ""
 
 msgid "Login"
 msgstr "الدخول"
@@ -89,14 +83,8 @@ msgstr "الدخول"
 msgid "Logout"
 msgstr "الخروج"
 
-msgid "More detailed description here."
-msgstr ".وصف أكثر تفصيل هنا"
-
 msgid "My roles"
 msgstr "ادواري"
-
-msgid "Invalid login or password. Please try again."
-msgstr "لا يتطابق مع حساب معين الدخول / كلمة السر"
 
 msgid "No process definition uri given"
 msgstr ""
@@ -113,14 +101,8 @@ msgstr "وقف"
 msgid "Please confirm the deletion of the activity"
 msgstr "الرجاء تأكيد حذف النشاط"
 
-msgid "Please login"
-msgstr "الرجاء الدخول"
-
 msgid "Please login to access the selected activity."
 msgstr ""
-
-msgid "Processes"
-msgstr "Processus"
 
 msgid "Process Finished"
 msgstr ""
@@ -131,8 +113,8 @@ msgstr "بدء العملية"
 msgid "Process Tree:"
 msgstr "Arborescence des processus:"
 
-msgid "Question (Ctrl-Q)"
-msgstr "(Ctrl-Q)سؤال"
+msgid "Processes"
+msgstr "Processus"
 
 msgid "Redirect immediately"
 msgstr ""
@@ -148,9 +130,6 @@ msgstr "ابدأ / استئناف الحالة"
 
 msgid "Status"
 msgstr "الحالة"
-
-msgid "Suppress"
-msgstr "حذف"
 
 msgid "TAO - An Open and Versatile Computer-Based Assessment Platform"
 msgstr "منهاج التقييم القائم على الحاسوب مفتوح ومتعدد الاستخدامات - TAO"
@@ -181,9 +160,6 @@ msgstr ""
 
 msgid "Then"
 msgstr "ثم"
-
-msgid "Type (Ctrl-T)"
-msgstr "(Ctrl-T) اضغط"
 
 msgid "type??"
 msgstr ""

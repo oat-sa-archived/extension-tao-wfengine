@@ -1498,7 +1498,7 @@
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyAccessControlModesRoleRestrictedUserInheritedDelivery
     @predicate http://www.w3.org/2000/01/rdf-schema#comment
     -->
-    <rdfs:comment xml:lang="zh-SG"><![CDATA[Useful for deliveries]]></rdfs:comment>
+    <rdfs:comment xml:lang="zh-SG"><![CDATA[Role Restricted User Inherited]]></rdfs:comment>
     <!--
     @sourceLanguage EN
     @targetLanguage zh-SG

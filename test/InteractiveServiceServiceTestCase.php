@@ -210,11 +210,9 @@ class InteractiveServiceServiceTestCase extends UnitTestCase {
 			$this->assertTrue(!empty($serviceDefinitionUrl));
 			$fullUri = ROOT_URL.ltrim($serviceDefinitionUrl, '/');
 			$resolver = new Resolver($fullUri);
-			$accessService = tao_models_classes_funcACL_AccessService::singleton();
-			$actionUri = $accessService->makeEMAUri($resolver->getExtensionFromURL(), $resolver->getModule(), $resolver->getAction());
-			$res = new core_kernel_classes_Resource($actionUri);
-			$this->assertTrue($res->exists(), 'action of service definition "'.$serviceDefinition->getLabel().'" does not exist');
-			
+			$ext = common_ext_ExtensionsManager::singleton()->getExtensionById($resolver->getExtensionFromURL());
+			$controller = $ext->getModule($resolver->getModule());
+			$this->assertTrue(method_exists($controller , $resolver->getAction()), 'action of service definition "'.$serviceDefinition->getLabel().'" does not exist');
 		}
 	}
 
