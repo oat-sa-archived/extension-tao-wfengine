@@ -109,12 +109,10 @@
 		<div id="content">
 			<div id="business">
 				<div id="navigation">
-					<?if(USE_PREVIOUS):?>
-						<?if($browserViewData['controls']['backward']):?>
-							<input type="button" id="back" value="<?= __("Back")?>"/>
-						<?else:?>
-							<input type="button" id="back" value="" style="display:none;"/>
-						<?endif?>
+					<?if($browserViewData['controls']['backward']):?>
+						<input type="button" id="back" value="<?= __("Back")?>"/>
+					<?else:?>
+						<input type="button" id="back" value="" style="display:none;"/>
 					<?endif?>
 
 					<?if($browserViewData['controls']['forward']): ?>

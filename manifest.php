@@ -130,14 +130,6 @@ return array(
 		# Process Browser page title.
 		'PROCESS_BROWSER_TITLE'	=> 'Process BrowserEngine',
 	
-		# Next/Previous button usable or not.
-		'USE_NEXT'				=> true,
-		'USE_PREVIOUS'			=> true,
-		'FORCE_NEXT'			=> true,
-	
-		# Keyboard enabled or not.
-		'USE_KEYBOARD'			=> true,
-	
 		# Service mode
 		# If set to true, the process dashboard (main view) and the
 		# process creation feature are not available.
