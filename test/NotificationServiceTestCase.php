@@ -72,7 +72,7 @@ class NotificationServiceTestCase extends UnitTestCase {
 		$langResource = tao_models_classes_LanguageService::singleton()->getLanguageByCode(DEFAULT_LANG);
 		$userData = array(
 			PROPERTY_USER_LOGIN			=> 	$login,
-			PROPERTY_USER_PASSWORD		=>	md5($pass),
+			PROPERTY_USER_PASSWORD		=>	core_kernel_users_AuthAdapter::getPasswordHash()->encrypt($pass),
 			PROPERTY_USER_DEFLG			=>	$langResource,
 			PROPERTY_USER_MAIL			=>  'somsack.sipasseuth@tudor.lu',
 			PROPERTY_USER_FIRSTNAME  	=>	'Sammy',

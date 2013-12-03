@@ -99,7 +99,7 @@ class wfEngineServiceTest extends UnitTestCase {
 		
 		$userData = array(
 			PROPERTY_USER_LOGIN		=> 	$login,
-			PROPERTY_USER_PASSWORD	=>	md5($this->userPassword),
+			PROPERTY_USER_PASSWORD	=>	core_kernel_users_AuthAdapter::getPasswordHash()->encrypt($this->userPassword),
 			PROPERTY_USER_DEFLG		=>	'http://www.tao.lu/Ontologies/TAO.rdf#Lang'.DEFAULT_LANG,
 			PROPERTY_USER_UILG		=>	'http://www.tao.lu/Ontologies/TAO.rdf#Lang'.DEFAULT_LANG,
 			PROPERTY_USER_ROLES		=>	INSTANCE_ROLE_WORKFLOW
