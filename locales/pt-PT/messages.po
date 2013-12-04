@@ -15,13 +15,13 @@ msgid "[TAO Notification System] Workflow"
 msgstr "[Sistema de notificações TAO] Fluxo de Trabalho"
 
 msgid "Access denied. Please renew your authentication!"
-msgstr ""
+msgstr "Acesso negado. Por favor renove a autenticação!"
 
 msgid "Active Process"
 msgstr "Processo Activo"
 
 msgid "Advanced Users"
-msgstr ""
+msgstr "Utilizadores Avançados"
 
 msgid "An error occured during request processing"
 msgstr "Um erro ocorreu durante o processo requerido"
@@ -33,10 +33,10 @@ msgid "Cannot create process execution"
 msgstr "Não é possível criar a execução de processo"
 
 msgid "Change..."
-msgstr ""
+msgstr "Modificar..."
 
 msgid "Check pending tasks for assessment preparation."
-msgstr ""
+msgstr "Verifique as tarefas pendentes para a preparação de avaliação."
 
 msgid "created by"
 msgstr "criado por"
@@ -75,7 +75,7 @@ msgid "Loading next activity..."
 msgstr "Executar próxima actividade"
 
 msgid "Log in"
-msgstr ""
+msgstr "Iniciar sessão"
 
 msgid "Login"
 msgstr "Inicio de sessão"
