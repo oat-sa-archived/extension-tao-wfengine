@@ -9,13 +9,13 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 msgid "(still undefined)"
-msgstr "(Reste à définir)"
+msgstr "(reste à définir)"
 
 msgid "[TAO Notification System] Workflow"
-msgstr "[Système de Notifications TAO]  Workflow"
+msgstr "[Système de Notifications TAO] Workflow"
 
 msgid "Access denied. Please renew your authentication!"
-msgstr ""
+msgstr "Accès refusé. Veuillez renouveler votre authentification !"
 
 msgid "Active Process"
 msgstr "Processus actif"
@@ -105,7 +105,7 @@ msgid "Please login to access the selected activity."
 msgstr "Veuillez vous identifier pour accéder à l'activité sélectionnée."
 
 msgid "Process Finished"
-msgstr ""
+msgstr "Processus terminé"
 
 msgid "Process initialization"
 msgstr "Initialisation du processus"
@@ -156,7 +156,7 @@ msgid "The resource is not an activity execution"
 msgstr "La ressource n'est pas une exécution d'activité"
 
 msgid "The variable with the code '.$code.' does not exists"
-msgstr "La variable avec le code ' .$code.' n'existe pas\n"
+msgstr "La variable avec le code '.$code.' n'existe pas\n"
 "\n"
 "msgid "
 
