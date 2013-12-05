@@ -43,7 +43,7 @@ class wfEngine_actions_ProcessRunner extends wfEngine_actions_ProcessBrowser {
 		if (!$this->hasRequestParameter('serviceCallId')) {
 		    throw new common_exception_Error('No serviceCallId on service call');
 		}
-	    $serviceService = tao_models_classes_service_state_Service::singleton();
+	    $serviceService = tao_models_classes_service_StateStorage::singleton();
 	    $userUri = common_session_SessionManager::getSession()->getUserUri();
 	    $processExecutionUri = is_null($userUri) ? null : $serviceService->get($userUri, $this->getRequestParameter('serviceCallId'));
 		if (is_null($processExecutionUri)) {
