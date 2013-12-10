@@ -21,7 +21,7 @@
  */
 ?>
 <?php
-require_once dirname(__FILE__) . '/../../tao/test/TaoTestRunner.php';
+require_once dirname(__FILE__) . '/../../tao/test/TaoPhpUnitTestRunner.php';
 include_once dirname(__FILE__) . '/../includes/raw_start.php';
 
 /**
@@ -31,7 +31,7 @@ include_once dirname(__FILE__) . '/../includes/raw_start.php';
  * @package wfEngine
  * @subpackage test
  */
-class RecoveryServiceTestCase extends UnitTestCase {
+class RecoveryServiceTestCase extends TaoPhpUnitTestRunner {
 	
 	
 	/**
@@ -47,11 +47,11 @@ class RecoveryServiceTestCase extends UnitTestCase {
 	 */
 	public function setUp(){
 		
-		TaoTestRunner::initTest();
+		TaoPhpUnitTestRunner::initTest();
 		
 		$activityExecutionClass = new core_kernel_classes_Class(CLASS_ACTIVITY_EXECUTION);
 		$this->activityExecution = $activityExecutionClass->createInstance('test');
-		
+		$this->service = wfEngine_models_classes_RecoveryService::singleton();
 	}
 	
 	
@@ -59,12 +59,10 @@ class RecoveryServiceTestCase extends UnitTestCase {
 	 * Test the service implementation
 	 */
 	public function testService(){
-		
-		$recoveryService = wfEngine_models_classes_RecoveryService::singleton();
-		$this->assertIsA($recoveryService, 'tao_models_classes_Service');
-		$this->assertIsA($recoveryService, 'wfEngine_models_classes_RecoveryService');
+		$this->assertIsA($this->service, 'tao_models_classes_Service');
+		$this->assertIsA($this->service, 'wfEngine_models_classes_RecoveryService');
 
-		$this->service = $recoveryService;
+
 	}
 	
 	/**

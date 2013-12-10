@@ -21,7 +21,7 @@
  */
 ?>
 <?php
-require_once dirname(__FILE__) . '/../../tao/test/TaoTestRunner.php';
+require_once dirname(__FILE__) . '/../../tao/test/TaoPhpUnitTestRunner.php';
 include_once dirname(__FILE__) . '/../includes/raw_start.php';
 
 /**
@@ -31,7 +31,7 @@ include_once dirname(__FILE__) . '/../includes/raw_start.php';
  * @package wfEngine
  * @subpackage test
  */
-class NotificationServiceTestCase extends UnitTestCase {
+class NotificationServiceTest extends TaoPhpUnitTestRunner {
 	
 	/**
 	 * CHANGE IT MANNUALLY to see step by step the output
@@ -59,7 +59,7 @@ class NotificationServiceTestCase extends UnitTestCase {
 	 */
 	public function setUp(){
 		
-		TaoTestRunner::initTest();
+		TaoPhpUnitTestRunner::initTest();
 		
 		error_reporting(E_ALL);
 		
@@ -89,7 +89,9 @@ class NotificationServiceTestCase extends UnitTestCase {
 		
 		$this->userService->logout();
 		$this->assertTrue($this->userService->loginUser($login, $pass));
-		$this->assertEqual($this->currentUser->getUri(),$this->userService->getCurrentUser()->getUri());
+		$this->assertEquals($this->currentUser->getUri(),$this->userService->getCurrentUser()->getUri());
+		
+		$this->service = wfEngine_models_classes_NotificationService::singleton();
 	}
 	
 	public function tearDown() {
@@ -125,11 +127,11 @@ class NotificationServiceTestCase extends UnitTestCase {
 	 */
 	public function testService(){
 		
-		$aeService = wfEngine_models_classes_NotificationService::singleton();
-		$this->assertIsA($aeService, 'tao_models_classes_Service');
-		$this->assertIsA($aeService, 'wfEngine_models_classes_NotificationService');
 
-		$this->service = $aeService;
+		$this->assertIsA($this->service, 'tao_models_classes_Service');
+		$this->assertIsA($this->service, 'wfEngine_models_classes_NotificationService');
+
+
 	}
 	
 	public function testCreateNotification(){
@@ -225,16 +227,16 @@ class NotificationServiceTestCase extends UnitTestCase {
 		
 		
 		$activityExecs = $processExecutionService->getCurrentActivityExecutions($processExecution);
-		$this->assertEqual(count($activityExecs), 1);
+		$this->assertEquals(count($activityExecs), 1);
 		$activityExecution = reset($activityExecs);
 		$activity = $activityExecutionService->getExecutionOf($activityExecution);
-		$this->assertEqual($activity->getUri(), $activity1->getUri());
+		$this->assertEquals($activity->getUri(), $activity1->getUri());
 		
 		//test notificaiton creation:
 		$notification = $this->service->createNotification($connector1, $this->currentUser, $activityExecution);
 		$this->assertNotNull($notification);
 		$builtMessage = (string) $notification->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_NOTIFICATION_MESSAGE));
-		$this->assertEqual($builtMessage, '
+		$this->assertEquals($builtMessage, '
 			Dear Sammy Norville Rogers,
 
 			Please join the translation process of the unit myUnit to fr_FR to complete your next task "activity1".
@@ -378,7 +380,7 @@ class NotificationServiceTestCase extends UnitTestCase {
 			while($i <= 5 ){
 				
 				$activityExecs = $processExecutionService->getAvailableCurrentActivityExecutions($proc, $this->currentUser);
-				$this->assertEqual(count($activityExecs), 1);
+				$this->assertEquals(count($activityExecs), 1);
 				$activityExec = reset($activityExecs);
 				$activity = $activityExecutionService->getExecutionOf($activityExec);
 				
@@ -413,7 +415,7 @@ class NotificationServiceTestCase extends UnitTestCase {
 						
 						$notifiedUser = $notification->getOnePropertyValue($notificationToProp);
 						$this->assertNotNull($notifiedUser);
-						$this->assertEqual($notifiedUser->getUri(), $this->currentUser->getUri());
+						$this->assertEquals($notifiedUser->getUri(), $this->currentUser->getUri());
 						
 						$notifications[] = $notification;
 					}
@@ -421,7 +423,7 @@ class NotificationServiceTestCase extends UnitTestCase {
 			} 
 			
 			$notificationCount = count($notifications);
-			$this->assertEqual($notificationCount, 4);
+			$this->assertEquals($notificationCount, 4);
 			
 //			$this->out("$notificationCount notifications to be sent");
 //			$this->assertTrue($this->service->sendNotifications(new tao_helpers_transfert_MailAdapter()));

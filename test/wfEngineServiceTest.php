@@ -21,7 +21,7 @@
  */
 ?>
 <?php
-require_once dirname(__FILE__) . '/../../tao/test/TaoTestRunner.php';
+require_once dirname(__FILE__) . '/../../tao/test/TaoPhpUnitTestRunner.php';
 include_once dirname(__FILE__) . '/../includes/raw_start.php';
 
 /**
@@ -31,7 +31,7 @@ include_once dirname(__FILE__) . '/../includes/raw_start.php';
  * @package wfEngine
  * @subpackage test
  */
-class wfEngineServiceTest extends UnitTestCase {
+class wfEngineServiceTest extends TaoPhpUnitTestRunner {
 	
 	/**
 	 * CHANGE IT MANNUALLY to see step by step the output
@@ -54,7 +54,7 @@ class wfEngineServiceTest extends UnitTestCase {
 	 */
 	public function setUp(){
 		
-		TaoTestRunner::initTest();
+		TaoPhpUnitTestRunner::initTest();
 		
 		error_reporting(E_ALL);
 		
@@ -148,6 +148,11 @@ class wfEngineServiceTest extends UnitTestCase {
 			$this->currentUser = null;
 		}
 	}
+	
+	public function testService(){
+		$this->assertIsA($this->userService,'wfEngine_models_classes_UserService');
+    }
+	
 	
 	protected function checkAccessControl($activityExecution){
 		

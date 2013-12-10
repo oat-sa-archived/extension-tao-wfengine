@@ -1,5 +1,5 @@
 <?php
-/*  
+/** 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; under version 2
@@ -19,9 +19,8 @@
  *               2009-2012 (update and modification) Public Research Centre Henri Tudor (under the project TAO-SUSTAIN & TAO-DEV);
  * 
  */
-?>
-<?php
-require_once dirname(__FILE__) . '/../../tao/test/TaoTestRunner.php';
+
+require_once dirname(__FILE__) . '/../../tao/test/TaoPhpUnitTestRunner.php';
 include_once dirname(__FILE__) . '/../includes/raw_start.php';
 
 /**
@@ -32,13 +31,19 @@ include_once dirname(__FILE__) . '/../includes/raw_start.php';
  * @subpackage test
  */
 
-class ActivityServiceTestCase extends UnitTestCase {
+class ActivityServiceTest extends TaoPhpUnitTestRunner {
     
     /**
 	 * @var wfEngine_models_classes_ActivityService
      */
     protected $service;
 
+    
+
+    public function setUp(){
+        $this->service = wfEngine_models_classes_ActivityService::singleton();
+    }
+    
     /**
      * output messages
      * @param string $message
@@ -62,17 +67,19 @@ class ActivityServiceTestCase extends UnitTestCase {
         }
     }
 
+    
+    
     /**
      * Test the service implementation
      */
     public function testService(){
 
-        $aService = wfEngine_models_classes_ActivityService::singleton();
-        $this->assertIsA($aService, 'tao_models_classes_Service');
-        $this->assertIsA($aService, 'wfEngine_models_classes_ActivityService');
+        $this->assertIsA($this->service, 'tao_models_classes_Service');
+        $this->assertIsA($this->service, 'wfEngine_models_classes_ActivityService');
 
-        $this->service = $aService;
+
     }
+
 
     public function testIsFinal(){
 		$processAuthoringService = wfAuthoring_models_classes_ProcessService::singleton();

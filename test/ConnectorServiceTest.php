@@ -21,7 +21,7 @@
  */
 ?>
 <?php
-require_once dirname(__FILE__) . '/../../tao/test/TaoTestRunner.php';
+require_once dirname(__FILE__) . '/../../tao/test/TaoPhpUnitTestRunner.php';
 include_once dirname(__FILE__) . '/../includes/raw_start.php';
 
 /**
@@ -32,7 +32,7 @@ include_once dirname(__FILE__) . '/../includes/raw_start.php';
  * @subpackage test
  */
 
-class ConnectorServiceTestCase extends UnitTestCase {
+class ConnectorServiceTest extends TaoPhpUnitTestRunner {
     /**
      * @var wfEngine_models_classes_ActivityService
      */
@@ -69,7 +69,7 @@ class ConnectorServiceTestCase extends UnitTestCase {
      * tests initialization
      */
     public function setUp(){
-        TaoTestRunner::initTest();
+        TaoPhpUnitTestRunner::initTest();
 
         $this->authoringService = wfAuthoring_models_classes_ProcessService::singleton();
 		$this->variableService = wfEngine_models_classes_VariableService::singleton();
@@ -84,6 +84,8 @@ class ConnectorServiceTestCase extends UnitTestCase {
         }else{
             $this->fail('fail to create a process definition resource');
         }
+        
+        $this->service = wfEngine_models_classes_ConnectorService::singleton();
     }
 
     public function tearDown() {
@@ -94,12 +96,10 @@ class ConnectorServiceTestCase extends UnitTestCase {
      * Test the service implementation
      */
     public function testService(){
+        $this->assertIsA($this->service, 'tao_models_classes_Service');
+        $this->assertIsA($this->service, 'wfEngine_models_classes_ConnectorService');
 
-        $aService = wfEngine_models_classes_ConnectorService::singleton();
-        $this->assertIsA($aService, 'tao_models_classes_Service');
-        $this->assertIsA($aService, 'wfEngine_models_classes_ConnectorService');
 
-        $this->service = $aService;
     }
 
     public function testIsConnector(){
@@ -124,7 +124,7 @@ class ConnectorServiceTestCase extends UnitTestCase {
         $transitionRule = $this->authoringService->createTransitionRule($connector1, '^myProcessVarCode1 == 1');
 
         $transitionRuleBis = $this->service->getTransitionRule($connector1);
-        $this->assertEqual($transitionRule->getUri(),$transitionRuleBis->getUri());
+        $this->assertEquals($transitionRule->getUri(),$transitionRuleBis->getUri());
 
         $then->delete(true);
         $else->delete(true);
@@ -160,14 +160,14 @@ class ConnectorServiceTestCase extends UnitTestCase {
 
         $this->assertIsA($this->service->getType($thenConnector),'core_kernel_classes_Resource');
         $this->assertIsA($this->service->getType($elseConnector),'core_kernel_classes_Resource');
-        $this->assertEqual($this->service->getType($thenConnector)->getUri(), INSTANCE_TYPEOFCONNECTORS_SEQUENCE);
-        $this->assertEqual($this->service->getType($elseConnector)->getUri(), INSTANCE_TYPEOFCONNECTORS_SEQUENCE);
+        $this->assertEquals($this->service->getType($thenConnector)->getUri(), INSTANCE_TYPEOFCONNECTORS_SEQUENCE);
+        $this->assertEquals($this->service->getType($elseConnector)->getUri(), INSTANCE_TYPEOFCONNECTORS_SEQUENCE);
 
         $myProcessVar1 = $this->variableService->getProcessVariable('myProcessVarCode1', true);
         $transitionRule = $this->authoringService->createTransitionRule($connector1, '^myProcessVarCode1 == 1');
         
         $connectorType = $this->service->getType($connector1);
-        $this->assertEqual($connectorType->getUri(),INSTANCE_TYPEOFCONNECTORS_CONDITIONAL);
+        $this->assertEquals($connectorType->getUri(),INSTANCE_TYPEOFCONNECTORS_CONDITIONAL);
 
         $connector2 = $this->authoringService->createConnector($activity3);
         $activity4 = $this->authoringService->createActivity($this->processDefinition, 'activity4 for interactive service unit test');
@@ -191,10 +191,10 @@ class ConnectorServiceTestCase extends UnitTestCase {
 		
 		//check if the connector merging has been effective:
 		$this->assertFalse($connector4->exists());
-		//$this->assertEqual($activity6->getUri(), $activity7->getUri());
+		//$this->assertEquals($activity6->getUri(), $activity7->getUri());
 		
-        $this->assertEqual($this->service->getType($connector2)->getUri(), INSTANCE_TYPEOFCONNECTORS_PARALLEL);
-        $this->assertEqual($this->service->getType($connector3)->getUri(), INSTANCE_TYPEOFCONNECTORS_JOIN);
+        $this->assertEquals($this->service->getType($connector2)->getUri(), INSTANCE_TYPEOFCONNECTORS_PARALLEL);
+        $this->assertEquals($this->service->getType($connector3)->getUri(), INSTANCE_TYPEOFCONNECTORS_JOIN);
 
         $then->delete(true);
         $else->delete(true);
@@ -243,15 +243,15 @@ class ConnectorServiceTestCase extends UnitTestCase {
         $connector1RealNextAct = array($then->getUri(),$else->getUri());
         
         
-        $this->assertIsA($connector1NextAct,'array');
-        $this->assertEqual(sizeof($connector1NextAct), 2);
+        $this->assertInternalType('array',$connector1NextAct);
+        $this->assertEquals(sizeof($connector1NextAct), 2);
         foreach ($connector1NextAct as $nextAct){
            $this->assertTrue(in_array($nextAct->getUri(), $connector1RealNextAct));
         }
     
         $elseNextAct = $this->service->getNextActivities($elseConnector);
 
-        $this->assertIsA($elseNextAct,'array');
+        $this->assertInternalType('array',$elseNextAct);
         $this->assertTrue(sizeof($elseNextAct) == 1);
         if(isset($elseNextAct[0]) && $elseNextAct[0] instanceof core_kernel_classes_Resource){
             $this->assertTrue($elseNextAct[0]->getUri() == $activity3->getUri());
@@ -259,7 +259,7 @@ class ConnectorServiceTestCase extends UnitTestCase {
 
         $thenNextAct = $this->service->getNextActivities($thenConnector);
 
-        $this->assertIsA($thenNextAct,'array');
+        $this->assertInternalType('array',$thenNextAct);
         $this->assertTrue(sizeof($thenNextAct) == 1);
          if(isset($thenNextAct[0]) && $thenNextAct[0] instanceof core_kernel_classes_Resource){
             $this->assertTrue($thenNextAct[0]->getUri() == $activity3->getUri());
@@ -292,12 +292,12 @@ class ConnectorServiceTestCase extends UnitTestCase {
         
 		//check if the connector merging has been effective:
 		$this->assertFalse($connector4->exists());
-		//$this->assertEqual($activity6->getUri(), $activity7->getUri());
+		//$this->assertEquals($activity6->getUri(), $activity7->getUri());
 		
 		$cardinalityService = wfEngine_models_classes_ActivityCardinalityService::singleton();
         $activity3NextActi = $this->service->getNextActivities($connector2);
-        $this->assertIsA($activity3NextActi,'array');
-        $this->assertEqual(sizeof($activity3NextActi), 2);
+        $this->assertInternalType('array',$activity3NextActi);
+        $this->assertEquals(sizeof($activity3NextActi), 2);
         $newActivitiesarrayCount = array();
         foreach ($activity3NextActi as $cardinality){
 			$this->assertTrue($cardinalityService->isCardinality($cardinality));
@@ -308,7 +308,7 @@ class ConnectorServiceTestCase extends UnitTestCase {
 				$newActivitiesarrayCount[$activity->getUri()] = $cardinalityService->getCardinality($cardinality);
             }
         }
-        $this->assertEqual($newActivitiesarrayCount, $newActivitiesArray);
+        $this->assertEquals($newActivitiesarrayCount, $newActivitiesArray);
         
         $activity4NextActi = $this->service->getNextActivities($connector3);
         $this->assertTrue(sizeof($activity4NextActi) == 1);
@@ -359,7 +359,7 @@ class ConnectorServiceTestCase extends UnitTestCase {
     
         $connector1PrevAct = $this->service->getPreviousActivities($connector1);
         
-        $this->assertIsA($connector1PrevAct,'array');
+        $this->assertInternalType('array',$connector1PrevAct);
         $this->assertTrue(sizeof($connector1PrevAct) == 1);
         if(isset($connector1PrevAct[0]) && $connector1PrevAct[0] instanceof core_kernel_classes_Resource){
             $this->assertTrue($connector1PrevAct[0]->getUri() == $this->activity->getUri());
@@ -368,14 +368,14 @@ class ConnectorServiceTestCase extends UnitTestCase {
         $elsePrevAct = $this->service->getPreviousActivities($elseConnector);
        
 
-        $this->assertIsA($elsePrevAct,'array');
+        $this->assertInternalType('array',$elsePrevAct);
         $this->assertTrue(sizeof($elsePrevAct) == 1);
         if(isset($elsePrevAct[0]) && $elsePrevAct[0] instanceof core_kernel_classes_Resource){
             $this->assertTrue($elsePrevAct[0]->getUri() == $else->getUri());
         }
 
         $thenPrevAct = $this->service->getPreviousActivities($thenConnector);
-        $this->assertIsA($thenPrevAct,'array');
+        $this->assertInternalType('array',$thenPrevAct);
         $this->assertTrue(sizeof($thenPrevAct) == 1);
         if(isset($thenPrevAct[0]) && $thenPrevAct[0] instanceof core_kernel_classes_Resource){
             $this->assertTrue($thenPrevAct[0]->getUri() == $then->getUri());
@@ -405,25 +405,25 @@ class ConnectorServiceTestCase extends UnitTestCase {
         $activity6 = $this->authoringService->createJoinActivity($connector3, null, '', $activity4);
 		$activity7 = $this->authoringService->createJoinActivity($connector4, $activity6, '', $activity5);
 		*/
-        $this->assertEqual(count($this->service->getNextActivities($connector2)), 2);
+        $this->assertEquals(count($this->service->getNextActivities($connector2)), 2);
 		
         $activity3PrevActi = $this->service->getPreviousActivities($connector2);
 
-         $this->assertIsA($activity3PrevActi,'array');
+         $this->assertInternalType('array', $activity3PrevActi);
         $this->assertTrue(sizeof($activity3PrevActi) == 1);
         if(isset($activity3PrevActi[0]) && $activity3PrevActi[0] instanceof core_kernel_classes_Resource){
             $this->assertTrue($activity3PrevActi[0]->getUri() == $activity3->getUri());
         }
         
         $activity4PrevActi = $this->service->getPreviousSteps($connector3);
-        $this->assertIsA($activity4PrevActi,'array');
-        $this->assertEqual(sizeof($activity4PrevActi), 2);
+        $this->assertInternalType('array',$activity4PrevActi);
+        $this->assertEquals(sizeof($activity4PrevActi), 2);
         $cardinalityService = wfEngine_models_classes_ActivityCardinalityService::singleton();
 		$prevActivitiesarrayCount = array();
         foreach ($activity4PrevActi as $cardinality){
 			$this->assertTrue($cardinalityService->isCardinality($cardinality));
 			$activities = $cardinalityService->getPreviousSteps($cardinality);
-			$this->assertEqual(count($activities), 1);
+			$this->assertEquals(count($activities), 1);
 			$activity = current($activities);
 			$keyExists = array_key_exists($activity->getUri(), $newActivitiesArray);
             $this->assertTrue($keyExists);
@@ -431,7 +431,7 @@ class ConnectorServiceTestCase extends UnitTestCase {
 				$prevActivitiesarrayCount[$activity->getUri()] = $cardinalityService->getCardinality($cardinality);
             }
         }
-        $this->assertEqual($prevActivitiesarrayCount, $newActivitiesArray);
+        $this->assertEquals($prevActivitiesarrayCount, $newActivitiesArray);
         
         $then->delete(true);
         $else->delete(true);

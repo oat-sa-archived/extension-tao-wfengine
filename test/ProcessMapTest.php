@@ -21,10 +21,10 @@
  */
 ?>
 <?php
-require_once dirname(__FILE__) . '/../../tao/test/TaoTestRunner.php';
+require_once dirname(__FILE__) . '/../../tao/test/TaoPhpUnitTestRunner.php';
 include_once dirname(__FILE__) . '/../includes/raw_start.php';
 
-class ProcessMapTestCase extends UnitTestCase {
+class ProcessMapTestCase extends TaoPhpUnitTestRunner {
 	
 	
 	protected $authoringService = null;
@@ -35,7 +35,7 @@ class ProcessMapTestCase extends UnitTestCase {
 	 * tests initialization
 	 */
 	public function setUp(){
-		TaoTestRunner::initTest();
+		TaoPhpUnitTestRunner::initTest();
 		
 		$processDefinitionClass = new core_kernel_classes_Class(CLASS_PROCESS);
 		$processDefinition = $processDefinitionClass->createInstance('processMapTestCase','created for the unit test ProcessMapTestCase');
@@ -197,7 +197,7 @@ class ProcessMapTestCase extends UnitTestCase {
 			}
 		}
 		
-		$this->assertEqual(count($activityList), 3);
+		$this->assertEquals(count($activityList), 3);
 		
 			
 		//delete all created resources:

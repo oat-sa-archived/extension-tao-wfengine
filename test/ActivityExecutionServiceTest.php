@@ -30,7 +30,7 @@ require_once dirname(__FILE__) . '/wfEngineServiceTest.php';
  * @package wfEngine
  * @subpackage test
  */
-class ActivityExecutionServiceTestCase extends wfEngineServiceTest {
+class ActivityExecutionServiceTest extends wfEngineServiceTest {
 	
 	/**
 	 * @var wfEngine_models_classes_ActivityExecutionService the tested service
@@ -329,16 +329,16 @@ class ActivityExecutionServiceTestCase extends wfEngineServiceTest {
 			$processExecName = 'Test Process Execution';
 			$processExecComment = 'created for processExecustionService test case by '.__METHOD__;
 			$processInstance = $processExecutionService->createProcessExecution($processDefinition, $processExecName, $processExecComment);
-			$this->assertEqual($processDefinition->getUri(), $processExecutionService->getExecutionOf($processInstance)->getUri());
-			$this->assertEqual($processDefinition->getUri(), $processExecutionService->getExecutionOf($processInstance)->getUri());
+			$this->assertEquals($processDefinition->getUri(), $processExecutionService->getExecutionOf($processInstance)->getUri());
+			$this->assertEquals($processDefinition->getUri(), $processExecutionService->getExecutionOf($processInstance)->getUri());
 			
 			$this->assertTrue($processExecutionService->checkStatus($processInstance, 'started'));
 			
 			$this->out(__METHOD__, true);
 			
 			$currentActivityExecutions = $processExecutionService->getCurrentActivityExecutions($processInstance);
-			$this->assertEqual(count($currentActivityExecutions), 1);
-			$this->assertEqual(strpos(array_pop($currentActivityExecutions)->getLabel(), 'Execution of activity1'), 0);
+			$this->assertEquals(count($currentActivityExecutions), 1);
+			$this->assertEquals(strpos(array_pop($currentActivityExecutions)->getLabel(), 'Execution of activity1'), 0);
 			
 			$this->out("<strong>Forward transitions:</strong>", true);
 			
@@ -353,7 +353,7 @@ class ActivityExecutionServiceTestCase extends wfEngineServiceTest {
 				}
 				
 				$activities = $processExecutionService->getAvailableCurrentActivityDefinitions($processInstance, $this->currentUser);
-				$this->assertEqual(count($activities), 1);
+				$this->assertEquals(count($activities), 1);
 				$activity = array_shift($activities);
 				
 				$this->out("<strong>".$activity->getLabel()."</strong>", true);
@@ -422,7 +422,7 @@ class ActivityExecutionServiceTestCase extends wfEngineServiceTest {
 				$this->assertNotNull($activityExecution);
 				$activityExecStatus = $activityExecutionService->getStatus($activityExecution);
 				$this->assertNotNull($activityExecStatus);
-				$this->assertEqual($activityExecStatus->getUri(), INSTANCE_PROCESSSTATUS_RESUMED);
+				$this->assertEquals($activityExecStatus->getUri(), INSTANCE_PROCESSSTATUS_RESUMED);
 				
 				//transition to next activity
 				$transitionResult = $processExecutionService->performTransition($processInstance, $activityExecution);
@@ -431,17 +431,17 @@ class ActivityExecutionServiceTestCase extends wfEngineServiceTest {
 					case 3:
 					case 4:
 					case 5:{
-						$this->assertFalse($transitionResult);
+						$this->assertFalse(count($transitionResult) > 0 );
 						$this->assertTrue($processExecutionService->isPaused($processInstance));
 						break;
 					}
 					case 2:{
-						$this->assertTrue(count($transitionResult));
+						$this->assertTrue(count($transitionResult) > 0 );
 						$this->assertFalse($processExecutionService->isPaused($processInstance));
 						break;
 					}
 					case 6:{
-						$this->assertFalse($transitionResult);
+						$this->assertFalse(count($transitionResult) > 0 );
 						$this->assertTrue($processExecutionService->isFinished($processInstance));
 						break;
 					}
@@ -461,13 +461,13 @@ class ActivityExecutionServiceTestCase extends wfEngineServiceTest {
 			while($j < $iterationNumber){
 				
 				$activitieExecs = $processExecutionService->getCurrentActivityExecutions($processInstance);
-				$this->assertEqual(count($activitieExecs), 1);
+				$this->assertEquals(count($activitieExecs), 1);
 				$activityExecution = reset($activitieExecs);
 				$activity = $activityExecutionService->getExecutionOf($activityExecution);
 				
 				$this->out("<strong>".$activity->getLabel()."</strong>", true);
 				$index = $iterationNumber - $j;
-				$this->assertEqual($activity->getLabel(), "activity$index");
+				$this->assertEquals($activity->getLabel(), "activity$index");
 				$this->out("current user : ".$this->currentUser->getOnePropertyValue($loginProperty).' "'.$this->currentUser->getUri().'"', true);
 				
 				$this->checkAccessControl($activityExecution);
@@ -521,15 +521,15 @@ class ActivityExecutionServiceTestCase extends wfEngineServiceTest {
 				$this->assertNotNull($activityExecution);
 				$activityExecStatus = $activityExecutionService->getStatus($activityExecution);
 				$this->assertNotNull($activityExecStatus);
-				$this->assertEqual($activityExecStatus->getUri(), INSTANCE_PROCESSSTATUS_RESUMED);
+				$this->assertEquals($activityExecStatus->getUri(), INSTANCE_PROCESSSTATUS_RESUMED);
 				
 				//transition to next activity
 				$transitionResult = $processExecutionService->performBackwardTransition($processInstance, $activityExecution);
 				$processStatus = $processExecutionService->getStatus($processInstance);
 				$this->assertNotNull($processStatus);
-				$this->assertEqual($processStatus->getUri(), INSTANCE_PROCESSSTATUS_RESUMED);
+				$this->assertEquals($processStatus->getUri(), INSTANCE_PROCESSSTATUS_RESUMED);
 				if($j < $iterationNumber-1){
-					$this->assertTrue(count($transitionResult));
+					$this->assertTrue(count($transitionResult) > 0);
 				}else{
 					$this->assertFalse($transitionResult);
 				}
@@ -549,7 +549,7 @@ class ActivityExecutionServiceTestCase extends wfEngineServiceTest {
 				}
 				
 				$activitieExecs = $processExecutionService->getCurrentActivityExecutions($processInstance);
-				$this->assertEqual(count($activitieExecs), 1);
+				$this->assertEquals(count($activitieExecs), 1);
 				$activityExecution = reset($activitieExecs);
 				$activity = $activityExecutionService->getExecutionOf($activityExecution);
 				
@@ -619,17 +619,17 @@ class ActivityExecutionServiceTestCase extends wfEngineServiceTest {
 					case 3:
 					case 4:
 					case 5:{
-						$this->assertFalse($transitionResult);
+						$this->assertFalse(count($transitionResult) > 0);
 						$this->assertTrue($processExecutionService->isPaused($processInstance));
 						break;
 					}
 					case 2:{
-						$this->assertTrue(count($transitionResult));
+						$this->assertTrue(count($transitionResult) > 0 );
 						$this->assertFalse($processExecutionService->isPaused($processInstance));
 						break;
 					}
 					case 6:{
-						$this->assertFalse($transitionResult);
+						$this->assertFalse(count($transitionResult) > 0);
 						$this->assertTrue($processExecutionService->isFinished($processInstance));
 						break;
 					}

@@ -21,10 +21,10 @@
  */
 ?>
 <?php
-require_once dirname(__FILE__) . '/../../tao/test/TaoTestRunner.php';
+require_once dirname(__FILE__) . '/../../tao/test/TaoPhpUnitTestRunner.php';
 include_once dirname(__FILE__) . '/../includes/raw_start.php';
 
-class ProcessDefinitionServiceTestCase extends UnitTestCase {
+class ProcessDefinitionServiceTest extends TaoPhpUnitTestRunner {
 	
 	
 	protected $service = null;
@@ -35,7 +35,7 @@ class ProcessDefinitionServiceTestCase extends UnitTestCase {
 	 * tests initialization
 	 */
 	public function setUp(){
-		TaoTestRunner::initTest();
+		TaoPhpUnitTestRunner::initTest();
 		
 		$processDefinitionClass = new core_kernel_classes_Class(CLASS_PROCESS);
 		$processDefinition = $processDefinitionClass->createInstance('processForUnitTest','created for the unit test of process definition service');
@@ -45,6 +45,8 @@ class ProcessDefinitionServiceTestCase extends UnitTestCase {
 			$this->fail('fail to create a process definition resource');
 		}
 		$this->authoringService = wfAuthoring_models_classes_ProcessService::singleton();
+		$this->service = wfEngine_models_classes_ProcessDefinitionService::singleton();
+		
 	}
 	
 	/**
@@ -52,12 +54,11 @@ class ProcessDefinitionServiceTestCase extends UnitTestCase {
 	 */
 	public function testService(){
 		
-		$service = wfEngine_models_classes_ProcessDefinitionService::singleton();
 		
-		$this->assertIsA($service, 'tao_models_classes_Service');
-		$this->assertIsA($service, 'wfEngine_models_classes_ProcessDefinitionService');
+		$this->assertIsA($this->service, 'tao_models_classes_Service');
+		$this->assertIsA($this->service, 'wfEngine_models_classes_ProcessDefinitionService');
 
-		$this->service = $service;
+
 		
 	}
 	
@@ -66,8 +67,8 @@ class ProcessDefinitionServiceTestCase extends UnitTestCase {
 		$activity2 = $this->authoringService->createActivity($this->processDefinition);
 		
 		$rootActivities = $this->service->getRootActivities($this->processDefinition);
-		$this->assertEqual(count($rootActivities), 1);
-		$this->assertEqual($rootActivities[0]->getUri(), $activity1->getUri());
+		$this->assertEquals(count($rootActivities), 1);
+		$this->assertEquals($rootActivities[0]->getUri(), $activity1->getUri());
 	}
 	
 	public function testGetAllActivities(){
@@ -76,7 +77,7 @@ class ProcessDefinitionServiceTestCase extends UnitTestCase {
 		$activity3 = $this->authoringService->createActivity($this->processDefinition);
 		
 		$allActivities = $this->service->getAllActivities($this->processDefinition);
-		$this->assertEqual(count($allActivities), 3);
+		$this->assertEquals(count($allActivities), 3);
 		
 		foreach($allActivities as $activity){
 			$this->assertTrue(in_array($activity->getUri(), array($activity1->getUri(), $activity2->getUri(), $activity3->getUri())));
@@ -86,7 +87,7 @@ class ProcessDefinitionServiceTestCase extends UnitTestCase {
 	public function testGetProcessVars(){
 		
 		$processVars = $this->service->getProcessVars($this->processDefinition);
-		$this->assertEqual(count($processVars), 1);
+		$this->assertEquals(count($processVars), 1);
 		
 		$variableService = wfEngine_models_classes_VariableService::singleton();
 		$myProcessVarName1 = 'myProcDefVarName1';
@@ -95,11 +96,11 @@ class ProcessDefinitionServiceTestCase extends UnitTestCase {
 		//this works too: $this->service->setProcessVariable($this->processDefinition, $myProcessVar1);
 		
 		$processVars = $this->service->getProcessVars($this->processDefinition);
-		$this->assertEqual(count($processVars), 2);
+		$this->assertEquals(count($processVars), 2);
 		$this->assertTrue(isset($processVars[$myProcessVar1->getUri()]));
 		$secondProcessVar = $processVars[$myProcessVar1->getUri()];
 		
-		$this->assertEqual($secondProcessVar['name'], $myProcessVarName1);
+		$this->assertEquals($secondProcessVar['name'], $myProcessVarName1);
 		
 		$myProcessVar1->delete();
 	}
