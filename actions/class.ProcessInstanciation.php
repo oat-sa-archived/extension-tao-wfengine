@@ -60,8 +60,9 @@ class wfEngine_actions_ProcessInstanciation extends wfEngine_actions_WfModule{
 	
 	public function initProcessExecution($posted){
 		
-		set_time_limit(200);
-			
+		//set_time_limit(200);
+	    helpers_TimeOutHelper::setTimeOutLimit(helpers_TimeOutHelper::LONG);
+	    
 		$processExecutionService = wfEngine_models_classes_ProcessExecutionService::singleton();
 		$activityExecutionService = wfEngine_models_classes_ActivityExecutionService::singleton();
 		
@@ -78,7 +79,7 @@ class wfEngine_actions_ProcessInstanciation extends wfEngine_actions_WfModule{
 		foreach($processExecutionService->getCurrentActivityExecutions($newProcessExecution) as $initialActivityExecution){
 			$activityExecutionService->createNonce($initialActivityExecution);
 		}
-
+		helpers_TimeOutHelper::reset();
 		$param = array('processUri' => urlencode($newProcessExecution->getUri()));
 		$this->redirect(tao_helpers_Uri::url('index', 'ProcessBrowser', null, $param));
 
