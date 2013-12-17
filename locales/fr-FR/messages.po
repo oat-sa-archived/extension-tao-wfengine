@@ -36,7 +36,7 @@ msgid "Change..."
 msgstr "Changer..."
 
 msgid "Check pending tasks for assessment preparation."
-msgstr ""
+msgstr "Vérifiez les tâches en attente pour la préparation de l'évaluation."
 
 msgid "created by"
 msgstr "créé par"
