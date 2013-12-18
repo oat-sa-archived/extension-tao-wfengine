@@ -52,7 +52,7 @@ return array(
 	),
 	'managementRole' => 'http://www.tao.lu/middleware/wfEngine.rdf#WorkflowsManagerRole',
     'acl' => array(
-        array('grant', 'http://www.tao.lu/Ontologies/wfEngine.rdf#WorkflowsManagerRole', array('ext'=>'wfEngine')),
+        array('grant', 'http://www.tao.lu/middleware/wfEngine.rdf#WorkflowsManagerRole', array('ext'=>'wfEngine')),
         array('grant', 'http://www.tao.lu/Ontologies/generis.rdf#AnonymousRole', array('ext'=>'wfEngine', 'mod' => 'Authentication')),
         array('grant', 'http://www.tao.lu/Ontologies/TAO.rdf#WorkflowRole', array('ext'=>'wfEngine', 'mod' => 'WfHome')),
         array('grant', 'http://www.tao.lu/Ontologies/TAO.rdf#WorkflowRole', array('ext'=>'wfEngine', 'mod' => 'ProcessBrowser')),
