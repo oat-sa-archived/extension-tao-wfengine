@@ -29,9 +29,9 @@ GatewayProcessAuthoring.addActivity = function(url, processUri){
 		dataType: 'json',
 		success: function(response){
 			if (response.uri) {
-				eventMgr.trigger('activityAdded', response);
+				$(document).trigger('activityAdded', response);
 			}else{
-				CL('error in adding an activity');
+				$.error('error in adding an activity');
 			}
 		}
 	});
@@ -53,7 +53,7 @@ GatewayProcessAuthoring.addInteractiveService = function(url, activityUri, servi
 		dataType: 'json',
 		success: function(response){
 			if (response.uri) {
-				eventMgr.trigger('interactiveServiceAdded', response);
+				$(document).trigger('interactiveServiceAdded', response);
 			}
 		}
 	});
@@ -71,7 +71,7 @@ GatewayProcessAuthoring.addConnector = function(url, prevActivityUri,typeOfConne
 		dataType: 'json',
 		success: function(response){
 			if (response.uri) {
-				eventMgr.trigger('connectorAdded', response);
+				$(document).trigger('connectorAdded', response);
 			}else{
 				throw 'error in adding a connector';
 			}
@@ -92,7 +92,7 @@ GatewayProcessAuthoring.saveActivityProperties = function(url, activityUri, prop
 		dataType: 'json',
 		success: function(response){
 			if (response.saved) {
-				eventMgr.trigger('activityPropertiesSaved', response);
+				$(document).trigger('activityPropertiesSaved', response);
 			}else{
 				throw 'error in saving activity properties';
 			}
@@ -110,7 +110,7 @@ GatewayProcessAuthoring.deleteActivity = function(url, activityUri){
 			dataType: 'json',
 			success: function(response){
 				if(response.deleted){
-					eventMgr.trigger('activityDeleted', response);
+					$(document).trigger('activityDeleted', response);
 				}else{
 					throw 'error in deleteing the activity';
 				}
@@ -128,7 +128,7 @@ GatewayProcessAuthoring.deleteConnector = function(url, connectorUri){
 		dataType: 'json',
 		success: function(response){
 			if(response.deleted){
-				eventMgr.trigger('connectorDeleted', response);
+				$(document).trigger('connectorDeleted', response);
 			}else{
 				throw 'error in deleteing the connector';
 			}
@@ -150,7 +150,7 @@ GatewayProcessAuthoring.saveConnector = function(url, connectorUri, prevActivity
 		dataType: 'json',
 		success: function(response){
 			if (response.saved){
-				eventMgr.trigger('connectorSaved', response);
+				$(document).trigger('connectorSaved', response);
 			}else{
 				throw 'error in saving connector';
 			}
@@ -160,5 +160,5 @@ GatewayProcessAuthoring.saveConnector = function(url, connectorUri, prevActivity
 }
 
 GatewayProcessAuthoring.selectElement = function(elementUri){
-	eventMgr.trigger('elementSelected', response);
+	$(document).trigger('elementSelected', response);
 }

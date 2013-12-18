@@ -83,7 +83,10 @@ class wfEngine_actions_Authentication extends wfEngine_actions_WfModule
 		}
 
 		$this->setData('form', $myForm->render());
-		$this->setView('login.tpl');
+                $this->setData('title', __("TAO Process Engine"));
+                $this->setData('login_title', __('Advanced Users'));
+                $this->setData('login_desc', __("Check pending tasks for assessment preparation."));
+		$this->setView('main/login.tpl', 'tao');
 	}
 
     /**

@@ -295,7 +295,8 @@ class wfEngine_actions_ProcessBrowser extends wfEngine_actions_WfModule{
 			$this->setData('activityExecutionUri',		$browserViewData['activityExecutionUri']);
 			$this->setData('processUri',				$browserViewData['processUri']);
 			$this->setData('activityExecutionNonce',	$browserViewData['activityExecutionNonce']);
-					
+                        
+                        $this->setData('client_config_url', $this->getClientConfigUrl());
 			$this->setView('process_browser.tpl');
 		}
 	}

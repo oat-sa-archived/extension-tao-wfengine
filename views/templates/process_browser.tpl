@@ -2,67 +2,38 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
 		<title><?=__("TAO - An Open and Versatile Computer-Based Assessment Platform")?></title>
-
-		<script type="text/javascript">
-			var taobase_www = '<?=TAOBASE_WWW?>';
-			var root_url = '<?=ROOT_URL?>';
-			var base_lang = '<?=strtolower(tao_helpers_I18n::getLangCode())?>';
-		</script>
-                <script src="<?=TAOBASE_WWW?>js/require-jquery.js" ></script>
-                <script src="<?=TAOBASE_WWW?>js/spin.min.js"></script>
-		<script src="<?=TAOBASE_WWW?>js/serviceApi/ServiceApi.js"></script>
-		<script src="<?=TAOBASE_WWW?>js/serviceApi/StateStorage.js"></script>
+                <link rel="stylesheet" type="text/css" href="<?=TAOBASE_WWW?>css/custom-theme/jquery-ui-1.8.22.custom.css" media="screen" />
+                <link rel="stylesheet" type="text/css" href="<?=BASE_WWW?>css/process_browser.css" media="screen" />
 		
-		<script type="text/javascript" src="<?=ROOT_URL?>wfEngine/views/js/wfApi/wfApi.min.js"></script>
-		<script type="text/javascript" src="<?=ROOT_URL?>wfEngine/views/js/WfRunner.js"></script>
-		<script type="text/javascript">
-                    require([taobase_www + 'js/config/config.js'], function(){
-                        'use strict';
-                        
-                        require(['jquery', 'json2'], function($) {
+                <script type="text/javascript" src="<?=TAOBASE_WWW?>js/lib/require.js" ></script>
+                <script type="text/javascript">
+                (function(){
+                    require(['<?=get_data('client_config_url')?>'], function(){
 
-                            $(document).ready(function(){
-                                var $back = $('#back');
-                                var $next = $("#next");
-                                var wfRunner = new WfRunner(
-                                    <?=json_encode(get_data('activityExecutionUri'))?>,
-                                    <?=json_encode(get_data('processUri'))?>,
-                                    <?=json_encode(get_data('activityExecutionNonce'))?>
-                                );
-                                <?foreach($services as $service):?>
-                                wfRunner.initService(<?=$service['api']?>, <?=json_encode($service['style'])?>);
-                                <?endforeach;?>
+                        require(['jquery', 'wfEngine/controller/processBrowser', 'serviceApi/ServiceApi', 'serviceApi/StateStorage', 'wfEngine/wfApi/wfApi.min'], 
+                            function($, ProcessBrowser, ServiceApi, StateStorage){
+                            
+                            var services = [
+                            <?foreach($services as $i => $service):?>
+                            {
+                               frameId  : 'tool-frame-<?=$i?>',
+                               api      : <?=$service['api']?>, 
+                               style    : <?=json_encode($service['style'])?>
+                            } <?=($i < count($services) - 1) ? ',' : '' ?>
+                            <?endforeach;?>  
+                            ];
+                            
+                            ProcessBrowser.start({
+                                activityExecutionUri    : '<?=get_data('activityExecutionUri')?>',
+                                processUri              : '<?=get_data('processUri')?>',
+                                activityExecutionNonce  : '<?=get_data('activityExecutionNonce')?>',
+                                services                : services
+                            });
 
-                                $back.click(function(e){
-
-                                    $back.off('click');
-                                    $next.off('click');
-                                    wfRunner.backward();
-
-                                    e.preventDefault();
-                                });
-                                $("#next").click(function(e){
-
-                                    $back.off('click');
-                                    $next.off('click');
-                                    wfRunner.forward();
-
-                                    e.preventDefault();
-                                });
-
-                                $("#debug").click(function(){
-                                    $("#debugWindow").toggle('slow');
-                                });
-                             });
-                         });
-                    });		
-		</script>
-		
-		<style media="screen">
-			@import url(<?=TAOBASE_WWW?>css/custom-theme/jquery-ui-1.8.22.custom.css);
-			@import url(<?=BASE_WWW?>css/process_browser.css);
-		</style>
-
+                        });
+                    });
+                }());
+                </script>
 	</head>
 
 	<body>
@@ -123,6 +94,9 @@
 				</div>
 
 				<div id="tools">
+                                    <?foreach($services as $i => $service):?>
+                                    <iframe id="tool-frame-<?=$i?>" class="toolframe" frameborder="0" scrolling="no" ></iframe>
+                                    <?endforeach;?>  
 				</div>
 			</div>
 			<br class="clear" />
