@@ -156,16 +156,10 @@ class wfEngine_actions_Authentication extends wfEngine_actions_WfModule
      */
 	public function logout()
 	{
-		// Humpa Lumpa motion twin session destroy .
-		if (isset($_COOKIE[session_name()])) {
-    		setcookie(session_name(), session_id(), 1, '/');
-		}
-
-		// Finally, destroy the session.
-		session_unset();
+	    core_kernel_users_Service::singleton()->logout();
 
 		if (!tao_helpers_Request::isAjax()) {
-			$this->redirect(_url('index', 'Authentication'));
+			$this->redirect(_url('login', 'Main', 'tao'));
 		} else {
 			echo json_encode(array('success' => true));
 		}
