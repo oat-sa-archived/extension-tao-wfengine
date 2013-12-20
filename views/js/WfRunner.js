@@ -81,7 +81,7 @@ define(['jquery', 'spin', 'iframeResizer'], function($, Spinner, iframeResizer){
             return self.forward();
         });
 
-        iframeResizer.autoHeight($serviceFrame, 'iframe');
+        iframeResizer.eventHeight($serviceFrame);
 
         serviceApi.loadInto($serviceFrame.get(0));
     };
