@@ -58,7 +58,7 @@
 	        	<?endif?>
 	
 	         	<li>
-	         		<a id="logout" class="action icon" href="<?=_url('logout', 'DeliveryServerAuthentification')?>"><?=__("Logout")?></a>
+	         		<a id="logout" class="action icon" href="<?=_url('logout', 'Main')?>"><?=__("Logout")?></a>
 	         	</li>
 	
 			</ul>
