@@ -37,5 +37,10 @@ class wfEngine_actions_Main extends tao_actions_Main {
 	{
 		parent::getSectionTrees();
 	}
+	
+	public function logout(){
+	    common_session_SessionManager::endSession();
+	    $this->redirect(ROOT_URL);
+	}
 }
 ?>
