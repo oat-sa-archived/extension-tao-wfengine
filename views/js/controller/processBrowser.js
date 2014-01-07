@@ -21,6 +21,7 @@ define(['jquery', 'lodash', 'wfEngine/WfRunner'], function($, _, WfRunner){
     
     return {
         start : function(options){
+            
             var $back = $('#back');
             var $next = $("#next");
             
@@ -44,6 +45,7 @@ define(['jquery', 'lodash', 'wfEngine/WfRunner'], function($, _, WfRunner){
                 deactivateControls();
                 wfRunner.backward();
             });
+            
             $next.click(function(e){
                 e.preventDefault();
                 deactivateControls();

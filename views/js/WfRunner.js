@@ -18,50 +18,7 @@
  *               2009-2012 (update and modification) Public Research Centre Henri Tudor (under the project TAO-SUSTAIN & TAO-DEV);
  * 
  */
-define(['jquery', 'spin', 'iframeResizer'], function($, Spinner, iframeResizer){
-
-
-    function overlay(){
-        var $overlay = $('#overlay');
-        if ($overlay.length > 0) {
-            $overlay.remove();
-        }
-        else {
-            $('<div id="overlay"></div>').appendTo(document.body);
-        }
-    }
-
-    //todo move to a separate module
-    function loading(reverse) {
-            var $loading = $('#loading');
-            reverse = reverse || false;
-
-            if ($loading.length > 0) {
-                    $loading.remove();
-            }
-            else {
-                $loading = $('<div id="loading"></div>').appendTo(document.body);
-                var opts = {
-                        lines: 11, // The number of lines to draw
-                        length: 21, // The length of each line
-                        width: 8, // The line thickness
-                        radius: 36, // The radius of the inner circle
-                        corners: 1, // Corner roundness (0..1)
-                        rotate: 0, // The rotation offset
-                        direction: (reverse === true) ? -1 : 1, // 1: clockwise, -1: counterclockwise
-                        color: '#888', // #rgb or #rrggbb or array of colors
-                        speed: 1.5, // Rounds per second
-                        trail: 60, // Afterglow percentage
-                        shadow: false, // Whether to render a shadow
-                        hwaccel: false, // Whether to use hardware acceleration
-                        className: 'spinner', // The CSS class to assign to the spinner
-                        zIndex: 2e9, // The z-index (defaults to 2000000000)
-                        top: 'auto', // Top position relative to parent in px
-                        left: 'auto' // Left position relative to parent in px
-                };
-                new Spinner(opts).spin($loading[0]);
-            }
-    }
+define(['jquery', 'iframeResizer', 'iframeNotifier'], function($, iframeResizer, iframeNotifier){
 
     function WfRunner(activityExecutionUri, processUri, activityExecutionNonce) {
             this.activityExecutionUri = activityExecutionUri;
@@ -83,7 +40,9 @@ define(['jquery', 'spin', 'iframeResizer'], function($, Spinner, iframeResizer){
 
         iframeResizer.eventHeight($serviceFrame);
 
-        serviceApi.loadInto($serviceFrame.get(0));
+        serviceApi.loadInto($serviceFrame.get(0), function(){
+            iframeNotifier.top('unloading');
+        });
     };
 
     WfRunner.prototype.forward = function() {
@@ -107,14 +66,10 @@ define(['jquery', 'spin', 'iframeResizer'], function($, Spinner, iframeResizer){
         $('#tools').empty().height('300px');
         $('#navigation').hide();
 
-        overlay();
-        loading(back || false);
+        iframeNotifier.top('loading', [back]);
 
-        setTimeout(function(){
-
-            //this should be change in favor of an ajax request to get data and set up again the wfRunner 
-            window.location.href = url;
-        }, 300);
+        //this should be change in favor of an ajax request to get data and set up again the wfRunner 
+        window.location.href = url;
     };
 
     return WfRunner;
