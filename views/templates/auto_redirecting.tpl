@@ -3,7 +3,7 @@
 	<head>
 		<title><?php echo __("TAO - An Open and Versatile Computer-Based Assessment Platform"); ?></title>
 
-		<script type="text/javascript" src="<?=TAOBASE_WWW?>js/jquery-1.8.0.min.js"></script>
+		<script type="text/javascript" src="<?=TAOBASE_WWW?>js/lib/jquery-1.8.0.min.js"></script>
 		<script type="text/javascript">
 			$(function(){
 				var counter = 10;

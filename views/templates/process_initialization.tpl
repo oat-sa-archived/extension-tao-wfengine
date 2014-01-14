@@ -7,7 +7,7 @@
 			@import url(<?=BASE_WWW?>/css/process_authoring.css);
 		</style>
 
-		<script type="text/javascript" src="<?=TAOBASE_WWW?>js/jquery-1.8.0.min.js"></script>
+		<script type="text/javascript" src="<?=TAOBASE_WWW?>js/lib/jquery-1.8.0.min.js"></script>
 	</head>
 	<body>
 		<ul id="control">

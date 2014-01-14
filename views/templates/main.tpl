@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
 		<title><?=__("WorkflowEngine Process Browser ")?></title>
-		<script type="text/javascript" src="<?=TAOBASE_WWW?>js/jquery-1.8.0.min.js"></script>
+		<script type="text/javascript" src="<?=TAOBASE_WWW?>js/lib/jquery-1.8.0.min.js"></script>
 		<link rel="stylesheet" type="text/css" href="<?=TAOBASE_WWW?>/css/custom-theme/jquery-ui-1.8.22.custom.css" />
 		<style media="screen">
 			@import url(<?=BASE_WWW?>/css/main.css);
