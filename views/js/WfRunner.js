@@ -38,10 +38,10 @@ define(['jquery', 'iframeResizer', 'iframeNotifier'], function($, iframeResizer,
             return self.forward();
         });
 
-        iframeResizer.eventHeight($serviceFrame);
+        iframeResizer.eventHeight($serviceFrame, parseInt($('#navigation').height(), 10));
 
         serviceApi.loadInto($serviceFrame.get(0), function(){
-            iframeNotifier.top('unloading');
+            iframeNotifier.parent('unloading');
         });
     };
 
@@ -66,7 +66,7 @@ define(['jquery', 'iframeResizer', 'iframeNotifier'], function($, iframeResizer,
         $('#tools').empty().height('300px');
         $('#navigation').hide();
 
-        iframeNotifier.top('loading', [back]);
+        iframeNotifier.parent('loading', [back]);
 
         //this should be change in favor of an ajax request to get data and set up again the wfRunner 
         window.location.href = url;
