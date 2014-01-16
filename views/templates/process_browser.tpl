@@ -10,8 +10,8 @@
                 (function(){
                     require(['<?=get_data('client_config_url')?>'], function(){
 
-                        require(['jquery', 'wfEngine/controller/processBrowser', 'serviceApi/ServiceApi', 'serviceApi/StateStorage', 'wfEngine/wfApi/wfApi.min'], 
-                            function($, ProcessBrowser, ServiceApi, StateStorage){
+                        require(['jquery', 'wfEngine/controller/processBrowser', 'serviceApi/ServiceApi', 'serviceApi/StateStorage', 'serviceApi/UserInfoService','wfEngine/wfApi/wfApi.min'], 
+                            function($, ProcessBrowser, ServiceApi, StateStorage, UserInfoService){
                             
                             var services = [
                             <?foreach($services as $i => $service):?>
