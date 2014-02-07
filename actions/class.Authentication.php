@@ -111,47 +111,6 @@ class wfEngine_actions_Authentication extends wfEngine_actions_WfModule
     }
 
     /**
-     * Get information about the current user
-     */
-    public function info()
-    {
-        $data = array();
-        $success = false;
-        $currentUser = $this->userService->getCurrentUser();
-        if(!is_null($currentUser)){
-
-            $success = true;
-            //properties to get
-            $properties = array(
-                'login' => PROPERTY_USER_LOGIN,
-                'uilg' => PROPERTY_USER_UILG,
-                'deflg' => PROPERTY_USER_DEFLG,
-                'mail' => PROPERTY_USER_MAIL,
-                'firstname' => PROPERTY_USER_FIRSTNAME,
-                'lastname' => PROPERTY_USER_LASTNAME,
-            );
-            foreach($properties as $label=>$propertyUri){
-                $value = $currentUser->getOnePropertyValue(new core_kernel_classes_Property($propertyUri));
-                if($value instanceof core_kernel_classes_Resource){
-                    $data[$label] = $value->getUri();
-                }else if($value instanceof core_kernel_classes_Literal){
-                    $data[$label] = (string)$value;
-                }
-            }
-            //add roles
-            $data['roles'] = array();
-            foreach($currentUser->getAllPropertyValues(new core_kernel_classes_Property(RDFS_TYPE)) as $type){
-                $data['roles'][] = $type->getUri();
-            }
-        }
-        //write the response
-        new common_AjaxResponse(array(
-            'success'   => $success
-            , 'data'    => $data
-        ));
-    }
-
-    /**
      * Logout a user
      */
 	public function logout()
