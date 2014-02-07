@@ -650,23 +650,28 @@ class wfEngine_models_classes_ProcessExecutionService
         // section 127-0-1-1-7a69d871:1322a76df3c:-8000:0000000000002F7D begin
 		$returnValue = $this->getCache(__METHOD__, array($processExecution));
 		if(empty($returnValue)){
-			
-			$status = $processExecution->getOnePropertyValue($this->processInstancesStatusProp);
-			if (!is_null($status)){
-				switch($status->getUri()){
-					case INSTANCE_PROCESSSTATUS_RESUMED:
-					case INSTANCE_PROCESSSTATUS_STARTED:
-					case INSTANCE_PROCESSSTATUS_FINISHED:
-					case INSTANCE_PROCESSSTATUS_PAUSED:
-					case INSTANCE_PROCESSSTATUS_CLOSED:{
-						$returnValue = $status;
-						break;
-					}
-				}
-
+			try {
+			    $status = $processExecution->getOnePropertyValue($this->processInstancesStatusProp);
+			    if (!is_null($status)){
+			        switch($status->getUri()){
+			        	case INSTANCE_PROCESSSTATUS_RESUMED:
+			        	case INSTANCE_PROCESSSTATUS_STARTED:
+			        	case INSTANCE_PROCESSSTATUS_FINISHED:
+			        	case INSTANCE_PROCESSSTATUS_PAUSED:
+			        	case INSTANCE_PROCESSSTATUS_CLOSED:{
+			        	    $returnValue = $status;
+			        	    break;
+			        	}
+			        }
+			    
+			    }
+			    $this->setCache(__METHOD__, array($processExecution), $returnValue);
+			} catch (Exception $e) {
+			    throw new common_Exception('fail to retrieve processExecution Status : ' . $processExecution );
 			}
+
 			
-			$this->setCache(__METHOD__, array($processExecution), $returnValue);
+			
 		}
 		
         // section 127-0-1-1-7a69d871:1322a76df3c:-8000:0000000000002F7D end
@@ -688,7 +693,7 @@ class wfEngine_models_classes_ProcessExecutionService
         $returnValue = (bool) false;
 
         // section 127-0-1-1-7a69d871:1322a76df3c:-8000:0000000000002F80 begin
-		
+
 		$processStatus = $this->getStatus($processExecution);
 		
 		if(!is_null($processStatus)){

@@ -55,12 +55,12 @@ class wfEngine_actions_ProcessBrowser extends wfEngine_actions_WfModule{
 			$processExecution = new core_kernel_classes_Resource($processExecutionUri);
 			//check that the process execution is not finished or closed here:
 			if($this->processExecutionService->isFinished($processExecution)){
-				
+
 			    common_Logger::w('Cannot browse a finished process execution');
 				$this->redirectToMain();
 				
 			}else{
-				
+			    
 				$this->processExecution = $processExecution;
 				
 				$activityExecutionUri = urldecode($this->getRequestParameter('activityUri'));
