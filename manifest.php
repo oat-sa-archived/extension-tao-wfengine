@@ -115,9 +115,6 @@ return array(
 		#BASE WWW the web resources path
 		'BASE_WWW'				=> ROOT_URL	.'wfEngine/views/',
 			
-		#WWW PATH the path where view medias (templates, img) are stored.
-		'WWW_PATH'				=> $extpath.'views'.DIRECTORY_SEPARATOR,
-	 
 	 	#TAO extension Paths
 		'TAOBASE_WWW'			=> ROOT_URL	.'tao/views/',
 		'TAOVIEW_PATH'			=> $taopath	.'views'.DIRECTORY_SEPARATOR,
