@@ -1,4 +1,6 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<?php
+use oat\tao\helpers\Template;
+?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
 		<title><?=__("TAO - An Open and Versatile Computer-Based Assessment Platform")?></title>
@@ -102,12 +104,10 @@
 			<br class="clear" />
   		</div>
 	</div>
-	
-
 <?php
-    if (!tao_helpers_Context::check('STANDALONE_MODE')) {
-        include TAO_TPL_PATH .'layout_footer.tpl';
-    }
+if (!tao_helpers_Context::check('STANDALONE_MODE')) {
+    Template::inc('layout_footer.tpl', 'tao');
+}
 ?>
 </body>
 </html>
