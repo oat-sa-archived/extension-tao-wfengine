@@ -29,7 +29,7 @@ include_once dirname(__FILE__) . '/../includes/raw_start.php';
  *
  * @author Lionel Lecaque, <taosupport@tudor.lu>
  * @package wfEngine
- * @subpackage test
+ 
  */
 //FIXME test case do not work
 class InteractiveServiceServiceTestCase // extends TaoPhpUnitTestRunner 

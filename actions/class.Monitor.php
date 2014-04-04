@@ -26,7 +26,7 @@
  *
  * @author Cédric Alfonsi, <taosupport@tudor.lu>
  * @package wfEngine
- * @subpackage actions
+ 
  * @license GPLv2  http://www.opensource.org/licenses/gpl-2.0.php
  */
 class wfEngine_actions_Monitor extends tao_actions_TaoModule {

@@ -1,5 +1,6 @@
 <?php
-/*  
+/**
+ *   
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; under version 2
@@ -19,27 +20,6 @@
  *               2009-2012 (update and modification) Public Research Centre Henri Tudor (under the project TAO-SUSTAIN & TAO-DEV);
  * 
  */
-?>
-<?php
-
-error_reporting(E_ALL);
-
-/**
- * Generis Object Oriented API -
- *
- * This file is part of Generis Object Oriented API.
- *
- *
- * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
- * @package wfEngine
- * @subpackage models_classes
- * @license GPLv2  http://www.opensource.org/licenses/gpl-2.0.php
- */
-
-if (0 > version_compare(PHP_VERSION, '5')) {
-    die('This file was generated for PHP 5');
-}
-
 
 /**
  * The wfEngine_models_classes_ProcessTreeService class allows to create the array representation of a jsTree for a given process
@@ -47,7 +27,7 @@ if (0 > version_compare(PHP_VERSION, '5')) {
  * @access public
  * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
  * @package wfEngine
- * @subpackage models_classes
+ 
  * @license GPLv2  http://www.opensource.org/licenses/gpl-2.0.php
  */
 class wfEngine_models_classes_ProcessTreeService

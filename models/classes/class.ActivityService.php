@@ -1,5 +1,5 @@
 <?php
-/*  
+/**  
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; under version 2
@@ -19,44 +19,6 @@
  *               2009-2012 (update and modification) Public Research Centre Henri Tudor (under the project TAO-SUSTAIN & TAO-DEV);
  * 
  */
-?>
-<?php
-
-error_reporting(E_ALL);
-
-/**
- * Service that retrieve information about Activty definition during runtime
- *
- * @author Joel Bout, <joel.bout@tudor.lu>
- * @package wfEngine
- * @subpackage models_classes
- */
-
-if (0 > version_compare(PHP_VERSION, '5')) {
-    die('This file was generated for PHP 5');
-}
-
-/**
- * include tao_models_classes_ServiceCacheInterface
- *
- * @author Joel Bout, <joel.bout@tudor.lu>
- */
-require_once('tao/models/classes/interface.ServiceCacheInterface.php');
-
-/**
- * include wfEngine_models_classes_StepService
- *
- * @author Joel Bout, <joel.bout@tudor.lu>
- */
-require_once('wfEngine/models/classes/class.StepService.php');
-
-/* user defined includes */
-// section 127-0-1-1--7eb5a1dd:13214d5811e:-8000:0000000000002E82-includes begin
-// section 127-0-1-1--7eb5a1dd:13214d5811e:-8000:0000000000002E82-includes end
-
-/* user defined constants */
-// section 127-0-1-1--7eb5a1dd:13214d5811e:-8000:0000000000002E82-constants begin
-// section 127-0-1-1--7eb5a1dd:13214d5811e:-8000:0000000000002E82-constants end
 
 /**
  * Service that retrieve information about Activty definition during runtime
@@ -64,7 +26,7 @@ require_once('wfEngine/models/classes/class.StepService.php');
  * @access public
  * @author Joel Bout, <joel.bout@tudor.lu>
  * @package wfEngine
- * @subpackage models_classes
+ 
  */
 class wfEngine_models_classes_ActivityService
     extends wfEngine_models_classes_StepService

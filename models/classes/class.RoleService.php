@@ -1,5 +1,6 @@
 <?php
-/*  
+/**
+ *   
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; under version 2
@@ -19,37 +20,6 @@
  *               2009-2012 (update and modification) Public Research Centre Henri Tudor (under the project TAO-SUSTAIN & TAO-DEV);
  * 
  */
-?>
-<?php
-
-error_reporting(E_ALL);
-
-/**
- * Manage the roles for the user workflow
- *
- * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
- * @package wfEngine
- * @subpackage models_classes
- */
-
-if (0 > version_compare(PHP_VERSION, '5')) {
-    die('This file was generated for PHP 5');
-}
-
-/**
- * This class provide service on user roles management
- *
- * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
- */
-require_once('tao/models/classes/class.RoleService.php');
-
-/* user defined includes */
-// section 127-0-1-1-7f226444:12902c0ab92:-8000:0000000000001F8B-includes begin
-// section 127-0-1-1-7f226444:12902c0ab92:-8000:0000000000001F8B-includes end
-
-/* user defined constants */
-// section 127-0-1-1-7f226444:12902c0ab92:-8000:0000000000001F8B-constants begin
-// section 127-0-1-1-7f226444:12902c0ab92:-8000:0000000000001F8B-constants end
 
 /**
  * Manage the roles for the user workflow
@@ -57,7 +27,7 @@ require_once('tao/models/classes/class.RoleService.php');
  * @access public
  * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
  * @package wfEngine
- * @subpackage models_classes
+ 
  */
 class wfEngine_models_classes_RoleService
     extends tao_models_classes_RoleService

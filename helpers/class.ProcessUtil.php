@@ -1,5 +1,6 @@
 <?php
-/*  
+/**
+ *   
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; under version 2
@@ -19,37 +20,6 @@
  *               2009-2012 (update and modification) Public Research Centre Henri Tudor (under the project TAO-SUSTAIN & TAO-DEV);
  * 
  */
-?>
-<?php
-
-error_reporting(E_ALL);
-
-/**
- * TAO - wfEngine/helpers/class.ProcessUtil.php
- *
- * $Id$
- *
- * This file is part of TAO.
- *
- * Automatically generated on 16.03.2012, 11:56:26 with ArgoUML PHP module 
- * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
- *
- * @author Joel Bout, <joel.bout@tudor.lu>
- * @package wfEngine
- * @subpackage helpers
- */
-
-if (0 > version_compare(PHP_VERSION, '5')) {
-    die('This file was generated for PHP 5');
-}
-
-/* user defined includes */
-// section 10-13-1-39--284957ac:12e4ca5284a:-8000:0000000000002BEA-includes begin
-// section 10-13-1-39--284957ac:12e4ca5284a:-8000:0000000000002BEA-includes end
-
-/* user defined constants */
-// section 10-13-1-39--284957ac:12e4ca5284a:-8000:0000000000002BEA-constants begin
-// section 10-13-1-39--284957ac:12e4ca5284a:-8000:0000000000002BEA-constants end
 
 /**
  * Short description of class wfEngine_helpers_ProcessUtil
@@ -57,7 +27,7 @@ if (0 > version_compare(PHP_VERSION, '5')) {
  * @access public
  * @author Joel Bout, <joel.bout@tudor.lu>
  * @package wfEngine
- * @subpackage helpers
+ 
  */
 class wfEngine_helpers_ProcessUtil
 {

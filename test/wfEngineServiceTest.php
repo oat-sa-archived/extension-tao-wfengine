@@ -29,7 +29,7 @@ include_once dirname(__FILE__) . '/../includes/raw_start.php';
  * 
  * @author Somsack Sipasseuth, <taosupport@tudor.lu>
  * @package wfEngine
- * @subpackage test
+ 
  */
 class wfEngineServiceTest extends TaoPhpUnitTestRunner {
 	

@@ -1,5 +1,6 @@
 <?php
-/*  
+/**
+ *   
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; under version 2
@@ -19,44 +20,6 @@
  *               2009-2012 (update and modification) Public Research Centre Henri Tudor (under the project TAO-SUSTAIN & TAO-DEV);
  * 
  */
-?>
-<?php
-
-error_reporting(E_ALL);
-
-/**
- * TAO - wfEngine/models/classes/class.ActivityCardinalityService.php
- *
- * $Id$
- *
- * This file is part of TAO.
- *
- * Automatically generated on 24.10.2012, 14:16:58 with ArgoUML PHP module 
- * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
- *
- * @author Joel Bout, <joel.bout@tudor.lu>
- * @package wfEngine
- * @subpackage models_classes
- */
-
-if (0 > version_compare(PHP_VERSION, '5')) {
-    die('This file was generated for PHP 5');
-}
-
-/**
- * include wfEngine_models_classes_StepService
- *
- * @author Joel Bout, <joel.bout@tudor.lu>
- */
-require_once('wfEngine/models/classes/class.StepService.php');
-
-/* user defined includes */
-// section 127-0-1-1-6eb1148b:132b4a0f8d0:-8000:000000000000304E-includes begin
-// section 127-0-1-1-6eb1148b:132b4a0f8d0:-8000:000000000000304E-includes end
-
-/* user defined constants */
-// section 127-0-1-1-6eb1148b:132b4a0f8d0:-8000:000000000000304E-constants begin
-// section 127-0-1-1-6eb1148b:132b4a0f8d0:-8000:000000000000304E-constants end
 
 /**
  * Short description of class wfEngine_models_classes_ActivityCardinalityService
@@ -64,7 +27,7 @@ require_once('wfEngine/models/classes/class.StepService.php');
  * @access public
  * @author Joel Bout, <joel.bout@tudor.lu>
  * @package wfEngine
- * @subpackage models_classes
+ 
  */
 class wfEngine_models_classes_ActivityCardinalityService
     extends wfEngine_models_classes_StepService

@@ -29,7 +29,7 @@ require_once dirname(__FILE__) . '/TranslationProcess/TranslationProcessHelper.p
  * 
  * @author Somsack Sipasseuth, <taosupport@tudor.lu>
  * @package wfEngine
- * @subpackage test
+ 
  */
 class TranslationProcessExecutionTestCase extends wfEngineServiceTest {
 	

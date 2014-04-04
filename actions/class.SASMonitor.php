@@ -26,7 +26,7 @@
  *  Montitor Controler provide actions to manage processes as Service
  * 
  * @package wfEngine
- * @subpackage actions
+ 
  * @license GPLv2  http://www.opensource.org/licenses/gpl-2.0.php
  */
 class wfEngine_actions_SASMonitor extends wfEngine_actions_Monitor {

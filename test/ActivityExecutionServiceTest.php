@@ -28,7 +28,7 @@ require_once dirname(__FILE__) . '/wfEngineServiceTest.php';
  * 
  * @author Somsack Sipasseuth, <taosupport@tudor.lu>
  * @package wfEngine
- * @subpackage test
+ 
  */
 class ActivityExecutionServiceTest extends wfEngineServiceTest {
 	

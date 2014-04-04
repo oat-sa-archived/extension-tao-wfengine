@@ -26,7 +26,7 @@
  * @access public
  * @author Jerome Bogaerts, <jerome@taotesting.com>
  * @package wfEngine
- * @subpackage models_classes
+ 
  */
 class wfEngine_models_classes_UserService
     extends tao_models_classes_UserService
