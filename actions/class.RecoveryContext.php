@@ -32,16 +32,6 @@
  */
 class wfEngine_actions_RecoveryContext extends tao_actions_Api {
 	
-	// token authentication does not seem to add any additional security
-	/*
-	public function _isAllowed() {
-		return parent::_isAllowed()
-			&& $this->hasRequestParameter('token')
-			&& $this->authenticate($this->getRequestParameter('token'))
-		;
-	}
-	*/
-	
 	/**
 	 * Retrieve the current context
 	 */

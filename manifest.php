@@ -117,8 +117,6 @@ return array(
 			
 	 	#TAO extension Paths
 		'TAOBASE_WWW'			=> ROOT_URL	.'tao/views/',
-		'TAOVIEW_PATH'			=> $taopath	.'views'.DIRECTORY_SEPARATOR,
-		'TAO_TPL_PATH'			=> $taopath	.'views'.DIRECTORY_SEPARATOR.'templates'.DIRECTORY_SEPARATOR,
 	
 		#PROCESS BASE WWW the web path of the process authoring tool
 		'PROCESS_BASE_WWW'		=> ROOT_URL	.'wfEngine/views/',
