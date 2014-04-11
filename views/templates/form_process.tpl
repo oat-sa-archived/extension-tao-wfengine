@@ -1,3 +1,6 @@
+<?php
+use oat\tao\helpers\Template;
+?>
 <div class="main-container">
 	<div id="form-title" class="ui-widget-header ui-corner-top ui-state-default">
 		<?=get_data('formTitle')?>
@@ -40,4 +43,4 @@ $(document).ready(function(){
 	$('select[id=\'<?=tao_helpers_Uri::encode(PROPERTY_PROCESS_INIT_ACL_MODE)?>\']').change(switchACLmode);
 });
 </script>
-<?include('footer.tpl');?>
+<?php Template::inc('footer.tpl'); ?>

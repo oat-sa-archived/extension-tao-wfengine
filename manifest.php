@@ -117,17 +117,5 @@ return array(
 			
 	 	#TAO extension Paths
 		'TAOBASE_WWW'			=> ROOT_URL	.'tao/views/',
-	
-		#PROCESS BASE WWW the web path of the process authoring tool
-		'PROCESS_BASE_WWW'		=> ROOT_URL	.'wfEngine/views/',
-		'PROCESS_BASE_PATH'		=> ROOT_PATH.'wfEngine'.DIRECTORY_SEPARATOR,
-									
-		# Process Browser page title.
-		'PROCESS_BROWSER_TITLE'	=> 'Process BrowserEngine',
-	
-		# Service mode
-		# If set to true, the process dashboard (main view) and the
-		# process creation feature are not available.
-		'SERVICE_MODE'			=> false	
 	)
 );
