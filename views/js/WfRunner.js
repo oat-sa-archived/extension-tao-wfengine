@@ -24,6 +24,7 @@ define(['jquery', 'iframeResizer', 'iframeNotifier'], function($, iframeResizer,
             this.activityExecutionUri = activityExecutionUri;
             this.processUri = processUri;
             this.nonce = activityExecutionNonce;
+            this.childServiceApi = null;
 
             this.services = [];
 
@@ -31,7 +32,9 @@ define(['jquery', 'iframeResizer', 'iframeNotifier'], function($, iframeResizer,
     }
 
     WfRunner.prototype.initService = function(serviceApi, $serviceFrame, style) {
+        
         var self = this;
+        this.childServiceApi = serviceApi;
         this.services.push(serviceApi);
 
         serviceApi.onFinish(function() {
@@ -46,20 +49,28 @@ define(['jquery', 'iframeResizer', 'iframeNotifier'], function($, iframeResizer,
     };
 
     WfRunner.prototype.forward = function() {
-        var url = this.processBrowserModule + 'next'
-                + '?processUri=' + encodeURIComponent(this.processUri)
-                + '&activityUri=' + encodeURIComponent(this.activityExecutionUri)
-                + '&nc=' + encodeURIComponent(this.nonce);
-        WfRunner.move(url);
+        var that = this;
+        
+        this.childServiceApi.kill(function (signal) {
+            var url = that.processBrowserModule + 'next'
+            + '?processUri=' + encodeURIComponent(that.processUri)
+            + '&activityUri=' + encodeURIComponent(that.activityExecutionUri)
+            + '&nc=' + encodeURIComponent(that.nonce);
+            WfRunner.move(url);
+        });
     };
 
     WfRunner.prototype.backward = function() {
-        var url = this.processBrowserModule + 'back'
-                + '?processUri=' + encodeURIComponent(this.processUri)
-                + '&activityUri=' + encodeURIComponent(this.activityExecutionUri)
-                + '&nc=' + encodeURIComponent(this.nonce);
+        var that = this;
+        
+        this.childServiceApi.kill(function (signal) {
+            var url = that.processBrowserModule + 'back'
+            + '?processUri=' + encodeURIComponent(that.processUri)
+            + '&activityUri=' + encodeURIComponent(that.activityExecutionUri)
+            + '&nc=' + encodeURIComponent(that.nonce);
 
-        WfRunner.move(url, true);
+            WfRunner.move(url, true);
+        });
     };
 
     WfRunner.move = function(url, back){
@@ -68,7 +79,8 @@ define(['jquery', 'iframeResizer', 'iframeNotifier'], function($, iframeResizer,
 
         iframeNotifier.parent('loading', [back]);
 
-        //this should be change in favor of an ajax request to get data and set up again the wfRunner 
+        // this should be change in favor of an ajax request to get data and set
+        // up again the wfRunner
         window.location.href = url;
     };
 
