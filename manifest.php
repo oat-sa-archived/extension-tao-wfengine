@@ -30,7 +30,7 @@ $taopath = dirname(dirname(__FILE__)).DIRECTORY_SEPARATOR.'tao'.DIRECTORY_SEPARA
 
 return array(
     'name' => 'wfEngine',
-    'name' => 'Workflow engine',
+    'label' => 'Workflow engine',
 	'description' => 'Workflow Engine extension',
     'license' => 'GPL-2.0',
 	'version' => '2.6',
