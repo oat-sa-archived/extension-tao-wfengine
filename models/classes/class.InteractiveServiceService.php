@@ -48,8 +48,8 @@ class wfEngine_models_classes_InteractiveServiceService
      */
     public function __construct()
     {
-        // section 127-0-1-1--7eb5a1dd:13214d5811e:-8000:0000000000002E97 begin
-        // section 127-0-1-1--7eb5a1dd:13214d5811e:-8000:0000000000002E97 end
+        
+        
     }
 
     /**
@@ -66,7 +66,7 @@ class wfEngine_models_classes_InteractiveServiceService
     {
         $returnValue = (string) '';
 
-        // section 127-0-1-1--7eb5a1dd:13214d5811e:-8000:0000000000002E99 begin
+        
 		$serviceDefinition = $interactiveService->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_CALLOFSERVICES_SERVICEDEFINITION));
 		
 		$serviceUrl = '';
@@ -102,7 +102,7 @@ class wfEngine_models_classes_InteractiveServiceService
         	$returnValue .= urlencode(trim($name)) . '=' . urlencode(trim($actualValue)) . '&';
         
 		}
-        // section 127-0-1-1--7eb5a1dd:13214d5811e:-8000:0000000000002E99 end
+        
 
         return (string) $returnValue;
     }
@@ -119,7 +119,7 @@ class wfEngine_models_classes_InteractiveServiceService
     {
         $returnValue = (string) '';
 
-        // section 127-0-1-1-4ecae359:132158f9a4c:-8000:0000000000002E9D begin
+        
 		
 		$styleData = array();
 		
@@ -164,7 +164,7 @@ class wfEngine_models_classes_InteractiveServiceService
 		    $returnValue .= "height:".$styleData['height'].";";
 		}
 		
-        // section 127-0-1-1-4ecae359:132158f9a4c:-8000:0000000000002E9D end
+        
 
         return (string) $returnValue;
     }
@@ -181,11 +181,11 @@ class wfEngine_models_classes_InteractiveServiceService
     {
         $returnValue = (bool) false;
 
-        // section 127-0-1-1-52a9110:13219ee179c:-8000:0000000000002EC1 begin
+        
         if(!is_null($interactiveService)){
 			$returnValue = $interactiveService->hasType( new core_kernel_classes_Class(CLASS_CALLOFSERVICES));
 		}
-        // section 127-0-1-1-52a9110:13219ee179c:-8000:0000000000002EC1 end
+        
 
         return (bool) $returnValue;
     }
@@ -203,7 +203,7 @@ class wfEngine_models_classes_InteractiveServiceService
     {
         $returnValue = array();
 
-        // section 127-0-1-1-511681e7:13291a3c527:-8000:000000000000303E begin
+        
 		
 		$inParameterCollection = $interactiveService->getPropertyValuesCollection(new core_kernel_classes_Property(PROPERTY_CALLOFSERVICES_ACTUALPARAMETERIN));
 		
@@ -279,7 +279,7 @@ class wfEngine_models_classes_InteractiveServiceService
 			
 		}
 		
-        // section 127-0-1-1-511681e7:13291a3c527:-8000:000000000000303E end
+        
 
         return (array) $returnValue;
     }
@@ -297,8 +297,8 @@ class wfEngine_models_classes_InteractiveServiceService
     {
         $returnValue = array();
 
-        // section 127-0-1-1-511681e7:13291a3c527:-8000:0000000000003042 begin
-        // section 127-0-1-1-511681e7:13291a3c527:-8000:0000000000003042 end
+        
+        
 
         return (array) $returnValue;
     }
@@ -315,7 +315,7 @@ class wfEngine_models_classes_InteractiveServiceService
     {
         $returnValue = (bool) false;
 
-        // section 127-0-1-1-8ae8e2e:132ba7fdd5a:-8000:0000000000003086 begin
+        
 		
 		$propActualParamIn = new core_kernel_classes_Property(PROPERTY_CALLOFSERVICES_ACTUALPARAMETERIN);
 		$propActualParamOut = new core_kernel_classes_Property(PROPERTY_CALLOFSERVICES_ACTUALPARAMETEROUT);
@@ -330,7 +330,7 @@ class wfEngine_models_classes_InteractiveServiceService
 		
 		$returnValue = $interactiveService->delete(true);
 		
-        // section 127-0-1-1-8ae8e2e:132ba7fdd5a:-8000:0000000000003086 end
+        
 
         return (bool) $returnValue;
     }

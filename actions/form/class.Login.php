@@ -48,7 +48,7 @@ class wfEngine_actions_form_Login
      */
     public function initForm()
     {
-        // section 127-0-1-1-68f1e705:127f61c8a56:-8000:00000000000023C0 begin
+        
         
     	$this->form = tao_helpers_form_FormFactory::getForm('loginForm');
 		
@@ -56,7 +56,7 @@ class wfEngine_actions_form_Login
 		$connectElt->setValue(__('Log in'));
 		$this->form->setActions(array($connectElt), 'bottom');
     	
-        // section 127-0-1-1-68f1e705:127f61c8a56:-8000:00000000000023C0 end
+        
     }
 
     /**
@@ -68,7 +68,7 @@ class wfEngine_actions_form_Login
      */
     public function initElements()
     {
-        // section 127-0-1-1-68f1e705:127f61c8a56:-8000:00000000000023C2 begin
+        
         
     	$loginElt = tao_helpers_form_FormFactory::getElement('login', 'Textbox');
 		$loginElt->setDescription(__('Login'));
@@ -87,7 +87,7 @@ class wfEngine_actions_form_Login
 		$activityElt = tao_helpers_form_FormFactory::getElement('activityUri', 'Hidden');
 		$this->form->addElement($activityElt);
 		
-        // section 127-0-1-1-68f1e705:127f61c8a56:-8000:00000000000023C2 end
+        
     }
 
 } /* end of class wfEngine_actions_form_Login */

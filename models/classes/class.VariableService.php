@@ -54,7 +54,7 @@ class wfEngine_models_classes_VariableService
     {
         $returnValue = (bool) false;
 
-        // section 127-0-1-1-3a6b44f1:1326d50ba09:-8000:00000000000065CB begin
+        
 		
 		if($this->cache){
 			switch($methodName){
@@ -72,7 +72,7 @@ class wfEngine_models_classes_VariableService
 			}
 		}
 		
-        // section 127-0-1-1-3a6b44f1:1326d50ba09:-8000:00000000000065CB end
+        
 
         return (bool) $returnValue;
     }
@@ -90,7 +90,7 @@ class wfEngine_models_classes_VariableService
     {
         $returnValue = null;
 
-        // section 127-0-1-1-3a6b44f1:1326d50ba09:-8000:00000000000065D0 begin
+        
 		// 
 		if($this->cache){
 			
@@ -108,7 +108,7 @@ class wfEngine_models_classes_VariableService
 			}
 			
 		}
-        // section 127-0-1-1-3a6b44f1:1326d50ba09:-8000:00000000000065D0 end
+        
 
         return $returnValue;
     }
@@ -126,8 +126,8 @@ class wfEngine_models_classes_VariableService
     {
         $returnValue = (bool) false;
 
-        // section 127-0-1-1-3a6b44f1:1326d50ba09:-8000:00000000000065D4 begin
-        // section 127-0-1-1-3a6b44f1:1326d50ba09:-8000:00000000000065D4 end
+        
+        
 
         return (bool) $returnValue;
     }
@@ -145,7 +145,7 @@ class wfEngine_models_classes_VariableService
     {
         $returnValue = (bool) false;
 
-        // section -87--2--3--76--7eb229c2:12916be1ece:-8000:0000000000003C07 begin
+        
     	$session = PHPSession::singleton();
         
 		if(is_null($activityExecution) && $session->hasAttribute("activityExecutionUri")){
@@ -180,7 +180,7 @@ class wfEngine_models_classes_VariableService
 			$returnValue &= $activityExecution->editPropertyValues($variablesProp, serialize($newVar));
 		}
 		
-        // section -87--2--3--76--7eb229c2:12916be1ece:-8000:0000000000003C07 end
+        
 
         return (bool) $returnValue;
     }
@@ -198,7 +198,7 @@ class wfEngine_models_classes_VariableService
     {
         $returnValue = (bool) false;
 
-        // section -87--2--3--76--7eb229c2:12916be1ece:-8000:0000000000003C0B begin
+        
         $session = PHPSession::singleton();
         
 		if(is_null($activityExecution) && $session->hasAttribute("activityExecutionUri")){
@@ -230,7 +230,7 @@ class wfEngine_models_classes_VariableService
 			}
 		}
 
-        // section -87--2--3--76--7eb229c2:12916be1ece:-8000:0000000000003C0B end
+        
 
         return (bool) $returnValue;
     }
@@ -248,7 +248,7 @@ class wfEngine_models_classes_VariableService
     {
         $returnValue = null;
 
-        // section -87--2--3--76--7eb229c2:12916be1ece:-8000:0000000000003C0E begin
+        
         $session = PHPSession::singleton();
         
 		if(is_null($activityExecution) && $session->hasAttribute("activityExecutionUri")){
@@ -271,7 +271,7 @@ class wfEngine_models_classes_VariableService
 				}
 			}
 		}
-        // section -87--2--3--76--7eb229c2:12916be1ece:-8000:0000000000003C0E end
+        
 
         return $returnValue;
     }
@@ -288,7 +288,7 @@ class wfEngine_models_classes_VariableService
     {
         $returnValue = array();
 
-        // section -87--2--3--76--7eb229c2:12916be1ece:-8000:0000000000003C11 begin
+        
         $session = PHPSession::singleton();
         
 		if(is_null($activityExecution) && $session->hasAttribute("activityExecutionUri")){
@@ -316,7 +316,7 @@ class wfEngine_models_classes_VariableService
             }
 		}
 		
-        // section -87--2--3--76--7eb229c2:12916be1ece:-8000:0000000000003C11 end
+        
 
         return (array) $returnValue;
     }
@@ -335,9 +335,9 @@ class wfEngine_models_classes_VariableService
     {
         $returnValue = (bool) false;
 
-        // section 127-0-1-1--55065e1d:1294a729605:-8000:0000000000002006 begin
+        
         $returnValue = $this->_set($key, $value, $activityExecution, false);
-        // section 127-0-1-1--55065e1d:1294a729605:-8000:0000000000002006 end
+        
 
         return (bool) $returnValue;
     }
@@ -355,7 +355,7 @@ class wfEngine_models_classes_VariableService
     {
         $returnValue = null;
 
-        // section 127-0-1-1--6e15d8e:132297dc60d:-8000:0000000000002F0C begin
+        
 		$cachedValue = $this->getCache(__METHOD__, array($code));
 		if(!is_null($cachedValue) && $cachedValue instanceof core_kernel_classes_Resource){
 			$returnValue = $cachedValue;
@@ -374,7 +374,7 @@ class wfEngine_models_classes_VariableService
 				$this->setCache(__METHOD__, array($code), $returnValue);
 			}
 		}
-        // section 127-0-1-1--6e15d8e:132297dc60d:-8000:0000000000002F0C end
+        
 
         return $returnValue;
     }
@@ -392,7 +392,7 @@ class wfEngine_models_classes_VariableService
     {
         $returnValue = null;
 
-        // section 127-0-1-1-8ae8e2e:132ba7fdd5a:-8000:0000000000003073 begin
+        
 		
 		if(!empty($code) && $this->getProcessVariable($code)){
 			throw new Exception("A process variable with the code '{$code}' already exists");
@@ -422,7 +422,7 @@ class wfEngine_models_classes_VariableService
 		}
 		
 		
-        // section 127-0-1-1-8ae8e2e:132ba7fdd5a:-8000:0000000000003073 end
+        
 
         return $returnValue;
     }
@@ -439,7 +439,7 @@ class wfEngine_models_classes_VariableService
     {
         $returnValue = (bool) false;
 
-        // section 127-0-1-1-8ae8e2e:132ba7fdd5a:-8000:0000000000003089 begin
+        
 		
 		if(!is_null($code)){
 		
@@ -451,7 +451,7 @@ class wfEngine_models_classes_VariableService
 			
 		}
 		
-        // section 127-0-1-1-8ae8e2e:132ba7fdd5a:-8000:0000000000003089 end
+        
 
         return (bool) $returnValue;
     }
@@ -468,9 +468,9 @@ class wfEngine_models_classes_VariableService
     {
         $returnValue = (bool) false;
 
-        // section 127-0-1-1--1b682bf3:132cdc3fef4:-8000:0000000000003096 begin
+        
 		$returnValue = $variable->hasType(new core_kernel_classes_Class(CLASS_PROCESSVARIABLES));
-        // section 127-0-1-1--1b682bf3:132cdc3fef4:-8000:0000000000003096 end
+        
 
         return (bool) $returnValue;
     }
@@ -484,7 +484,7 @@ class wfEngine_models_classes_VariableService
      */
     public function __construct()
     {
-        // section 127-0-1-1-ce05865:132dda78a59:-8000:00000000000030A8 begin
+        
 		
 		$this->instancesCache = array();
 		$this->cache = true;
@@ -492,7 +492,7 @@ class wfEngine_models_classes_VariableService
 		$this->variablesProperty = new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_VARIABLES);
 		$this->codeProperty = new core_kernel_classes_Property(PROPERTY_PROCESSVARIABLES_CODE);
 		
-        // section 127-0-1-1-ce05865:132dda78a59:-8000:00000000000030A8 end
+        
     }
 
     /**
@@ -509,9 +509,9 @@ class wfEngine_models_classes_VariableService
     {
         $returnValue = (bool) false;
 
-        // section 127-0-1-1-1899355b:13312537157:-8000:00000000000030E0 begin
+        
 		$returnValue = $this->_set($key, $value, $activityExecution, true);
-        // section 127-0-1-1-1899355b:13312537157:-8000:00000000000030E0 end
+        
 
         return (bool) $returnValue;
     }
@@ -531,7 +531,7 @@ class wfEngine_models_classes_VariableService
     {
         $returnValue = (bool) false;
 
-        // section 127-0-1-1-1899355b:13312537157:-8000:00000000000030E7 begin
+        
         $session = PHPSession::singleton();
         
 		if(is_null($activityExecution) && $session->hasAttribute("activityExecutionUri")){
@@ -564,7 +564,7 @@ class wfEngine_models_classes_VariableService
 			$returnValue = $activityExecution->editPropertyValues($this->variablesProperty, serialize($allVars));
 		}
 		
-        // section 127-0-1-1-1899355b:13312537157:-8000:00000000000030E7 end
+        
 
         return (bool) $returnValue;
     }
@@ -581,9 +581,9 @@ class wfEngine_models_classes_VariableService
     {
         $returnValue = (string) '';
 
-        // section 127-0-1-1--193aa0be:133cfb90ad2:-8000:0000000000003431 begin
+        
 		$returnValue = $variable->getOnePropertyValue($this->codeProperty);
-        // section 127-0-1-1--193aa0be:133cfb90ad2:-8000:0000000000003431 end
+        
 
         return (string) $returnValue;
     }
@@ -599,7 +599,7 @@ class wfEngine_models_classes_VariableService
     {
         $returnValue = array();
 
-        // section 127-0-1-1--9be58b4:1341d29fb0d:-8000:0000000000003468 begin
+        
 		foreach($this->processVariablesClass->getInstances(false) as $variable){
 			$returnValue[$variable->getUri()] = array(
 				'code' => $this->getCode($variable),
@@ -607,7 +607,7 @@ class wfEngine_models_classes_VariableService
 			);
 		}
 		
-        // section 127-0-1-1--9be58b4:1341d29fb0d:-8000:0000000000003468 end
+        
 
         return (array) $returnValue;
     }

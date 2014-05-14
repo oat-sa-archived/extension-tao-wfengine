@@ -51,13 +51,13 @@ class wfEngine_models_classes_StepService
     {
         $returnValue = array();
 
-        // section 10-30-1--78-1db73770:13a8c80f2ee:-8000:0000000000003BAF begin
+        
         $stepClass = new core_kernel_classes_Class(CLASS_STEP);
 		$returnValue= $stepClass->searchInstances(
 			array(PROPERTY_STEP_NEXT => $step),
 			array('like' => false, 'recursive' => true)
 		);
-        // section 10-30-1--78-1db73770:13a8c80f2ee:-8000:0000000000003BAF end
+        
 
         return (array) $returnValue;
     }
@@ -74,12 +74,12 @@ class wfEngine_models_classes_StepService
     {
         $returnValue = array();
 
-        // section 10-30-1--78-1db73770:13a8c80f2ee:-8000:0000000000003BB2 begin
+        
     	$nextStepProp = new core_kernel_classes_Property(PROPERTY_STEP_NEXT);
         foreach ($step->getPropertyValues($nextStepProp) as $stepUri) {
         	$returnValue[] = new core_kernel_classes_Resource($stepUri);
         }
-        // section 10-30-1--78-1db73770:13a8c80f2ee:-8000:0000000000003BB2 end
+        
 
         return (array) $returnValue;
     }

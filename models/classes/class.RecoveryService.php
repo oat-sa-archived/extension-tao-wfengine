@@ -57,11 +57,11 @@ class wfEngine_models_classes_RecoveryService
      */
     public function __construct()
     {
-        // section 127-0-1-1-1a24352c:12c1717dc9c:-8000:0000000000002806 begin
+        
         
     	$this->contextRecoveryProperty = new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_CTX_RECOVERY);
     	
-        // section 127-0-1-1-1a24352c:12c1717dc9c:-8000:0000000000002806 end
+        
     }
 
     /**
@@ -77,13 +77,13 @@ class wfEngine_models_classes_RecoveryService
     {
         $returnValue = (bool) false;
 
-        // section 127-0-1-1-1a24352c:12c1717dc9c:-8000:00000000000027F4 begin
+        
         
         if(!is_null($activityExecution) && is_array($context)){
         	$returnValue = $activityExecution->editPropertyValues($this->contextRecoveryProperty, serialize($context));
         }
         
-        // section 127-0-1-1-1a24352c:12c1717dc9c:-8000:00000000000027F4 end
+        
 
         return (bool) $returnValue;
     }
@@ -101,7 +101,7 @@ class wfEngine_models_classes_RecoveryService
     {
         $returnValue = array();
 
-        // section 127-0-1-1-1a24352c:12c1717dc9c:-8000:00000000000027F8 begin
+        
         
          if(!is_null($activityExecution)){
 			 $theActivityExecution = null;
@@ -156,7 +156,7 @@ class wfEngine_models_classes_RecoveryService
          }
         
         
-        // section 127-0-1-1-1a24352c:12c1717dc9c:-8000:00000000000027F8 end
+        
 
         return (array) $returnValue;
     }
@@ -174,13 +174,13 @@ class wfEngine_models_classes_RecoveryService
     {
         $returnValue = (bool) false;
 
-        // section 127-0-1-1-1a24352c:12c1717dc9c:-8000:00000000000027FC begin
+        
         
     	if(!is_null($activityExecution)){
          	$returnValue = $activityExecution->removePropertyValues($this->contextRecoveryProperty);
          }
         
-        // section 127-0-1-1-1a24352c:12c1717dc9c:-8000:00000000000027FC end
+        
 
         return (bool) $returnValue;
     }
@@ -198,7 +198,7 @@ class wfEngine_models_classes_RecoveryService
     {
         $returnValue = array();
 
-        // section 127-0-1-1-53da607c:1328c576a23:-8000:000000000000303B begin
+        
 		
 		$activityExecutionService = wfEngine_models_classes_ActivityExecutionService::singleton();
 		if(is_null($user)){
@@ -243,7 +243,7 @@ class wfEngine_models_classes_RecoveryService
 			}
 		}
 		
-        // section 127-0-1-1-53da607c:1328c576a23:-8000:000000000000303B end
+        
 
         return (array) $returnValue;
     }

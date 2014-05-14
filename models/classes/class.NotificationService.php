@@ -96,7 +96,7 @@ class wfEngine_models_classes_NotificationService
      */
     public function __construct()
     {
-        // section 127-0-1-1-1609ec43:129caf00b07:-8000:0000000000002240 begin
+        
         
     	$this->notificationClass 			= new core_kernel_classes_Class(CLASS_NOTIFICATION);
     	$this->notificationSentProp 		= new core_kernel_classes_Property(PROPERTY_NOTIFICATION_SENT);
@@ -107,7 +107,7 @@ class wfEngine_models_classes_NotificationService
 		$this->notificationMessageProp		= new core_kernel_classes_Property(PROPERTY_NOTIFICATION_MESSAGE);
     	$this->connectorNotificationProp	= new core_kernel_classes_Property(PROPERTY_CONNECTORS_NOTIFICATION_MESSAGE);
 		
-        // section 127-0-1-1-1609ec43:129caf00b07:-8000:0000000000002240 end
+        
     }
 
     /**
@@ -124,7 +124,7 @@ class wfEngine_models_classes_NotificationService
     {
         $returnValue = (int) 0;
 
-        // section 127-0-1-1-1609ec43:129caf00b07:-8000:000000000000223C begin
+        
         
         if(!is_null($connector) && !is_null($activityExecution)){
 	        
@@ -303,7 +303,7 @@ class wfEngine_models_classes_NotificationService
 			
         }
         
-        // section 127-0-1-1-1609ec43:129caf00b07:-8000:000000000000223C end
+        
 
         return (int) $returnValue;
     }
@@ -319,7 +319,7 @@ class wfEngine_models_classes_NotificationService
     {
         $returnValue = array();
 
-        // section 127-0-1-1-1609ec43:129caf00b07:-8000:0000000000002242 begin
+        
         
         //get the notifications with the sent property to false
 		$notifications = $this->notificationClass->searchInstances(array($this->notificationSentProp->getUri() => GENERIS_FALSE), array('like' => false, 'recursive' => 0));
@@ -331,7 +331,7 @@ class wfEngine_models_classes_NotificationService
 	    	} 
 	    }
         
-        // section 127-0-1-1-1609ec43:129caf00b07:-8000:0000000000002242 end
+        
 
         return (array) $returnValue;
     }
@@ -348,7 +348,7 @@ class wfEngine_models_classes_NotificationService
     {
         $returnValue = (bool) false;
 
-        // section 127-0-1-1-1609ec43:129caf00b07:-8000:000000000000228C begin
+        
         
         if(!is_null($adapter)){
         	
@@ -411,7 +411,7 @@ class wfEngine_models_classes_NotificationService
         	}
         }
         
-        // section 127-0-1-1-1609ec43:129caf00b07:-8000:000000000000228C end
+        
 
         return (bool) $returnValue;
     }
@@ -431,7 +431,7 @@ class wfEngine_models_classes_NotificationService
     {
         $returnValue = null;
 
-        // section 127-0-1-1-278177bc:1333f1e99bb:-8000:0000000000003242 begin
+        
 		
 		$activityExecutionService = wfEngine_models_classes_ActivityExecutionService::singleton();
 
@@ -483,7 +483,7 @@ class wfEngine_models_classes_NotificationService
 		$notification->setPropertyValue($this->notificationMessageProp, $content);
 		$returnValue = $notification;
 			
-        // section 127-0-1-1-278177bc:1333f1e99bb:-8000:0000000000003242 end
+        
 
         return $returnValue;
     }

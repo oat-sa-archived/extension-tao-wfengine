@@ -49,9 +49,9 @@ class wfEngine_helpers_GUIHelper
     {
         $returnValue = (string) '';
 
-        // section 127-0-1-1-bcacefe:1326704aac0:-8000:0000000000003017 begin
+        
 		$returnValue = str_replace(array('&nbsp;'), ' ', $string);
-        // section 127-0-1-1-bcacefe:1326704aac0:-8000:0000000000003017 end
+        
 
         return (string) $returnValue;
     }
@@ -68,7 +68,7 @@ class wfEngine_helpers_GUIHelper
     {
         $returnValue = (string) '';
 
-        // section 127-0-1-1-bcacefe:1326704aac0:-8000:000000000000301A begin
+        
 		
 		$baseURI = 'img/status_';
 		$statusName = '';
@@ -96,7 +96,7 @@ class wfEngine_helpers_GUIHelper
 		
 		$returnValue = $baseURI.$statusName.'.png';
 		
-        // section 127-0-1-1-bcacefe:1326704aac0:-8000:000000000000301A end
+        
 
         return (string) $returnValue;
     }

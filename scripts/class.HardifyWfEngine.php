@@ -72,7 +72,7 @@ extends tao_scripts_Runner
 	 */
 	protected function preRun()
 	{
-		// section 127-0-1-1-22592813:12fbf8723a0:-8000:0000000000002FD6 begin
+		
 
 		if(!empty($this->parameters['compile'])){
 			$this->mode = self::MODE_SMOOTH2HARD;
@@ -81,7 +81,7 @@ extends tao_scripts_Runner
 			$this->mode = self::MODE_HARD2SMOOTH;
 		}
 		 
-		// section 127-0-1-1-22592813:12fbf8723a0:-8000:0000000000002FD6 end
+		
 	}
 
 	/**
@@ -93,7 +93,7 @@ extends tao_scripts_Runner
 	 */
 	protected function run()
 	{
-		// section 127-0-1-1-22592813:12fbf8723a0:-8000:0000000000002FD4 begin
+		
 
 		if (!defined('DEBUG_PERSISTENCE')){
 			define ('DEBUG_PERSISTENCE', false);
@@ -162,7 +162,7 @@ extends tao_scripts_Runner
 				$this->err('Unknow mode', true);
 		}
 		 
-		// section 127-0-1-1-22592813:12fbf8723a0:-8000:0000000000002FD4 end
+		
 	}
 
 	/**
@@ -174,7 +174,7 @@ extends tao_scripts_Runner
 	 */
 	protected function postRun()
 	{
-		// section 127-0-1-1-22592813:12fbf8723a0:-8000:0000000000002FD8 begin
+		
 
 		$referencer = core_kernel_persistence_hardapi_ResourceReferencer::singleton();
 		$referencer->clearCaches();
@@ -247,7 +247,7 @@ extends tao_scripts_Runner
 		}
 		 
 		$this->out("\nFinished !\n", array('color' => 'light_blue'));
-		// section 127-0-1-1-22592813:12fbf8723a0:-8000:0000000000002FD8 end
+		
 	}
 
 } /* end of class wfEngine_scripts_HardifyWfEngine */

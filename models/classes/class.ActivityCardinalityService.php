@@ -51,13 +51,13 @@ class wfEngine_models_classes_ActivityCardinalityService
     {
         $returnValue = (bool) false;
 
-        // section 127-0-1-1-6eb1148b:132b4a0f8d0:-8000:000000000000304F begin
+        
 		
 		if(!empty($object) && $object instanceof core_kernel_classes_Resource){
 			$returnValue = $object->hasType(new core_kernel_classes_Class(CLASS_ACTIVITYCARDINALITY));
 		}
 		
-        // section 127-0-1-1-6eb1148b:132b4a0f8d0:-8000:000000000000304F end
+        
 
         return (bool) $returnValue;
     }
@@ -75,7 +75,7 @@ class wfEngine_models_classes_ActivityCardinalityService
     {
         $returnValue = null;
 
-        // section 127-0-1-1-6eb1148b:132b4a0f8d0:-8000:0000000000003052 begin
+        
 		$cardinalityValue = null;
 		if(is_numeric($cardinality)){
 			$cardinalityValue = intval($cardinality);
@@ -91,7 +91,7 @@ class wfEngine_models_classes_ActivityCardinalityService
 			));
 		}
 		
-        // section 127-0-1-1-6eb1148b:132b4a0f8d0:-8000:0000000000003052 end
+        
 
         return $returnValue;
     }
@@ -109,9 +109,9 @@ class wfEngine_models_classes_ActivityCardinalityService
     {
         $returnValue = null;
 
-        // section 127-0-1-1-6eb1148b:132b4a0f8d0:-8000:0000000000003058 begin
+        
 		$returnValue = $this->getDestination($activityCardinality);
-        // section 127-0-1-1-6eb1148b:132b4a0f8d0:-8000:0000000000003058 end
+        
 
         return $returnValue;
     }
@@ -129,7 +129,7 @@ class wfEngine_models_classes_ActivityCardinalityService
     {
         $returnValue = null;
 
-        // section 127-0-1-1-6eb1148b:132b4a0f8d0:-8000:000000000000305B begin
+        
 		//TODO: to be cached
 		if(!is_null($activityCardinality)){
 			
@@ -159,7 +159,7 @@ class wfEngine_models_classes_ActivityCardinalityService
 				throw new wfEngine_models_classes_ProcessDefinitonException('cardinality must be a integer or a process variable of an integer');
 			}
 		}
-        // section 127-0-1-1-6eb1148b:132b4a0f8d0:-8000:000000000000305B end
+        
 
         return $returnValue;
     }
@@ -173,8 +173,8 @@ class wfEngine_models_classes_ActivityCardinalityService
      */
     public function __construct()
     {
-        // section 127-0-1-1-6eb1148b:132b4a0f8d0:-8000:0000000000003064 begin
-        // section 127-0-1-1-6eb1148b:132b4a0f8d0:-8000:0000000000003064 end
+        
+        
     }
 
     /**
@@ -190,7 +190,7 @@ class wfEngine_models_classes_ActivityCardinalityService
     {
         $returnValue = (bool) false;
 
-        // section 127-0-1-1-6eb1148b:132b4a0f8d0:-8000:0000000000003067 begin
+        
 		//TODO: to be cached
 		if(!is_null($activityCardinality)){
 			$returnValue = $activityCardinality->editPropertyValues(
@@ -198,7 +198,7 @@ class wfEngine_models_classes_ActivityCardinalityService
 				intval($cardinality)
 			);
 		}
-        // section 127-0-1-1-6eb1148b:132b4a0f8d0:-8000:0000000000003067 end
+        
 
         return (bool) $returnValue;
     }
@@ -216,9 +216,9 @@ class wfEngine_models_classes_ActivityCardinalityService
     {
         $returnValue = (bool) false;
 
-        // section 127-0-1-1-2c295278:132fc7ce41a:-8000:00000000000030D2 begin
+        
 		$returnValue = $activityCardinality->editPropertyValues(new core_kernel_classes_Property(PROPERTY_ACTIVITYCARDINALITY_SPLITVARIABLES), $variables);
-        // section 127-0-1-1-2c295278:132fc7ce41a:-8000:00000000000030D2 end
+        
 
         return (bool) $returnValue;
     }
@@ -235,7 +235,7 @@ class wfEngine_models_classes_ActivityCardinalityService
     {
         $returnValue = array();
 
-        // section 127-0-1-1-2c295278:132fc7ce41a:-8000:00000000000030D7 begin
+        
 		
 		foreach($activityCardinality->getPropertyValues(new core_kernel_classes_Property(PROPERTY_ACTIVITYCARDINALITY_SPLITVARIABLES)) as $splitVariableUri){
 			if(common_Utils::isUri($splitVariableUri)){
@@ -243,7 +243,7 @@ class wfEngine_models_classes_ActivityCardinalityService
 			}
 		}
 		
-        // section 127-0-1-1-2c295278:132fc7ce41a:-8000:00000000000030D7 end
+        
 
         return (array) $returnValue;
     }
@@ -261,7 +261,7 @@ class wfEngine_models_classes_ActivityCardinalityService
     {
         $returnValue = null;
 
-        // section 10-30-1--78-1db73770:13a8c80f2ee:-8000:0000000000003B9A begin
+        
 
     	// @TODO consider other properties in case of chained connectors
     	$propNextStep = new core_kernel_classes_Property(PROPERTY_STEP_NEXT);
@@ -276,7 +276,7 @@ class wfEngine_models_classes_ActivityCardinalityService
 				}
 			}
 		}
-        // section 10-30-1--78-1db73770:13a8c80f2ee:-8000:0000000000003B9A end
+        
 
         return $returnValue;
     }
@@ -293,13 +293,13 @@ class wfEngine_models_classes_ActivityCardinalityService
     {
         $returnValue = null;
 
-        // section 10-30-1--78-5ba9bc3b:13a91b2b409:-8000:0000000000003BB5 begin
+        
         $sources = $this->getPreviousSteps($cardinality);
         if (count($sources) <> 1) {
         	throw new wfEngine_models_classes_ProcessDefinitonException('Cardinality '.$cardinality->getUri().' has '.count($sources).' sources');
         }
         $returnValue = current($sources);
-        // section 10-30-1--78-5ba9bc3b:13a91b2b409:-8000:0000000000003BB5 end
+        
 
         return $returnValue;
     }
@@ -316,13 +316,13 @@ class wfEngine_models_classes_ActivityCardinalityService
     {
         $returnValue = null;
 
-        // section 10-30-1--78-5ba9bc3b:13a91b2b409:-8000:0000000000003BB8 begin
+        
         $destination = $this->getNextSteps($cardinality);
         if (count($destination) <> 1) {
         	throw new wfEngine_models_classes_ProcessDefinitonException('Cardinality '.$cardinality->getUri().' has '.count($destination).' destinations');
         }
         $returnValue = current($destination);
-        // section 10-30-1--78-5ba9bc3b:13a91b2b409:-8000:0000000000003BB8 end
+        
 
         return $returnValue;
     }

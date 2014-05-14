@@ -51,10 +51,10 @@ class wfEngine_models_classes_TransitionRuleService
     {
         $returnValue = null;
 
-        // section 127-0-1-1-66b8afb4:1322473370c:-8000:0000000000002ED8 begin
+        
         $elseProperty = new core_kernel_classes_Property(PROPERTY_TRANSITIONRULES_ELSE);        
         $returnValue = $rule->getOnePropertyValue($elseProperty);    
-        // section 127-0-1-1-66b8afb4:1322473370c:-8000:0000000000002ED8 end
+        
 
         return $returnValue;
     }
@@ -71,7 +71,7 @@ class wfEngine_models_classes_TransitionRuleService
     {
         $returnValue = null;
 
-        // section 127-0-1-1-66b8afb4:1322473370c:-8000:0000000000002EDB begin
+        
         $thenProperty = new core_kernel_classes_Property(PROPERTY_TRANSITIONRULES_THEN);
         try{
             $returnValue = $rule->getUniquePropertyValue($thenProperty);
@@ -80,7 +80,7 @@ class wfEngine_models_classes_TransitionRuleService
         catch (common_Exception $e){
             throw new wfEngine_models_classes_ProcessExecutionException('Transition Rule ' . $rule->getUri() . ' do not have value for Then Property');
         }
-        // section 127-0-1-1-66b8afb4:1322473370c:-8000:0000000000002EDB end
+        
 
         return $returnValue;
     }
@@ -97,9 +97,9 @@ class wfEngine_models_classes_TransitionRuleService
     {
         $returnValue = (bool) false;
 
-        // section 127-0-1-1-66b8afb4:1322473370c:-8000:0000000000002EDE begin
+        
         $returnValue = $rule->hasType(new core_kernel_classes_Class(CLASS_TRANSITIONRULES));
-        // section 127-0-1-1-66b8afb4:1322473370c:-8000:0000000000002EDE end
+        
 
         return (bool) $returnValue;
     }
@@ -116,10 +116,10 @@ class wfEngine_models_classes_TransitionRuleService
     {
         $returnValue = null;
 
-        // section 127-0-1-1-74734511:1327233d503:-8000:0000000000003032 begin
+        
         $ruleObj = new core_kernel_rules_Rule($rule->getUri());
         $returnValue = $ruleObj->getExpression();
-        // section 127-0-1-1-74734511:1327233d503:-8000:0000000000003032 end
+        
 
         return $returnValue;
     }

@@ -54,8 +54,8 @@ class wfEngine_models_classes_ConnectorService
     {
         $returnValue = (bool) false;
 
-        // section 127-0-1-1-3a6b44f1:1326d50ba09:-8000:00000000000065CB begin
-        // section 127-0-1-1-3a6b44f1:1326d50ba09:-8000:00000000000065CB end
+        
+        
 
         return (bool) $returnValue;
     }
@@ -73,8 +73,8 @@ class wfEngine_models_classes_ConnectorService
     {
         $returnValue = null;
 
-        // section 127-0-1-1-3a6b44f1:1326d50ba09:-8000:00000000000065D0 begin
-        // section 127-0-1-1-3a6b44f1:1326d50ba09:-8000:00000000000065D0 end
+        
+        
 
         return $returnValue;
     }
@@ -92,8 +92,8 @@ class wfEngine_models_classes_ConnectorService
     {
         $returnValue = (bool) false;
 
-        // section 127-0-1-1-3a6b44f1:1326d50ba09:-8000:00000000000065D4 begin
-        // section 127-0-1-1-3a6b44f1:1326d50ba09:-8000:00000000000065D4 end
+        
+        
 
         return (bool) $returnValue;
     }
@@ -110,11 +110,11 @@ class wfEngine_models_classes_ConnectorService
     {
         $returnValue = (bool) false;
 
-        // section 127-0-1-1-4ecae359:132158f9a4c:-8000:0000000000002EBD begin
+        
         if(!is_null($connector)){
             $returnValue = $connector->hasType( new core_kernel_classes_Class(CLASS_CONNECTORS));
         }
-        // section 127-0-1-1-4ecae359:132158f9a4c:-8000:0000000000002EBD end
+        
 
         return (bool) $returnValue;
     }
@@ -132,11 +132,11 @@ class wfEngine_models_classes_ConnectorService
     {
         $returnValue = array();
 
-        // section 127-0-1-1-66b8afb4:1322473370c:-8000:0000000000002EC5 begin
+        
         foreach ($this->getNextSteps($connector) as $next) {
         	$returnValue[$next->getUri()] = $next;
         }
-        // section 127-0-1-1-66b8afb4:1322473370c:-8000:0000000000002EC5 end
+        
 
         return (array) $returnValue;
     }
@@ -154,7 +154,7 @@ class wfEngine_models_classes_ConnectorService
     {
         $returnValue = array();
 
-        // section 127-0-1-1-66b8afb4:1322473370c:-8000:0000000000002ECB begin
+        
         $steps = $this->getPreviousSteps($connector);
         if (!$followCardinalities) {
         	$returnValue = $steps;
@@ -171,7 +171,7 @@ class wfEngine_models_classes_ConnectorService
         		}
         	}
         }
-        // section 127-0-1-1-66b8afb4:1322473370c:-8000:0000000000002ECB end
+        
 
         return (array) $returnValue;
     }
@@ -188,7 +188,7 @@ class wfEngine_models_classes_ConnectorService
     {
         $returnValue = null;
 
-        // section 127-0-1-1-66b8afb4:1322473370c:-8000:0000000000002ECF begin
+        
        	$connTypeProp = new core_kernel_classes_Property(PROPERTY_CONNECTORS_TYPE);
        	try{
        	    $returnValue = $connector->getUniquePropertyValue($connTypeProp);
@@ -196,7 +196,7 @@ class wfEngine_models_classes_ConnectorService
        	catch (common_Exception $e) {
 			throw new wfEngine_models_classes_ProcessDefinitonException('Exception when retreiving connector type ' . $connector->getUri());
        	}
-        // section 127-0-1-1-66b8afb4:1322473370c:-8000:0000000000002ECF end
+        
 
         return $returnValue;
     }
@@ -213,10 +213,10 @@ class wfEngine_models_classes_ConnectorService
     {
         $returnValue = null;
 
-        // section 127-0-1-1-66b8afb4:1322473370c:-8000:0000000000002ED3 begin
+        
         $ruleProp = new core_kernel_classes_Property(PROPERTY_CONNECTORS_TRANSITIONRULE);
         $returnValue = $connector->getOnePropertyValue($ruleProp);
-        // section 127-0-1-1-66b8afb4:1322473370c:-8000:0000000000002ED3 end
+        
 
         return $returnValue;
     }
@@ -232,9 +232,9 @@ class wfEngine_models_classes_ConnectorService
     {
         $returnValue = array();
 
-        // section 127-0-1-1--1e09aee3:133358e11e1:-8000:0000000000003242 begin
+        
         throw new common_exception_Error(__METHOD__.' not yet implemented');
-        // section 127-0-1-1--1e09aee3:133358e11e1:-8000:0000000000003242 end
+        
 
         return (array) $returnValue;
     }

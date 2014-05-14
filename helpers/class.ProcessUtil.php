@@ -50,7 +50,7 @@ class wfEngine_helpers_ProcessUtil
     {
         $returnValue = null;
 
-        // section 10-13-1-39--284957ac:12e4ca5284a:-8000:0000000000002BF2 begin
+        
 		$serviceClass = new core_kernel_classes_Class(CLASS_SUPPORTSERVICES);
 		$services = $serviceClass->searchInstances(array(PROPERTY_SUPPORTSERVICES_URL => $url), array('like' => false, 'recursive' => 1000));
 		if(count($services)){
@@ -60,7 +60,7 @@ class wfEngine_helpers_ProcessUtil
 			}
 		}	
         
-        // section 10-13-1-39--284957ac:12e4ca5284a:-8000:0000000000002BF2 end
+        
 
         return $returnValue;
     }
@@ -77,11 +77,11 @@ class wfEngine_helpers_ProcessUtil
     {
         $returnValue = (bool) false;
 
-        // section 10-13-1-39--284957ac:12e4ca5284a:-8000:0000000000002BF5 begin
+        
 		if(!is_null($resource)){
 			$returnValue = $resource->hasType( new core_kernel_classes_Class(CLASS_ACTIVITIES));
 		}
-        // section 10-13-1-39--284957ac:12e4ca5284a:-8000:0000000000002BF5 end
+        
 
         return (bool) $returnValue;
     }
@@ -98,11 +98,11 @@ class wfEngine_helpers_ProcessUtil
     {
         $returnValue = (bool) false;
 
-        // section 10-13-1-39--284957ac:12e4ca5284a:-8000:0000000000002BFE begin
+        
 		if(!is_null($resource)){
 			$returnValue = $resource->hasType( new core_kernel_classes_Class(CLASS_CONNECTORS));
 		}
-        // section 10-13-1-39--284957ac:12e4ca5284a:-8000:0000000000002BFE end
+        
 
         return (bool) $returnValue;
     }
@@ -119,11 +119,11 @@ class wfEngine_helpers_ProcessUtil
     {
         $returnValue = array();
 
-        // section 127-0-1-1--7eb5a1dd:13214d5811e:-8000:0000000000002E9E begin
+        
         foreach ($variables as $var) {
             $returnValue[$var->uri] = $var->value;
         }
-        // section 127-0-1-1--7eb5a1dd:13214d5811e:-8000:0000000000002E9E end
+        
 
         return (array) $returnValue;
     }
@@ -141,7 +141,7 @@ class wfEngine_helpers_ProcessUtil
     {
         $returnValue = array();
 
-        // section 127-0-1-1-3efeec8d:1361b13fcc8:-8000:00000000000038A6 begin
+        
         $prop = new core_kernel_classes_Property(PROPERTY_PROCESSINSTANCES_ACTIVITYEXECUTIONS);
         $activities = $process->getPropertyValues($prop);
         
@@ -165,7 +165,7 @@ class wfEngine_helpers_ProcessUtil
         	unset($nextmap[$currenturi]);
         	$currenturi = $nexturi;
         }
-        // section 127-0-1-1-3efeec8d:1361b13fcc8:-8000:00000000000038A6 end
+        
 
         return (array) $returnValue;
     }
@@ -181,7 +181,7 @@ class wfEngine_helpers_ProcessUtil
      */
     public static function checkType( core_kernel_classes_Resource $resource,  core_kernel_classes_Class $clazz)
     {
-        // section 127-0-1-1-3efeec8d:1361b13fcc8:-8000:00000000000038AC begin
+        
     	if(!is_null($resource) && !is_null($clazz)){	
 			foreach($resource->getTypes() as $type){
 				if($type instanceof core_kernel_classes_Class){
@@ -192,7 +192,7 @@ class wfEngine_helpers_ProcessUtil
 				}
 			}
 		}
-        // section 127-0-1-1-3efeec8d:1361b13fcc8:-8000:00000000000038AC end
+        
     }
 
     /**
@@ -207,10 +207,10 @@ class wfEngine_helpers_ProcessUtil
     {
         $returnValue = (bool) false;
 
-        // section 127-0-1-1-3efeec8d:1361b13fcc8:-8000:00000000000038AE begin
+        
 		$next = wfEngine_models_classes_StepService::singleton()->getNextSteps($activity);
 		$returnValue = empty($next);
-        // section 127-0-1-1-3efeec8d:1361b13fcc8:-8000:00000000000038AE end
+        
 
         return (bool) $returnValue;
     }
@@ -227,9 +227,9 @@ class wfEngine_helpers_ProcessUtil
     {
         $returnValue = (bool) false;
 
-        // section 127-0-1-1-3efeec8d:1361b13fcc8:-8000:00000000000038B0 begin
+        
         $returnValue = wfEngine_models_classes_ActivityService::singleton()->isInitial($activity);
-        // section 127-0-1-1-3efeec8d:1361b13fcc8:-8000:00000000000038B0 end
+        
 
         return (bool) $returnValue;
     }

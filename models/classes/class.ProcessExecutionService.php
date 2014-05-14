@@ -55,7 +55,7 @@ class wfEngine_models_classes_ProcessExecutionService
     {
         $returnValue = (bool) false;
 
-        // section 127-0-1-1-3a6b44f1:1326d50ba09:-8000:00000000000065CB begin
+        
 		if($this->cache){
 			
 			switch($methodName){
@@ -84,7 +84,7 @@ class wfEngine_models_classes_ProcessExecutionService
 				}
 			}
 		}
-        // section 127-0-1-1-3a6b44f1:1326d50ba09:-8000:00000000000065CB end
+        
 
         return (bool) $returnValue;
     }
@@ -102,7 +102,7 @@ class wfEngine_models_classes_ProcessExecutionService
     {
         $returnValue = null;
 
-        // section 127-0-1-1-3a6b44f1:1326d50ba09:-8000:00000000000065D0 begin
+        
 		if($this->cache){
 			switch($methodName){
 				case __CLASS__.'::getCurrentActivityExecutions':{
@@ -127,7 +127,7 @@ class wfEngine_models_classes_ProcessExecutionService
 		  }
 		}
 		
-        // section 127-0-1-1-3a6b44f1:1326d50ba09:-8000:00000000000065D0 end
+        
 
         return $returnValue;
     }
@@ -145,7 +145,7 @@ class wfEngine_models_classes_ProcessExecutionService
     {
         $returnValue = (bool) false;
 
-        // section 127-0-1-1-3a6b44f1:1326d50ba09:-8000:00000000000065D4 begin
+        
 		if($this->cache){
 			
 			if(empty($methodName)){
@@ -185,7 +185,7 @@ class wfEngine_models_classes_ProcessExecutionService
 				}
 			}
 		}
-        // section 127-0-1-1-3a6b44f1:1326d50ba09:-8000:00000000000065D4 end
+        
 
         return (bool) $returnValue;
     }
@@ -203,7 +203,7 @@ class wfEngine_models_classes_ProcessExecutionService
     {
         $returnValue = (bool) false;
 
-        // section 10-50-1-116-185ba8ba:12f4978614f:-8000:0000000000002D5F begin
+        
 		if($processExecution->hasType($this->processInstancesClass)){
 		
 			if($finishedOnly){
@@ -224,7 +224,7 @@ class wfEngine_models_classes_ProcessExecutionService
 			
 			$returnValue = $processExecution->delete();
 		}
-        // section 10-50-1-116-185ba8ba:12f4978614f:-8000:0000000000002D5F end
+        
 
         return (bool) $returnValue;
     }
@@ -242,7 +242,7 @@ class wfEngine_models_classes_ProcessExecutionService
     {
         $returnValue = (bool) false;
 
-        // section 10-50-1-116-185ba8ba:12f4978614f:-8000:0000000000002D68 begin
+        
 		if(is_array($processExecutions)){
 			if(empty($processExecutions)){
 				$activityExecutionClass = new core_kernel_classes_Class(CLASS_ACTIVITY_EXECUTION);
@@ -284,7 +284,7 @@ class wfEngine_models_classes_ProcessExecutionService
 		else{
 			throw new InvalidArgumentException('$processExecutions must be an array.');
 		}
-        // section 10-50-1-116-185ba8ba:12f4978614f:-8000:0000000000002D68 end
+        
 
         return (bool) $returnValue;
     }
@@ -301,9 +301,9 @@ class wfEngine_models_classes_ProcessExecutionService
     {
         $returnValue = (bool) false;
 
-        // section 10-50-1-116-185ba8ba:12f4978614f:-8000:0000000000002D78 begin
+        
 		$returnValue = $this->checkStatus($processExecution, 'finished');
-        // section 10-50-1-116-185ba8ba:12f4978614f:-8000:0000000000002D78 end
+        
 
         return (bool) $returnValue;
     }
@@ -320,12 +320,12 @@ class wfEngine_models_classes_ProcessExecutionService
     {
         $returnValue = array();
 
-        // section 127-0-1-1-7c36bc99:13092a153cd:-8000:0000000000003B8C begin
+        
         if(!is_null($processDefinition)){
                 $processInstancesClass = new core_kernel_classes_Class(CLASS_PROCESSINSTANCES);
                 $returnValue = $processInstancesClass->searchInstances(array(PROPERTY_PROCESSINSTANCES_EXECUTIONOF => $processDefinition->getUri()));
         }
-        // section 127-0-1-1-7c36bc99:13092a153cd:-8000:0000000000003B8C end
+        
 
         return (array) $returnValue;
     }
@@ -339,7 +339,7 @@ class wfEngine_models_classes_ProcessExecutionService
      */
     public function __construct()
     {
-        // section 127-0-1-1-7c36bc99:13092a153cd:-8000:0000000000003B9A begin
+        
 		
         parent::__construct();
 		
@@ -361,7 +361,7 @@ class wfEngine_models_classes_ProcessExecutionService
 		$this->activityExecutionsProcessExecutionProp = new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_PROCESSEXECUTION);
 		
 		$this->activityExecutionService = wfEngine_models_classes_ActivityExecutionService::singleton();
-        // section 127-0-1-1-7c36bc99:13092a153cd:-8000:0000000000003B9A end
+        
     }
 
     /**
@@ -379,7 +379,7 @@ class wfEngine_models_classes_ProcessExecutionService
     {
         $returnValue = null;
 
-        // section 127-0-1-1-7a69d871:1322a76df3c:-8000:0000000000002F51 begin
+        
 		common_Logger::i('Creating processexecution for '.$processDefinition->getUri());
         
         if(empty($comment)){
@@ -441,7 +441,7 @@ class wfEngine_models_classes_ProcessExecutionService
 			
 		}
 		
-        // section 127-0-1-1-7a69d871:1322a76df3c:-8000:0000000000002F51 end
+        
 
         return $returnValue;
     }
@@ -458,9 +458,9 @@ class wfEngine_models_classes_ProcessExecutionService
     {
         $returnValue = (bool) false;
 
-        // section 127-0-1-1-7a69d871:1322a76df3c:-8000:0000000000002F63 begin
+        
 		$returnValue = $this->checkStatus($processExecution, 'paused');
-        // section 127-0-1-1-7a69d871:1322a76df3c:-8000:0000000000002F63 end
+        
 
         return (bool) $returnValue;
     }
@@ -477,9 +477,9 @@ class wfEngine_models_classes_ProcessExecutionService
     {
         $returnValue = (bool) false;
 
-        // section 127-0-1-1-7a69d871:1322a76df3c:-8000:0000000000002F66 begin
+        
 		$returnValue = $this->checkStatus($processExecution, 'closed');
-        // section 127-0-1-1-7a69d871:1322a76df3c:-8000:0000000000002F66 end
+        
 
         return (bool) $returnValue;
     }
@@ -496,9 +496,9 @@ class wfEngine_models_classes_ProcessExecutionService
     {
         $returnValue = (bool) false;
 
-        // section 127-0-1-1-7a69d871:1322a76df3c:-8000:0000000000002F69 begin
+        
 		$returnValue = $this->setStatus($processExecution, 'paused');
-        // section 127-0-1-1-7a69d871:1322a76df3c:-8000:0000000000002F69 end
+        
 
         return (bool) $returnValue;
     }
@@ -515,9 +515,9 @@ class wfEngine_models_classes_ProcessExecutionService
     {
         $returnValue = (bool) false;
 
-        // section 127-0-1-1-7a69d871:1322a76df3c:-8000:0000000000002F6C begin
+        
 		$returnValue = $this->setStatus($processExecution, 'resumed');
-        // section 127-0-1-1-7a69d871:1322a76df3c:-8000:0000000000002F6C end
+        
 
         return (bool) $returnValue;
     }
@@ -534,11 +534,11 @@ class wfEngine_models_classes_ProcessExecutionService
     {
         $returnValue = (bool) false;
 
-        // section 127-0-1-1-7a69d871:1322a76df3c:-8000:0000000000002F70 begin
+        
 		
 		$returnValue = $this->setStatus($processExecution, 'finished');
 		
-        // section 127-0-1-1-7a69d871:1322a76df3c:-8000:0000000000002F70 end
+        
 
         return (bool) $returnValue;
     }
@@ -555,7 +555,7 @@ class wfEngine_models_classes_ProcessExecutionService
     {
         $returnValue = (bool) false;
 
-        // section 127-0-1-1-7a69d871:1322a76df3c:-8000:0000000000002F76 begin
+        
 		
 		$returnValue = $this->setStatus($processExecution, 'closed');
 		
@@ -564,7 +564,7 @@ class wfEngine_models_classes_ProcessExecutionService
 		//remove the current tokens
 		$this->removeCurrentActivityExecutions($processExecution);
 		
-        // section 127-0-1-1-7a69d871:1322a76df3c:-8000:0000000000002F76 end
+        
 
         return (bool) $returnValue;
     }
@@ -582,7 +582,7 @@ class wfEngine_models_classes_ProcessExecutionService
     {
         $returnValue = (bool) false;
 
-        // section 127-0-1-1-7a69d871:1322a76df3c:-8000:0000000000002F79 begin
+        
 
 		if (!empty($status)){
 			if($status instanceof core_kernel_classes_Resource){
@@ -630,7 +630,7 @@ class wfEngine_models_classes_ProcessExecutionService
 			}
 		}
 		
-        // section 127-0-1-1-7a69d871:1322a76df3c:-8000:0000000000002F79 end
+        
 
         return (bool) $returnValue;
     }
@@ -647,7 +647,7 @@ class wfEngine_models_classes_ProcessExecutionService
     {
         $returnValue = null;
 
-        // section 127-0-1-1-7a69d871:1322a76df3c:-8000:0000000000002F7D begin
+        
 		$returnValue = $this->getCache(__METHOD__, array($processExecution));
 		if(empty($returnValue)){
 			try {
@@ -674,7 +674,7 @@ class wfEngine_models_classes_ProcessExecutionService
 			
 		}
 		
-        // section 127-0-1-1-7a69d871:1322a76df3c:-8000:0000000000002F7D end
+        
 
         return $returnValue;
     }
@@ -692,7 +692,7 @@ class wfEngine_models_classes_ProcessExecutionService
     {
         $returnValue = (bool) false;
 
-        // section 127-0-1-1-7a69d871:1322a76df3c:-8000:0000000000002F80 begin
+        
 
 		$processStatus = $this->getStatus($processExecution);
 		
@@ -729,7 +729,7 @@ class wfEngine_models_classes_ProcessExecutionService
 			}
 		}
 		
-        // section 127-0-1-1-7a69d871:1322a76df3c:-8000:0000000000002F80 end
+        
 
         return (bool) $returnValue;
     }
@@ -747,7 +747,7 @@ class wfEngine_models_classes_ProcessExecutionService
     {
         $returnValue = null;
 
-        // section 127-0-1-1-7a69d871:1322a76df3c:-8000:0000000000002F84 begin
+        
 		$session = PHPSession::singleton();
         
 		$session->setAttribute("activityExecutionUri", $activityExecution->getUri());
@@ -892,7 +892,7 @@ class wfEngine_models_classes_ProcessExecutionService
 			$this->resume($processExecution);
 		}		
 		
-        // section 127-0-1-1-7a69d871:1322a76df3c:-8000:0000000000002F84 end
+        
 
         return $returnValue;
     }
@@ -911,7 +911,7 @@ class wfEngine_models_classes_ProcessExecutionService
     {
         $returnValue = null;
 
-        // section 127-0-1-1-7a69d871:1322a76df3c:-8000:0000000000002F88 begin
+        
 		
 		//check if the transition is possible, e.g. process is not finished
 		if($this->isFinished($processExecution)){
@@ -948,7 +948,7 @@ class wfEngine_models_classes_ProcessExecutionService
 			$returnValue = false;
 		}
 		
-        // section 127-0-1-1-7a69d871:1322a76df3c:-8000:0000000000002F88 end
+        
 
         return $returnValue;
     }
@@ -967,7 +967,7 @@ class wfEngine_models_classes_ProcessExecutionService
     {
         $returnValue = null;
 
-        // section 127-0-1-1--4b38ca35:1323a4c748d:-8000:0000000000002F87 begin
+        
 		
 		$connectorService = wfEngine_models_classes_ConnectorService::singleton();
 		$activityService = wfEngine_models_classes_ActivityService::singleton();
@@ -1024,7 +1024,7 @@ class wfEngine_models_classes_ProcessExecutionService
 			}
 		}
 		
-        // section 127-0-1-1--4b38ca35:1323a4c748d:-8000:0000000000002F87 end
+        
 
         return $returnValue;
     }
@@ -1043,7 +1043,7 @@ class wfEngine_models_classes_ProcessExecutionService
     {
         $returnValue = array();
 
-        // section 127-0-1-1--4b38ca35:1323a4c748d:-8000:0000000000002F8B begin
+        
 		
 		$activityService = wfEngine_models_classes_ActivityService::singleton();
 		$connectorService = wfEngine_models_classes_ConnectorService::singleton();
@@ -1087,7 +1087,7 @@ class wfEngine_models_classes_ProcessExecutionService
 //			var_dump('else', $returnValue);
 		}
 		
-        // section 127-0-1-1--4b38ca35:1323a4c748d:-8000:0000000000002F8B end
+        
 
         return (array) $returnValue;
     }
@@ -1106,7 +1106,7 @@ class wfEngine_models_classes_ProcessExecutionService
     {
         $returnValue = null;
 
-        // section 127-0-1-1--4b38ca35:1323a4c748d:-8000:0000000000002F8F begin
+        
 		
 		$connectorService = wfEngine_models_classes_ConnectorService::singleton();
 		$cardinalityService = wfEngine_models_classes_ActivityCardinalityService::singleton();
@@ -1174,7 +1174,7 @@ class wfEngine_models_classes_ProcessExecutionService
 			$returnValue = false;
 		}
 		
-        // section 127-0-1-1--4b38ca35:1323a4c748d:-8000:0000000000002F8F end
+        
 
         return $returnValue;
     }
@@ -1191,7 +1191,7 @@ class wfEngine_models_classes_ProcessExecutionService
     {
         $returnValue = null;
 
-        // section 127-0-1-1--42c550f9:1323e0e4fe5:-8000:0000000000002FB6 begin
+        
 		
 		$returnValue = $this->getCache(__METHOD__, array($processExecution));
 		if(empty($returnValue)){
@@ -1206,7 +1206,7 @@ class wfEngine_models_classes_ProcessExecutionService
 			}
 		}
 		
-        // section 127-0-1-1--42c550f9:1323e0e4fe5:-8000:0000000000002FB6 end
+        
 
         return $returnValue;
     }
@@ -1224,7 +1224,7 @@ class wfEngine_models_classes_ProcessExecutionService
     {
         $returnValue = (bool) false;
 
-        // section 127-0-1-1--6e0edde7:13247ef74e0:-8000:0000000000002FC7 begin
+        
 		
 		if(!is_null($processExecution)){
             if(!is_array($activityExecutions) && !empty($activityExecutions) && $activityExecutions instanceof core_kernel_classes_Resource){
@@ -1239,7 +1239,7 @@ class wfEngine_models_classes_ProcessExecutionService
 			}
         }
 		
-        // section 127-0-1-1--6e0edde7:13247ef74e0:-8000:0000000000002FC7 end
+        
 
         return (bool) $returnValue;
     }
@@ -1258,7 +1258,7 @@ class wfEngine_models_classes_ProcessExecutionService
     {
         $returnValue = array();
 
-        // section 127-0-1-1--6e0edde7:13247ef74e0:-8000:0000000000002FCD begin
+        
 		
 		$allCurrentActivityExecutions = array();
 		
@@ -1306,7 +1306,7 @@ class wfEngine_models_classes_ProcessExecutionService
 		}
         
 		
-        // section 127-0-1-1--6e0edde7:13247ef74e0:-8000:0000000000002FCD end
+        
 
         return (array) $returnValue;
     }
@@ -1327,7 +1327,7 @@ class wfEngine_models_classes_ProcessExecutionService
     {
         $returnValue = null;
 
-        // section 127-0-1-1--6e0edde7:13247ef74e0:-8000:0000000000002FD5 begin
+        
 		if(!is_null($processExecution) && !is_null($activityExecution) && !is_null($user)){
              
 			$assignedUser = $this->activityExecutionService->getActivityExecutionUser($activityExecution);
@@ -1363,7 +1363,7 @@ class wfEngine_models_classes_ProcessExecutionService
 			}
 			
         }
-        // section 127-0-1-1--6e0edde7:13247ef74e0:-8000:0000000000002FD5 end
+        
 
         return $returnValue;
     }
@@ -1382,7 +1382,7 @@ class wfEngine_models_classes_ProcessExecutionService
     {
         $returnValue = array();
 
-        // section 127-0-1-1--6e0edde7:13247ef74e0:-8000:0000000000002FE5 begin
+        
 		
 		//old method to return available current definition:
 		$currentActivityExecutions = $this->getCurrentActivityExecutions($processExecution);
@@ -1416,7 +1416,7 @@ class wfEngine_models_classes_ProcessExecutionService
 		
 		//suggestion: check ACL on the return values of this method
 		
-        // section 127-0-1-1--6e0edde7:13247ef74e0:-8000:0000000000002FE5 end
+        
 
         return (array) $returnValue;
     }
@@ -1434,7 +1434,7 @@ class wfEngine_models_classes_ProcessExecutionService
     {
         $returnValue = (bool) false;
 
-        // section 127-0-1-1--5016dfa1:1324df105c5:-8000:0000000000003022 begin
+        
 		
 		if(!is_null($processExecution)){
             if(!is_array($activityExecutions) && !empty($activityExecutions) && $activityExecutions instanceof core_kernel_classes_Resource){
@@ -1469,7 +1469,7 @@ class wfEngine_models_classes_ProcessExecutionService
 			}
         }
 		
-        // section 127-0-1-1--5016dfa1:1324df105c5:-8000:0000000000003022 end
+        
 
         return (bool) $returnValue;
     }
@@ -1486,7 +1486,7 @@ class wfEngine_models_classes_ProcessExecutionService
     {
         $returnValue = array();
 
-        // section 127-0-1-1--1e75179b:1325dc5c4e1:-8000:0000000000003012 begin
+        
 		
 		$previousProperty = new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_PREVIOUS);
 		$followingProperty = new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_FOLLOWING);
@@ -1546,7 +1546,7 @@ class wfEngine_models_classes_ProcessExecutionService
 		}
 		
 		ksort($returnValue);
-        // section 127-0-1-1--1e75179b:1325dc5c4e1:-8000:0000000000003012 end
+        
 
         return (array) $returnValue;
     }
@@ -1564,7 +1564,7 @@ class wfEngine_models_classes_ProcessExecutionService
     {
         $returnValue = array();
 
-        // section 127-0-1-1-6eb1148b:132b4a0f8d0:-8000:000000000000306D begin
+        
 		$connectorService = wfEngine_models_classes_ConnectorService::singleton();
 		$cardinalityService = wfEngine_models_classes_ActivityCardinalityService::singleton();
 		
@@ -1585,7 +1585,7 @@ class wfEngine_models_classes_ProcessExecutionService
 			
 		}
 		
-        // section 127-0-1-1-6eb1148b:132b4a0f8d0:-8000:000000000000306D end
+        
 
         return (array) $returnValue;
     }
@@ -1603,7 +1603,7 @@ class wfEngine_models_classes_ProcessExecutionService
     {
         $returnValue = array();
 
-        // section 127-0-1-1--1b682bf3:132cdc3fef4:-8000:000000000000307A begin
+        
 		
 		$currentActivityExecutions = $this->getCurrentActivityExecutions($processExecution);
 		$propActivityExecutionCurrentUser = new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_CURRENT_USER);
@@ -1620,7 +1620,7 @@ class wfEngine_models_classes_ProcessExecutionService
 				$returnValue[$currentActivityExecution->getUri()] = $currentActivityExecution;
 			}
 		}	
-        // section 127-0-1-1--1b682bf3:132cdc3fef4:-8000:000000000000307A end
+        
 
         return (array) $returnValue;
     }
@@ -1640,7 +1640,7 @@ class wfEngine_models_classes_ProcessExecutionService
     {
         $returnValue = array();
 
-        // section 127-0-1-1--32040631:1334998261c:-8000:0000000000003246 begin
+        
 		
 		$previousProperty = new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_PREVIOUS);
 		$followingProperty = new core_kernel_classes_Property(PROPERTY_ACTIVITY_EXECUTION_FOLLOWING);
@@ -1717,7 +1717,7 @@ class wfEngine_models_classes_ProcessExecutionService
 			$returnValue[] = $unorderedActivityExecutions[$uri];
 		}
 		
-        // section 127-0-1-1--32040631:1334998261c:-8000:0000000000003246 end
+        
 
         return (array) $returnValue;
     }
@@ -1735,7 +1735,7 @@ class wfEngine_models_classes_ProcessExecutionService
     {
         $returnValue = (bool) false;
 
-        // section 127-0-1-1-6e321c4d:13349bf5055:-8000:000000000000324A begin
+        
 		
 		$allowed = false;
 		
@@ -1791,7 +1791,7 @@ class wfEngine_models_classes_ProcessExecutionService
 			$returnValue = $this->setCurrentActivityExecutions($processExecution, $restoringActivityExecutions);
 		}
 		
-        // section 127-0-1-1-6e321c4d:13349bf5055:-8000:000000000000324A end
+        
 
         return (bool) $returnValue;
     }

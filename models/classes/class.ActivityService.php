@@ -53,7 +53,7 @@ class wfEngine_models_classes_ActivityService
     {
         $returnValue = (bool) false;
 
-        // section 127-0-1-1-3a6b44f1:1326d50ba09:-8000:00000000000065CB begin
+        
 		if($this->cache){
 			
 			switch($methodName){
@@ -79,7 +79,7 @@ class wfEngine_models_classes_ActivityService
 		}
 			
 		}
-        // section 127-0-1-1-3a6b44f1:1326d50ba09:-8000:00000000000065CB end
+        
 
         return (bool) $returnValue;
     }
@@ -97,7 +97,7 @@ class wfEngine_models_classes_ActivityService
     {
         $returnValue = null;
 
-        // section 127-0-1-1-3a6b44f1:1326d50ba09:-8000:00000000000065D0 begin
+        
 		if($this->cache){
 			
 			switch($methodName){
@@ -122,7 +122,7 @@ class wfEngine_models_classes_ActivityService
 			}
 			
 		}
-        // section 127-0-1-1-3a6b44f1:1326d50ba09:-8000:00000000000065D0 end
+        
 
         return $returnValue;
     }
@@ -140,8 +140,8 @@ class wfEngine_models_classes_ActivityService
     {
         $returnValue = (bool) false;
 
-        // section 127-0-1-1-3a6b44f1:1326d50ba09:-8000:00000000000065D4 begin
-        // section 127-0-1-1-3a6b44f1:1326d50ba09:-8000:00000000000065D4 end
+        
+        
 
         return (bool) $returnValue;
     }
@@ -155,12 +155,12 @@ class wfEngine_models_classes_ActivityService
      */
     protected function __construct()
     {
-        // section 127-0-1-1--384c890a:132d352d389:-8000:00000000000030A8 begin
+        
 		
 		$this->instancesCache = array();
 		$this->cache = true;
 		parent::__construct();
-        // section 127-0-1-1--384c890a:132d352d389:-8000:00000000000030A8 end
+        
     }
 
     /**
@@ -175,7 +175,7 @@ class wfEngine_models_classes_ActivityService
     {
         $returnValue = array();
 
-        // section 127-0-1-1--7eb5a1dd:13214d5811e:-8000:0000000000002E84 begin
+        
 		$possibleValues = array(INSTANCE_CONTROL_BACKWARD, INSTANCE_CONTROL_FORWARD); 
 		$propValues = $activity->getPropertyValues(new core_kernel_classes_Property(PROPERTY_ACTIVITIES_CONTROLS));
 		foreach ($propValues as $value) {
@@ -186,7 +186,7 @@ class wfEngine_models_classes_ActivityService
 		if($this->isInitial($activity)){
 			$returnValue[INSTANCE_CONTROL_BACKWARD] = false ;
 		}
-        // section 127-0-1-1--7eb5a1dd:13214d5811e:-8000:0000000000002E84 end
+        
 
         return (array) $returnValue;
     }
@@ -203,7 +203,7 @@ class wfEngine_models_classes_ActivityService
     {
         $returnValue = array();
 
-        // section 127-0-1-1--7eb5a1dd:13214d5811e:-8000:0000000000002E92 begin
+        
         
 		$services = $activity->getPropertyValuesCollection(new core_kernel_classes_Property(PROPERTY_ACTIVITIES_INTERACTIVESERVICES));
 		foreach($services->getIterator() as $service){
@@ -212,7 +212,7 @@ class wfEngine_models_classes_ActivityService
 			}
 		}
 
-        // section 127-0-1-1--7eb5a1dd:13214d5811e:-8000:0000000000002E92 end
+        
 
         return (array) $returnValue;
     }
@@ -229,7 +229,7 @@ class wfEngine_models_classes_ActivityService
     {
         $returnValue = (bool) false;
 
-        // section 127-0-1-1-4ecae359:132158f9a4c:-8000:0000000000002EA3 begin
+        
 		$cachedValue = $this->getCache(__METHOD__, array($activity));
 		if(!is_null($cachedValue) && is_bool($cachedValue)){
 			$returnValue = $cachedValue;
@@ -243,7 +243,7 @@ class wfEngine_models_classes_ActivityService
 			$this->setCache(__METHOD__, array($activity), $returnValue);
 		}
         
-        // section 127-0-1-1-4ecae359:132158f9a4c:-8000:0000000000002EA3 end
+        
 
         return (bool) $returnValue;
     }
@@ -260,12 +260,12 @@ class wfEngine_models_classes_ActivityService
     {
         $returnValue = (bool) false;
 
-        // section 127-0-1-1-4ecae359:132158f9a4c:-8000:0000000000002EA7 begin
+        
         $nextConnectors = $this->getNextConnectors($activity);
         if(count($nextConnectors) == 0){
             $returnValue = true;
         }
-        // section 127-0-1-1-4ecae359:132158f9a4c:-8000:0000000000002EA7 end
+        
 
         return (bool) $returnValue;
     }
@@ -282,7 +282,7 @@ class wfEngine_models_classes_ActivityService
     {
         $returnValue = array();
 
-        // section 127-0-1-1-4ecae359:132158f9a4c:-8000:0000000000002EAB begin
+        
 		
 		$cachedValue = $this->getCache(__METHOD__, array($activity));
 		if(!is_null($cachedValue) && is_array($cachedValue)){
@@ -295,7 +295,7 @@ class wfEngine_models_classes_ActivityService
 			$this->getCache(__METHOD__, array($activity), $returnValue);
 		}
 		
-        // section 127-0-1-1-4ecae359:132158f9a4c:-8000:0000000000002EAB end
+        
 
         return (array) $returnValue;
     }
@@ -312,11 +312,11 @@ class wfEngine_models_classes_ActivityService
     {
         $returnValue = (bool) false;
 
-        // section 127-0-1-1-4ecae359:132158f9a4c:-8000:0000000000002EB8 begin
+        
         if(!is_null($activity)){
             $returnValue = $activity->hasType( new core_kernel_classes_Class(CLASS_ACTIVITIES));
         }
-        // section 127-0-1-1-4ecae359:132158f9a4c:-8000:0000000000002EB8 end
+        
 
         return (bool) $returnValue;
     }
@@ -333,7 +333,7 @@ class wfEngine_models_classes_ActivityService
     {
         $returnValue = (bool) false;
 
-        // section 127-0-1-1-52a9110:13219ee179c:-8000:0000000000002EBE begin
+        
 		$cachedValue = $this->getCache(__METHOD__, array($activity));
 		if(!is_null($cachedValue) && is_bool($cachedValue)){
 			$returnValue = $cachedValue;
@@ -348,7 +348,7 @@ class wfEngine_models_classes_ActivityService
 			$this->setCache(__METHOD__, array($activity), $returnValue);
 		}
         
-        // section 127-0-1-1-52a9110:13219ee179c:-8000:0000000000002EBE end
+        
 
         return (bool) $returnValue;
     }
@@ -365,7 +365,7 @@ class wfEngine_models_classes_ActivityService
     {
         $returnValue = null;
 
-        // section 127-0-1-1--4b38ca35:1323a4c748d:-8000:0000000000002F84 begin
+        
 		
 		$connectors = $this->getNextConnectors($activity);
 		$countConnectors = count($connectors);
@@ -398,7 +398,7 @@ class wfEngine_models_classes_ActivityService
 			//it is the final activity
 		}
 		
-        // section 127-0-1-1--4b38ca35:1323a4c748d:-8000:0000000000002F84 end
+        
 
         return $returnValue;
     }
@@ -417,7 +417,7 @@ class wfEngine_models_classes_ActivityService
     {
         $returnValue = (bool) false;
 
-        // section 127-0-1-1--1b682bf3:132cdc3fef4:-8000:000000000000309D begin
+        
 		
 		//check the kind of resources
         if($this->getClass($activity)->getUri() != CLASS_ACTIVITIES){
@@ -455,7 +455,7 @@ class wfEngine_models_classes_ActivityService
         //bind the mode and the target (user or role) to the activity
         $returnValue = $this->bindProperties($activity, $properties);
 		
-        // section 127-0-1-1--1b682bf3:132cdc3fef4:-8000:000000000000309D end
+        
 
         return (bool) $returnValue;
     }
@@ -471,7 +471,7 @@ class wfEngine_models_classes_ActivityService
     {
         $returnValue = array();
 
-        // section 127-0-1-1--1b682bf3:132cdc3fef4:-8000:00000000000030A2 begin
+        
 		$returnValue = $this->getCache(__METHOD__);
 		if(is_null($returnValue)){
 			$aclModeClass = new core_kernel_classes_Class(CLASS_ACL_MODES);
@@ -480,7 +480,7 @@ class wfEngine_models_classes_ActivityService
 			}
 			$this->setCache(__METHOD__, array(), $returnValue);
 		}
-        // section 127-0-1-1--1b682bf3:132cdc3fef4:-8000:00000000000030A2 end
+        
 
         return (array) $returnValue;
     }
@@ -498,14 +498,14 @@ class wfEngine_models_classes_ActivityService
     {
         $returnValue = (bool) false;
 
-        // section 127-0-1-1--1e09aee3:133358e11e1:-8000:0000000000003233 begin
+        
 		
 		$propHidden = new core_kernel_classes_Property(PROPERTY_ACTIVITIES_ISHIDDEN);
 		$hidden = (bool) $hidden;
 		$returnValue = $activity->editPropertyValues($propHidden, ($hidden)?GENERIS_TRUE:GENERIS_FALSE);
 		$this->setCache(__CLASS__.'::isHidden', array($activity), $hidden);
 		
-        // section 127-0-1-1--1e09aee3:133358e11e1:-8000:0000000000003233 end
+        
 
         return (bool) $returnValue;
     }
@@ -523,7 +523,7 @@ class wfEngine_models_classes_ActivityService
     {
         $returnValue = (bool) false;
 
-        // section 127-0-1-1--1e09aee3:133358e11e1:-8000:000000000000323B begin
+        
 		$possibleValues = $this->getAllControls();
 		if(is_array($controls)){
 			$values = array();
@@ -535,7 +535,7 @@ class wfEngine_models_classes_ActivityService
 			$returnValue = $activity->editPropertyValues(new core_kernel_classes_Property(PROPERTY_ACTIVITIES_CONTROLS), $values);
 		}
 		
-        // section 127-0-1-1--1e09aee3:133358e11e1:-8000:000000000000323B end
+        
 
         return (bool) $returnValue;
     }
@@ -551,9 +551,9 @@ class wfEngine_models_classes_ActivityService
     {
         $returnValue = array();
 
-        // section 127-0-1-1--1e09aee3:133358e11e1:-8000:000000000000324F begin
+        
 		$returnValue = array(INSTANCE_CONTROL_BACKWARD, INSTANCE_CONTROL_FORWARD); 
-        // section 127-0-1-1--1e09aee3:133358e11e1:-8000:000000000000324F end
+        
 
         return (array) $returnValue;
     }
@@ -570,7 +570,7 @@ class wfEngine_models_classes_ActivityService
     {
         $returnValue = null;
 
-        // section 10-30-1--78-4ca28256:13aace225cc:-8000:0000000000003BFF begin
+        
 		$processClass = new core_kernel_classes_Class(CLASS_PROCESS);
 		$processes = $processClass->searchInstances(
 			array(PROPERTY_PROCESS_ACTIVITIES => $activity),
@@ -580,7 +580,7 @@ class wfEngine_models_classes_ActivityService
 			throw new common_exception_Error('ActivityDefinition('.$activity->getUri().') is associated to '.count($process).' processes');
 		}
 		$returnValue = current($processes); 
-        // section 10-30-1--78-4ca28256:13aace225cc:-8000:0000000000003BFF end
+        
 
         return $returnValue;
     }

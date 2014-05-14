@@ -74,7 +74,7 @@ class wfEngine_models_classes_ProcessDefinitionService
     {
         $returnValue = array();
 
-        // section 127-0-1-1--6e15d8e:132297dc60d:-8000:0000000000002EEB begin
+        
 		
 		//@TODO: use $this->processRootActivitiesProp property to optimize performance:
 		//@TODO: remove all call of the constant PROPERTY_ACTIVITIES_ISINITIAL
@@ -90,7 +90,7 @@ class wfEngine_models_classes_ProcessDefinitionService
 			}
 		}
 		
-        // section 127-0-1-1--6e15d8e:132297dc60d:-8000:0000000000002EEB end
+        
 
         return (array) $returnValue;
     }
@@ -107,13 +107,13 @@ class wfEngine_models_classes_ProcessDefinitionService
     {
         $returnValue = array();
 
-        // section 127-0-1-1--6e15d8e:132297dc60d:-8000:0000000000002EF0 begin
+        
 		foreach ($processDefinition->getPropertyValuesCollection($this->processActivitiesProp)->getIterator() as $activity){
 			if($activity instanceof core_kernel_classes_Resource){
 				$returnValue[$activity->getUri()] = $activity;
 			}
 		}
-        // section 127-0-1-1--6e15d8e:132297dc60d:-8000:0000000000002EF0 end
+        
 
         return (array) $returnValue;
     }
@@ -130,7 +130,7 @@ class wfEngine_models_classes_ProcessDefinitionService
     {
         $returnValue = array();
 
-        // section 127-0-1-1--6e15d8e:132297dc60d:-8000:0000000000002EF3 begin
+        
 		
 		$rangeProp = new core_kernel_classes_Property(RDFS_RANGE);
 		$widgetProp = new core_kernel_classes_Property(PROPERTY_WIDGET);
@@ -157,7 +157,7 @@ class wfEngine_models_classes_ProcessDefinitionService
 			
 		}
 
-        // section 127-0-1-1--6e15d8e:132297dc60d:-8000:0000000000002EF3 end
+        
 
         return (array) $returnValue;
     }
@@ -171,14 +171,14 @@ class wfEngine_models_classes_ProcessDefinitionService
      */
     protected function __construct()
     {
-        // section 127-0-1-1--6e15d8e:132297dc60d:-8000:0000000000002F01 begin
+        
 		
 		$this->processVariablesProp = new core_kernel_classes_Property(PROPERTY_PROCESS_VARIABLES);
 		$this->processActivitiesProp = new core_kernel_classes_Property(PROPERTY_PROCESS_ACTIVITIES);
 		$this->activitiesIsInitialProp = new core_kernel_classes_Property(PROPERTY_ACTIVITIES_ISINITIAL);
 		$this->processRootActivitiesProp = new core_kernel_classes_Property(PROPERTY_ACTIVITIES_ISINITIAL);
 		
-        // section 127-0-1-1--6e15d8e:132297dc60d:-8000:0000000000002F01 end
+        
     }
 
     /**
@@ -194,7 +194,7 @@ class wfEngine_models_classes_ProcessDefinitionService
     {
         $returnValue = (bool) false;
 
-        // section 127-0-1-1--6e15d8e:132297dc60d:-8000:0000000000002F06 begin
+        
 		if(is_string($processVariable) && !empty ($processVariable)){
 			//is a code:
 			$variableService = wfEngine_models_classes_VariableService::singleton();
@@ -206,7 +206,7 @@ class wfEngine_models_classes_ProcessDefinitionService
 			$returnValue = $processDefinition->setPropertyValue($this->processVariablesProp, $processVariable->getUri());
 		}
 		
-        // section 127-0-1-1--6e15d8e:132297dc60d:-8000:0000000000002F06 end
+        
 
         return (bool) $returnValue;
     }
@@ -224,10 +224,10 @@ class wfEngine_models_classes_ProcessDefinitionService
     {
         $returnValue = (bool) false;
 
-        // section 127-0-1-1--db23604:133a151a3dc:-8000:00000000000033AC begin
+        
 		//@TODO: use this method to set initial process activities
 		$processDefinition->editPropertyValues($this->processRootActivitiesProp, $rootActivities);
-        // section 127-0-1-1--db23604:133a151a3dc:-8000:00000000000033AC end
+        
 
         return (bool) $returnValue;
     }
@@ -246,7 +246,7 @@ class wfEngine_models_classes_ProcessDefinitionService
     {
         $returnValue = null;
 
-        // section 127-0-1-1--db23604:133a151a3dc:-8000:00000000000033B0 begin
+        
 		
         if(!$processDefinition->hasType(new core_kernel_classes_Class(CLASS_PROCESS))){
         	throw new Exception("Process must be an instance of the class Process");
@@ -280,7 +280,7 @@ class wfEngine_models_classes_ProcessDefinitionService
         //bind the mode and the target (user or role) to the activity
         $returnValue = $this->bindProperties($processDefinition, $properties);
 		
-        // section 127-0-1-1--db23604:133a151a3dc:-8000:00000000000033B0 end
+        
 
         return $returnValue;
     }
@@ -298,7 +298,7 @@ class wfEngine_models_classes_ProcessDefinitionService
     {
         $returnValue = (bool) false;
 
-        // section 127-0-1-1--db23604:133a151a3dc:-8000:00000000000033B9 begin
+        
 		
 		if(!is_null($processDefinition)){
 
@@ -336,7 +336,7 @@ class wfEngine_models_classes_ProcessDefinitionService
                 }
             }
         }
-        // section 127-0-1-1--db23604:133a151a3dc:-8000:00000000000033B9 end
+        
 
         return (bool) $returnValue;
     }
@@ -352,12 +352,12 @@ class wfEngine_models_classes_ProcessDefinitionService
     {
         $returnValue = array();
 
-        // section 127-0-1-1--db23604:133a151a3dc:-8000:00000000000033BE begin
+        
 		$returnValue = array(
 			INSTANCE_ACL_ROLE => new core_kernel_classes_Resource(INSTANCE_ACL_ROLE),
 			INSTANCE_ACL_USER => new core_kernel_classes_Resource(INSTANCE_ACL_USER)
 		);
-        // section 127-0-1-1--db23604:133a151a3dc:-8000:00000000000033BE end
+        
 
         return (array) $returnValue;
     }
@@ -374,13 +374,13 @@ class wfEngine_models_classes_ProcessDefinitionService
     {
         $returnValue = array();
 
-        // section 10-30-1--78-4ca28256:13aace225cc:-8000:0000000000003BF3 begin
+        
 		foreach($this->getActivitiesByProcess($process) as $activity){
 			if(wfEngine_models_classes_ActivityService::singleton()->isInitial($activity)){
 				$returnValue[] = $activity;
 			}
 		}	
-        // section 10-30-1--78-4ca28256:13aace225cc:-8000:0000000000003BF3 end
+        
 
         return (array) $returnValue;
     }
