@@ -595,7 +595,6 @@
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyAccessControlModesRoleRestrictedUserInheritedDelivery">
     <rdf:type rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassAccessControlModes"/>
-    <rdfs:comment xml:lang="en-US"><![CDATA[Useful for deliveries]]></rdfs:comment>
     <rdfs:label xml:lang="en-US"><![CDATA[Role Restricted User Inherited Delivery]]></rdfs:label>
     <rdfs:comment xml:lang="en-US"><![CDATA[Role Restricted User Inherited]]></rdfs:comment>
   </rdf:Description>
