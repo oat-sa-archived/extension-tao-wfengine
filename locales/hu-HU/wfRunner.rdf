@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-    @sourceLanguage EN
+    @sourceLanguage en-US
     @targetLanguage hu-HU
 -->
 <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xml:base="http://www.tao.lu/middleware/wfEngine.rdf#">
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#FormalParamProcessDefinition">
     <!--
-    @sourceLanguage EN
+    @sourceLanguage en-US
     @targetLanguage hu-HU
     @source Process Definition
     @subject http://www.tao.lu/middleware/wfEngine.rdf#FormalParamProcessDefinition
@@ -14,7 +14,7 @@
     -->
     <rdfs:label xml:lang="hu-HU"><![CDATA[Process Definition]]></rdfs:label>
     <!--
-    @sourceLanguage EN
+    @sourceLanguage en-US
     @targetLanguage hu-HU
     @source Process Definition Uri
     @subject http://www.tao.lu/middleware/wfEngine.rdf#FormalParamProcessDefinition
@@ -24,7 +24,7 @@
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#FormalParamProcessVariables">
     <!--
-    @sourceLanguage EN
+    @sourceLanguage en-US
     @targetLanguage hu-HU
     @source Process Variables
     @subject http://www.tao.lu/middleware/wfEngine.rdf#FormalParamProcessVariables
@@ -32,7 +32,7 @@
     -->
     <rdfs:label xml:lang="hu-HU"><![CDATA[Process Variables]]></rdfs:label>
     <!--
-    @sourceLanguage EN
+    @sourceLanguage en-US
     @targetLanguage hu-HU
     @source Process Variables Array
     @subject http://www.tao.lu/middleware/wfEngine.rdf#FormalParamProcessVariables
@@ -42,7 +42,7 @@
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#ProcessDefinitionRunner">
     <!--
-    @sourceLanguage EN
+    @sourceLanguage en-US
     @targetLanguage hu-HU
     @source Process Runner
     @subject http://www.tao.lu/middleware/wfEngine.rdf#ProcessDefinitionRunner
@@ -50,7 +50,7 @@
     -->
     <rdfs:label xml:lang="hu-HU"><![CDATA[Process Runner]]></rdfs:label>
     <!--
-    @sourceLanguage EN
+    @sourceLanguage en-US
     @targetLanguage hu-HU
     @source Runs a process definition using the workflow engine
     @subject http://www.tao.lu/middleware/wfEngine.rdf#ProcessDefinitionRunner

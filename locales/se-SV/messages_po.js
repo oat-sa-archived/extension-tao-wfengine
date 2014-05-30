@@ -1,8 +1,0 @@
-/* auto generated content */
-/* lang: se-SV */
-define(function(){
- return {
-   langCode : 'se-SV',
-   i18n_tr : {"(still undefined)":"(fortfarande odefinerat)","Active Process":"Aktiv process","An error occured during request processing":"Ett fel intr\u00e4ffade under f\u00f6rfr\u00e5gad process","Back":"Bak\u00e5t","Else":"Annan","Finished Process":"Process f\u00e4rdig","Forward":"Fram\u00e5t","Home":"Hem","If":"Om","Initialize new Process":"Initialisera ny process","Invalid login or password. Please try again.":"Inget konto matchar det angivna anv\u00e4ndarnamnet\/l\u00f6senordet","Launch Process":"Sp\u00e5ra process","Loading next activity...":"Laddar n\u00e4sta aktivitet...","Login":"Logga in","Logout":"Logga ut","My roles":"Mina roller","Password":"L\u00f6senord","Pause":"Paus","Please confirm the deletion of the activity":"Var v\u00e4nlig och bekr\u00e4fta raderande av aktiviteten.","Process initialization":"Processinitialiserande","Process Tree:":"Processtr\u00e4d","Processes":"Processes","Start\/Resume the case":"Starta\/\u00e5teruppta fallet","Status":"Status","TAO - An Open and Versatile Computer-Based Assessment Platform":"TAO - En \u00f6ppen, smidig och m\u00e5ngsidig datorbaserad utv\u00e4rderingsplattform","TAO Process Engine":"TAO processverktyg","The Processes module allows to create Processes.":"Processmodulen l\u00e5ter dig skapa processer","Then":"D\u00e5","type??":"skriv??","User Id.":"Anv\u00e4ndar-id","User name:":"Anv\u00e4ndarnamn:","Welcome to TAO Process Engine":"V\u00e4lkommen till TAO processverktyg","Workflow Engine":"Arbetsfl\u00f6desverktyg"}
- };
-});

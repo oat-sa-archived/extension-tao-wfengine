@@ -1,2107 +1,2099 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
 -->
 <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xml:base="http://www.tao.lu/middleware/wfEngine.rdf#">
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#ClassStep">
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Step
     @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassStep
     @predicate http://www.w3.org/2000/01/rdf-schema#label
     -->
-    <rdfs:label xml:lang="se-SV"><![CDATA[Step]]></rdfs:label>
+    <rdfs:label xml:lang="sv-SE"><![CDATA[Step]]></rdfs:label>
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Process Step
     @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassStep
     @predicate http://www.w3.org/2000/01/rdf-schema#comment
     -->
-    <rdfs:comment xml:lang="se-SV"><![CDATA[Process Step]]></rdfs:comment>
+    <rdfs:comment xml:lang="sv-SE"><![CDATA[Process Step]]></rdfs:comment>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyStepNext">
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source nextStep
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyStepNext
     @predicate http://www.w3.org/2000/01/rdf-schema#label
     -->
-    <rdfs:label xml:lang="se-SV"><![CDATA[nextStep]]></rdfs:label>
+    <rdfs:label xml:lang="sv-SE"><![CDATA[nextStep]]></rdfs:label>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyTransitionRulesThen">
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Then
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyTransitionRulesThen
     @predicate http://www.w3.org/2000/01/rdf-schema#label
     -->
-    <rdfs:label xml:lang="se-SV"><![CDATA[Then]]></rdfs:label>
+    <rdfs:label xml:lang="sv-SE"><![CDATA[Then]]></rdfs:label>
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Then statement
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyTransitionRulesThen
     @predicate http://www.w3.org/2000/01/rdf-schema#comment
     -->
-    <rdfs:comment xml:lang="se-SV"><![CDATA[Then statement]]></rdfs:comment>
+    <rdfs:comment xml:lang="sv-SE"><![CDATA[Then statement]]></rdfs:comment>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#ClassCallOfservicesResources">
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Call Of services Resources
     @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassCallOfservicesResources
     @predicate http://www.w3.org/2000/01/rdf-schema#label
     -->
-    <rdfs:label xml:lang="se-SV"><![CDATA[Call Of services Resources]]></rdfs:label>
+    <rdfs:label xml:lang="sv-SE"><![CDATA[Call Of services Resources]]></rdfs:label>
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Call of services Resources
     @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassCallOfservicesResources
     @predicate http://www.w3.org/2000/01/rdf-schema#comment
     -->
-    <rdfs:comment xml:lang="se-SV"><![CDATA[Call of services Resources]]></rdfs:comment>
+    <rdfs:comment xml:lang="sv-SE"><![CDATA[Call of services Resources]]></rdfs:comment>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#ClassServiceDefinitionResources">
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Services Definition Resources
     @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassServiceDefinitionResources
     @predicate http://www.w3.org/2000/01/rdf-schema#label
     -->
-    <rdfs:label xml:lang="se-SV"><![CDATA[Services Definition Resources]]></rdfs:label>
+    <rdfs:label xml:lang="sv-SE"><![CDATA[Services Definition Resources]]></rdfs:label>
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Services Definition Resources
     @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassServiceDefinitionResources
     @predicate http://www.w3.org/2000/01/rdf-schema#comment
     -->
-    <rdfs:comment xml:lang="se-SV"><![CDATA[Services Definition Resources]]></rdfs:comment>
+    <rdfs:comment xml:lang="sv-SE"><![CDATA[Services Definition Resources]]></rdfs:comment>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessDefinitionResources">
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Process Definition Resources
     @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessDefinitionResources
     @predicate http://www.w3.org/2000/01/rdf-schema#label
     -->
-    <rdfs:label xml:lang="se-SV"><![CDATA[Process Definition Resources]]></rdfs:label>
+    <rdfs:label xml:lang="sv-SE"><![CDATA[Process Definition Resources]]></rdfs:label>
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Process Definition Resources
     @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessDefinitionResources
     @predicate http://www.w3.org/2000/01/rdf-schema#comment
     -->
-    <rdfs:comment xml:lang="se-SV"><![CDATA[Process Definition Resources]]></rdfs:comment>
+    <rdfs:comment xml:lang="sv-SE"><![CDATA[Process Definition Resources]]></rdfs:comment>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#ClassServicesResources">
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Services Resources
     @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassServicesResources
     @predicate http://www.w3.org/2000/01/rdf-schema#label
     -->
-    <rdfs:label xml:lang="se-SV"><![CDATA[Services Resources]]></rdfs:label>
+    <rdfs:label xml:lang="sv-SE"><![CDATA[Services Resources]]></rdfs:label>
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Services Resources
     @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassServicesResources
     @predicate http://www.w3.org/2000/01/rdf-schema#comment
     -->
-    <rdfs:comment xml:lang="se-SV"><![CDATA[Services Resources]]></rdfs:comment>
+    <rdfs:comment xml:lang="sv-SE"><![CDATA[Services Resources]]></rdfs:comment>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessExecutionResources">
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Process Execution Resource
     @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessExecutionResources
     @predicate http://www.w3.org/2000/01/rdf-schema#label
     -->
-    <rdfs:label xml:lang="se-SV"><![CDATA[Process Execution Resource]]></rdfs:label>
+    <rdfs:label xml:lang="sv-SE"><![CDATA[Process Execution Resource]]></rdfs:label>
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Process Execution Resource
     @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessExecutionResources
     @predicate http://www.w3.org/2000/01/rdf-schema#comment
     -->
-    <rdfs:comment xml:lang="se-SV"><![CDATA[Process Execution Resource]]></rdfs:comment>
+    <rdfs:comment xml:lang="sv-SE"><![CDATA[Process Execution Resource]]></rdfs:comment>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#ClassTransitionRules">
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Transition Rules
     @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassTransitionRules
     @predicate http://www.w3.org/2000/01/rdf-schema#label
     -->
-    <rdfs:label xml:lang="se-SV"><![CDATA[Transition Rules]]></rdfs:label>
+    <rdfs:label xml:lang="sv-SE"><![CDATA[Transition Rules]]></rdfs:label>
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Transition Rules
     @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassTransitionRules
     @predicate http://www.w3.org/2000/01/rdf-schema#comment
     -->
-    <rdfs:comment xml:lang="se-SV"><![CDATA[Transition Rules]]></rdfs:comment>
+    <rdfs:comment xml:lang="sv-SE"><![CDATA[Transition Rules]]></rdfs:comment>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyServiceDefinitionsFormalParameterIn">
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source formalParameterIn
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyServiceDefinitionsFormalParameterIn
     @predicate http://www.w3.org/2000/01/rdf-schema#label
     -->
-    <rdfs:label xml:lang="se-SV"><![CDATA[formalParameterIn]]></rdfs:label>
+    <rdfs:label xml:lang="sv-SE"><![CDATA[formalParameterIn]]></rdfs:label>
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Formal Parameter for input
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyServiceDefinitionsFormalParameterIn
     @predicate http://www.w3.org/2000/01/rdf-schema#comment
     -->
-    <rdfs:comment xml:lang="se-SV"><![CDATA[Formal Parameter for input]]></rdfs:comment>
+    <rdfs:comment xml:lang="sv-SE"><![CDATA[Formal Parameter for input]]></rdfs:comment>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivitiesInitial">
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source isInitial
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivitiesInitial
     @predicate http://www.w3.org/2000/01/rdf-schema#label
     -->
-    <rdfs:label xml:lang="se-SV"><![CDATA[isInitial]]></rdfs:label>
+    <rdfs:label xml:lang="sv-SE"><![CDATA[isInitial]]></rdfs:label>
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Is Initial activity
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivitiesInitial
     @predicate http://www.w3.org/2000/01/rdf-schema#comment
     -->
-    <rdfs:comment xml:lang="se-SV"><![CDATA[Is Initial activity]]></rdfs:comment>
+    <rdfs:comment xml:lang="sv-SE"><![CDATA[Is Initial activity]]></rdfs:comment>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#InstanceStatusPaused">
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Paused
     @subject http://www.tao.lu/middleware/wfEngine.rdf#InstanceStatusPaused
     @predicate http://www.w3.org/2000/01/rdf-schema#label
     -->
-    <rdfs:label xml:lang="se-SV"><![CDATA[Paused]]></rdfs:label>
+    <rdfs:label xml:lang="sv-SE"><![CDATA[Paused]]></rdfs:label>
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Paused status
     @subject http://www.tao.lu/middleware/wfEngine.rdf#InstanceStatusPaused
     @predicate http://www.w3.org/2000/01/rdf-schema#comment
     -->
-    <rdfs:comment xml:lang="se-SV"><![CDATA[Paused status]]></rdfs:comment>
+    <rdfs:comment xml:lang="sv-SE"><![CDATA[Paused status]]></rdfs:comment>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessInstancesStatus">
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Status
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessInstancesStatus
     @predicate http://www.w3.org/2000/01/rdf-schema#label
     -->
-    <rdfs:label xml:lang="se-SV"><![CDATA[Status]]></rdfs:label>
+    <rdfs:label xml:lang="sv-SE"><![CDATA[Status]]></rdfs:label>
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Status
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessInstancesStatus
     @predicate http://www.w3.org/2000/01/rdf-schema#comment
     -->
-    <rdfs:comment xml:lang="se-SV"><![CDATA[Status]]></rdfs:comment>
+    <rdfs:comment xml:lang="sv-SE"><![CDATA[Status]]></rdfs:comment>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#InstanceStatusFinished">
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Finished
     @subject http://www.tao.lu/middleware/wfEngine.rdf#InstanceStatusFinished
     @predicate http://www.w3.org/2000/01/rdf-schema#label
     -->
-    <rdfs:label xml:lang="se-SV"><![CDATA[Finished]]></rdfs:label>
+    <rdfs:label xml:lang="sv-SE"><![CDATA[Finished]]></rdfs:label>
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Finished Status
     @subject http://www.tao.lu/middleware/wfEngine.rdf#InstanceStatusFinished
     @predicate http://www.w3.org/2000/01/rdf-schema#comment
     -->
-    <rdfs:comment xml:lang="se-SV"><![CDATA[Finished Status]]></rdfs:comment>
+    <rdfs:comment xml:lang="sv-SE"><![CDATA[Finished Status]]></rdfs:comment>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#InstanceStatusResumed">
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Active
     @subject http://www.tao.lu/middleware/wfEngine.rdf#InstanceStatusResumed
     @predicate http://www.w3.org/2000/01/rdf-schema#label
     -->
-    <rdfs:label xml:lang="se-SV"><![CDATA[Active]]></rdfs:label>
+    <rdfs:label xml:lang="sv-SE"><![CDATA[Active]]></rdfs:label>
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Active status
     @subject http://www.tao.lu/middleware/wfEngine.rdf#InstanceStatusResumed
     @predicate http://www.w3.org/2000/01/rdf-schema#comment
     -->
-    <rdfs:comment xml:lang="se-SV"><![CDATA[Active status]]></rdfs:comment>
+    <rdfs:comment xml:lang="sv-SE"><![CDATA[Active status]]></rdfs:comment>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#InstanceStatusStarted">
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Started
     @subject http://www.tao.lu/middleware/wfEngine.rdf#InstanceStatusStarted
     @predicate http://www.w3.org/2000/01/rdf-schema#label
     -->
-    <rdfs:label xml:lang="se-SV"><![CDATA[Started]]></rdfs:label>
+    <rdfs:label xml:lang="sv-SE"><![CDATA[Started]]></rdfs:label>
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Started status
     @subject http://www.tao.lu/middleware/wfEngine.rdf#InstanceStatusStarted
     @predicate http://www.w3.org/2000/01/rdf-schema#comment
     -->
-    <rdfs:comment xml:lang="se-SV"><![CDATA[Started status]]></rdfs:comment>
+    <rdfs:comment xml:lang="sv-SE"><![CDATA[Started status]]></rdfs:comment>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#InstanceStatusClosed">
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Closed
     @subject http://www.tao.lu/middleware/wfEngine.rdf#InstanceStatusClosed
     @predicate http://www.w3.org/2000/01/rdf-schema#label
     -->
-    <rdfs:label xml:lang="se-SV"><![CDATA[Closed]]></rdfs:label>
+    <rdfs:label xml:lang="sv-SE"><![CDATA[Closed]]></rdfs:label>
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Closed status
     @subject http://www.tao.lu/middleware/wfEngine.rdf#InstanceStatusClosed
     @predicate http://www.w3.org/2000/01/rdf-schema#comment
     -->
-    <rdfs:comment xml:lang="se-SV"><![CDATA[Closed status]]></rdfs:comment>
+    <rdfs:comment xml:lang="sv-SE"><![CDATA[Closed status]]></rdfs:comment>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessInstanceStatus">
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Process Instance Status
     @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessInstanceStatus
     @predicate http://www.w3.org/2000/01/rdf-schema#label
     -->
-    <rdfs:label xml:lang="se-SV"><![CDATA[Process Instance Status]]></rdfs:label>
+    <rdfs:label xml:lang="sv-SE"><![CDATA[Process Instance Status]]></rdfs:label>
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Process Instance Status
     @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessInstanceStatus
     @predicate http://www.w3.org/2000/01/rdf-schema#comment
     -->
-    <rdfs:comment xml:lang="se-SV"><![CDATA[Process Instance Status]]></rdfs:comment>
+    <rdfs:comment xml:lang="sv-SE"><![CDATA[Process Instance Status]]></rdfs:comment>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessInstancesExecutionOf">
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Execution of
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessInstancesExecutionOf
     @predicate http://www.w3.org/2000/01/rdf-schema#label
     -->
-    <rdfs:label xml:lang="se-SV"><![CDATA[Execution of]]></rdfs:label>
+    <rdfs:label xml:lang="sv-SE"><![CDATA[Execution of]]></rdfs:label>
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Execution of
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessInstancesExecutionOf
     @predicate http://www.w3.org/2000/01/rdf-schema#comment
     -->
-    <rdfs:comment xml:lang="se-SV"><![CDATA[Execution of]]></rdfs:comment>
+    <rdfs:comment xml:lang="sv-SE"><![CDATA[Execution of]]></rdfs:comment>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessInstancesCurrentActivityExecutions">
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Current Activity Executions
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessInstancesCurrentActivityExecutions
     @predicate http://www.w3.org/2000/01/rdf-schema#label
     -->
-    <rdfs:label xml:lang="se-SV"><![CDATA[Current Activity Executions]]></rdfs:label>
+    <rdfs:label xml:lang="sv-SE"><![CDATA[Current Activity Executions]]></rdfs:label>
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Current Activity Executions
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessInstancesCurrentActivityExecutions
     @predicate http://www.w3.org/2000/01/rdf-schema#comment
     -->
-    <rdfs:comment xml:lang="se-SV"><![CDATA[Current Activity Executions]]></rdfs:comment>
+    <rdfs:comment xml:lang="sv-SE"><![CDATA[Current Activity Executions]]></rdfs:comment>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessInstancesActivityExecutions">
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Activity Executions
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessInstancesActivityExecutions
     @predicate http://www.w3.org/2000/01/rdf-schema#label
     -->
-    <rdfs:label xml:lang="se-SV"><![CDATA[Activity Executions]]></rdfs:label>
+    <rdfs:label xml:lang="sv-SE"><![CDATA[Activity Executions]]></rdfs:label>
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Activity Executions
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessInstancesActivityExecutions
     @predicate http://www.w3.org/2000/01/rdf-schema#comment
     -->
-    <rdfs:comment xml:lang="se-SV"><![CDATA[Activity Executions]]></rdfs:comment>
+    <rdfs:comment xml:lang="sv-SE"><![CDATA[Activity Executions]]></rdfs:comment>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessInstancesTimeStarted">
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Started on
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessInstancesTimeStarted
     @predicate http://www.w3.org/2000/01/rdf-schema#label
     -->
-    <rdfs:label xml:lang="se-SV"><![CDATA[Started on]]></rdfs:label>
+    <rdfs:label xml:lang="sv-SE"><![CDATA[Started on]]></rdfs:label>
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source the start time of the process execution
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessInstancesTimeStarted
     @predicate http://www.w3.org/2000/01/rdf-schema#comment
     -->
-    <rdfs:comment xml:lang="se-SV"><![CDATA[the start time of the process execution]]></rdfs:comment>
+    <rdfs:comment xml:lang="sv-SE"><![CDATA[the start time of the process execution]]></rdfs:comment>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessInstances">
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Process Instances
     @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessInstances
     @predicate http://www.w3.org/2000/01/rdf-schema#label
     -->
-    <rdfs:label xml:lang="se-SV"><![CDATA[Process Instances]]></rdfs:label>
+    <rdfs:label xml:lang="sv-SE"><![CDATA[Process Instances]]></rdfs:label>
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Process Instances
     @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessInstances
     @predicate http://www.w3.org/2000/01/rdf-schema#comment
     -->
-    <rdfs:comment xml:lang="se-SV"><![CDATA[Process Instances]]></rdfs:comment>
+    <rdfs:comment xml:lang="sv-SE"><![CDATA[Process Instances]]></rdfs:comment>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessActivities">
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Activities
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessActivities
     @predicate http://www.w3.org/2000/01/rdf-schema#label
     -->
-    <rdfs:label xml:lang="se-SV"><![CDATA[Activities]]></rdfs:label>
+    <rdfs:label xml:lang="sv-SE"><![CDATA[Activities]]></rdfs:label>
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Activities
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessActivities
     @predicate http://www.w3.org/2000/01/rdf-schema#comment
     -->
-    <rdfs:comment xml:lang="se-SV"><![CDATA[Activities]]></rdfs:comment>
+    <rdfs:comment xml:lang="sv-SE"><![CDATA[Activities]]></rdfs:comment>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessRootActivities">
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Root Activities
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessRootActivities
     @predicate http://www.w3.org/2000/01/rdf-schema#label
     -->
-    <rdfs:label xml:lang="se-SV"><![CDATA[Root Activities]]></rdfs:label>
+    <rdfs:label xml:lang="sv-SE"><![CDATA[Root Activities]]></rdfs:label>
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Root Activities
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessRootActivities
     @predicate http://www.w3.org/2000/01/rdf-schema#comment
     -->
-    <rdfs:comment xml:lang="se-SV"><![CDATA[Root Activities]]></rdfs:comment>
+    <rdfs:comment xml:lang="sv-SE"><![CDATA[Root Activities]]></rdfs:comment>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyCallOfServicesActualParameterOut">
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Actual Parameter Out
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyCallOfServicesActualParameterOut
     @predicate http://www.w3.org/2000/01/rdf-schema#label
     -->
-    <rdfs:label xml:lang="se-SV"><![CDATA[Actual Parameter Out]]></rdfs:label>
+    <rdfs:label xml:lang="sv-SE"><![CDATA[Actual Parameter Out]]></rdfs:label>
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Actual Parameter Out
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyCallOfServicesActualParameterOut
     @predicate http://www.w3.org/2000/01/rdf-schema#comment
     -->
-    <rdfs:comment xml:lang="se-SV"><![CDATA[Actual Parameter Out]]></rdfs:comment>
+    <rdfs:comment xml:lang="sv-SE"><![CDATA[Actual Parameter Out]]></rdfs:comment>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyServiceDefinitionsFormalParameterOut">
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Formal Parameter Out
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyServiceDefinitionsFormalParameterOut
     @predicate http://www.w3.org/2000/01/rdf-schema#label
     -->
-    <rdfs:label xml:lang="se-SV"><![CDATA[Formal Parameter Out]]></rdfs:label>
+    <rdfs:label xml:lang="sv-SE"><![CDATA[Formal Parameter Out]]></rdfs:label>
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Formal Paramater Out
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyServiceDefinitionsFormalParameterOut
     @predicate http://www.w3.org/2000/01/rdf-schema#comment
     -->
-    <rdfs:comment xml:lang="se-SV"><![CDATA[Formal Paramater Out]]></rdfs:comment>
+    <rdfs:comment xml:lang="sv-SE"><![CDATA[Formal Paramater Out]]></rdfs:comment>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyConnectorsType">
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Connector Type
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyConnectorsType
     @predicate http://www.w3.org/2000/01/rdf-schema#label
     -->
-    <rdfs:label xml:lang="se-SV"><![CDATA[Connector Type]]></rdfs:label>
+    <rdfs:label xml:lang="sv-SE"><![CDATA[Connector Type]]></rdfs:label>
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Connector Type
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyConnectorsType
     @predicate http://www.w3.org/2000/01/rdf-schema#comment
     -->
-    <rdfs:comment xml:lang="se-SV"><![CDATA[Connector Type]]></rdfs:comment>
+    <rdfs:comment xml:lang="sv-SE"><![CDATA[Connector Type]]></rdfs:comment>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyCallOfServicesActualParameterin">
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Actual Parameter In
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyCallOfServicesActualParameterin
     @predicate http://www.w3.org/2000/01/rdf-schema#label
     -->
-    <rdfs:label xml:lang="se-SV"><![CDATA[Actual Parameter In]]></rdfs:label>
+    <rdfs:label xml:lang="sv-SE"><![CDATA[Actual Parameter In]]></rdfs:label>
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Actual Parameter In
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyCallOfServicesActualParameterin
     @predicate http://www.w3.org/2000/01/rdf-schema#comment
     -->
-    <rdfs:comment xml:lang="se-SV"><![CDATA[Actual Parameter In]]></rdfs:comment>
+    <rdfs:comment xml:lang="sv-SE"><![CDATA[Actual Parameter In]]></rdfs:comment>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyCallOfServicesServiceDefinition">
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Service Definition
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyCallOfServicesServiceDefinition
     @predicate http://www.w3.org/2000/01/rdf-schema#label
     -->
-    <rdfs:label xml:lang="se-SV"><![CDATA[Service Definition]]></rdfs:label>
+    <rdfs:label xml:lang="sv-SE"><![CDATA[Service Definition]]></rdfs:label>
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Service Definition
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyCallOfServicesServiceDefinition
     @predicate http://www.w3.org/2000/01/rdf-schema#comment
     -->
-    <rdfs:comment xml:lang="se-SV"><![CDATA[Service Definition]]></rdfs:comment>
+    <rdfs:comment xml:lang="sv-SE"><![CDATA[Service Definition]]></rdfs:comment>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#ClassCallOfServices">
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Call of Services
     @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassCallOfServices
     @predicate http://www.w3.org/2000/01/rdf-schema#label
     -->
-    <rdfs:label xml:lang="se-SV"><![CDATA[Call of Services]]></rdfs:label>
+    <rdfs:label xml:lang="sv-SE"><![CDATA[Call of Services]]></rdfs:label>
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Call of Services
     @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassCallOfServices
     @predicate http://www.w3.org/2000/01/rdf-schema#comment
     -->
-    <rdfs:comment xml:lang="se-SV"><![CDATA[Call of Services]]></rdfs:comment>
+    <rdfs:comment xml:lang="sv-SE"><![CDATA[Call of Services]]></rdfs:comment>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#InstanceTypeOfConnectorsSequence">
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Sequence
     @subject http://www.tao.lu/middleware/wfEngine.rdf#InstanceTypeOfConnectorsSequence
     @predicate http://www.w3.org/2000/01/rdf-schema#label
     -->
-    <rdfs:label xml:lang="se-SV"><![CDATA[Sequence]]></rdfs:label>
+    <rdfs:label xml:lang="sv-SE"><![CDATA[Sequence]]></rdfs:label>
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Sequence Connector Type
     @subject http://www.tao.lu/middleware/wfEngine.rdf#InstanceTypeOfConnectorsSequence
     @predicate http://www.w3.org/2000/01/rdf-schema#comment
     -->
-    <rdfs:comment xml:lang="se-SV"><![CDATA[Sequence Connector Type]]></rdfs:comment>
+    <rdfs:comment xml:lang="sv-SE"><![CDATA[Sequence Connector Type]]></rdfs:comment>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#InstanceTypeOfConnectorsConditional">
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Conditional
     @subject http://www.tao.lu/middleware/wfEngine.rdf#InstanceTypeOfConnectorsConditional
     @predicate http://www.w3.org/2000/01/rdf-schema#label
     -->
-    <rdfs:label xml:lang="se-SV"><![CDATA[Conditional]]></rdfs:label>
+    <rdfs:label xml:lang="sv-SE"><![CDATA[Conditional]]></rdfs:label>
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Conditional Connector Type
     @subject http://www.tao.lu/middleware/wfEngine.rdf#InstanceTypeOfConnectorsConditional
     @predicate http://www.w3.org/2000/01/rdf-schema#comment
     -->
-    <rdfs:comment xml:lang="se-SV"><![CDATA[Conditional Connector Type]]></rdfs:comment>
+    <rdfs:comment xml:lang="sv-SE"><![CDATA[Conditional Connector Type]]></rdfs:comment>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#InstanceTypeOfConnectorsParallel">
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Split
     @subject http://www.tao.lu/middleware/wfEngine.rdf#InstanceTypeOfConnectorsParallel
     @predicate http://www.w3.org/2000/01/rdf-schema#label
     -->
-    <rdfs:label xml:lang="se-SV"><![CDATA[Split]]></rdfs:label>
+    <rdfs:label xml:lang="sv-SE"><![CDATA[Split]]></rdfs:label>
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Split Connector Type
     @subject http://www.tao.lu/middleware/wfEngine.rdf#InstanceTypeOfConnectorsParallel
     @predicate http://www.w3.org/2000/01/rdf-schema#comment
     -->
-    <rdfs:comment xml:lang="se-SV"><![CDATA[Split Connector Type]]></rdfs:comment>
+    <rdfs:comment xml:lang="sv-SE"><![CDATA[Split Connector Type]]></rdfs:comment>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#InstanceTypeOfConnectorsJoin">
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Join
     @subject http://www.tao.lu/middleware/wfEngine.rdf#InstanceTypeOfConnectorsJoin
     @predicate http://www.w3.org/2000/01/rdf-schema#label
     -->
-    <rdfs:label xml:lang="se-SV"><![CDATA[Join]]></rdfs:label>
+    <rdfs:label xml:lang="sv-SE"><![CDATA[Join]]></rdfs:label>
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Join Connector Type
     @subject http://www.tao.lu/middleware/wfEngine.rdf#InstanceTypeOfConnectorsJoin
     @predicate http://www.w3.org/2000/01/rdf-schema#comment
     -->
-    <rdfs:comment xml:lang="se-SV"><![CDATA[Join Connector Type]]></rdfs:comment>
+    <rdfs:comment xml:lang="sv-SE"><![CDATA[Join Connector Type]]></rdfs:comment>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#InstanceTypeOfConnectorsSwitch">
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Switch
     @subject http://www.tao.lu/middleware/wfEngine.rdf#InstanceTypeOfConnectorsSwitch
     @predicate http://www.w3.org/2000/01/rdf-schema#label
     -->
-    <rdfs:label xml:lang="se-SV"><![CDATA[Switch]]></rdfs:label>
+    <rdfs:label xml:lang="sv-SE"><![CDATA[Switch]]></rdfs:label>
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Switch Connector Type
     @subject http://www.tao.lu/middleware/wfEngine.rdf#InstanceTypeOfConnectorsSwitch
     @predicate http://www.w3.org/2000/01/rdf-schema#comment
     -->
-    <rdfs:comment xml:lang="se-SV"><![CDATA[Switch Connector Type]]></rdfs:comment>
+    <rdfs:comment xml:lang="sv-SE"><![CDATA[Switch Connector Type]]></rdfs:comment>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#ClassConnectors">
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Connectors
     @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassConnectors
     @predicate http://www.w3.org/2000/01/rdf-schema#label
     -->
-    <rdfs:label xml:lang="se-SV"><![CDATA[Connectors]]></rdfs:label>
+    <rdfs:label xml:lang="sv-SE"><![CDATA[Connectors]]></rdfs:label>
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Connectors
     @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassConnectors
     @predicate http://www.w3.org/2000/01/rdf-schema#comment
     -->
-    <rdfs:comment xml:lang="se-SV"><![CDATA[Connectors]]></rdfs:comment>
+    <rdfs:comment xml:lang="sv-SE"><![CDATA[Connectors]]></rdfs:comment>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessVariables">
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Process Variables
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessVariables
     @predicate http://www.w3.org/2000/01/rdf-schema#label
     -->
-    <rdfs:label xml:lang="se-SV"><![CDATA[Process Variables]]></rdfs:label>
+    <rdfs:label xml:lang="sv-SE"><![CDATA[Process Variables]]></rdfs:label>
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Process Variables
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessVariables
     @predicate http://www.w3.org/2000/01/rdf-schema#comment
     -->
-    <rdfs:comment xml:lang="se-SV"><![CDATA[Process Variables]]></rdfs:comment>
+    <rdfs:comment xml:lang="sv-SE"><![CDATA[Process Variables]]></rdfs:comment>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#ClassTypeOfConnectors">
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source TypeOfConnectors
     @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassTypeOfConnectors
     @predicate http://www.w3.org/2000/01/rdf-schema#label
     -->
-    <rdfs:label xml:lang="se-SV"><![CDATA[TypeOfConnectors]]></rdfs:label>
+    <rdfs:label xml:lang="sv-SE"><![CDATA[TypeOfConnectors]]></rdfs:label>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyActualParametersProcessVariable">
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Process Variable
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActualParametersProcessVariable
     @predicate http://www.w3.org/2000/01/rdf-schema#label
     -->
-    <rdfs:label xml:lang="se-SV"><![CDATA[Process Variable]]></rdfs:label>
+    <rdfs:label xml:lang="sv-SE"><![CDATA[Process Variable]]></rdfs:label>
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Process Variable
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActualParametersProcessVariable
     @predicate http://www.w3.org/2000/01/rdf-schema#comment
     -->
-    <rdfs:comment xml:lang="se-SV"><![CDATA[Process Variable]]></rdfs:comment>
+    <rdfs:comment xml:lang="sv-SE"><![CDATA[Process Variable]]></rdfs:comment>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyActualParametersConstantValue">
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Constant Value
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActualParametersConstantValue
     @predicate http://www.w3.org/2000/01/rdf-schema#label
     -->
-    <rdfs:label xml:lang="se-SV"><![CDATA[Constant Value]]></rdfs:label>
+    <rdfs:label xml:lang="sv-SE"><![CDATA[Constant Value]]></rdfs:label>
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Constant Value
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActualParametersConstantValue
     @predicate http://www.w3.org/2000/01/rdf-schema#comment
     -->
-    <rdfs:comment xml:lang="se-SV"><![CDATA[Constant Value]]></rdfs:comment>
+    <rdfs:comment xml:lang="sv-SE"><![CDATA[Constant Value]]></rdfs:comment>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessVariables">
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Process Variables
     @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessVariables
     @predicate http://www.w3.org/2000/01/rdf-schema#label
     -->
-    <rdfs:label xml:lang="se-SV"><![CDATA[Process Variables]]></rdfs:label>
+    <rdfs:label xml:lang="sv-SE"><![CDATA[Process Variables]]></rdfs:label>
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Process Variables
     @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessVariables
     @predicate http://www.w3.org/2000/01/rdf-schema#comment
     -->
-    <rdfs:comment xml:lang="se-SV"><![CDATA[Process Variables]]></rdfs:comment>
+    <rdfs:comment xml:lang="sv-SE"><![CDATA[Process Variables]]></rdfs:comment>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyActualParametersFormalParameter">
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Formal Parameter
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActualParametersFormalParameter
     @predicate http://www.w3.org/2000/01/rdf-schema#label
     -->
-    <rdfs:label xml:lang="se-SV"><![CDATA[Formal Parameter]]></rdfs:label>
+    <rdfs:label xml:lang="sv-SE"><![CDATA[Formal Parameter]]></rdfs:label>
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Formal Parameter
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActualParametersFormalParameter
     @predicate http://www.w3.org/2000/01/rdf-schema#comment
     -->
-    <rdfs:comment xml:lang="se-SV"><![CDATA[Formal Parameter]]></rdfs:comment>
+    <rdfs:comment xml:lang="sv-SE"><![CDATA[Formal Parameter]]></rdfs:comment>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyFormalParametersDefaultConstantValue">
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Default Constant Value
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyFormalParametersDefaultConstantValue
     @predicate http://www.w3.org/2000/01/rdf-schema#label
     -->
-    <rdfs:label xml:lang="se-SV"><![CDATA[Default Constant Value]]></rdfs:label>
+    <rdfs:label xml:lang="sv-SE"><![CDATA[Default Constant Value]]></rdfs:label>
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Default Constant Value
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyFormalParametersDefaultConstantValue
     @predicate http://www.w3.org/2000/01/rdf-schema#comment
     -->
-    <rdfs:comment xml:lang="se-SV"><![CDATA[Default Constant Value]]></rdfs:comment>
+    <rdfs:comment xml:lang="sv-SE"><![CDATA[Default Constant Value]]></rdfs:comment>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyFormalParametersDefaultProcessVariable">
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source DefaultProcessVariable
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyFormalParametersDefaultProcessVariable
     @predicate http://www.w3.org/2000/01/rdf-schema#label
     -->
-    <rdfs:label xml:lang="se-SV"><![CDATA[DefaultProcessVariable]]></rdfs:label>
+    <rdfs:label xml:lang="sv-SE"><![CDATA[DefaultProcessVariable]]></rdfs:label>
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Default Process Variable
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyFormalParametersDefaultProcessVariable
     @predicate http://www.w3.org/2000/01/rdf-schema#comment
     -->
-    <rdfs:comment xml:lang="se-SV"><![CDATA[Default Process Variable]]></rdfs:comment>
+    <rdfs:comment xml:lang="sv-SE"><![CDATA[Default Process Variable]]></rdfs:comment>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#ClassActualParameters">
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Actual Parameter
     @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassActualParameters
     @predicate http://www.w3.org/2000/01/rdf-schema#label
     -->
-    <rdfs:label xml:lang="se-SV"><![CDATA[Actual Parameter]]></rdfs:label>
+    <rdfs:label xml:lang="sv-SE"><![CDATA[Actual Parameter]]></rdfs:label>
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Actual Parameter
     @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassActualParameters
     @predicate http://www.w3.org/2000/01/rdf-schema#comment
     -->
-    <rdfs:comment xml:lang="se-SV"><![CDATA[Actual Parameter]]></rdfs:comment>
+    <rdfs:comment xml:lang="sv-SE"><![CDATA[Actual Parameter]]></rdfs:comment>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyFormalParameterDataType">
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Data Type
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyFormalParameterDataType
     @predicate http://www.w3.org/2000/01/rdf-schema#label
     -->
-    <rdfs:label xml:lang="se-SV"><![CDATA[Data Type]]></rdfs:label>
+    <rdfs:label xml:lang="sv-SE"><![CDATA[Data Type]]></rdfs:label>
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Data Type
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyFormalParameterDataType
     @predicate http://www.w3.org/2000/01/rdf-schema#comment
     -->
-    <rdfs:comment xml:lang="se-SV"><![CDATA[Data Type]]></rdfs:comment>
+    <rdfs:comment xml:lang="sv-SE"><![CDATA[Data Type]]></rdfs:comment>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyFormalParametersName">
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Name
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyFormalParametersName
     @predicate http://www.w3.org/2000/01/rdf-schema#label
     -->
-    <rdfs:label xml:lang="se-SV"><![CDATA[Name]]></rdfs:label>
+    <rdfs:label xml:lang="sv-SE"><![CDATA[Name]]></rdfs:label>
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Formal Parameter Name
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyFormalParametersName
     @predicate http://www.w3.org/2000/01/rdf-schema#comment
     -->
-    <rdfs:comment xml:lang="se-SV"><![CDATA[Formal Parameter Name]]></rdfs:comment>
+    <rdfs:comment xml:lang="sv-SE"><![CDATA[Formal Parameter Name]]></rdfs:comment>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#ClassFormalParameters">
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Formal Parameter
     @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassFormalParameters
     @predicate http://www.w3.org/2000/01/rdf-schema#label
     -->
-    <rdfs:label xml:lang="se-SV"><![CDATA[Formal Parameter]]></rdfs:label>
+    <rdfs:label xml:lang="sv-SE"><![CDATA[Formal Parameter]]></rdfs:label>
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Formal Parameter
     @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassFormalParameters
     @predicate http://www.w3.org/2000/01/rdf-schema#comment
     -->
-    <rdfs:comment xml:lang="se-SV"><![CDATA[Formal Parameter]]></rdfs:comment>
+    <rdfs:comment xml:lang="sv-SE"><![CDATA[Formal Parameter]]></rdfs:comment>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertySupportServicesUrl">
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source url
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertySupportServicesUrl
     @predicate http://www.w3.org/2000/01/rdf-schema#label
     -->
-    <rdfs:label xml:lang="se-SV"><![CDATA[url]]></rdfs:label>
+    <rdfs:label xml:lang="sv-SE"><![CDATA[url]]></rdfs:label>
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source url
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertySupportServicesUrl
     @predicate http://www.w3.org/2000/01/rdf-schema#comment
     -->
-    <rdfs:comment xml:lang="se-SV"><![CDATA[url]]></rdfs:comment>
+    <rdfs:comment xml:lang="sv-SE"><![CDATA[url]]></rdfs:comment>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyWebServicesWsdlUrl">
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source wsdl location
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyWebServicesWsdlUrl
     @predicate http://www.w3.org/2000/01/rdf-schema#label
     -->
-    <rdfs:label xml:lang="se-SV"><![CDATA[wsdl location]]></rdfs:label>
+    <rdfs:label xml:lang="sv-SE"><![CDATA[wsdl location]]></rdfs:label>
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source wsdl location
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyWebServicesWsdlUrl
     @predicate http://www.w3.org/2000/01/rdf-schema#comment
     -->
-    <rdfs:comment xml:lang="se-SV"><![CDATA[wsdl location]]></rdfs:comment>
+    <rdfs:comment xml:lang="sv-SE"><![CDATA[wsdl location]]></rdfs:comment>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivitiesInteractiveServices">
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Interactive Services
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivitiesInteractiveServices
     @predicate http://www.w3.org/2000/01/rdf-schema#label
     -->
-    <rdfs:label xml:lang="se-SV"><![CDATA[Interactive Services]]></rdfs:label>
+    <rdfs:label xml:lang="sv-SE"><![CDATA[Interactive Services]]></rdfs:label>
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Interactive Services
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivitiesInteractiveServices
     @predicate http://www.w3.org/2000/01/rdf-schema#comment
     -->
-    <rdfs:comment xml:lang="se-SV"><![CDATA[Interactive Services]]></rdfs:comment>
+    <rdfs:comment xml:lang="sv-SE"><![CDATA[Interactive Services]]></rdfs:comment>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#ClassActivities">
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Activity
     @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassActivities
     @predicate http://www.w3.org/2000/01/rdf-schema#label
     -->
-    <rdfs:label xml:lang="se-SV"><![CDATA[Activity]]></rdfs:label>
+    <rdfs:label xml:lang="sv-SE"><![CDATA[Activity]]></rdfs:label>
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Activity
     @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassActivities
     @predicate http://www.w3.org/2000/01/rdf-schema#comment
     -->
-    <rdfs:comment xml:lang="se-SV"><![CDATA[Activity]]></rdfs:comment>
+    <rdfs:comment xml:lang="sv-SE"><![CDATA[Activity]]></rdfs:comment>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessDefinitions">
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Process Definition
     @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessDefinitions
     @predicate http://www.w3.org/2000/01/rdf-schema#label
     -->
-    <rdfs:label xml:lang="se-SV"><![CDATA[Process Definition]]></rdfs:label>
+    <rdfs:label xml:lang="sv-SE"><![CDATA[Process Definition]]></rdfs:label>
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Process Definition
     @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessDefinitions
     @predicate http://www.w3.org/2000/01/rdf-schema#comment
     -->
-    <rdfs:comment xml:lang="se-SV"><![CDATA[Process Definition]]></rdfs:comment>
+    <rdfs:comment xml:lang="sv-SE"><![CDATA[Process Definition]]></rdfs:comment>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyConnectorsTransitionRule">
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Transition Rule
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyConnectorsTransitionRule
     @predicate http://www.w3.org/2000/01/rdf-schema#label
     -->
-    <rdfs:label xml:lang="se-SV"><![CDATA[Transition Rule]]></rdfs:label>
+    <rdfs:label xml:lang="sv-SE"><![CDATA[Transition Rule]]></rdfs:label>
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Transition Rule
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyConnectorsTransitionRule
     @predicate http://www.w3.org/2000/01/rdf-schema#comment
     -->
-    <rdfs:comment xml:lang="se-SV"><![CDATA[Transition Rule]]></rdfs:comment>
+    <rdfs:comment xml:lang="sv-SE"><![CDATA[Transition Rule]]></rdfs:comment>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyTransitionRulesElse">
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Else
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyTransitionRulesElse
     @predicate http://www.w3.org/2000/01/rdf-schema#label
     -->
-    <rdfs:label xml:lang="se-SV"><![CDATA[Else]]></rdfs:label>
+    <rdfs:label xml:lang="sv-SE"><![CDATA[Else]]></rdfs:label>
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Else statement
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyTransitionRulesElse
     @predicate http://www.w3.org/2000/01/rdf-schema#comment
     -->
-    <rdfs:comment xml:lang="se-SV"><![CDATA[Else statement]]></rdfs:comment>
+    <rdfs:comment xml:lang="sv-SE"><![CDATA[Else statement]]></rdfs:comment>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivitiesHidden">
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Is Hidden
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivitiesHidden
     @predicate http://www.w3.org/2000/01/rdf-schema#label
     -->
-    <rdfs:label xml:lang="se-SV"><![CDATA[Is Hidden]]></rdfs:label>
+    <rdfs:label xml:lang="sv-SE"><![CDATA[Is Hidden]]></rdfs:label>
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Is Hidden
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivitiesHidden
     @predicate http://www.w3.org/2000/01/rdf-schema#comment
     -->
-    <rdfs:comment xml:lang="se-SV"><![CDATA[Is Hidden]]></rdfs:comment>
+    <rdfs:comment xml:lang="sv-SE"><![CDATA[Is Hidden]]></rdfs:comment>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyConnectorsActivityReference">
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Activity Reference
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyConnectorsActivityReference
     @predicate http://www.w3.org/2000/01/rdf-schema#label
     -->
-    <rdfs:label xml:lang="se-SV"><![CDATA[Activity Reference]]></rdfs:label>
+    <rdfs:label xml:lang="sv-SE"><![CDATA[Activity Reference]]></rdfs:label>
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source the reference to the activity at the time of creation
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyConnectorsActivityReference
     @predicate http://www.w3.org/2000/01/rdf-schema#comment
     -->
-    <rdfs:comment xml:lang="se-SV"><![CDATA[the reference to the activity at the time of creation]]></rdfs:comment>
+    <rdfs:comment xml:lang="sv-SE"><![CDATA[the reference to the activity at the time of creation]]></rdfs:comment>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyCode">
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Code
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyCode
     @predicate http://www.w3.org/2000/01/rdf-schema#label
     -->
-    <rdfs:label xml:lang="se-SV"><![CDATA[Code]]></rdfs:label>
+    <rdfs:label xml:lang="sv-SE"><![CDATA[Code]]></rdfs:label>
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source For process variables only
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyCode
     @predicate http://www.w3.org/2000/01/rdf-schema#comment
     -->
-    <rdfs:comment xml:lang="se-SV"><![CDATA[For process variables only]]></rdfs:comment>
+    <rdfs:comment xml:lang="sv-SE"><![CDATA[For process variables only]]></rdfs:comment>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyCallOfServicesTop">
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Top Shifting
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyCallOfServicesTop
     @predicate http://www.w3.org/2000/01/rdf-schema#label
     -->
-    <rdfs:label xml:lang="se-SV"><![CDATA[Top Shifting]]></rdfs:label>
+    <rdfs:label xml:lang="sv-SE"><![CDATA[Top Shifting]]></rdfs:label>
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source The CSS top attribute value for the service iframe
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyCallOfServicesTop
     @predicate http://www.w3.org/2000/01/rdf-schema#comment
     -->
-    <rdfs:comment xml:lang="se-SV"><![CDATA[The CSS top attribute value for the service iframe]]></rdfs:comment>
+    <rdfs:comment xml:lang="sv-SE"><![CDATA[The CSS top attribute value for the service iframe]]></rdfs:comment>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyCallOfServicesLeft">
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Left Shifting
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyCallOfServicesLeft
     @predicate http://www.w3.org/2000/01/rdf-schema#label
     -->
-    <rdfs:label xml:lang="se-SV"><![CDATA[Left Shifting]]></rdfs:label>
+    <rdfs:label xml:lang="sv-SE"><![CDATA[Left Shifting]]></rdfs:label>
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source The CSS left attribute value for the service iframe
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyCallOfServicesLeft
     @predicate http://www.w3.org/2000/01/rdf-schema#comment
     -->
-    <rdfs:comment xml:lang="se-SV"><![CDATA[The CSS left attribute value for the service iframe]]></rdfs:comment>
+    <rdfs:comment xml:lang="sv-SE"><![CDATA[The CSS left attribute value for the service iframe]]></rdfs:comment>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyCallOfServicesWidth">
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Width
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyCallOfServicesWidth
     @predicate http://www.w3.org/2000/01/rdf-schema#label
     -->
-    <rdfs:label xml:lang="se-SV"><![CDATA[Width]]></rdfs:label>
+    <rdfs:label xml:lang="sv-SE"><![CDATA[Width]]></rdfs:label>
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source The CSS width attribute value for the service iframe
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyCallOfServicesWidth
     @predicate http://www.w3.org/2000/01/rdf-schema#comment
     -->
-    <rdfs:comment xml:lang="se-SV"><![CDATA[The CSS width attribute value for the service iframe]]></rdfs:comment>
+    <rdfs:comment xml:lang="sv-SE"><![CDATA[The CSS width attribute value for the service iframe]]></rdfs:comment>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyCallOfServicesHeight">
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Height
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyCallOfServicesHeight
     @predicate http://www.w3.org/2000/01/rdf-schema#label
     -->
-    <rdfs:label xml:lang="se-SV"><![CDATA[Height]]></rdfs:label>
+    <rdfs:label xml:lang="sv-SE"><![CDATA[Height]]></rdfs:label>
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source The CSS height attribute value for the service iframe
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyCallOfServicesHeight
     @predicate http://www.w3.org/2000/01/rdf-schema#comment
     -->
-    <rdfs:comment xml:lang="se-SV"><![CDATA[The CSS height attribute value for the service iframe]]></rdfs:comment>
+    <rdfs:comment xml:lang="sv-SE"><![CDATA[The CSS height attribute value for the service iframe]]></rdfs:comment>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsExecutionOf">
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Activity Definition
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsExecutionOf
     @predicate http://www.w3.org/2000/01/rdf-schema#label
     -->
-    <rdfs:label xml:lang="se-SV"><![CDATA[Activity Definition]]></rdfs:label>
+    <rdfs:label xml:lang="sv-SE"><![CDATA[Activity Definition]]></rdfs:label>
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Activity Definition
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsExecutionOf
     @predicate http://www.w3.org/2000/01/rdf-schema#comment
     -->
-    <rdfs:comment xml:lang="se-SV"><![CDATA[Activity Definition]]></rdfs:comment>
+    <rdfs:comment xml:lang="sv-SE"><![CDATA[Activity Definition]]></rdfs:comment>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsCurrentUser">
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Current User
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsCurrentUser
     @predicate http://www.w3.org/2000/01/rdf-schema#label
     -->
-    <rdfs:label xml:lang="se-SV"><![CDATA[Current User]]></rdfs:label>
+    <rdfs:label xml:lang="sv-SE"><![CDATA[Current User]]></rdfs:label>
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Current User
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsCurrentUser
     @predicate http://www.w3.org/2000/01/rdf-schema#comment
     -->
-    <rdfs:comment xml:lang="se-SV"><![CDATA[Current User]]></rdfs:comment>
+    <rdfs:comment xml:lang="sv-SE"><![CDATA[Current User]]></rdfs:comment>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsProcessExecution">
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Process Execution
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsProcessExecution
     @predicate http://www.w3.org/2000/01/rdf-schema#label
     -->
-    <rdfs:label xml:lang="se-SV"><![CDATA[Process Execution]]></rdfs:label>
+    <rdfs:label xml:lang="sv-SE"><![CDATA[Process Execution]]></rdfs:label>
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source The process execution to which the activity execution is linked
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsProcessExecution
     @predicate http://www.w3.org/2000/01/rdf-schema#comment
     -->
-    <rdfs:comment xml:lang="se-SV"><![CDATA[The process execution to which the activity execution is linked]]></rdfs:comment>
+    <rdfs:comment xml:lang="sv-SE"><![CDATA[The process execution to which the activity execution is linked]]></rdfs:comment>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsHasVariables">
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Variables
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsHasVariables
     @predicate http://www.w3.org/2000/01/rdf-schema#label
     -->
-    <rdfs:label xml:lang="se-SV"><![CDATA[Variables]]></rdfs:label>
+    <rdfs:label xml:lang="sv-SE"><![CDATA[Variables]]></rdfs:label>
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Serialized array of currently used variables
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsHasVariables
     @predicate http://www.w3.org/2000/01/rdf-schema#comment
     -->
-    <rdfs:comment xml:lang="se-SV"><![CDATA[Serialized array of currently used variables]]></rdfs:comment>
+    <rdfs:comment xml:lang="sv-SE"><![CDATA[Serialized array of currently used variables]]></rdfs:comment>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsPreviousActivityExecutions">
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Previous Activity Executions
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsPreviousActivityExecutions
     @predicate http://www.w3.org/2000/01/rdf-schema#label
     -->
-    <rdfs:label xml:lang="se-SV"><![CDATA[Previous Activity Executions]]></rdfs:label>
+    <rdfs:label xml:lang="sv-SE"><![CDATA[Previous Activity Executions]]></rdfs:label>
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Used to build the process path
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsPreviousActivityExecutions
     @predicate http://www.w3.org/2000/01/rdf-schema#comment
     -->
-    <rdfs:comment xml:lang="se-SV"><![CDATA[Used to build the process path]]></rdfs:comment>
+    <rdfs:comment xml:lang="sv-SE"><![CDATA[Used to build the process path]]></rdfs:comment>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsFollowingActivityExecutions">
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Following Activity Executions
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsFollowingActivityExecutions
     @predicate http://www.w3.org/2000/01/rdf-schema#label
     -->
-    <rdfs:label xml:lang="se-SV"><![CDATA[Following Activity Executions]]></rdfs:label>
+    <rdfs:label xml:lang="sv-SE"><![CDATA[Following Activity Executions]]></rdfs:label>
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Used to build the process path
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsFollowingActivityExecutions
     @predicate http://www.w3.org/2000/01/rdf-schema#comment
     -->
-    <rdfs:comment xml:lang="se-SV"><![CDATA[Used to build the process path]]></rdfs:comment>
+    <rdfs:comment xml:lang="sv-SE"><![CDATA[Used to build the process path]]></rdfs:comment>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsStatus">
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Status
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsStatus
     @predicate http://www.w3.org/2000/01/rdf-schema#label
     -->
-    <rdfs:label xml:lang="se-SV"><![CDATA[Status]]></rdfs:label>
+    <rdfs:label xml:lang="sv-SE"><![CDATA[Status]]></rdfs:label>
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source The status of the activity execution
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsStatus
     @predicate http://www.w3.org/2000/01/rdf-schema#comment
     -->
-    <rdfs:comment xml:lang="se-SV"><![CDATA[The status of the activity execution]]></rdfs:comment>
+    <rdfs:comment xml:lang="sv-SE"><![CDATA[The status of the activity execution]]></rdfs:comment>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsTimeCreated">
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Created on
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsTimeCreated
     @predicate http://www.w3.org/2000/01/rdf-schema#label
     -->
-    <rdfs:label xml:lang="se-SV"><![CDATA[Created on]]></rdfs:label>
+    <rdfs:label xml:lang="sv-SE"><![CDATA[Created on]]></rdfs:label>
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source The creation time of the activity execution
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsTimeCreated
     @predicate http://www.w3.org/2000/01/rdf-schema#comment
     -->
-    <rdfs:comment xml:lang="se-SV"><![CDATA[The creation time of the activity execution]]></rdfs:comment>
+    <rdfs:comment xml:lang="sv-SE"><![CDATA[The creation time of the activity execution]]></rdfs:comment>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsTimeStarted">
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Started on
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsTimeStarted
     @predicate http://www.w3.org/2000/01/rdf-schema#label
     -->
-    <rdfs:label xml:lang="se-SV"><![CDATA[Started on]]></rdfs:label>
+    <rdfs:label xml:lang="sv-SE"><![CDATA[Started on]]></rdfs:label>
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source The start time of the activity execution
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsTimeStarted
     @predicate http://www.w3.org/2000/01/rdf-schema#comment
     -->
-    <rdfs:comment xml:lang="se-SV"><![CDATA[The start time of the activity execution]]></rdfs:comment>
+    <rdfs:comment xml:lang="sv-SE"><![CDATA[The start time of the activity execution]]></rdfs:comment>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsTimeLastAccess">
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Last accessed on
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsTimeLastAccess
     @predicate http://www.w3.org/2000/01/rdf-schema#label
     -->
-    <rdfs:label xml:lang="se-SV"><![CDATA[Last accessed on]]></rdfs:label>
+    <rdfs:label xml:lang="sv-SE"><![CDATA[Last accessed on]]></rdfs:label>
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source The last time the current user accessed it
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsTimeLastAccess
     @predicate http://www.w3.org/2000/01/rdf-schema#comment
     -->
-    <rdfs:comment xml:lang="se-SV"><![CDATA[The last time the current user accessed it]]></rdfs:comment>
+    <rdfs:comment xml:lang="sv-SE"><![CDATA[The last time the current user accessed it]]></rdfs:comment>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsNonce">
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Nonce
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsNonce
     @predicate http://www.w3.org/2000/01/rdf-schema#label
     -->
-    <rdfs:label xml:lang="se-SV"><![CDATA[Nonce]]></rdfs:label>
+    <rdfs:label xml:lang="sv-SE"><![CDATA[Nonce]]></rdfs:label>
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source The nonce to garantee unique action (transitions)
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsNonce
     @predicate http://www.w3.org/2000/01/rdf-schema#comment
     -->
-    <rdfs:comment xml:lang="se-SV"><![CDATA[The nonce to garantee unique action (transitions)]]></rdfs:comment>
+    <rdfs:comment xml:lang="sv-SE"><![CDATA[The nonce to garantee unique action (transitions)]]></rdfs:comment>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsAccessControlMode">
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Execution ACL mode
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsAccessControlMode
     @predicate http://www.w3.org/2000/01/rdf-schema#label
     -->
-    <rdfs:label xml:lang="se-SV"><![CDATA[Execution ACL mode]]></rdfs:label>
+    <rdfs:label xml:lang="sv-SE"><![CDATA[Execution ACL mode]]></rdfs:label>
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source The ACL mode applied to the acitivty execution
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsAccessControlMode
     @predicate http://www.w3.org/2000/01/rdf-schema#comment
     -->
-    <rdfs:comment xml:lang="se-SV"><![CDATA[The ACL mode applied to the acitivty execution]]></rdfs:comment>
+    <rdfs:comment xml:lang="sv-SE"><![CDATA[The ACL mode applied to the acitivty execution]]></rdfs:comment>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsRestrictedUser">
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Execution restricted user
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsRestrictedUser
     @predicate http://www.w3.org/2000/01/rdf-schema#label
     -->
-    <rdfs:label xml:lang="se-SV"><![CDATA[Execution restricted user]]></rdfs:label>
+    <rdfs:label xml:lang="sv-SE"><![CDATA[Execution restricted user]]></rdfs:label>
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source The user who is allowed to execute the activity execution
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsRestrictedUser
     @predicate http://www.w3.org/2000/01/rdf-schema#comment
     -->
-    <rdfs:comment xml:lang="se-SV"><![CDATA[The user who is allowed to execute the activity execution]]></rdfs:comment>
+    <rdfs:comment xml:lang="sv-SE"><![CDATA[The user who is allowed to execute the activity execution]]></rdfs:comment>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsRestrictedRole">
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Execution restricted role
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsRestrictedRole
     @predicate http://www.w3.org/2000/01/rdf-schema#label
     -->
-    <rdfs:label xml:lang="se-SV"><![CDATA[Execution restricted role]]></rdfs:label>
+    <rdfs:label xml:lang="sv-SE"><![CDATA[Execution restricted role]]></rdfs:label>
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source The role who is allowed to execute the activity execution
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsRestrictedRole
     @predicate http://www.w3.org/2000/01/rdf-schema#comment
     -->
-    <rdfs:comment xml:lang="se-SV"><![CDATA[The role who is allowed to execute the activity execution]]></rdfs:comment>
+    <rdfs:comment xml:lang="sv-SE"><![CDATA[The role who is allowed to execute the activity execution]]></rdfs:comment>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#ClassActivityExecutions">
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Activity Instance Resource
     @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassActivityExecutions
     @predicate http://www.w3.org/2000/01/rdf-schema#label
     -->
-    <rdfs:label xml:lang="se-SV"><![CDATA[Activity Instance Resource]]></rdfs:label>
+    <rdfs:label xml:lang="sv-SE"><![CDATA[Activity Instance Resource]]></rdfs:label>
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Activity Instance Resource
     @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassActivityExecutions
     @predicate http://www.w3.org/2000/01/rdf-schema#comment
     -->
-    <rdfs:comment xml:lang="se-SV"><![CDATA[Activity Instance Resource]]></rdfs:comment>
+    <rdfs:comment xml:lang="sv-SE"><![CDATA[Activity Instance Resource]]></rdfs:comment>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#ClassAccessControlModes">
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source ACL modes
     @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassAccessControlModes
     @predicate http://www.w3.org/2000/01/rdf-schema#label
     -->
-    <rdfs:label xml:lang="se-SV"><![CDATA[ACL modes]]></rdfs:label>
+    <rdfs:label xml:lang="sv-SE"><![CDATA[ACL modes]]></rdfs:label>
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source ACL modes
     @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassAccessControlModes
     @predicate http://www.w3.org/2000/01/rdf-schema#comment
     -->
-    <rdfs:comment xml:lang="se-SV"><![CDATA[ACL modes]]></rdfs:comment>
+    <rdfs:comment xml:lang="sv-SE"><![CDATA[ACL modes]]></rdfs:comment>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyAccessControlModesRole">
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Role
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyAccessControlModesRole
     @predicate http://www.w3.org/2000/01/rdf-schema#label
     -->
-    <rdfs:label xml:lang="se-SV"><![CDATA[Role]]></rdfs:label>
+    <rdfs:label xml:lang="sv-SE"><![CDATA[Role]]></rdfs:label>
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Access Control Role
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyAccessControlModesRole
     @predicate http://www.w3.org/2000/01/rdf-schema#comment
     -->
-    <rdfs:comment xml:lang="se-SV"><![CDATA[Access Control Role]]></rdfs:comment>
+    <rdfs:comment xml:lang="sv-SE"><![CDATA[Access Control Role]]></rdfs:comment>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyAccessControlModesRoleRestrictedUser">
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Role Restricted User
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyAccessControlModesRoleRestrictedUser
     @predicate http://www.w3.org/2000/01/rdf-schema#label
     -->
-    <rdfs:label xml:lang="se-SV"><![CDATA[Role Restricted User]]></rdfs:label>
+    <rdfs:label xml:lang="sv-SE"><![CDATA[Role Restricted User]]></rdfs:label>
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Role Restricted User
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyAccessControlModesRoleRestrictedUser
     @predicate http://www.w3.org/2000/01/rdf-schema#comment
     -->
-    <rdfs:comment xml:lang="se-SV"><![CDATA[Role Restricted User]]></rdfs:comment>
+    <rdfs:comment xml:lang="sv-SE"><![CDATA[Role Restricted User]]></rdfs:comment>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyAccessControlModesUser">
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source User
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyAccessControlModesUser
     @predicate http://www.w3.org/2000/01/rdf-schema#label
     -->
-    <rdfs:label xml:lang="se-SV"><![CDATA[User]]></rdfs:label>
+    <rdfs:label xml:lang="sv-SE"><![CDATA[User]]></rdfs:label>
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source User
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyAccessControlModesUser
     @predicate http://www.w3.org/2000/01/rdf-schema#comment
     -->
-    <rdfs:comment xml:lang="se-SV"><![CDATA[User]]></rdfs:comment>
+    <rdfs:comment xml:lang="sv-SE"><![CDATA[User]]></rdfs:comment>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyAccessControlModesRoleRestrictedUserInherited">
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Role Restricted User Inherited
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyAccessControlModesRoleRestrictedUserInherited
     @predicate http://www.w3.org/2000/01/rdf-schema#label
     -->
-    <rdfs:label xml:lang="se-SV"><![CDATA[Role Restricted User Inherited]]></rdfs:label>
+    <rdfs:label xml:lang="sv-SE"><![CDATA[Role Restricted User Inherited]]></rdfs:label>
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Role Restricted User Inherited
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyAccessControlModesRoleRestrictedUserInherited
     @predicate http://www.w3.org/2000/01/rdf-schema#comment
     -->
-    <rdfs:comment xml:lang="se-SV"><![CDATA[Role Restricted User Inherited]]></rdfs:comment>
+    <rdfs:comment xml:lang="sv-SE"><![CDATA[Role Restricted User Inherited]]></rdfs:comment>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyAccessControlModesRoleRestrictedUserInheritedDelivery">
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Role Restricted User Inherited Delivery
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyAccessControlModesRoleRestrictedUserInheritedDelivery
     @predicate http://www.w3.org/2000/01/rdf-schema#label
     -->
-    <rdfs:label xml:lang="se-SV"><![CDATA[Role Restricted User Inherited Delivery]]></rdfs:label>
+    <rdfs:label xml:lang="sv-SE"><![CDATA[Role Restricted User Inherited Delivery]]></rdfs:label>
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
-    @source Useful for deliveries
-    @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyAccessControlModesRoleRestrictedUserInheritedDelivery
-    @predicate http://www.w3.org/2000/01/rdf-schema#comment
-    -->
-    <rdfs:comment xml:lang="se-SV"><![CDATA[Role Restricted User Inherited]]></rdfs:comment>
-    <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Role Restricted User Inherited
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyAccessControlModesRoleRestrictedUserInheritedDelivery
     @predicate http://www.w3.org/2000/01/rdf-schema#comment
     -->
-    <rdfs:comment xml:lang="se-SV"><![CDATA[Role Restricted User Inherited]]></rdfs:comment>
+    <rdfs:comment xml:lang="sv-SE"><![CDATA[Role Restricted User Inherited]]></rdfs:comment>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivitiesAccessControlMode">
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source ACL mode
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivitiesAccessControlMode
     @predicate http://www.w3.org/2000/01/rdf-schema#label
     -->
-    <rdfs:label xml:lang="se-SV"><![CDATA[ACL mode]]></rdfs:label>
+    <rdfs:label xml:lang="sv-SE"><![CDATA[ACL mode]]></rdfs:label>
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source ACL mode
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivitiesAccessControlMode
     @predicate http://www.w3.org/2000/01/rdf-schema#comment
     -->
-    <rdfs:comment xml:lang="se-SV"><![CDATA[ACL mode]]></rdfs:comment>
+    <rdfs:comment xml:lang="sv-SE"><![CDATA[ACL mode]]></rdfs:comment>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivitiesRestrictedRole">
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source restricted Role
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivitiesRestrictedRole
     @predicate http://www.w3.org/2000/01/rdf-schema#label
     -->
-    <rdfs:label xml:lang="se-SV"><![CDATA[restricted Role]]></rdfs:label>
+    <rdfs:label xml:lang="sv-SE"><![CDATA[restricted Role]]></rdfs:label>
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source restricted Role
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivitiesRestrictedRole
     @predicate http://www.w3.org/2000/01/rdf-schema#comment
     -->
-    <rdfs:comment xml:lang="se-SV"><![CDATA[restricted Role]]></rdfs:comment>
+    <rdfs:comment xml:lang="sv-SE"><![CDATA[restricted Role]]></rdfs:comment>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivitiesRestrictedUser">
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Restricted User
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivitiesRestrictedUser
     @predicate http://www.w3.org/2000/01/rdf-schema#label
     -->
-    <rdfs:label xml:lang="se-SV"><![CDATA[Restricted User]]></rdfs:label>
+    <rdfs:label xml:lang="sv-SE"><![CDATA[Restricted User]]></rdfs:label>
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Restricted User
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivitiesRestrictedUser
     @predicate http://www.w3.org/2000/01/rdf-schema#comment
     -->
-    <rdfs:comment xml:lang="se-SV"><![CDATA[Restricted User]]></rdfs:comment>
+    <rdfs:comment xml:lang="sv-SE"><![CDATA[Restricted User]]></rdfs:comment>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessInitAccesControlMode">
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Init ACL mode
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessInitAccesControlMode
     @predicate http://www.w3.org/2000/01/rdf-schema#label
     -->
-    <rdfs:label xml:lang="se-SV"><![CDATA[Init ACL mode]]></rdfs:label>
+    <rdfs:label xml:lang="sv-SE"><![CDATA[Init ACL mode]]></rdfs:label>
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Init ACL mode
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessInitAccesControlMode
     @predicate http://www.w3.org/2000/01/rdf-schema#comment
     -->
-    <rdfs:comment xml:lang="se-SV"><![CDATA[Init ACL mode]]></rdfs:comment>
+    <rdfs:comment xml:lang="sv-SE"><![CDATA[Init ACL mode]]></rdfs:comment>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessInitRestrictedUser">
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Init Restricted User
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessInitRestrictedUser
     @predicate http://www.w3.org/2000/01/rdf-schema#label
     -->
-    <rdfs:label xml:lang="se-SV"><![CDATA[Init Restricted User]]></rdfs:label>
+    <rdfs:label xml:lang="sv-SE"><![CDATA[Init Restricted User]]></rdfs:label>
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Init Restricted User
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessInitRestrictedUser
     @predicate http://www.w3.org/2000/01/rdf-schema#comment
     -->
-    <rdfs:comment xml:lang="se-SV"><![CDATA[Init Restricted User]]></rdfs:comment>
+    <rdfs:comment xml:lang="sv-SE"><![CDATA[Init Restricted User]]></rdfs:comment>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessInitRestrictedRole">
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Init Restricted Role
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessInitRestrictedRole
     @predicate http://www.w3.org/2000/01/rdf-schema#label
     -->
-    <rdfs:label xml:lang="se-SV"><![CDATA[Init Restricted Role]]></rdfs:label>
+    <rdfs:label xml:lang="sv-SE"><![CDATA[Init Restricted Role]]></rdfs:label>
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Init Restricted Role
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessInitRestrictedRole
     @predicate http://www.w3.org/2000/01/rdf-schema#comment
     -->
-    <rdfs:comment xml:lang="se-SV"><![CDATA[Init Restricted Role]]></rdfs:comment>
+    <rdfs:comment xml:lang="sv-SE"><![CDATA[Init Restricted Role]]></rdfs:comment>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessDiagramData">
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Diagram Data
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessDiagramData
     @predicate http://www.w3.org/2000/01/rdf-schema#label
     -->
-    <rdfs:label xml:lang="se-SV"><![CDATA[Diagram Data]]></rdfs:label>
+    <rdfs:label xml:lang="sv-SE"><![CDATA[Diagram Data]]></rdfs:label>
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Diagram Data
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessDiagramData
     @predicate http://www.w3.org/2000/01/rdf-schema#comment
     -->
-    <rdfs:comment xml:lang="se-SV"><![CDATA[Diagram Data]]></rdfs:comment>
+    <rdfs:comment xml:lang="sv-SE"><![CDATA[Diagram Data]]></rdfs:comment>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#ClassNotificationMode">
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Notification Mode
     @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassNotificationMode
     @predicate http://www.w3.org/2000/01/rdf-schema#label
     -->
-    <rdfs:label xml:lang="se-SV"><![CDATA[Notification Mode]]></rdfs:label>
+    <rdfs:label xml:lang="sv-SE"><![CDATA[Notification Mode]]></rdfs:label>
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Notification Mode
     @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassNotificationMode
     @predicate http://www.w3.org/2000/01/rdf-schema#comment
     -->
-    <rdfs:comment xml:lang="se-SV"><![CDATA[Notification Mode]]></rdfs:comment>
+    <rdfs:comment xml:lang="sv-SE"><![CDATA[Notification Mode]]></rdfs:comment>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#InstanceNotifyUser">
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Notify User
     @subject http://www.tao.lu/middleware/wfEngine.rdf#InstanceNotifyUser
     @predicate http://www.w3.org/2000/01/rdf-schema#label
     -->
-    <rdfs:label xml:lang="se-SV"><![CDATA[Notify User]]></rdfs:label>
+    <rdfs:label xml:lang="sv-SE"><![CDATA[Notify User]]></rdfs:label>
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Notify User
     @subject http://www.tao.lu/middleware/wfEngine.rdf#InstanceNotifyUser
     @predicate http://www.w3.org/2000/01/rdf-schema#comment
     -->
-    <rdfs:comment xml:lang="se-SV"><![CDATA[Notify User]]></rdfs:comment>
+    <rdfs:comment xml:lang="sv-SE"><![CDATA[Notify User]]></rdfs:comment>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#InstanceNotifyNextActivityUsers">
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Notify Next Activity Users
     @subject http://www.tao.lu/middleware/wfEngine.rdf#InstanceNotifyNextActivityUsers
     @predicate http://www.w3.org/2000/01/rdf-schema#label
     -->
-    <rdfs:label xml:lang="se-SV"><![CDATA[Notify Next Activity Users]]></rdfs:label>
+    <rdfs:label xml:lang="sv-SE"><![CDATA[Notify Next Activity Users]]></rdfs:label>
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Notify Next Activity Users
     @subject http://www.tao.lu/middleware/wfEngine.rdf#InstanceNotifyNextActivityUsers
     @predicate http://www.w3.org/2000/01/rdf-schema#comment
     -->
-    <rdfs:comment xml:lang="se-SV"><![CDATA[Notify Next Activity Users]]></rdfs:comment>
+    <rdfs:comment xml:lang="sv-SE"><![CDATA[Notify Next Activity Users]]></rdfs:comment>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#InstanceNotifyThenActivityUsers">
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Notify Then Activity Users
     @subject http://www.tao.lu/middleware/wfEngine.rdf#InstanceNotifyThenActivityUsers
     @predicate http://www.w3.org/2000/01/rdf-schema#label
     -->
-    <rdfs:label xml:lang="se-SV"><![CDATA[Notify Then Activity Users]]></rdfs:label>
+    <rdfs:label xml:lang="sv-SE"><![CDATA[Notify Then Activity Users]]></rdfs:label>
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source For connector of conditional type only
     @subject http://www.tao.lu/middleware/wfEngine.rdf#InstanceNotifyThenActivityUsers
     @predicate http://www.w3.org/2000/01/rdf-schema#comment
     -->
-    <rdfs:comment xml:lang="se-SV"><![CDATA[For connector of conditional type only]]></rdfs:comment>
+    <rdfs:comment xml:lang="sv-SE"><![CDATA[For connector of conditional type only]]></rdfs:comment>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#InstanceNotifyElseActivityUsers">
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Notify Else Activity Users
     @subject http://www.tao.lu/middleware/wfEngine.rdf#InstanceNotifyElseActivityUsers
     @predicate http://www.w3.org/2000/01/rdf-schema#label
     -->
-    <rdfs:label xml:lang="se-SV"><![CDATA[Notify Else Activity Users]]></rdfs:label>
+    <rdfs:label xml:lang="sv-SE"><![CDATA[Notify Else Activity Users]]></rdfs:label>
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source For connector of conditional type only
     @subject http://www.tao.lu/middleware/wfEngine.rdf#InstanceNotifyElseActivityUsers
     @predicate http://www.w3.org/2000/01/rdf-schema#comment
     -->
-    <rdfs:comment xml:lang="se-SV"><![CDATA[For connector of conditional type only]]></rdfs:comment>
+    <rdfs:comment xml:lang="sv-SE"><![CDATA[For connector of conditional type only]]></rdfs:comment>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#InstanceNotifyPreviousActivityUsers">
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Notify Previous Activity Users
     @subject http://www.tao.lu/middleware/wfEngine.rdf#InstanceNotifyPreviousActivityUsers
     @predicate http://www.w3.org/2000/01/rdf-schema#label
     -->
-    <rdfs:label xml:lang="se-SV"><![CDATA[Notify Previous Activity Users]]></rdfs:label>
+    <rdfs:label xml:lang="sv-SE"><![CDATA[Notify Previous Activity Users]]></rdfs:label>
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Notify Previous Activity Users
     @subject http://www.tao.lu/middleware/wfEngine.rdf#InstanceNotifyPreviousActivityUsers
     @predicate http://www.w3.org/2000/01/rdf-schema#comment
     -->
-    <rdfs:comment xml:lang="se-SV"><![CDATA[Notify Previous Activity Users]]></rdfs:comment>
+    <rdfs:comment xml:lang="sv-SE"><![CDATA[Notify Previous Activity Users]]></rdfs:comment>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#InstanceNotifyRole">
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Notify Role
     @subject http://www.tao.lu/middleware/wfEngine.rdf#InstanceNotifyRole
     @predicate http://www.w3.org/2000/01/rdf-schema#label
     -->
-    <rdfs:label xml:lang="se-SV"><![CDATA[Notify Role]]></rdfs:label>
+    <rdfs:label xml:lang="sv-SE"><![CDATA[Notify Role]]></rdfs:label>
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Notify Role
     @subject http://www.tao.lu/middleware/wfEngine.rdf#InstanceNotifyRole
     @predicate http://www.w3.org/2000/01/rdf-schema#comment
     -->
-    <rdfs:comment xml:lang="se-SV"><![CDATA[Notify Role]]></rdfs:comment>
+    <rdfs:comment xml:lang="sv-SE"><![CDATA[Notify Role]]></rdfs:comment>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyConnectorsNotificationModes">
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Notify
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyConnectorsNotificationModes
     @predicate http://www.w3.org/2000/01/rdf-schema#label
     -->
-    <rdfs:label xml:lang="se-SV"><![CDATA[Notify]]></rdfs:label>
+    <rdfs:label xml:lang="sv-SE"><![CDATA[Notify]]></rdfs:label>
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Notify
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyConnectorsNotificationModes
     @predicate http://www.w3.org/2000/01/rdf-schema#comment
     -->
-    <rdfs:comment xml:lang="se-SV"><![CDATA[Notify]]></rdfs:comment>
+    <rdfs:comment xml:lang="sv-SE"><![CDATA[Notify]]></rdfs:comment>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyConnectorsNotifiedUser">
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Users to notify
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyConnectorsNotifiedUser
     @predicate http://www.w3.org/2000/01/rdf-schema#label
     -->
-    <rdfs:label xml:lang="se-SV"><![CDATA[Users to notify]]></rdfs:label>
+    <rdfs:label xml:lang="sv-SE"><![CDATA[Users to notify]]></rdfs:label>
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Users to notify
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyConnectorsNotifiedUser
     @predicate http://www.w3.org/2000/01/rdf-schema#comment
     -->
-    <rdfs:comment xml:lang="se-SV"><![CDATA[Users to notify]]></rdfs:comment>
+    <rdfs:comment xml:lang="sv-SE"><![CDATA[Users to notify]]></rdfs:comment>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyConnectorsNotifiedRole">
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Role's users to notify
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyConnectorsNotifiedRole
     @predicate http://www.w3.org/2000/01/rdf-schema#label
     -->
-    <rdfs:label xml:lang="se-SV"><![CDATA[Role's users to notify]]></rdfs:label>
+    <rdfs:label xml:lang="sv-SE"><![CDATA[Role's users to notify]]></rdfs:label>
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Role's users to notify
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyConnectorsNotifiedRole
     @predicate http://www.w3.org/2000/01/rdf-schema#comment
     -->
-    <rdfs:comment xml:lang="se-SV"><![CDATA[Role's users to notify]]></rdfs:comment>
+    <rdfs:comment xml:lang="sv-SE"><![CDATA[Role's users to notify]]></rdfs:comment>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyConnectorsNotificationMessage">
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Notification Message
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyConnectorsNotificationMessage
     @predicate http://www.w3.org/2000/01/rdf-schema#label
     -->
-    <rdfs:label xml:lang="se-SV"><![CDATA[Notification Message]]></rdfs:label>
+    <rdfs:label xml:lang="sv-SE"><![CDATA[Notification Message]]></rdfs:label>
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Notification Message
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyConnectorsNotificationMessage
     @predicate http://www.w3.org/2000/01/rdf-schema#comment
     -->
-    <rdfs:comment xml:lang="se-SV"><![CDATA[Notification Message]]></rdfs:comment>
+    <rdfs:comment xml:lang="sv-SE"><![CDATA[Notification Message]]></rdfs:comment>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#ClassNotification">
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Notification
     @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassNotification
     @predicate http://www.w3.org/2000/01/rdf-schema#label
     -->
-    <rdfs:label xml:lang="se-SV"><![CDATA[Notification]]></rdfs:label>
+    <rdfs:label xml:lang="sv-SE"><![CDATA[Notification]]></rdfs:label>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyNotificationTo">
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source User to notify
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyNotificationTo
     @predicate http://www.w3.org/2000/01/rdf-schema#label
     -->
-    <rdfs:label xml:lang="se-SV"><![CDATA[User to notify]]></rdfs:label>
+    <rdfs:label xml:lang="sv-SE"><![CDATA[User to notify]]></rdfs:label>
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source User to notify
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyNotificationTo
     @predicate http://www.w3.org/2000/01/rdf-schema#comment
     -->
-    <rdfs:comment xml:lang="se-SV"><![CDATA[User to notify]]></rdfs:comment>
+    <rdfs:comment xml:lang="sv-SE"><![CDATA[User to notify]]></rdfs:comment>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyNotificationConnector">
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Connector's notification
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyNotificationConnector
     @predicate http://www.w3.org/2000/01/rdf-schema#label
     -->
-    <rdfs:label xml:lang="se-SV"><![CDATA[Connector's notification]]></rdfs:label>
+    <rdfs:label xml:lang="sv-SE"><![CDATA[Connector's notification]]></rdfs:label>
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Connector's notification
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyNotificationConnector
     @predicate http://www.w3.org/2000/01/rdf-schema#comment
     -->
-    <rdfs:comment xml:lang="se-SV"><![CDATA[Connector's notification]]></rdfs:comment>
+    <rdfs:comment xml:lang="sv-SE"><![CDATA[Connector's notification]]></rdfs:comment>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyNotificationProcessExecution">
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Process execution's notification
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyNotificationProcessExecution
     @predicate http://www.w3.org/2000/01/rdf-schema#label
     -->
-    <rdfs:label xml:lang="se-SV"><![CDATA[Process execution's notification]]></rdfs:label>
+    <rdfs:label xml:lang="sv-SE"><![CDATA[Process execution's notification]]></rdfs:label>
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Process execution's notification
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyNotificationProcessExecution
     @predicate http://www.w3.org/2000/01/rdf-schema#comment
     -->
-    <rdfs:comment xml:lang="se-SV"><![CDATA[Process execution's notification]]></rdfs:comment>
+    <rdfs:comment xml:lang="sv-SE"><![CDATA[Process execution's notification]]></rdfs:comment>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyNotificationSent">
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Notification sent
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyNotificationSent
     @predicate http://www.w3.org/2000/01/rdf-schema#label
     -->
-    <rdfs:label xml:lang="se-SV"><![CDATA[Notification sent]]></rdfs:label>
+    <rdfs:label xml:lang="sv-SE"><![CDATA[Notification sent]]></rdfs:label>
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Notification sent
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyNotificationSent
     @predicate http://www.w3.org/2000/01/rdf-schema#comment
     -->
-    <rdfs:comment xml:lang="se-SV"><![CDATA[Notification sent]]></rdfs:comment>
+    <rdfs:comment xml:lang="sv-SE"><![CDATA[Notification sent]]></rdfs:comment>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyNotificationDate">
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Notification date
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyNotificationDate
     @predicate http://www.w3.org/2000/01/rdf-schema#label
     -->
-    <rdfs:label xml:lang="se-SV"><![CDATA[Notification date]]></rdfs:label>
+    <rdfs:label xml:lang="sv-SE"><![CDATA[Notification date]]></rdfs:label>
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Notification date
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyNotificationDate
     @predicate http://www.w3.org/2000/01/rdf-schema#comment
     -->
-    <rdfs:comment xml:lang="se-SV"><![CDATA[Notification date]]></rdfs:comment>
+    <rdfs:comment xml:lang="sv-SE"><![CDATA[Notification date]]></rdfs:comment>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsContextRecovery">
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Context Recovery
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsContextRecovery
     @predicate http://www.w3.org/2000/01/rdf-schema#label
     -->
-    <rdfs:label xml:lang="se-SV"><![CDATA[Context Recovery]]></rdfs:label>
+    <rdfs:label xml:lang="sv-SE"><![CDATA[Context Recovery]]></rdfs:label>
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Context Recovery
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsContextRecovery
     @predicate http://www.w3.org/2000/01/rdf-schema#comment
     -->
-    <rdfs:comment xml:lang="se-SV"><![CDATA[Context Recovery]]></rdfs:comment>
+    <rdfs:comment xml:lang="sv-SE"><![CDATA[Context Recovery]]></rdfs:comment>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#ClassControls">
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Controls
     @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassControls
     @predicate http://www.w3.org/2000/01/rdf-schema#label
     -->
-    <rdfs:label xml:lang="se-SV"><![CDATA[Controls]]></rdfs:label>
+    <rdfs:label xml:lang="sv-SE"><![CDATA[Controls]]></rdfs:label>
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Controls
     @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassControls
     @predicate http://www.w3.org/2000/01/rdf-schema#comment
     -->
-    <rdfs:comment xml:lang="se-SV"><![CDATA[Controls]]></rdfs:comment>
+    <rdfs:comment xml:lang="sv-SE"><![CDATA[Controls]]></rdfs:comment>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#InstanceControlsForward">
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Forward
     @subject http://www.tao.lu/middleware/wfEngine.rdf#InstanceControlsForward
     @predicate http://www.w3.org/2000/01/rdf-schema#label
     -->
-    <rdfs:label xml:lang="se-SV"><![CDATA[Forward]]></rdfs:label>
+    <rdfs:label xml:lang="sv-SE"><![CDATA[Forward]]></rdfs:label>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#InstanceControlsBackward">
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Backward
     @subject http://www.tao.lu/middleware/wfEngine.rdf#InstanceControlsBackward
     @predicate http://www.w3.org/2000/01/rdf-schema#label
     -->
-    <rdfs:label xml:lang="se-SV"><![CDATA[Backward]]></rdfs:label>
+    <rdfs:label xml:lang="sv-SE"><![CDATA[Backward]]></rdfs:label>
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Backward
     @subject http://www.tao.lu/middleware/wfEngine.rdf#InstanceControlsBackward
     @predicate http://www.w3.org/2000/01/rdf-schema#comment
     -->
-    <rdfs:comment xml:lang="se-SV"><![CDATA[Backward]]></rdfs:comment>
+    <rdfs:comment xml:lang="sv-SE"><![CDATA[Backward]]></rdfs:comment>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivitiesControls">
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Activity controls
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivitiesControls
     @predicate http://www.w3.org/2000/01/rdf-schema#label
     -->
-    <rdfs:label xml:lang="se-SV"><![CDATA[Activity controls]]></rdfs:label>
+    <rdfs:label xml:lang="sv-SE"><![CDATA[Activity controls]]></rdfs:label>
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Activity controls
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivitiesControls
     @predicate http://www.w3.org/2000/01/rdf-schema#comment
     -->
-    <rdfs:comment xml:lang="se-SV"><![CDATA[Activity controls]]></rdfs:comment>
+    <rdfs:comment xml:lang="sv-SE"><![CDATA[Activity controls]]></rdfs:comment>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#ProcessVarPrevEndosment">
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source PREV_ENDORSMENT
     @subject http://www.tao.lu/middleware/wfEngine.rdf#ProcessVarPrevEndosment
     @predicate http://www.w3.org/2000/01/rdf-schema#label
     -->
-    <rdfs:label xml:lang="se-SV"><![CDATA[PREV_ENDORSMENT]]></rdfs:label>
+    <rdfs:label xml:lang="sv-SE"><![CDATA[PREV_ENDORSMENT]]></rdfs:label>
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Previous Endorsment
     @subject http://www.tao.lu/middleware/wfEngine.rdf#ProcessVarPrevEndosment
     @predicate http://www.w3.org/2000/01/rdf-schema#comment
     -->
-    <rdfs:comment xml:lang="se-SV"><![CDATA[Previous Endorsment]]></rdfs:comment>
+    <rdfs:comment xml:lang="sv-SE"><![CDATA[Previous Endorsment]]></rdfs:comment>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#ClassActivityCardinality">
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Activity Cardinality
     @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassActivityCardinality
     @predicate http://www.w3.org/2000/01/rdf-schema#label
     -->
-    <rdfs:label xml:lang="se-SV"><![CDATA[Activity Cardinality]]></rdfs:label>
+    <rdfs:label xml:lang="sv-SE"><![CDATA[Activity Cardinality]]></rdfs:label>
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Activity Cardinality
     @subject http://www.tao.lu/middleware/wfEngine.rdf#ClassActivityCardinality
     @predicate http://www.w3.org/2000/01/rdf-schema#comment
     -->
-    <rdfs:comment xml:lang="se-SV"><![CDATA[Activity Cardinality]]></rdfs:comment>
+    <rdfs:comment xml:lang="sv-SE"><![CDATA[Activity Cardinality]]></rdfs:comment>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityCardinalityCardinality">
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Cardinality
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityCardinalityCardinality
     @predicate http://www.w3.org/2000/01/rdf-schema#label
     -->
-    <rdfs:label xml:lang="se-SV"><![CDATA[Cardinality]]></rdfs:label>
+    <rdfs:label xml:lang="sv-SE"><![CDATA[Cardinality]]></rdfs:label>
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Cardinality
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityCardinalityCardinality
     @predicate http://www.w3.org/2000/01/rdf-schema#comment
     -->
-    <rdfs:comment xml:lang="se-SV"><![CDATA[Cardinality]]></rdfs:comment>
+    <rdfs:comment xml:lang="sv-SE"><![CDATA[Cardinality]]></rdfs:comment>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityCardinalitySplitVariables">
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Split variables
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityCardinalitySplitVariables
     @predicate http://www.w3.org/2000/01/rdf-schema#label
     -->
-    <rdfs:label xml:lang="se-SV"><![CDATA[Split variables]]></rdfs:label>
+    <rdfs:label xml:lang="sv-SE"><![CDATA[Split variables]]></rdfs:label>
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Split variables
     @subject http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityCardinalitySplitVariables
     @predicate http://www.w3.org/2000/01/rdf-schema#comment
     -->
-    <rdfs:comment xml:lang="se-SV"><![CDATA[Split variables]]></rdfs:comment>
+    <rdfs:comment xml:lang="sv-SE"><![CDATA[Split variables]]></rdfs:comment>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/middleware/wfEngine.rdf#WorkflowsManagerRole">
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source Workflows Manager
     @subject http://www.tao.lu/middleware/wfEngine.rdf#WorkflowsManagerRole
     @predicate http://www.w3.org/2000/01/rdf-schema#label
     -->
-    <rdfs:label xml:lang="se-SV"><![CDATA[Workflows Manager]]></rdfs:label>
+    <rdfs:label xml:lang="sv-SE"><![CDATA[Workflows Manager]]></rdfs:label>
     <!--
-    @sourceLanguage EN
-    @targetLanguage se-SV
+    @sourceLanguage en-US
+    @targetLanguage sv-SE
     @source The Workflows Manager Role
     @subject http://www.tao.lu/middleware/wfEngine.rdf#WorkflowsManagerRole
     @predicate http://www.w3.org/2000/01/rdf-schema#comment
     -->
-    <rdfs:comment xml:lang="se-SV"><![CDATA[The Workflows Manager Role]]></rdfs:comment>
+    <rdfs:comment xml:lang="sv-SE"><![CDATA[The Workflows Manager Role]]></rdfs:comment>
   </rdf:Description>
 </rdf:RDF>

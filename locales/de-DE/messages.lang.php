@@ -1,7 +1,6 @@
 <?php
 $GLOBALS['__l10n']["Add / Edit lists"]="Listen hinzufügen/bearbeiten";
 $GLOBALS['__l10n']["Add property"]="Eigenschaft hinzufügen";
-$GLOBALS['__l10n']["Add the source file"]="Quelldatei hinzufügen";
 $GLOBALS['__l10n']["An error occured during user deletion"]="Ein Fehler ist während dem Löschvorgang aufgetreten";
 $GLOBALS['__l10n']["Class"]="Klasse";
 $GLOBALS['__l10n']["Create"]="Erstellen";
@@ -71,13 +70,11 @@ $GLOBALS['__l10n']["Translate to"]="Übersetzen auf";
 $GLOBALS['__l10n']["Translation parameters"]="Übersetzungsparameter";
 $GLOBALS['__l10n']["Translation saved"]="Übersetzung gespeichert";
 $GLOBALS['__l10n']["Type"]="Typ";
-$GLOBALS['__l10n']["Upload CSV File"]="CSV-Datei uploaden";
 $GLOBALS['__l10n']["Use the * character to replace any string"]="Benutzen Sie bitten das Zeichen * zur Ersetzung eienr Zeichenfolge";
 $GLOBALS['__l10n']["User"]="Benutzer";
 $GLOBALS['__l10n']["User added"]="Benutzer hinzugefügt";
 $GLOBALS['__l10n']["User deleted successfully"]="Benutzer erfolgreich gelöscht";
 $GLOBALS['__l10n']["User saved"]="Benutzer gespeichert";
-$GLOBALS['__l10n']["Users"]="Benutzer";
 $GLOBALS['__l10n']["You cannot modify this property"]="Sie können diese Eigenschaft nicht ändern";
 
 ?>
