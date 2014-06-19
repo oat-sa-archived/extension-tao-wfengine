@@ -235,7 +235,8 @@ class wfEngine_actions_ProcessBrowser extends wfEngine_actions_WfModule{
 			            $parameters[$key] = (string)$value;
 			        }
 			    }
-			    $jsServiceApi = tao_helpers_ServiceJavascripts::getServiceApi($serviceCallModel, $activityExecution->getUri(), $parameters);
+			    $serviceCallId = $activityExecution->getUri() . (count($interactiveServices) == 1 ? '' : $interactiveService->getUri());
+			    $jsServiceApi = tao_helpers_ServiceJavascripts::getServiceApi($serviceCallModel, $serviceCallId, $parameters);
 				$services[] = array(
 					'style'		=> $interactiveServiceService->getStyle($interactiveService),
 				    'api'      => $jsServiceApi
