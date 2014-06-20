@@ -32,8 +32,8 @@ $GLOBALS['__l10n']["Create a list"]="إنشاء قائمة";
 $GLOBALS['__l10n']["CSV Options"]="CSV خيارات";
 $GLOBALS['__l10n']["Current language"]="اللغة الحالية";
 $GLOBALS['__l10n']["Data imported successfully"]="البيانات التي تم استيرادها بنجاح";
-$GLOBALS['__l10n']["Data language"]="لغة البيانات";
 $GLOBALS['__l10n']["Data Language"]="لغة البيانات";
+$GLOBALS['__l10n']["Data language"]="لغة البيانات";
 $GLOBALS['__l10n']["Date"]="التاريخ";
 $GLOBALS['__l10n']["Delete"]="حذف";
 $GLOBALS['__l10n']["delete"]="حذف";
@@ -43,13 +43,13 @@ $GLOBALS['__l10n']["Deliveries"]="Deliveries";
 $GLOBALS['__l10n']["Don't set"]="لا تدرج";
 $GLOBALS['__l10n']["Download"]="تحميل";
 $GLOBALS['__l10n']["duplicate"]="تكرار";
-$GLOBALS['__l10n']["edit"]="تحرير";
 $GLOBALS['__l10n']["Edit"]="تحرير";
+$GLOBALS['__l10n']["edit"]="تحرير";
 $GLOBALS['__l10n']["Edit a user"]="تحرير مستخدم";
 $GLOBALS['__l10n']["Edit Comment"]="تحرير تعليق";
 $GLOBALS['__l10n']["Edit user"]="تحرير مستخدم";
-$GLOBALS['__l10n']["element"]="عنصر";
 $GLOBALS['__l10n']["Element"]="العنصر";
+$GLOBALS['__l10n']["element"]="عنصر";
 $GLOBALS['__l10n']["element deleted"]="عنصر محذوف";
 $GLOBALS['__l10n']["Else"]="والا";
 $GLOBALS['__l10n']["Error"]="خطأ";
@@ -69,8 +69,8 @@ $GLOBALS['__l10n']["If"]="Si";
 $GLOBALS['__l10n']["Import"]="استيراد";
 $GLOBALS['__l10n']["Inclusive (AND)"]="Inclusif (ET)";
 $GLOBALS['__l10n']["Initialize new Process"]="بدء عملية جديدة";
-$GLOBALS['__l10n']["Interface Language"]="لغة الواجهة";
 $GLOBALS['__l10n']["Interface language"]="لغة الواجهة";
+$GLOBALS['__l10n']["Interface Language"]="لغة الواجهة";
 $GLOBALS['__l10n']["Invalid field length"]="طول الحقل غير صحيح";
 $GLOBALS['__l10n']["Invalid field range"]="Le rang du champ est invalide";
 $GLOBALS['__l10n']["Invalid file size"]="حجم الملف غير صحيح";
@@ -93,13 +93,13 @@ $GLOBALS['__l10n']["Local Data (the local namespace containing only the data ins
 $GLOBALS['__l10n']["Login"]="الدخول";
 $GLOBALS['__l10n']["Logout"]="الخروج";
 $GLOBALS['__l10n']["Manage data list"]="إدارة قائمة البيانات";
-$GLOBALS['__l10n']["Manage deliveries"]="Gérer les deliveries";
 $GLOBALS['__l10n']["Manage groups"]="إدارة المجموعات";
 $GLOBALS['__l10n']["Manage items"]="ادارة الاسئلة";
 $GLOBALS['__l10n']["Manage test takers"]="إدارة المتقدمين للاختبار";
 $GLOBALS['__l10n']["Manage tests"]="ادارة الاختبارات";
 $GLOBALS['__l10n']["Manage users"]="إدارة المستخدمين";
 $GLOBALS['__l10n']["Map the properties to the CSV columns"]="CSV اختر الخصائص المتعلقة بالاعمدة";
+$GLOBALS['__l10n']["Media Manager"]="إدارة الوسائط";
 $GLOBALS['__l10n']["Meta Data"]="بيانات التعريف";
 $GLOBALS['__l10n']["move"]="حرك";
 $GLOBALS['__l10n']["Move to"]="حرك الى";
@@ -144,8 +144,8 @@ $GLOBALS['__l10n']["Right click the tree to manage your lists"]="استعمل ز
 $GLOBALS['__l10n']["Save"]="حفظ";
 $GLOBALS['__l10n']["Search"]="بحث";
 $GLOBALS['__l10n']["Search results"]="البحث عن النتائج";
-$GLOBALS['__l10n']["select"]="اختر";
 $GLOBALS['__l10n']["Select"]="حدد";
+$GLOBALS['__l10n']["select"]="اختر";
 $GLOBALS['__l10n']["Select a language"]="حدد اللغة";
 $GLOBALS['__l10n']["Select the element destination"]="حدد العنصر المستقبل";
 $GLOBALS['__l10n']["selected"]="محدد";
@@ -157,9 +157,8 @@ $GLOBALS['__l10n']["Start/Resume the case"]="ابدأ / استئناف الحا�
 $GLOBALS['__l10n']["Status"]="الحالة";
 $GLOBALS['__l10n']["Supported export formats"]="صيغ الاستيراد المعتمدة";
 $GLOBALS['__l10n']["TAO - An Open and Versatile Computer-Based Assessment Platform"]="منهاج التقييم القائم على الحاسوب مفتوح ومتعدد الاستخدامات - TAO";
-$GLOBALS['__l10n']["TAO Back Office"]="TAO: Outils d'administration";
+$GLOBALS['__l10n']["TAO Delivery Server"]="Serveur de delivery TAO";
 $GLOBALS['__l10n']["TAO Process Engine"]="TAO محرك عملية";
-$GLOBALS['__l10n']["Test takers"]="المترشحون للااختبار";
 $GLOBALS['__l10n']["Tests"]="الاختبارات";
 $GLOBALS['__l10n']["The format of this field is not valid."]="تنسيق هذا الحقل غير صالح";
 $GLOBALS['__l10n']["The Processes module allows to create Processes."]="Le module de traitement permet de créer des processus";
