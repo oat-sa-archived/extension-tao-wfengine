@@ -12,6 +12,7 @@ use oat\tao\helpers\Template;
 		<script type="text/javascript" src="<?=TAOBASE_WWW?>js/lib/jquery-1.8.0.min.js"></script>
 	</head>
 	<body>
+  <div class="content-wrap">
 		<ul id="control">
         	<li>
         		<span id="connecteduser" class="icon"><?=__("User Id.")?> <span id="username"><?=$userViewData['username']?></span> </span><span class="separator"></span>
@@ -51,6 +52,8 @@ use oat\tao\helpers\Template;
 			</div>
 
 		</div>
+        </div>
+<!-- /content-wrap -->
 <?php
 Template::inc('layout_footer.tpl', 'tao')
 ?>

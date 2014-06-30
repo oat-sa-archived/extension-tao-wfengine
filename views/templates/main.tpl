@@ -12,6 +12,7 @@ use oat\tao\helpers\Template;
 	</head>
 
 	<body>
+  <div class="content-wrap">
 		<div id="process_view"></div>
 		<ul id="control">
         	<li>
@@ -87,6 +88,8 @@ use oat\tao\helpers\Template;
 
 		</div>
 		<!-- End of content -->
+		</div>
+<!-- /content-wrap -->
 <?php
 Template::inc('layout_footer.tpl', 'tao')
 ?>

@@ -39,6 +39,7 @@ use oat\tao\helpers\Template;
 	</head>
 
 	<body>
+  <div class="content-wrap">
 		<div id="runner">
 		<div id="process_view"></div>
         <?if(!tao_helpers_Context::check('STANDALONE_MODE') && !has_data('allowControl') || get_data('allowControl')):?>
@@ -104,6 +105,8 @@ use oat\tao\helpers\Template;
 			<br class="clear" />
   		</div>
 	</div>
+    </div>
+<!-- /content-wrap -->
 <?php
 if (!tao_helpers_Context::check('STANDALONE_MODE')) {
     Template::inc('layout_footer.tpl', 'tao');
