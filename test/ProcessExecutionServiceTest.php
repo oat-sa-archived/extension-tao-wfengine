@@ -79,8 +79,6 @@ class ProcessExecutionServiceTest extends TaoPhpUnitTestRunner{
 		
 		TaoPhpUnitTestRunner::initTest();
 		
-		error_reporting(E_ALL);
-		
 		if(is_null($this->userService)){
 			$this->userService = wfEngine_models_classes_UserService::singleton();
 		}
@@ -98,13 +96,12 @@ class ProcessExecutionServiceTest extends TaoPhpUnitTestRunner{
 		
 		$this->testUserClass = new core_kernel_classes_Class(CLASS_WORKFLOWUSER);
 		$this->testUserRole = new core_kernel_classes_Resource(INSTANCE_ROLE_WORKFLOW);
-		$this->currentUser = $this->userService->getOneUser($login);
 		
-		if(is_null($this->currentUser)){
-			$this->currentUser = $this->testUserClass->createInstanceWithProperties($userData);
+		if (!$this->userService->loginAvailable($login)) {
+		    $this->fail('test login already taken');
 		}
+		$this->currentUser = $this->testUserClass->createInstanceWithProperties($userData);
 		
-		$this->userService->logout();
 		if($this->userService->loginUser($login, $pass)){
 			$this->currentUser = $this->userService->getCurrentUser();
 			$this->currentUser0 = $this->currentUser;
@@ -693,10 +690,10 @@ class ProcessExecutionServiceTest extends TaoPhpUnitTestRunner{
 					RDFS_LABEL				=> $login
 				);
 
-				$otherUser = $this->userService->getOneUser($login);
-				if(is_null($otherUser)){
-					$otherUser = $this->testUserClass->createInstanceWithProperties($userData);
+				if (!$this->userService->loginAvailable($login)) {
+				    $this->fail('test login already taken');
 				}
+				$otherUser = $this->testUserClass->createInstanceWithProperties($userData);
 				$createdUsers[$otherUser->getUri()] = $otherUser; 
 
 				if($this->userService->loginUser($login, $pass)){

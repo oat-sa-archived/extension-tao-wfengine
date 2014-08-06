@@ -52,19 +52,17 @@ class ActivityExecutionServiceTest extends wfEngineServiceTest {
 			PROPERTY_USER_PASSWORD	=>	core_kernel_users_AuthAdapter::getPasswordHash()->encrypt($this->userPassword),
 			PROPERTY_USER_DEFLG		=>	'http://www.tao.lu/Ontologies/TAO.rdf#Lang'.DEFAULT_LANG,
 			PROPERTY_USER_UILG		=>	'http://www.tao.lu/Ontologies/TAO.rdf#Lang'.DEFAULT_LANG,
-			PROPERTY_USER_ROLES		=> 	INSTANCE_ROLE_WORKFLOW);
+			PROPERTY_USER_ROLES		=> 	INSTANCE_ROLE_WORKFLOW
+		);
 		
-		$this->currentUser = $this->userService->getOneUser($login);
-		if(is_null($this->currentUser)){
-			$userClass = new core_kernel_classes_Class(CLASS_WORKFLOWUSER);
-			$this->currentUser = $userClass->createInstanceWithProperties($userData);
+		if (!$this->userService->loginAvailable($login)) {
+		    $this->fail('test login already taken');
 		}
 		
-		$this->userService->logout();
-		if($this->userService->loginUser($login, $this->userPassword)){
-			$this->currentUser = $this->userService->getCurrentUser();
-			$this->currentUser0 = $this->currentUser;
-		}
+		$userClass = new core_kernel_classes_Class(CLASS_WORKFLOWUSER);
+		$this->currentUser = $userClass->createInstanceWithProperties($userData);
+		
+		$this->currentUser0 = $this->currentUser;
 		
 		$this->service = wfEngine_models_classes_ActivityExecutionService::singleton();
 	}

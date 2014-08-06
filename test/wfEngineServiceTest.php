@@ -95,8 +95,6 @@ class wfEngineServiceTest extends TaoPhpUnitTestRunner {
 	
 	protected function createUser($login){
 		
-		$returnValue = null;
-		
 		$userData = array(
 			PROPERTY_USER_LOGIN		=> 	$login,
 			PROPERTY_USER_PASSWORD	=>	core_kernel_users_AuthAdapter::getPasswordHash()->encrypt($this->userPassword),
@@ -105,18 +103,18 @@ class wfEngineServiceTest extends TaoPhpUnitTestRunner {
 			PROPERTY_USER_ROLES		=>	INSTANCE_ROLE_WORKFLOW
 		);
 		
-		$user = $this->userService->getOneUser($login);
-		if(is_null($user)){
-			$userClass = new core_kernel_classes_Class(CLASS_WORKFLOWUSER);
-			$user = $userClass->createInstanceWithProperties($userData);
+		if (!$this->userService->loginAvailable($login)) {
+		    $this->fail('test login already taken');
 		}
-		$returnValue = $user;
 		
-		if(is_null($returnValue)){
+		$userClass = new core_kernel_classes_Class(CLASS_WORKFLOWUSER);
+		$user = $userClass->createInstanceWithProperties($userData);
+		
+		if(is_null($user)){
 			throw new Exception('cannot get the user with login '.$login);
 		}
 		
-		return $returnValue;
+		return $user;
 	}
 	
 	protected function changeUser($login){

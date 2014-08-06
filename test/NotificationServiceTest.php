@@ -80,16 +80,14 @@ class NotificationServiceTest extends TaoPhpUnitTestRunner {
 			PROPERTY_USER_ROLES			=>  INSTANCE_ROLE_WORKFLOW
 		);
 		
-		$this->currentUser = $this->userService->getOneUser($login);
-		$this->assertNull($this->currentUser);
-		if(is_null($this->currentUser)){
-			$userClass = new core_kernel_classes_Class(CLASS_GENERIS_USER);
-			$this->currentUser = $userClass->createInstanceWithProperties($userData);
+		if (!$this->userService->loginAvailable($login)) {
+		    $this->fail('test login already taken');
 		}
 		
-		$this->userService->logout();
+		$userClass = new core_kernel_classes_Class(CLASS_WORKFLOWUSER);
+		$this->currentUser = $userClass->createInstanceWithProperties($userData);
+		
 		$this->assertTrue($this->userService->loginUser($login, $pass));
-		$this->assertEquals($this->currentUser->getUri(),$this->userService->getCurrentUser()->getUri());
 		
 		$this->service = wfEngine_models_classes_NotificationService::singleton();
 	}
