@@ -18,10 +18,10 @@ use oat\tao\helpers\Template;
         		<span id="connecteduser" class="icon"><?=__("User Id.")?> <span id="username"><?=$userViewData['username']?></span> </span><span class="separator"></span>
         	</li>
          	<li>
-         		<a class="action icon" id="home" href="<?=BASE_URL?>Main/index"><?=__("Home")?></a> <span class="separator"></span>
+         		<a class="action icon" id="home" href="<?= _url('index', 'Main')?>"><?=__("Home")?></a> <span class="separator"></span>
          	</li>
          	<li>
-         		<a class="action icon" id="logout" href="<?=BASE_URL?>Authentication/logout"><?=__("Logout")?></a>
+         		<a class="action icon" id="logout" href="<?=_url('logout', 'Authentication')?>"><?=__("Logout")?></a>
          	</li>
 		</ul>
 

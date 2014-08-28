@@ -7,7 +7,7 @@ use oat\tao\helpers\Template;
                 <link rel="stylesheet" type="text/css" href="<?=TAOBASE_WWW?>css/custom-theme/jquery-ui-1.8.22.custom.css" media="screen" />
                 <link rel="stylesheet" type="text/css" href="<?=BASE_WWW?>css/process_browser.css" media="screen" />
 		
-                <script type="text/javascript" src="<?=TAOBASE_WWW?>js/lib/require.js" ></script>
+                <script type="text/javascript" src="<?= Template::js('lib/require.js', 'tao')?>" ></script>
                 <script type="text/javascript">
                 (function(){
                     require(['<?=get_data('client_config_url')?>'], function(){
@@ -51,7 +51,7 @@ use oat\tao\helpers\Template;
 	
 	
 	         	<li>
-	         		<a id="pause" class="action icon" href="<?=BASE_URL?>ProcessBrowser/pause?processUri=<?=urlencode($browserViewData['processUri'])?>"><?=__("Pause")?></a> <span class="separator"></span>
+	         		<a id="pause" class="action icon" href="<?= _url('pause', 'ProcessBrowser', null, array('processUri' => $browserViewData['processUri']))?>"><?=__("Pause")?></a> <span class="separator"></span>
 	         	</li>
 	
 	         	<?if(get_data('debugWidget')):?>

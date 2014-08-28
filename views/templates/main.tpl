@@ -19,7 +19,7 @@ use oat\tao\helpers\Template;
         		<span id="connecteduser" class="icon"><?=__("User name:")?> <span id="username"><?=$userViewData['username']?></span> </span><span class="separator"></span>
         	</li>
          	<li>
-         		<a class="action icon" id="logout" href="<?=BASE_URL?>Authentication/logout"><?=__("Logout")?></a>
+         		<a class="action icon" id="logout" href="<?= _url('logout', 'Authentication') ?>"><?=__("Logout")?></a>
          	</li>
 		</ul>
 
@@ -47,7 +47,7 @@ use oat\tao\helpers\Template;
 								<?if($procData['status'] != 'Finished'): ?>
 									<?foreach ($procData['activities'] as $activity): ?>
                                         <?if($activity['may_participate']):?>
-											<a href="<?=BASE_URL?>ProcessBrowser/index?processUri=<?=urlencode($procData['uri'])?>&activityUri=<?=urlencode($activity['uri'])?>"><?=$activity['label']?></a>
+											<a href="<?= _url('index', 'ProcessBrowser', null, array('processUri' => $procData['uri'], 'activityUri' => $activity['uri'])) ?>"><?=$activity['label']?></a>
 										<?elseif (!$activity['allowed'] && !$activity['finished']):?>
 											<span class="activity-denied"><?=$activity['label']?></span>
                                         <?elseif ( $activity['finished']):?>
