@@ -3,7 +3,7 @@
 	<head>
 		<title><?php echo __("TAO - An Open and Versatile Computer-Based Assessment Platform"); ?></title>
 
-		<script type="text/javascript" src="<?=TAOBASE_WWW?>js/lib/jquery-1.8.0.min.js"></script>
+		<script type="text/javascript" src="<?=Template::js('lib/jquery-1.8.0.min.js', 'tao')?>"></script>
 		<script type="text/javascript">
 			$(function(){
 				var counter = 10;
@@ -31,7 +31,7 @@
 	</head>
 
 	<body>
-		<div id="loader"><img src="<?=TAOBASE_WWW?>img/ajax-loader.gif" /> <?=__('Loading next activity...')?></div>
+		<div id="loader"><img src="<?=Template::img('ajax-loader.gif', 'tao')?>" /> <?=__('Loading next activity...')?></div>
 		<div id="process_view"></div>
 
 		<ul id="control">

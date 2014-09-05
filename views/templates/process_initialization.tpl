@@ -9,7 +9,7 @@ use oat\tao\helpers\Template;
 			@import url(<?=BASE_WWW?>/css/process_authoring.css);
 		</style>
 
-		<script type="text/javascript" src="<?=TAOBASE_WWW?>js/lib/jquery-1.8.0.min.js"></script>
+		<script type="text/javascript" src="<?=Template::js('lib/jquery-1.8.0.min.js', 'tao')?>"></script>
 	</head>
 	<body>
   <div class="content-wrap">

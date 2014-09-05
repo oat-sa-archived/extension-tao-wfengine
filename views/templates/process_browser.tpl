@@ -4,7 +4,7 @@ use oat\tao\helpers\Template;
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
 		<title><?=__("TAO - An Open and Versatile Computer-Based Assessment Platform")?></title>
-                <link rel="stylesheet" type="text/css" href="<?=TAOBASE_WWW?>css/custom-theme/jquery-ui-1.8.22.custom.css" media="screen" />
+                <link rel="stylesheet" type="text/css" href="<?=Template::css('custom-theme/jquery-ui-1.8.22.custom.css', 'tao')?>" media="screen" />
                 <link rel="stylesheet" type="text/css" href="<?=BASE_WWW?>css/process_browser.css" media="screen" />
 		
                 <script type="text/javascript" src="<?= Template::js('lib/require.js', 'tao')?>" ></script>
