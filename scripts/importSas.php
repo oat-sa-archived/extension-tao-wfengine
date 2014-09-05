@@ -1,4 +1,6 @@
 <?php
+use oat\tao\model\accessControl\func\AccessRule;
+use oat\tao\model\accessControl\func\AclProxy;
 /*  
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -187,6 +189,25 @@ class SaSImporter extends SasManager{
 		}
 		else{
 			echo "\n";
+		}
+		
+		// @todo remove temporary solution and improve the way AccessControl and workflows interact
+		$missingRights = array(
+    		array('ext'=>'taoItems', 'mod' => 'SaSItems'),
+    		array('ext'=>'taoSubjects', 'mod' => 'SaSSubjects'),
+    		array('ext'=>'taoSubjects', 'mod' => 'SasSubjectsImport'),
+    		array('ext'=>'taoTests', 'mod' => 'SaSTests'),
+    		array('ext'=>'taoGroups', 'mod' => 'SaSGroups'),
+    		array('ext'=>'taoDelivery', 'mod' => 'SaSResultServer'),
+    		array('ext'=>'taoDelivery', 'mod' => 'SaSDelivery'),
+    		array('ext'=>'tao', 'mod' => 'WebService'),
+    		array('ext'=>'taoResults', 'mod' => 'SaSResults'),
+    		array('ext'=>'tao', 'mod' => 'SaSUsers'),
+    		array('ext'=>'tao', 'mod' => 'File')
+	    );
+		foreach ($missingRights as $filter) {
+		    $rule = new AccessRule(AccessRule::GRANT, INSTANCE_ROLE_WORKFLOW, $filter);
+		    AclProxy::applyRule($rule);
 		}
 		
 		$this->log("import finished");
