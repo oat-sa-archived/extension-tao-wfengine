@@ -194,8 +194,8 @@ class SaSImporter extends SasManager{
 		// @todo remove temporary solution and improve the way AccessControl and workflows interact
 		$missingRights = array(
     		array('ext'=>'taoItems', 'mod' => 'SaSItems'),
-    		array('ext'=>'taoSubjects', 'mod' => 'SaSSubjects'),
-    		array('ext'=>'taoSubjects', 'mod' => 'SasSubjectsImport'),
+    		array('ext'=>'taoTestTaker', 'mod' => 'SasTestTaker'),
+    		array('ext'=>'taoTestTaker', 'mod' => 'SasImport'),
     		array('ext'=>'taoTests', 'mod' => 'SaSTests'),
     		array('ext'=>'taoGroups', 'mod' => 'SaSGroups'),
     		array('ext'=>'taoDelivery', 'mod' => 'SaSResultServer'),
