@@ -88,7 +88,7 @@ class ProcessExecutionServiceTest extends TaoPhpUnitTestRunner{
 		$pass = 'test123';
 		$userData = array(
 			PROPERTY_USER_LOGIN		=> 	$login,
-			PROPERTY_USER_PASSWORD	=>	core_kernel_users_AuthAdapter::getPasswordHash()->encrypt($pass),
+			PROPERTY_USER_PASSWORD	=>	core_kernel_users_Service::getPasswordHash()->encrypt($pass),
 			PROPERTY_USER_DEFLG		=>	'http://www.tao.lu/Ontologies/TAO.rdf#Lang'.DEFAULT_LANG,
 			PROPERTY_USER_UILG		=>	'http://www.tao.lu/Ontologies/TAO.rdf#Lang'.DEFAULT_LANG,
 			PROPERTY_USER_ROLES		=>  INSTANCE_ROLE_WORKFLOW
@@ -683,7 +683,7 @@ class ProcessExecutionServiceTest extends TaoPhpUnitTestRunner{
 				$pass = 'test123';
 				$userData = array(
 					PROPERTY_USER_LOGIN		=> 	$login,
-					PROPERTY_USER_PASSWORD	=>	core_kernel_users_AuthAdapter::getPasswordHash()->encrypt($pass),
+					PROPERTY_USER_PASSWORD	=>	core_kernel_users_Service::getPasswordHash()->encrypt($pass),
 					PROPERTY_USER_DEFLG		=>	'http://www.tao.lu/Ontologies/TAO.rdf#Lang'.DEFAULT_LANG,
 					PROPERTY_USER_UILG		=>  'http://www.tao.lu/Ontologies/TAO.rdf#Lang'.DEFAULT_LANG,
 					PROPERTY_USER_ROLES		=> 	INSTANCE_ROLE_WORKFLOW,
