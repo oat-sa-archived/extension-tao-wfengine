@@ -36,7 +36,7 @@ use oat\tao\helpers\Template;
 						</tr>
 					</thead>
 					<tbody>
-						<?foreach($processViewData as $procData): ?>
+						<?php foreach($processViewData as $procData): ?>
 						<tr>
 							<td class="status"><img src="<?=BASE_WWW?>/<?=wfEngine_helpers_GUIHelper::buildStatusImageURI($procData['status'])?>"/></td>
 
@@ -44,22 +44,22 @@ use oat\tao\helpers\Template;
 							<td class="label"><?=wfEngine_helpers_GUIHelper::sanitizeGenerisString($procData['label'])?></td>
 
 							<td class="join">
-								<?if($procData['status'] != 'Finished'): ?>
-									<?foreach ($procData['activities'] as $activity): ?>
-                                        <?if($activity['may_participate']):?>
+								<?php if($procData['status'] != 'Finished'): ?>
+									<?php foreach ($procData['activities'] as $activity): ?>
+                                        <?php if($activity['may_participate']):?>
 											<a href="<?= _url('index', 'ProcessBrowser', null, array('processUri' => $procData['uri'], 'activityUri' => $activity['uri'])) ?>"><?=$activity['label']?></a>
-										<?elseif (!$activity['allowed'] && !$activity['finished']):?>
+										<?php elseif (!$activity['allowed'] && !$activity['finished']):?>
 											<span class="activity-denied"><?=$activity['label']?></span>
-                                        <?elseif ( $activity['finished']):?>
+                                        <?php elseif ( $activity['finished']):?>
                                              <span class=""><?=__("Process Finished")?></span>
-										<?endif;?>
-									<?endforeach;?>
-								<?else:?>
+										<?php endif;?>
+									<?php endforeach;?>
+								<?php else:?>
 									<span><?=__("Finished Process");?></span>
-								<?endif;?>
+								<?php endif;?>
 							</td>
 						</tr>
-						<?endforeach;?>
+						<?php endforeach;?>
 					</tbody>
 				</table>
 				<!-- End of Active Processes -->
@@ -67,20 +67,20 @@ use oat\tao\helpers\Template;
 
 				<h2 class="section_title"><?=__("Initialize new Process")?></h2>
 				<div id="new_process">
-					<?foreach($availableProcessDefinition as $procDef):?>
+					<?php foreach($availableProcessDefinition as $procDef):?>
 						<li>
 							<a href="<?=_url('authoring', 'ProcessInstanciation', null, array('processDefinitionUri' => $procDef->getUri()))?>">
 							<?=wfEngine_helpers_GUIHelper::sanitizeGenerisString($procDef->getLabel())?></a>
 						</li>
-					<?endforeach; ?>
+					<?php endforeach; ?>
 				</div>
 
 
 				<h2 class="section_title"><?=__("My roles")?></h2>
 				<ul id="roles">
-					<?foreach ($userViewData['roles'] as $role):?>
+					<?php foreach ($userViewData['roles'] as $role):?>
 						<li><?=$role['label']?></li>
-					<?endforeach;?>
+					<?php endforeach;?>
 
 				</ul>
 				<!-- End of Roles -->

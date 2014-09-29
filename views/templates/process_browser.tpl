@@ -16,13 +16,13 @@ use oat\tao\helpers\Template;
                             function($, ProcessBrowser, ServiceApi, StateStorage, UserInfoService){
                             
                             var services = [
-                            <?foreach($services as $i => $service):?>
+                            <?php foreach($services as $i => $service):?>
                             {
                                frameId  : 'tool-frame-<?=$i?>',
                                api      : <?=$service['api']?>, 
                                style    : <?=json_encode($service['style'])?>
                             } <?=($i < count($services) - 1) ? ',' : '' ?>
-                            <?endforeach;?>  
+                            <?php endforeach;?>  
                             ];
                             
                             ProcessBrowser.start({
@@ -42,7 +42,7 @@ use oat\tao\helpers\Template;
   <div class="content-wrap">
 		<div id="runner">
 		<div id="process_view"></div>
-        <?if(!tao_helpers_Context::check('STANDALONE_MODE') && !has_data('allowControl') || get_data('allowControl')):?>
+        <?php if(!tao_helpers_Context::check('STANDALONE_MODE') && !has_data('allowControl') || get_data('allowControl')):?>
 			<ul id="control">
 	        	<li>
 	        		<span id="connecteduser" class="icon"><?=__("User name:")?> <span id="username"><?=$userViewData['username']?></span></span>
@@ -54,11 +54,11 @@ use oat\tao\helpers\Template;
 	         		<a id="pause" class="action icon" href="<?= _url('pause', 'ProcessBrowser', null, array('processUri' => $browserViewData['processUri']))?>"><?=__("Pause")?></a> <span class="separator"></span>
 	         	</li>
 	
-	         	<?if(get_data('debugWidget')):?>
+	         	<?php if(get_data('debugWidget')):?>
 				<li>
 					<a id="debug" class="action icon" href="#">Debug</a> <span class="separator"></span>
 				</li>
-	        	<?endif?>
+	        	<?php endif?>
 	
 	         	<li>
 	         		<a id="logout" class="action icon" href="<?=_url('logout', 'Main')?>"><?=__("Logout")?></a>
@@ -66,40 +66,40 @@ use oat\tao\helpers\Template;
 	
 			</ul>
 			
-			<?if(get_data('debugWidget')):?>
+			<?php if(get_data('debugWidget')):?>
 					<div id="debugWindow" style="display:none;">
-						<?foreach(get_data('debugData') as $debugSection => $debugObj):?>
+						<?php foreach(get_data('debugData') as $debugSection => $debugObj):?>
 						<fieldset>
 							<legend><?=$debugSection?></legend>
 							<pre>
 								<?print_r($debugObj)?>
 							</pre>
 						</fieldset>
-						<?endforeach?>
+						<?php endforeach?>
 					</div>
-			<?endif?>
-		<?endif?>
+			<?php endif?>
+		<?php endif?>
 
 		<div id="content">
 			<div id="business">
 				<div id="navigation">
-					<?if($browserViewData['controls']['backward']):?>
+					<?php if($browserViewData['controls']['backward']):?>
 						<input type="button" id="back" value="<?= __("Back")?>"/>
-					<?else:?>
+					<?php else:?>
 						<input type="button" id="back" value="" style="display:none;"/>
-					<?endif?>
+					<?php endif?>
 
-					<?if($browserViewData['controls']['forward']): ?>
+					<?php if($browserViewData['controls']['forward']): ?>
 						<input type="button" id="next" value="<?= __("Forward")?>"/>
-					<?else:?>
+					<?php else:?>
 						<input type="button" id="next" value="" style="display:none;"/>
-					<?endif?>
+					<?php endif?>
 				</div>
 
 				<div id="tools">
-                                    <?foreach($services as $i => $service):?>
+                                    <?php foreach($services as $i => $service):?>
                                     <iframe id="tool-frame-<?=$i?>" class="toolframe" frameborder="0" scrolling="no" ></iframe>
-                                    <?endforeach;?>  
+                                    <?php endforeach;?>  
 				</div>
 			</div>
 			<br class="clear" />

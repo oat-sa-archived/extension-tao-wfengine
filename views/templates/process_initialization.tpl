@@ -34,12 +34,12 @@ use oat\tao\helpers\Template;
 				<input type="hidden" name="posted[executionOf]" value="<?=urlencode($processAuthoringData['processUri']); ?>"/>
 					<table id="authoring_table">
 						<tbody>
-							<?foreach($processAuthoringData['variables'] as $var): ?>
+							<?php foreach($processAuthoringData['variables'] as $var): ?>
 							<tr>
 								<td class="variable_name"><?=$var['name']?> :</td>
 								<td><input type="text" size="50" name="posted[variables][<?=$var['key']?>]" value=""/></td>
 							</tr>
-							<?endforeach?>
+							<?php endforeach?>
 						</tbody>
 						<tfoot>
 							<tr>
