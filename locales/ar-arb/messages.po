@@ -1,15 +1,20 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: TAO v2.6-RC03\n"
-"PO-Revision-Date: 2014-06-20T16:26:35\n"
+"Project-Id-Version: TAO v2.7\n"
+"PO-Revision-Date: 2014-10-14T10:43:11\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: ar-arb\n"
+"sourceLanguage: en-US\n"
+"targetLanguage: ar-arb\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Basepath: ../../\n"
+"X-Poedit-KeywordsList: __\n"
+"X-Poedit-SearchPath-0: .\n"
 
 msgid "(still undefined)"
-msgstr "(لا يزال غير معروف)"
+msgstr ""
 
 msgid "[TAO Notification System] Workflow"
 msgstr ""
@@ -18,16 +23,16 @@ msgid "Access denied. Please renew your authentication!"
 msgstr ""
 
 msgid "Active Process"
-msgstr "Processus actif"
+msgstr ""
 
 msgid "Advanced Users"
 msgstr ""
 
 msgid "An error occured during request processing"
-msgstr "حدث خطأ أثناء معالجة الطلب"
+msgstr ""
 
 msgid "Back"
-msgstr "رجوع"
+msgstr ""
 
 msgid "Cannot create process execution"
 msgstr ""
@@ -39,49 +44,49 @@ msgid "created by"
 msgstr ""
 
 msgid "Else"
-msgstr "والا"
+msgstr ""
 
 msgid "execution of"
 msgstr ""
 
 msgid "Finished Process"
-msgstr "انتهاء العملية"
+msgstr ""
 
 msgid "Forward"
-msgstr "تحويل"
+msgstr ""
 
 msgid "Home"
-msgstr "الصفحة الرئيسية"
+msgstr ""
 
 msgid "If"
-msgstr "Si"
+msgstr ""
 
 msgid "If there is no available activity or there are more than one. You will be redirected to the process main page."
 msgstr ""
 
 msgid "Initialize new Process"
-msgstr "بدء عملية جديدة"
+msgstr ""
 
 msgid "Invalid login or password. Please try again."
-msgstr "لا يتطابق مع حساب معين الدخول / كلمة السر"
+msgstr ""
 
 msgid "Launch Process"
-msgstr "إطلاق عملية"
+msgstr ""
 
 msgid "Loading next activity..."
-msgstr "...تحميل النشاط التالي"
+msgstr ""
 
 msgid "Log in"
 msgstr ""
 
 msgid "Login"
-msgstr "الدخول"
+msgstr ""
 
 msgid "Logout"
-msgstr "الخروج"
+msgstr ""
 
 msgid "My roles"
-msgstr "ادواري"
+msgstr ""
 
 msgid "No process definition uri given"
 msgstr ""
@@ -90,13 +95,13 @@ msgid "No variable code given"
 msgstr ""
 
 msgid "Password"
-msgstr "كلمة السر"
+msgstr ""
 
 msgid "Pause"
-msgstr "وقف"
+msgstr ""
 
 msgid "Please confirm the deletion of the activity"
-msgstr "الرجاء تأكيد حذف النشاط"
+msgstr ""
 
 msgid "Please login to access the selected activity."
 msgstr ""
@@ -105,13 +110,13 @@ msgid "Process Finished"
 msgstr ""
 
 msgid "Process initialization"
-msgstr "بدء العملية"
+msgstr ""
 
 msgid "Process Tree:"
-msgstr "Arborescence des processus:"
+msgstr ""
 
 msgid "Processes"
-msgstr "Processus"
+msgstr ""
 
 msgid "Redirect immediately"
 msgstr ""
@@ -123,16 +128,16 @@ msgid "seconds"
 msgstr ""
 
 msgid "Start/Resume the case"
-msgstr "ابدأ / استئناف الحالة"
+msgstr ""
 
 msgid "Status"
-msgstr "الحالة"
+msgstr ""
 
 msgid "TAO - An Open and Versatile Computer-Based Assessment Platform"
-msgstr "منهاج التقييم القائم على الحاسوب مفتوح ومتعدد الاستخدامات - TAO"
+msgstr ""
 
 msgid "TAO Process Engine"
-msgstr "TAO محرك عملية"
+msgstr ""
 
 msgid "The activity provided in the url is no longer the up-to-date."
 msgstr ""
@@ -141,7 +146,7 @@ msgid "The link may be outdated."
 msgstr ""
 
 msgid "The Processes module allows to create Processes."
-msgstr "Le module de traitement permet de créer des processus"
+msgstr ""
 
 msgid "The resource is not a process definition"
 msgstr ""
@@ -156,7 +161,7 @@ msgid "The variable with the code '.$code.' does not exists"
 msgstr ""
 
 msgid "Then"
-msgstr "ثم"
+msgstr ""
 
 msgid "type??"
 msgstr ""
@@ -165,19 +170,19 @@ msgid "Unable to log in the user"
 msgstr ""
 
 msgid "User Id."
-msgstr "معرف المستخدم"
+msgstr ""
 
 msgid "User logged in successfully"
 msgstr ""
 
 msgid "User name:"
-msgstr ":اسم المستخدم"
+msgstr ""
 
 msgid "Welcome to TAO Process Engine"
-msgstr "Bienvenue dans le moteur de processus TAO"
+msgstr ""
 
 msgid "Workflow Engine"
-msgstr "محرك سير العمل"
+msgstr ""
 
 msgid "WorkflowEngine Process Browser "
 msgstr ""

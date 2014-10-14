@@ -1,187 +1,192 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: TAO v2.6-RC03\n"
-"PO-Revision-Date: 2014-06-20T16:26:35\n"
+"Project-Id-Version: TAO v2.7\n"
+"PO-Revision-Date: 2014-10-14T10:43:11\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: da-DK\n"
+"sourceLanguage: en-US\n"
+"targetLanguage: da-DK\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Basepath: ../../\n"
+"X-Poedit-KeywordsList: __\n"
+"X-Poedit-SearchPath-0: .\n"
 
 msgid "(still undefined)"
-msgstr "(fortsat udefineret)"
+msgstr ""
 
 msgid "[TAO Notification System] Workflow"
-msgstr "[TAO Notification System] Arbejdsproces"
+msgstr ""
 
 msgid "Access denied. Please renew your authentication!"
 msgstr ""
 
 msgid "Active Process"
-msgstr "Aktiv proces"
+msgstr ""
 
 msgid "Advanced Users"
 msgstr ""
 
 msgid "An error occured during request processing"
-msgstr "En fejl indtraf under forespørgsel"
+msgstr ""
 
 msgid "Back"
-msgstr "Tilbage"
+msgstr ""
 
 msgid "Cannot create process execution"
-msgstr "Kan ikke oprette proces udførelsen"
+msgstr ""
 
 msgid "Check pending tasks for assessment preparation."
 msgstr ""
 
 msgid "created by"
-msgstr "oprettet af"
+msgstr ""
 
 msgid "Else"
-msgstr "Anden"
+msgstr ""
 
 msgid "execution of"
-msgstr "udførelse af"
+msgstr ""
 
 msgid "Finished Process"
-msgstr "Process færdig"
+msgstr ""
 
 msgid "Forward"
-msgstr "Fremad"
+msgstr ""
 
 msgid "Home"
-msgstr "Hjem"
+msgstr ""
 
 msgid "If"
-msgstr "Om"
+msgstr ""
 
 msgid "If there is no available activity or there are more than one. You will be redirected to the process main page."
-msgstr "Hvis der ikke er tilgængelig aktivitet eller der er mere end en. Du vil blive omdirigeret til proces hovedsiden."
+msgstr ""
 
 msgid "Initialize new Process"
-msgstr "Initialisere ny process"
+msgstr ""
 
 msgid "Invalid login or password. Please try again."
-msgstr "Ingen konto matcher det angivne log ind / adgangskode"
+msgstr ""
 
 msgid "Launch Process"
-msgstr "Starter proces"
+msgstr ""
 
 msgid "Loading next activity..."
-msgstr "Henter næste aktivitet..."
+msgstr ""
 
 msgid "Log in"
 msgstr ""
 
 msgid "Login"
-msgstr "Log ind"
+msgstr ""
 
 msgid "Logout"
-msgstr "Log ud"
+msgstr ""
 
 msgid "My roles"
-msgstr "Mine roller"
+msgstr ""
 
 msgid "No process definition uri given"
-msgstr "Ingen proces definition uri"
+msgstr ""
 
 msgid "No variable code given"
-msgstr "Ingen variabel kode givet"
+msgstr ""
 
 msgid "Password"
-msgstr "Adgangskode"
+msgstr ""
 
 msgid "Pause"
-msgstr "Pause"
+msgstr ""
 
 msgid "Please confirm the deletion of the activity"
-msgstr "Bekræft sletning af aktiviteten"
+msgstr ""
 
 msgid "Please login to access the selected activity."
-msgstr "Log ind for at gå til den valgte aktivitet."
+msgstr ""
 
 msgid "Process Finished"
-msgstr "Proces færdig"
+msgstr ""
 
 msgid "Process initialization"
-msgstr "Process initialisering"
+msgstr ""
 
 msgid "Process Tree:"
-msgstr "Proces træ:"
+msgstr ""
 
 msgid "Processes"
-msgstr "Proces"
+msgstr ""
 
 msgid "Redirect immediately"
-msgstr "Omdiriger øjeblikkelig"
+msgstr ""
 
 msgid "Redirection in "
-msgstr "Omdirigering "
+msgstr ""
 
 msgid "seconds"
-msgstr "sekunder"
+msgstr ""
 
 msgid "Start/Resume the case"
-msgstr "Start/genoptag sagen"
+msgstr ""
 
 msgid "Status"
-msgstr "Status"
+msgstr ""
 
 msgid "TAO - An Open and Versatile Computer-Based Assessment Platform"
-msgstr "TAO - En åben og alsidig computer-baseret testplatform"
+msgstr ""
 
 msgid "TAO Process Engine"
-msgstr "TAO procesværktøj"
+msgstr ""
 
 msgid "The activity provided in the url is no longer the up-to-date."
-msgstr "Aktiviteten fastsat i url'en er ikke længer up-to-date."
+msgstr ""
 
 msgid "The link may be outdated."
-msgstr "Linket er måske forældet."
+msgstr ""
 
 msgid "The Processes module allows to create Processes."
-msgstr "Procesmodulet lader dig oprette processer"
+msgstr ""
 
 msgid "The resource is not a process definition"
-msgstr "Ressourcen er ikke en proces definition"
+msgstr ""
 
 msgid "The resource is not a process execution"
-msgstr "Ressourcen er ikke en proces udførelse"
+msgstr ""
 
 msgid "The resource is not an activity execution"
-msgstr "Ressourcen er ikke en aktivitets udførelse"
+msgstr ""
 
 msgid "The variable with the code '.$code.' does not exists"
-msgstr "Variablen med koden '.$code.' eksistere ikke"
+msgstr ""
 
 msgid "Then"
-msgstr "Da"
+msgstr ""
 
 msgid "type??"
-msgstr "skriv??"
+msgstr ""
 
 msgid "Unable to log in the user"
-msgstr "Det er ikke muligt at logge brugeren ind"
+msgstr ""
 
 msgid "User Id."
-msgstr "Bruger id."
+msgstr ""
 
 msgid "User logged in successfully"
-msgstr "Bruger logget ind med succes"
+msgstr ""
 
 msgid "User name:"
-msgstr "Brugernavn:"
+msgstr ""
 
 msgid "Welcome to TAO Process Engine"
-msgstr "Velkommen til TAO procesværktøj"
+msgstr ""
 
 msgid "Workflow Engine"
-msgstr "Arbejdsproces værktøj"
+msgstr ""
 
 msgid "WorkflowEngine Process Browser "
-msgstr "Arbejdsprocesværktøj Proces Browser "
+msgstr ""
 
 msgid "You will be redirected to the current activity if you are allowed to."
-msgstr "Du vil blive omdirigeret til den aktuelle aktivitet hvis du har tilladelse til det."
+msgstr ""
 
