@@ -101,6 +101,4 @@ class wfEngine_helpers_GUIHelper
         return (string) $returnValue;
     }
 
-} /* end of class wfEngine_helpers_GUIHelper */
-
-?>
+}

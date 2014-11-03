@@ -250,6 +250,4 @@ extends tao_scripts_Runner
 		
 	}
 
-} /* end of class wfEngine_scripts_HardifyWfEngine */
-
-?>
+}
