@@ -36,7 +36,7 @@ return array(
 	'version' => '2.6',
 	'author' => 'Open Assessment Technologies, CRP Henri Tudor',
 	'requires' => array(
-	    'tao' => '>=2.4'
+	    'tao' => '>=2.7.0'
     ),
 	'models' => array(
 		'http://www.tao.lu/middleware/wfEngine.rdf'
