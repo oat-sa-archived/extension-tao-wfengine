@@ -90,6 +90,4 @@ class wfEngine_actions_form_Login
         
     }
 
-} /* end of class wfEngine_actions_form_Login */
-
-?>
+}

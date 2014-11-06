@@ -327,6 +327,4 @@ class wfEngine_models_classes_ActivityCardinalityService
         return $returnValue;
     }
 
-} /* end of class wfEngine_models_classes_ActivityCardinalityService */
-
-?>
+}

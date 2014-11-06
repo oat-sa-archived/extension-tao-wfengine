@@ -55,6 +55,4 @@ class wfEngine_models_classes_RoleService
         
     }
 
-} /* end of class wfEngine_models_classes_RoleService */
-
-?>
+}

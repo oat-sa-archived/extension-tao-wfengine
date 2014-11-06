@@ -239,6 +239,4 @@ class wfEngine_models_classes_ConnectorService
         return (array) $returnValue;
     }
 
-} /* end of class wfEngine_models_classes_ConnectorService */
-
-?>
+}

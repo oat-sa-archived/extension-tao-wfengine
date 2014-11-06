@@ -585,6 +585,4 @@ class wfEngine_models_classes_ActivityService
         return $returnValue;
     }
 
-} /* end of class wfEngine_models_classes_ActivityService */
-
-?>
+}
