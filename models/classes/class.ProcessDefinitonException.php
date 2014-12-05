@@ -38,6 +38,4 @@ class wfEngine_models_classes_ProcessDefinitonException
 
     // --- OPERATIONS ---
 
-} /* end of class wfEngine_models_classes_ProcessDefinitonException */
-
-?>
+} 

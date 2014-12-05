@@ -109,7 +109,7 @@ use oat\tao\helpers\Template;
 <!-- /content-wrap -->
 <?php
 if (!tao_helpers_Context::check('STANDALONE_MODE')) {
-    Template::inc('layout_footer.tpl', 'tao');
+    Template::inc('footer.tpl', 'tao');
 }
 ?>
 </body>

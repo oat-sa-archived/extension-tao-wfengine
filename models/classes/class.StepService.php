@@ -84,6 +84,4 @@ class wfEngine_models_classes_StepService
         return (array) $returnValue;
     }
 
-} /* end of class wfEngine_models_classes_StepService */
-
-?>
+}

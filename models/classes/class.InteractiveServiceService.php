@@ -335,6 +335,4 @@ class wfEngine_models_classes_InteractiveServiceService
         return (bool) $returnValue;
     }
 
-} /* end of class wfEngine_models_classes_InteractiveServiceService */
-
-?>
+} 

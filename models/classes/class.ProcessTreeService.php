@@ -536,6 +536,4 @@ class wfEngine_models_classes_ProcessTreeService
 		}
 		return $nodeData;
 	}
-} /* end of class  */
-
-?>
+} 

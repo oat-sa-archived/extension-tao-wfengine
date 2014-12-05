@@ -488,6 +488,4 @@ class wfEngine_models_classes_NotificationService
         return $returnValue;
     }
 
-} /* end of class wfEngine_models_classes_NotificationService */
-
-?>
+} 

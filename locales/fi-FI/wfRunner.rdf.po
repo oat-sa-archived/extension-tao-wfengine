@@ -1,0 +1,42 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: TAO v3.0\n"
+"PO-Revision-Date: 2014-10-21T07:53:49\n"
+"Last-Translator: TAO Translation Team <translation@tao.lu>\n"
+"MIME-Version: 1.0\n"
+"Language: fi-FI\n"
+"sourceLanguage: en-US\n"
+"targetLanguage: fi-FI\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+# http://www.tao.lu/middleware/wfEngine.rdf#FormalParamProcessDefinition
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "Process Definition"
+msgstr "Process Definition"
+
+# http://www.tao.lu/middleware/wfEngine.rdf#FormalParamProcessDefinition
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Process Definition"
+msgstr "Process Definition Uri"
+
+# http://www.tao.lu/middleware/wfEngine.rdf#FormalParamProcessVariables
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "Process Variables"
+msgstr "Process Variables"
+
+# http://www.tao.lu/middleware/wfEngine.rdf#FormalParamProcessVariables
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Process Variables"
+msgstr "Process Variables Array"
+
+# http://www.tao.lu/middleware/wfEngine.rdf#ProcessDefinitionRunner
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "Process Runner"
+msgstr "Process Runner"
+
+# http://www.tao.lu/middleware/wfEngine.rdf#ProcessDefinitionRunner
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Process Runner"
+msgstr "Runs a process definition using the workflow engine"
+

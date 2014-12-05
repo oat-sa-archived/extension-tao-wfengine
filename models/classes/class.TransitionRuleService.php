@@ -124,6 +124,4 @@ class wfEngine_models_classes_TransitionRuleService
         return $returnValue;
     }
 
-} /* end of class wfEngine_models_classes_TransitionRuleService */
-
-?>
+}

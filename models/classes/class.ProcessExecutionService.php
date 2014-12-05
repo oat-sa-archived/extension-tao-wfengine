@@ -1796,6 +1796,4 @@ class wfEngine_models_classes_ProcessExecutionService
         return (bool) $returnValue;
     }
 
-} /* end of class wfEngine_models_classes_ProcessExecutionService */
-
-?>
+} 

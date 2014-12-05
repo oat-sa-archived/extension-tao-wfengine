@@ -234,6 +234,4 @@ class wfEngine_helpers_ProcessUtil
         return (bool) $returnValue;
     }
 
-} /* end of class wfEngine_helpers_ProcessUtil */
-
-?>
+}
