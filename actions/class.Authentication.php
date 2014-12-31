@@ -115,7 +115,7 @@ class wfEngine_actions_Authentication extends wfEngine_actions_WfModule
      */
 	public function logout()
 	{
-	    core_kernel_users_Service::singleton()->logout();
+	    $this->userService->logout();
 
 		if (!tao_helpers_Request::isAjax()) {
 			$this->redirect(_url('login', 'Main', 'tao'));
