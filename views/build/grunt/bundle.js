@@ -7,11 +7,12 @@ module.exports = function(grunt) {
     var root        = grunt.option('root');
     var libs        = grunt.option('mainlibs');
     var ext         = require(root + '/tao/views/build/tasks/helpers/extensions')(grunt, root);
+    var out         = 'output/wfEngine';
 
     /**
      * Remove bundled and bundling files
      */
-    clean.wfenginebundle = ['output',  root + '/wfEngine/views/js/controllers.min.js'];
+    clean.wfenginebundle = [out,  root + '/wfEngine/views/js/controllers.min.js'];
     
     /**
      * Compile tao files into a bundle 
@@ -19,7 +20,7 @@ module.exports = function(grunt) {
     requirejs.wfenginebundle = {
         options: {
             baseUrl : '../js',
-            dir : 'output',
+            dir : out,
             mainConfigFile : './config/requirejs.build.js',
             paths : { 'wfEngine' : root + '/wfEngine/views/js' },
             modules : [{
@@ -35,8 +36,8 @@ module.exports = function(grunt) {
      */
     copy.wfenginebundle = {
         files: [
-            { src: ['output/wfEngine/controller/routes.js'],  dest: root + '/wfEngine/views/js/controllers.min.js' },
-            { src: ['output/wfEngine/controller/routes.js.map'],  dest: root + '/wfEngine/views/js/controllers.min.js.map' }
+            { src: [out + '/wfEngine/controller/routes.js'],  dest: root + '/wfEngine/views/js/controllers.min.js' },
+            { src: [out + '/wfEngine/controller/routes.js.map'],  dest: root + '/wfEngine/views/js/controllers.min.js.map' }
         ]
     };
 
