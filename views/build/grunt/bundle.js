@@ -12,7 +12,7 @@ module.exports = function(grunt) {
     /**
      * Remove bundled and bundling files
      */
-    clean.wfenginebundle = [out,  root + '/wfEngine/views/js/controllers.min.js'];
+    clean.wfenginebundle = [out];
     
     /**
      * Compile tao files into a bundle 
