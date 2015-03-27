@@ -24,6 +24,9 @@
 define('NS_WFENGINE', 'http://www.tao.lu/middleware/wfEngine.rdf');
 define('NS_RULES', 'http://www.tao.lu/middleware/Rules.rdf');
 $todefine = array(
+	'CLASS_WORKFLOWUSER' 				=> 'http://www.tao.lu/Ontologies/TAO.rdf#WorkflowUser',
+    'INSTANCE_ROLE_WORKFLOW'  			=> 'http://www.tao.lu/Ontologies/TAO.rdf#WorkflowRole',
+    
 	'ENABLE_HTTP_REDIRECT_PROCESS_BROWSER' 			=> false,
 	
 	'VAR_PROCESS_INSTANCE' 							=> NS_RULES . '#VarProcessInstance',
