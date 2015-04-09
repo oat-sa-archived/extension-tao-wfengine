@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: TAO v3.0\n"
-"PO-Revision-Date: 2014-10-21T07:53:52\n"
+"Project-Id-Version: TAO 3.0-RC05\n"
+"PO-Revision-Date: 2015-04-09T09:23:55\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: ru-RU\n"
@@ -17,8 +17,8 @@ msgstr "Step"
 
 # http://www.tao.lu/middleware/wfEngine.rdf#ClassStep
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
-msgid "Step"
-msgstr "Process Step"
+msgid "Process Step"
+msgstr ""
 
 # http://www.tao.lu/middleware/wfEngine.rdf#PropertyStepNext
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
@@ -32,8 +32,8 @@ msgstr "Then"
 
 # http://www.tao.lu/middleware/wfEngine.rdf#PropertyTransitionRulesThen
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
-msgid "Then"
-msgstr "Then statement"
+msgid "Then statement"
+msgstr ""
 
 # http://www.tao.lu/middleware/wfEngine.rdf#ClassCallOfservicesResources
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
@@ -42,8 +42,8 @@ msgstr "Call Of services Resources"
 
 # http://www.tao.lu/middleware/wfEngine.rdf#ClassCallOfservicesResources
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
-msgid "Call Of services Resources"
-msgstr "Call of services Resources"
+msgid "Call of services Resources"
+msgstr ""
 
 # http://www.tao.lu/middleware/wfEngine.rdf#ClassServiceDefinitionResources
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
@@ -102,8 +102,8 @@ msgstr "formalParameterIn"
 
 # http://www.tao.lu/middleware/wfEngine.rdf#PropertyServiceDefinitionsFormalParameterIn
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
-msgid "formalParameterIn"
-msgstr "Formal Parameter for input"
+msgid "Formal Parameter for input"
+msgstr ""
 
 # http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivitiesInitial
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
@@ -112,8 +112,8 @@ msgstr "isInitial"
 
 # http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivitiesInitial
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
-msgid "isInitial"
-msgstr "Is Initial activity"
+msgid "Is Initial activity"
+msgstr ""
 
 # http://www.tao.lu/middleware/wfEngine.rdf#InstanceStatusPaused
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
@@ -122,8 +122,8 @@ msgstr "Paused"
 
 # http://www.tao.lu/middleware/wfEngine.rdf#InstanceStatusPaused
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
-msgid "Paused"
-msgstr "Paused status"
+msgid "Paused status"
+msgstr ""
 
 # http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsStatus
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
@@ -142,8 +142,8 @@ msgstr "Finished"
 
 # http://www.tao.lu/middleware/wfEngine.rdf#InstanceStatusFinished
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
-msgid "Finished"
-msgstr "Finished Status"
+msgid "Finished Status"
+msgstr ""
 
 # http://www.tao.lu/middleware/wfEngine.rdf#InstanceStatusResumed
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
@@ -152,8 +152,8 @@ msgstr "Active"
 
 # http://www.tao.lu/middleware/wfEngine.rdf#InstanceStatusResumed
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
-msgid "Active"
-msgstr "Active status"
+msgid "Active status"
+msgstr ""
 
 # http://www.tao.lu/middleware/wfEngine.rdf#InstanceStatusStarted
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
@@ -162,8 +162,8 @@ msgstr "Started"
 
 # http://www.tao.lu/middleware/wfEngine.rdf#InstanceStatusStarted
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
-msgid "Started"
-msgstr "Started status"
+msgid "Started status"
+msgstr ""
 
 # http://www.tao.lu/middleware/wfEngine.rdf#InstanceStatusClosed
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
@@ -172,8 +172,8 @@ msgstr "Closed"
 
 # http://www.tao.lu/middleware/wfEngine.rdf#InstanceStatusClosed
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
-msgid "Closed"
-msgstr "Closed status"
+msgid "Closed status"
+msgstr ""
 
 # http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessInstanceStatus
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
@@ -220,10 +220,10 @@ msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Started on"
 msgstr "Started on"
 
-# http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsTimeStarted
+# http://www.tao.lu/middleware/wfEngine.rdf#PropertyProcessInstancesTimeStarted
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
-msgid "Started on"
-msgstr "The start time of the activity execution"
+msgid "the start time of the process execution"
+msgstr ""
 
 # http://www.tao.lu/middleware/wfEngine.rdf#ClassProcessInstances
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
@@ -272,8 +272,8 @@ msgstr "Formal Parameter Out"
 
 # http://www.tao.lu/middleware/wfEngine.rdf#PropertyServiceDefinitionsFormalParameterOut
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
-msgid "Formal Parameter Out"
-msgstr "Formal Paramater Out"
+msgid "Formal Paramater Out"
+msgstr ""
 
 # http://www.tao.lu/middleware/wfEngine.rdf#PropertyConnectorsType
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
@@ -322,8 +322,8 @@ msgstr "Sequence"
 
 # http://www.tao.lu/middleware/wfEngine.rdf#InstanceTypeOfConnectorsSequence
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
-msgid "Sequence"
-msgstr "Sequence Connector Type"
+msgid "Sequence Connector Type"
+msgstr ""
 
 # http://www.tao.lu/middleware/wfEngine.rdf#InstanceTypeOfConnectorsConditional
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
@@ -332,8 +332,8 @@ msgstr "Conditional"
 
 # http://www.tao.lu/middleware/wfEngine.rdf#InstanceTypeOfConnectorsConditional
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
-msgid "Conditional"
-msgstr "Conditional Connector Type"
+msgid "Conditional Connector Type"
+msgstr ""
 
 # http://www.tao.lu/middleware/wfEngine.rdf#InstanceTypeOfConnectorsParallel
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
@@ -342,8 +342,8 @@ msgstr "Split"
 
 # http://www.tao.lu/middleware/wfEngine.rdf#InstanceTypeOfConnectorsParallel
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
-msgid "Split"
-msgstr "Split Connector Type"
+msgid "Split Connector Type"
+msgstr ""
 
 # http://www.tao.lu/middleware/wfEngine.rdf#InstanceTypeOfConnectorsJoin
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
@@ -352,8 +352,8 @@ msgstr "Join"
 
 # http://www.tao.lu/middleware/wfEngine.rdf#InstanceTypeOfConnectorsJoin
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
-msgid "Join"
-msgstr "Join Connector Type"
+msgid "Join Connector Type"
+msgstr ""
 
 # http://www.tao.lu/middleware/wfEngine.rdf#InstanceTypeOfConnectorsSwitch
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
@@ -362,8 +362,8 @@ msgstr "Switch"
 
 # http://www.tao.lu/middleware/wfEngine.rdf#InstanceTypeOfConnectorsSwitch
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
-msgid "Switch"
-msgstr "Switch Connector Type"
+msgid "Switch Connector Type"
+msgstr ""
 
 # http://www.tao.lu/middleware/wfEngine.rdf#ClassConnectors
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
@@ -437,8 +437,8 @@ msgstr "DefaultProcessVariable"
 
 # http://www.tao.lu/middleware/wfEngine.rdf#PropertyFormalParametersDefaultProcessVariable
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
-msgid "DefaultProcessVariable"
-msgstr "Default Process Variable"
+msgid "Default Process Variable"
+msgstr ""
 
 # http://www.tao.lu/middleware/wfEngine.rdf#ClassActualParameters
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
@@ -467,8 +467,8 @@ msgstr "Name"
 
 # http://www.tao.lu/middleware/wfEngine.rdf#PropertyFormalParametersName
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
-msgid "Name"
-msgstr "Formal Parameter Name"
+msgid "Formal Parameter Name"
+msgstr ""
 
 # http://www.tao.lu/middleware/wfEngine.rdf#PropertySupportServicesUrl
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
@@ -537,8 +537,8 @@ msgstr "Else"
 
 # http://www.tao.lu/middleware/wfEngine.rdf#PropertyTransitionRulesElse
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
-msgid "Else"
-msgstr "Else statement"
+msgid "Else statement"
+msgstr ""
 
 # http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivitiesHidden
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
@@ -557,8 +557,8 @@ msgstr "Activity Reference"
 
 # http://www.tao.lu/middleware/wfEngine.rdf#PropertyConnectorsActivityReference
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
-msgid "Activity Reference"
-msgstr "the reference to the activity at the time of creation"
+msgid "the reference to the activity at the time of creation"
+msgstr ""
 
 # http://www.tao.lu/middleware/wfEngine.rdf#PropertyCode
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
@@ -567,8 +567,8 @@ msgstr "Code"
 
 # http://www.tao.lu/middleware/wfEngine.rdf#PropertyCode
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
-msgid "Code"
-msgstr "For process variables only"
+msgid "For process variables only"
+msgstr ""
 
 # http://www.tao.lu/middleware/wfEngine.rdf#PropertyCallOfServicesTop
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
@@ -577,8 +577,8 @@ msgstr "Top Shifting"
 
 # http://www.tao.lu/middleware/wfEngine.rdf#PropertyCallOfServicesTop
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
-msgid "Top Shifting"
-msgstr "The CSS top attribute value for the service iframe"
+msgid "The CSS top attribute value for the service iframe"
+msgstr ""
 
 # http://www.tao.lu/middleware/wfEngine.rdf#PropertyCallOfServicesLeft
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
@@ -587,8 +587,8 @@ msgstr "Left Shifting"
 
 # http://www.tao.lu/middleware/wfEngine.rdf#PropertyCallOfServicesLeft
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
-msgid "Left Shifting"
-msgstr "The CSS left attribute value for the service iframe"
+msgid "The CSS left attribute value for the service iframe"
+msgstr ""
 
 # http://www.tao.lu/middleware/wfEngine.rdf#PropertyCallOfServicesWidth
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
@@ -597,8 +597,8 @@ msgstr "Width"
 
 # http://www.tao.lu/middleware/wfEngine.rdf#PropertyCallOfServicesWidth
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
-msgid "Width"
-msgstr "The CSS width attribute value for the service iframe"
+msgid "The CSS width attribute value for the service iframe"
+msgstr ""
 
 # http://www.tao.lu/middleware/wfEngine.rdf#PropertyCallOfServicesHeight
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
@@ -607,8 +607,8 @@ msgstr "Height"
 
 # http://www.tao.lu/middleware/wfEngine.rdf#PropertyCallOfServicesHeight
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
-msgid "Height"
-msgstr "The CSS height attribute value for the service iframe"
+msgid "The CSS height attribute value for the service iframe"
+msgstr ""
 
 # http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsExecutionOf
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
@@ -637,8 +637,8 @@ msgstr "Process Execution"
 
 # http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsProcessExecution
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
-msgid "Process Execution"
-msgstr "The process execution to which the activity execution is linked"
+msgid "The process execution to which the activity execution is linked"
+msgstr ""
 
 # http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsHasVariables
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
@@ -647,28 +647,28 @@ msgstr "Variables"
 
 # http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsHasVariables
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
-msgid "Variables"
-msgstr "Serialized array of currently used variables"
+msgid "Serialized array of currently used variables"
+msgstr ""
 
 # http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsPreviousActivityExecutions
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Previous Activity Executions"
 msgstr "Previous Activity Executions"
 
-# http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsPreviousActivityExecutions
+# http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsFollowingActivityExecutions
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
-msgid "Previous Activity Executions"
-msgstr "Used to build the process path"
+msgid "Used to build the process path"
+msgstr ""
 
 # http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsFollowingActivityExecutions
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Following Activity Executions"
 msgstr "Following Activity Executions"
 
-# http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsFollowingActivityExecutions
+# http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsStatus
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
-msgid "Following Activity Executions"
-msgstr "Used to build the process path"
+msgid "The status of the activity execution"
+msgstr ""
 
 # http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsTimeCreated
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
@@ -677,8 +677,13 @@ msgstr "Created on"
 
 # http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsTimeCreated
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
-msgid "Created on"
-msgstr "The creation time of the activity execution"
+msgid "The creation time of the activity execution"
+msgstr ""
+
+# http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsTimeStarted
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "The start time of the activity execution"
+msgstr ""
 
 # http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsTimeLastAccess
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
@@ -687,8 +692,8 @@ msgstr "Last accessed on"
 
 # http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsTimeLastAccess
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
-msgid "Last accessed on"
-msgstr "The last time the current user accessed it"
+msgid "The last time the current user accessed it"
+msgstr ""
 
 # http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsNonce
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
@@ -697,8 +702,8 @@ msgstr "Nonce"
 
 # http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsNonce
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
-msgid "Nonce"
-msgstr "The nonce to garantee unique action (transitions)"
+msgid "The nonce to garantee unique action (transitions)"
+msgstr ""
 
 # http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsAccessControlMode
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
@@ -707,8 +712,8 @@ msgstr "Execution ACL mode"
 
 # http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsAccessControlMode
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
-msgid "Execution ACL mode"
-msgstr "The ACL mode applied to the acitivty execution"
+msgid "The ACL mode applied to the acitivty execution"
+msgstr ""
 
 # http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsRestrictedUser
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
@@ -717,8 +722,8 @@ msgstr "Execution restricted user"
 
 # http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsRestrictedUser
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
-msgid "Execution restricted user"
-msgstr "The user who is allowed to execute the activity execution"
+msgid "The user who is allowed to execute the activity execution"
+msgstr ""
 
 # http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsRestrictedRole
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
@@ -727,8 +732,8 @@ msgstr "Execution restricted role"
 
 # http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsRestrictedRole
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
-msgid "Execution restricted role"
-msgstr "The role who is allowed to execute the activity execution"
+msgid "The role who is allowed to execute the activity execution"
+msgstr ""
 
 # http://www.tao.lu/middleware/wfEngine.rdf#ClassActivityExecutions
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
@@ -757,8 +762,8 @@ msgstr "Role"
 
 # http://www.tao.lu/middleware/wfEngine.rdf#PropertyAccessControlModesRole
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
-msgid "Role"
-msgstr "Access Control Role"
+msgid "Access Control Role"
+msgstr ""
 
 # http://www.tao.lu/middleware/wfEngine.rdf#PropertyAccessControlModesRoleRestrictedUser
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
@@ -794,11 +799,6 @@ msgstr "Role Restricted User Inherited"
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Role Restricted User Inherited Delivery"
 msgstr "Role Restricted User Inherited Delivery"
-
-# http://www.tao.lu/middleware/wfEngine.rdf#PropertyAccessControlModesRoleRestrictedUserInheritedDelivery
-msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
-msgid "Role Restricted User Inherited Delivery"
-msgstr "Role Restricted User Inherited"
 
 # http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivitiesAccessControlMode
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
@@ -905,20 +905,15 @@ msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Notify Then Activity Users"
 msgstr "Notify Then Activity Users"
 
-# http://www.tao.lu/middleware/wfEngine.rdf#InstanceNotifyThenActivityUsers
+# http://www.tao.lu/middleware/wfEngine.rdf#InstanceNotifyElseActivityUsers
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
-msgid "Notify Then Activity Users"
-msgstr "For connector of conditional type only"
+msgid "For connector of conditional type only"
+msgstr ""
 
 # http://www.tao.lu/middleware/wfEngine.rdf#InstanceNotifyElseActivityUsers
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Notify Else Activity Users"
 msgstr "Notify Else Activity Users"
-
-# http://www.tao.lu/middleware/wfEngine.rdf#InstanceNotifyElseActivityUsers
-msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
-msgid "Notify Else Activity Users"
-msgstr "For connector of conditional type only"
 
 # http://www.tao.lu/middleware/wfEngine.rdf#InstanceNotifyPreviousActivityUsers
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
@@ -1087,8 +1082,8 @@ msgstr "PREV_ENDORSMENT"
 
 # http://www.tao.lu/middleware/wfEngine.rdf#ProcessVarPrevEndosment
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
-msgid "PREV_ENDORSMENT"
-msgstr "Previous Endorsment"
+msgid "Previous Endorsment"
+msgstr ""
 
 # http://www.tao.lu/middleware/wfEngine.rdf#ClassActivityCardinality
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
@@ -1119,11 +1114,241 @@ msgstr "Split variables"
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Split variables"
 msgstr "Split variables"
+
+# http://www.tao.lu/Ontologies/TAO.rdf#WorkflowUser
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "WfUser"
+msgstr ""
+
+# http://www.tao.lu/Ontologies/TAO.rdf#WorkflowUser
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Workflow User: sub class to group the workflow user, not deletable"
+msgstr ""
+
+# http://www.tao.lu/Ontologies/TAO.rdf#WorkflowRole
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "Workflow Participant"
+msgstr ""
+
+# http://www.tao.lu/Ontologies/TAO.rdf#WorkflowRole
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "The Workflow Participant Role"
+msgstr ""
 
 # http://www.tao.lu/middleware/wfEngine.rdf#WorkflowsManagerRole
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Workflows Manager"
 msgstr "Workflows Manager"
+
+# http://www.tao.lu/middleware/wfEngine.rdf#WorkflowsManagerRole
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "The Workflows Manager Role"
+msgstr ""
+
+# http://www.tao.lu/middleware/wfEngine.rdf#ClassStep
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Step"
+msgstr "Process Step"
+
+# http://www.tao.lu/middleware/wfEngine.rdf#PropertyTransitionRulesThen
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Then"
+msgstr "Then statement"
+
+# http://www.tao.lu/middleware/wfEngine.rdf#ClassCallOfservicesResources
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Call Of services Resources"
+msgstr "Call of services Resources"
+
+# http://www.tao.lu/middleware/wfEngine.rdf#PropertyServiceDefinitionsFormalParameterIn
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "formalParameterIn"
+msgstr "Formal Parameter for input"
+
+# http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivitiesInitial
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "isInitial"
+msgstr "Is Initial activity"
+
+# http://www.tao.lu/middleware/wfEngine.rdf#InstanceStatusPaused
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Paused"
+msgstr "Paused status"
+
+# http://www.tao.lu/middleware/wfEngine.rdf#InstanceStatusFinished
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Finished"
+msgstr "Finished Status"
+
+# http://www.tao.lu/middleware/wfEngine.rdf#InstanceStatusResumed
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Active"
+msgstr "Active status"
+
+# http://www.tao.lu/middleware/wfEngine.rdf#InstanceStatusStarted
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Started"
+msgstr "Started status"
+
+# http://www.tao.lu/middleware/wfEngine.rdf#InstanceStatusClosed
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Closed"
+msgstr "Closed status"
+
+# http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsTimeStarted
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Started on"
+msgstr "The start time of the activity execution"
+
+# http://www.tao.lu/middleware/wfEngine.rdf#PropertyServiceDefinitionsFormalParameterOut
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Formal Parameter Out"
+msgstr "Formal Paramater Out"
+
+# http://www.tao.lu/middleware/wfEngine.rdf#InstanceTypeOfConnectorsSequence
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Sequence"
+msgstr "Sequence Connector Type"
+
+# http://www.tao.lu/middleware/wfEngine.rdf#InstanceTypeOfConnectorsConditional
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Conditional"
+msgstr "Conditional Connector Type"
+
+# http://www.tao.lu/middleware/wfEngine.rdf#InstanceTypeOfConnectorsParallel
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Split"
+msgstr "Split Connector Type"
+
+# http://www.tao.lu/middleware/wfEngine.rdf#InstanceTypeOfConnectorsJoin
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Join"
+msgstr "Join Connector Type"
+
+# http://www.tao.lu/middleware/wfEngine.rdf#InstanceTypeOfConnectorsSwitch
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Switch"
+msgstr "Switch Connector Type"
+
+# http://www.tao.lu/middleware/wfEngine.rdf#PropertyFormalParametersDefaultProcessVariable
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "DefaultProcessVariable"
+msgstr "Default Process Variable"
+
+# http://www.tao.lu/middleware/wfEngine.rdf#PropertyFormalParametersName
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Name"
+msgstr "Formal Parameter Name"
+
+# http://www.tao.lu/middleware/wfEngine.rdf#PropertyTransitionRulesElse
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Else"
+msgstr "Else statement"
+
+# http://www.tao.lu/middleware/wfEngine.rdf#PropertyConnectorsActivityReference
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Activity Reference"
+msgstr "the reference to the activity at the time of creation"
+
+# http://www.tao.lu/middleware/wfEngine.rdf#PropertyCode
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Code"
+msgstr "For process variables only"
+
+# http://www.tao.lu/middleware/wfEngine.rdf#PropertyCallOfServicesTop
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Top Shifting"
+msgstr "The CSS top attribute value for the service iframe"
+
+# http://www.tao.lu/middleware/wfEngine.rdf#PropertyCallOfServicesLeft
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Left Shifting"
+msgstr "The CSS left attribute value for the service iframe"
+
+# http://www.tao.lu/middleware/wfEngine.rdf#PropertyCallOfServicesWidth
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Width"
+msgstr "The CSS width attribute value for the service iframe"
+
+# http://www.tao.lu/middleware/wfEngine.rdf#PropertyCallOfServicesHeight
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Height"
+msgstr "The CSS height attribute value for the service iframe"
+
+# http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsProcessExecution
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Process Execution"
+msgstr "The process execution to which the activity execution is linked"
+
+# http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsHasVariables
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Variables"
+msgstr "Serialized array of currently used variables"
+
+# http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsPreviousActivityExecutions
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Previous Activity Executions"
+msgstr "Used to build the process path"
+
+# http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsFollowingActivityExecutions
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Following Activity Executions"
+msgstr "Used to build the process path"
+
+# http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsTimeCreated
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Created on"
+msgstr "The creation time of the activity execution"
+
+# http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsTimeLastAccess
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Last accessed on"
+msgstr "The last time the current user accessed it"
+
+# http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsNonce
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Nonce"
+msgstr "The nonce to garantee unique action (transitions)"
+
+# http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsAccessControlMode
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Execution ACL mode"
+msgstr "The ACL mode applied to the acitivty execution"
+
+# http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsRestrictedUser
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Execution restricted user"
+msgstr "The user who is allowed to execute the activity execution"
+
+# http://www.tao.lu/middleware/wfEngine.rdf#PropertyActivityExecutionsRestrictedRole
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Execution restricted role"
+msgstr "The role who is allowed to execute the activity execution"
+
+# http://www.tao.lu/middleware/wfEngine.rdf#PropertyAccessControlModesRole
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Role"
+msgstr "Access Control Role"
+
+# http://www.tao.lu/middleware/wfEngine.rdf#PropertyAccessControlModesRoleRestrictedUserInheritedDelivery
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Role Restricted User Inherited Delivery"
+msgstr "Role Restricted User Inherited"
+
+# http://www.tao.lu/middleware/wfEngine.rdf#InstanceNotifyThenActivityUsers
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Notify Then Activity Users"
+msgstr "For connector of conditional type only"
+
+# http://www.tao.lu/middleware/wfEngine.rdf#InstanceNotifyElseActivityUsers
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Notify Else Activity Users"
+msgstr "For connector of conditional type only"
+
+# http://www.tao.lu/middleware/wfEngine.rdf#ProcessVarPrevEndosment
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "PREV_ENDORSMENT"
+msgstr "Previous Endorsment"
 
 # http://www.tao.lu/middleware/wfEngine.rdf#WorkflowsManagerRole
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
