@@ -33,7 +33,7 @@ return array(
     'label' => 'Workflow engine',
 	'description' => 'Workflow Engine extension',
     'license' => 'GPL-2.0',
-	'version' => '2.6',
+	'version' => '2.7',
 	'author' => 'Open Assessment Technologies, CRP Henri Tudor',
 	'requires' => array(
 	    'tao' => '>=2.7.0'
