@@ -33,7 +33,7 @@ return array(
     'label' => 'Workflow engine',
 	'description' => 'Workflow Engine extension',
     'license' => 'GPL-2.0',
-	'version' => '2.7',
+	'version' => '2.7.1',
 	'author' => 'Open Assessment Technologies, CRP Henri Tudor',
 	'requires' => array(
 	    'tao' => '>=2.7.0'
@@ -50,6 +50,7 @@ return array(
 			//dirname(__FILE__). '/scripts/importSas.php',
 		)
 	),
+    'update' => 'oat\\taoWfEngine\\scripts\\update\\Updater',
 	'managementRole' => 'http://www.tao.lu/middleware/wfEngine.rdf#WorkflowsManagerRole',
     'acl' => array(
         array('grant', 'http://www.tao.lu/middleware/wfEngine.rdf#WorkflowsManagerRole', array('ext'=>'wfEngine')),
